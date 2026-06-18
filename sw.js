@@ -1,8 +1,8 @@
 /* Offline cache so the app works on the plane / no signal. */
-const CACHE = "sts-v2";
+const CACHE = "sts-v3";
 const ASSETS = [
   "./", "./index.html", "./styles.css",
-  "./curriculum.js", "./messages.js", "./app.js",
+  "./config.js", "./curriculum.js", "./messages.js", "./app.js",
   "./manifest.webmanifest", "./icon.svg"
 ];
 self.addEventListener("install", e => {
