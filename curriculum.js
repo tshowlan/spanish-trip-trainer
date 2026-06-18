@@ -294,4 +294,199 @@ const CURRICULUM = {
   ]
 };
 
-if (typeof module !== "undefined") module.exports = CURRICULUM;
+/* =========================================================================
+   EXPANSION  —  extra core lessons, conditional (profile-gated) lessons,
+   a harder "Level Up" stage, and the data used by the intro onboarding.
+   Lessons tagged with `requires` only appear if the user's profile matches.
+   ========================================================================= */
+
+/* Allergens — used to generate a personalized "Your Allergies" lesson.
+   `frag` is the grammatically-correct bit after "Soy alérgico ___". */
+const ALLERGENS = [
+  { key: "gluten",    en: "gluten",    frag: "al gluten" },
+  { key: "nuts",      en: "nuts",      frag: "a los frutos secos" },
+  { key: "peanuts",   en: "peanuts",   frag: "a los cacahuetes" },
+  { key: "shellfish", en: "shellfish", frag: "al marisco" },
+  { key: "dairy",     en: "dairy",     frag: "a los lácteos" },
+  { key: "eggs",      en: "eggs",      frag: "al huevo" },
+  { key: "fish",      en: "fish",      frag: "al pescado" },
+  { key: "soy",       en: "soy",       frag: "a la soja" }
+];
+
+const LODGING_OPTIONS = [
+  { key: "hotel",  label: "Hotel" },
+  { key: "airbnb", label: "Airbnb / apartment" }
+];
+
+const TRANSPORT_OPTIONS = [
+  { key: "metro", label: "Metro" },
+  { key: "train", label: "Train (Renfe / AVE)" },
+  { key: "bus",   label: "Bus" },
+  { key: "ferry", label: "Ferry / boat" }
+];
+
+(function expandCurriculum() {
+  const byId = id => CURRICULUM.stages.find(s => s.id === id);
+
+  /* ---- Coffee shop (core, everyone) → Out & About ---- */
+  byId("s2").lessons.push({
+    id: "s2-coffee",
+    topic: "Coffee shop",
+    title: "Coffee Shop",
+    reward: "You can order a cortado and survive a 'cash only' barista. Caffeine: secured.",
+    items: [
+      { es: "Un café con leche, por favor", en: "A coffee with milk, please" },
+      { es: "Un cortado, por favor", en: "An espresso with a dash of milk, please", note: "A 'cortado' is espresso 'cut' with a little warm milk — a Spain classic." },
+      { es: "Un café solo", en: "A black espresso", latam: "Latin America: 'un espresso' / 'un café negro'." },
+      { es: "Un croissant, por favor", en: "A croissant, please", note: "Also spelled 'un cruasán'." },
+      { es: "¿Qué pasteles tienen?", en: "What pastries do you have?" },
+      { es: "¿Para tomar aquí o para llevar?", en: "For here or to take away?", note: "What the barista asks you." },
+      { es: "¿Me puede dar cambio?", en: "Can you give me change?" },
+      { es: "Solo efectivo, el datáfono no funciona", en: "Cash only, the card machine's down", note: "You might hear this — 'datáfono' is the card terminal." }
+    ]
+  });
+
+  /* ---- On the plane / flight attendant (core) → On the Move ---- */
+  byId("s3").lessons.push({
+    id: "s3-plane",
+    topic: "Transport · On the plane",
+    title: "On the Plane",
+    reward: "Chicken or pasta, juice or wine — you can now run the whole drinks cart in Spanish.",
+    items: [
+      { es: "¿Pollo o pasta?", en: "Chicken or pasta?", note: "What the flight attendant asks you." },
+      { es: "Pollo, por favor", en: "Chicken, please" },
+      { es: "Pasta, por favor", en: "Pasta, please" },
+      { es: "¿Para beber?", en: "Anything to drink?", note: "What they ask you." },
+      { es: "Un zumo de naranja", en: "An orange juice", latam: "Latin America: 'un jugo de naranja'." },
+      { es: "Una copa de vino tinto", en: "A glass of red wine" },
+      { es: "Un café, por favor", en: "A coffee, please" },
+      { es: "¿Me puede dar una manta?", en: "Can I have a blanket?" }
+    ]
+  });
+
+  /* ---- Conditional: Metro (transport: metro) → On the Move ---- */
+  byId("s3").lessons.push({
+    id: "s3-metro", requires: { transport: "metro" },
+    topic: "Transport · Metro",
+    title: "Metro",
+    reward: "You can buy a T-casual and not ride the wrong line. Barcelona underground: conquered.",
+    items: [
+      { es: "¿Dónde está la estación de metro?", en: "Where's the metro station?" },
+      { es: "una T-casual", en: "a 10-trip travel card", note: "Barcelona's pay-per-ride metro/bus card." },
+      { es: "¿Qué línea va a...?", en: "Which line goes to...?" },
+      { es: "¿Tengo que hacer transbordo?", en: "Do I have to change lines?" },
+      { es: "¿Cuántas paradas faltan?", en: "How many stops are left?" },
+      { es: "el andén", en: "the platform" },
+      { es: "la salida", en: "the exit", cat: "Catalan sign: 'Sortida'." }
+    ]
+  });
+
+  /* ---- Conditional: Train (transport: train) → On the Move ---- */
+  byId("s3").lessons.push({
+    id: "s3-train", requires: { transport: "train" },
+    topic: "Transport · Train",
+    title: "Trains",
+    reward: "Platforms, seats, delays — you can ride the AVE like a commuter.",
+    items: [
+      { es: "¿De qué andén sale el tren?", en: "Which platform does the train leave from?" },
+      { es: "un billete a Madrid", en: "a ticket to Madrid", latam: "Latin America: 'un boleto'." },
+      { es: "¿Este asiento está libre?", en: "Is this seat free?" },
+      { es: "el AVE", en: "the high-speed train", note: "Spain's high-speed rail." },
+      { es: "¿El tren va con retraso?", en: "Is the train delayed?" },
+      { es: "ida y vuelta", en: "round trip" },
+      { es: "¿Dónde valido el billete?", en: "Where do I validate the ticket?" }
+    ]
+  });
+
+  /* ---- Conditional: Bus (transport: bus) → On the Move ---- */
+  byId("s3").lessons.push({
+    id: "s3-bus", requires: { transport: "bus" },
+    topic: "Transport · Bus",
+    title: "Buses",
+    reward: "You can flag the right bus and get off at the right stop. No more mystery tours.",
+    items: [
+      { es: "¿Este autobús va al centro?", en: "Does this bus go downtown?" },
+      { es: "¿Dónde está la parada?", en: "Where's the bus stop?" },
+      { es: "¿Cuánto cuesta el billete?", en: "How much is the ticket?" },
+      { es: "¿Me avisa cuando lleguemos?", en: "Will you let me know when we arrive?" },
+      { es: "¿Para en...?", en: "Does it stop at...?" },
+      { es: "el conductor", en: "the driver" }
+    ]
+  });
+
+  /* ---- Conditional: Ferry (transport: ferry) → On the Move ---- */
+  byId("s3").lessons.push({
+    id: "s3-ferry", requires: { transport: "ferry" },
+    topic: "Transport · Ferry",
+    title: "Ferries & Boats",
+    reward: "Docks, crossings, round-trips — you can board a boat without getting on the wrong one.",
+    items: [
+      { es: "¿Dónde se compran los billetes del ferry?", en: "Where do you buy ferry tickets?" },
+      { es: "¿A qué hora sale el próximo ferry?", en: "What time does the next ferry leave?" },
+      { es: "¿Cuánto dura la travesía?", en: "How long is the crossing?" },
+      { es: "¿Desde qué muelle sale?", en: "Which dock does it leave from?" },
+      { es: "un billete de ida y vuelta", en: "a return (round-trip) ticket" },
+      { es: "¿Está incluido el equipaje?", en: "Is luggage included?" },
+      { es: "Se mueve mucho", en: "It's rough / it moves a lot" }
+    ]
+  });
+
+  /* ---- Conditional: Airbnb (lodging: airbnb) → Hotel & Sights ---- */
+  byId("s4").lessons.push({
+    id: "s4-airbnb", requires: { lodging: "airbnb" },
+    topic: "Airbnb / apartment",
+    title: "Your Airbnb",
+    reward: "Keys, wifi, trash day, the lockbox that won't open — you can handle a host like a pro.",
+    items: [
+      { es: "¿Dónde recojo las llaves?", en: "Where do I pick up the keys?" },
+      { es: "¿Cuál es la contraseña del wifi?", en: "What's the wifi password?" },
+      { es: "¿Cómo funciona la calefacción?", en: "How does the heating work?" },
+      { es: "¿Dónde se tira la basura?", en: "Where do I take out the trash?" },
+      { es: "La caja de seguridad no abre", en: "The lockbox won't open" },
+      { es: "No hay agua caliente", en: "There's no hot water" },
+      { es: "¿A qué hora tengo que salir?", en: "What time do I have to check out?" },
+      { es: "¿Me puede dar la dirección exacta?", en: "Can you give me the exact address?" }
+    ]
+  });
+
+  /* ---- New harder stage: Level Up (longer, combined sentences) ---- */
+  CURRICULUM.stages.push({
+    id: "s5",
+    title: "Level Up",
+    blurb: "Full sentences that string topics together. The big-kid stage.",
+    lessons: [
+      {
+        id: "s5-real",
+        topic: "Advanced · Real situations",
+        title: "Real Conversations",
+        reward: "Look at you — full sentences now. People might mistake you for someone who lives here.",
+        items: [
+          { es: "¿Podría recomendarme un plato típico de aquí?", en: "Could you recommend a typical local dish?" },
+          { es: "Disculpe, creo que hay un error en la cuenta", en: "Excuse me, I think there's a mistake on the bill" },
+          { es: "¿A qué hora cierra la cocina?", en: "What time does the kitchen close?" },
+          { es: "Estamos buscando un sitio para cenar cerca de aquí", en: "We're looking for somewhere to have dinner near here" },
+          { es: "Perdone, ¿este tren va al centro?", en: "Excuse me, does this train go to the center?" },
+          { es: "¿Sería posible cambiar de habitación?", en: "Would it be possible to change rooms?" }
+        ]
+      },
+      {
+        id: "s5-fix",
+        topic: "Advanced · When things go wrong",
+        title: "When It Goes Wrong",
+        reward: "Lost, overcharged, double-booked — you can talk your way out of it. Travel boss mode.",
+        items: [
+          { es: "Reservé una habitación pero no aparece", en: "I booked a room but it's not showing up" },
+          { es: "Creo que me he perdido, ¿me puede ayudar?", en: "I think I'm lost, can you help me?" },
+          { es: "Se me ha olvidado la cartera en el taxi", en: "I left my wallet in the taxi" },
+          { es: "¿Puede llamar a un médico, por favor?", en: "Can you call a doctor, please?" },
+          { es: "Esto no es lo que he pedido", en: "This isn't what I ordered" },
+          { es: "¿Dónde está la comisaría más cercana?", en: "Where's the nearest police station?" }
+        ]
+      }
+    ]
+  });
+})();
+
+if (typeof module !== "undefined") {
+  module.exports = { CURRICULUM, ALLERGENS, LODGING_OPTIONS, TRANSPORT_OPTIONS };
+}
