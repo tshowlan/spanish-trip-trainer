@@ -239,3 +239,9 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .skill { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 8px; background: var(--bg-elevated); color: var(--text-dim); }
 .skill.good { background: rgba(88,204,106,.16); color: var(--green); }
 .skill.bad { background: rgba(255,90,110,.14); color: var(--red); }
+
+/* ---------- account ---------- */
+.backup-banner { background: var(--bg-card); border: 1px solid var(--accent-2); border-radius: var(--radius);
+  padding: 16px; margin: 16px 0 4px; font-size: 14px; line-height: 1.45; color: var(--text); }
+.backup-banner .btn { width: 100%; }
+.linkbtn { background: none; border: none; color: #6ec6ff; font-weight: 700; font-size: 14px; cursor: pointer; padding: 6px; width: 100%; }
