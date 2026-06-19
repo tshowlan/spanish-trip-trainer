@@ -1,5 +1,5 @@
 /* Offline cache so the app works on the plane / no signal. */
-const CACHE = "sts-v3";
+const CACHE = "sts-v4";
 const ASSETS = [
   "./", "./index.html", "./styles.css",
   "./config.js", "./curriculum.js", "./messages.js", "./app.js",

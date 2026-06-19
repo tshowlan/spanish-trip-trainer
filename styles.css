@@ -25,8 +25,8 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .topbar {
   position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; gap: 14px;
-  padding: 14px 18px;
-  background: linear-gradient(180deg, var(--bg) 70%, transparent);
+  padding: calc(14px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) 14px calc(18px + env(safe-area-inset-left));
+  background: linear-gradient(180deg, var(--bg) 85%, transparent);
 }
 .stat { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 16px; }
 .stat .ic { font-size: 18px; }
