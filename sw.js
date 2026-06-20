@@ -2,7 +2,7 @@
    Online → always fetch the latest (so updates land without reinstalling).
    Offline → fall back to the cache (works on the plane / no signal).
    Cross-origin requests (e.g. Supabase) are left untouched. */
-const CACHE = "sts-v6";
+const CACHE = "sts-v7";
 const ASSETS = [
   "./", "./index.html", "./styles.css",
   "./config.js", "./curriculum.js", "./messages.js", "./app.js",
@@ -34,4 +34,20 @@ self.addEventListener("fetch", e => {
       })
       .catch(() => caches.match(e.request).then(hit => hit || caches.match("./index.html")))
   );
+});
+
+// ---- push reminders ----
+self.addEventListener("push", e => {
+  let d = { title: "Spanish Trip Trainer", body: "Time for a quick lesson 🇪🇸" };
+  try { if (e.data) d = Object.assign(d, e.data.json()); } catch { if (e.data) d.body = e.data.text(); }
+  e.waitUntil(self.registration.showNotification(d.title, {
+    body: d.body, icon: "./icon.svg", badge: "./icon.svg", tag: "stt-reminder", renotify: true
+  }));
+});
+self.addEventListener("notificationclick", e => {
+  e.notification.close();
+  e.waitUntil(clients.matchAll({ type: "window", includeUncontrolled: true }).then(list => {
+    for (const c of list) { if ("focus" in c) return c.focus(); }
+    if (clients.openWindow) return clients.openWindow("./index.html");
+  }));
 });
