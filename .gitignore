@@ -1,2 +1,3 @@
 .claude/
 .DS_Store
+supabase_push_run.sql
