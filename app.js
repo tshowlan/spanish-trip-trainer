@@ -3,7 +3,11 @@
 const STORE_KEY = "sts_state_v1";
 const todayStr = () => new Date().toISOString().slice(0, 10);
 
-const DEFAULT_STATE = { xp: 0, gems: 0, streak: 0, lastActive: null, lessons: {}, history: [], sound: true, profile: null, topicStats: {}, cloud: null, account: null, reminders: { enabled: false, morning: 480, evening: 1290 } };
+// Per-destination fields live in state.trips[<dest>]; the active trip's copy is
+// mirrored at the top level. Global fields (streak, gems, history, account,
+// cloud, sound, reminders) are shared across all destinations.
+const DEFAULT_STATE = { xp: 0, gems: 0, streak: 0, lastActive: null, lessons: {}, history: [], sound: true, profile: null, topicStats: {}, cloud: null, account: null, reminders: { enabled: false, morning: 480, evening: 1290 }, trips: {}, active: null };
+const DEST_FIELDS = ["profile", "lessons", "topicStats", "xp"];
 let state = load();
 
 function load() {
@@ -17,6 +21,7 @@ let DECK, LESSON_ORDER, ALL_ITEMS;
 
 function meetsReq(lesson, p) {
   if (!lesson.requires) return true;
+  if (lessonDone(lesson.id)) return true;     // never hide a lesson you've already finished
   if (!p) return false;                       // hide conditional lessons until onboarded
   if (lesson.requires.lodging)   return (p.lodging || []).includes(lesson.requires.lodging);
   if (lesson.requires.transport) return (p.transport || []).includes(lesson.requires.transport);
@@ -283,16 +288,20 @@ function renderOnboarding() {
 
   function finish() {
     const d = destInfo(draft.destination);
-    state.profile = {
+    const newProfile = {
       destination: draft.destination, dialect: d.dialect, tripDate: draft.date,
       tripType: draft.tripType, needs: draft.needs, allergies: draft.allergies,
       level: draft.level || "new", lodging: [], transport: []
     };
+    snapshotActive();                          // stash the trip we're leaving
+    state.active = draft.destination;
+    applyTrip(draft.destination);              // load existing progress for this destination (if any)
+    state.profile = newProfile;                // refresh the plan with the new answers
     save(); rebuildDeck();
     toast(`¡Vamos! ${d.flag} ${Math.max(0, daysUntil(draft.date))} days to go`);
     const first = DECK.stages[0] && DECK.stages[0].lessons[0];
     const fresh = Object.keys(state.lessons).length === 0;
-    (first && fresh) ? startLesson(first) : renderHome();   // new users → straight into L1; returning → map
+    (first && fresh) ? startLesson(first) : renderHome();   // new trip → straight into L1; returning → map
   }
   render();
 }
@@ -325,6 +334,9 @@ function renderHome() {
       <p>Trip-ready ${d.dialect}, one scenario at a time. Finish a lesson to unlock the next.</p>
       ${streakStrip()}
     </div>`));
+  const tripsBtn = el(`<button class="trips-btn">⇄ Your trips</button>`);
+  tripsBtn.addEventListener("click", renderTrips);
+  home.querySelector(".hero").appendChild(tripsBtn);
   if (!state.account) {
     const banner = el(`<div class="backup-banner"><span>🔒 Back up your progress — create an account so a reinstall never wipes your streak.</span><button class="btn" style="margin-top:10px">Create account</button></div>`);
     banner.querySelector("button").addEventListener("click", () => renderAuth("signup"));
@@ -390,6 +402,12 @@ function renderSettings() {
     <span class="chev" style="font-size:22px">›</span></div>`);
   remRow.addEventListener("click", renderReminders);
   wrap.appendChild(remRow);
+  const d2 = destInfo(state.profile && state.profile.destination);
+  const tripsRow = el(`<div class="set-row" style="cursor:pointer"><div><div class="set-t">Your trips</div><div class="set-d">Active: ${d2.flag} ${d2.label} · switch destinations</div></div>
+    <span class="chev" style="font-size:22px">›</span></div>`);
+  tripsRow.addEventListener("click", renderTrips);
+  wrap.appendChild(tripsRow);
+
   const grpRow = el(`<div class="set-row" style="cursor:pointer"><div><div class="set-t">Group mode</div><div class="set-d">${state.cloud && state.cloud.group ? "In group " + state.cloud.group : "Share a code, compare strengths"}</div></div>
     <span class="chev" style="font-size:22px">›</span></div>`);
   grpRow.addEventListener("click", renderGroup);
@@ -745,11 +763,12 @@ function ensureIdentity() {
 async function cloudSync() {
   if (!state.cloud || !state.cloud.optedIn) return;          // nothing leaves the device until you join a group
   ensureIdentity();
+  snapshotActive();                                          // make sure the active trip is current in state.trips
   await rpc("sync_player", {
     p_id: state.cloud.playerId, p_secret: state.cloud.secret,
     p_name: state.cloud.name || "Traveler", p_group: state.cloud.group || null,
     p_xp: state.xp, p_streak: state.streak, p_stats: state.topicStats || {},
-    p_progress: { lessons: state.lessons, profile: state.profile, history: state.history }
+    p_progress: { history: state.history, trips: state.trips, active: state.active }
   });
 }
 function genCode() {
@@ -855,14 +874,20 @@ async function loadMembers(list, code) {
 // Merge a remote player record down onto this device.
 function applyPlayer(r) {
   if (!r) return;
-  state.xp = Math.max(state.xp, r.xp || 0);
-  state.streak = Math.max(state.streak, r.streak || 0);
-  state.topicStats = r.stats || state.topicStats || {};
+  state.streak = Math.max(state.streak, r.streak || 0);      // streak is global
   if (state.cloud) { if (r.name) state.cloud.name = r.name; state.cloud.group = r.group_code || state.cloud.group; }
   if (r.progress) {
-    if (r.progress.lessons) state.lessons = Object.assign({}, state.lessons, r.progress.lessons);
-    if (r.progress.profile) state.profile = r.progress.profile;
     if (r.progress.history) state.history = [...new Set([...(state.history || []), ...r.progress.history])];
+    if (r.progress.trips) {                                  // per-destination restore
+      state.trips = Object.assign({}, state.trips, r.progress.trips);
+      if (r.progress.active) state.active = r.progress.active;
+      if (state.active) applyTrip(state.active);
+    } else {                                                 // legacy single-trip backup
+      if (r.progress.lessons) state.lessons = Object.assign({}, state.lessons, r.progress.lessons);
+      if (r.progress.profile) state.profile = r.progress.profile;
+      state.xp = Math.max(state.xp, r.xp || 0);
+      state.topicStats = r.stats || state.topicStats || {};
+    }
   }
 }
 
@@ -1100,12 +1125,79 @@ function renderReminders() {
   });
 }
 
+/* ============================== TRIPS (per-destination progress) ============================== */
+function snapshotActive() {
+  if (!state.active) return;
+  const snap = {}; DEST_FIELDS.forEach(f => snap[f] = state[f]);
+  state.trips[state.active] = snap;
+}
+function applyTrip(key) {
+  const t = state.trips[key] || {};
+  state.profile = t.profile || null;
+  state.lessons = t.lessons || {};
+  state.topicStats = t.topicStats || {};
+  state.xp = t.xp || 0;
+}
+function switchDestination(key) {
+  if (key === state.active) { renderHome(); return; }
+  snapshotActive();
+  state.active = key;
+  applyTrip(key);
+  save(); rebuildDeck();
+  state.profile ? renderHome() : renderOnboarding();   // existing trip → its map; brand-new → onboard
+}
+// One-time migration: existing flat progress is all Barcelona/Spain content → file it under 'spain'.
+function migrateTrips() {
+  if (state.active || Object.keys(state.trips).length) return;
+  const hasData = Object.keys(state.lessons).length > 0 || state.profile;
+  if (!hasData) return;
+  const prof = state.profile
+    ? Object.assign({}, state.profile, { destination: "spain", dialect: "Castilian Spanish" })
+    : null;
+  state.trips.spain = { profile: prof, lessons: state.lessons, topicStats: state.topicStats, xp: state.xp };
+  state.active = "spain";
+  applyTrip("spain");
+  save();
+}
+function tripSummary(key) {
+  const t = key === state.active
+    ? { profile: state.profile, lessons: state.lessons, xp: state.xp }
+    : (state.trips[key] || {});
+  return { done: Object.keys(t.lessons || {}).length, xp: t.xp || 0, tripDate: (t.profile || {}).tripDate };
+}
+function renderTrips() {
+  clearFooter();
+  const app = $("#app"); app.innerHTML = "";
+  const wrap = el(`<div class="settings"></div>`);
+  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">‹</button><h2>Your trips</h2></div>`));
+  wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">Each destination keeps its own progress. Switch anytime — nothing is lost.</p>`));
+  app.appendChild(wrap);
+  $("#back").addEventListener("click", renderHome);
+  const have = new Set([...Object.keys(state.trips), state.active].filter(Boolean));
+  DESTINATIONS.forEach(d => {
+    if (!have.has(d.key)) return;
+    const s = tripSummary(d.key);
+    const active = d.key === state.active;
+    const days = s.tripDate ? Math.max(0, daysUntil(s.tripDate)) : null;
+    const row = el(`<div class="set-row" style="cursor:pointer;${active ? "border-color:var(--green)" : ""}">
+      <div><div class="set-t">${d.flag} ${d.label} ${active ? '<span class="you">active</span>' : ""}</div>
+      <div class="set-d">${s.done} lesson${s.done === 1 ? "" : "s"} done · ${s.xp} XP${days !== null ? ` · ${days}d to go` : ""}</div></div>
+      <span class="chev" style="font-size:22px">${active ? "✓" : "›"}</span></div>`);
+    if (!active) row.addEventListener("click", () => switchDestination(d.key));
+    wrap.appendChild(row);
+  });
+  const add = el(`<button class="btn grey" style="margin-top:16px">＋ Start a new destination</button>`);
+  add.addEventListener("click", renderOnboarding);
+  wrap.appendChild(add);
+}
+
 /* ============================== boot ============================== */
+migrateTrips();
 rebuildDeck();
 $("#gear").addEventListener("click", renderSettings);
 $("#group").addEventListener("click", renderGroup);
 handleAuthRedirect().then(handled => {
   if (handled) return;
-  if (!state.profile || !state.profile.tripDate) renderOnboarding(); else renderHome();
+  if (!state.profile) renderOnboarding(); else renderHome();
 });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});

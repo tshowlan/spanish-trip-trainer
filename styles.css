@@ -255,3 +255,5 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .plan-list { margin: 10px 0 4px; padding-left: 0; list-style: none; }
 .plan-list li { position: relative; padding: 6px 0 6px 26px; color: var(--text); line-height: 1.35; }
 .plan-list li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 800; }
+.trips-btn { margin-top: 12px; background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-dim); border-radius: 99px; padding: 7px 14px; font-weight: 700; font-size: 13px; cursor: pointer; }
+.trips-btn:active { transform: scale(.97); }
