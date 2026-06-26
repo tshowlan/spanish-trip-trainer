@@ -1,7 +1,7 @@
 {
-  "name": "Spanish Trip Trainer",
-  "short_name": "Spanish Trip",
-  "description": "Barcelona-ready Spanish, travel phrases first.",
+  "name": "Tripfluent",
+  "short_name": "Tripfluent",
+  "description": "Get trip-ready Spanish for your destination.",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",

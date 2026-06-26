@@ -2,7 +2,7 @@
    Online → always fetch the latest (so updates land without reinstalling).
    Offline → fall back to the cache (works on the plane / no signal).
    Cross-origin requests (e.g. Supabase) are left untouched. */
-const CACHE = "sts-v7";
+const CACHE = "sts-v8";
 const ASSETS = [
   "./", "./index.html", "./styles.css",
   "./config.js", "./curriculum.js", "./messages.js", "./app.js",
