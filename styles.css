@@ -1,19 +1,45 @@
 :root {
+  /* ---- color ---- */
   --bg: #0f1419;
   --bg-card: #1a2129;
   --bg-elevated: #222c36;
   --text: #f3f6f9;
   --text-dim: #9bb0c0;
-  --accent: #ff5a3c;        /* warm Barcelona terracotta */
-  --accent-2: #ffb33c;      /* Gaudí gold */
+  --accent: #ff5a3c;        /* warm terracotta */
+  --accent-2: #ffb33c;      /* gold */
   --green: #58cc6a;
   --green-dark: #46a557;
   --red: #ff5a6e;
   --border: #2c3a47;
-  --radius: 16px;
+
+  /* ---- type ---- */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-text: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 25px;
+  --text-2xl: 31px;
+  --text-3xl: 39px;
+
+  /* ---- spacing (≈1.5 step) ---- */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+
+  /* ---- radius ---- */
+  --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+  --radius: 16px;                      /* legacy alias */
+
+  /* ---- motion ---- */
+  --transition: 160ms cubic-bezier(.2,.7,.3,1);
+
   --shadow: 0 4px 0 rgba(0,0,0,.35);
-  font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: var(--font-text);
 }
+
+/* Display face for headings (editorial warmth) */
+h1, h2, h3, .hero h1, .onb-card h2, .complete h2 { font-family: var(--font-display); letter-spacing: -0.01em; }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
