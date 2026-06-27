@@ -16,7 +16,16 @@ function load() {
 }
 function save() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
 
-/* ---------- deck (curriculum filtered/augmented by the user's profile) ---------- */
+/* ---------- content packs (one per country; each fully bespoke) ----------
+   Register a new destination = add a content_<cc>.js pack + an entry here +
+   a DESTINATIONS entry. Each pack owns its scenarios, vocab, and TTS accent. */
+const CONTENT = {
+  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages },
+  mexico: { key: "mexico", dialect: "Mexican Spanish",   tts: "es-MX", stages: (typeof MEXICO_PACK !== "undefined" ? MEXICO_PACK.stages : CURRICULUM.stages) }
+};
+function activePack() { return CONTENT[state.active] || CONTENT.spain; }
+
+/* ---------- deck (active country's pack, filtered/augmented by the profile) ---------- */
 let DECK, LESSON_ORDER, ALL_ITEMS;
 
 function meetsReq(lesson, p) {
@@ -44,12 +53,12 @@ function buildAllergyLesson(keys) {
 function rebuildDeck() {
   const p = state.profile;
   DECK = { stages: [] };
-  CURRICULUM.stages.forEach(st => {
+  activePack().stages.forEach(st => {
     DECK.stages.push(Object.assign({}, st, { lessons: st.lessons.filter(l => meetsReq(l, p)) }));
   });
-  if (p && p.allergies && p.allergies.length) {
-    const s1 = DECK.stages.find(s => s.id === "s1");
-    if (s1) s1.lessons.splice(1, 0, buildAllergyLesson(p.allergies));
+  if (p && p.allergies && p.allergies.length && DECK.stages[0]) {
+    const s0 = DECK.stages[0];                 // inject the personalized allergy lesson early
+    s0.lessons.splice(Math.min(1, s0.lessons.length), 0, buildAllergyLesson(p.allergies));
   }
   LESSON_ORDER = []; ALL_ITEMS = [];
   DECK.stages.forEach(st => st.lessons.forEach(l => {
@@ -73,18 +82,20 @@ function registerActivity() {
   state.lastActive = t;
 }
 
-/* ---------- audio: TTS + synthesized success sounds ---------- */
-let esVoice = null;
-function pickVoice() {
+/* ---------- audio: TTS (per-country accent) + synthesized success sounds ---------- */
+if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = () => {};
+function voiceFor(lang) {
   const vs = speechSynthesis.getVoices();
-  esVoice = vs.find(v => /es-ES/i.test(v.lang)) || vs.find(v => /^es/i.test(v.lang)) || null;
+  return vs.find(v => v.lang.replace("_", "-").toLowerCase() === lang.toLowerCase())   // exact (es-MX)
+      || vs.find(v => /^es/i.test(v.lang))                                             // any Spanish
+      || null;
 }
-if ("speechSynthesis" in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 function speak(text) {
   if (!("speechSynthesis" in window)) return;
   speechSynthesis.cancel();
+  const lang = (typeof activePack === "function" ? activePack().tts : "es-ES");
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = "es-ES"; if (esVoice) u.voice = esVoice; u.rate = 0.9;
+  u.lang = lang; const v = voiceFor(lang); if (v) u.voice = v; u.rate = 0.9;
   speechSynthesis.speak(u);
 }
 
