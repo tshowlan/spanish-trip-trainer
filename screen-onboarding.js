@@ -42,8 +42,7 @@ function renderOnboarding() {
     if (screen === "welcome") {
       wrap.appendChild(el(`
         <div class="onb-card">
-          <div class="onb-emoji">🧭</div>
-          <h2>Welcome to Tripfluent</h2>
+          <div class="hero-mark" style="margin-bottom:16px">${wordmark(36)}</div>
           <p>Not a fluency app — a get-ready-for-<i>this trip</i> app. A few quick questions and I'll build a plan timed to your departure.</p>
         </div>`));
       const btn = el(`<button class="btn">Plan my trip</button>`);

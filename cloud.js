@@ -53,7 +53,7 @@ function renderGroup() {
   clearFooter();
   const app = $("#app"); app.innerHTML = "";
   const wrap = el(`<div class="settings"></div>`);
-  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">‹</button><h2>Group</h2></div>`));
+  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>Group</h2></div>`));
   app.appendChild(wrap);
   $("#back").addEventListener("click", renderHome);
   (state.cloud && state.cloud.group) ? renderGroupView(wrap) : renderGroupJoin(wrap);

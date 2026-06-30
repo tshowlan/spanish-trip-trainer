@@ -21,7 +21,7 @@ function renderHome() {
     : `<div class="countdown"><span class="cd-num">${days}</span> day${days === 1 ? "" : "s"} until ${d.flag} ${d.label}</div>`;
   home.appendChild(el(`
     <div class="hero">
-      <h1>${d.flag} Tripfluent</h1>
+      <div class="hero-mark">${wordmark(32)}</div>
       ${countdown}
       <p>Trip-ready ${d.dialect}, one scenario at a time. Finish a lesson to unlock the next.</p>
       ${streakStrip()}
@@ -54,7 +54,7 @@ function renderHome() {
             <div class="s">${l.topic} · ${l.items.length} phrases</div>
             ${isDone ? `<div class="stars">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</div>` : ""}
           </div>
-          <div class="chev">${unlocked ? "›" : ""}</div>`);
+          <div class="chev">${unlocked ? icon('caret-right',18) : ""}</div>`);
       if (unlocked) card.addEventListener("click", () => startLesson(l));
       else card.addEventListener("click", () => toast("Finish the lesson before it to unlock 🔒"));
       list.appendChild(card);

@@ -38,7 +38,7 @@ function renderQuestion() {
   const wrap = el(`<div class="runner"></div>`);
   wrap.appendChild(el(`
     <div class="progress-row">
-      <button class="close-btn" id="quit">✕</button>
+      <button class="close-btn" id="quit">${icon('x',24)}</button>
       <div class="pbar"><i style="width:${pct}%"></i></div>
       <div class="hearts">♥ ${run.hearts}</div>
     </div>`));

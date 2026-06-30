@@ -41,7 +41,7 @@ function renderReminders() {
   clearFooter();
   const app = $("#app"); app.innerHTML = "";
   const wrap = el(`<div class="settings"></div>`);
-  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">‹</button><h2>Reminders</h2></div>`));
+  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>Reminders</h2></div>`));
   wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">A friendly nudge in the morning and before bed to keep your streak alive.</p>`));
 
   const r = state.reminders;

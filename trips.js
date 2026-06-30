@@ -42,7 +42,7 @@ function renderTrips() {
   clearFooter();
   const app = $("#app"); app.innerHTML = "";
   const wrap = el(`<div class="settings"></div>`);
-  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">‹</button><h2>Your trips</h2></div>`));
+  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>Your trips</h2></div>`));
   wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">Each destination keeps its own progress. Switch anytime — nothing is lost.</p>`));
   app.appendChild(wrap);
   $("#back").addEventListener("click", renderHome);
@@ -55,7 +55,7 @@ function renderTrips() {
     const row = el(`<div class="set-row" style="cursor:pointer;${active ? "border-color:var(--green)" : ""}">
       <div><div class="set-t">${d.flag} ${d.label} ${active ? '<span class="you">active</span>' : ""}</div>
       <div class="set-d">${s.done} lesson${s.done === 1 ? "" : "s"} done · ${s.xp} XP${days !== null ? ` · ${days}d to go` : ""}</div></div>
-      <span class="chev" style="font-size:22px">${active ? "✓" : "›"}</span></div>`);
+      <span class="chev">${active ? "✓" : icon('caret-right',20)}</span></div>`);
     if (!active) row.addEventListener("click", () => switchDestination(d.key));
     wrap.appendChild(row);
   });

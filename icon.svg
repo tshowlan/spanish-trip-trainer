@@ -1,6 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="110" fill="#0f1419"/>
-  <circle cx="256" cy="220" r="120" fill="#ff5a3c"/>
-  <path d="M256 120 l28 70 74 4 -58 46 20 72 -64-40 -64 40 20-72 -58-46 74-4z" fill="#ffb33c"/>
-  <text x="256" y="430" font-family="ui-rounded,system-ui,sans-serif" font-size="84" font-weight="800" fill="#f3f6f9" text-anchor="middle">ES</text>
+  <rect width="512" height="512" rx="112" fill="#1c275e"/>
+  <circle cx="256" cy="256" r="150" fill="none" stroke="#fcfcf3" stroke-width="14" opacity="0.55"/>
+  <!-- compass needle -->
+  <path d="M256 120 L300 256 L256 392 L212 256 Z" fill="#d8b713"/>
+  <path d="M120 256 L256 212 L392 256 L256 300 Z" fill="#4a7fc1"/>
+  <circle cx="256" cy="256" r="20" fill="#fcfcf3"/>
 </svg>
