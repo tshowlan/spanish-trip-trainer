@@ -46,6 +46,16 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 /* icons + wordmark */
 .ph { display: inline-block; vertical-align: middle; flex: none; }
 .wordmark { max-width: 100%; height: auto; }
+
+/* splash / loading screen */
+#splash {
+  position: fixed; inset: 0; z-index: 2000; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity .5s ease .2s;
+}
+#splash .wordmark { transform-origin: center center; will-change: transform;
+  transition: transform .7s cubic-bezier(.5,.05,.2,1); }
+#splash.out { opacity: 0; pointer-events: none; }
 .icon-btn { background: none; border: none; cursor: pointer; color: var(--text-dim); padding: 4px; display: inline-flex; }
 .icon-btn:active { transform: scale(.9); }
 

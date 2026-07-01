@@ -28,6 +28,28 @@ function icon(name, size = 22) {
   return `<svg class="ph" viewBox="0 0 256 256" width="${size}" height="${size}" fill="currentColor" aria-hidden="true">${PH[name] ? `<path d="${PH[name]}"/>` : ""}</svg>`;
 }
 
+/* ---------- splash: fullscreen wordmark that zooms into its home-screen spot ---------- */
+function runSplash() {
+  const splash = document.getElementById("splash");
+  if (!splash) return;
+  const sw = splash.querySelector(".wordmark");
+  const ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+  ready.then(() => setTimeout(() => {
+    const target = document.querySelector(".hero .wordmark") || document.querySelector(".onb-card .wordmark");
+    if (target && sw) {
+      const t = target.getBoundingClientRect(), s = sw.getBoundingClientRect();
+      if (s.height && t.height) {
+        const scale = t.height / s.height;
+        const dx = (t.left + t.width / 2) - (s.left + s.width / 2);
+        const dy = (t.top + t.height / 2) - (s.top + s.height / 2);
+        sw.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+      }
+    }
+    splash.classList.add("out");
+    setTimeout(() => splash.remove(), 800);
+  }, 550));
+}
+
 /* ---------- wordmark (Trip = Plus Jakarta 800 navy, fluent = Playfair italic blue) ---------- */
 function wordmark(h = 30) {
   return `<svg class="wordmark" viewBox="0 0 640 150" height="${h}" role="img" aria-label="Tripfluent" style="display:block;overflow:visible">
