@@ -26,7 +26,7 @@ function renderHome() {
       <p>Trip-ready ${d.dialect}, one scenario at a time. Finish a lesson to unlock the next.</p>
       ${streakStrip()}
     </div>`));
-  const tripsBtn = el(`<button class="trips-btn">⇄ Your trips</button>`);
+  const tripsBtn = el(`<button class="pill trips-btn">⇄ Your trips</button>`);
   tripsBtn.addEventListener("click", renderTrips);
   home.querySelector(".hero").appendChild(tripsBtn);
   if (!state.account) {

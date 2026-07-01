@@ -42,7 +42,7 @@ function renderSettings() {
   editP.addEventListener("click", renderOnboarding);
   wrap.appendChild(editP);
 
-  const reset = el(`<button class="btn" style="margin-top:12px;background:var(--red);color:#2a0406">Reset all progress</button>`);
+  const reset = el(`<button class="btn btn--danger" style="margin-top:12px">Reset all progress</button>`);
   reset.addEventListener("click", () => {
     if (confirm("Erase all progress, streak, and profile? This can't be undone.")) {
       state = Object.assign({}, DEFAULT_STATE); save(); rebuildDeck(); renderOnboarding();
