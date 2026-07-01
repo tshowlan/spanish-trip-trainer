@@ -1,7 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="112" fill="#fcfcf3"/>
-  <g transform="translate(256,256) scale(0.23105360443622922,-0.23105360443622922) translate(-552.0,-297.0)">
-    <path d="M200 0V610H11V745H541V610H355V0Z" fill="#1c275e"/>
-    <g transform="translate(592.0,0) scale(1.0,1.0)"><path d="M63 495 69 515H376L370 495ZM399 766Q381 766 367.5 759.0Q354 752 343 742Q327 727 314.5 696.5Q302 666 291.0 626.5Q280 587 269 541L77 -174Q47 -175 20.0 -178.0Q-7 -181 -32 -188L156 513Q177 594 202.5 647.5Q228 701 263 733Q288 756 322.5 769.0Q357 782 394 782Q445 782 473.0 759.5Q501 737 501 703Q501 685 491.0 667.5Q481 650 464.5 639.0Q448 628 426 628Q403 628 390.0 638.5Q377 649 378 668Q378 696 395.5 716.5Q413 737 441 746Q440 753 428.5 759.5Q417 766 399 766Z" fill="#4a7fc1"/></g>
-  </g>
+  <svg x="106" y="61" width="300" height="390" viewBox="0 0 100 130" preserveAspectRatio="xMidYMid meet">
+    <defs><clipPath id="tower"><polygon points="35,102 65,102 60,44 40,44"/></clipPath></defs>
+    <polygon points="43,23 43,33 6,26 11,10" fill="#d8b713" opacity="0.82"/>
+    <polygon points="57,23 57,33 94,26 89,10" fill="#d8b713" opacity="0.82"/>
+    <rect x="18" y="110" width="64" height="6" fill="#1c275e"/>
+    <rect x="28" y="102" width="44" height="9" fill="#1c275e"/>
+    <polygon points="35,102 65,102 60,44 40,44" fill="#1c275e"/>
+    <rect x="0" y="60" width="100" height="9" fill="#4a7fc1" clip-path="url(#tower)"/>
+    <rect x="0" y="79" width="100" height="9" fill="#4a7fc1" clip-path="url(#tower)"/>
+    <rect x="37" y="39" width="26" height="6" fill="#1c275e"/>
+    <rect x="37" y="44" width="26" height="2" fill="#4a7fc1"/>
+    <rect x="43" y="22" width="14" height="18" fill="#1c275e"/>
+    <rect x="44.5" y="23.5" width="11" height="15" fill="#d8b713"/>
+    <polygon points="41,22 59,22 50,13" fill="#1c275e"/>
+  </svg>
 </svg>

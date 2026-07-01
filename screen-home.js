@@ -21,7 +21,7 @@ function renderHome() {
     : `<div class="countdown"><span class="cd-num">${days}</span> day${days === 1 ? "" : "s"} until ${d.flag} ${d.label}</div>`;
   home.appendChild(el(`
     <div class="hero">
-      <div class="hero-mark">${wordmark(32)}</div>
+      <div class="hero-mark">${wordmark(30)}${lighthouse(40)}</div>
       ${countdown}
       <p>Trip-ready ${d.dialect}, one scenario at a time. Finish a lesson to unlock the next.</p>
       ${streakStrip()}

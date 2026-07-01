@@ -28,14 +28,35 @@ function icon(name, size = 22) {
   return `<svg class="ph" viewBox="0 0 256 256" width="${size}" height="${size}" fill="currentColor" aria-hidden="true">${PH[name] ? `<path d="${PH[name]}"/>` : ""}</svg>`;
 }
 
-/* ---------- splash: fullscreen wordmark that zooms into its home-screen spot ---------- */
+/* ---------- lighthouse mark (geometric, brand palette) ---------- */
+let _lhId = 0;
+function lighthouse(h = 40) {
+  const id = "lh-" + (++_lhId);
+  return `<svg class="lighthouse" viewBox="0 0 100 130" height="${h}" role="img" aria-label="lighthouse" style="display:block">
+    <defs><clipPath id="${id}"><polygon points="35,102 65,102 60,44 40,44"/></clipPath></defs>
+    <polygon points="43,23 43,33 6,26 11,10" fill="#d8b713" opacity="0.82"/>
+    <polygon points="57,23 57,33 94,26 89,10" fill="#d8b713" opacity="0.82"/>
+    <rect x="18" y="110" width="64" height="6" fill="#1c275e"/>
+    <rect x="28" y="102" width="44" height="9" fill="#1c275e"/>
+    <polygon points="35,102 65,102 60,44 40,44" fill="#1c275e"/>
+    <rect x="0" y="60" width="100" height="9" fill="#4a7fc1" clip-path="url(#${id})"/>
+    <rect x="0" y="79" width="100" height="9" fill="#4a7fc1" clip-path="url(#${id})"/>
+    <rect x="37" y="39" width="26" height="6" fill="#1c275e"/>
+    <rect x="37" y="44" width="26" height="2" fill="#4a7fc1"/>
+    <rect x="43" y="22" width="14" height="18" fill="#1c275e"/>
+    <rect x="44.5" y="23.5" width="11" height="15" fill="#d8b713"/>
+    <polygon points="41,22 59,22 50,13" fill="#1c275e"/>
+  </svg>`;
+}
+
+/* ---------- splash: fullscreen lockup that zooms into its home-screen spot ---------- */
 function runSplash() {
   const splash = document.getElementById("splash");
   if (!splash) return;
-  const sw = splash.querySelector(".wordmark");
+  const sw = splash.querySelector(".hero-mark");
   const ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
   ready.then(() => setTimeout(() => {
-    const target = document.querySelector(".hero .wordmark") || document.querySelector(".onb-card .wordmark");
+    const target = document.querySelector(".hero .hero-mark") || document.querySelector(".onb-card .hero-mark");
     if (target && sw) {
       const t = target.getBoundingClientRect(), s = sw.getBoundingClientRect();
       if (s.height && t.height) {
