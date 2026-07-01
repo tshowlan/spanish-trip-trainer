@@ -52,12 +52,45 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 /* splash / loading screen */
 #splash {
   position: fixed; inset: 0; z-index: 2000; background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity .5s ease .2s;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  transition: opacity .5s ease;
 }
-#splash .hero-mark { transform-origin: center center; will-change: transform;
-  transition: transform .7s cubic-bezier(.5,.05,.2,1); }
 #splash.out { opacity: 0; pointer-events: none; }
+
+/* -- zoom style: lockup shrinks into place -- */
+#splash.zoom { transition: opacity .5s ease .2s; }
+#splash.zoom .hero-mark { transform-origin: center center; will-change: transform;
+  transition: transform .7s cubic-bezier(.5,.05,.2,1); }
+
+/* -- beacon style: big lighthouse, wordmark below, light sweeps + flash reveal -- */
+#splash.beacon { flex-direction: column; }
+.splash-stack { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.splash-lh { animation: splash-rise .7s cubic-bezier(.2,.7,.3,1) both; }
+.splash-lh .lighthouse { filter: drop-shadow(0 8px 18px rgba(28,39,94,.14)); }
+.splash-wm { animation: splash-fade .7s ease .25s both; }
+@keyframes splash-rise { from { transform: translateY(18px) scale(.95); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes splash-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.splash-beam {
+  position: absolute; left: 50%; top: 43%; width: 240vmax; height: 240vmax;
+  transform: translate(-50%, -50%); z-index: 1; pointer-events: none;
+  background: conic-gradient(from 0deg,
+    rgba(216,183,19,0) 0deg, rgba(216,183,19,.36) 10deg, rgba(216,183,19,0) 24deg,
+    rgba(216,183,19,0) 180deg, rgba(216,183,19,.20) 189deg, rgba(216,183,19,0) 201deg,
+    rgba(216,183,19,0) 360deg);
+  animation: splash-beam 1.5s cubic-bezier(.4,0,.45,1) both;
+}
+@keyframes splash-beam {
+  from { transform: translate(-50%,-50%) rotate(-40deg); opacity: 0; }
+  12%  { opacity: 1; }
+  to   { transform: translate(-50%,-50%) rotate(500deg); opacity: 1; }
+}
+.splash-flash {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: radial-gradient(circle at 50% 43%, #fffdf0 0%, rgba(255,253,240,0) 58%);
+  animation: splash-flash .5s ease both;
+}
+@keyframes splash-flash { 0% { opacity: 0; } 45% { opacity: .92; } 100% { opacity: 0; } }
 .icon-btn { background: none; border: none; cursor: pointer; color: var(--text-dim); padding: 4px; display: inline-flex; }
 .icon-btn:active { transform: scale(.9); }
 

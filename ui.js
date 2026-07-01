@@ -49,12 +49,42 @@ function lighthouse(h = 40) {
   </svg>`;
 }
 
-/* ---------- splash: fullscreen lockup that zooms into its home-screen spot ---------- */
+/* ---------- splash ----------
+   SPLASH_STYLE: "beacon" = big lighthouse + wordmark below, light sweeps and reveals the app.
+                 "zoom"   = wordmark+lighthouse lockup shrinks into its home-screen spot. */
+const SPLASH_STYLE = "beacon";
+
+function splashMarkup() {
+  if (SPLASH_STYLE === "zoom")
+    return `<div class="hero-mark">${wordmark(56)}${lighthouse(70)}</div>`;
+  return `<div class="splash-beam"></div>
+    <div class="splash-stack">
+      <div class="splash-lh">${lighthouse(200)}</div>
+      <div class="splash-wm">${wordmark(46)}</div>
+    </div>`;
+}
+function initSplash() {
+  const s = document.getElementById("splash");
+  if (!s) return;
+  s.classList.add(SPLASH_STYLE);
+  s.innerHTML = splashMarkup();
+}
 function runSplash() {
   const splash = document.getElementById("splash");
   if (!splash) return;
-  const sw = splash.querySelector(".hero-mark");
   const ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+  (SPLASH_STYLE === "zoom" ? runSplashZoom : runSplashBeacon)(splash, ready);
+}
+function runSplashBeacon(splash, ready) {
+  ready.then(() => setTimeout(() => {
+    const flash = document.createElement("div"); flash.className = "splash-flash";
+    splash.appendChild(flash);                         // beam sweeps, then flash reveals the app
+    setTimeout(() => splash.classList.add("out"), 230);
+    setTimeout(() => splash.remove(), 950);
+  }, 1350));
+}
+function runSplashZoom(splash, ready) {
+  const sw = splash.querySelector(".hero-mark");
   ready.then(() => setTimeout(() => {
     const target = document.querySelector(".hero .hero-mark") || document.querySelector(".onb-card .hero-mark");
     if (target && sw) {
