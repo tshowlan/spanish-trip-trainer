@@ -58,6 +58,7 @@ function splashMarkup() {
   if (SPLASH_STYLE === "zoom")
     return `<div class="hero-mark">${wordmark(56)}${lighthouse(70)}</div>`;
   return `<div class="splash-beam"></div>
+    <div class="splash-flood"></div>
     <div class="splash-stack">
       <div class="splash-lh">${lighthouse(200)}</div>
       <div class="splash-wm">${wordmark(46)}</div>
@@ -76,12 +77,10 @@ function runSplash() {
   (SPLASH_STYLE === "zoom" ? runSplashZoom : runSplashBeacon)(splash, ready);
 }
 function runSplashBeacon(splash, ready) {
-  ready.then(() => setTimeout(() => {
-    const flash = document.createElement("div"); flash.className = "splash-flash";
-    splash.appendChild(flash);                         // beam sweeps, then flash reveals the app
-    setTimeout(() => splash.classList.add("out"), 230);
-    setTimeout(() => splash.remove(), 950);
-  }, 1350));
+  ready.then(() => {                                    // beam sweeps toward you, floods, reveals app
+    setTimeout(() => splash.classList.add("out"), 1650);
+    setTimeout(() => splash.remove(), 2250);
+  });
 }
 function runSplashZoom(splash, ready) {
   const sw = splash.querySelector(".hero-mark");
