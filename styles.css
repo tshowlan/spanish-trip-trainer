@@ -46,7 +46,7 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 /* icons + wordmark */
 .ph { display: inline-block; vertical-align: middle; flex: none; }
 .wordmark { max-width: 100%; height: auto; }
-.hero-mark { display: flex; align-items: center; gap: 10px; }
+.hero-mark { display: flex; align-items: center; gap: 4px; }
 .lighthouse { flex: none; }
 
 /* splash / loading screen */

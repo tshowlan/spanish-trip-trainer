@@ -73,7 +73,7 @@ function runSplash() {
 
 /* ---------- wordmark (Trip = Plus Jakarta 800 navy, fluent = Playfair italic blue) ---------- */
 function wordmark(h = 30) {
-  return `<svg class="wordmark" viewBox="0 0 640 150" height="${h}" role="img" aria-label="Tripfluent" style="display:block;overflow:visible">
+  return `<svg class="wordmark" viewBox="0 0 476 150" height="${h}" role="img" aria-label="Tripfluent" style="display:block;overflow:visible">
     <text x="4" y="112" text-anchor="start"><tspan font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="104" fill="#1c275e" letter-spacing="-2">Trip</tspan><tspan font-family="'Playfair Display',Georgia,serif" font-style="italic" font-weight="500" font-size="104" fill="#4a7fc1">fluent</tspan></text>
   </svg>`;
 }
