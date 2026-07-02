@@ -355,7 +355,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 /* ---------- floating tab bar ---------- */
 #tabbar {
   position: fixed; left: 50%; transform: translateX(-50%);
-  bottom: calc(7px + env(safe-area-inset-bottom));
+  bottom: max(8px, calc(env(safe-area-inset-bottom) / 2));
   width: calc(100% - 20px); max-width: 460px;
   z-index: 40; display: none; align-items: stretch; justify-content: space-around;
   background: var(--bg-card); border: 1px solid var(--border); border-radius: 99px;
