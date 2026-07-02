@@ -62,8 +62,7 @@ const SPLASH_STYLE = "beacon";
 function splashMarkup() {
   if (SPLASH_STYLE === "zoom")
     return `<div class="hero-mark">${wordmark(56)}${lighthouse(70)}</div>`;
-  return `<div class="splash-beam"></div>
-    <div class="splash-flood"></div>
+  return `<div class="splash-flood"></div>
     <div class="splash-stack">
       <div class="splash-lh">${lighthouse(200)}</div>
       <div class="splash-wm">${wordmark(46)}</div>
@@ -82,9 +81,9 @@ function runSplash() {
   (SPLASH_STYLE === "zoom" ? runSplashZoom : runSplashBeacon)(splash, ready);
 }
 function runSplashBeacon(splash, ready) {
-  ready.then(() => {                                    // beam sweeps toward you, floods, reveals app
-    setTimeout(() => splash.classList.add("out"), 1650);
-    setTimeout(() => splash.remove(), 2250);
+  ready.then(() => {                                    // hold on the lighthouse, then flood + reveal
+    setTimeout(() => splash.classList.add("out"), 2900);
+    setTimeout(() => splash.remove(), 3500);
   });
 }
 function runSplashZoom(splash, ready) {
