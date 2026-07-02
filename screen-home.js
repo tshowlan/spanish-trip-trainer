@@ -10,6 +10,7 @@ function streakStrip() {
 function renderHome() {
   renderTopbar();
   clearFooter();
+  showTabbar("home");
   const app = $("#app");
   app.innerHTML = "";
   const home = el(`<div class="home"></div>`);

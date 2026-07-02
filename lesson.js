@@ -34,6 +34,7 @@ function renderQuestion() {
   const q = run.qs[run.idx];
   const pct = Math.round(run.idx / run.qs.length * 100);
   clearFooter();
+  hideTabbar();
   app.innerHTML = "";
   const wrap = el(`<div class="runner"></div>`);
   wrap.appendChild(el(`

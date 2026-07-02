@@ -40,6 +40,7 @@ function tripSummary(key) {
 }
 function renderTrips() {
   clearFooter();
+  hideTabbar();
   const app = $("#app"); app.innerHTML = "";
   const wrap = el(`<div class="settings"></div>`);
   wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>Your trips</h2></div>`));

@@ -50,16 +50,17 @@ function strengths(stats) {
 }
 
 function renderGroup() {
+  hideTabbar();
   clearFooter();
   const app = $("#app"); app.innerHTML = "";
   const wrap = el(`<div class="settings"></div>`);
   wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>Group</h2></div>`));
   app.appendChild(wrap);
   $("#back").addEventListener("click", renderHome);
-  (state.cloud && state.cloud.group) ? renderGroupView(wrap) : renderGroupJoin(wrap);
+  (state.cloud && state.cloud.group) ? renderGroupView(wrap, renderGroup) : renderGroupJoin(wrap, renderGroup);
 }
 
-function renderGroupJoin(wrap) {
+function renderGroupJoin(wrap, rerender = renderGroup) {
   wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">Learn together. Create a group, share the code with your travel buddies, and see who's best — and worst — at what.</p>`));
   wrap.appendChild(el(`<div class="set-t" style="margin:10px 0 6px">Your name</div>`));
   const name = el(`<input class="text-input" placeholder="Your name" value="${(state.cloud && state.cloud.name) || ""}">`);
@@ -75,7 +76,7 @@ function renderGroupJoin(wrap) {
     ensureIdentity();
     state.cloud.name = name.value.trim() || "Traveler";
     state.cloud.group = code; state.cloud.optedIn = true; save();
-    try { await cloudSync(); toast("You're in! Code: " + code); renderGroup(); }
+    try { await cloudSync(); toast("You're in! Code: " + code); rerender(); }
     catch (e) { state.cloud.group = null; save(); toast("Couldn't connect: " + e.message); }
   }
   createBtn.addEventListener("click", () => enter(genCode()));
@@ -85,7 +86,7 @@ function renderGroupJoin(wrap) {
   });
 }
 
-function renderGroupView(wrap) {
+function renderGroupView(wrap, rerender = renderGroup) {
   const code = state.cloud.group;
   wrap.appendChild(el(`<div class="group-code">Group code <b>${code}</b><button class="copy" id="copy">Copy</button></div>`));
   const list = el(`<div id="members"><p class="onb-dim">Loading…</p></div>`);
@@ -106,7 +107,7 @@ function renderGroupView(wrap) {
   copySync.addEventListener("click", () => { navigator.clipboard && navigator.clipboard.writeText(sync); toast("Sync code copied"); });
   refresh.addEventListener("click", () => loadMembers(list, code));
   leave.addEventListener("click", () => {
-    if (confirm("Leave this group?")) { state.cloud.group = null; save(); cloudSync().catch(() => {}); renderGroup(); }
+    if (confirm("Leave this group?")) { state.cloud.group = null; save(); cloudSync().catch(() => {}); rerender(); }
   });
   restoreBtn.addEventListener("click", () => doRestore(restore.value.trim()));
   loadMembers(list, code);

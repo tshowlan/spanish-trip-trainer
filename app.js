@@ -5,8 +5,8 @@
 initSplash();
 migrateTrips();
 rebuildDeck();
+initTabbar();
 $("#gear").addEventListener("click", renderSettings);
-$("#group").addEventListener("click", renderGroup);
 handleAuthRedirect().then(handled => {
   if (!handled) { if (!state.profile) renderOnboarding(); else renderHome(); }
   runSplash();                       // play the intro once the first screen is rendered

@@ -1,6 +1,7 @@
 /* ============================== SETTINGS ============================== */
 function renderSettings() {
   clearFooter();
+  hideTabbar();
   const app = $("#app");
   app.innerHTML = "";
   const wrap = el(`<div class="settings"></div>`);
@@ -33,9 +34,9 @@ function renderSettings() {
   tripsRow.addEventListener("click", renderTrips);
   wrap.appendChild(tripsRow);
 
-  const grpRow = el(`<div class="set-row" style="cursor:pointer"><div><div class="set-t">Group mode</div><div class="set-d">${state.cloud && state.cloud.group ? "In group " + state.cloud.group : "Share a code, compare strengths"}</div></div>
+  const grpRow = el(`<div class="set-row" style="cursor:pointer"><div><div class="set-t">Group mode</div><div class="set-d">${state.cloud && state.cloud.group ? "In group " + state.cloud.group : "In the Progress tab — share a code, compare strengths"}</div></div>
     <span class="chev">${icon('caret-right',20)}</span></div>`);
-  grpRow.addEventListener("click", renderGroup);
+  grpRow.addEventListener("click", () => navTo("progress"));
   wrap.appendChild(grpRow);
 
   const editP = el(`<button class="btn grey" style="margin-top:20px">Edit trip profile</button>`);

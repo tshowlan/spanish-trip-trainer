@@ -56,6 +56,7 @@ function doLogout() { state.account = null; save(); }
 
 function renderAuth(mode) {
   clearFooter();
+  hideTabbar();
   const app = $("#app"); app.innerHTML = "";
   const wrap = el(`<div class="settings"></div>`);
   const title = mode === "signup" ? "Create account" : "Log in";

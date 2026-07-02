@@ -36,6 +36,7 @@ function renderOnboarding() {
 
   function render() {
     clearFooter();
+    hideTabbar();
     app.innerHTML = "";
     const wrap = el(`<div class="onb"></div>`);
 

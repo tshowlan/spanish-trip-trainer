@@ -2,13 +2,14 @@
    Online → always fetch the latest (so updates land without reinstalling).
    Offline → fall back to the cache (works on the plane / no signal).
    Cross-origin requests (e.g. Supabase) are left untouched. */
-const CACHE = "sts-v20";
+const CACHE = "sts-v21";
 const ASSETS = [
   "./", "./index.html", "./styles.css", "./fonts.css",
   "./fonts/plus-jakarta-sans.woff2", "./fonts/inter.woff2", "./fonts/playfair-italic-500.woff2",
   "./config.js", "./curriculum.js", "./content_mx.js", "./messages.js",
-  "./state.js", "./engine.js", "./audio.js", "./ui.js", "./srs.js",
-  "./screen-onboarding.js", "./screen-home.js", "./screen-settings.js",
+  "./state.js", "./engine.js", "./audio.js", "./ui.js", "./srs.js", "./nav.js",
+  "./screen-onboarding.js", "./screen-home.js", "./screen-quests.js", "./screen-phrasebook.js",
+  "./screen-progress.js", "./screen-settings.js",
   "./lesson.js", "./cloud.js", "./accounts.js", "./push.js", "./trips.js", "./app.js",
   "./manifest.webmanifest", "./icon.svg"
 ];

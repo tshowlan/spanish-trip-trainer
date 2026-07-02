@@ -351,3 +351,52 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .plan-list li { position: relative; padding: 6px 0 6px 26px; color: var(--text); line-height: 1.35; }
 .plan-list li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 800; }
 .trips-btn { margin-top: var(--space-3); }               /* uses .pill for the chip look */
+
+/* ---------- floating tab bar ---------- */
+#tabbar {
+  position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+  z-index: 40; display: none; align-items: stretch; gap: 2px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 99px;
+  padding: 6px; box-shadow: 0 8px 28px rgba(28,39,94,.18);
+}
+#tabbar.show { display: flex; }
+.tab {
+  background: none; border: none; cursor: pointer; color: var(--text-dim);
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 7px 15px; border-radius: 99px; font-size: 10px; font-weight: 700; letter-spacing: .2px;
+  transition: color .15s, background .15s;
+}
+.tab svg { width: 23px; height: 23px; }
+.tab.active { color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, transparent); }
+.tab:active { transform: scale(.93); }
+
+/* ---------- tab screens (quests / phrasebook / progress) ---------- */
+.tab-screen { padding-bottom: 104px; }
+.screen-head { margin-bottom: 14px; }
+.screen-head h2 { font-size: 26px; margin: 0; }
+.q-head { font-family: var(--font-display); font-weight: 800; font-size: 15px; margin: 22px 0 10px; }
+
+.quest { display: flex; align-items: center; gap: 14px; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 10px; }
+.quest.done { opacity: .72; }
+.q-check { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--border); flex: none;
+  display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 15px; }
+.quest.done .q-check { background: var(--green); border-color: var(--green-dark); }
+.q-t { font-weight: 800; font-size: 15px; }
+.q-d { color: var(--text-dim); font-size: 12px; margin-top: 2px; }
+
+.pb-seg { display: flex; gap: 8px; margin: 12px 0 4px; }
+.pb-seg .pill.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+.pb-group { font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-dim); margin: 16px 0 8px; }
+.pb-row { display: flex; align-items: center; gap: 12px; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 11px 14px; margin-bottom: 8px; }
+.pb-speak { background: var(--bg-elevated); border: none; border-radius: 10px; padding: 6px 10px; cursor: pointer; font-size: 15px; flex: none; }
+.pb-text { flex: 1; min-width: 0; }
+.pb-es { font-weight: 700; }
+.pb-en { color: var(--text-dim); font-size: 13px; margin-top: 1px; }
+.pb-save { background: none; border: none; cursor: pointer; color: var(--border); flex: none; padding: 4px; display: flex; }
+.pb-save.on { color: var(--accent); }
+
+.prog-row { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 8px; font-weight: 700; }
+.prog-pct { color: var(--primary); font-weight: 800; }
