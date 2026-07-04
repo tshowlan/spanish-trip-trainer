@@ -1,12 +1,28 @@
-/* ============================== HOME / MAP ============================== */
-function streakStrip() {
-  const days = [];
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date(Date.now() - i * 864e5).toISOString().slice(0, 10);
-    days.push(`<i class="${state.history.includes(d) ? "hit" : ""}" title="${d}"></i>`);
-  }
-  return `<div class="streak-strip"><span>Last 2 weeks</span><div class="dots">${days.join("")}</div></div>`;
+/* ============================== HOME (scores + map) ============================== */
+function ringSVG(val, cls) {
+  const r = 52, C = 2 * Math.PI * r, off = C * (1 - Math.max(0, Math.min(100, val)) / 100);
+  return `<svg class="ring ${cls}" viewBox="0 0 120 120">
+    <circle class="ring-bg" cx="60" cy="60" r="${r}"/>
+    <circle class="ring-fg" cx="60" cy="60" r="${r}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 60 60)"/>
+  </svg>`;
 }
+function sparkBars(arr) {
+  const max = Math.max(1, ...arr);
+  return arr.map(v => `<i style="height:${v ? Math.max(16, Math.round(v / max * 100)) : 6}%" class="${v ? "on" : ""}"></i>`).join("");
+}
+function _lastSessionDays() {
+  const last = (state.sessions || []).reduce((m, s) => Math.max(m, new Date(s.at).getTime()), 0);
+  return last ? Math.floor((Date.now() - last) / 864e5) : null;
+}
+function _recencyText() {
+  const d = _lastSessionDays();
+  return d === null ? "not yet" : d === 0 ? "today" : d === 1 ? "yesterday" : `${d} days ago`;
+}
+function findLesson(id) {
+  for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) if (l.id === id) return l;
+  return null;
+}
+
 function renderHome() {
   renderTopbar();
   clearFooter();
@@ -16,22 +32,62 @@ function renderHome() {
   const home = el(`<div class="home"></div>`);
   const p = state.profile || {};
   const d = destInfo(p.destination);
+  const s = computeScores();
+  const started = s.lifetimeSessions > 0 || Object.keys(state.lessons).length > 0;
   const days = p.tripDate ? Math.max(0, daysUntil(p.tripDate)) : null;
-  const countdown = days === null ? ""
-    : days <= 0 ? `<div class="countdown here">${d.flag} You're trip-ready — ¡buen viaje!</div>`
-    : `<div class="countdown"><span class="cd-num">${days}</span> day${days === 1 ? "" : "s"} until ${d.flag} ${d.label}</div>`;
-  home.appendChild(el(`
-    <div class="hero">
-      <div class="hero-mark">${wordmark(30)}${lighthouse(40)}</div>
-      ${countdown}
-      <p>Trip-ready ${d.dialect}, one scenario at a time. Finish a lesson to unlock the next.</p>
-      ${streakStrip()}
-    </div>`));
-  const tripsBtn = el(`<button class="pill trips-btn">⇄ Your trips</button>`);
-  tripsBtn.addEventListener("click", renderTrips);
-  home.querySelector(".hero").appendChild(tripsBtn);
+  const band = readinessBand(s.readiness);
+
+  const hero = el(`<div class="hero">
+    <div class="brandline">${wordmark(26)}<span class="lang-flag">${d.flag}</span></div>
+  </div>`);
+
+  if (!started) {
+    hero.appendChild(el(`<div class="empty-hero">Complete your first lesson to start your Trip Readiness score.</div>`));
+  } else {
+    const scores = el(`<div class="scores">
+      <button class="ring-card ${band.cls}" id="sc-readiness">
+        <div class="ring-wrap">${ringSVG(s.readiness, band.cls)}
+          <div class="ring-center"><div class="ring-num" data-to="${s.readiness}">0<span class="pct">%</span></div></div>
+        </div>
+        <div class="ring-band">${band.label}</div>
+        ${days !== null ? `<div class="ring-days">${days} days out</div>` : `<div class="ring-days set-date">Set your trip date</div>`}
+        ${s.lifetimeSessions < 5 ? `<div class="ring-sub">Establishing baseline</div>` : ``}
+      </button>
+      <div class="tiles">
+        <button class="tile" id="sc-momentum">
+          <div class="tile-top"><span class="tile-num">${s.momentum}</span><span class="tile-label">Momentum</span></div>
+          <div class="spark">${sparkBars(momentumSpark())}</div>
+        </button>
+        <button class="tile" id="sc-retention">
+          <div class="tile-top"><span class="tile-num">${s.retention}</span><span class="tile-label">Retention</span></div>
+          <div class="tile-foot">${(() => { const f = fadingLessons().filter(x => x.strength < 60).length; return f ? `${f} fading — tap to review` : "holding strong"; })()}</div>
+        </button>
+      </div>
+    </div>`);
+    hero.appendChild(scores);
+  }
+  home.appendChild(hero);
+
+  if (started) {
+    // count the ring number up on open
+    setTimeout(() => {
+      const n = home.querySelector(".ring-num"); if (!n) return;
+      const to = +n.dataset.to; const t0 = performance.now();
+      const step = now => {
+        const k = Math.min(1, (now - t0) / 600), e = 1 - Math.pow(1 - k, 3);
+        n.firstChild.textContent = Math.round(to * e);
+        if (k < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }, 30);
+    hero.querySelector("#sc-readiness").addEventListener("click", () => scoreSheet("readiness"));
+    hero.querySelector("#sc-momentum").addEventListener("click", () => scoreSheet("momentum"));
+    hero.querySelector("#sc-retention").addEventListener("click", () => scoreSheet("retention"));
+    const sd = hero.querySelector(".set-date"); if (sd) sd.addEventListener("click", renderOnboarding);
+  }
+
   if (!state.account) {
-    const banner = el(`<div class="backup-banner"><span>🔒 Back up your progress — create an account so a reinstall never wipes your streak.</span><button class="btn" style="margin-top:10px">Create account</button></div>`);
+    const banner = el(`<div class="backup-banner"><span>🔒 Back up your progress — create an account so a reinstall never wipes your progress.</span><button class="btn" style="margin-top:10px">Create account</button></div>`);
     banner.querySelector("button").addEventListener("click", () => renderAuth("signup"));
     home.appendChild(banner);
   }
@@ -55,7 +111,7 @@ function renderHome() {
             <div class="s">${l.topic} · ${l.items.length} phrases</div>
             ${isDone ? `<div class="stars">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</div>` : ""}
           </div>
-          <div class="chev">${unlocked ? icon('caret-right',18) : ""}</div>`);
+          <div class="chev">${unlocked ? icon('caret-right', 18) : ""}</div>`);
       if (unlocked) card.addEventListener("click", () => startLesson(l));
       else card.addEventListener("click", () => toast("Finish the lesson before it to unlock 🔒"));
       list.appendChild(card);
@@ -64,4 +120,43 @@ function renderHome() {
     home.appendChild(stage);
   });
   app.appendChild(home);
+}
+
+/* ---- score detail sheet (every score explains itself in one tap) ---- */
+function scoreSheet(which) {
+  const s = state.scoresCache || computeScores();
+  document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
+  let title, drivers, cta = null;
+  if (which === "readiness") {
+    title = "Trip Readiness";
+    drivers = [`Coverage ${s.coverage}`, `Retention ${s.retention}`, `Last practiced ${_recencyText()}`];
+  } else if (which === "momentum") {
+    title = "Momentum";
+    drivers = [`${s.activeDays7} of 5 active days`, `${s.sessions7} sessions this week`];
+  } else {
+    title = "Retention";
+    const fade = fadingLessons().filter(x => x.strength < 60);
+    drivers = fade.length ? [`${fade.length} scenario${fade.length === 1 ? "" : "s"} fading`] : ["Everything's holding strong"];
+    if (fade.length) cta = { label: "Review the weakest scenario", fn: () => { const l = findLesson(fade[0].id); if (l) { closeSheet(); startLesson(l); } } };
+  }
+  const wrap = el(`<div class="sheet-wrap">
+    <div class="sheet-backdrop"></div>
+    <div class="sheet">
+      <div class="sheet-grab"></div>
+      <div class="sheet-title">${title}</div>
+      <div class="drivers">${drivers.map(x => `<div class="driver">${x}</div>`).join("")}</div>
+    </div>
+  </div>`);
+  if (cta) {
+    const b = el(`<button class="btn" style="margin-top:14px">${cta.label}</button>`);
+    b.addEventListener("click", cta.fn);
+    wrap.querySelector(".sheet").appendChild(b);
+  }
+  document.body.appendChild(wrap);
+  requestAnimationFrame(() => wrap.classList.add("show"));
+  wrap.querySelector(".sheet-backdrop").addEventListener("click", closeSheet);
+}
+function closeSheet() {
+  const w = document.querySelector(".sheet-wrap");
+  if (!w) return; w.classList.remove("show"); setTimeout(() => w.remove(), 260);
 }

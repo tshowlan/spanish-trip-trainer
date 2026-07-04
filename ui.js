@@ -12,8 +12,8 @@ function toast(msg) {
 }
 function renderTopbar() {
   $("#stat-streak").textContent = state.streak;
-  $("#stat-xp").textContent = state.xp;
-  $("#stat-gems").textContent = state.gems;
+  const xp = $("#stat-xp"); if (xp) xp.textContent = state.xp;
+  const gems = $("#stat-gems"); if (gems) gems.textContent = state.gems;
 }
 
 /* ---------- Phosphor icons (inline SVG, one consistent family) ---------- */

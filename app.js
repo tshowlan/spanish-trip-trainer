@@ -4,6 +4,7 @@
 /* ============================== boot ============================== */
 initSplash();
 migrateTrips();
+migrateScoring();
 rebuildDeck();
 initTabbar();
 $("#gear").addEventListener("click", renderSettings);

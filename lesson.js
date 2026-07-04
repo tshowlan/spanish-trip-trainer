@@ -263,36 +263,37 @@ function finishLesson() {
   const stars = run.wrong === 0 ? 3 : run.wrong <= 2 ? 2 : 1;
   const firstTime = !lessonDone(lesson.id);
   const prev = state.lessons[lesson.id];
-  state.lessons[lesson.id] = { stars: Math.max(stars, prev ? prev.stars : 0) };
-  const gained = firstTime ? 20 : 8;
-  state.xp += gained;
-  if (firstTime) state.gems += 1;
+  const now = new Date().toISOString();
+  state.lessons[lesson.id] = { stars: Math.max(stars, prev ? prev.stars : 0), at: now };
+  if (firstTime) { state.xp += 20; state.gems += 1; } else state.xp += 8;   // kept in state for the group view
   // per-category accuracy → powers the group "best/worst at" view
   const cat = categoryOf(lesson.topic);
   const total = run.qs.length, correct = Math.max(0, total - run.wrong);
   state.topicStats = state.topicStats || {};
   const cs = state.topicStats[cat] = state.topicStats[cat] || { correct: 0, total: 0 };
   cs.correct += correct; cs.total += total;
-  const before = state.streak;
+  // session log → powers Momentum / Recency / Retention
+  const prevReadiness = (state.scoresCache || {}).readiness;
+  state.sessions = state.sessions || [];
+  state.sessions.push({ at: now, lessonId: lesson.id, category: cat, phrases: total, correct });
   registerActivity();
+  const scores = computeScores();
   save(); renderTopbar();
   cloudSync().catch(() => {});
   playSound("win");
 
+  const delta = (prevReadiness != null) ? scores.readiness - prevReadiness : null;
   const app = $("#app");
   app.innerHTML = "";
   app.appendChild(el(`
     <div class="complete">
-      <div class="big">${stars === 3 ? "🏆" : "🎉"}</div>
       <h2>¡Lección completa!</h2>
       <div class="scorebar">
-        <div class="score"><div class="n">${"★".repeat(stars)}</div><div class="l">stars</div></div>
-        <div class="score"><div class="n">+${gained}</div><div class="l">XP</div></div>
-        <div class="score"><div class="n">🔥 ${state.streak}</div><div class="l">day streak</div></div>
+        <div class="score"><div class="n stars-n">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</div><div class="l">accuracy</div></div>
+        <div class="score"><div class="n">${scores.readiness}<span class="pct">%</span></div><div class="l">trip readiness${delta > 0 ? ` <span class="up">▲${delta}</span>` : ""}</div></div>
       </div>
       <div class="reward">${lesson.reward}</div>
-      <button class="btn" id="home">Back to map</button>
+      <button class="btn" id="home">Continue</button>
     </div>`));
   $("#home").addEventListener("click", renderHome);
-  if (state.streak > before) toast(pick(STREAK_LINES)(state.streak));
 }

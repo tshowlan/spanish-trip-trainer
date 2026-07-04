@@ -6,10 +6,21 @@ function snapshotActive() {
 }
 function applyTrip(key) {
   const t = state.trips[key] || {};
-  state.profile = t.profile || null;
-  state.lessons = t.lessons || {};
-  state.topicStats = t.topicStats || {};
-  state.xp = t.xp || 0;
+  const defaults = { profile: null, lessons: {}, topicStats: {}, xp: 0, sessions: [] };
+  DEST_FIELDS.forEach(f => { state[f] = (t[f] !== undefined ? t[f] : defaults[f]); });
+}
+// One-time: give already-completed lessons a timestamp so Retention has data, and ensure
+// every trip has a sessions log. (Scores build forward from here for existing users.)
+function migrateScoring() {
+  const now = new Date().toISOString();
+  const fix = t => {
+    if (!t) return;
+    Object.values(t.lessons || {}).forEach(l => { if (l && !l.at) l.at = now; });
+    if (!t.sessions) t.sessions = [];
+  };
+  fix(state);                                   // active trip (mirrored at top level)
+  Object.values(state.trips || {}).forEach(fix);
+  save();
 }
 function switchDestination(key) {
   if (key === state.active) { renderHome(); return; }

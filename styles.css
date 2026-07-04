@@ -388,3 +388,55 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .prog-row { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card);
   border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 8px; font-weight: 700; }
 .prog-pct { color: var(--primary); font-weight: 800; }
+
+/* ---------- home scores (Whoop-style) ---------- */
+.brandline { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 6px 0 20px; }
+.lang-flag { font-size: 22px; line-height: 1; }
+.empty-hero { text-align: center; color: var(--text-dim); font-size: 15px; line-height: 1.5; padding: 16px 12px 26px; }
+
+.scores { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 8px; }
+.ring-card { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+.ring-wrap { position: relative; display: grid; place-items: center; }
+.ring { width: min(240px, 62vw); height: auto; display: block; }
+.ring-bg { fill: none; stroke: var(--bg-elevated); stroke-width: 10; }
+.ring-fg { fill: none; stroke: var(--ring, var(--secondary)); stroke-width: 10; stroke-linecap: round;
+  transition: stroke-dashoffset .85s cubic-bezier(.3,.7,.3,1); }
+.ring-center { position: absolute; inset: 0; display: grid; place-items: center; }
+.ring-num { font-family: var(--font-display); font-weight: 800; font-size: 56px; color: var(--text); line-height: 1; }
+.ring-num .pct { font-size: 22px; color: var(--text-dim); font-weight: 800; }
+.ring-band { font-weight: 800; font-size: 16px; color: var(--ring, var(--secondary)); }
+.ring-days { font-size: 13px; color: var(--text-dim); font-weight: 700; }
+.ring-days.set-date { color: var(--secondary); }
+.ring-sub { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: .6px; font-weight: 700; margin-top: 2px; }
+.ring-card.band-top  { --ring: var(--green); }
+.ring-card.band-good { --ring: var(--secondary); }
+.ring-card.band-mid  { --ring: var(--accent-2); }
+.ring-card.band-low  { --ring: var(--text-dim); }
+
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+.tile { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: 14px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 10px; }
+.tile-top { display: flex; align-items: baseline; gap: 8px; }
+.tile-num { font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1; }
+.tile-label { font-size: 13px; color: var(--text-dim); font-weight: 700; }
+.spark { display: flex; align-items: flex-end; gap: 4px; height: 32px; }
+.spark i { flex: 1; background: var(--bg-elevated); border-radius: 3px; min-height: 6px; }
+.spark i.on { background: var(--accent-2); }
+.tile-foot { font-size: 12px; color: var(--text-dim); font-weight: 600; }
+
+/* score detail sheet */
+.sheet-wrap { position: fixed; inset: 0; z-index: 60; }
+.sheet-backdrop { position: absolute; inset: 0; background: rgba(5,5,5,.35); opacity: 0; transition: opacity .25s; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; max-width: 480px; margin: 0 auto; background: var(--bg-card);
+  border-radius: 22px 22px 0 0; padding: 12px 22px calc(24px + env(safe-area-inset-bottom));
+  transform: translateY(100%); transition: transform .3s cubic-bezier(.3,.7,.3,1); box-shadow: 0 -8px 30px rgba(28,39,94,.18); }
+.sheet-wrap.show .sheet-backdrop { opacity: 1; }
+.sheet-wrap.show .sheet { transform: none; }
+.sheet-grab { width: 40px; height: 5px; border-radius: 99px; background: var(--border); margin: 2px auto 14px; }
+.sheet-title { font-family: var(--font-display); font-weight: 800; font-size: 20px; margin-bottom: 12px; }
+.drivers { display: flex; flex-direction: column; gap: 8px; }
+.driver { background: var(--bg-elevated); border-radius: 10px; padding: 12px 14px; font-weight: 700; font-size: 15px; }
+
+.complete .stars-n { color: var(--accent-2); }
+.complete .pct { font-size: 20px; color: var(--text-dim); }
+.complete .up { color: var(--green); font-weight: 800; }
