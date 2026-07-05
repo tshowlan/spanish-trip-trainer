@@ -48,11 +48,13 @@ function composeSession(lesson) {
   shuffle(practice).forEach(q => qs.push(q));
   return qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it }));  // safety net
 }
-// pure-review session (Home "Review" entry / all lessons complete)
+// pure-review session (Home "Review" entry / all lessons complete): mistakes first, then due
 function composeReview() {
-  const due = dueForReview(0).slice(0, 14);                 // everything seen, oldest first
-  const pool = due.slice();
-  return due.map(it => reviewQuestion(it, pool));
+  const mistakes = mistakesPool();
+  const due = dueForReview();
+  const seen = [...new Set([...mistakes, ...due])];
+  const pool = (seen.length ? seen : dueForReview(0)).slice(0, 14);
+  return pool.map(it => reviewQuestion(it, pool));
 }
 
 let run = null;
@@ -351,7 +353,7 @@ function finishGrade(ok, item, extra) {
   run.answered = true;
   const q = run.qs[run.idx];
   if (!ok) { run.wrong++; if (run.hearts > 0) run.hearts--; if (run.missed) run.missed.set(itemId(item), item); }
-  recordAnswer(itemId(item), ok);
+  recordAnswer(itemId(item), ok, { mode: q && q.type });
   playSound(ok ? "correct" : "wrong");
   const notes = [];
   if (extra) notes.push(`<span class="note-chip"><b>note</b> ${extra}</span>`);

@@ -51,24 +51,27 @@ function recencyScore() {
   return Math.round(100 * Math.exp(-((Date.now() - last) / _DAY) / 7));
 }
 
-/* ---- Retention (0–100): V1 lesson-level forgetting curve (per-phrase hook left below) ---- */
+/* ---- Retention (0–100): M3 per-phrase SRS strength (mean retrievability across learned items) ---- */
 function retentionScore() {
-  const done = Object.entries(state.lessons || {}).map(([id, l]) => l).filter(l => l && l.at);
-  if (!done.length) return 0;
-  const S = 7;                                                 // fixed stability for the lesson-level fallback
-  const mean = done.reduce((a, l) => a + 100 * Math.exp(-_daysSince(l.at) / S), 0) / done.length;
+  const entries = Object.values(state.learn || {}).filter(s => s && s.exposures >= 1);
+  if (!entries.length) return retentionScoreLegacy();          // no per-item data yet → lesson curve
+  const mean = entries.reduce((a, s) => a + itemStrength(s), 0) / entries.length;
   return Math.round(mean);
 }
-// Completed lessons sorted weakest-first (for the "review" CTA); {id, strength}
-function fadingLessons() {
-  const S = 7;
-  return Object.entries(state.lessons || {})
-    .filter(([, l]) => l && l.at)
-    .map(([id, l]) => ({ id, strength: Math.round(100 * Math.exp(-_daysSince(l.at) / S)) }))
+// pre-M3 fallback: lesson-level forgetting curve (used until the learner has per-item data)
+function retentionScoreLegacy() {
+  const done = Object.values(state.lessons || {}).filter(l => l && l.at);
+  if (!done.length) return 0;
+  const mean = done.reduce((a, l) => a + 100 * Math.exp(-_daysSince(l.at) / 7), 0) / done.length;
+  return Math.round(mean);
+}
+// individual phrases sorted weakest-first (for the retention "review" CTA); {id, strength}
+function fadingItems() {
+  return Object.entries(state.learn || {})
+    .filter(([, s]) => s && s.exposures >= 1)
+    .map(([id, s]) => ({ id, strength: Math.round(itemStrength(s)) }))
     .sort((a, b) => a.strength - b.strength);
 }
-/* Per-phrase retention (future): when state.phrases exists, replace retentionScore with the mean of
-   strength(phrase)=100·e^(−daysSinceLastCorrect/S), S=4·1.8^consecutiveCorrect, production 1.5× weight. */
 
 /* ---- Trip Readiness (headline composite) ---- */
 function readinessScore() {

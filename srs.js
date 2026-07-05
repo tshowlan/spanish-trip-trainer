@@ -23,11 +23,42 @@ function recordExposure(id) {
   const s = learnState(id); if (!s) return;
   s.exposures++; s.lastSeen = todayStr();
 }
-// graded answer: advance exposure + streak/lapse bookkeeping
-function recordAnswer(id, ok) {
+/* ---------- SM-2-lite scheduler (M3) ---------- */
+function seedInterval(difficulty) { return ({ 1: 4, 2: 3, 3: 2, 4: 1, 5: 1 })[difficulty || 2] || 3; }
+function _dateAdd(dateStr, days) {
+  const dt = new Date((dateStr || todayStr()) + "T00:00:00");
+  dt.setDate(dt.getDate() + Math.min(3650, Math.round(days)));
+  return dt.toISOString().slice(0, 10);
+}
+// graded answer: advance exposure + streak/lapse + SM-2-lite interval/ease/due + mastery axes.
+// opts.mode is the exercise type, used to set the production/cold/native axes.
+function recordAnswer(id, ok, opts) {
   const s = learnState(id); if (!s) return;
+  if (s.ease == null) s.ease = 2.3;
+  if (s.interval == null) s.interval = 0;
+  s.axes = s.axes || { production: 0, cold: 0, native: 0, chained: 0 };
   s.exposures++; s.lastSeen = todayStr();
-  if (ok) s.streak++; else { s.streak = 0; s.lapses++; s.lastMiss = todayStr(); }
+  const daysLeft = (state.profile && state.profile.tripDate) ? Math.max(1, daysUntil(state.profile.tripDate)) : 3650;
+  if (ok) {
+    s.streak++;
+    s.interval = s.interval === 0 ? seedInterval(s.difficulty) : Math.round(s.interval * s.ease);
+    const m = opts && opts.mode;                                  // mastery axes (as modes exist)
+    if (m === "type_translation") { s.axes.production = 1; s.axes.cold = 1; }
+    else if (m === "listen_type") { s.axes.production = 1; s.axes.native = 1; }
+    if (s.axes.production && s.axes.cold && s.axes.native && s.axes.chained) s.interval *= 2;  // graduated
+    s.interval = Math.min(s.interval, daysLeft);                  // never schedule past the trip
+    s.ease = Math.min(2.8, s.ease + 0.05);
+  } else {
+    s.streak = 0; s.lapses++; s.lastMiss = todayStr();
+    s.interval = 1; s.ease = Math.max(1.3, s.ease - 0.2);
+  }
+  s.due = _dateAdd(todayStr(), s.interval);
+}
+// current retrievability (0–100): decays from lastSeen over the item's own stability (interval)
+function itemStrength(s) {
+  if (!s || s.exposures < 1) return 0;
+  const stability = Math.max(1, s.interval || 1);
+  return 100 * Math.exp(-Math.max(0, _daysAgo(s.lastSeen)) / stability);
 }
 
 /* ---------- review selection (M2 — pre-SRS recency heuristic; SM-2 arrives in M3) ---------- */
@@ -35,12 +66,28 @@ function _daysAgo(dateStr) {
   if (!dateStr) return Infinity;
   return Math.floor((Date.now() - new Date(dateStr + "T00:00:00").getTime()) / 864e5);
 }
-// items seen at least once but not practised in a while — the trip-wide review pool, oldest first
+// trip-wide review pool: items whose SRS due date has arrived (most overdue first).
+// minDays=0 forces "everything seen" (pure-review fallback). Pre-SRS entries use recency.
 function dueForReview(minDays) {
-  const cut = minDays == null ? 3 : minDays;
+  const today = todayStr();
   return (ALL_ITEMS || [])
-    .filter(it => { const s = learnPeek(it); return s && s.exposures >= 1 && _daysAgo(s.lastSeen) >= cut; })
-    .sort((a, b) => _daysAgo(learnPeek(b).lastSeen) - _daysAgo(learnPeek(a).lastSeen));
+    .filter(it => {
+      const s = learnPeek(it); if (!s || s.exposures < 1) return false;
+      if (minDays === 0) return true;
+      if (s.due) return s.due <= today;
+      return _daysAgo(s.lastSeen) >= (minDays == null ? 3 : minDays);
+    })
+    .sort((a, b) => {
+      const da = learnPeek(a).due || "9999-99-99", db = learnPeek(b).due || "9999-99-99";
+      return da < db ? -1 : da > db ? 1 : 0;                     // most overdue first
+    });
+}
+// persistent mistakes: phrases you've missed and not yet re-mastered (2 correct in a row clears it).
+// Stays across days until fixed — this is the standing "practice your mistakes" collection.
+function mistakesPool() {
+  return (ALL_ITEMS || []).filter(it => {
+    const s = learnPeek(it); return s && s.lapses > 0 && s.streak < 2;
+  });
 }
 // items missed in the last ~48h — these open the next session as warm-up
 function recentMisses(withinDays) {

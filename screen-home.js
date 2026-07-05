@@ -87,12 +87,17 @@ function renderHome() {
     const sd = hero.querySelector(".set-date"); if (sd) sd.addEventListener("click", renderOnboarding);
   }
 
-  // Review entry point — surfaces phrases going cold across the whole trip
-  if (started) {
-    const dueN = (typeof dueForReview === "function") ? dueForReview().length : 0;
-    if (dueN > 0) {
-      const rev = el(`<button class="review-cta"><span class="rev-ic">${icon("arrows-clockwise", 18)}</span><span>Review <b>${dueN}</b> phrase${dueN === 1 ? "" : "s"} going cold</span><span class="chev">${icon("caret-right", 18)}</span></button>`);
-      rev.addEventListener("click", startReview);
+  // Review entry point — surfaces mistakes to fix + phrases going cold across the whole trip
+  if (started && typeof dueForReview === "function") {
+    const mistakes = (typeof mistakesPool === "function") ? mistakesPool() : [];
+    const due = dueForReview();
+    const pool = [...new Set([...mistakes, ...due])].slice(0, 15);
+    if (pool.length) {
+      const label = mistakes.length
+        ? `Fix <b>${mistakes.length}</b> mistake${mistakes.length === 1 ? "" : "s"}${due.length > mistakes.length ? " + review" : ""}`
+        : `Review <b>${due.length}</b> phrase${due.length === 1 ? "" : "s"} going cold`;
+      const rev = el(`<button class="review-cta"><span class="rev-ic">${icon("arrows-clockwise", 18)}</span><span>${label}</span><span class="chev">${icon("caret-right", 18)}</span></button>`);
+      rev.addEventListener("click", () => startReview(pool));
       home.appendChild(rev);
     }
   }
@@ -148,9 +153,12 @@ function scoreSheet(which) {
     drivers = [`${s.activeDays7} of 5 active days`, `${s.sessions7} sessions this week`];
   } else {
     title = "Retention";
-    const fade = fadingLessons().filter(x => x.strength < 60);
-    drivers = fade.length ? [`${fade.length} scenario${fade.length === 1 ? "" : "s"} fading`] : ["Everything's holding strong"];
-    if (fade.length) cta = { label: "Review the weakest scenario", fn: () => { const l = findLesson(fade[0].id); if (l) { closeSheet(); startLesson(l); } } };
+    const fade = fadingItems().filter(x => x.strength < 60);
+    drivers = fade.length ? [`${fade.length} phrase${fade.length === 1 ? "" : "s"} fading`] : ["Everything's holding strong"];
+    if (fade.length) {
+      const weak = fade.slice(0, 12).map(x => ITEM_INDEX[x.id]).filter(Boolean);
+      cta = { label: `Review ${weak.length} fading phrase${weak.length === 1 ? "" : "s"}`, fn: () => { closeSheet(); startReview(weak); } };
+    }
   }
   const wrap = el(`<div class="sheet-wrap">
     <div class="sheet-backdrop"></div>
