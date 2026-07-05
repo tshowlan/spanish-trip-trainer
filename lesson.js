@@ -262,7 +262,10 @@ function renderFill(q) {
 /* ----- tap to build ----- */
 function renderBuild(q) {
   const item = q.item;
-  const correctWords = item.es.split(" ");
+  // strip leading/trailing punctuation from tiles so ¿ ? , don't give away word position;
+  // the full punctuated sentence is revealed in the feedback after you submit.
+  const strip = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "") || w;
+  const correctWords = item.es.split(" ").map(strip);
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Build the sentence</div>`));
   body.appendChild(el(`<div class="prompt">${item.en}</div>`));
@@ -290,7 +293,7 @@ function renderBuild(q) {
   function refreshCheck() { $("#check").disabled = chosen.length !== correctWords.length; }
   f.querySelector("#check").addEventListener("click", () => {
     if (run.answered) return;
-    grade(chosen.join(" ") === item.es, item);
+    grade(chosen.join(" ") === correctWords.join(" "), item);
   });
 }
 

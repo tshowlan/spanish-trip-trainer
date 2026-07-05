@@ -128,8 +128,8 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
   display: flex; align-items: center; justify-content: center; gap: 5px;
   pointer-events: none;
 }
-.topbar-brand .wordmark { height: 18px; }
-.topbar-brand .tb-flag { font-size: 15px; line-height: 1; }
+.topbar-brand .wordmark { height: 22px; }
+.topbar-brand .tb-flag { font-size: 18px; line-height: 1; }
 
 /* ---------- home / map ---------- */
 .home { padding: 8px 18px 120px; }
@@ -234,8 +234,8 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
   padding: 16px 18px calc(16px + env(safe-area-inset-bottom)); background: var(--bg);
   border-top: 1px solid var(--border);
 }
-.footer.correct { background: color-mix(in srgb, var(--green) 12%, transparent); }
-.footer.wrong { background: color-mix(in srgb, var(--red) 12%, transparent); }
+.footer.correct { background: color-mix(in srgb, var(--green) 12%, var(--bg)); }
+.footer.wrong { background: color-mix(in srgb, var(--red) 12%, var(--bg)); }
 .fb-title { font-weight: 800; font-size: 17px; margin-bottom: 2px; }
 .fb-title.ok { color: var(--green); } .fb-title.no { color: var(--red); }
 .fb-sub { color: var(--text-dim); font-size: 13px; margin-bottom: 12px; }
