@@ -31,7 +31,7 @@ function recordAnswer(id, ok) {
 }
 
 /* ---------- review selection (M2 — pre-SRS recency heuristic; SM-2 arrives in M3) ---------- */
-function _daysSince(dateStr) {
+function _daysAgo(dateStr) {
   if (!dateStr) return Infinity;
   return Math.floor((Date.now() - new Date(dateStr + "T00:00:00").getTime()) / 864e5);
 }
@@ -39,15 +39,15 @@ function _daysSince(dateStr) {
 function dueForReview(minDays) {
   const cut = minDays == null ? 3 : minDays;
   return (ALL_ITEMS || [])
-    .filter(it => { const s = learnPeek(it); return s && s.exposures >= 1 && _daysSince(s.lastSeen) >= cut; })
-    .sort((a, b) => _daysSince(learnPeek(b).lastSeen) - _daysSince(learnPeek(a).lastSeen));
+    .filter(it => { const s = learnPeek(it); return s && s.exposures >= 1 && _daysAgo(s.lastSeen) >= cut; })
+    .sort((a, b) => _daysAgo(learnPeek(b).lastSeen) - _daysAgo(learnPeek(a).lastSeen));
 }
 // items missed in the last ~48h — these open the next session as warm-up
 function recentMisses(withinDays) {
   const w = withinDays == null ? 2 : withinDays;
   return (ALL_ITEMS || [])
-    .filter(it => { const s = learnPeek(it); return s && s.lastMiss && _daysSince(s.lastMiss) <= w && s.streak === 0; })
-    .sort((a, b) => _daysSince(learnPeek(a).lastMiss) - _daysSince(learnPeek(b).lastMiss));
+    .filter(it => { const s = learnPeek(it); return s && s.lastMiss && _daysAgo(s.lastMiss) <= w && s.streak === 0; })
+    .sort((a, b) => _daysAgo(learnPeek(a).lastMiss) - _daysAgo(learnPeek(b).lastMiss));
 }
 // trip date proximity → cram mode raises the review share and pushes production
 function cramActive() {
