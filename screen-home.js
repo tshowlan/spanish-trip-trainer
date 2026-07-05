@@ -3,7 +3,7 @@ function ringSVG(val, cls) {
   const r = 52, C = 2 * Math.PI * r, off = C * (1 - Math.max(0, Math.min(100, val)) / 100);
   return `<svg class="ring ${cls}" viewBox="0 0 120 120">
     <circle class="ring-bg" cx="60" cy="60" r="${r}"/>
-    <circle class="ring-fg" cx="60" cy="60" r="${r}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 60 60)"/>
+    <circle class="ring-fg" cx="60" cy="60" r="${r}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${C.toFixed(1)}" data-fill="${off.toFixed(1)}" transform="rotate(-90 60 60)"/>
   </svg>`;
 }
 function sparkBars(arr) {
@@ -45,7 +45,7 @@ function renderHome() {
     hero.appendChild(el(`<div class="empty-hero">Complete your first lesson to start your Trip Readiness score.</div>`));
   } else {
     const scores = el(`<div class="scores">
-      <button class="ring-card ${band.cls}" id="sc-readiness">
+      <button class="ring-card big ${band.cls}" id="sc-readiness">
         <div class="ring-wrap">${ringSVG(s.readiness, band.cls)}
           <div class="ring-center"><div class="ring-num" data-to="${s.readiness}">0<span class="pct">%</span></div></div>
         </div>
@@ -53,14 +53,18 @@ function renderHome() {
         ${days !== null ? `<div class="ring-days">${days} days out</div>` : `<div class="ring-days set-date">Set your trip date</div>`}
         ${s.lifetimeSessions < 5 ? `<div class="ring-sub">Establishing baseline</div>` : ``}
       </button>
-      <div class="tiles">
-        <button class="tile" id="sc-momentum">
-          <div class="tile-top"><span class="tile-num">${s.momentum}</span><span class="tile-label">Momentum</span></div>
-          <div class="spark">${sparkBars(momentumSpark())}</div>
+      <div class="mini-rings">
+        <button class="ring-card mini m-momentum" id="sc-momentum">
+          <div class="ring-wrap">${ringSVG(s.momentum, "m-momentum")}
+            <div class="ring-center"><div class="ring-num" data-to="${s.momentum}">0</div></div>
+          </div>
+          <div class="ring-label">Momentum</div>
         </button>
-        <button class="tile" id="sc-retention">
-          <div class="tile-top"><span class="tile-num">${s.retention}</span><span class="tile-label">Retention</span></div>
-          <div class="tile-foot">${(() => { const f = fadingLessons().filter(x => x.strength < 60).length; return f ? `${f} fading — tap to review` : "holding strong"; })()}</div>
+        <button class="ring-card mini m-retention" id="sc-retention">
+          <div class="ring-wrap">${ringSVG(s.retention, "m-retention")}
+            <div class="ring-center"><div class="ring-num" data-to="${s.retention}">0</div></div>
+          </div>
+          <div class="ring-label">Retention</div>
         </button>
       </div>
     </div>`);
@@ -69,17 +73,19 @@ function renderHome() {
   home.appendChild(hero);
 
   if (started) {
-    // count the ring number up on open
+    // fill the arcs + count the numbers up on open
     setTimeout(() => {
-      const n = home.querySelector(".ring-num"); if (!n) return;
-      const to = +n.dataset.to; const t0 = performance.now();
-      const step = now => {
-        const k = Math.min(1, (now - t0) / 600), e = 1 - Math.pow(1 - k, 3);
-        n.firstChild.textContent = Math.round(to * e);
-        if (k < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    }, 30);
+      home.querySelectorAll(".ring-fg").forEach(c => { if (c.dataset.fill != null) c.style.strokeDashoffset = c.dataset.fill; });
+      home.querySelectorAll(".ring-num").forEach(n => {
+        const to = +n.dataset.to; const t0 = performance.now();
+        const step = now => {
+          const k = Math.min(1, (now - t0) / 650), e = 1 - Math.pow(1 - k, 3);
+          n.firstChild.textContent = Math.round(to * e);
+          if (k < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }, 40);
     hero.querySelector("#sc-readiness").addEventListener("click", () => scoreSheet("readiness"));
     hero.querySelector("#sc-momentum").addEventListener("click", () => scoreSheet("momentum"));
     hero.querySelector("#sc-retention").addEventListener("click", () => scoreSheet("retention"));

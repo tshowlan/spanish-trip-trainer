@@ -399,13 +399,20 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .scores { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 8px; }
 .ring-card { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
 .ring-wrap { position: relative; display: grid; place-items: center; }
-.ring { width: min(240px, 62vw); height: auto; display: block; }
+.ring { width: min(176px, 46vw); height: auto; display: block; }
+.ring-card.mini .ring { width: min(116px, 33vw); }
 .ring-bg { fill: none; stroke: var(--bg-elevated); stroke-width: 10; }
 .ring-fg { fill: none; stroke: var(--ring, var(--secondary)); stroke-width: 10; stroke-linecap: round;
   transition: stroke-dashoffset .85s cubic-bezier(.3,.7,.3,1); }
 .ring-center { position: absolute; inset: 0; display: grid; place-items: center; }
-.ring-num { font-family: var(--font-display); font-weight: 800; font-size: 56px; color: var(--text); line-height: 1; }
-.ring-num .pct { font-size: 22px; color: var(--text-dim); font-weight: 800; }
+.ring-num { font-family: var(--font-display); font-weight: 800; font-size: 44px; color: var(--text); line-height: 1; }
+.ring-num .pct { font-size: 18px; color: var(--text-dim); font-weight: 800; }
+.ring-card.mini .ring-num { font-size: 24px; }
+.mini-rings { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+.ring-card.mini { gap: 4px; }
+.ring-label { font-weight: 800; font-size: 13px; color: var(--text-dim); }
+.m-momentum { --ring: var(--secondary); }
+.m-retention { --ring: var(--green); }
 .ring-band { font-weight: 800; font-size: 16px; color: var(--ring, var(--secondary)); }
 .ring-days { font-size: 13px; color: var(--text-dim); font-weight: 700; }
 .ring-days.set-date { color: var(--secondary); }
