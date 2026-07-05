@@ -43,18 +43,18 @@ function renderHome() {
     hero.appendChild(el(`<div class="empty-hero">Complete your first lesson to start your Trip Readiness score.</div>`));
   } else {
     const scores = el(`<div class="scores">
+      <button class="ring-card m-momentum" id="sc-momentum">
+        <div class="ring-wrap">${ringSVG(s.momentum, "m-momentum")}
+          <div class="ring-center"><div class="ring-num" data-to="${s.momentum}">0</div></div>
+        </div>
+        <div class="ring-label">Momentum</div>
+      </button>
       <button class="ring-card readiness" id="sc-readiness">
         <div class="ring-wrap">${ringSVG(s.readiness, "readiness")}
           <div class="ring-center"><div class="ring-num" data-to="${s.readiness}">0<span class="pct">%</span></div></div>
         </div>
         <div class="ring-label">Trip Readiness<span class="info-btn" aria-hidden="true">i</span></div>
         ${days !== null ? `<div class="ring-days">${days}d out</div>` : `<div class="ring-days set-date">Set date</div>`}
-      </button>
-      <button class="ring-card m-momentum" id="sc-momentum">
-        <div class="ring-wrap">${ringSVG(s.momentum, "m-momentum")}
-          <div class="ring-center"><div class="ring-num" data-to="${s.momentum}">0</div></div>
-        </div>
-        <div class="ring-label">Momentum</div>
       </button>
       <button class="ring-card m-retention" id="sc-retention">
         <div class="ring-wrap">${ringSVG(s.retention, "m-retention")}
