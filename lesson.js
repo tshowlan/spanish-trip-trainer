@@ -3,19 +3,27 @@
 function buildQuestions(lesson) {
   const items = lesson.items.slice();                 // authored order (card must precede any test)
   const seen = items.filter(it => exposuresOf(it) > 0);
+  const fresh = items.filter(it => exposuresOf(it) === 0);
   const qs = [];
   // warm-up: a match round over already-seen items (recognition only — no brand-new items)
   if (seen.length >= 4) qs.push({ type: "match", items: sample(seen, Math.min(5, seen.length)) });
-  items.forEach(it => {
-    if (exposuresOf(it) === 0) {
-      // first sight: teach with a presentation card, then one recognition rep this session
-      qs.push({ type: "present", item: it });
-      qs.push({ type: "mc_es2en", item: it });
-    } else {
-      qs.push({ type: chooseType(it), item: it });
-    }
-  });
+  // teach new items in small chunks: bulk-present the group, THEN practice each. This way
+  // distractors are things you were just taught, and it's never "here's a word, now pick it".
+  const CHUNK = 4;
+  for (let i = 0; i < fresh.length; i += CHUNK) {
+    const group = fresh.slice(i, i + CHUNK);
+    group.forEach(it => qs.push({ type: "present", item: it }));
+    group.forEach(it => qs.push({ type: introRep(it), item: it, pool: group }));
+  }
+  // already-seen items climb the exposure ladder
+  seen.forEach(it => qs.push({ type: chooseType(it), item: it }));
   return qs;
+}
+// first practice after teaching: order the sentence if we can (production), else recognise it
+// among its just-taught siblings. Never a bare "match the word you just saw".
+function introRep(item) {
+  const n = item.es.trim().split(/\s+/).length;
+  return (n >= 2 && n <= 8) ? "build" : "mc_es2en";
 }
 
 let run = null;
@@ -72,13 +80,30 @@ function footer(html) {
 }
 function clearFooter() { const f = $("#footer"); if (f) f.remove(); }
 
+/* distractors must be the same KIND as the answer: siblings you were just taught, matched on
+   length "shape", so a one-word answer never sits beside full sentences. */
+function mcOptions(item, es2en, siblings) {
+  const answer = es2en ? item.en : item.es;
+  const val = x => es2en ? x.en : x.es;
+  const wc = s => s.trim().split(/\s+/).length;
+  const shape = n => n <= 1 ? 0 : n <= 3 ? 1 : 2;      // word / short phrase / sentence
+  const tb = shape(wc(answer));
+  const cand = [];
+  const add = arr => { for (const x of arr) if (val(x) !== answer && !cand.includes(x)) cand.push(x); };
+  const sibs = (siblings && siblings.length ? siblings : []);
+  add(sibs.filter(x => shape(wc(val(x))) === tb));                   // same lesson, same shape
+  if (cand.length < 3) add(ALL_ITEMS.filter(x => shape(wc(val(x))) === tb)); // any lesson, same shape
+  if (cand.length < 3) add(sibs);                                    // same lesson, any shape
+  if (cand.length < 3) add(ALL_ITEMS);                               // last resort
+  const distract = [...new Set(sample(cand, 8).map(val))].filter(v => v !== answer).slice(0, 3);
+  return { answer, options: shuffle([answer, ...distract]) };
+}
+
 /* ----- multiple choice ----- */
 function renderMC(q) {
   const es2en = q.type === "mc_es2en";
   const item = q.item;
-  const answer = es2en ? item.en : item.es;
-  const pool = ALL_ITEMS.filter(x => (es2en ? x.en : x.es) !== answer);
-  const options = shuffle([answer, ...sample(pool, 3).map(x => es2en ? x.en : x.es)]);
+  const { answer, options } = mcOptions(item, es2en, q.pool && q.pool.length ? q.pool : run.lesson.items);
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">${es2en ? "What does this mean?" : "Say it in Spanish"}</div>`));
   body.appendChild(el(`<div class="prompt">${es2en ? item.es : item.en}</div>`));
@@ -145,8 +170,13 @@ function renderFill(q) {
   const trail = (raw.match(/[?!).,;:"»]+$/) || [""])[0];
   const answer = raw.slice(lead.length, raw.length - trail.length);
   const shown = words.map((w, i) => i === idx ? `${lead}<span class="blank">_____</span>${trail}` : w).join(" ");
-  const otherWords = [...new Set(ALL_ITEMS.flatMap(x => x.es.split(" ").map(clean)))]
+  const wordsFrom = arr => [...new Set(arr.flatMap(x => x.es.split(" ").map(clean)))]
     .filter(w => norm(w) !== norm(answer) && w.length >= 3);
+  // prefer distractor words from this lesson, close in length to the answer
+  const lessonWords = wordsFrom(run.lesson.items);
+  let otherWords = lessonWords.filter(w => Math.abs(w.length - answer.length) <= 3);
+  if (otherWords.length < 3) otherWords = lessonWords;
+  if (otherWords.length < 3) otherWords = wordsFrom(ALL_ITEMS);
   const options = shuffle([answer, ...sample(otherWords, 3)]);
 
   const body = $("#qbody");
