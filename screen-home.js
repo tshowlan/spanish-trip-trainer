@@ -87,6 +87,16 @@ function renderHome() {
     const sd = hero.querySelector(".set-date"); if (sd) sd.addEventListener("click", renderOnboarding);
   }
 
+  // Review entry point — surfaces phrases going cold across the whole trip
+  if (started) {
+    const dueN = (typeof dueForReview === "function") ? dueForReview().length : 0;
+    if (dueN > 0) {
+      const rev = el(`<button class="review-cta"><span class="rev-ic">${icon("arrows-clockwise", 18)}</span><span>Review <b>${dueN}</b> phrase${dueN === 1 ? "" : "s"} going cold</span><span class="chev">${icon("caret-right", 18)}</span></button>`);
+      rev.addEventListener("click", startReview);
+      home.appendChild(rev);
+    }
+  }
+
   if (!state.account) {
     const banner = el(`<div class="backup-banner"><span>🔒 Back up your progress — create an account so a reinstall never wipes your progress.</span><button class="btn" style="margin-top:10px">Create account</button></div>`);
     banner.querySelector("button").addEventListener("click", () => renderAuth("signup"));

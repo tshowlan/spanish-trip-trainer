@@ -413,6 +413,15 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .brandline { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 6px 0 20px; }
 .lang-flag { font-size: 22px; line-height: 1; }
 .empty-hero { text-align: center; color: var(--text-dim); font-size: 15px; line-height: 1.5; padding: 16px 12px 26px; }
+.review-cta {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  margin: 4px 0 8px; padding: 12px 14px; cursor: pointer;
+  background: var(--bg-card); border: 1px solid var(--accent-2); border-radius: var(--radius-md);
+  color: var(--text); font-weight: 700; font-size: 14px; text-align: left;
+}
+.review-cta .rev-ic { display: inline-flex; color: var(--accent-2); flex: none; }
+.review-cta b { color: var(--accent-2); }
+.review-cta .chev { margin-left: auto; color: var(--text-dim); display: inline-flex; }
 
 .scores { display: flex; align-items: flex-start; justify-content: center; gap: 8px; margin-bottom: 8px; }
 .ring-card { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; min-width: 0; padding: 0; }

@@ -27,7 +27,32 @@ function recordExposure(id) {
 function recordAnswer(id, ok) {
   const s = learnState(id); if (!s) return;
   s.exposures++; s.lastSeen = todayStr();
-  if (ok) s.streak++; else { s.streak = 0; s.lapses++; }
+  if (ok) s.streak++; else { s.streak = 0; s.lapses++; s.lastMiss = todayStr(); }
+}
+
+/* ---------- review selection (M2 — pre-SRS recency heuristic; SM-2 arrives in M3) ---------- */
+function _daysSince(dateStr) {
+  if (!dateStr) return Infinity;
+  return Math.floor((Date.now() - new Date(dateStr + "T00:00:00").getTime()) / 864e5);
+}
+// items seen at least once but not practised in a while — the trip-wide review pool, oldest first
+function dueForReview(minDays) {
+  const cut = minDays == null ? 3 : minDays;
+  return (ALL_ITEMS || [])
+    .filter(it => { const s = learnPeek(it); return s && s.exposures >= 1 && _daysSince(s.lastSeen) >= cut; })
+    .sort((a, b) => _daysSince(learnPeek(b).lastSeen) - _daysSince(learnPeek(a).lastSeen));
+}
+// items missed in the last ~48h — these open the next session as warm-up
+function recentMisses(withinDays) {
+  const w = withinDays == null ? 2 : withinDays;
+  return (ALL_ITEMS || [])
+    .filter(it => { const s = learnPeek(it); return s && s.lastMiss && _daysSince(s.lastMiss) <= w && s.streak === 0; })
+    .sort((a, b) => _daysSince(learnPeek(a).lastMiss) - _daysSince(learnPeek(b).lastMiss));
+}
+// trip date proximity → cram mode raises the review share and pushes production
+function cramActive() {
+  const d = state.profile && state.profile.tripDate ? daysUntil(state.profile.tripDate) : null;
+  return d != null && d >= 0 && d < 14;
 }
 
 /* ---------- exposure ladder ----------
@@ -35,7 +60,7 @@ function recordAnswer(id, ok) {
    not a single-item mode here. An item's rung is chosen from its exposure count. */
 const LADDER = [
   ["present"],                                    // 0    first sight — teach, never test
-  ["mc_es2en"],                                   // 1–2  recognition
+  ["mc_es2en", "listen_choice"],                  // 1–2  recognition (incl. hear-and-pick)
   ["mc_en2es", "build", "fill_blank"],            // 3–4  scaffolded production
   ["type_translation", "listen_type"]             // 5+   cold production
 ];

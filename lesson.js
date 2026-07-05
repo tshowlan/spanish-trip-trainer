@@ -1,23 +1,13 @@
 /* ============================== LESSON RUNNER ============================== */
-// chooseType() + the exposure ladder now live in srs.js.
-function buildQuestions(lesson) {
-  const items = lesson.items.slice();                 // authored order (card must precede any test)
-  const seen = items.filter(it => exposuresOf(it) > 0);
-  const fresh = items.filter(it => exposuresOf(it) === 0);
-  const qs = [];
-  // warm-up: a match round over already-seen items (recognition only — no brand-new items)
-  if (seen.length >= 4) qs.push({ type: "match", items: sample(seen, Math.min(5, seen.length)) });
-  // teach new items in small chunks: bulk-present the group, THEN practice each. This way
-  // distractors are things you were just taught, and it's never "here's a word, now pick it".
-  const CHUNK = 4;
-  for (let i = 0; i < fresh.length; i += CHUNK) {
-    const group = fresh.slice(i, i + CHUNK);
-    group.forEach(it => qs.push({ type: "present", item: it }));
-    group.forEach(it => qs.push({ type: introRep(it), item: it, pool: group }));
-  }
-  // already-seen items climb the exposure ladder
-  seen.forEach(it => qs.push({ type: chooseType(it), item: it }));
-  return qs;
+// chooseType() + the exposure ladder live in srs.js; review pools (dueForReview,
+// recentMisses, cramActive) too. composeSession() weaves them into one queue.
+
+// a graded review rep for a seen item — mostly its ladder rung, sometimes a
+// situational "which do you say?" for texture. cram pushes production.
+function reviewQuestion(item, pool) {
+  if (cramActive() && item.es.trim().split(/\s+/).length >= 2) return { type: "build", item, pool };
+  if (Math.random() < 0.25) return { type: "respond", item, pool };
+  return { type: chooseType(item), item, pool };
 }
 // first practice after teaching: order the sentence if we can (production), else recognise it
 // among its just-taught siblings. Never a bare "match the word you just saw".
@@ -26,9 +16,54 @@ function introRep(item) {
   return (n >= 2 && n <= 8) ? "build" : "mc_es2en";
 }
 
+/* ---- session composer (M2): warm-up misses + new items + trip-wide review ---- */
+function composeSession(lesson) {
+  const lessonItems = lesson.items || [];
+  const newItems = lessonItems.filter(it => exposuresOf(it) === 0);   // teach ALL new (coverage before unlock)
+  const newIds = new Set(newItems.map(itemId));
+  const warm = recentMisses().filter(it => !newIds.has(itemId(it))).slice(0, 3);
+  const warmIds = new Set(warm.map(itemId));
+
+  const qs = [];
+  // 1) warm-up: recent misses reopen the next session
+  warm.forEach(it => qs.push(reviewQuestion(it)));
+  // 2) teach new items in bulk chunks (cards precede any test of them)
+  const CHUNK = 4;
+  for (let i = 0; i < newItems.length; i += CHUNK) newItems.slice(i, i + CHUNK).forEach(it => qs.push({ type: "present", item: it }));
+  // 3) practice pool: new-item reps + trip-wide review, shuffled together (cards already placed)
+  const practice = [];
+  newItems.forEach(it => practice.push({ type: introRep(it), item: it, pool: newItems }));
+  let reviewPool;
+  if (newItems.length) {
+    // review share ~⅓ (up to ½ in cram) of the whole trip, so a new lesson revisits older ones
+    const cap = cramActive() ? Math.min(8, Math.max(3, newItems.length)) : Math.min(6, Math.max(3, Math.round(newItems.length * 0.6)));
+    reviewPool = dueForReview().filter(it => !newIds.has(itemId(it)) && !warmIds.has(itemId(it))).slice(0, cap);
+  } else {
+    // redo of a completed lesson: drill its own items, plus a few trip-wide due
+    const own = lessonItems.filter(it => !warmIds.has(itemId(it)));
+    const extra = dueForReview().filter(it => !lessonItems.includes(it) && !warmIds.has(itemId(it))).slice(0, 4);
+    reviewPool = [...own, ...extra];
+  }
+  reviewPool.forEach(it => practice.push(reviewQuestion(it, reviewPool)));
+  shuffle(practice).forEach(q => qs.push(q));
+  return qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it }));  // safety net
+}
+// pure-review session (Home "Review" entry / all lessons complete)
+function composeReview() {
+  const due = dueForReview(0).slice(0, 14);                 // everything seen, oldest first
+  const pool = due.slice();
+  return due.map(it => reviewQuestion(it, pool));
+}
+
 let run = null;
 function startLesson(lesson) {
-  run = { lesson, qs: buildQuestions(lesson), idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0 };
+  run = { lesson, qs: composeSession(lesson), idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: false };
+  renderQuestion();
+}
+function startReview() {
+  const qs = composeReview();
+  if (!qs.length) { toast("Nothing to review yet — finish a lesson first 📚"); return; }
+  run = { lesson: { id: "__review__", topic: "Review", items: [] }, qs, idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: true };
   renderQuestion();
 }
 function renderQuestion() {
@@ -51,7 +86,8 @@ function renderQuestion() {
   $("#quit").addEventListener("click", () => { if (confirm("Quit this lesson? Progress in it is lost.")) renderHome(); });
   run.answered = false;
   ({ present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
-     type_translation: renderType, listen_type: renderListen, fill_blank: renderFill }[q.type])(q);
+     type_translation: renderType, listen_type: renderListen, fill_blank: renderFill,
+     respond: renderRespond, listen_choice: renderListenChoice }[q.type])(q);
 }
 
 /* ----- presentation card (first sight of an item — teach, never grade) ----- */
@@ -108,6 +144,10 @@ function renderMC(q) {
   body.appendChild(el(`<div class="qtype">${es2en ? "What does this mean?" : "Say it in Spanish"}</div>`));
   body.appendChild(el(`<div class="prompt">${es2en ? item.es : item.en}</div>`));
   if (es2en) { const sb = el(`<button class="speak-btn">🔊 Hear it</button>`); sb.addEventListener("click", () => speak(item.es)); body.appendChild(sb); }
+  body.appendChild(mcChoices(options, answer, item));
+}
+// shared choice grid → grades opt===answer
+function mcChoices(options, answer, item) {
   const choices = el(`<div class="choices"></div>`);
   options.forEach(opt => {
     const c = el(`<button class="choice">${opt}</button>`);
@@ -118,7 +158,30 @@ function renderMC(q) {
     });
     choices.appendChild(c);
   });
-  body.appendChild(choices);
+  return choices;
+}
+
+/* ----- choose the appropriate response (M2): a situation → pick the learned phrase ----- */
+function renderRespond(q) {
+  const item = q.item;
+  const { answer, options } = mcOptions(item, false, q.pool && q.pool.length ? q.pool : run.lesson.items);  // Spanish options
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Which do you say?</div>`));
+  body.appendChild(el(`<div class="prompt">You want to say: “${item.en}”</div>`));
+  body.appendChild(mcChoices(options, answer, item));
+}
+
+/* ----- listen & choose (M2): hear it → pick the meaning (great for numbers) ----- */
+function renderListenChoice(q) {
+  const item = q.item;
+  const { answer, options } = mcOptions(item, true, q.pool && q.pool.length ? q.pool : run.lesson.items);   // English options
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">What did you hear?</div>`));
+  const play = el(`<button class="big-speak">🔊</button>`);
+  play.addEventListener("click", () => speak(item.es));
+  body.appendChild(play);
+  setTimeout(() => speak(item.es), 300);
+  body.appendChild(mcChoices(options, answer, item));
 }
 
 /* ----- type the translation (English → Spanish) ----- */
@@ -324,6 +387,7 @@ function next() {
 function finishLesson() {
   clearFooter();
   const lesson = run.lesson;
+  if (run.review) return finishReview();               // pure-review session: no lesson to mark
   const stars = run.wrong === 0 ? 3 : run.wrong <= 2 ? 2 : 1;
   const firstTime = !lessonDone(lesson.id);
   const prev = state.lessons[lesson.id];
@@ -357,6 +421,34 @@ function finishLesson() {
         <div class="score"><div class="n">${scores.readiness}<span class="pct">%</span></div><div class="l">trip readiness${delta > 0 ? ` <span class="up">▲${delta}</span>` : ""}</div></div>
       </div>
       <div class="reward">${lesson.reward}</div>
+      <button class="btn" id="home">Continue</button>
+    </div>`));
+  $("#home").addEventListener("click", renderHome);
+}
+
+/* pure-review completion: log the session for Momentum/Recency, but mark no lesson */
+function finishReview() {
+  const now = new Date().toISOString();
+  const total = run.qs.length, correct = Math.max(0, total - run.wrong);
+  const prevReadiness = (state.scoresCache || {}).readiness;
+  state.sessions = state.sessions || [];
+  state.sessions.push({ at: now, lessonId: "__review__", category: "Review", phrases: total, correct });
+  registerActivity();
+  const scores = computeScores();
+  save(); renderTopbar();
+  cloudSync().catch(() => {});
+  playSound("win");
+  const delta = (prevReadiness != null) ? scores.readiness - prevReadiness : null;
+  const app = $("#app");
+  app.innerHTML = "";
+  app.appendChild(el(`
+    <div class="complete">
+      <h2>Review complete</h2>
+      <div class="scorebar">
+        <div class="score"><div class="n">${correct}/${total}</div><div class="l">recalled</div></div>
+        <div class="score"><div class="n">${scores.readiness}<span class="pct">%</span></div><div class="l">trip readiness${delta > 0 ? ` <span class="up">▲${delta}</span>` : ""}</div></div>
+      </div>
+      <div class="reward">Nice — keeping older phrases warm is how they stick for the trip.</div>
       <button class="btn" id="home">Continue</button>
     </div>`));
   $("#home").addEventListener("click", renderHome);
