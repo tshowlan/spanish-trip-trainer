@@ -12,6 +12,11 @@ function toast(msg) {
 }
 function renderTopbar() {
   $("#stat-streak").textContent = state.streak;
+  const brand = $("#topbar-brand");
+  if (brand) {
+    const d = destInfo(state.profile && state.profile.destination);
+    brand.innerHTML = `${wordmark(18)}<span class="tb-flag">${d.flag}</span>`;
+  }
   const xp = $("#stat-xp"); if (xp) xp.textContent = state.xp;
   const gems = $("#stat-gems"); if (gems) gems.textContent = state.gems;
 }

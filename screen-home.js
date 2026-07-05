@@ -37,9 +37,7 @@ function renderHome() {
   const days = p.tripDate ? Math.max(0, daysUntil(p.tripDate)) : null;
   const band = readinessBand(s.readiness);
 
-  const hero = el(`<div class="hero">
-    <div class="brandline">${wordmark(26)}<span class="lang-flag">${d.flag}</span></div>
-  </div>`);
+  const hero = el(`<div class="hero"></div>`);
 
   if (!started) {
     hero.appendChild(el(`<div class="empty-hero">Complete your first lesson to start your Trip Readiness score.</div>`));
@@ -49,9 +47,8 @@ function renderHome() {
         <div class="ring-wrap">${ringSVG(s.readiness, band.cls)}
           <div class="ring-center"><div class="ring-num" data-to="${s.readiness}">0<span class="pct">%</span></div></div>
         </div>
-        <div class="ring-band">${band.label}</div>
+        <div class="ring-name">Trip Readiness<span class="info-btn" aria-hidden="true">i</span></div>
         ${days !== null ? `<div class="ring-days">${days} days out</div>` : `<div class="ring-days set-date">Set your trip date</div>`}
-        ${s.lifetimeSessions < 5 ? `<div class="ring-sub">Establishing baseline</div>` : ``}
       </button>
       <div class="mini-rings">
         <button class="ring-card mini m-momentum" id="sc-momentum">
@@ -132,9 +129,11 @@ function renderHome() {
 function scoreSheet(which) {
   const s = state.scoresCache || computeScores();
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
-  let title, drivers, cta = null;
+  let title, drivers, cta = null, sub = null;
   if (which === "readiness") {
+    const band = readinessBand(s.readiness);
     title = "Trip Readiness";
+    sub = `${band.label}${s.lifetimeSessions < 5 ? " · establishing baseline" : ""}`;
     drivers = [`Coverage ${s.coverage}`, `Retention ${s.retention}`, `Last practiced ${_recencyText()}`];
   } else if (which === "momentum") {
     title = "Momentum";
@@ -150,6 +149,7 @@ function scoreSheet(which) {
     <div class="sheet">
       <div class="sheet-grab"></div>
       <div class="sheet-title">${title}</div>
+      ${sub ? `<div class="sheet-sub">${sub}</div>` : ``}
       <div class="drivers">${drivers.map(x => `<div class="driver">${x}</div>`).join("")}</div>
     </div>
   </div>`);
