@@ -57,13 +57,14 @@ function composeReview() {
 
 let run = null;
 function startLesson(lesson) {
-  run = { lesson, qs: composeSession(lesson), idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: false };
+  run = { lesson, qs: composeSession(lesson), idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map() };
   renderQuestion();
 }
-function startReview() {
-  const qs = composeReview();
+// startReview() → due-item session; startReview(items) → focused review of those items (e.g. mistakes)
+function startReview(items) {
+  const qs = items && items.length ? items.map(it => reviewQuestion(it, items)) : composeReview();
   if (!qs.length) { toast("Nothing to review yet — finish a lesson first 📚"); return; }
-  run = { lesson: { id: "__review__", topic: "Review", items: [] }, qs, idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: true };
+  run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map() };
   renderQuestion();
 }
 function renderQuestion() {
@@ -85,6 +86,8 @@ function renderQuestion() {
   app.appendChild(wrap);
   $("#quit").addEventListener("click", () => { if (confirm("Quit this lesson? Progress in it is lost.")) renderHome(); });
   run.answered = false;
+  // make the mistake re-queue visible: label a phrase you missed coming back around
+  if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">↩ Second chance — you missed this one</div>`));
   ({ present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill,
      respond: renderRespond, listen_choice: renderListenChoice }[q.type])(q);
@@ -347,7 +350,7 @@ function gradeTyped(raw, item) {
 function finishGrade(ok, item, extra) {
   run.answered = true;
   const q = run.qs[run.idx];
-  if (!ok) { run.wrong++; if (run.hearts > 0) run.hearts--; }
+  if (!ok) { run.wrong++; if (run.hearts > 0) run.hearts--; if (run.missed) run.missed.set(itemId(item), item); }
   recordAnswer(itemId(item), ok);
   playSound(ok ? "correct" : "wrong");
   const notes = [];
@@ -414,6 +417,7 @@ function finishLesson() {
   playSound("win");
 
   const delta = (prevReadiness != null) ? scores.readiness - prevReadiness : null;
+  const missed = run.missed ? [...run.missed.values()] : [];
   const app = $("#app");
   app.innerHTML = "";
   app.appendChild(el(`
@@ -424,8 +428,10 @@ function finishLesson() {
         <div class="score"><div class="n">${scores.readiness}<span class="pct">%</span></div><div class="l">trip readiness${delta > 0 ? ` <span class="up">▲${delta}</span>` : ""}</div></div>
       </div>
       <div class="reward">${lesson.reward}</div>
-      <button class="btn" id="home">Continue</button>
+      ${missed.length ? `<button class="btn accent" id="reviewmiss">Review your ${missed.length} mistake${missed.length === 1 ? "" : "s"}</button><div style="height:10px"></div>` : ""}
+      <button class="btn${missed.length ? " grey" : ""}" id="home">Continue</button>
     </div>`));
+  if (missed.length) $("#reviewmiss").addEventListener("click", () => startReview(missed));
   $("#home").addEventListener("click", renderHome);
 }
 
