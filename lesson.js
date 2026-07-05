@@ -1,38 +1,33 @@
 /* ============================== LESSON RUNNER ============================== */
-function chooseType(item) {
-  const w = item.es.split(" ").length;
-  const level = (state.profile && state.profile.level) || "new";
-  const pool = ["mc_es2en", "mc_en2es", "listen_type", "type_translation"];
-  if (w >= 2 && w <= 8) pool.push("build");
-  if (w >= 3) pool.push("fill_blank");
-  const hard = ["type_translation", "listen_type"];
-  const weighted = [];
-  pool.forEach(t => {
-    let n = 1;
-    if (level === "confident") n = hard.includes(t) ? 3 : t === "build" ? 2 : t.startsWith("mc") ? 1 : 2;
-    else if (level === "some") n = hard.includes(t) ? 2 : 2;
-    else n = t.startsWith("mc") ? 3 : t === "fill_blank" ? 2 : t === "build" ? 2 : 1; // beginner: type/listen rare
-    for (let k = 0; k < n; k++) weighted.push(t);
-  });
-  return weighted[Math.floor(Math.random() * weighted.length)];
-}
+// chooseType() + the exposure ladder now live in srs.js.
 function buildQuestions(lesson) {
-  const items = shuffle(lesson.items.slice());
+  const items = lesson.items.slice();                 // authored order (card must precede any test)
+  const seen = items.filter(it => exposuresOf(it) > 0);
   const qs = [];
-  if (items.length >= 4) qs.push({ type: "match", items: sample(items, Math.min(5, items.length)) });
-  items.forEach(it => qs.push({ type: chooseType(it), item: it }));
+  // warm-up: a match round over already-seen items (recognition only — no brand-new items)
+  if (seen.length >= 4) qs.push({ type: "match", items: sample(seen, Math.min(5, seen.length)) });
+  items.forEach(it => {
+    if (exposuresOf(it) === 0) {
+      // first sight: teach with a presentation card, then one recognition rep this session
+      qs.push({ type: "present", item: it });
+      qs.push({ type: "mc_es2en", item: it });
+    } else {
+      qs.push({ type: chooseType(it), item: it });
+    }
+  });
   return qs;
 }
 
 let run = null;
 function startLesson(lesson) {
-  run = { lesson, qs: buildQuestions(lesson), idx: 0, hearts: 5, wrong: 0, answered: false };
+  run = { lesson, qs: buildQuestions(lesson), idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0 };
   renderQuestion();
 }
 function renderQuestion() {
   const app = $("#app");
   const q = run.qs[run.idx];
-  const pct = Math.round(run.idx / run.qs.length * 100);
+  // progress only moves forward — re-queued misses extend the lesson, never rewind the bar
+  run.pct = Math.max(run.pct || 0, Math.round(run.idx / run.qs.length * 100));
   clearFooter();
   hideTabbar();
   app.innerHTML = "";
@@ -40,15 +35,34 @@ function renderQuestion() {
   wrap.appendChild(el(`
     <div class="progress-row">
       <button class="close-btn" id="quit">${icon('x',24)}</button>
-      <div class="pbar"><i style="width:${pct}%"></i></div>
+      <div class="pbar"><i style="width:${run.pct}%"></i></div>
       <div class="hearts">♥ ${run.hearts}</div>
     </div>`));
   wrap.appendChild(el(`<div id="qbody"></div>`));
   app.appendChild(wrap);
   $("#quit").addEventListener("click", () => { if (confirm("Quit this lesson? Progress in it is lost.")) renderHome(); });
   run.answered = false;
-  ({ match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
+  ({ present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill }[q.type])(q);
+}
+
+/* ----- presentation card (first sight of an item — teach, never grade) ----- */
+function renderPresent(q) {
+  const item = q.item;
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">New phrase</div>`));
+  const card = el(`<div class="present-card">
+      <div class="present-es">${item.es}</div>
+      <div class="present-en">${item.en}</div>
+      ${item.note ? `<div class="present-note">${item.note}</div>` : ""}
+    </div>`);
+  body.appendChild(card);
+  const replay = el(`<button class="speak-btn">🔊 Hear it</button>`);
+  replay.addEventListener("click", () => speak(item.es));
+  body.appendChild(replay);
+  setTimeout(() => speak(item.es), 250);
+  const f = footer(`<button class="btn" id="got">Got it</button>`);
+  f.querySelector("#got").addEventListener("click", () => { recordExposure(itemId(item)); next(); });
 }
 function footer(html) {
   const old = $("#footer"); if (old) old.remove();
@@ -94,7 +108,7 @@ function renderType(q) {
   setTimeout(() => input.focus(), 50);
   const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
   input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
-  const submit = () => { if (!run.answered && input.value.trim()) grade(norm(input.value) === norm(item.es), item, true); };
+  const submit = () => { if (!run.answered && input.value.trim()) gradeTyped(input.value, item); };
   input.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
   f.querySelector("#check").addEventListener("click", submit);
 }
@@ -113,10 +127,9 @@ function renderListen(q) {
   setTimeout(() => input.focus(), 50);
   const f = footer(`<button class="btn grey" id="skip">Can't tell — skip</button><div style="height:10px"></div><button class="btn" id="check" disabled>Check</button>`);
   input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
-  const submit = ok => grade(ok, item, true);
-  input.addEventListener("keydown", e => { if (e.key === "Enter" && input.value.trim() && !run.answered) submit(norm(input.value) === norm(item.es)); });
-  f.querySelector("#check").addEventListener("click", () => { if (!run.answered && input.value.trim()) submit(norm(input.value) === norm(item.es)); });
-  f.querySelector("#skip").addEventListener("click", () => { if (!run.answered) submit(false); });
+  input.addEventListener("keydown", e => { if (e.key === "Enter" && input.value.trim() && !run.answered) gradeTyped(input.value, item); });
+  f.querySelector("#check").addEventListener("click", () => { if (!run.answered && input.value.trim()) gradeTyped(input.value, item); });
+  f.querySelector("#skip").addEventListener("click", () => { if (!run.answered) grade(false, item); });
 }
 
 /* ----- fill in the blank ----- */
@@ -184,7 +197,7 @@ function renderBuild(q) {
   function refreshCheck() { $("#check").disabled = chosen.length !== correctWords.length; }
   f.querySelector("#check").addEventListener("click", () => {
     if (run.answered) return;
-    grade(chosen.join(" ") === item.es, item, true);
+    grade(chosen.join(" ") === item.es, item);
   });
 }
 
@@ -217,7 +230,7 @@ function onMatchTap(tile, grid, q) {
     [sel, tile].forEach(c => { c.classList.remove("sel"); c.classList.add("gone"); });
     grid._sel = null; grid._left--;
     const it = q.items.find(i => i.es === decodeURIComponent(tile.dataset.key));
-    if (it) speak(it.es);
+    if (it) { speak(it.es); recordExposure(itemId(it)); }   // warm-up match counts as an exposure
     if (grid._left === 0) { playSound("correct"); setTimeout(() => next(), 350); }
   } else {
     tile.classList.add("bad"); sel.classList.add("bad");
@@ -228,11 +241,21 @@ function onMatchTap(tile, grid, q) {
 }
 
 /* ----- grading + feedback ----- */
-function grade(ok, item) {
+function grade(ok, item) { finishGrade(ok, item, null); }
+// typed answers get typo/accent tolerance (edit distance ≤ 1, accent slips accepted)
+function gradeTyped(raw, item) {
+  const j = judgeTyped(raw, item.es);
+  const extra = j.accent ? "Almost — watch the accent." : (j.typo ? "Close — mind the spelling." : null);
+  finishGrade(j.ok, item, extra);
+}
+function finishGrade(ok, item, extra) {
   run.answered = true;
+  const q = run.qs[run.idx];
   if (!ok) { run.wrong++; if (run.hearts > 0) run.hearts--; }
+  recordAnswer(itemId(item), ok);
   playSound(ok ? "correct" : "wrong");
   const notes = [];
+  if (extra) notes.push(`<span class="note-chip"><b>note</b> ${extra}</span>`);
   if (item.note) notes.push(`<span class="note-chip"><b>tip</b> ${item.note}</span>`);
   if (item.latam) notes.push(`<span class="note-chip"><b>L. America</b> ${item.latam}</span>`);
   if (item.cat) notes.push(`<span class="note-chip"><b>Català</b> ${item.cat}</span>`);
@@ -247,7 +270,18 @@ function grade(ok, item) {
   sb.addEventListener("click", () => speak(item.es));
   f.insertBefore(sb, f.querySelector("#cont"));
   if (ok) speak(item.es);
+  if (!ok && q && q.item) requeueMiss(item, q.type);
   $("#cont").addEventListener("click", () => next());
+}
+// missed item → re-serve later in the session, one ladder rung easier (capped to avoid spirals)
+function requeueMiss(item, failedType) {
+  const id = itemId(item); if (!id) return;
+  run.reasks[id] = run.reasks[id] || 0;
+  if (run.reasks[id] >= 2) return;                       // cap at 2 re-asks/item; M2 warm-up catches the rest
+  run.reasks[id]++;
+  const type = rungDownType(failedType, item);
+  const pos = Math.min(run.qs.length, run.idx + 3 + Math.floor(Math.random() * 3));   // 3–5 slots later
+  run.qs.splice(pos, 0, { type, item, requeued: true });
 }
 function next() {
   clearFooter();

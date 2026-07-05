@@ -177,6 +177,15 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .qtype { color: var(--text-dim); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
 .prompt { font-size: 24px; font-weight: 800; margin: 8px 0 6px; line-height: 1.25; }
 .prompt-sub { color: var(--text-dim); font-size: 14px; margin-bottom: 18px; }
+/* presentation card — first sight of a new phrase (teach, not test) */
+.present-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-left: 4px solid var(--accent-2); border-radius: var(--radius-md);
+  padding: 22px 20px; margin: 14px 0 16px; text-align: center;
+}
+.present-es { font-size: 26px; font-weight: 800; line-height: 1.25; color: var(--text); }
+.present-en { font-size: 16px; color: var(--text-dim); margin-top: 8px; }
+.present-note { font-size: 13px; color: var(--secondary); margin-top: 12px; line-height: 1.4; }
 .speak-btn {
   display: inline-flex; align-items: center; gap: 8px; margin: 4px 0 18px;
   background: var(--bg-elevated); border: 1px solid var(--border); color: var(--secondary);

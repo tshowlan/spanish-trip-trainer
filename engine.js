@@ -8,7 +8,12 @@ const CONTENT = {
 function activePack() { return CONTENT[state.active] || CONTENT.spain; }
 
 /* ---------- deck (active country's pack, filtered/augmented by the profile) ---------- */
-let DECK, LESSON_ORDER, ALL_ITEMS;
+let DECK, LESSON_ORDER, ALL_ITEMS, ITEM_INDEX;
+
+// deterministic, url-safe slug of a Spanish string (for auto item IDs)
+function slug(s) {
+  return norm(s).replace(/[^a-z0-9 ]/g, "").trim().replace(/\s+/g, "-").slice(0, 40) || "item";
+}
 
 function meetsReq(lesson, p) {
   if (!lesson.requires) return true;
@@ -42,9 +47,21 @@ function rebuildDeck() {
     const s0 = DECK.stages[0];                 // inject the personalized allergy lesson early
     s0.lessons.splice(Math.min(1, s0.lessons.length), 0, buildAllergyLesson(p.allergies));
   }
-  LESSON_ORDER = []; ALL_ITEMS = [];
+  LESSON_ORDER = []; ALL_ITEMS = []; ITEM_INDEX = {};
+  const packKey = activePack().key;
   DECK.stages.forEach(st => st.lessons.forEach(l => {
-    LESSON_ORDER.push(l.id); l.items.forEach(it => ALL_ITEMS.push(it));
+    LESSON_ORDER.push(l.id);
+    l.items.forEach(it => {
+      // normalize pass: give every item a stable, deterministic id (authored id wins)
+      if (!it.id) {
+        const base = `${packKey}:${l.id}:${slug(it.es)}`;
+        let id = base, n = 2;
+        while (ITEM_INDEX[id] && ITEM_INDEX[id] !== it) { id = `${base}-${n++}`; console.warn("Tripfluent: duplicate item id", base); }
+        it.id = id;
+      }
+      ITEM_INDEX[it.id] = it;
+      ALL_ITEMS.push(it);
+    });
   }));
 }
 

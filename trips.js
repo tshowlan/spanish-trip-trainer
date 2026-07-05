@@ -6,7 +6,7 @@ function snapshotActive() {
 }
 function applyTrip(key) {
   const t = state.trips[key] || {};
-  const defaults = { profile: null, lessons: {}, topicStats: {}, xp: 0, sessions: [] };
+  const defaults = { profile: null, lessons: {}, topicStats: {}, xp: 0, sessions: [], learn: {} };
   DEST_FIELDS.forEach(f => { state[f] = (t[f] !== undefined ? t[f] : defaults[f]); });
 }
 // One-time: give already-completed lessons a timestamp so Retention has data, and ensure
@@ -17,6 +17,7 @@ function migrateScoring() {
     if (!t) return;
     Object.values(t.lessons || {}).forEach(l => { if (l && !l.at) l.at = now; });
     if (!t.sessions) t.sessions = [];
+    if (!t.learn) t.learn = {};
   };
   fix(state);                                   // active trip (mirrored at top level)
   Object.values(state.trips || {}).forEach(fix);
