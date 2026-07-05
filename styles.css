@@ -113,9 +113,11 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
   padding: calc(14px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) 14px calc(18px + env(safe-area-inset-left));
   background: linear-gradient(180deg, var(--bg) 85%, transparent);
 }
-.stat { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 16px; }
+.stat { display: flex; align-items: center; gap: 5px; font-weight: 800; font-size: 16px; }
 .stat .ic { font-size: 18px; }
-.stat.streak { color: var(--accent-2); }
+.stat .ic.flame { display: inline-flex; }
+.flame-ic { display: block; filter: drop-shadow(0 1px 1px rgba(239,68,68,.25)); }
+.stat.streak { color: var(--text); }
 .stat.xp { color: var(--green); }
 .stat.gems { color: var(--secondary); }
 .topbar .spacer { flex: 1; }
@@ -436,6 +438,11 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .sheet-title { font-family: var(--font-display); font-weight: 800; font-size: 20px; margin-bottom: 12px; }
 .drivers { display: flex; flex-direction: column; gap: 8px; }
 .driver { background: var(--bg-elevated); border-radius: 10px; padding: 12px 14px; font-weight: 700; font-size: 15px; }
+
+/* profile */
+.profile-status { text-align: center; padding: 8px 0 22px; }
+.tier-name { font-family: var(--font-display); font-weight: 800; font-size: 28px; }
+.tier-sub { color: var(--text-dim); font-size: 13px; margin-top: 4px; }
 
 .complete .stars-n { color: var(--accent-2); }
 .complete .pct { font-size: 20px; color: var(--text-dim); }

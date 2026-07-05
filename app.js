@@ -8,6 +8,7 @@ migrateScoring();
 rebuildDeck();
 initTabbar();
 $("#gear").addEventListener("click", renderSettings);
+$("#profile").addEventListener("click", renderProfile);
 handleAuthRedirect().then(handled => {
   if (!handled) { if (!state.profile) renderOnboarding(); else renderHome(); }
   runSplash();                       // play the intro once the first screen is rendered

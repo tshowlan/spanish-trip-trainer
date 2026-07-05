@@ -1,3 +1,41 @@
+/* ============================== PROFILE ============================== */
+function renderProfile() {
+  clearFooter();
+  hideTabbar();
+  const app = $("#app"); app.innerHTML = "";
+  const wrap = el(`<div class="screen"></div>`);
+  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon("caret-left", 26)}</button><h2>Profile</h2></div>`));
+
+  // status tier (permanent) — tier logic lands with the Status milestone; everyone starts Newcomer
+  wrap.appendChild(el(`<div class="profile-status">
+    <div class="tier-name">Newcomer</div>
+    <div class="tier-sub">Build your Trip Readiness to earn your first status.</div>
+  </div>`));
+
+  // account
+  if (state.account) {
+    const acct = el(`<div class="set-row"><div><div class="set-t">Account</div><div class="set-d">${state.account.email} · backed up ☁️</div></div>
+      <button class="btn grey" id="logout" style="width:auto;padding:8px 14px;box-shadow:none">Log out</button></div>`);
+    wrap.appendChild(acct);
+    acct.querySelector("#logout").addEventListener("click", () => { if (confirm("Log out? Your progress stays on this device and in your account.")) { doLogout(); renderProfile(); } });
+  } else {
+    const acct = el(`<div class="set-row" style="cursor:pointer;border-color:var(--accent-2)"><div><div class="set-t">Create an account</div><div class="set-d">Back up your progress & join trips</div></div>
+      <span class="chev">${icon("caret-right", 20)}</span></div>`);
+    acct.addEventListener("click", () => renderAuth("signup"));
+    wrap.appendChild(acct);
+  }
+
+  // trips
+  const nTrips = new Set([...Object.keys(state.trips || {}), state.active].filter(Boolean)).size;
+  const tripsRow = el(`<div class="set-row" style="cursor:pointer"><div><div class="set-t">Your trips</div><div class="set-d">${nTrips} destination${nTrips === 1 ? "" : "s"}</div></div>
+    <span class="chev">${icon("caret-right", 20)}</span></div>`);
+  tripsRow.addEventListener("click", renderTrips);
+  wrap.appendChild(tripsRow);
+
+  app.appendChild(wrap);
+  $("#back").addEventListener("click", renderHome);
+}
+
 /* ============================== SETTINGS ============================== */
 function renderSettings() {
   clearFooter();
