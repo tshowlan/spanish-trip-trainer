@@ -40,7 +40,7 @@ function recordAnswer(id, ok, opts) {
   s.exposures++; s.lastSeen = todayStr();
   const daysLeft = (state.profile && state.profile.tripDate) ? Math.max(1, daysUntil(state.profile.tripDate)) : 3650;
   if (ok) {
-    s.streak++;
+    s.streak++; s.lastCorrect = todayStr();
     s.interval = s.interval === 0 ? seedInterval(s.difficulty) : Math.round(s.interval * s.ease);
     const m = opts && opts.mode;                                  // mastery axes (as modes exist)
     if (m === "type_translation") { s.axes.production = 1; s.axes.cold = 1; }
@@ -54,11 +54,18 @@ function recordAnswer(id, ok, opts) {
   }
   s.due = _dateAdd(todayStr(), s.interval);
 }
-// current retrievability (0–100): decays from lastSeen over the item's own stability (interval)
+// per-phrase strength (0–100) = maturity × recency.
+//   recency  : retrievability decaying from the LAST CORRECT recall over the item's stability
+//   maturity : how cemented the memory is (a phrase seen right once is fragile, not 100%)
+//   production mastery lifts the ceiling — cold recall counts for more than recognition.
 function itemStrength(s) {
   if (!s || s.exposures < 1) return 0;
-  const stability = Math.max(1, s.interval || 1);
-  return 100 * Math.exp(-Math.max(0, _daysAgo(s.lastSeen)) / stability);
+  const iv = Math.max(1, s.interval || 1);
+  const days = Math.max(0, _daysAgo(s.lastCorrect || s.lastSeen));
+  const recency = Math.exp(-days / iv);
+  let maturity = iv / (iv + 5);                                   // 0 reps→low, grows as interval builds
+  if (s.axes && s.axes.production) maturity += (1 - maturity) * 0.3;
+  return 100 * maturity * recency;
 }
 
 /* ---------- review selection (M2 — pre-SRS recency heuristic; SM-2 arrives in M3) ---------- */
