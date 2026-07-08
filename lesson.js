@@ -6,9 +6,12 @@
 // situational "which do you say?" for texture. cram pushes production.
 function reviewQuestion(item, pool) {
   if (cramActive() && item.es.trim().split(/\s+/).length >= 2) return { type: "build", item, pool };
+  if (item.reply && Math.random() < 0.3) return { type: "reply_listen", item, pool };  // comprehend the answer back
   if (Math.random() < 0.25) return { type: "respond", item, pool };
   return { type: chooseType(item), item, pool };
 }
+// safety-critical phrases cram mode front-loads when the trip is near
+function isCritical(item) { return (item.tags || []).some(t => t === "dietary" || t === "emergency"); }
 // first practice after teaching: order the sentence if we can (production), else recognise it
 // among its just-taught siblings. Never a bare "match the word you just saw".
 function introRep(item) {
@@ -37,7 +40,14 @@ function composeSession(lesson) {
   if (newItems.length) {
     // review share ~⅓ (up to ½ in cram) of the whole trip, so a new lesson revisits older ones
     const cap = cramActive() ? Math.min(8, Math.max(3, newItems.length)) : Math.min(6, Math.max(3, Math.round(newItems.length * 0.6)));
-    reviewPool = dueForReview().filter(it => !newIds.has(itemId(it)) && !warmIds.has(itemId(it))).slice(0, cap);
+    const free = it => !newIds.has(itemId(it)) && !warmIds.has(itemId(it));
+    let due = dueForReview().filter(free);
+    if (cramActive()) {
+      // trip is close → front-load safety-critical phrases (dietary / emergency) even if not due yet
+      const crit = (ALL_ITEMS || []).filter(it => { const s = learnPeek(it); return s && s.exposures >= 1 && isCritical(it) && free(it) && !due.includes(it); });
+      due = [...crit, ...due];
+    }
+    reviewPool = due.slice(0, cap);
   } else {
     // redo of a completed lesson: drill its own items, plus a few trip-wide due
     const own = lessonItems.filter(it => !warmIds.has(itemId(it)));
@@ -92,7 +102,7 @@ function renderQuestion() {
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">↩ Second chance — you missed this one</div>`));
   ({ present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill,
-     respond: renderRespond, listen_choice: renderListenChoice }[q.type])(q);
+     respond: renderRespond, listen_choice: renderListenChoice, reply_listen: renderReply }[q.type])(q);
 }
 
 /* ----- presentation card (first sight of an item — teach, never grade) ----- */
@@ -173,6 +183,24 @@ function renderRespond(q) {
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Which do you say?</div>`));
   body.appendChild(el(`<div class="prompt">You want to say: “${item.en}”</div>`));
+  body.appendChild(mcChoices(options, answer, item));
+}
+
+/* ----- understand the reply (M2): hear what a local says back → pick its meaning ----- */
+function renderReply(q) {
+  const item = q.item, r = item.reply;
+  if (!r) return renderMC({ type: "mc_es2en", item });                 // safety: no reply data
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Understand the reply</div>`));
+  body.appendChild(el(`<div class="prompt-sub" style="margin-bottom:8px">You said: “${item.es}”</div>`));
+  const play = el(`<button class="big-speak">🔊</button>`);
+  play.addEventListener("click", () => speak(r.es));
+  body.appendChild(play);
+  body.appendChild(el(`<div class="prompt-sub">They answer — what did they say?</div>`));
+  setTimeout(() => speak(r.es), 300);
+  const answer = r.en;
+  const pool = [...new Set((ALL_ITEMS || []).flatMap(x => x.reply && x.reply.en !== answer ? [x.reply.en] : []).concat((ALL_ITEMS || []).filter(x => x.en !== answer).map(x => x.en)))];
+  const options = shuffle([answer, ...sample(pool, 3)]);
   body.appendChild(mcChoices(options, answer, item));
 }
 
@@ -271,6 +299,8 @@ function renderBuild(q) {
   // the full punctuated sentence is revealed in the feedback after you submit.
   const strip = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "") || w;
   const correctWords = item.es.split(" ").map(strip);
+  // neutralize the sentence-initial capital so the first word isn't given away
+  if (correctWords.length) correctWords[0] = correctWords[0].charAt(0).toLowerCase() + correctWords[0].slice(1);
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Build the sentence</div>`));
   body.appendChild(el(`<div class="prompt">${item.en}</div>`));
