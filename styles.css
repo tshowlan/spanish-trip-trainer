@@ -192,6 +192,18 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .present-es { font-size: 26px; font-weight: 800; line-height: 1.25; color: var(--text); }
 .present-en { font-size: 16px; color: var(--text-dim); margin-top: 8px; }
 .present-note { font-size: 13px; color: var(--secondary); margin-top: 12px; line-height: 1.4; }
+/* intro page — all the section's new phrases at once */
+.intro-list { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 8px; }
+.intro-row {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; cursor: pointer;
+  background: var(--bg-card); border: 1px solid var(--border); border-left: 4px solid var(--accent-2);
+  border-radius: var(--radius-md); padding: 12px 14px;
+}
+.intro-txt { flex: 1; min-width: 0; }
+.intro-es { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.intro-en { font-size: 14px; color: var(--text-dim); margin-top: 2px; }
+.intro-note { font-size: 12px; color: var(--secondary); margin-top: 5px; line-height: 1.35; }
+.intro-spk { flex: none; font-size: 18px; color: var(--secondary); }
 .speak-btn {
   display: inline-flex; align-items: center; gap: 8px; margin: 4px 0 18px;
   background: var(--bg-elevated); border: 1px solid var(--border); color: var(--secondary);

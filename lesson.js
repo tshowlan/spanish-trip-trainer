@@ -30,9 +30,8 @@ function composeSession(lesson) {
   const qs = [];
   // 1) warm-up: recent misses reopen the next session
   warm.forEach(it => qs.push(reviewQuestion(it)));
-  // 2) teach new items in bulk chunks (cards precede any test of them)
-  const CHUNK = 4;
-  for (let i = 0; i < newItems.length; i += CHUNK) newItems.slice(i, i + CHUNK).forEach(it => qs.push({ type: "present", item: it }));
+  // 2) teach all the new phrases on ONE intro page (precedes any test of them)
+  if (newItems.length) qs.push({ type: "intro", items: newItems });
   // 3) practice pool: new-item reps + trip-wide review, shuffled together (cards already placed)
   const practice = [];
   newItems.forEach(it => practice.push({ type: introRep(it), item: it, pool: newItems }));
@@ -100,12 +99,31 @@ function renderQuestion() {
   run.answered = false;
   // make the mistake re-queue visible: label a phrase you missed coming back around
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">↩ Second chance — you missed this one</div>`));
-  ({ present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
+  ({ intro: renderIntro, present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill,
      respond: renderRespond, listen_choice: renderListenChoice, reply_listen: renderReply }[q.type])(q);
 }
 
-/* ----- presentation card (first sight of an item — teach, never grade) ----- */
+/* ----- intro page (all of a section's new phrases at once — teach, never grade) ----- */
+function renderIntro(q) {
+  const items = q.items || [];
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">New phrases · tap to hear</div>`));
+  const list = el(`<div class="intro-list"></div>`);
+  items.forEach(it => {
+    const row = el(`<button class="intro-row">
+      <div class="intro-txt"><div class="intro-es">${it.es}</div><div class="intro-en">${it.en}</div>${it.note ? `<div class="intro-note">${it.note}</div>` : ""}</div>
+      <span class="intro-spk">🔊</span>
+    </button>`);
+    row.addEventListener("click", () => speak(it.es));
+    list.appendChild(row);
+  });
+  body.appendChild(list);
+  const f = footer(`<button class="btn" id="got">Got it — let's practice</button>`);
+  f.querySelector("#got").addEventListener("click", () => { items.forEach(it => recordExposure(itemId(it))); next(); });
+}
+
+/* ----- presentation card (single-phrase re-teach after a miss — teach, never grade) ----- */
 function renderPresent(q) {
   const item = q.item;
   const body = $("#qbody");
