@@ -51,12 +51,26 @@ function recencyScore() {
   return Math.round(100 * Math.exp(-((Date.now() - last) / _DAY) / 7));
 }
 
-/* ---- Retention (0–100): M3 per-phrase SRS strength (mean retrievability across learned items) ---- */
+/* ---- Retention (0–100): mean per-phrase strength across EVERYTHING you've been taught ---- */
 function retentionScore() {
-  const entries = Object.values(state.learn || {}).filter(s => s && s.exposures >= 1);
-  if (!entries.length) return retentionScoreLegacy();          // no per-item data yet → lesson curve
-  const mean = entries.reduce((a, s) => a + itemStrength(s), 0) / entries.length;
-  return Math.round(mean);
+  const strengths = [];
+  (typeof DECK !== "undefined" && DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
+    const doneLesson = lessonDone(l.id);
+    l.items.forEach(it => {
+      const s = (state.learn || {})[it.id];
+      if (s && s.exposures >= 1) strengths.push(itemStrength(s));         // per-phrase SRS strength
+      else if (doneLesson) strengths.push(lessonBaselineStrength(l.id));  // taught via a completed lesson
+    });
+  }));
+  if (!strengths.length) return retentionScoreLegacy();
+  return Math.round(strengths.reduce((a, b) => a + b, 0) / strengths.length);
+}
+// a phrase from a completed lesson you haven't drilled individually: moderate maturity,
+// decaying from when the lesson was finished (so old un-reviewed material fades toward 0)
+function lessonBaselineStrength(lessonId) {
+  const lo = (state.lessons || {})[lessonId];
+  if (!lo || !lo.at) return 0;
+  return 100 * 0.42 * Math.exp(-Math.max(0, _daysSince(lo.at)) / 7);
 }
 // pre-M3 fallback: lesson-level forgetting curve (used until the learner has per-item data)
 function retentionScoreLegacy() {
