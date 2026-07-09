@@ -3,6 +3,7 @@
 
 /* ============================== boot ============================== */
 applyTheme();
+applyDevFont();   // DEV-FONT-FLAG (remove after decision, spec §6)
 initSplash();
 migrateTrips();
 migrateScoring();
