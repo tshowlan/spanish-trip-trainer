@@ -41,11 +41,11 @@ function renderReminders() {
   clearFooter();
   const app = $("#app"); app.innerHTML = "";
   const wrap = el(`<div class="settings"></div>`);
-  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>Reminders</h2></div>`));
-  wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">A friendly nudge in the morning and before bed to keep your streak alive.</p>`));
+  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>Practice reminder</h2></div>`));
+  wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">A nudge to practice at times you choose. No streaks, no guilt — if nothing needs your attention, it stays quiet.</p>`));
 
   const r = state.reminders;
-  const toggle = el(`<div class="set-row"><div><div class="set-t">Daily reminders</div><div class="set-d">${r.enabled ? "On" : "Off"}</div></div>
+  const toggle = el(`<div class="set-row"><div><div class="set-t">Practice reminders</div><div class="set-d">${r.enabled ? "On" : "Off"}</div></div>
     <button class="toggle ${r.enabled ? "on" : ""}" id="rtog"><i></i></button></div>`);
   wrap.appendChild(toggle);
 
