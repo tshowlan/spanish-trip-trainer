@@ -38,15 +38,15 @@ as $$
     s.player_id::text, s.endpoint, s.p256dh, s.auth, s.tz,
     s.morning, s.evening, s.enabled,
     p.name,
-    p.group_code,                                         -- <<< CONFIRM players' group column
-    coalesce(p.progress -> 'notif', '{}'::jsonb) as notif, -- <<< CONFIRM players' progress column
+    p.group_code,
+    coalesce(p.progress -> 'notif', '{}'::jsonb) as notif,
     coalesce((
       select jsonb_agg(jsonb_build_object('type', l.type, 'sent_at', l.sent_at, 'meta', l.meta) order by l.sent_at desc)
       from notif_log l
       where l.player_id = s.player_id::text and l.sent_at > now() - interval '8 days'
     ), '[]'::jsonb) as recent
   from push_subs s
-  join players p on p.id::text = s.player_id::text
+  join players p on p.player_id::text = s.player_id::text
   where s.enabled = true and s.endpoint is not null;
 $$;
 
