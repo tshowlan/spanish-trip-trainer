@@ -34,7 +34,9 @@ async function cloudSync() {
     p_id: state.cloud.playerId, p_secret: state.cloud.secret,
     p_name: state.cloud.name || "Traveler", p_group: state.cloud.group || null,
     p_xp: state.xp, p_streak: state.streak, p_stats: state.topicStats || {},
-    p_progress: { history: state.history, trips: state.trips, active: state.active }
+    // notif = the honest score snapshot the (server-side) notification engine cites; stored in the
+    // existing progress JSON so no backend schema change is needed to start collecting it.
+    p_progress: { history: state.history, trips: state.trips, active: state.active, notif: notifSnapshot() }
   });
 }
 function genCode() {

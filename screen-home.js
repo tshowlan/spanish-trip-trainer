@@ -87,6 +87,15 @@ function renderHome() {
     const sd = hero.querySelector(".set-date"); if (sd) sd.addEventListener("click", renderOnboarding);
   }
 
+  // Pace check (scores spec §1.1): only when a trip date is set and you're projected below "on track"
+  if (started && s.pace && s.pace.projected < 85) {
+    const pc = s.pace;
+    const lever = pc.reachable && pc.addSessions > 0
+      ? ` Add ~${pc.addSessions} session${pc.addSessions === 1 ? "" : "s"}/week to hit ${pc.target}%.`
+      : "";
+    home.appendChild(el(`<div class="pace-line">At this pace you'll be ~<b>${pc.projected}%</b> ready by your trip.${lever}</div>`));
+  }
+
   // Review entry point — surfaces mistakes to fix + phrases going cold across the whole trip
   if (started && typeof dueForReview === "function") {
     const mistakes = (typeof mistakesPool === "function") ? mistakesPool() : [];

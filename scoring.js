@@ -98,6 +98,70 @@ function readinessBand(r) {
   return { label: "Getting started", cls: "band-low" };
 }
 
+/* ---- Pace check (scores spec §1.1): project Readiness at the trip date ---- */
+// Heuristic gap-closing model: continued practice at the current weekly cadence
+// closes a shrinking fraction of the gap to a practical ceiling. Returns null when
+// there's no trip date, the trip has passed, or the account is still cold-starting.
+function paceProjection(readinessArg) {
+  const p = state.profile;
+  if (!p || !p.tripDate) return null;
+  const daysOut = daysUntil(p.tripDate);
+  if (daysOut <= 0) return null;
+  if (_sessions().length < 5) return null;                     // cold start — too noisy to project (§6.3)
+  const current = readinessArg != null ? readinessArg : ((state.scoresCache || {}).readiness);
+  if (current == null) return null;
+  const weeks = Math.max(0.3, daysOut / 7);
+  const spwNow = _sessions7().length;                          // sessions/week = sessions in the last 7 days
+  const CEIL = 94, GAIN = 0.10, TARGET = 90;
+  const project = spw => spw <= 0
+    ? Math.round(current * Math.exp(-daysOut / 21))            // not practicing → slow drift down
+    : Math.round(current + (CEIL - current) * (1 - Math.exp(-GAIN * spw * weeks)));
+  const projected = project(spwNow);
+  const need = (TARGET - current) / (CEIL - current);          // fraction of gap to close for TARGET
+  let addSessions = 0, reachable = need < 1;
+  if (need > 0 && reachable) {
+    const spwNeed = -Math.log(1 - need) / (GAIN * weeks);
+    addSessions = Math.max(0, Math.ceil(spwNeed - spwNow));
+    if (spwNeed > 10) { reachable = false; addSessions = 0; }   // >10 sessions/wk isn't a realistic ask — drop the lever
+  }
+  return { projected, target: TARGET, daysOut, spwNow, addSessions, reachable, onTrack: projected >= 85 };
+}
+
+/* ---- fading phrases grouped by scenario category (for retention notifications) ---- */
+function fadingByCategory(threshold) {
+  const cut = threshold == null ? 40 : threshold;
+  const out = {};
+  (typeof DECK !== "undefined" && DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
+    const cat = categoryOf(l.topic);
+    l.items.forEach(it => {
+      const ls = (state.learn || {})[it.id];
+      const strength = ls && ls.exposures >= 1 ? itemStrength(ls) : (lessonDone(l.id) ? lessonBaselineStrength(l.id) : null);
+      if (strength != null && strength < cut) out[cat] = (out[cat] || 0) + 1;
+    });
+  }));
+  return out;
+}
+
+/* ---- notification snapshot: the honest numbers the backend cites when it sends a push ---- */
+function notifSnapshot() {
+  const s = state.scoresCache || computeScores();
+  const fading = fadingByCategory(40);
+  const lastAt = _sessions().reduce((m, x) => Math.max(m, new Date(x.at).getTime()), 0);
+  return {
+    readiness: s.readiness, retention: s.retention, momentum: s.momentum,
+    coverage: s.coverage, recency: s.recency,
+    sessions7: s.sessions7, activeDays7: s.activeDays7, lifetimeSessions: s.lifetimeSessions,
+    fadingByCategory: fading, fadingTotal: Object.values(fading).reduce((a, b) => a + b, 0),
+    pace: s.pace ? { projected: s.pace.projected, target: s.pace.target, addSessions: s.pace.addSessions } : null,
+    tripDate: (state.profile || {}).tripDate || null,
+    destination: (state.profile || {}).destination || null,
+    daysOut: (state.profile || {}).tripDate ? daysUntil(state.profile.tripDate) : null,
+    language: state.active || null,
+    lastSession: lastAt ? new Date(lastAt).toISOString() : null,
+    computedAt: new Date().toISOString()
+  };
+}
+
 /* ---- bundle + cache (for instant render + count-up from previous value) ---- */
 function computeScores() {
   const s = {
@@ -109,5 +173,6 @@ function computeScores() {
     computedAt: Date.now()
   };
   state.scoresCache = s;
+  s.pace = paceProjection(s.readiness);                        // attach pace once readiness is known
   return s;
 }
