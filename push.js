@@ -82,6 +82,6 @@ function renderReminders() {
     const perm = await Notification.requestPermission();
     if (perm !== "granted") { toast("Allow notifications first"); return; }
     const reg = await navigator.serviceWorker.ready;
-    reg.showNotification("Spanish Trip Trainer", { body: "Look at you go — notifications work! 🎉", icon: "./icon.svg" });
+    reg.showNotification("Tripfluent", { body: "Notifications are on — you'll get honest nudges, never streak guilt.", icon: "./icon.svg" });
   });
 }
