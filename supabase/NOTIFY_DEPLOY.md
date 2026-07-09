@@ -1,104 +1,98 @@
 # Deploying the Tripfluent notification engine
 
-This is the server half of §6 (the app already syncs the score snapshot the
-function reads). Three files:
+This **replaces** the existing `send-reminders` function (which still sends the
+old streak copy). The app already syncs the score snapshot the new function
+reads (`players.progress.notif`), so this is purely server-side.
 
-- `notify.sql` — DB objects (the only place your real schema is referenced)
-- `functions/notify/index.ts` — the hourly edge function (schema-agnostic)
-- this guide
+Project: **`ijrpogqxbcacvcasdzco`** · function URL once deployed:
+`https://ijrpogqxbcacvcasdzco.functions.supabase.co/notify`
 
-You need: the Supabase CLI (`npm i -g supabase`), your project ref, and your
-existing VAPID key pair (the same one the current morning/evening sender uses —
-the public key is in the app's `config.js`; the private key is already a secret
-in your project).
+Files:
+- `notify.sql` — `notif_log` table + `notif_recipients()` / `notif_mark_sent()` RPCs
+- `functions/notify/index.ts` — the engine (schema-agnostic; only calls those RPCs)
+
+Secrets are **already set** for `send-reminders` and are reused as-is:
+`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `VAPID_PUBLIC`, `VAPID_PRIVATE`,
+`CRON_SECRET`. Nothing new to set.
 
 ---
 
 ## 1. Create the DB objects
 
-Open **Supabase → SQL Editor**, paste `notify.sql`, and **before running** fix
-the three `<<< ADJUST` spots to match your actual tables/columns:
+Supabase → **SQL Editor** → paste `notify.sql` → run. It's already matched to
+your `push_subs` schema. Only confirm the two `<<< CONFIRM` spots — that your
+`players` table has a `group_code` column and a `progress` jsonb column (the
+ones `sync_player` writes). Verify:
 
-- the push-subscription table name (assumed `push_subs`) and its columns
-  (`endpoint, p256dh, auth, tz, morning, evening, enabled, player_id`);
-- the `players` table's group column (assumed `group_code`);
-- where the client snapshot lives (assumed `players.progress -> 'notif'`).
+```sql
+select player_id, notif->>'readiness', notif->>'fadingTotal', jsonb_array_length(recent)
+from notif_recipients();
+```
 
-Not sure of the names? Run `select table_name from information_schema.tables
-where table_schema='public';` and inspect the table your `save_push` RPC writes
-to. Then run the file. Sanity check: `select player_id, notif->>'readiness',
-jsonb_array_length(recent) from notif_recipients();` should return your
-push-enabled users with their snapshot.
+You should see your push-enabled users with a non-null readiness once they've
+opened the app on the new build (v46+, which syncs the snapshot).
 
 ## 2. Deploy the function
 
 ```bash
-supabase login
-supabase link --project-ref YOUR_PROJECT_REF
-
-# secrets (SUPABASE_URL + service-role are injected automatically at runtime,
-# but set them explicitly if your project doesn't; VAPID_* you must set)
-supabase secrets set VAPID_PUBLIC="BEYdbCF7...(your public key)"
-supabase secrets set VAPID_PRIVATE="(your private key)"
-supabase secrets set VAPID_SUBJECT="mailto:you@yourdomain.com"
-
+supabase link --project-ref ijrpogqxbcacvcasdzco
 supabase functions deploy notify --no-verify-jwt
 ```
 
-`--no-verify-jwt` because the cron calls it machine-to-machine, not a logged-in
-user. The function uses the service-role key internally to read all recipients.
+## 3. Point the cron at `notify` (and retire `send-reminders`)
 
-## 3. Schedule it hourly
-
-In the SQL editor (needs the `pg_cron` + `pg_net` extensions, both available on
-Supabase — enable under **Database → Extensions**):
+You already have a ~15-min cron calling `send-reminders`. Repoint it — or add a
+new schedule and drop the old one:
 
 ```sql
+-- stop the old streak sender
+select cron.unschedule('send-reminders');   -- use its real job name; see: select * from cron.job;
+
+-- run the new engine every 15 min (matches the function's ±15-min delivery window)
 select cron.schedule(
-  'tripfluent-notify-hourly',
-  '0 * * * *',                                   -- top of every hour
+  'tripfluent-notify',
+  '*/15 * * * *',
   $$ select net.http_post(
-       url    := 'https://YOUR_PROJECT_REF.functions.supabase.co/notify',
-       headers := jsonb_build_object('Authorization', 'Bearer ' || 'YOUR_ANON_OR_SERVICE_KEY')
+       url     := 'https://ijrpogqxbcacvcasdzco.functions.supabase.co/notify',
+       headers := jsonb_build_object('x-cron-secret', current_setting('app.cron_secret', true))
      ); $$
 );
 ```
 
-Why hourly: each user is evaluated once/day, at the top of their local delivery
-hour (their reminder time, or 18:00 local if they haven't set one), so the job
-must wake every hour to catch every timezone. The function itself enforces one
-message per user per day.
+If your old cron passed `CRON_SECRET` some other way (e.g. a hardcoded header or
+a vault secret), mirror that here — the function rejects any call whose
+`x-cron-secret` header doesn't match the `CRON_SECRET` secret.
 
 ## 4. Test
 
-- **Dry run now:** `curl -X POST https://YOUR_PROJECT_REF.functions.supabase.co/notify`
-  → returns `{ ok, considered, sent }`. `considered` counts users whose local
-  delivery hour is *right now*; `sent` counts pushes actually delivered.
-- **Force yourself a send:** temporarily make `isDeliveryHour` return `true` (or
-  set your reminder time to the current local hour), ensure your account has a
-  synced snapshot (`notif->>'readiness'` non-null) and ≥1 fading category or a
-  trip countdown, then curl it. Check `select * from notif_log order by sent_at
-  desc limit 5;`.
-- **Watch logs:** `supabase functions logs notify`.
+```bash
+curl -X POST https://ijrpogqxbcacvcasdzco.functions.supabase.co/notify \
+  -H "x-cron-secret: YOUR_CRON_SECRET"
+# → {"ok":true,"considered":N,"sent":M}
+```
+
+`considered` = users whose local delivery time is within ±15 min of now; `sent` =
+pushes delivered. To force yourself one: set your reminder time to the current
+local time (Settings → Practice reminder), make sure your account has a synced
+snapshot with a fading category or a 30/14/7-day countdown, then curl. Check
+`select * from notif_log order by sent_at desc limit 5;` and
+`supabase functions logs notify`.
 
 ---
 
-## What this implements (and what it doesn't)
+## What it implements
 
-Implemented per spec: **countdown** (30/14/7 days, fires regardless), **pace**
-(≤1/week, only when slipping), **retention** (≥8 fading, ≤3/week, ≥48h apart),
-**user-scheduled neutral reminder** (suppressed if you practiced that day), the
-**traffic rules** (one voice/day, priority countdown→pace→retention, 9–21 quiet
-hours for smart sends, no smart sends under 5 sessions), and the **governing
-principle** (every message cites a real number/count).
+Per §6: **countdown** (30/14/7 days, always), **pace** (≤1/week, only when
+slipping), **retention** (≥8 fading, ≤3/week, ≥48h apart), a **neutral scheduled
+reminder** (suppressed if you practiced that day), under the **traffic rules**
+(one message/user/day, priority countdown→pace→retention, 9–21 quiet hours for
+smart sends, nothing smart under 5 sessions), every message citing a real number.
 
-Not yet implemented (flagged in code): **group pulse** — needs a cross-player
-query that depends on the group-view rework (migration spec §3); the hook is
-marked `// GROUP pulse — TODO`. And **day-of-week** scheduling — uncomment the
-`days` column in `notify.sql` §4, have the client pass `p_days` into `save_push`,
-and gate delivery on `local.weekday ∈ days`.
+**Deferred (marked TODO in code):** group pulse (needs the group-view rework,
+migration §3) and day-of-week scheduling (uncomment `notify.sql` §4 + pass
+`p_days` into `save_push`).
 
-## Turning it off
+## Rollback
 
-`select cron.unschedule('tripfluent-notify-hourly');` — the app keeps working;
-it just stops sending. No client change needed.
+`select cron.unschedule('tripfluent-notify');` — the app keeps working, sends
+just stop. (Re-schedule `send-reminders` if you want the old behavior back.)
