@@ -58,6 +58,17 @@ function renderSettings() {
     wrap.appendChild(acct);
   }
 
+  const theme = state.theme || "system";
+  const themeRow = el(`<div class="set-row"><div><div class="set-t">Appearance</div><div class="set-d">Theme</div></div>
+    <div class="seg-toggle" id="theme-seg">
+      ${["system", "light", "dark"].map(t => `<button class="seg ${theme === t ? "on" : ""}" data-t="${t}">${t[0].toUpperCase() + t.slice(1)}</button>`).join("")}
+    </div></div>`);
+  wrap.appendChild(themeRow);
+  themeRow.querySelectorAll(".seg").forEach(b => b.addEventListener("click", () => {
+    state.theme = b.dataset.t; save(); applyTheme();
+    themeRow.querySelectorAll(".seg").forEach(x => x.classList.toggle("on", x === b));
+  }));
+
   const sound = el(`<div class="set-row"><div><div class="set-t">Success sounds</div><div class="set-d">Play a chime on correct answers</div></div>
     <button class="toggle ${state.sound ? "on" : ""}" id="snd"><i></i></button></div>`);
   wrap.appendChild(sound);

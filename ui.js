@@ -10,13 +10,22 @@ function toast(msg) {
   const t = $("#toast"); t.textContent = msg; t.classList.add("show");
   clearTimeout(t._tmo); t._tmo = setTimeout(() => t.classList.remove("show"), 2600);
 }
+// theme: "system" follows the OS (prefers-color-scheme); "light"/"dark" force it.
+function applyTheme() {
+  const root = document.documentElement;
+  const t = state.theme || "system";
+  if (t === "system") root.removeAttribute("data-theme");
+  else root.setAttribute("data-theme", t);
+  const bg = getComputedStyle(root).getPropertyValue("--bg").trim();
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta && bg) meta.setAttribute("content", bg);
+}
 function renderTopbar() {
   $("#stat-streak").textContent = state.streak;
   const brand = $("#topbar-brand");
-  if (brand) {
-    const d = destInfo(state.profile && state.profile.destination);
-    brand.innerHTML = `${wordmark(22)}<span class="tb-flag">${d.flag}</span>`;
-  }
+  if (brand) brand.innerHTML = wordmark(22);
+  const flag = $("#lang-flag");
+  if (flag) flag.textContent = destInfo(state.profile && state.profile.destination).flag;
   const xp = $("#stat-xp"); if (xp) xp.textContent = state.xp;
   const gems = $("#stat-gems"); if (gems) gems.textContent = state.gems;
 }
@@ -113,6 +122,6 @@ function runSplashZoom(splash, ready) {
 /* ---------- wordmark (Trip = Plus Jakarta 800 navy, fluent = Playfair italic blue) ---------- */
 function wordmark(h = 30) {
   return `<svg class="wordmark" viewBox="0 0 476 150" height="${h}" role="img" aria-label="Tripfluent" style="display:block;overflow:visible">
-    <text x="4" y="112" text-anchor="start"><tspan font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="104" fill="#1c275e" letter-spacing="-2">Trip</tspan><tspan font-family="'Playfair Display',Georgia,serif" font-style="italic" font-weight="500" font-size="104" fill="#4a7fc1">fluent</tspan></text>
+    <text x="4" y="112" text-anchor="start"><tspan font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="104" fill="var(--wordmark-1,#1c275e)" letter-spacing="-2">Trip</tspan><tspan font-family="'Playfair Display',Georgia,serif" font-style="italic" font-weight="500" font-size="104" fill="var(--wordmark-2,#4a7fc1)">fluent</tspan></text>
   </svg>`;
 }

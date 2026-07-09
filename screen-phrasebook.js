@@ -1,6 +1,7 @@
 /* ============================== PHRASEBOOK (saved + dictionary) ============================== */
 let _pbFilter = "";
 let _pbSavedOnly = false;
+let _pbOpen = new Set();     // expanded section ids (a search expands everything temporarily)
 function isSaved(es) { return (state.saved || []).includes(es); }
 function toggleSave(es) {
   state.saved = state.saved || [];
@@ -37,9 +38,14 @@ function renderPhrasebook() {
         return norm(it.es).includes(q) || norm(it.en).includes(q);
       });
       if (!items.length) return;
-      list.appendChild(el(`<div class="pb-group">${les.title}</div>`));
+      count += items.length;
+      const open = q ? true : _pbOpen.has(les.id);                 // a search expands every matching section
+      const header = el(`<button class="pb-group ${open ? "open" : ""}">
+        <span class="pb-caret">${icon("caret-right", 16)}</span>
+        <span class="pb-gtitle">${les.title}</span>
+        <span class="pb-count">${items.length}</span></button>`);
+      const rows = el(`<div class="pb-rows ${open ? "" : "collapsed"}"></div>`);
       items.forEach(it => {
-        count++;
         const row = el(`<div class="pb-row">
           <button class="pb-speak" aria-label="Play">🔊</button>
           <div class="pb-text"><div class="pb-es">${it.es}</div><div class="pb-en">${it.en}</div></div>
@@ -47,8 +53,10 @@ function renderPhrasebook() {
         </div>`);
         row.querySelector(".pb-speak").addEventListener("click", () => speak(it.es));
         row.querySelector(".pb-save").addEventListener("click", () => { toggleSave(it.es); draw(); refreshSeg(); });
-        list.appendChild(row);
+        rows.appendChild(row);
       });
+      header.addEventListener("click", () => { _pbOpen.has(les.id) ? _pbOpen.delete(les.id) : _pbOpen.add(les.id); draw(); });
+      list.appendChild(header); list.appendChild(rows);
     }));
     if (!count) list.appendChild(el(`<p class="onb-dim" style="margin-top:20px">${_pbSavedOnly ? "No saved phrases yet — tap the bookmark on any phrase to keep it here." : "No matches."}</p>`));
   }

@@ -127,7 +127,8 @@ function renderIntro(q) {
 function renderPresent(q) {
   const item = q.item;
   const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">New phrase</div>`));
+  // no "New phrase" label on a re-teach — the "Second chance" chip already frames it
+  if (!q.requeued) body.appendChild(el(`<div class="qtype">New phrase</div>`));
   const card = el(`<div class="present-card">
       <div class="present-es">${item.es}</div>
       <div class="present-en">${item.en}</div>

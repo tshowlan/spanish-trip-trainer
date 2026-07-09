@@ -2,6 +2,7 @@
    Engine, screens, content, and cloud live in their own files (see index.html load order). */
 
 /* ============================== boot ============================== */
+applyTheme();
 initSplash();
 migrateTrips();
 migrateScoring();

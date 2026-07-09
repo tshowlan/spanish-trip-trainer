@@ -36,6 +36,7 @@ function renderHome() {
   const started = s.lifetimeSessions > 0 || Object.keys(state.lessons).length > 0;
   const days = p.tripDate ? Math.max(0, daysUntil(p.tripDate)) : null;
   const band = readinessBand(s.readiness);
+  const rClass = s.readiness < 40 ? "r-low" : s.readiness < 65 ? "r-mid" : "r-high";   // red / yellow / green
 
   const hero = el(`<div class="hero"></div>`);
 
@@ -49,11 +50,11 @@ function renderHome() {
         </div>
         <div class="ring-label">Momentum</div>
       </button>
-      <button class="ring-card readiness" id="sc-readiness">
+      <button class="ring-card readiness ${rClass}" id="sc-readiness">
         <div class="ring-wrap">${ringSVG(s.readiness, "readiness")}
           <div class="ring-center"><div class="ring-num" data-to="${s.readiness}">0<span class="pct">%</span></div></div>
         </div>
-        <div class="ring-label">Trip Readiness<span class="info-btn" aria-hidden="true">i</span></div>
+        <div class="ring-label">Trip Readiness</div>
         ${days !== null ? `<div class="ring-days">${days}d out</div>` : `<div class="ring-days set-date">Set date</div>`}
       </button>
       <button class="ring-card m-retention" id="sc-retention">
