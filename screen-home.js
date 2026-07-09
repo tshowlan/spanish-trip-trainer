@@ -238,7 +238,8 @@ function reviewRow() {
 
 /* 8b.4 — standing line: exactly three slots (phrases ready · focus area · trip pace) */
 function phrasesReadyCount() {
-  return Object.values(state.learn || {}).filter(s => s && s.exposures >= 5 && s.streak >= 2).length;
+  // phrases you're producing reliably (2+ correct in a row after a few looks)
+  return Object.values(state.learn || {}).filter(s => s && s.streak >= 2 && s.exposures >= 3).length;
 }
 function focusCategory() {
   const cats = Object.entries(state.topicStats || {}).filter(([, v]) => v && v.total >= 10)
@@ -259,6 +260,8 @@ function standingLine() {
     f.addEventListener("click", () => { const its = itemsInCategory(focus); if (its.length) startReview(its); });
     line.appendChild(f);
   }
+  const days = (state.profile || {}).tripDate ? daysUntil(state.profile.tripDate) : null;
   if (pace) line.appendChild(el(`<div class="stand-slot ${pace.onTrack ? "pace-ok" : "pace-behind"}">${pace.onTrack ? "On pace" : `Behind · ~${pace.projected}%`}</div>`));
+  else if (days !== null && days >= 0) line.appendChild(el(`<div class="stand-slot">Pace: baseline building</div>`));  // <5 sessions → too noisy to project yet
   return line.children.length ? line : null;
 }
