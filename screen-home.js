@@ -88,28 +88,11 @@ function renderHome() {
     const sd = hero.querySelector(".set-date"); if (sd) sd.addEventListener("click", renderOnboarding);
   }
 
-  // Pace check (scores spec §1.1): only when a trip date is set and you're projected below "on track"
-  if (started && s.pace && s.pace.projected < 85) {
-    const pc = s.pace;
-    const lever = pc.reachable && pc.addSessions > 0
-      ? ` Add ~${pc.addSessions} session${pc.addSessions === 1 ? "" : "s"}/week to hit ${pc.target}%.`
-      : "";
-    home.appendChild(el(`<div class="pace-line">At this pace you'll be ~<b>${pc.projected}%</b> ready by your trip.${lever}</div>`));
-  }
-
-  // Review entry point — surfaces mistakes to fix + phrases going cold across the whole trip
-  if (started && typeof dueForReview === "function") {
-    const mistakes = (typeof mistakesPool === "function") ? mistakesPool() : [];
-    const due = dueForReview();
-    const pool = [...new Set([...mistakes, ...due])].slice(0, 15);
-    if (pool.length) {
-      const label = mistakes.length
-        ? `Fix <b>${mistakes.length}</b> mistake${mistakes.length === 1 ? "" : "s"}${due.length > mistakes.length ? " + review" : ""}`
-        : `Review <b>${due.length}</b> phrase${due.length === 1 ? "" : "s"} going cold`;
-      const rev = el(`<button class="review-cta"><span class="rev-ic">${icon("arrows-clockwise", 18)}</span><span>${label}</span><span class="chev">${icon("caret-right", 18)}</span></button>`);
-      rev.addEventListener("click", () => startReview(pool));
-      home.appendChild(rev);
-    }
+  // Action region (learning-engine spec §8b): hero tile + review row + standing line
+  if (started) {
+    home.appendChild(heroTile());
+    home.appendChild(reviewRow());
+    const sl = standingLine(); if (sl) home.appendChild(sl);
   }
 
   if (!state.account) {
@@ -191,4 +174,89 @@ function scoreSheet(which) {
 function closeSheet() {
   const w = document.querySelector(".sheet-wrap");
   if (!w) return; w.classList.remove("show"); setTimeout(() => w.remove(), 260);
+}
+
+/* ============================== HOME ACTION REGION (§8b) ============================== */
+function seenItems() { return (ALL_ITEMS || []).filter(it => exposuresOf(it) > 0); }
+function firstOpenLesson() {
+  for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons)
+    if (lessonUnlocked(l.id) && !lessonDone(l.id)) return l;
+  return null;
+}
+function itemsInCategory(cat) {
+  const out = [];
+  (DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
+    if (categoryOf(l.topic) === cat) l.items.forEach(it => { if (exposuresOf(it) > 0) out.push(it); });
+  }));
+  return out;
+}
+
+/* 8b.2 — hero action tile: evaluate the priority function, render the first matching state.
+   Copy guardrail (§8b.1): recommends, never threatens; the only real deadline is the trip date. */
+function heroState() {
+  const p = state.profile || {};
+  const days = p.tripDate ? Math.max(0, daysUntil(p.tripDate)) : null;
+  const mistakes = mistakesPool(), due = dueForReview();
+  const backlog = [...new Set([...mistakes, ...due])];
+  const lastDays = _lastSessionDays();
+  const next = firstOpenLesson();
+  if (days !== null && days <= 14)
+    return { kind: "cram", title: `${days} day${days === 1 ? "" : "s"} out — drill your essentials`, run: () => startReview(backlog.length ? backlog : seenItems()) };
+  if (backlog.length >= 15)
+    return { kind: "review", title: `Review ${backlog.length} due items`, sub: "Quickest way to lift Retention", run: () => startReview(backlog) };
+  if (lastDays !== null && lastDays >= 2 && backlog.length)
+    return { kind: "momentum", title: "Momentum's dipping — 3 minutes brings it back", run: () => startReview(backlog.slice(0, 8)) };
+  if (next)
+    return { kind: "lesson", title: `Start: ${next.title}`, sub: next.topic, run: () => startLesson(next) };
+  return { kind: "caught", title: "You're ahead — a quick practice round?", run: () => startReview(seenItems()) };
+}
+function heroTile() {
+  const h = heroState();
+  const t = el(`<button class="hero-tile hero-${h.kind}">
+    <div class="hero-txt"><div class="hero-title">${h.title}</div>${h.sub ? `<div class="hero-sub">${h.sub}</div>` : ""}</div>
+    <span class="hero-go">${icon("caret-right", 22)}</span></button>`);
+  t.addEventListener("click", h.run);
+  return t;
+}
+
+/* 8b.3 — persistent review row: three always-present chips (spatial stability; 0 = disabled-quiet) */
+function reviewRow() {
+  const mistakes = mistakesPool(), due = dueForReview();
+  const row = el(`<div class="review-row"></div>`);
+  const chip = (label, n, disabled, run) => {
+    const c = el(`<button class="review-chip ${disabled ? "off" : ""}">${label}${n != null ? ` <b>${n}</b>` : ""}</button>`);
+    if (!disabled) c.addEventListener("click", run); else c.disabled = true;
+    return c;
+  };
+  row.appendChild(chip("Mistakes", mistakes.length, !mistakes.length, () => startReview(mistakes)));
+  row.appendChild(chip("Due", due.length, !due.length, () => startReview(due)));
+  row.appendChild(chip("Practice", null, !seenItems().length, () => startReview(seenItems())));
+  return row;
+}
+
+/* 8b.4 — standing line: exactly three slots (phrases ready · focus area · trip pace) */
+function phrasesReadyCount() {
+  return Object.values(state.learn || {}).filter(s => s && s.exposures >= 5 && s.streak >= 2).length;
+}
+function focusCategory() {
+  const cats = Object.entries(state.topicStats || {}).filter(([, v]) => v && v.total >= 10)
+    .map(([k, v]) => ({ k, acc: v.correct / v.total })).sort((a, b) => a.acc - b.acc);
+  return cats.length ? cats[0].k : null;
+}
+function standingLine() {
+  const slots = [];
+  const pr = phrasesReadyCount();
+  slots.push(`<div class="stand-slot"><b>${pr}</b> phrase${pr === 1 ? "" : "s"} ready</div>`);
+  const focus = focusCategory();
+  const s = state.scoresCache || computeScores();
+  const pace = s.pace;
+  const line = el(`<div class="standing-line"></div>`);
+  line.appendChild(el(slots[0]));
+  if (focus) {
+    const f = el(`<button class="stand-slot stand-btn">Focus: <b>${focus}</b></button>`);
+    f.addEventListener("click", () => { const its = itemsInCategory(focus); if (its.length) startReview(its); });
+    line.appendChild(f);
+  }
+  if (pace) line.appendChild(el(`<div class="stand-slot">${pace.onTrack ? "On pace" : `Behind — ~${pace.projected}% by trip`}</div>`));
+  return line.children.length ? line : null;
 }
