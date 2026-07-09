@@ -480,20 +480,29 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .hero-tile.hero-caught { background: var(--bg-elevated); color: var(--text); box-shadow: none; border: 1px solid var(--border); }
 .hero-tile.hero-caught .hero-go { color: var(--text-dim); }
 
-.review-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.review-row { display: flex; gap: 8px; margin-bottom: 8px; }
 .review-chip {
-  flex: 1; cursor: pointer; padding: 10px 8px; border-radius: 999px;
-  background: var(--bg-card); border: 1px solid var(--border); color: var(--text);
-  font-weight: 700; font-size: 13px; text-align: center;
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer;
+  padding: 10px 6px; border-radius: var(--radius-md);
+  background: var(--bg-card); border: 1px solid var(--border);
 }
-.review-chip b { color: var(--accent-2); }
-.review-chip.off { opacity: .45; cursor: default; }
+.review-chip .chip-top { display: inline-flex; align-items: center; gap: 5px; font-weight: 800; font-size: 15px; color: var(--text); }
+.review-chip .chip-ic { display: inline-flex; color: var(--text-dim); }
+.review-chip .chip-label { font-size: 12px; font-weight: 700; color: var(--text-dim); }
+.review-chip.c-mistakes .chip-ic, .review-chip.c-mistakes .chip-top b { color: var(--red); }
+.review-chip.c-practice .chip-ic { color: var(--accent-2); }
+.review-chip.off { opacity: .5; cursor: default; }
 
-.standing-line { display: flex; flex-wrap: wrap; gap: 8px 14px; justify-content: center; margin: 0 0 6px; }
+.standing-line {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px 14px; flex-wrap: wrap;
+  background: var(--bg-elevated); border-radius: var(--radius-md); padding: 10px 14px; margin: 0 0 8px;
+}
 .stand-slot { font-size: 12.5px; font-weight: 700; color: var(--text-dim); background: none; border: none; padding: 0; }
 .stand-slot b { color: var(--text); font-weight: 800; }
 .stand-btn { cursor: pointer; }
 .stand-btn b { color: var(--secondary); }
+.stand-slot.pace-ok { color: var(--green); }
+.stand-slot.pace-behind { color: var(--accent-2); }
 
 .scores { display: flex; align-items: flex-start; justify-content: center; gap: 8px; margin-bottom: 8px; }
 .ring-card { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; min-width: 0; padding: 0; }

@@ -219,18 +219,20 @@ function heroTile() {
   return t;
 }
 
-/* 8b.3 — persistent review row: three always-present chips (spatial stability; 0 = disabled-quiet) */
+/* 8b.3 — persistent review row: three always-present tiles (spatial stability; 0 = disabled-quiet) */
 function reviewRow() {
   const mistakes = mistakesPool(), due = dueForReview();
   const row = el(`<div class="review-row"></div>`);
-  const chip = (label, n, disabled, run) => {
-    const c = el(`<button class="review-chip ${disabled ? "off" : ""}">${label}${n != null ? ` <b>${n}</b>` : ""}</button>`);
+  const chip = (cls, ic, n, label, disabled, run) => {
+    const c = el(`<button class="review-chip ${cls} ${disabled ? "off" : ""}">
+      <span class="chip-top"><span class="chip-ic">${icon(ic, 16)}</span>${n != null ? `<b>${n}</b>` : ""}</span>
+      <span class="chip-label">${label}</span></button>`);
     if (!disabled) c.addEventListener("click", run); else c.disabled = true;
     return c;
   };
-  row.appendChild(chip("Mistakes", mistakes.length, !mistakes.length, () => startReview(mistakes)));
-  row.appendChild(chip("Due", due.length, !due.length, () => startReview(due)));
-  row.appendChild(chip("Practice", null, !seenItems().length, () => startReview(seenItems())));
+  row.appendChild(chip("c-mistakes", "warning", mistakes.length, "Mistakes", !mistakes.length, () => startReview(mistakes)));
+  row.appendChild(chip("c-due", "arrows-clockwise", due.length, "Due", !due.length, () => startReview(due)));
+  row.appendChild(chip("c-practice", "lightning", null, "Practice", !seenItems().length, () => startReview(seenItems())));
   return row;
 }
 
@@ -257,6 +259,6 @@ function standingLine() {
     f.addEventListener("click", () => { const its = itemsInCategory(focus); if (its.length) startReview(its); });
     line.appendChild(f);
   }
-  if (pace) line.appendChild(el(`<div class="stand-slot">${pace.onTrack ? "On pace" : `Behind — ~${pace.projected}% by trip`}</div>`));
+  if (pace) line.appendChild(el(`<div class="stand-slot ${pace.onTrack ? "pace-ok" : "pace-behind"}">${pace.onTrack ? "On pace" : `Behind · ~${pace.projected}%`}</div>`));
   return line.children.length ? line : null;
 }
