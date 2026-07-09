@@ -62,7 +62,7 @@ function renderAuth(mode) {
   const title = mode === "signup" ? "Create account" : "Log in";
   wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>${title}</h2></div>`));
   wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">${mode === "signup"
-    ? "Back up your progress so a reinstall or new phone never loses your streak."
+    ? "Back up your progress so a reinstall or new phone never wipes it."
     : "Welcome back — log in to restore your progress."}</p>`));
   wrap.appendChild(el(`<div class="set-t" style="margin:12px 0 6px">Email</div>`));
   const email = el(`<input class="text-input" type="email" autocomplete="email" autocapitalize="off" autocorrect="off" placeholder="you@example.com">`);

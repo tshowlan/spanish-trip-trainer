@@ -52,7 +52,7 @@ function renderSettings() {
     wrap.appendChild(acct);
     acct.querySelector("#logout").addEventListener("click", () => { if (confirm("Log out? Your progress stays on this device and in your account.")) { doLogout(); renderSettings(); } });
   } else {
-    const acct = el(`<div class="set-row" style="border-color:var(--accent-2)"><div><div class="set-t">Back up your progress</div><div class="set-d">Create an account so you never lose your streak</div></div>
+    const acct = el(`<div class="set-row" style="border-color:var(--accent-2)"><div><div class="set-t">Back up your progress</div><div class="set-d">Create an account so a reinstall never wipes your progress</div></div>
       <span class="chev">${icon('caret-right',20)}</span></div>`);
     acct.addEventListener("click", () => renderAuth("signup"));
     wrap.appendChild(acct);
@@ -73,7 +73,7 @@ function renderSettings() {
     <button class="toggle ${state.sound ? "on" : ""}" id="snd"><i></i></button></div>`);
   wrap.appendChild(sound);
 
-  const remRow = el(`<div class="set-row" style="cursor:pointer"><div><div class="set-t">Push reminders</div><div class="set-d">${state.reminders.enabled ? `On · ${minToHHMM(state.reminders.morning)} & ${minToHHMM(state.reminders.evening)}` : "Morning + bedtime nudges"}</div></div>
+  const remRow = el(`<div class="set-row" style="cursor:pointer"><div><div class="set-t">Practice reminder</div><div class="set-d">${state.reminders.enabled ? `On · ${minToHHMM(state.reminders.morning)}` : "Honest nudges at a time you set"}</div></div>
     <span class="chev">${icon('caret-right',20)}</span></div>`);
   remRow.addEventListener("click", renderReminders);
   wrap.appendChild(remRow);
@@ -94,7 +94,7 @@ function renderSettings() {
 
   const reset = el(`<button class="btn btn--danger" style="margin-top:12px">Reset all progress</button>`);
   reset.addEventListener("click", () => {
-    if (confirm("Erase all progress, streak, and profile? This can't be undone.")) {
+    if (confirm("Erase all progress and profile? This can't be undone.")) {
       state = Object.assign({}, DEFAULT_STATE); save(); rebuildDeck(); renderOnboarding();
     }
   });
