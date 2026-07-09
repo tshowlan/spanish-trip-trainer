@@ -2,7 +2,7 @@
    Online → always fetch the latest (so updates land without reinstalling).
    Offline → fall back to the cache (works on the plane / no signal).
    Cross-origin requests (e.g. Supabase) are left untouched. */
-const CACHE = "sts-v47";
+const CACHE = "sts-v48";
 const ASSETS = [
   "./", "./index.html", "./styles.css", "./fonts.css",
   "./fonts/plus-jakarta-sans.woff2", "./fonts/inter.woff2", "./fonts/playfair-italic-500.woff2",
@@ -43,10 +43,11 @@ self.addEventListener("fetch", e => {
 
 // ---- push reminders ----
 self.addEventListener("push", e => {
-  let d = { title: "Tripfluent", body: "A few phrases are fading — a short review brings them back." };
-  try { if (e.data) d = Object.assign(d, e.data.json()); } catch { if (e.data) d.body = e.data.text(); }
+  // message goes in the title; iOS appends "from Tripfluent" (the app name) itself.
+  let d = { title: "A few phrases are fading — a short review brings them back.", body: "" };
+  try { if (e.data) d = Object.assign(d, e.data.json()); } catch { if (e.data) d.title = e.data.text(); }
   e.waitUntil(self.registration.showNotification(d.title, {
-    body: d.body, icon: "./icon.svg", badge: "./icon.svg", tag: "stt-reminder", renotify: true
+    body: d.body || undefined, icon: "./icon.svg", badge: "./icon.svg", tag: "stt-reminder", renotify: true
   }));
 });
 self.addEventListener("notificationclick", e => {

@@ -106,7 +106,9 @@ Deno.serve(async (req) => {
     try {
       await webpush.sendNotification(
         { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
-        JSON.stringify({ title: "Tripfluent", body: msg.body }),
+        // message goes in the TITLE; iOS appends "from Tripfluent" (the app name) itself,
+        // so a "Tripfluent" title would read "Tripfluent from Tripfluent". Leave body empty.
+        JSON.stringify({ title: msg.body, body: "" }),
       );
       await db.rpc("notif_mark_sent", { p_player: sub.player_id, p_type: msg.type, p_meta: msg.meta ?? {} });
       sent++;
