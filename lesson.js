@@ -16,7 +16,7 @@ function isCritical(item) { return (item.tags || []).some(t => t === "dietary" |
 // among its just-taught siblings. Never a bare "match the word you just saw".
 function introRep(item) {
   const n = item.es.trim().split(/\s+/).length;
-  return (n >= 2 && n <= 8) ? "build" : "mc_es2en";
+  return (n >= 4 && n <= 8) ? "build" : "mc_es2en";   // §1b.3: short items go to recognition, not a 2-tile "build"
 }
 
 /* ---- session composer (M2): warm-up misses + new items + trip-wide review ---- */

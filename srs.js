@@ -122,8 +122,8 @@ const LADDER = [
 function _wordCount(item) { return item.es.trim().split(/\s+/).length; }
 function _modeFeasible(mode, item) {
   const n = _wordCount(item);
-  if (mode === "build") return n >= 2 && n <= 8;   // tap-to-build needs a real sentence
-  if (mode === "fill_blank") return n >= 3;
+  if (mode === "build") return n >= 4 && n <= 8;   // §1b.3: no tap-to-build under 4 tokens
+  if (mode === "fill_blank") return n >= 3;        // §1b.3: no fill-in-the-blank under 3 tokens
   return true;
 }
 function _tierOfType(type) {
