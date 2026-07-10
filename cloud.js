@@ -11,8 +11,11 @@ function categoryOf(topic) {
   return "Basics";
 }
 const cloudHeaders = () => ({ apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" });
-async function rpc(fn, body) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, { method: "POST", headers: cloudHeaders(), body: JSON.stringify(body) });
+async function rpc(fn, body, opts) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: "POST", headers: cloudHeaders(), body: JSON.stringify(body),
+    keepalive: !!(opts && opts.keepalive)     // let a background/close flush outlive the page
+  });
   const text = await res.text();
   const data = text ? JSON.parse(text) : null;
   if (!res.ok) throw new Error((data && data.message) || ("HTTP " + res.status));
@@ -26,7 +29,7 @@ function ensureIdentity() {
     save();
   }
 }
-async function cloudSync() {
+async function cloudSync(opts) {
   if (!state.cloud || !state.cloud.optedIn) return;          // nothing leaves the device until you join a group
   ensureIdentity();
   snapshotActive();                                          // make sure the active trip is current in state.trips
@@ -37,7 +40,7 @@ async function cloudSync() {
     // notif = the honest score snapshot the (server-side) notification engine cites; stored in the
     // existing progress JSON so no backend schema change is needed to start collecting it.
     p_progress: { history: state.history, trips: state.trips, active: state.active, notif: notifSnapshot() }
-  });
+  }, opts);
 }
 function genCode() {
   const a = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -140,7 +143,58 @@ async function loadMembers(list, code) {
   } catch (e) { list.innerHTML = `<p class="onb-dim">Couldn't load: ${e.message}</p>`; }
 }
 
-// Merge a remote player record down onto this device.
+/* ---- non-destructive merge helpers ----
+   A login/restore pulls the server copy DOWN onto whatever is on this device. It must never
+   roll progress back: for every lesson and phrase we keep the *more-advanced* of the two sides,
+   and we union anything that exists on only one side. (Fixes the reinstall-then-login rollback.) */
+function _laterISO(a, b) { return (a || "") >= (b || "") ? (a || b || "") : (b || ""); }
+function _mergeLessons(a, b) {
+  a = a || {}; b = b || {}; const out = {};
+  new Set([...Object.keys(a), ...Object.keys(b)]).forEach(id => {
+    const x = a[id], y = b[id];
+    out[id] = !x ? y : !y ? x : { stars: Math.max(x.stars || 0, y.stars || 0), at: _laterISO(x.at, y.at) };
+  });
+  return out;
+}
+function _mergeLearn(a, b) {
+  a = a || {}; b = b || {}; const out = {};
+  new Set([...Object.keys(a), ...Object.keys(b)]).forEach(id => {
+    const x = a[id], y = b[id];
+    if (!x || !y) { out[id] = x || y; return; }
+    const xr = x.exposures || 0, yr = y.exposures || 0;        // more work done wins; tie → most recently seen
+    out[id] = xr !== yr ? (xr > yr ? x : y) : (_laterISO(x.lastSeen, y.lastSeen) === (x.lastSeen || "") ? x : y);
+  });
+  return out;
+}
+function _mergeStats(a, b) {
+  a = a || {}; b = b || {}; const out = {};
+  new Set([...Object.keys(a), ...Object.keys(b)]).forEach(k => {
+    const x = a[k], y = b[k];
+    out[k] = !x ? y : !y ? x : ((x.total || 0) >= (y.total || 0) ? x : y);   // fuller record; don't double-count
+  });
+  return out;
+}
+function _mergeSessions(a, b) {
+  const seen = new Set(), out = [];
+  [...(a || []), ...(b || [])].forEach(s => {
+    const k = (s.at || "") + "|" + (s.lessonId || "");
+    if (!seen.has(k)) { seen.add(k); out.push(s); }
+  });
+  return out.sort((p, q) => (p.at || "") < (q.at || "") ? -1 : 1);
+}
+function mergeTrip(local, server) {
+  local = local || {}; server = server || {};
+  return {
+    profile: local.profile || server.profile || null,
+    lessons: _mergeLessons(local.lessons, server.lessons),
+    topicStats: _mergeStats(local.topicStats, server.topicStats),
+    xp: Math.max(local.xp || 0, server.xp || 0),
+    sessions: _mergeSessions(local.sessions, server.sessions),
+    learn: _mergeLearn(local.learn, server.learn)
+  };
+}
+
+// Merge a remote player record down onto this device (never overwrites newer local progress).
 function applyPlayer(r) {
   if (!r) return;
   state.streak = Math.max(state.streak, r.streak || 0);      // streak is global
@@ -148,14 +202,17 @@ function applyPlayer(r) {
   if (r.progress) {
     if (r.progress.history) state.history = [...new Set([...(state.history || []), ...r.progress.history])];
     if (r.progress.trips) {                                  // per-destination restore
-      state.trips = Object.assign({}, state.trips, r.progress.trips);
-      if (r.progress.active) state.active = r.progress.active;
-      if (state.active) applyTrip(state.active);
+      snapshotActive();                                     // fold live top-level progress into its trip first
+      Object.keys(r.progress.trips).forEach(k => {
+        state.trips[k] = mergeTrip(state.trips[k], r.progress.trips[k]);   // keep the better of local vs server
+      });
+      if (r.progress.active && !state.active) state.active = r.progress.active;   // respect this device's active trip
+      if (state.active) applyTrip(state.active);             // re-mirror the merged active trip to top level
     } else {                                                 // legacy single-trip backup
-      if (r.progress.lessons) state.lessons = Object.assign({}, state.lessons, r.progress.lessons);
-      if (r.progress.profile) state.profile = r.progress.profile;
+      if (r.progress.lessons) state.lessons = _mergeLessons(state.lessons, r.progress.lessons);
+      if (r.progress.profile && !state.profile) state.profile = r.progress.profile;
       state.xp = Math.max(state.xp, r.xp || 0);
-      state.topicStats = r.stats || state.topicStats || {};
+      state.topicStats = _mergeStats(state.topicStats, r.stats);
     }
   }
 }
