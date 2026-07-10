@@ -4,11 +4,11 @@
 
 // a graded review rep for a seen item — mostly its ladder rung, sometimes a
 // situational "which do you say?" for texture. cram pushes production.
-function reviewQuestion(item, pool) {
-  if (cramActive() && item.es.trim().split(/\s+/).length >= 2) return { type: "build", item, pool };
+function reviewQuestion(item, pool, cap) {
+  if (cramActive() && item.es.trim().split(/\s+/).length >= 2) return { type: "build", item, pool };  // build = rung 2, ok under cap
   if (item.reply && Math.random() < 0.3) return { type: "reply_listen", item, pool };  // comprehend the answer back
   if (Math.random() < 0.25) return { type: "respond", item, pool };
-  return { type: chooseType(item), item, pool };
+  return { type: chooseType(item, { cap }), item, pool };
 }
 // safety-critical phrases cram mode front-loads when the trip is near
 function isCritical(item) { return (item.tags || []).some(t => t === "dietary" || t === "emergency"); }
@@ -26,10 +26,11 @@ function composeSession(lesson) {
   const newIds = new Set(newItems.map(itemId));
   const warm = recentMisses().filter(it => !newIds.has(itemId(it))).slice(0, 3);
   const warmIds = new Set(warm.map(itemId));
+  const rungCap = lessonDone(lesson.id) ? null : 2;   // §4.1 first-pass cap: introducing → never cold
 
   const qs = [];
   // 1) warm-up: recent misses reopen the next session
-  warm.forEach(it => qs.push(reviewQuestion(it)));
+  warm.forEach(it => qs.push(reviewQuestion(it, null, rungCap)));
   // 2) teach all the new phrases on ONE intro page (precedes any test of them)
   if (newItems.length) qs.push({ type: "intro", items: newItems });
   // 3) practice pool: new-item reps + trip-wide review, shuffled together (cards already placed)
@@ -53,7 +54,7 @@ function composeSession(lesson) {
     const extra = dueForReview().filter(it => !lessonItems.includes(it) && !warmIds.has(itemId(it))).slice(0, 4);
     reviewPool = [...own, ...extra];
   }
-  reviewPool.forEach(it => practice.push(reviewQuestion(it, reviewPool)));
+  reviewPool.forEach(it => practice.push(reviewQuestion(it, reviewPool, rungCap)));
   shuffle(practice).forEach(q => qs.push(q));
   return qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it }));  // safety net
 }
@@ -436,7 +437,9 @@ function onMatchTap(tile, grid, q) {
 function grade(ok, item) { finishGrade(ok, item, null); }
 // typed answers get typo/accent tolerance (edit distance ≤ 1, accent slips accepted)
 function gradeTyped(raw, item) {
-  const j = judgeTyped(raw, item.es);
+  // §4b.3: accept the canonical form OR any authored variant (same typo tolerance)
+  let j = { ok: false };
+  for (const t of [item.es].concat(item.variants || [])) { const r = judgeTyped(raw, t); if (r.ok) { j = r; break; } }
   const extra = j.accent ? "Almost — watch the accent." : (j.typo ? "Close — mind the spelling." : null);
   finishGrade(j.ok, item, extra);
 }

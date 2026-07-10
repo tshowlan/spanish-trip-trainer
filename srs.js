@@ -137,14 +137,24 @@ function _pickModeForTier(tier, item) {
   }
   return "mc_es2en";                                // recognition always works
 }
-function _baseTier(exposures) { return exposures <= 2 ? 1 : exposures <= 4 ? 2 : 3; }
+// §4.1: rung thresholds scale with the item's own difficulty (1–5, default 2),
+// so short easy phrases graduate quickly and elaborate ones get more runway.
+function _baseTier(exposures, difficulty) {
+  const d = difficulty || 2;
+  if (exposures >= 5 + d) return 3;   // cold production
+  if (exposures >= 2 + d) return 2;   // scaffolded production
+  return 1;                           // recognition
+}
 
-// pick the graded mode for an item this session, from its lifetime exposures
-function chooseType(item) {
+// pick the graded mode for an item this session. opts.cap limits the max rung
+// (first-pass cap, §4.1 — a lesson introducing new material never goes cold).
+function chooseType(item, opts) {
   const s = learnPeek(item);
   const exp = s ? s.exposures : 0;
-  let tier = _baseTier(exp);
+  let tier = _baseTier(exp, item.difficulty);
   if (s && s.streak === 0 && s.lapses > 0) tier = Math.max(1, tier - 1);  // rung-down after a recent miss
+  const cap = opts && opts.cap;
+  if (cap) tier = Math.min(tier, cap);
   return _pickModeForTier(tier, item);
 }
 // re-serve a missed item one rung easier than the mode it failed (0 → presentation card)
