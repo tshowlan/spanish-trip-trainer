@@ -193,21 +193,30 @@ function footer(html) {
 }
 function clearFooter() { const f = $("#footer"); if (f) f.remove(); }
 
-/* distractors must be the same KIND as the answer: siblings you were just taught, matched on
-   length "shape", so a one-word answer never sits beside full sentences. */
+/* distractors must be the same KIND as the answer. §4b.4 distractor ladder: prefer siblings that
+   share a CATEGORY (tags) — other numbers for a number, other dishes for a dish — tightened by
+   length "shape" so a one-word answer never sits beside full sentences. Falls back to shape-only
+   (legacy behaviour) so untagged packs, or answers with no same-tag siblings, never regress. */
 function mcOptions(item, es2en, siblings) {
   const answer = es2en ? item.en : item.es;
   const val = x => es2en ? x.en : x.es;
   const wc = s => s.trim().split(/\s+/).length;
   const shape = n => n <= 1 ? 0 : n <= 3 ? 1 : 2;      // word / short phrase / sentence
   const tb = shape(wc(answer));
+  const tags = item.tags || [];
+  const sameTag = x => tags.length && (x.tags || []).some(t => tags.includes(t));
+  const sameShape = x => shape(wc(val(x))) === tb;
   const cand = [];
   const add = arr => { for (const x of arr) if (val(x) !== answer && !cand.includes(x)) cand.push(x); };
   const sibs = (siblings && siblings.length ? siblings : []);
-  add(sibs.filter(x => shape(wc(val(x))) === tb));                   // same lesson, same shape
-  if (cand.length < 3) add(ALL_ITEMS.filter(x => shape(wc(val(x))) === tb)); // any lesson, same shape
-  if (cand.length < 3) add(sibs);                                    // same lesson, any shape
-  if (cand.length < 3) add(ALL_ITEMS);                               // last resort
+  const all = ALL_ITEMS || [];
+  add(sibs.filter(x => sameTag(x) && sameShape(x)));                 // same lesson · same category · same shape
+  if (cand.length < 3) add(all.filter(x => sameTag(x) && sameShape(x)));  // any lesson · same category · same shape
+  if (cand.length < 3) add(all.filter(sameTag));                    // any lesson · same category · any shape
+  if (cand.length < 3) add(sibs.filter(sameShape));                 // same lesson · same shape (legacy)
+  if (cand.length < 3) add(all.filter(sameShape));                  // any lesson · same shape (legacy)
+  if (cand.length < 3) add(sibs);                                   // same lesson · any shape
+  if (cand.length < 3) add(all);                                    // last resort
   const distract = [...new Set(sample(cand, 8).map(val))].filter(v => v !== answer).slice(0, 3);
   return { answer, options: shuffle([answer, ...distract]) };
 }
