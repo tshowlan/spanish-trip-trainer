@@ -104,23 +104,65 @@ function renderQuestion() {
      respond: renderRespond, listen_choice: renderListenChoice, reply_listen: renderReply }[q.type])(q);
 }
 
-/* ----- intro page (all of a section's new phrases at once — teach, never grade) ----- */
+/* ----- intro flow: new phrases one at a time over a regional photo, then a recap page ----- */
+// pick a scenario photo from the active region for the lesson being introduced
+function introPhoto(lesson) {
+  const t = ((lesson && lesson.topic || "") + " " + (lesson && lesson.title || "")).toLowerCase();
+  const pick =
+    /coffee|caf|pastr|bakery|breakfast/.test(t) ? "cafe" :
+    /market|shop|bargain/.test(t) ? "market" :
+    /taxi|transport|airport|plane|metro|bus|ferry|direction|way|around/.test(t) ? "transport" :
+    /sight|ruin|landmark|museum/.test(t) ? "sights" :
+    /hotel|check|airbnb|room|towel|lodg/.test(t) ? "default" :
+    /number|money|peso|time|pay/.test(t) ? "market" :
+    /food|order|taco|eat|diet|allerg|bar|mezcal|table/.test(t) ? "food" :
+    "cafe";                                   // greetings / small talk / rescue → a warm café
+  const region = state.active === "spain" ? "mx" : "mx";   // TODO: add /img/es set for Spain
+  return `./img/${region}/${pick}.jpg`;
+}
 function renderIntro(q) {
   const items = q.items || [];
-  const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">New phrases · tap to hear</div>`));
-  const list = el(`<div class="intro-list"></div>`);
-  items.forEach(it => {
-    const row = el(`<button class="intro-row">
-      <div class="intro-txt"><div class="intro-es">${it.es}</div><div class="intro-en">${it.en}</div>${it.note ? `<div class="intro-note">${it.note}</div>` : ""}</div>
-      <span class="intro-spk">🔊</span>
-    </button>`);
-    row.addEventListener("click", () => speak(it.es));
-    list.appendChild(row);
-  });
-  body.appendChild(list);
-  const f = footer(`<button class="btn" id="got">Got it — let's practice</button>`);
-  f.querySelector("#got").addEventListener("click", () => { items.forEach(it => recordExposure(itemId(it))); next(); });
+  const photo = introPhoto(run.lesson);
+  const seen = new Set();
+  let i = 0;                                  // current card; items.length == recap page
+  new Image().src = photo;                    // warm the cache so it's ready
+  function draw() {
+    const body = $("#qbody");
+    body.innerHTML = "";
+    if (i < items.length) {
+      const it = items[i];
+      body.appendChild(el(`<div class="intro-photo" style="background-image:url('${photo}')">
+        <div class="intro-scrim"></div>
+        <div class="intro-fg">
+          <div class="intro-count">New phrase · ${i + 1} of ${items.length}</div>
+          <div class="intro-es-big">${it.es}</div>
+          <div class="intro-en-big">${it.en}</div>
+          ${it.note ? `<div class="intro-note-big">${it.note}</div>` : ""}
+          <button class="speak-btn intro-hear">🔊 Hear it</button>
+        </div>
+      </div>`));
+      body.querySelector(".intro-hear").addEventListener("click", () => speak(it.es));
+      if (!seen.has(it.id)) { seen.add(it.id); setTimeout(() => speak(it.es), 250); }
+      const f = footer(`${i > 0 ? `<button class="btn grey" id="iback" style="margin-bottom:8px">← Back</button>` : ""}<button class="btn" id="inext">${i === items.length - 1 ? "See all →" : "Next →"}</button>`);
+      if (i > 0) f.querySelector("#iback").addEventListener("click", () => { i--; draw(); });
+      f.querySelector("#inext").addEventListener("click", () => { i++; draw(); });
+    } else {
+      body.appendChild(el(`<div class="qtype">All ${items.length} new phrases · tap to hear</div>`));
+      const list = el(`<div class="intro-list"></div>`);
+      items.forEach(it => {
+        const row = el(`<button class="intro-row">
+          <div class="intro-txt"><div class="intro-es">${it.es}</div><div class="intro-en">${it.en}</div>${it.note ? `<div class="intro-note">${it.note}</div>` : ""}</div>
+          <span class="intro-spk">🔊</span></button>`);
+        row.addEventListener("click", () => speak(it.es));
+        list.appendChild(row);
+      });
+      body.appendChild(list);
+      const f = footer(`<button class="btn grey" id="iback" style="margin-bottom:8px">← Back</button><button class="btn" id="istart">Got it — let's practice</button>`);
+      f.querySelector("#iback").addEventListener("click", () => { i--; draw(); });
+      f.querySelector("#istart").addEventListener("click", () => { items.forEach(it => recordExposure(itemId(it))); next(); });
+    }
+  }
+  draw();
 }
 
 /* ----- presentation card (single-phrase re-teach after a miss — teach, never grade) ----- */

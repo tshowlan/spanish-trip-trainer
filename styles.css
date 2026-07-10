@@ -230,6 +230,20 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .present-en { font-size: 16px; color: var(--text-dim); margin-top: 8px; }
 .present-note { font-size: 13px; color: var(--secondary); margin-top: 12px; line-height: 1.4; }
 /* intro page — all the section's new phrases at once */
+/* full-bleed regional photo card (one phrase at a time, Oura-style) */
+.intro-photo {
+  position: relative; margin: -16px -18px 0; min-height: 66vh;
+  background-size: cover; background-position: center; background-color: var(--bg-elevated);
+  display: flex; align-items: flex-end; overflow: hidden;
+}
+.intro-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,.35) 62%, rgba(0,0,0,.82) 100%); }
+.intro-fg { position: relative; padding: 22px 20px 24px; color: #fff; width: 100%; }
+.intro-count { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; opacity: .85; margin-bottom: 10px; }
+.intro-es-big { font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1.15; text-shadow: 0 1px 12px rgba(0,0,0,.4); }
+.intro-en-big { font-size: 17px; margin-top: 8px; opacity: .95; text-shadow: 0 1px 10px rgba(0,0,0,.4); }
+.intro-note-big { font-size: 13px; margin-top: 10px; opacity: .88; line-height: 1.4; }
+.intro-hear { margin: 14px 0 0; background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.3); color: #fff; backdrop-filter: blur(4px); }
+
 .intro-list { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 8px; }
 .intro-row {
   display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; cursor: pointer;
