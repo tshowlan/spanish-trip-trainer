@@ -144,7 +144,7 @@ function renderIntro(q) {
       </div>`));
       body.querySelector(".intro-hear").addEventListener("click", () => speak(it.es));
       if (!seen.has(it.id)) { seen.add(it.id); setTimeout(() => speak(it.es), 250); }
-      const f = footer(`${i > 0 ? `<button class="btn grey" id="iback" style="margin-bottom:8px">← Back</button>` : ""}<button class="btn" id="inext">${i === items.length - 1 ? "See all →" : "Next →"}</button>`);
+      const f = footer(`<div class="intro-nav">${i > 0 ? `<button class="btn grey" id="iback">← Back</button>` : `<span class="nav-gap"></span>`}<button class="btn" id="inext">${i === items.length - 1 ? "See all →" : "Next →"}</button></div>`);
       if (i > 0) f.querySelector("#iback").addEventListener("click", () => { i--; draw(); });
       f.querySelector("#inext").addEventListener("click", () => { i++; draw(); });
     } else {
@@ -158,7 +158,7 @@ function renderIntro(q) {
         list.appendChild(row);
       });
       body.appendChild(list);
-      const f = footer(`<button class="btn grey" id="iback" style="margin-bottom:8px">← Back</button><button class="btn" id="istart">Got it — let's practice</button>`);
+      const f = footer(`<div class="intro-nav"><button class="btn grey" id="iback">← Back</button><button class="btn" id="istart">Got it. Let's practice</button></div>`);
       f.querySelector("#iback").addEventListener("click", () => { i--; draw(); });
       f.querySelector("#istart").addEventListener("click", () => { items.forEach(it => recordExposure(itemId(it))); next(); });
     }
@@ -357,12 +357,11 @@ function renderFill(q) {
 /* ----- tap to build ----- */
 function renderBuild(q) {
   const item = q.item;
-  // strip leading/trailing punctuation from tiles so ¿ ? , don't give away word position;
-  // the full punctuated sentence is revealed in the feedback after you submit.
   const strip = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "") || w;
-  const correctWords = item.es.split(" ").map(strip);
-  // neutralize the sentence-initial capital so the first word isn't given away
-  if (correctWords.length) correctWords[0] = correctWords[0].charAt(0).toLowerCase() + correctWords[0].slice(1);
+  const original = item.es.split(" ");            // with punctuation + caps → shown in the built line
+  const bankWords = original.map(strip);          // stripped → tiles (no positional giveaway) + grading
+  const display = bankWords.slice();
+  if (display.length) display[0] = display[0].charAt(0).toLowerCase() + display[0].slice(1);  // hide "word 1" in the bank
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Build the sentence</div>`));
   body.appendChild(el(`<div class="prompt">${item.en}</div>`));
@@ -370,27 +369,28 @@ function renderBuild(q) {
   const ans = el(`<div class="build-answer"></div>`);
   const bank = el(`<div class="bank"></div>`);
   body.appendChild(ans); body.appendChild(bank);
-  const chosen = [];
-  shuffle(correctWords.map((w, i) => ({ w, i }))).forEach(({ w, i }) => {
-    const tile = el(`<button class="word" data-i="${i}">${w}</button>`);
+  const chosen = [];                              // placed original indices, in order
+  shuffle(original.map((_, i) => i)).forEach(i => {
+    const tile = el(`<button class="word" data-i="${i}">${display[i]}</button>`);
     tile.addEventListener("click", () => {
       if (run.answered || tile.classList.contains("used")) return;
-      tile.classList.add("used"); chosen.push(w);
-      const slot = el(`<button class="word">${w}</button>`);
+      tile.classList.add("used"); chosen.push(i);
+      const slot = el(`<button class="word">${original[i]}</button>`);   // punctuation shows in the built line
       slot.addEventListener("click", () => {
         if (run.answered) return;
         tile.classList.remove("used"); slot.remove();
-        chosen.splice(chosen.indexOf(w), 1); refreshCheck();
+        chosen.splice(chosen.indexOf(i), 1); refreshCheck();
       });
       ans.appendChild(slot); refreshCheck();
     });
     bank.appendChild(tile);
   });
   const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
-  function refreshCheck() { $("#check").disabled = chosen.length !== correctWords.length; }
+  function refreshCheck() { $("#check").disabled = chosen.length !== original.length; }
   f.querySelector("#check").addEventListener("click", () => {
     if (run.answered) return;
-    grade(chosen.join(" ") === correctWords.join(" "), item);
+    const built = chosen.map(i => bankWords[i]).join(" ").toLowerCase();
+    grade(built === bankWords.join(" ").toLowerCase(), item);
   });
 }
 

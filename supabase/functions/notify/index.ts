@@ -56,7 +56,7 @@ function decide(sub: any, tz: string, now: { minutes: number; hour: number; ymd:
   // COUNTDOWN — 30/14/7 days out, fires regardless of behavior
   for (const m of [30, 14, 7]) {
     if (n.daysOut === m && !lastOf(recent, `countdown_${m}`)) {
-      return { type: `countdown_${m}`, body: `${m === 7 ? "One week" : m + " days"} to ${dest(n)} — ${n.readiness}%, ${band(n.readiness)}.` };
+      return { type: `countdown_${m}`, title: `${m === 7 ? "One week" : m + " days"} to ${dest(n)}`, body: `You're at ${n.readiness}% — ${band(n.readiness)}.` };
     }
   }
 
@@ -68,13 +68,13 @@ function decide(sub: any, tz: string, now: { minutes: number; hour: number; ymd:
       const prev = recent.find(r => r.type === "pace")?.meta?.projected;
       if (prev == null || pace.projected <= prev) {             // only when slipping, never when improving
         const lever = pace.addSessions > 0 ? ` ${pace.addSessions} session${pace.addSessions === 1 ? "" : "s"} this week puts ${pace.target}% back in reach.` : "";
-        return { type: "pace", body: `${n.daysOut} days to ${dest(n)} — you're pacing to ${pace.projected}%.${lever}`, meta: { projected: pace.projected } };
+        return { type: "pace", title: `${n.daysOut} days to ${dest(n)}`, body: `You're pacing to ${pace.projected}%.${lever}`, meta: { projected: pace.projected } };
       }
     }
     // RETENTION (workhorse) — ≥8 fading. Max 3/week, min 48h apart.
     if ((n.fadingTotal ?? 0) >= 8 && hoursSince(lastOf(recent, "retention")) >= 48 && countSince(recent, "retention", 7) < 3) {
       const top = Object.entries(n.fadingByCategory || {}).sort((a: any, b: any) => b[1] - a[1])[0];
-      if (top) return { type: "retention", body: `${top[1]} ${String(top[0]).toLowerCase()} phrases are fading — a 5-minute review restores them.` };
+      if (top) return { type: "retention", title: `${top[1]} ${String(top[0]).toLowerCase()} phrases fading`, body: `A 5-minute review brings them back.` };
     }
     // GROUP pulse — TODO: needs a cross-player group query (migration spec §3). Max 1/week.
   }
@@ -82,7 +82,7 @@ function decide(sub: any, tz: string, now: { minutes: number; hour: number; ymd:
   // USER-SCHEDULED reminder — neutral fallback at the chosen slot; suppressed if practiced today (§6.2)
   if (sub.enabled) {
     const doneToday = n.lastSession && local(tz, new Date(n.lastSession)).ymd === now.ymd;
-    if (!doneToday) return { type: "reminder", body: `A few minutes now keeps your ${dest(n)} phrases fresh — you're at ${n.readiness}%.` };
+    if (!doneToday) return { type: "reminder", title: `Time to practice`, body: `A few minutes keeps your ${dest(n)} phrases fresh — you're at ${n.readiness}%.` };
   }
   return null;
 }
@@ -106,9 +106,9 @@ Deno.serve(async (req) => {
     try {
       await webpush.sendNotification(
         { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
-        // message goes in the TITLE; iOS appends "from Tripfluent" (the app name) itself,
-        // so a "Tripfluent" title would read "Tripfluent from Tripfluent". Leave body empty.
-        JSON.stringify({ title: msg.body, body: "" }),
+        // short title (fits one line) + full body (wraps, fully readable). Title is content,
+        // not "Tripfluent", so iOS shows "<title> · from Tripfluent" with no redundancy.
+        JSON.stringify({ title: msg.title, body: msg.body }),
       );
       await db.rpc("notif_mark_sent", { p_player: sub.player_id, p_type: msg.type, p_meta: msg.meta ?? {} });
       sent++;

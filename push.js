@@ -82,6 +82,6 @@ function renderReminders() {
     const perm = await Notification.requestPermission();
     if (perm !== "granted") { toast("Allow notifications first"); return; }
     const reg = await navigator.serviceWorker.ready;
-    reg.showNotification("Notifications are on — honest nudges, never streak guilt.", { icon: "./icon.svg" });
+    reg.showNotification("Notifications on", { body: "Honest nudges, never streak guilt.", icon: "./icon.svg" });
   });
 }
