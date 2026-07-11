@@ -494,6 +494,20 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .pb-save { background: none; border: none; cursor: pointer; color: var(--border); flex: none; padding: 4px; display: flex; }
 .pb-save.on { color: var(--accent); }
 
+/* keyword threads (§6.2): recurring-word chips on a phrase → tap to see the word's family */
+.pb-kws { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+.pb-kw { display: inline-flex; align-items: center; gap: 5px; background: var(--bg-elevated); border: 1px solid var(--border);
+  color: var(--text-dim); border-radius: 999px; padding: 2px 8px 2px 9px; font-size: 12px; font-weight: 600; cursor: pointer; line-height: 1.6; }
+.pb-kw:hover { color: var(--text); }
+.pb-kw.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+.pb-kw-n { font-size: 10px; font-weight: 800; color: var(--accent-2); }
+.pb-kw.on .pb-kw-n { color: #fff; }
+.pb-thread { display: flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--accent-2);
+  border-radius: var(--radius-md); padding: 10px 12px; margin-bottom: 10px; }
+.pb-thread-back { background: var(--bg-elevated); border: none; border-radius: 10px; padding: 5px 8px; cursor: pointer; color: var(--text); display: inline-flex; flex: none; }
+.pb-thread-t { flex: 1; min-width: 0; font-weight: 700; }
+.pb-thread-t b { color: var(--accent-2); }
+
 .prog-row { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card);
   border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 8px; font-weight: 700; }
 .prog-pct { color: var(--primary); font-weight: 800; }

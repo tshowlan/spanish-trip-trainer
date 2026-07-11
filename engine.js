@@ -52,9 +52,11 @@ function rebuildDeck() {
   DECK.stages.forEach(st => st.lessons.forEach(l => {
     LESSON_ORDER.push(l.id);
     l.items.forEach(it => {
-      // normalize pass: give every item a stable, deterministic id (authored id wins)
+      // normalize pass: give every item a stable, deterministic id (authored id wins).
+      // Identity is the PHRASE (pack:slug), not its lesson — so a phrase keeps its SRS
+      // history when it moves lessons (required for the tiered-spiral restructure).
       if (!it.id) {
-        const base = `${packKey}:${l.id}:${slug(it.es)}`;
+        const base = `${packKey}:${slug(it.es)}`;
         let id = base, n = 2;
         while (ITEM_INDEX[id] && ITEM_INDEX[id] !== it) { id = `${base}-${n++}`; console.warn("Tripfluent: duplicate item id", base); }
         it.id = id;

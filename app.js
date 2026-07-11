@@ -7,6 +7,7 @@ applyDevFont();   // DEV-FONT-FLAG (remove after decision, spec §6)
 initSplash();
 migrateTrips();
 migrateScoring();
+migrateItemIds();     // remap SRS keys to lesson-independent ids (pack:slug) — before deck/scores read them
 rebuildDeck();
 initTabbar();
 $("#gear").addEventListener("click", renderSettings);

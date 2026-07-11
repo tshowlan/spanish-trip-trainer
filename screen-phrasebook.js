@@ -1,6 +1,7 @@
-/* ============================== PHRASEBOOK (saved + dictionary) ============================== */
+/* ============================== PHRASEBOOK (saved + dictionary + keyword threads) ============================== */
 let _pbFilter = "";
 let _pbSavedOnly = false;
+let _pbThread = null;        // active keyword "thread" — show every phrase that uses this word (§6.2)
 let _pbOpen = new Set();     // expanded section ids (a search expands everything temporarily)
 function isSaved(es) { return (state.saved || []).includes(es); }
 function toggleSave(es) {
@@ -8,6 +9,13 @@ function toggleSave(es) {
   const i = state.saved.indexOf(es);
   i >= 0 ? state.saved.splice(i, 1) : state.saved.push(es);
   save();
+}
+// keyword -> [items] across the active deck. A "thread" is a keyword shared by ≥2 phrases.
+function buildKwIndex() {
+  const idx = new Map();
+  DECK.stages.forEach(st => st.lessons.forEach(les => les.items.forEach(it =>
+    (it.keywords || []).forEach(k => { if (!idx.has(k)) idx.set(k, []); idx.get(k).push(it); }))));
+  return idx;
 }
 function renderPhrasebook() {
   showTabbar("phrases");
@@ -27,9 +35,44 @@ function renderPhrasebook() {
   wrap.appendChild(list);
   app.appendChild(wrap);
 
+  const kwIndex = buildKwIndex();
+  const threadCount = k => (kwIndex.get(k) || []).length;
+
+  // one phrase row, with its recurring-keyword chips (tap a chip to open that word's thread)
+  function phraseRow(it) {
+    const kws = (it.keywords || []).filter(k => threadCount(k) >= 2);
+    const chips = kws.map(k => `<button class="pb-kw ${k === _pbThread ? "on" : ""}" data-kw="${k}">${k}<span class="pb-kw-n">${threadCount(k)}</span></button>`).join("");
+    const row = el(`<div class="pb-row">
+      <button class="pb-speak" aria-label="Play">🔊</button>
+      <div class="pb-text"><div class="pb-es">${it.es}</div><div class="pb-en">${it.en}</div>${chips ? `<div class="pb-kws">${chips}</div>` : ""}</div>
+      <button class="pb-save ${isSaved(it.es) ? "on" : ""}" aria-label="Save">${icon("bookmark", 20)}</button>
+    </div>`);
+    row.querySelector(".pb-speak").addEventListener("click", () => speak(it.es));
+    row.querySelector(".pb-save").addEventListener("click", () => { toggleSave(it.es); draw(); refreshSeg(); });
+    row.querySelectorAll(".pb-kw").forEach(c => c.addEventListener("click", () => {
+      _pbThread = c.dataset.kw; _pbFilter = ""; search.value = ""; draw();
+    }));
+    return row;
+  }
+
   function draw() {
-    const q = norm(_pbFilter);
     list.innerHTML = "";
+
+    // ---- thread view: every phrase that uses the tapped keyword, flat ----
+    if (_pbThread) {
+      const fam = kwIndex.get(_pbThread) || [];
+      const banner = el(`<div class="pb-thread">
+        <button class="pb-thread-back" aria-label="Back">${icon("caret-left", 18)}</button>
+        <span class="pb-thread-t">Phrases with <b>${_pbThread}</b></span>
+        <span class="pb-count">${fam.length}</span></div>`);
+      banner.querySelector(".pb-thread-back").addEventListener("click", () => { _pbThread = null; draw(); });
+      list.appendChild(banner);
+      fam.forEach(it => list.appendChild(phraseRow(it)));
+      return;
+    }
+
+    // ---- normal grouped view ----
+    const q = norm(_pbFilter);
     let count = 0;
     DECK.stages.forEach(st => st.lessons.forEach(les => {
       const items = les.items.filter(it => {
@@ -45,16 +88,7 @@ function renderPhrasebook() {
         <span class="pb-gtitle">${les.title}</span>
         <span class="pb-count">${items.length}</span></button>`);
       const rows = el(`<div class="pb-rows ${open ? "" : "collapsed"}"></div>`);
-      items.forEach(it => {
-        const row = el(`<div class="pb-row">
-          <button class="pb-speak" aria-label="Play">🔊</button>
-          <div class="pb-text"><div class="pb-es">${it.es}</div><div class="pb-en">${it.en}</div></div>
-          <button class="pb-save ${isSaved(it.es) ? "on" : ""}" aria-label="Save">${icon("bookmark", 20)}</button>
-        </div>`);
-        row.querySelector(".pb-speak").addEventListener("click", () => speak(it.es));
-        row.querySelector(".pb-save").addEventListener("click", () => { toggleSave(it.es); draw(); refreshSeg(); });
-        rows.appendChild(row);
-      });
+      items.forEach(it => rows.appendChild(phraseRow(it)));
       header.addEventListener("click", () => { _pbOpen.has(les.id) ? _pbOpen.delete(les.id) : _pbOpen.add(les.id); draw(); });
       list.appendChild(header); list.appendChild(rows);
     }));
@@ -62,9 +96,9 @@ function renderPhrasebook() {
   }
   function refreshSeg() { const b = seg.querySelector('[data-s="saved"]'); if (b) b.textContent = `★ Saved (${(state.saved || []).length})`; }
 
-  search.addEventListener("input", () => { _pbFilter = search.value; draw(); });
+  search.addEventListener("input", () => { _pbFilter = search.value; _pbThread = null; draw(); });
   seg.querySelectorAll(".pill").forEach(b => b.addEventListener("click", () => {
-    _pbSavedOnly = b.dataset.s === "saved";
+    _pbSavedOnly = b.dataset.s === "saved"; _pbThread = null;
     seg.querySelectorAll(".pill").forEach(x => x.classList.toggle("on", x === b));
     draw();
   }));

@@ -190,7 +190,7 @@ function mergeTrip(local, server) {
     topicStats: _mergeStats(local.topicStats, server.topicStats),
     xp: Math.max(local.xp || 0, server.xp || 0),
     sessions: _mergeSessions(local.sessions, server.sessions),
-    learn: _mergeLearn(local.learn, server.learn)
+    learn: _mergeLearn(_remapLearnKeys(local.learn), _remapLearnKeys(server.learn))   // normalize old ids on either side
   };
 }
 

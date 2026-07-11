@@ -23,6 +23,28 @@ function migrateScoring() {
   Object.values(state.trips || {}).forEach(fix);
   save();
 }
+// One-time: item ids became lesson-independent (pack:slug, was pack:lesson:slug). Remap every
+// learn map's keys old→new so SRS history survives; merge any collisions by keeping the more-
+// progressed record. Also called on incoming cloud data (see cloud.js mergeTrip) so a pull from
+// an un-migrated device/server can't strand progress under stale keys.
+function _remapLearnKeys(learn) {
+  if (!learn) return learn;
+  const better = (a, b) => { if (!a || !b) return a || b; const x = a.exposures || 0, y = b.exposures || 0; return x !== y ? (x > y ? a : b) : ((a.lastSeen || "") >= (b.lastSeen || "") ? a : b); };
+  const out = {};
+  Object.keys(learn).forEach(k => {
+    const p = k.split(":");
+    const nk = p.length === 3 ? p[0] + ":" + p[2] : k;        // pack:lesson:slug -> pack:slug
+    out[nk] = out[nk] ? better(out[nk], learn[k]) : learn[k];
+  });
+  return out;
+}
+function migrateItemIds() {
+  if (state.idsV2) return;
+  state.learn = _remapLearnKeys(state.learn);
+  Object.values(state.trips || {}).forEach(t => { if (t && t.learn) t.learn = _remapLearnKeys(t.learn); });
+  state.idsV2 = true;
+  save();
+}
 function switchDestination(key) {
   if (key === state.active) { renderHome(); return; }
   snapshotActive();
