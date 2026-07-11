@@ -27,7 +27,7 @@ const MEXICO_PACK = {
             { es: "Buenas tardes", en: "Good afternoon", tier: 1, tags: ["greetings"], contextEs: "Buenas tardes, señor", contextEn: "Good afternoon, sir", keywords: ["tardes"] },
             { es: "Buenas noches", en: "Good evening / night", tier: 1, tags: ["greetings"], contextEs: "Buenas noches, hasta mañana", contextEn: "Good night, see you tomorrow", keywords: ["noches"] },
             { es: "Por favor", en: "Please", tier: 1, tags: ["politeness"], contextEs: "Un café, por favor", contextEn: "A coffee, please", keywords: ["por favor"] },
-            { es: "Gracias", en: "Thank you", tier: 1, tags: ["politeness"], contextEs: "Muchas gracias por todo", contextEn: "Thank you very much for everything", keywords: ["gracias"], variants: ["Muchas gracias"], reply: { es: "De nada", en: "You're welcome" } },
+            { es: "Gracias", en: "Thank you", tier: 1, tags: ["politeness"], contextEs: "Muchas gracias por todo", contextEn: "Thank you very much for everything", variants: ["Muchas gracias"], reply: { es: "De nada", en: "You're welcome" } },
             { es: "De nada", en: "You're welcome", tier: 1, tags: ["politeness"], contextEs: "—Gracias. —De nada.", contextEn: "—Thanks. —You're welcome." },
             { es: "Con permiso", en: "Excuse me (getting past)", tier: 1, tags: ["politeness"], note: "Very Mexican — say it squeezing by or leaving a table.", contextEs: "Con permiso, voy a pasar", contextEn: "Excuse me, I'm coming through", keywords: ["permiso"] },
             { es: "Disculpe", en: "Excuse me (to get attention)", tier: 1, tags: ["politeness"], contextEs: "Disculpe, ¿me ayuda?", contextEn: "Excuse me, can you help me?", keywords: ["disculpe"] }
@@ -76,7 +76,8 @@ const MEXICO_PACK = {
             { es: "Una cerveza, por favor", en: "A beer, please", note: "Casually: 'una chela'.", tier: 2, tags: ["drink"], keywords: ["cerveza"], variants: ["Una chela, por favor"] },
             { es: "¿Está muy picante?", en: "Is it very spicy?", note: "Colloquially: '¿pica mucho?'", tier: 2, tags: ["food", "dietary"], keywords: ["picante"], variants: ["¿Pica mucho?"], reply: { es: "Un poquito, pero está rico", en: "A little, but it's tasty" } },
             { es: "Sin chile, por favor", en: "Without chili, please", tier: 2, tags: ["food", "dietary"], keywords: ["chile"] },
-            { es: "La cuenta, por favor", en: "The check, please", tier: 2, tags: ["restaurant", "money"], keywords: ["cuenta"], variants: ["¿Me trae la cuenta?"] }
+            { es: "La cuenta, por favor", en: "The check, please", tier: 2, tags: ["restaurant", "money"], keywords: ["cuenta"], variants: ["¿Me trae la cuenta?"] },
+            { es: "¿Me separa la cuenta?", en: "Can you split the check?", tier: 2, tags: ["restaurant", "money"], keywords: ["cuenta"], reply: { es: "Claro, ¿cómo la divido?", en: "Sure, how should I split it?" } }
           ]
         }
       ]
@@ -94,7 +95,7 @@ const MEXICO_PACK = {
             { es: "¿Esto lleva...?", en: "Does this contain...?", tier: 2, tags: ["dietary", "food"], contextEs: "¿Esto lleva chile?", contextEn: "Does this contain chili?", keywords: ["lleva"] },
             { es: "Soy celíaco", en: "I'm celiac", note: "Women: 'celíaca'.", tier: 2, tags: ["dietary", "health"], contextEs: "Soy celíaco, sin gluten por favor", contextEn: "I'm celiac, gluten-free please", keywords: ["celíaco"] },
             { es: "Sin gluten", en: "Gluten-free", tier: 1, tags: ["dietary", "food"], contextEs: "¿Tienen algo sin gluten?", contextEn: "Do you have anything gluten-free?", keywords: ["gluten"] },
-            { es: "¿Tiene harina de trigo?", en: "Does it have wheat flour?", tier: 2, tags: ["dietary", "food"], keywords: ["harina", "trigo"] },
+            { es: "¿Tiene harina de trigo?", en: "Does it have wheat flour?", tier: 2, tags: ["dietary", "food"], keywords: ["tiene", "harina", "trigo"] },
             { es: "Soy vegetariano", en: "I'm vegetarian", note: "Women: 'vegetariana'.", tier: 2, tags: ["dietary", "food"], contextEs: "Soy vegetariano, ¿qué me recomienda?", contextEn: "I'm vegetarian, what do you recommend?", keywords: ["vegetariano"] },
             { es: "Sin cacahuate", en: "Without peanut", note: "Mexico: 'cacahuate'. (Spain: 'cacahuete'.)", tier: 2, tags: ["dietary", "food"], contextEs: "Sin cacahuate, soy alérgico", contextEn: "Without peanut, I'm allergic", keywords: ["cacahuate"] },
             { es: "Sin camarón", en: "Without shrimp", note: "Mexico: 'camarón'. (Spain: 'gamba'.)", tier: 2, tags: ["dietary", "food"], contextEs: "Sin camarón, por favor", contextEn: "Without shrimp, please", keywords: ["camarón"] },
@@ -157,7 +158,8 @@ const MEXICO_PACK = {
             { es: "¿Qué pan tienen?", en: "What pastries do you have?", tier: 2, tags: ["coffee", "food"], keywords: ["pan"] },
             { es: "¿Para aquí o para llevar?", en: "For here or to go?", note: "What the barista asks you.", tier: 2, tags: ["coffee"], keywords: ["llevar"], reply: { es: "Para llevar, por favor", en: "To go, please" } },
             { es: "¿Me da un vaso de agua?", en: "Can I get a glass of water?", tier: 2, tags: ["drink"], keywords: ["agua", "vaso"] },
-            { es: "Solo efectivo", en: "Cash only", note: "You might hear this at small spots.", tier: 1, tags: ["money"], contextEs: "Aquí es solo efectivo", contextEn: "Here it's cash only", keywords: ["efectivo"] }
+            { es: "Solo efectivo", en: "Cash only", note: "You might hear this at small spots.", tier: 1, tags: ["money"], contextEs: "Aquí es solo efectivo", contextEn: "Here it's cash only", keywords: ["efectivo"] },
+            { es: "¿Cuál es la contraseña del wifi?", en: "What's the wifi password?", tier: 2, tags: ["coffee", "lodging"], keywords: ["contraseña", "wifi"] }
           ]
         }
       ]
@@ -209,7 +211,8 @@ const MEXICO_PACK = {
             { es: "Reclamo de equipaje", en: "Baggage claim", note: "Mexico: 'reclamo de equipaje'.", tier: 2, tags: ["airport", "signs"], keywords: ["equipaje"] },
             { es: "Seguridad", en: "Security", tier: 1, tags: ["airport", "signs"], contextEs: "El control de seguridad", contextEn: "The security checkpoint", keywords: ["seguridad"] },
             { es: "Aduana", en: "Customs", tier: 1, tags: ["airport", "signs"], contextEs: "Pasar por aduana", contextEn: "To go through customs", keywords: ["aduana"] },
-            { es: "el vuelo", en: "the flight", tier: 1, tags: ["airport"], contextEs: "¿A qué hora sale el vuelo?", contextEn: "What time does the flight leave?", keywords: ["vuelo"] }
+            { es: "el vuelo", en: "the flight", tier: 1, tags: ["airport"], contextEs: "¿A qué hora sale el vuelo?", contextEn: "What time does the flight leave?", keywords: ["vuelo"] },
+            { es: "¿Dónde recojo mi equipaje?", en: "Where do I pick up my luggage?", tier: 2, tags: ["airport"], keywords: ["equipaje"] }
           ]
         },
         {
@@ -297,9 +300,9 @@ const MEXICO_PACK = {
             { es: "¿Me trae otra almohada?", en: "Can you bring another pillow?", tier: 2, tags: ["hotel", "lodging"], keywords: ["almohada"] },
             { es: "La regadera no sirve", en: "The shower isn't working", note: "Mexico: 'regadera' = shower; 'no sirve' = doesn't work.", tier: 2, tags: ["hotel", "lodging"], keywords: ["regadera", "sirve"] },
             { es: "No hay agua caliente", en: "There's no hot water", tier: 2, tags: ["hotel", "lodging"], keywords: ["agua", "caliente"] },
-            { es: "papel de baño", en: "toilet paper", note: "Mexico: 'papel de baño'.", tier: 2, tags: ["hotel", "bathroom"], keywords: ["papel"] },
+            { es: "papel de baño", en: "toilet paper", note: "Mexico: 'papel de baño'.", tier: 2, tags: ["hotel", "bathroom"], keywords: ["papel", "baño"] },
             { es: "No molestar", en: "Do not disturb (sign)", tier: 1, tags: ["hotel", "signs"], contextEs: "El letrero de 'no molestar'", contextEn: "The 'do not disturb' sign", keywords: ["molestar"] },
-            { es: "Muchas gracias por todo", en: "Thank you very much for everything", note: "Housekeeping appreciates it — and a small tip.", tier: 2, tags: ["politeness"], keywords: ["gracias"] }
+            { es: "Muchas gracias por todo", en: "Thank you very much for everything", note: "Housekeeping appreciates it — and a small tip.", tier: 2, tags: ["politeness"] }
           ]
         },
         {
@@ -337,7 +340,7 @@ const MEXICO_PACK = {
           items: [
             { es: "¿Algo más?", en: "Anything else?", tier: 1, tags: ["social", "restaurant"], contextEs: "—¿Algo más? —No, gracias.", contextEn: "—Anything else? —No, thanks.", keywords: ["más"] },
             { es: "Mande", en: "Pardon? / Yes?", note: "Very Mexican polite way to say 'what?' or 'go ahead'.", tier: 1, tags: ["social", "politeness"], contextEs: "—Disculpe. —¿Mande?", contextEn: "—Excuse me. —Yes?", keywords: ["mande"] },
-            { es: "Con gusto", en: "My pleasure", note: "Common Mexican reply to 'gracias'.", tier: 1, tags: ["social", "politeness"], contextEs: "—Gracias. —Con gusto.", contextEn: "—Thanks. —My pleasure.", keywords: ["gusto"] },
+            { es: "Con gusto", en: "My pleasure", note: "Common Mexican reply to 'gracias'.", tier: 1, tags: ["social", "politeness"], contextEs: "—Gracias. —Con gusto.", contextEn: "—Thanks. —My pleasure." },
             { es: "Ahorita", en: "Right now / in a bit", note: "Famously flexible Mexican timing.", tier: 1, tags: ["social", "time"], contextEs: "Ahorita se lo traigo", contextEn: "I'll bring it right away", keywords: ["ahorita"] },
             { es: "¿Es todo?", en: "Is that all?", tier: 1, tags: ["social", "restaurant"], contextEs: "—¿Es todo? —Sí, gracias.", contextEn: "—Is that all? —Yes, thanks.", keywords: ["todo"] },
             { es: "Provecho", en: "Enjoy your meal", note: "Said when passing people who are eating.", tier: 1, tags: ["social", "food"], contextEs: "Buen provecho", contextEn: "Enjoy your meal", keywords: ["provecho"] },
@@ -351,7 +354,7 @@ const MEXICO_PACK = {
           items: [
             { es: "¿De dónde eres?", en: "Where are you from?", tier: 2, tags: ["social"], keywords: ["dónde", "eres"], reply: { es: "Soy de aquí, de la ciudad", en: "I'm from here, from the city" } },
             { es: "Soy de...", en: "I'm from...", tier: 1, tags: ["social"], contextEs: "Soy de Estados Unidos", contextEn: "I'm from the United States", keywords: ["soy"] },
-            { es: "Mucho gusto", en: "Nice to meet you", tier: 1, tags: ["social", "greetings"], contextEs: "Mucho gusto, me llamo Ana", contextEn: "Nice to meet you, I'm Ana", keywords: ["gusto"], reply: { es: "Igualmente", en: "Likewise" } },
+            { es: "Mucho gusto", en: "Nice to meet you", tier: 1, tags: ["social", "greetings"], contextEs: "Mucho gusto, me llamo Ana", contextEn: "Nice to meet you, I'm Ana", reply: { es: "Igualmente", en: "Likewise" } },
             { es: "¿Qué me recomienda?", en: "What do you recommend?", note: "Callback from ordering — locals love being asked.", tier: 2, tags: ["social", "food"], keywords: ["recomienda"] },
             { es: "¿Cuál es tu mezcal favorito?", en: "What's your favorite mezcal?", tier: 2, tags: ["social", "drink"], keywords: ["mezcal"] },
             { es: "Está buenísimo", en: "It's really good", tier: 2, tags: ["social", "food"], keywords: ["buenísimo"], variants: ["Está riquísimo"] },
@@ -390,7 +393,7 @@ const MEXICO_PACK = {
             { es: "¿Me podría recomendar un platillo típico?", en: "Could you recommend a typical dish?", note: "Mexico: 'platillo' = dish.", tier: 3, tags: ["restaurant", "food"], difficulty: 4, keywords: ["recomendar", "platillo"] },
             { es: "Disculpe, creo que hay un error en la cuenta", en: "Excuse me, I think there's a mistake on the bill", tier: 3, tags: ["restaurant", "money"], difficulty: 4, keywords: ["error", "cuenta"] },
             { es: "¿A qué hora cierra la cocina?", en: "What time does the kitchen close?", tier: 3, tags: ["restaurant", "time"], difficulty: 3, keywords: ["hora", "cocina"] },
-            { es: "Estamos buscando un lugar para cenar cerca de aquí", en: "We're looking for somewhere to have dinner near here", tier: 3, tags: ["restaurant", "directions"], difficulty: 4, keywords: ["buscando", "cenar"] },
+            { es: "Estamos buscando un lugar para cenar cerca de aquí", en: "We're looking for somewhere to have dinner near here", tier: 3, tags: ["restaurant", "directions"], difficulty: 4, keywords: ["buscando", "cenar", "cerca"] },
             { es: "Disculpe, ¿este camión va al centro?", en: "Excuse me, does this bus go downtown?", tier: 3, tags: ["bus", "transport"], difficulty: 3, keywords: ["camión", "centro"] },
             { es: "¿Sería posible cambiar de cuarto?", en: "Would it be possible to change rooms?", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["cambiar", "cuarto"] }
           ]
