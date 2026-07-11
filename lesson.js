@@ -329,20 +329,28 @@ function renderFill(q) {
   const item = q.item;
   const clean = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "");
   const words = item.es.split(" ");
-  // pick a meaningful word to blank (prefer cleaned length >= 4)
-  let idxs = words.map((w, i) => i).filter(i => clean(words[i]).length >= 4);
-  const idx = idxs.length ? idxs[Math.floor(Math.random() * idxs.length)] : Math.floor(Math.random() * words.length);
+  // §4b.1 blank rotation: blank a KEYWORD (the content word that carries meaning), rotating which
+  // one across exposures so repeated encounters test different keywords. Multi-word keywords (e.g.
+  // "por favor") don't match a single token, so we fall back to the longest-word heuristic — no regression.
+  const kws = (item.keywords || []).map(k => norm(k));
+  let idxs = words.map((w, i) => i).filter(i => kws.includes(norm(clean(words[i]))));
+  if (!idxs.length) idxs = words.map((w, i) => i).filter(i => clean(words[i]).length >= 4);
+  const idx = idxs.length ? idxs[(exposuresOf(item) || 0) % idxs.length] : Math.floor(Math.random() * words.length);
   const raw = words[idx];
   const lead = (raw.match(/^[¿¡("«]+/) || [""])[0];
   const trail = (raw.match(/[?!).,;:"»]+$/) || [""])[0];
   const answer = raw.slice(lead.length, raw.length - trail.length);
   const shown = words.map((w, i) => i === idx ? `${lead}<span class="blank">_____</span>${trail}` : w).join(" ");
+  // distractors: prefer single-word content words (keywords) from same-CATEGORY items, then this
+  // lesson's words near the answer's length, then anywhere (legacy) — so options are plausibly wrong.
+  const tags = item.tags || [];
+  const sameTag = x => tags.length && (x.tags || []).some(t => tags.includes(t));
   const wordsFrom = arr => [...new Set(arr.flatMap(x => x.es.split(" ").map(clean)))]
     .filter(w => norm(w) !== norm(answer) && w.length >= 3);
-  // prefer distractor words from this lesson, close in length to the answer
-  const lessonWords = wordsFrom(run.lesson.items);
-  let otherWords = lessonWords.filter(w => Math.abs(w.length - answer.length) <= 3);
-  if (otherWords.length < 3) otherWords = lessonWords;
+  const kwsFrom = arr => [...new Set(arr.flatMap(x => (x.keywords || []).map(clean)))]
+    .filter(w => /^\S+$/.test(w) && norm(w) !== norm(answer) && w.length >= 3);
+  let otherWords = kwsFrom((ALL_ITEMS || []).filter(sameTag));       // same-category content words
+  if (otherWords.length < 3) { const lw = wordsFrom(run.lesson.items); otherWords = lw.filter(w => Math.abs(w.length - answer.length) <= 3); if (otherWords.length < 3) otherWords = lw; }
   if (otherWords.length < 3) otherWords = wordsFrom(ALL_ITEMS);
   const options = shuffle([answer, ...sample(otherWords, 3)]);
 
