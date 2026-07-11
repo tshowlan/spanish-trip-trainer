@@ -101,28 +101,35 @@ function renderHome() {
     home.appendChild(banner);
   }
 
+  const recId = recommendedLessonId();
+  const passName = { 1: "Survival", 2: "Comfort", 3: "Fluent" };
   DECK.stages.forEach(st => {
-    const total = st.lessons.length || 1;
-    const done = st.lessons.filter(l => lessonDone(l.id)).length;
+    const visible = st.lessons.filter(l => !l.bonus);          // pass % / bar ignore bonus lessons
+    const total = visible.length || 1;
+    const done = visible.filter(l => lessonDone(l.id)).length;
     const stage = el(`<div class="stage"></div>`);
     stage.appendChild(el(`
       <div class="stage-head"><h2>${st.title}</h2><span class="blurb">${st.blurb}</span></div>
       <div class="stage-bar"><i style="width:${Math.round(done / total * 100)}%"></i></div>`));
     const list = el(`<div class="lessons"></div>`);
     st.lessons.forEach(l => {
-      const isDone = lessonDone(l.id), unlocked = lessonUnlocked(l.id);
-      const stars = isDone ? state.lessons[l.id].stars : 0;
+      const isDone = lessonDone(l.id);
+      const isRec = l.id === recId;
+      const fading = isDone ? lessonFadingCount(l) : 0;
+      const stored = state.lessons[l.id];
+      const stars = stored ? stored.stars : (isDone ? 3 : 0);
+      const chip = l.bonus ? `<span class="tier-chip bonus">Bonus</span>`
+        : `<span class="tier-chip p${st.pass}">${passName[st.pass] || ""}</span>`;
       const card = el(`
-        <div class="lesson ${isDone ? "done" : ""} ${unlocked ? "" : "locked"}">
-          <div class="badge">${isDone ? "✓" : unlocked ? "▶" : "🔒"}</div>
+        <div class="lesson ${isDone ? "done" : ""} ${isRec ? "rec" : ""}">
+          <div class="badge">${isDone ? "✓" : "▶"}</div>
           <div class="meta">
-            <div class="t">${l.title}</div>
-            <div class="s">${l.topic} · ${l.items.length} phrases</div>
-            ${isDone ? `<div class="stars">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</div>` : ""}
+            <div class="t">${l.title}${isRec ? ` <span class="rec-tag">Next</span>` : ""}</div>
+            <div class="s">${chip} · ${l.items.length} phrases${fading ? ` · <span class="fade-badge">${fading} to review</span>` : ""}</div>
+            ${isDone && stars ? `<div class="stars">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</div>` : ""}
           </div>
-          <div class="chev">${unlocked ? icon('caret-right', 18) : ""}</div>`);
-      if (unlocked) card.addEventListener("click", () => startLesson(l));
-      else card.addEventListener("click", () => toast("Finish the lesson before it to unlock 🔒"));
+          <div class="chev">${icon('caret-right', 18)}</div>`);
+      card.addEventListener("click", () => startLesson(l));
       list.appendChild(card);
     });
     stage.appendChild(list);
@@ -180,8 +187,17 @@ function closeSheet() {
 function seenItems() { return (ALL_ITEMS || []).filter(it => exposuresOf(it) > 0); }
 function firstOpenLesson() {
   for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons)
-    if (lessonUnlocked(l.id) && !lessonDone(l.id)) return l;
+    if (!l.bonus && !lessonDone(l.id)) return l;
   return null;
+}
+// how many of a lesson's phrases are due/fading — powers the review-due badge on completed tiles
+function lessonFadingCount(l) {
+  const today = todayStr();
+  return l.items.filter(it => {
+    const s = state.learn && state.learn[it.id];
+    if (!s || !s.exposures) return false;
+    return s.due ? s.due <= today : itemStrength(s) < 55;
+  }).length;
 }
 function itemsInCategory(cat) {
   const out = [];

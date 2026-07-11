@@ -67,10 +67,33 @@ function rebuildDeck() {
   }));
 }
 
-function lessonDone(id) { return !!state.lessons[id]; }
-function lessonUnlocked(id) {
-  const i = LESSON_ORDER.indexOf(id);
-  return i === 0 || lessonDone(LESSON_ORDER[i - 1]);
+// A lesson is done if it was completed in the flow (stored) OR every phrase in it has been recalled
+// correctly at least once. The derived half means the Phase-B reshuffle never shows a lesson whose
+// phrases you've mastered as "incomplete" — no migration, nothing persisted, and it can't mark a
+// lesson falsely complete (all items correct ⇒ genuinely done). Works per active trip via DECK.
+function lessonDone(id) { return !!state.lessons[id] || lessonMastered(id); }
+function lessonMastered(id) {
+  for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) {
+    if (l.id !== id) continue;
+    return l.items.length > 0 && l.items.every(it => { const s = state.learn && state.learn[it.id]; return s && s.lastCorrect; });
+  }
+  return false;
+}
+// §1.2: passes are pacing GUIDANCE, never locks — the exposure ladder + first-pass cap protect an
+// eager learner who jumps ahead. Nothing is ever gated; the map nudges via recommendedLessonId().
+function lessonUnlocked() { return true; }
+function passLessonsVisible(passNum) {                 // conditionals are already filtered from DECK by profile
+  const st = (DECK ? DECK.stages : []).find(s => s.pass === passNum);
+  return st ? st.lessons.filter(l => !l.bonus) : [];
+}
+function passCompletion(passNum) {
+  const ls = passLessonsVisible(passNum);
+  return ls.length ? ls.filter(l => lessonDone(l.id)).length / ls.length : 1;
+}
+function recommendedLessonId() {                       // first not-done, non-bonus lesson in pass order
+  for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons)
+    if (!l.bonus && !lessonDone(l.id)) return l.id;
+  return null;
 }
 
 /* ---------- streak ---------- */

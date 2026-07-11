@@ -202,6 +202,15 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .lesson .meta .s { color: var(--text-dim); font-size: 12px; margin-top: 2px; }
 .lesson .stars { color: var(--accent-2); font-size: 13px; letter-spacing: 1px; }
 .lesson .chev { color: var(--text-dim); font-size: 20px; }
+/* tiered-spiral tiles: tier chip (from pass), review-due badge, recommended marker */
+.tier-chip { display: inline-block; font-size: 11px; font-weight: 700; border: 1px solid currentColor; border-radius: 999px; padding: 0 7px; line-height: 1.5; vertical-align: 1px; }
+.tier-chip.p1 { color: var(--green); }
+.tier-chip.p2 { color: var(--secondary); }
+.tier-chip.p3 { color: var(--accent-2); }
+.tier-chip.bonus { color: var(--text-dim); }
+.lesson .fade-badge { color: var(--accent-2); font-weight: 700; }
+.lesson.rec { border-color: var(--secondary); }
+.rec-tag { font-size: 10px; font-weight: 800; color: #fff; background: var(--secondary); border-radius: 999px; padding: 1px 7px; vertical-align: 2px; }
 
 /* ---------- lesson runner ---------- */
 .runner { padding: 16px 18px 40px; }
