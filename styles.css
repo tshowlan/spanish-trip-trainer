@@ -46,7 +46,7 @@
    user is on "system", or when the root is stamped data-theme="dark". ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { color-scheme: dark;
-    --bg: #15140e; --bg-card: #201e15; --bg-elevated: #2b2820; --text: #f6f4ea; --text-dim: #a7a494;
+    --bg: #000000; --bg-card: #201e15; --bg-elevated: #2b2820; --text: #f6f4ea; --text-dim: #a7a494;
     --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
     --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: #34301f;
     --wordmark-1: #c8d2f5; --wordmark-2: #7aa6db; --shadow: 0 3px 0 rgba(0,0,0,.45);
