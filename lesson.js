@@ -28,34 +28,51 @@ function composeSession(lesson) {
   const warmIds = new Set(warm.map(itemId));
   const rungCap = lessonDone(lesson.id) ? null : 2;   // §4.1 first-pass cap: introducing → never cold
 
-  const qs = [];
-  // 1) warm-up: recent misses reopen the next session
-  warm.forEach(it => qs.push(reviewQuestion(it, null, rungCap)));
-  // 2) teach all the new phrases on ONE intro page (precedes any test of them)
-  if (newItems.length) qs.push({ type: "intro", items: newItems });
-  // 3) practice pool: new-item reps + trip-wide review, shuffled together (cards already placed)
-  const practice = [];
-  newItems.forEach(it => practice.push({ type: introRep(it), item: it, pool: newItems }));
+  // review pool: ~⅓ (up to ½ in cram) of the whole trip, so a new lesson revisits older ones
   let reviewPool;
   if (newItems.length) {
-    // review share ~⅓ (up to ½ in cram) of the whole trip, so a new lesson revisits older ones
     const cap = cramActive() ? Math.min(8, Math.max(3, newItems.length)) : Math.min(6, Math.max(3, Math.round(newItems.length * 0.6)));
     const free = it => !newIds.has(itemId(it)) && !warmIds.has(itemId(it));
     let due = dueForReview().filter(free);
     if (cramActive()) {
-      // trip is close → front-load safety-critical phrases (dietary / emergency) even if not due yet
       const crit = (ALL_ITEMS || []).filter(it => { const s = learnPeek(it); return s && s.exposures >= 1 && isCritical(it) && free(it) && !due.includes(it); });
       due = [...crit, ...due];
     }
     reviewPool = due.slice(0, cap);
   } else {
-    // redo of a completed lesson: drill its own items, plus a few trip-wide due
     const own = lessonItems.filter(it => !warmIds.has(itemId(it)));
     const extra = dueForReview().filter(it => !lessonItems.includes(it) && !warmIds.has(itemId(it))).slice(0, 4);
     reviewPool = [...own, ...extra];
   }
-  reviewPool.forEach(it => practice.push(reviewQuestion(it, reviewPool, rungCap)));
-  shuffle(practice).forEach(q => qs.push(q));
+
+  const qs = [];
+  warm.forEach(it => qs.push(reviewQuestion(it, null, rungCap)));       // 1) warm-up: recent misses
+
+  // redo of a completed lesson → no new items to weave, just drill
+  if (!newItems.length) {
+    shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap))).forEach(q => qs.push(q));
+    return qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it }));
+  }
+
+  // §6.1b micro-batch weave: never >2 presentation cards in a row; each new item gets a rung-1
+  // retrieval within ~3 slots of its card, then an expanding-gap re-test later; due reviews fill the
+  // gaps. Replaces the old massed photo-intro (a 10-card slideshow the user reflexively skims). The
+  // one scene photo lives in the primer (§4c.4), not on every card — cards are typographic beats.
+  const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap)));
+  let ri = 0; const nextReview = () => (ri < reviews.length ? reviews[ri++] : null);
+  const later = [];                                                    // expanding-gap re-tests
+  for (let b = 0; b < newItems.length; b += 2) {
+    const batch = newItems.slice(b, b + 2);                            // ≤2 new items → ≤2 cards in a row
+    batch.forEach(it => qs.push({ type: "present", item: it }));       // present (card precedes any test)
+    batch.forEach(it => qs.push({ type: "mc_es2en", item: it, pool: newItems }));  // immediate rung-1 retrieval
+    const r = nextReview(); if (r) qs.push(r);                         // gap filler
+    batch.forEach(it => later.push({ type: introRep(it), item: it, pool: newItems }));  // schedule expanding re-test
+    if (later.length >= 4) { qs.push(later.shift()); const r2 = nextReview(); if (r2) qs.push(r2); }
+  }
+  while (later.length || ri < reviews.length) {                        // drain re-tests + leftover reviews
+    if (later.length) qs.push(later.shift());
+    const r = nextReview(); if (r) qs.push(r);
+  }
   return qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it }));  // safety net
 }
 // pure-review session (Home "Review" entry / all lessons complete): mistakes first, then due
@@ -235,10 +252,13 @@ function renderPresent(q) {
   const body = $("#qbody");
   // no "New phrase" label on a re-teach — the "Second chance" chip already frames it
   if (!q.requeued) body.appendChild(el(`<div class="qtype">New phrase</div>`));
+  const short = item.es.trim().split(/\s+/).length < 3;
   const card = el(`<div class="present-card">
       <div class="present-es">${item.es}</div>
       <div class="present-en">${item.en}</div>
+      ${short && item.contextEs ? `<div class="present-ctx">${item.contextEs}${item.contextEn ? ` <span>— ${item.contextEn}</span>` : ""}</div>` : ""}
       ${item.note ? `<div class="present-note">${item.note}</div>` : ""}
+      ${item.anchor ? `<div class="present-anchor">💡 ${item.anchor}</div>` : ""}
     </div>`);
   body.appendChild(card);
   const replay = el(`<button class="speak-btn">🔊 Hear it</button>`);

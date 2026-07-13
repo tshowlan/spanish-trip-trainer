@@ -240,6 +240,9 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .present-es { font-size: 26px; font-weight: 800; line-height: 1.25; color: var(--text); }
 .present-en { font-size: 16px; color: var(--text-dim); margin-top: 8px; }
 .present-note { font-size: 13px; color: var(--secondary); margin-top: 12px; line-height: 1.4; }
+.present-ctx { font-size: 15px; color: var(--text); margin-top: 12px; line-height: 1.4; opacity: .9; }
+.present-ctx span { color: var(--text-dim); }
+.present-anchor { font-size: 13px; color: var(--accent-2); margin-top: 12px; background: var(--bg-elevated); border-radius: 10px; padding: 8px 12px; display: inline-block; }
 /* intro page — all the section's new phrases at once */
 /* full-bleed regional photo card (one phrase at a time, Oura-style) */
 .intro-photo {
