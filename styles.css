@@ -230,6 +230,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .qtype { color: var(--text-dim); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
 .prompt { font-size: 24px; font-weight: 800; margin: 8px 0 6px; line-height: 1.25; }
 .prompt-sub { color: var(--text-dim); font-size: 14px; margin-bottom: 18px; }
+.effort-line { background: color-mix(in srgb, var(--secondary) 12%, transparent); border: 1px solid var(--secondary); color: var(--secondary); border-radius: 12px; padding: 10px 14px; font-size: 13px; font-weight: 600; line-height: 1.4; margin: 10px 0 16px; }
 /* presentation card — first sight of a new phrase (teach, not test) */
 .present-card {
   background: var(--bg-card); border: 1px solid var(--border);

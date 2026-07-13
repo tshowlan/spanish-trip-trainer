@@ -285,14 +285,34 @@ function mcOptions(item, es2en, siblings) {
 }
 
 /* ----- multiple choice ----- */
+// §4b.3 variant presentation: once an item is familiar (exposures ≥ 3), ~1 in 4 recognition/listening
+// reps surface a natural `variant` instead of the canonical string — locals won't use our exact words.
+// Never in the first 3 exposures (canonical form stabilizes first). Grading already accepts variants.
+function presentEs(item) {
+  const vs = item.variants || [];
+  if (vs.length && exposuresOf(item) >= 3 && Math.random() < 0.25) return { text: pick(vs), variant: true };
+  return { text: item.es, variant: false };
+}
+// §4c.5 effort framing: one-time line the first time a learner hits a cold-production exercise.
+function coldEffortNote(body) {
+  if (state.effortColdShown) return;
+  state.effortColdShown = true; save();
+  body.appendChild(el(`<div class="effort-line">✍️ Typing it cold is what makes it stick — this is the rep that counts.</div>`));
+}
 function renderMC(q) {
   const es2en = q.type === "mc_es2en";
   const item = q.item;
   const { answer, options } = mcOptions(item, es2en, q.pool && q.pool.length ? q.pool : run.lesson.items);
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">${es2en ? "What does this mean?" : "Say it in Spanish"}</div>`));
-  body.appendChild(el(`<div class="prompt">${es2en ? item.es : item.en}</div>`));
-  if (es2en) { const sb = el(`<button class="speak-btn">🔊 Hear it</button>`); sb.addEventListener("click", () => speak(item.es)); body.appendChild(sb); }
+  if (es2en) {
+    const pe = presentEs(item);
+    body.appendChild(el(`<div class="prompt">${pe.text}</div>`));
+    if (pe.variant) body.appendChild(el(`<div class="prompt-sub">Another common way to say it</div>`));
+    const sb = el(`<button class="speak-btn">🔊 Hear it</button>`); sb.addEventListener("click", () => speak(pe.text)); body.appendChild(sb);
+  } else {
+    body.appendChild(el(`<div class="prompt">${item.en}</div>`));
+  }
   body.appendChild(mcChoices(options, answer, item));
 }
 // shared choice grid → grades opt===answer
@@ -344,10 +364,11 @@ function renderListenChoice(q) {
   const { answer, options } = mcOptions(item, true, q.pool && q.pool.length ? q.pool : run.lesson.items);   // English options
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">What did you hear?</div>`));
+  const pe = presentEs(item);                          // §4b.3: listening may play a natural variant
   const play = el(`<button class="big-speak">🔊</button>`);
-  play.addEventListener("click", () => speak(item.es));
+  play.addEventListener("click", () => speak(pe.text));
   body.appendChild(play);
-  setTimeout(() => speak(item.es), 300);
+  setTimeout(() => speak(pe.text), 300);
   body.appendChild(mcChoices(options, answer, item));
 }
 
@@ -356,6 +377,7 @@ function renderType(q) {
   const item = q.item;
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Type it in Spanish</div>`));
+  coldEffortNote(body);                                // §4c.5 one-time cold-production framing
   body.appendChild(el(`<div class="prompt">${item.en}</div>`));
   body.appendChild(el(`<div class="prompt-sub">Accents and capitals don't matter.</div>`));
   const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe aquí…">`);
@@ -373,10 +395,12 @@ function renderListen(q) {
   const item = q.item;
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Type what you hear</div>`));
+  coldEffortNote(body);                                // §4c.5 one-time cold-production framing
+  const pe = presentEs(item);                          // §4b.3: may play a natural variant (grading accepts it)
   const play = el(`<button class="big-speak">🔊</button>`);
-  play.addEventListener("click", () => speak(item.es));
+  play.addEventListener("click", () => speak(pe.text));
   body.appendChild(play);
-  setTimeout(() => speak(item.es), 350);
+  setTimeout(() => speak(pe.text), 350);
   const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe en español…">`);
   body.appendChild(input);
   setTimeout(() => input.focus(), 50);
@@ -532,6 +556,7 @@ function finishGrade(ok, item, extra) {
   const notes = [];
   if (extra) notes.push(`<span class="note-chip"><b>note</b> ${extra}</span>`);
   if (item.note) notes.push(`<span class="note-chip"><b>tip</b> ${item.note}</span>`);
+  if (item.anchor) notes.push(`<span class="note-chip"><b>💡</b> ${item.anchor}</span>`);   // §4c.2 memory hook at the moment of error
   if (item.latam) notes.push(`<span class="note-chip"><b>L. America</b> ${item.latam}</span>`);
   if (item.cat) notes.push(`<span class="note-chip"><b>Català</b> ${item.cat}</span>`);
   const f = footer(`
@@ -544,9 +569,14 @@ function finishGrade(ok, item, extra) {
   const sb = el(`<button class="speak-btn" style="margin:0 0 10px">🔊 ${item.es}</button>`);
   sb.addEventListener("click", () => speak(item.es));
   f.insertBefore(sb, f.querySelector("#cont"));
-  if (ok) speak(item.es);
+  speak(item.es);                                     // §4c.2: always replay the correct audio — the miss is the moment it matters
   if (!ok && q && q.item) requeueMiss(item, q.type);
-  $("#cont").addEventListener("click", () => next());
+  const cont = $("#cont");
+  if (!ok) {                                          // §4c.2 forced processing beat: a miss can't be blown past — attend to the correction
+    cont.disabled = true;
+    setTimeout(() => { if (cont) cont.disabled = false; }, 1400);
+  }
+  cont.addEventListener("click", () => { if (!cont.disabled) next(); });
 }
 // missed item → re-serve later in the session, one ladder rung easier (capped to avoid spirals)
 function requeueMiss(item, failedType) {
