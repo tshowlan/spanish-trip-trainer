@@ -147,6 +147,18 @@ if (tagCount.size) {
   });
 }
 
+// ---- 7. narrative smells (§9b / §11.2.7) -----------------------------------
+H("7. Narrative smells (§9b — real specifics + cast, not generic placeholders)");
+const PLACEHOLDERS = ["the waiter", "the waitress", "the restaurant", "the market", "the driver", "the hotel", "the shop", "the store", "a drink", "the food", "the bartender", "the clerk", "the host"];
+const CAST = ["andres", "lupe", "marisol", "beto", "elena"];   // cast tokens (accent-stripped); tune per pack
+let narrWarn0 = warnings;
+const scanText = (txt, where) => { if (!txt) return; const low = txt.toLowerCase(); PLACEHOLDERS.forEach(p => { if (low.includes(p)) warn(`generic "${p}" in ${where}: "${txt.slice(0, 60)}…"`); }); };
+items.forEach(({ it, lesson }) => { scanText(it.en, `${lesson.id} en`); scanText(it.contextEn, `${lesson.id} contextEn`); });
+lessons.forEach(l => { scanText(l.reward, `${l.id} reward`); scanText(l.cultureNote, `${l.id} cultureNote`); if (l.primer) { scanText(l.primer.scene, `${l.id} primer.scene`); scanText(l.primer.mission, `${l.id} primer.mission`); } });
+let castErr = 0;
+items.forEach(({ it, lesson }) => { const nes = norm(it.es); CAST.forEach(c => { if (new RegExp(`\\b${c}\\b`).test(nes)) { err(`cast name "${c}" in graded es "${it.es}" (${lesson.id}) — §9b.6 rule 2`); castErr++; } }); });
+if (warnings === narrWarn0 && !castErr) ok("no generic placeholders; no cast names in graded answers");
+
 // ---- summary ---------------------------------------------------------------
 console.log(`\n\x1b[1mSummary:\x1b[0m ${hardErrors} hard error${hardErrors === 1 ? "" : "s"}, ${warnings} warning${warnings === 1 ? "" : "s"}.`);
 console.log(hardErrors ? "\x1b[31mFix hard errors before shipping.\x1b[0m\n" : "\x1b[32mNo hard errors.\x1b[0m\n");

@@ -49,7 +49,7 @@ const MEXICO_PACK = {
           id: "mx-greet", topic: "Greetings & politeness", title: "Hola & gracias",
           reward: "First words down — the taquero already likes you better.",
           cultureNote: "In small shops and comedores, a 'buenos días' to the whole room when you walk in isn't optional — it's basic courtesy, and it warms everyone up before you say another word.",
-          primer: { scene: "It's your first morning in Mexico City. You duck into a café, and the woman behind the counter looks up with a warm 'buenos días.'", mission: "Greet her back — and say please and thank you like you mean it.", guessItem: "Gracias" },
+          primer: { scene: "Your first morning in Oaxaca. You duck into a café on a quiet street off the Zócalo, and the woman behind the counter looks up with a warm 'buenos días.'", mission: "Greet her back — and say please and thank you like you mean it.", guessItem: "Gracias" },
           items: [
             { es: "Hola", en: "Hi", tier: 1, tags: ["greetings"], contextEs: "Hola, buenos días", contextEn: "Hi, good morning" },
             { es: "Buenos días", en: "Good morning", tier: 1, tags: ["greetings"], contextEs: "Buenos días, ¿cómo está?", contextEn: "Good morning, how are you?", keywords: ["días"] },
@@ -81,7 +81,7 @@ const MEXICO_PACK = {
         {
           id: "mx-rescue", topic: "How do you say", title: "I only speak a little",
           reward: "Now you can admit your Spanish is shaky — in Spanish. Locals will slow down for you.",
-          primer: { scene: "You've been smiling and nodding, but you didn't catch a word of what the shopkeeper just said. He's waiting for an answer.", mission: "Admit your Spanish is shaky — and ask him to slow down.", guessItem: "¿Habla inglés?" },
+          primer: { scene: "Doña Lupe just rattled off the day's specials at her comedor — and you caught maybe one word. She waits, dish towel over her shoulder, patient.", mission: "Admit your Spanish is shaky — and ask her to slow down.", guessItem: "¿Habla inglés?" },
           items: [
             { es: "Hablo poquito español", en: "I speak a little Spanish", note: "'Poquito' is friendly and very Mexican.", tier: 2, tags: ["communication"], keywords: ["español"] },
             { es: "Estoy aprendiendo español", en: "I'm learning Spanish", note: "Buys patience instantly.", tier: 2, tags: ["communication"], keywords: ["aprendiendo", "español"] },
@@ -97,7 +97,7 @@ const MEXICO_PACK = {
           id: "mx-table", topic: "Ordering food & drink", title: "First words at the table",
           reward: "You can get a table, read the menu, order, and ask for the check. Night one: handled.",
           cultureNote: "'Provecho' is said to strangers as you pass their table mid-meal — a quick nod and a word. Say it back when it's said to you.",
-          primer: { scene: "The taquería is loud and packed. A host grabs two menus and raises an eyebrow at you — '¿Para cuántos?'", mission: "Get a table, see the menu, order a dish, and settle the check.", guessItem: "El menú, por favor" },
+          primer: { scene: "It's loud and packed at Doña Lupe's comedor by the Mercado 20 de Noviembre. She grabs two menus and raises an eyebrow — '¿Para cuántos?'", mission: "Get a table, see the menu, order the tlayudas, and settle the check.", guessItem: "El menú, por favor" },
           items: [
             { es: "Una mesa para dos, por favor", en: "A table for two, please", tier: 2, tags: ["restaurant", "food"], keywords: ["mesa"], variants: ["Mesa para dos, por favor"] },
             { es: "El menú, por favor", en: "The menu, please", tier: 2, tags: ["restaurant", "food"], anchor: "'menú' = menu.", keywords: ["menú"], variants: ["¿Me trae el menú?", "La carta, por favor"] },
@@ -110,7 +110,7 @@ const MEXICO_PACK = {
           id: "mx-diet-safe", topic: "Dietary needs & allergies", title: "Allergy essentials",
           reward: "Crucial unlock — you can keep yourself safe at the table. Gluten, begone.",
           cultureNote: "'No pica' (not spicy) is relative here — a 'mild' salsa can still surprise you. If you truly can't take heat, say 'sin chile' and mean it.",
-          primer: { scene: "The waiter is lowering a plate toward your table — and you're pretty sure there's shrimp in it. You have about three seconds.", mission: "Tell them what you can't eat, and that it really matters.", guessItem: "Soy alérgico a..." },
+          primer: { scene: "Doña Lupe is lowering a plate toward your table — and you're pretty sure there's camarón in it. You have about three seconds.", mission: "Tell her what you can't eat, and that it really matters.", guessItem: "Soy alérgico a..." },
           items: [
             { es: "Soy alérgico a...", en: "I'm allergic to...", note: "Women: 'alérgica'.", tier: 2, tags: ["dietary", "health"], anchor: "'alérgico' = allergic.", keywords: ["alérgico"] },
             { es: "Soy celíaco", en: "I'm celiac", note: "Women: 'celíaca'.", tier: 2, tags: ["dietary", "health"], contextEs: "Soy celíaco, sin gluten por favor", contextEn: "I'm celiac, gluten-free please", keywords: ["celíaco"] },
@@ -124,7 +124,7 @@ const MEXICO_PACK = {
           id: "mx-bathroom", topic: "Bathrooms & signs", title: "Where's the bathroom",
           reward: "You can find a bathroom and read the door. Push-vs-pull humiliation: avoided.",
           cultureNote: "Carry a few coins and your own tissue — many public restrooms charge a couple of pesos and don't stock paper.",
-          primer: { scene: "Two unmarked doors at the back of the restaurant, and a server rushing past with a tray. You really need to pick the right one.", mission: "Ask where the bathroom is — and read the door before you push.", guessItem: "Entrada" },
+          primer: { scene: "Two unmarked doors at the back of Doña Lupe's comedor, and a server rushing past with a tray of caldo. You really need to pick the right one.", mission: "Ask where the bathroom is — and read the door before you push.", guessItem: "Entrada" },
           items: [
             { es: "¿Dónde está el baño?", en: "Where's the bathroom?", note: "Mexico: 'baño'.", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "baño"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
             { es: "¿Tienen baño?", en: "Do you have a bathroom?", tier: 1, tags: ["bathroom"], contextEs: "Disculpe, ¿tienen baño?", contextEn: "Excuse me, do you have a bathroom?", keywords: ["baño"] },
@@ -140,7 +140,7 @@ const MEXICO_PACK = {
           id: "mx-cash", topic: "Numbers, money & paying", title: "Pesos & paying cash",
           reward: "Pesos, cash, and the total — you can pay without pointing at the register.",
           cultureNote: "Cash is king at markets and street stalls. Break big bills at a chain store first — vendors rarely have change for a 500-peso note.",
-          primer: { scene: "The market vendor rattles off a price and holds out her hand. There's a hand-lettered sign taped to the stall: 'solo efectivo.'", mission: "Handle pesos and pay in cash without fumbling.", guessItem: "cien" },
+          primer: { scene: "At the Mercado 20 de Noviembre, Beto weighs out a bag of chapulines and rattles off the price. Taped to his puesto: a hand-lettered 'solo efectivo.'", mission: "Handle pesos and pay Beto in cash without fumbling.", guessItem: "cien" },
           items: [
             { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte pesos", contextEn: "Twenty pesos" },
             { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta pesos", contextEn: "Fifty pesos" },
@@ -168,7 +168,7 @@ const MEXICO_PACK = {
         {
           id: "mx-airport", topic: "Airport signs", title: "Reading the airport",
           reward: "Arrivals, departures, your gate — all decoded. You won't miss the flight over a sign.",
-          primer: { scene: "You step off the jet bridge into a wall of Spanish signage. Your bag's on a carousel somewhere, and there's a line for customs ahead.", mission: "Read the signs — departures, arrivals, security, customs.", guessItem: "Seguridad" },
+          primer: { scene: "You step off the jet bridge into a wall of Spanish signage. Somewhere past customs, Andrés is waiting with a cab — but first you have to find your bag.", mission: "Read the signs — departures, arrivals, security, customs.", guessItem: "Seguridad" },
           items: [
             { es: "Salidas", en: "Departures", tier: 1, tags: ["airport", "signs"], contextEs: "La sala de salidas", contextEn: "The departures hall", keywords: ["salidas"] },
             { es: "Llegadas", en: "Arrivals", tier: 1, tags: ["airport", "signs"], contextEs: "La zona de llegadas", contextEn: "The arrivals area", keywords: ["llegadas"] },
@@ -199,7 +199,7 @@ const MEXICO_PACK = {
           id: "mx-help", topic: "Problems & emergencies", title: "If something's wrong",
           reward: "The safety net is in place. Now go enjoy Oaxaca — you're covered.",
           cultureNote: "Mexico's emergency number is 911. For minor stuff, the farmacia often has a doctor in a back consultorio — cheap, fast, no appointment.",
-          primer: { scene: "You pat your pocket and your stomach drops — your wallet's gone. A shopkeeper catches your face and asks if you're okay.", mission: "Get help fast — a doctor, the police, or a pharmacy.", guessItem: "Es una emergencia" },
+          primer: { scene: "You pat every pocket twice — your wallet's gone. Sra. Elena, the pharmacist across the street, catches your face and asks if you're okay.", mission: "Get help fast — a doctor, the police, or her farmacia.", guessItem: "Es una emergencia" },
           items: [
             { es: "Ayuda", en: "Help", tier: 1, tags: ["emergency"], contextEs: "¡Ayuda, por favor!", contextEn: "Help, please!", keywords: ["ayuda"] },
             { es: "Necesito un médico", en: "I need a doctor", tier: 1, tags: ["emergency", "health"], keywords: ["médico"], variants: ["Necesito un doctor"] },
