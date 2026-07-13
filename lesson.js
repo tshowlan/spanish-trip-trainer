@@ -760,6 +760,7 @@ function finishLesson() {
         <div class="score"><div class="n">${scores.readiness}<span class="pct">%</span></div><div class="l">trip readiness${delta > 0 ? ` <span class="up">▲${delta}</span>` : ""}</div></div>
       </div>
       <div class="reward">${lesson.reward}</div>
+      ${lesson.cultureNote ? `<div class="culture-note"><span class="cn-label">Local tip</span> ${lesson.cultureNote}</div>` : ""}
       ${missed.length ? `<button class="btn accent" id="reviewmiss">Review your ${missed.length} mistake${missed.length === 1 ? "" : "s"}</button><div style="height:10px"></div>` : ""}
       <button class="btn${missed.length ? " grey" : ""}" id="home">Continue</button>
     </div>`));

@@ -10,6 +10,32 @@
    Run tools/audit-pack.mjs after edits.
    ========================================================================= */
 
+/* =========================================================================
+   CAST SHEET (§9b.2) — a recurring narrative cast for the Mexico trip.
+   Rule: the CAST is fictional; the FOOD, DRINKS, MARKETS, and LANDMARKS are
+   real (tlayudas, mezcal derecho, el Zócalo, Mercado 20 de Noviembre). Never
+   reference a real named business. Cast names appear only in prompt/context/
+   primer text a learner READS — NEVER inside graded answer tokens (§9b.6 r.2).
+   Characters recur across lessons AND passes: the taxi driver of pass 1 is the
+   same one whose directions you decode in pass 2; pass 3 is those people, deeper.
+
+   • ANDRÉS — Zócalo-savvy taxi/Didi driver. Pops the cajuela, talks fútbol,
+     knows every shortcut. (arrival · taxi · directions · airport)
+   • DOÑA LUPE — runs a comedor off the Mercado 20 de Noviembre; her tlayudas
+     and caldo are the reason you came. Warm, motherly, fast. (table · order ·
+     dietary · market · "talk to the chef")
+   • MARISOL — front desk at your posada / your Airbnb host. Unflappable,
+     practical, hands you the wifi password before you ask. (check-in · room ·
+     airbnb · complaints)
+   • BETO — the mezcalero at his market puesto; pours you a mezcal derecho and
+     explains the agave before you sip. (bar · mezcal · small talk · market)
+   • SRA. ELENA — pharmacist at the farmacia with the little consultorio in back;
+     your calm in a small emergency. (help · emergencies · when things go wrong)
+
+   Primer arcs (§9b.3): sequence each pass as one loose day — land with Andrés →
+   Marisol at check-in → Doña Lupe's comedor → Beto's mezcal in the evening.
+   ========================================================================= */
+
 const MEXICO_PACK = {
   key: "mexico",
   dialect: "Mexican Spanish",
@@ -22,6 +48,7 @@ const MEXICO_PACK = {
         {
           id: "mx-greet", topic: "Greetings & politeness", title: "Hola & gracias",
           reward: "First words down — the taquero already likes you better.",
+          cultureNote: "In small shops and comedores, a 'buenos días' to the whole room when you walk in isn't optional — it's basic courtesy, and it warms everyone up before you say another word.",
           primer: { scene: "It's your first morning in Mexico City. You duck into a café, and the woman behind the counter looks up with a warm 'buenos días.'", mission: "Greet her back — and say please and thank you like you mean it.", guessItem: "Gracias" },
           items: [
             { es: "Hola", en: "Hi", tier: 1, tags: ["greetings"], contextEs: "Hola, buenos días", contextEn: "Hi, good morning" },
@@ -69,6 +96,7 @@ const MEXICO_PACK = {
         {
           id: "mx-table", topic: "Ordering food & drink", title: "First words at the table",
           reward: "You can get a table, read the menu, order, and ask for the check. Night one: handled.",
+          cultureNote: "'Provecho' is said to strangers as you pass their table mid-meal — a quick nod and a word. Say it back when it's said to you.",
           primer: { scene: "The taquería is loud and packed. A host grabs two menus and raises an eyebrow at you — '¿Para cuántos?'", mission: "Get a table, see the menu, order a dish, and settle the check.", guessItem: "El menú, por favor" },
           items: [
             { es: "Una mesa para dos, por favor", en: "A table for two, please", tier: 2, tags: ["restaurant", "food"], keywords: ["mesa"], variants: ["Mesa para dos, por favor"] },
@@ -81,6 +109,7 @@ const MEXICO_PACK = {
         {
           id: "mx-diet-safe", topic: "Dietary needs & allergies", title: "Allergy essentials",
           reward: "Crucial unlock — you can keep yourself safe at the table. Gluten, begone.",
+          cultureNote: "'No pica' (not spicy) is relative here — a 'mild' salsa can still surprise you. If you truly can't take heat, say 'sin chile' and mean it.",
           primer: { scene: "The waiter is lowering a plate toward your table — and you're pretty sure there's shrimp in it. You have about three seconds.", mission: "Tell them what you can't eat, and that it really matters.", guessItem: "Soy alérgico a..." },
           items: [
             { es: "Soy alérgico a...", en: "I'm allergic to...", note: "Women: 'alérgica'.", tier: 2, tags: ["dietary", "health"], anchor: "'alérgico' = allergic.", keywords: ["alérgico"] },
@@ -94,6 +123,7 @@ const MEXICO_PACK = {
         {
           id: "mx-bathroom", topic: "Bathrooms & signs", title: "Where's the bathroom",
           reward: "You can find a bathroom and read the door. Push-vs-pull humiliation: avoided.",
+          cultureNote: "Carry a few coins and your own tissue — many public restrooms charge a couple of pesos and don't stock paper.",
           primer: { scene: "Two unmarked doors at the back of the restaurant, and a server rushing past with a tray. You really need to pick the right one.", mission: "Ask where the bathroom is — and read the door before you push.", guessItem: "Entrada" },
           items: [
             { es: "¿Dónde está el baño?", en: "Where's the bathroom?", note: "Mexico: 'baño'.", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "baño"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
@@ -109,6 +139,7 @@ const MEXICO_PACK = {
         {
           id: "mx-cash", topic: "Numbers, money & paying", title: "Pesos & paying cash",
           reward: "Pesos, cash, and the total — you can pay without pointing at the register.",
+          cultureNote: "Cash is king at markets and street stalls. Break big bills at a chain store first — vendors rarely have change for a 500-peso note.",
           primer: { scene: "The market vendor rattles off a price and holds out her hand. There's a hand-lettered sign taped to the stall: 'solo efectivo.'", mission: "Handle pesos and pay in cash without fumbling.", guessItem: "cien" },
           items: [
             { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte pesos", contextEn: "Twenty pesos" },
@@ -167,6 +198,7 @@ const MEXICO_PACK = {
         {
           id: "mx-help", topic: "Problems & emergencies", title: "If something's wrong",
           reward: "The safety net is in place. Now go enjoy Oaxaca — you're covered.",
+          cultureNote: "Mexico's emergency number is 911. For minor stuff, the farmacia often has a doctor in a back consultorio — cheap, fast, no appointment.",
           primer: { scene: "You pat your pocket and your stomach drops — your wallet's gone. A shopkeeper catches your face and asks if you're okay.", mission: "Get help fast — a doctor, the police, or a pharmacy.", guessItem: "Es una emergencia" },
           items: [
             { es: "Ayuda", en: "Help", tier: 1, tags: ["emergency"], contextEs: "¡Ayuda, por favor!", contextEn: "Help, please!", keywords: ["ayuda"] },
@@ -203,6 +235,7 @@ const MEXICO_PACK = {
         {
           id: "mx-coffee", topic: "Coffee shop", title: "Coffee shop",
           reward: "You can order a café de olla and survive a 'cash only' counter. Caffeine: secured.",
+          cultureNote: "Café de olla is brewed in a clay pot with cinnamon and piloncillo — order it at a comedor, and let it be slow.",
           items: [
             { es: "Un café con leche, por favor", en: "A coffee with milk, please", tier: 2, tags: ["coffee", "drink"], keywords: ["café", "leche"] },
             { es: "Un café americano", en: "An americano (black coffee)", note: "The standard black coffee in Mexico.", tier: 2, tags: ["coffee", "drink"], keywords: ["café", "americano"] },
@@ -253,6 +286,7 @@ const MEXICO_PACK = {
         {
           id: "mx-taxi", topic: "Taxis & rideshare", title: "Taxis & Uber",
           reward: "You can survive a taxi without overpaying. Backseat boss.",
+          cultureNote: "In CDMX, skip street-hailed taxis — use Uber/Didi or an authorized 'sitio' stand. No meter? Agree the fare before you get in.",
           items: [
             { es: "Lléveme a esta dirección", en: "Take me to this address", tier: 2, tags: ["taxi", "transport"], keywords: ["dirección"], variants: ["¿Me lleva a esta dirección?"] },
             { es: "¿Cuánto al centro?", en: "How much to downtown?", tier: 2, tags: ["taxi", "money"], keywords: ["cuánto", "centro"], reply: { es: "Como cien pesos", en: "About a hundred pesos" } },
@@ -360,6 +394,7 @@ const MEXICO_PACK = {
         {
           id: "mx-market", topic: "Markets & shopping", title: "At the market",
           reward: "Markets decoded. ¿A cómo los aguacates? You got this.",
+          cultureNote: "'¿A cómo?' opens the price. A little back-and-forth is expected, but stay friendly — a smile drops the price faster than hard bargaining.",
           items: [
             { es: "¿Tiene...?", en: "Do you have...?", tier: 1, tags: ["market", "shopping"], contextEs: "¿Tiene aguacates?", contextEn: "Do you have avocados?", keywords: ["tiene"] },
             { es: "¿A cómo?", en: "How much (per unit)?", note: "Classic market phrase for prices.", tier: 2, tags: ["market", "money"], keywords: ["cómo"], reply: { es: "A treinta pesos el kilo", en: "Thirty pesos a kilo" } },
@@ -448,6 +483,7 @@ const MEXICO_PACK = {
         {
           id: "mx-mezcal", topic: "Advanced · Bars", title: "Mezcal & cocktail bars",
           reward: "You can chat up a bartender and order like a local. Salud — the good stuff finds you now.",
+          cultureNote: "Mezcal is sipped, never shot — kissing the glass is the local tell. As they say: 'para todo mal, mezcal; para todo bien, también.'",
           items: [
             { es: "¿Qué mezcal me recomienda?", en: "Which mezcal do you recommend?", tier: 3, tags: ["drink", "social"], difficulty: 3, keywords: ["mezcal", "recomienda"] },
             { es: "Un mezcal derecho, por favor", en: "A mezcal neat, please", note: "Mexico: 'derecho' = neat/straight up.", tier: 3, tags: ["drink", "social"], difficulty: 3, keywords: ["mezcal"] },
