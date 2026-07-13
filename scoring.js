@@ -162,6 +162,34 @@ function notifSnapshot() {
   };
 }
 
+/* ---- §7.3 divergence detection — where three dials earn their keep ----
+   The dials co-move most weeks; the value is in the DIVERGENCES. This reads current state (a
+   trend-free v1 until daily history accrues) and returns the one actionable pattern, as data —
+   the detail sheet composes the copy + CTA. Each dial has a distinct lever (§7.1):
+   Momentum = do a session today; Retention = steer a session toward review; Readiness = the output. */
+function scoreDivergence(s) {
+  s = s || state.scoresCache || computeScores();
+  if (s.lifetimeSessions < 5) return null;                     // too early to diagnose honestly
+  const fading = fadingItems().filter(x => x.strength < 55).length;
+  const cats = coverageCats();
+  const untouched = Object.values(cats).filter(c => c.done === 0).length;
+  // (a) quality problem — putting in the work, but earlier phrases decay: steer next session to review
+  if (s.momentum >= 50 && fading >= 12 && s.retention < s.coverage - 5) return { kind: "review", fading };
+  // (b) coverage problem — what's learned is solid, but too little of the trip is covered: new content
+  if (s.retention >= 60 && s.coverage <= 55 && untouched >= 2) return { kind: "cover", untouched };
+  return null;
+}
+
+/* ---- §7.2 foundation: one score snapshot per day, for the trend charts (re-derivable from sessions) ---- */
+function _recordDaily(s) {
+  state.scoreHistory = state.scoreHistory || [];
+  const today = new Date().toISOString().slice(0, 10);
+  const rec = { date: today, readiness: s.readiness, momentum: s.momentum, retention: s.retention, sessions: s.sessions7 };
+  const h = state.scoreHistory, last = h[h.length - 1];
+  if (last && last.date === today) { h[h.length - 1] = rec; }   // same-day update, no persist churn
+  else { h.push(rec); if (h.length > 120) h.splice(0, h.length - 120); save(); }  // new day → persist
+}
+
 /* ---- bundle + cache (for instant render + count-up from previous value) ---- */
 function computeScores() {
   const s = {
@@ -174,5 +202,6 @@ function computeScores() {
   };
   state.scoresCache = s;
   s.pace = paceProjection(s.readiness);                        // attach pace once readiness is known
+  _recordDaily(s);                                             // §7.2 daily history for trend charts
   return s;
 }

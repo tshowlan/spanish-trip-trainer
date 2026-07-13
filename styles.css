@@ -661,6 +661,9 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .sheet-sub { font-size: 13px; font-weight: 700; color: var(--secondary); text-transform: capitalize; margin: -8px 0 12px; }
 .drivers { display: flex; flex-direction: column; gap: 8px; }
 .driver { background: var(--bg-elevated); border-radius: 10px; padding: 12px 14px; font-weight: 700; font-size: 15px; }
+/* §7.1 role line + §7.3 divergence narration in the score detail sheet */
+.sheet-role { font-size: 13px; color: var(--text-dim); line-height: 1.45; margin: 0 0 14px; }
+.sheet-diverge { margin-top: 12px; background: var(--bg-card); border: 1px solid var(--accent-2); border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.45; }
 
 /* profile */
 .profile-status { text-align: center; padding: 8px 0 22px; }

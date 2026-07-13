@@ -142,17 +142,27 @@ function renderHome() {
 function scoreSheet(which) {
   const s = state.scoresCache || computeScores();
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
-  let title, drivers, cta = null, sub = null;
+  const destL = (typeof destInfo === "function" ? destInfo((state.profile || {}).destination).label : "your trip");
+  let title, drivers, cta = null, sub = null, role = "", diverge = null;
   if (which === "readiness") {
     const band = readinessBand(s.readiness);
     title = "Trip Readiness";
     sub = `${band.label}${s.lifetimeSessions < 5 ? " · establishing baseline" : ""}`;
+    // §7.1: Readiness is the OUTPUT — never steered directly
+    role = "Will you be ready? This score is the output — you move it through Momentum and Retention, never directly.";
     drivers = [`Coverage ${s.coverage}`, `Retention ${s.retention}`, `Last practiced ${_recencyText()}`];
+    if (s.pace && !s.pace.onTrack && s.pace.reachable && s.pace.addSessions > 0)
+      diverge = { line: `At this pace you'll be ~${s.pace.projected}% ready. About ${s.pace.addSessions} more session${s.pace.addSessions === 1 ? "" : "s"}/week gets you to 90%.` };
+    const dv = scoreDivergence(s);   // §7.3 — a divergence overrides the generic pace line
+    if (dv && dv.kind === "cover") diverge = { line: `What you've learned is solid — but ${destL} needs more. ${dv.untouched} scenario categories still untouched.`, cta: { label: "Start the next lesson", fn: () => { closeSheet(); const n = firstOpenLesson(); n ? startLesson(n) : startReview(seenItems()); } } };
+    else if (dv && dv.kind === "review") diverge = { line: `You're putting in the work — but ${dv.fading} earlier phrases are fading. Point the next session at review.`, cta: { label: "Review fading phrases", fn: () => { closeSheet(); startReview(fadingItems().filter(x => x.strength < 55).slice(0, 12).map(x => ITEM_INDEX[x.id]).filter(Boolean)); } } };
   } else if (which === "momentum") {
     title = "Momentum";
+    role = "Are you doing the work? This is your only same-day lever — one session and it moves today.";
     drivers = [`${s.activeDays7} of 5 active days`, `${s.sessions7} sessions this week`];
   } else {
     title = "Retention";
+    role = "Is it sticking? Your lever: steer a session toward review instead of new content.";
     const fade = fadingItems().filter(x => x.strength < 60);
     drivers = fade.length ? [`${fade.length} phrase${fade.length === 1 ? "" : "s"} fading`] : ["Everything's holding strong"];
     if (fade.length) {
@@ -166,12 +176,15 @@ function scoreSheet(which) {
       <div class="sheet-grab"></div>
       <div class="sheet-title">${title}</div>
       ${sub ? `<div class="sheet-sub">${sub}</div>` : ``}
+      <div class="sheet-role">${role}</div>
       <div class="drivers">${drivers.map(x => `<div class="driver">${x}</div>`).join("")}</div>
+      ${diverge ? `<div class="sheet-diverge">${diverge.line}</div>` : ``}
     </div>
   </div>`);
-  if (cta) {
-    const b = el(`<button class="btn" style="margin-top:14px">${cta.label}</button>`);
-    b.addEventListener("click", cta.fn);
+  const theCta = (diverge && diverge.cta) || cta;
+  if (theCta) {
+    const b = el(`<button class="btn" style="margin-top:14px">${theCta.label}</button>`);
+    b.addEventListener("click", theCta.fn);
     wrap.querySelector(".sheet").appendChild(b);
   }
   document.body.appendChild(wrap);
