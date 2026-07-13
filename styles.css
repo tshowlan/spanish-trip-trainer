@@ -2,6 +2,7 @@
   /* ---- color (light / cream theme) ---- */
   --bg: #fcfcf3;            /* cream */
   --bg-card: #ffffff;
+  --bg-nav: #ffffff;        /* floating tab bar — matches card in light */
   --bg-elevated: #f1eee1;   /* warm light gray */
   --text: #050505;
   --text-dim: #5e6672;
@@ -46,14 +47,14 @@
    user is on "system", or when the root is stamped data-theme="dark". ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { color-scheme: dark;
-    --bg: #000000; --bg-card: #201e15; --bg-elevated: #2b2820; --text: #f6f4ea; --text-dim: #a7a494;
+    --bg: #000000; --bg-nav: #000000; --bg-card: #201e15; --bg-elevated: #2b2820; --text: #f6f4ea; --text-dim: #a7a494;
     --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
     --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: #34301f;
     --wordmark-1: #c8d2f5; --wordmark-2: #7aa6db; --shadow: 0 3px 0 rgba(0,0,0,.45);
   }
 }
 :root[data-theme="dark"] { color-scheme: dark;
-  --bg: #15140e; --bg-card: #201e15; --bg-elevated: #2b2820; --text: #f6f4ea; --text-dim: #a7a494;
+  --bg: #000000; --bg-nav: #000000; --bg-card: #201e15; --bg-elevated: #2b2820; --text: #f6f4ea; --text-dim: #a7a494;
   --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
   --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: #34301f;
   --wordmark-1: #c8d2f5; --wordmark-2: #7aa6db; --shadow: 0 3px 0 rgba(0,0,0,.45);
@@ -448,7 +449,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
   bottom: max(8px, calc(env(safe-area-inset-bottom) / 2));
   width: calc(100% - 56px); max-width: 390px;
   z-index: 40; display: none; align-items: stretch; justify-content: space-around;
-  background: var(--bg-card); border: 1px solid var(--border); border-radius: 99px;
+  background: var(--bg-nav); border: 1px solid var(--border); border-radius: 99px;
   padding: 7px 8px; box-shadow: 0 8px 28px rgba(28,39,94,.18);
 }
 #tabbar.show { display: flex; }
