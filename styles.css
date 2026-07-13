@@ -260,6 +260,23 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .intro-nav #inext, .intro-nav #istart { flex: 1; }
 .intro-nav .nav-gap { flex: 0 0 auto; }
 
+/* §4c.4 scenario primer — scene (photo banner + text) → guess → reveal */
+.primer-photo { margin: -16px -18px 20px; height: 40vh; background-size: cover; background-position: center; background-color: var(--bg-elevated); border-radius: 0 0 22px 22px; }
+.primer-fg { padding-bottom: 100px; }
+.primer-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: var(--text-dim); margin-bottom: 12px; }
+.primer-label.ok { color: var(--green); }
+.primer-scene { font-family: var(--font-display); font-size: 22px; line-height: 1.4; }
+.primer-mission { margin-top: 16px; font-size: 15px; line-height: 1.5; color: var(--text-dim); }
+.primer-mission b { color: var(--accent); font-weight: 800; margin-right: 5px; }
+.primer-body { padding: 30px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; min-height: 60vh; justify-content: center; }
+.primer-guess-es { font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1.2; }
+.primer-guess-es.big { font-size: 34px; }
+.primer-body .qtype { margin: 8px 0 4px; }
+.primer-body .choices { width: 100%; margin-top: 8px; }
+.primer-body .speak-btn { margin: 10px 0; }
+.primer-en { font-size: 18px; color: var(--text-dim); margin-top: 4px; }
+.primer-anchor { margin-top: 18px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; font-size: 14px; color: var(--secondary); }
+
 .intro-list { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 8px; }
 .intro-row {
   display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; cursor: pointer;

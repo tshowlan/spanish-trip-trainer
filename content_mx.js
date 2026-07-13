@@ -22,13 +22,14 @@ const MEXICO_PACK = {
         {
           id: "mx-greet", topic: "Greetings & politeness", title: "Hola & gracias",
           reward: "First words down — the taquero already likes you better.",
+          primer: { scene: "It's your first morning in Mexico City. You duck into a café, and the woman behind the counter looks up with a warm 'buenos días.'", mission: "Greet her back — and say please and thank you like you mean it.", guessItem: "Gracias" },
           items: [
             { es: "Hola", en: "Hi", tier: 1, tags: ["greetings"], contextEs: "Hola, buenos días", contextEn: "Hi, good morning" },
             { es: "Buenos días", en: "Good morning", tier: 1, tags: ["greetings"], contextEs: "Buenos días, ¿cómo está?", contextEn: "Good morning, how are you?", keywords: ["días"] },
             { es: "Buenas tardes", en: "Good afternoon", tier: 1, tags: ["greetings"], contextEs: "Buenas tardes, señor", contextEn: "Good afternoon, sir", keywords: ["tardes"] },
             { es: "Buenas noches", en: "Good evening / night", tier: 1, tags: ["greetings"], contextEs: "Buenas noches, hasta mañana", contextEn: "Good night, see you tomorrow", keywords: ["noches"] },
             { es: "Por favor", en: "Please", tier: 1, tags: ["politeness"], contextEs: "Un café, por favor", contextEn: "A coffee, please", keywords: ["por favor"] },
-            { es: "Gracias", en: "Thank you", tier: 1, tags: ["politeness"], contextEs: "Muchas gracias por todo", contextEn: "Thank you very much for everything", variants: ["Muchas gracias"], reply: { es: "De nada", en: "You're welcome" } },
+            { es: "Gracias", en: "Thank you", tier: 1, tags: ["politeness"], contextEs: "Muchas gracias por todo", contextEn: "Thank you very much for everything", anchor: "Think: 'gratitude.'", variants: ["Muchas gracias"], reply: { es: "De nada", en: "You're welcome" } },
             { es: "De nada", en: "You're welcome", tier: 1, tags: ["politeness"], contextEs: "—Gracias. —De nada.", contextEn: "—Thanks. —You're welcome." },
             { es: "Con permiso", en: "Excuse me (getting past)", tier: 1, tags: ["politeness"], note: "Very Mexican — say it squeezing by or leaving a table.", contextEs: "Con permiso, voy a pasar", contextEn: "Excuse me, I'm coming through", keywords: ["permiso"] },
             { es: "Disculpe", en: "Excuse me (to get attention)", tier: 1, tags: ["politeness"], contextEs: "Disculpe, ¿me ayuda?", contextEn: "Excuse me, can you help me?", keywords: ["disculpe"] }
@@ -53,11 +54,12 @@ const MEXICO_PACK = {
         {
           id: "mx-rescue", topic: "How do you say", title: "I only speak a little",
           reward: "Now you can admit your Spanish is shaky — in Spanish. Locals will slow down for you.",
+          primer: { scene: "You've been smiling and nodding, but you didn't catch a word of what the shopkeeper just said. He's waiting for an answer.", mission: "Admit your Spanish is shaky — and ask him to slow down.", guessItem: "¿Habla inglés?" },
           items: [
             { es: "Hablo poquito español", en: "I speak a little Spanish", note: "'Poquito' is friendly and very Mexican.", tier: 2, tags: ["communication"], keywords: ["español"] },
             { es: "Estoy aprendiendo español", en: "I'm learning Spanish", note: "Buys patience instantly.", tier: 2, tags: ["communication"], keywords: ["aprendiendo", "español"] },
             { es: "No entiendo", en: "I don't understand", tier: 1, tags: ["communication"], contextEs: "Perdón, no entiendo bien", contextEn: "Sorry, I don't understand well", keywords: ["entiendo"] },
-            { es: "¿Habla inglés?", en: "Do you speak English?", note: "Formal (usted) — polite default with strangers.", tier: 1, tags: ["communication"], contextEs: "Disculpe, ¿habla inglés?", contextEn: "Excuse me, do you speak English?", keywords: ["inglés"] },
+            { es: "¿Habla inglés?", en: "Do you speak English?", note: "Formal (usted) — polite default with strangers.", tier: 1, tags: ["communication"], contextEs: "Disculpe, ¿habla inglés?", contextEn: "Excuse me, do you speak English?", anchor: "'inglés' = English.", keywords: ["inglés"] },
             { es: "¿Cómo se dice...?", en: "How do you say...?", tier: 2, tags: ["communication"], keywords: ["dice"] },
             { es: "¿Puede repetir, por favor?", en: "Can you repeat that, please?", tier: 2, tags: ["communication"], keywords: ["repetir"], variants: ["¿Me lo repite, por favor?"] },
             { es: "Más despacio, por favor", en: "Slower, please", tier: 2, tags: ["communication"], keywords: ["despacio"] },
@@ -67,9 +69,10 @@ const MEXICO_PACK = {
         {
           id: "mx-table", topic: "Ordering food & drink", title: "First words at the table",
           reward: "You can get a table, read the menu, order, and ask for the check. Night one: handled.",
+          primer: { scene: "The taquería is loud and packed. A host grabs two menus and raises an eyebrow at you — '¿Para cuántos?'", mission: "Get a table, see the menu, order a dish, and settle the check.", guessItem: "El menú, por favor" },
           items: [
             { es: "Una mesa para dos, por favor", en: "A table for two, please", tier: 2, tags: ["restaurant", "food"], keywords: ["mesa"], variants: ["Mesa para dos, por favor"] },
-            { es: "El menú, por favor", en: "The menu, please", tier: 2, tags: ["restaurant", "food"], keywords: ["menú"], variants: ["¿Me trae el menú?", "La carta, por favor"] },
+            { es: "El menú, por favor", en: "The menu, please", tier: 2, tags: ["restaurant", "food"], anchor: "'menú' = menu.", keywords: ["menú"], variants: ["¿Me trae el menú?", "La carta, por favor"] },
             { es: "Me gustaría los tacos", en: "I'd like the tacos", tier: 2, tags: ["restaurant", "food"], keywords: ["tacos"], variants: ["Quisiera los tacos", "Para mí los tacos"] },
             { es: "Un agua, por favor", en: "A water, please", tier: 1, tags: ["drink", "restaurant"], keywords: ["agua"] },
             { es: "La cuenta, por favor", en: "The check, please", tier: 2, tags: ["restaurant", "money"], keywords: ["cuenta"], variants: ["¿Me trae la cuenta?"] }
@@ -78,8 +81,9 @@ const MEXICO_PACK = {
         {
           id: "mx-diet-safe", topic: "Dietary needs & allergies", title: "Allergy essentials",
           reward: "Crucial unlock — you can keep yourself safe at the table. Gluten, begone.",
+          primer: { scene: "The waiter is lowering a plate toward your table — and you're pretty sure there's shrimp in it. You have about three seconds.", mission: "Tell them what you can't eat, and that it really matters.", guessItem: "Soy alérgico a..." },
           items: [
-            { es: "Soy alérgico a...", en: "I'm allergic to...", note: "Women: 'alérgica'.", tier: 2, tags: ["dietary", "health"], keywords: ["alérgico"] },
+            { es: "Soy alérgico a...", en: "I'm allergic to...", note: "Women: 'alérgica'.", tier: 2, tags: ["dietary", "health"], anchor: "'alérgico' = allergic.", keywords: ["alérgico"] },
             { es: "Soy celíaco", en: "I'm celiac", note: "Women: 'celíaca'.", tier: 2, tags: ["dietary", "health"], contextEs: "Soy celíaco, sin gluten por favor", contextEn: "I'm celiac, gluten-free please", keywords: ["celíaco"] },
             { es: "Sin gluten", en: "Gluten-free", tier: 1, tags: ["dietary", "food"], contextEs: "¿Tienen algo sin gluten?", contextEn: "Do you have anything gluten-free?", keywords: ["gluten"] },
             { es: "Sin cacahuate", en: "Without peanut", note: "Mexico: 'cacahuate'. (Spain: 'cacahuete'.)", tier: 2, tags: ["dietary", "food"], contextEs: "Sin cacahuate, soy alérgico", contextEn: "Without peanut, I'm allergic", keywords: ["cacahuate"] },
@@ -90,13 +94,14 @@ const MEXICO_PACK = {
         {
           id: "mx-bathroom", topic: "Bathrooms & signs", title: "Where's the bathroom",
           reward: "You can find a bathroom and read the door. Push-vs-pull humiliation: avoided.",
+          primer: { scene: "Two unmarked doors at the back of the restaurant, and a server rushing past with a tray. You really need to pick the right one.", mission: "Ask where the bathroom is — and read the door before you push.", guessItem: "Entrada" },
           items: [
             { es: "¿Dónde está el baño?", en: "Where's the bathroom?", note: "Mexico: 'baño'.", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "baño"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
             { es: "¿Tienen baño?", en: "Do you have a bathroom?", tier: 1, tags: ["bathroom"], contextEs: "Disculpe, ¿tienen baño?", contextEn: "Excuse me, do you have a bathroom?", keywords: ["baño"] },
             { es: "Hombres", en: "Men (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "El baño de hombres", contextEn: "The men's bathroom", keywords: ["hombres"] },
             { es: "Mujeres", en: "Women (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "El baño de mujeres", contextEn: "The women's bathroom", keywords: ["mujeres"] },
             { es: "Salida", en: "Exit (sign)", tier: 1, tags: ["signs"], contextEs: "La salida está por allá", contextEn: "The exit is over there", keywords: ["salida"] },
-            { es: "Entrada", en: "Entrance (sign)", tier: 1, tags: ["signs"], contextEs: "La entrada principal", contextEn: "The main entrance", keywords: ["entrada"] },
+            { es: "Entrada", en: "Entrance (sign)", tier: 1, tags: ["signs"], contextEs: "La entrada principal", contextEn: "The main entrance", anchor: "'entrada' = entrance (to enter).", keywords: ["entrada"] },
             { es: "Empuje", en: "Push (sign)", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'empuje'", contextEn: "The door says 'push'", keywords: ["empuje"] },
             { es: "Jale", en: "Pull (sign)", note: "Mexico: 'Jale' = pull. (Spain: 'Tirar'.)", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'jale'", contextEn: "The door says 'pull'", keywords: ["jale"] }
           ]
@@ -104,10 +109,11 @@ const MEXICO_PACK = {
         {
           id: "mx-cash", topic: "Numbers, money & paying", title: "Pesos & paying cash",
           reward: "Pesos, cash, and the total — you can pay without pointing at the register.",
+          primer: { scene: "The market vendor rattles off a price and holds out her hand. There's a hand-lettered sign taped to the stall: 'solo efectivo.'", mission: "Handle pesos and pay in cash without fumbling.", guessItem: "cien" },
           items: [
             { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte pesos", contextEn: "Twenty pesos" },
             { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta pesos", contextEn: "Fifty pesos" },
-            { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien pesos", contextEn: "One hundred pesos" },
+            { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien pesos", contextEn: "One hundred pesos", anchor: "Think: 'century / percent' — 100." },
             { es: "En efectivo", en: "In cash", tier: 1, tags: ["money"], contextEs: "Voy a pagar en efectivo", contextEn: "I'll pay in cash", keywords: ["efectivo"] },
             { es: "¿Cuánto es?", en: "How much is it (total)?", tier: 2, tags: ["money"], keywords: ["cuánto"] }
           ]
@@ -131,13 +137,14 @@ const MEXICO_PACK = {
         {
           id: "mx-airport", topic: "Airport signs", title: "Reading the airport",
           reward: "Arrivals, departures, your gate — all decoded. You won't miss the flight over a sign.",
+          primer: { scene: "You step off the jet bridge into a wall of Spanish signage. Your bag's on a carousel somewhere, and there's a line for customs ahead.", mission: "Read the signs — departures, arrivals, security, customs.", guessItem: "Seguridad" },
           items: [
             { es: "Salidas", en: "Departures", tier: 1, tags: ["airport", "signs"], contextEs: "La sala de salidas", contextEn: "The departures hall", keywords: ["salidas"] },
             { es: "Llegadas", en: "Arrivals", tier: 1, tags: ["airport", "signs"], contextEs: "La zona de llegadas", contextEn: "The arrivals area", keywords: ["llegadas"] },
             { es: "Puerta de embarque", en: "Boarding gate", tier: 2, tags: ["airport", "signs"], keywords: ["puerta", "embarque"] },
             { es: "Documentación", en: "Check-in (bag drop)", note: "Mexico: 'documentación' / 'check-in'.", tier: 1, tags: ["airport", "signs"], contextEs: "El mostrador de documentación", contextEn: "The check-in counter", keywords: ["documentación"] },
             { es: "Reclamo de equipaje", en: "Baggage claim", note: "Mexico: 'reclamo de equipaje'.", tier: 2, tags: ["airport", "signs"], keywords: ["equipaje"] },
-            { es: "Seguridad", en: "Security", tier: 1, tags: ["airport", "signs"], contextEs: "El control de seguridad", contextEn: "The security checkpoint", keywords: ["seguridad"] },
+            { es: "Seguridad", en: "Security", tier: 1, tags: ["airport", "signs"], contextEs: "El control de seguridad", contextEn: "The security checkpoint", anchor: "'seguridad' = security.", keywords: ["seguridad"] },
             { es: "Aduana", en: "Customs", tier: 1, tags: ["airport", "signs"], contextEs: "Pasar por aduana", contextEn: "To go through customs", keywords: ["aduana"] },
             { es: "el vuelo", en: "the flight", tier: 1, tags: ["airport"], contextEs: "¿A qué hora sale el vuelo?", contextEn: "What time does the flight leave?", keywords: ["vuelo"] },
             { es: "¿Dónde recojo mi equipaje?", en: "Where do I pick up my luggage?", tier: 2, tags: ["airport"], keywords: ["equipaje"] }
@@ -160,6 +167,7 @@ const MEXICO_PACK = {
         {
           id: "mx-help", topic: "Problems & emergencies", title: "If something's wrong",
           reward: "The safety net is in place. Now go enjoy Oaxaca — you're covered.",
+          primer: { scene: "You pat your pocket and your stomach drops — your wallet's gone. A shopkeeper catches your face and asks if you're okay.", mission: "Get help fast — a doctor, the police, or a pharmacy.", guessItem: "Es una emergencia" },
           items: [
             { es: "Ayuda", en: "Help", tier: 1, tags: ["emergency"], contextEs: "¡Ayuda, por favor!", contextEn: "Help, please!", keywords: ["ayuda"] },
             { es: "Necesito un médico", en: "I need a doctor", tier: 1, tags: ["emergency", "health"], keywords: ["médico"], variants: ["Necesito un doctor"] },
@@ -169,7 +177,7 @@ const MEXICO_PACK = {
             { es: "¿Habla inglés?", en: "Do you speak English?", tier: 1, tags: ["emergency", "communication"], keywords: ["inglés"] },
             { es: "Perdí mi pasaporte", en: "I lost my passport", tier: 2, tags: ["emergency"], keywords: ["pasaporte"] },
             { es: "¿Dónde está la farmacia?", en: "Where's the pharmacy?", tier: 1, tags: ["emergency", "health", "directions"], keywords: ["dónde", "farmacia"] },
-            { es: "Es una emergencia", en: "It's an emergency", tier: 1, tags: ["emergency"], contextEs: "Por favor, es una emergencia", contextEn: "Please, it's an emergency", keywords: ["emergencia"] },
+            { es: "Es una emergencia", en: "It's an emergency", tier: 1, tags: ["emergency"], contextEs: "Por favor, es una emergencia", contextEn: "Please, it's an emergency", anchor: "'emergencia' = emergency.", keywords: ["emergencia"] },
             { es: "Me duele aquí", en: "It hurts here", tier: 2, tags: ["emergency", "health"], keywords: ["duele"] }
           ]
         }

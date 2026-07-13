@@ -69,8 +69,71 @@ function composeReview() {
 
 let run = null;
 function startLesson(lesson) {
+  // Compose FIRST (so the primer's guess item is still "new" here and stays in the session),
+  // then run the primer on a first pass before the lesson proper. Replays/reviews skip straight in.
   run = { lesson, qs: composeSession(lesson), idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map() };
-  renderQuestion();
+  if (!lessonDone(lesson.id) && lesson.primer && lesson.primer.guessItem) renderPrimer(lesson, renderQuestion);
+  else renderQuestion();
+}
+/* §4c.4 scenario primer — a ~20s first-pass-only pre-lesson flow. Its job is as much emotional as
+   cognitive: it connects the next 6 minutes of effort to the trip the user is excited about, by
+   putting them in their future self's shoes. Anticipation of something real, never fear of a
+   counter (the no-streak philosophy). Scene copy stays concrete + second-person — a moment they're
+   about to live, not a lesson description. The step-2 guess is ungraded and records nothing beyond
+   the reveal's exposure, so it doesn't violate the introduce-first rule (§4.1). */
+function renderPrimer(lesson, onDone) {
+  const p = lesson.primer || {};
+  const items = lesson.items || [];
+  const guess = items.find(it => it.es === p.guessItem || it.id === p.guessItem || (it.keywords || []).includes(p.guessItem)) || items[0];
+  const app = $("#app"); clearFooter(); hideTabbar();
+  const photo = introPhoto(lesson);
+
+  const scene = () => {
+    app.innerHTML = "";
+    app.appendChild(el(`<div class="runner primer">
+      <div class="primer-photo" style="background-image:url('${photo}')"></div>
+      <div class="primer-fg">
+        <div class="primer-label">The scene</div>
+        <div class="primer-scene">${p.scene || ""}</div>
+        <div class="primer-mission"><b>Your mission</b> ${p.mission || ""}</div>
+      </div></div>`));
+    footer(`<button class="btn" id="pnext">I'm in →</button>`);
+    $("#pnext").addEventListener("click", guessStep);
+  };
+  const guessStep = () => {
+    if (!guess) return onDone();
+    app.innerHTML = "";
+    const others = items.filter(it => it !== guess).map(it => it.en);
+    const opts = shuffle([guess.en, ...[...new Set(others)].filter(Boolean).sort(() => Math.random() - .5).slice(0, 2)]);
+    app.appendChild(el(`<div class="runner primer">
+      <div class="primer-body">
+        <div class="primer-label">Take a guess — no penalty</div>
+        <div class="primer-guess-es">${guess.es}</div>
+        <div class="qtype">What do you think it means?</div>
+        <div class="choices" id="pchoices"></div>
+      </div></div>`));
+    const cc = $("#pchoices");
+    opts.forEach(o => { const b = el(`<button class="choice">${o}</button>`); b.addEventListener("click", reveal); cc.appendChild(b); });
+    footer(`<button class="btn grey" id="pskip">Skip — just show me</button>`);
+    $("#pskip").addEventListener("click", reveal);
+  };
+  const reveal = () => {
+    recordExposure(itemId(guess));                 // reveal doubles as the guess item's presentation card → exposure 1
+    app.innerHTML = "";
+    app.appendChild(el(`<div class="runner primer">
+      <div class="primer-body reveal">
+        <div class="primer-label ok">Here it is</div>
+        <div class="primer-guess-es big">${guess.es}</div>
+        <button class="speak-btn" id="psp">🔊 Hear it</button>
+        <div class="primer-en">${guess.en}</div>
+        ${guess.anchor ? `<div class="primer-anchor">💡 ${guess.anchor}</div>` : ""}
+      </div></div>`));
+    speak(guess.es);
+    $("#psp").addEventListener("click", () => speak(guess.es));
+    footer(`<button class="btn accent" id="pstart">Start the lesson →</button>`);
+    $("#pstart").addEventListener("click", onDone);
+  };
+  scene();
 }
 // startReview() → due-item session; startReview(items) → focused review of those items (e.g. mistakes)
 function startReview(items) {
