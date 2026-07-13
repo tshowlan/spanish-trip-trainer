@@ -421,6 +421,11 @@ function renderFill(q) {
   // "por favor") don't match a single token, so we fall back to the longest-word heuristic — no regression.
   const kws = (item.keywords || []).map(k => norm(k));
   let idxs = words.map((w, i) => i).filter(i => kws.includes(norm(clean(words[i]))));
+  // §4b.2 blank-count progression: one blank is the entry mode; after 2 correct one-blank passes,
+  // blank TWO keywords (if the phrase has ≥2). One-blank stays the workhorse the learner meets most.
+  const learn = state.learn && state.learn[itemId(item)];
+  if (idxs.length >= 2 && ((learn && learn.fill1) || 0) >= 2) { q.blanks = 2; return renderFillTwo(q, item, words, clean, idxs.slice(0, 2)); }
+  q.blanks = 1;
   if (!idxs.length) idxs = words.map((w, i) => i).filter(i => clean(words[i]).length >= 4);
   const idx = idxs.length ? idxs[(exposuresOf(item) || 0) % idxs.length] : Math.floor(Math.random() * words.length);
   const raw = words[idx];
@@ -457,29 +462,128 @@ function renderFill(q) {
   });
   body.appendChild(choices);
 }
+// §4b.2 two-blank fill: two keyword slots filled from one word bank (2 answers + 2 distractors).
+function renderFillTwo(q, item, words, clean, blankIdxs) {
+  const body = $("#qbody");
+  const part = raw => { const lead = (raw.match(/^[¿¡("«]+/) || [""])[0], trail = (raw.match(/[?!).,;:"»]+$/) || [""])[0]; return { lead, trail, core: raw.slice(lead.length, raw.length - trail.length) }; };
+  const answers = blankIdxs.map(i => part(words[i]).core);
+  const shown = words.map((w, i) => {
+    const bi = blankIdxs.indexOf(i); if (bi < 0) return w;
+    const p = part(w); return `${p.lead}<span class="fillslot" data-slot="${bi}"></span>${p.trail}`;
+  }).join(" ");
+  body.appendChild(el(`<div class="qtype">Fill in the blanks</div>`));
+  const prompt = el(`<div class="prompt">${shown}</div>`); body.appendChild(prompt);
+  body.appendChild(el(`<div class="prompt-sub">${item.en}</div>`));
+  const tags = item.tags || [], na = answers.map(a => norm(a));
+  const kwsFrom = arr => [...new Set(arr.flatMap(x => (x.keywords || []).map(clean)))].filter(w => /^\S+$/.test(w) && !na.includes(norm(w)) && w.length >= 3);
+  let distract = kwsFrom((ALL_ITEMS || []).filter(x => (x.tags || []).some(t => tags.includes(t))));
+  if (distract.length < 2) distract = [...new Set((ALL_ITEMS || []).flatMap(x => x.es.split(" ").map(clean)))].filter(w => !na.includes(norm(w)) && w.length >= 3);
+  const bankWords = shuffle([...answers, ...sample(distract, 2)]);
+  const bank = el(`<div class="bank"></div>`); body.appendChild(bank);
+  const slotEls = [...prompt.querySelectorAll(".fillslot")];
+  const fill = {};
+  slotEls.forEach((se, bi) => se.addEventListener("click", () => {
+    if (run.answered || fill[bi] == null) return;
+    const w = fill[bi]; delete fill[bi]; se.textContent = ""; se.classList.remove("filled");
+    const t = [...bank.children].find(b => b.textContent === w && b.classList.contains("used")); if (t) t.classList.remove("used"); refresh();
+  }));
+  const nextEmpty = () => slotEls.findIndex((_, bi) => fill[bi] == null);
+  bankWords.forEach(w => {
+    const tile = el(`<button class="word">${w}</button>`);
+    tile.addEventListener("click", () => {
+      if (run.answered || tile.classList.contains("used")) return;
+      const bi = nextEmpty(); if (bi < 0) return;
+      fill[bi] = w; tile.classList.add("used"); slotEls[bi].textContent = w; slotEls[bi].classList.add("filled"); refresh();
+    });
+    bank.appendChild(tile);
+  });
+  const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
+  function refresh() { $("#check").disabled = slotEls.some((_, bi) => fill[bi] == null); }
+  f.querySelector("#check").addEventListener("click", () => {
+    if (run.answered) return;
+    grade(slotEls.every((_, bi) => norm(fill[bi] || "") === norm(answers[bi])), item);
+  });
+}
 
 /* ----- tap to build ----- */
+// §1b.4: tokens the learner has mastered "everywhere" — a stripped token in ≥3 items at exposures ≥5
+// (e.g. "por favor" after heavy use). Pre-placing these keeps a build's difficulty on its NEW words.
+function _masteredTokens() {
+  const strip = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "");
+  const count = new Map();
+  (ALL_ITEMS || []).forEach(it => {
+    if (exposuresOf(it) < 5) return;
+    [...new Set(it.es.toLowerCase().split(/\s+/).map(strip).filter(Boolean))].forEach(t => count.set(t, (count.get(t) || 0) + 1));
+  });
+  const set = new Set(); count.forEach((n, t) => { if (n >= 3) set.add(t); }); return set;
+}
 function renderBuild(q) {
   const item = q.item;
   const strip = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "") || w;
   const original = item.es.split(" ");            // with punctuation + caps → shown in the built line
   const bankWords = original.map(strip);          // stripped → tiles (no positional giveaway) + grading
-  const display = bankWords.slice();
-  if (display.length) display[0] = display[0].charAt(0).toLowerCase() + display[0].slice(1);  // hide "word 1" in the bank
+  const display = i => (i === 0 ? bankWords[i].charAt(0).toLowerCase() + bankWords[i].slice(1) : bankWords[i]);  // hide "word 1" cap
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Build the sentence</div>`));
   body.appendChild(el(`<div class="prompt">${item.en}</div>`));
-  body.appendChild(el(`<div class="prompt-sub">Tap the words in order.</div>`));
   const ans = el(`<div class="build-answer"></div>`);
   const bank = el(`<div class="bank"></div>`);
+  const target = () => bankWords.join(" ").toLowerCase();
+
+  // §1b.4 scaffolded build: pre-place mastered chunks in position; the learner assembles only the new
+  // words. (Builds never set the `production` axis in recordAnswer, so an easy scaffolded build can't
+  // fake cold production — graduation still needs a typed rep. §1b.4 credit-weighting is satisfied.)
+  const mastered = _masteredTokens();
+  const scaffold = new Set(original.map((_, i) => i).filter(i => mastered.has(bankWords[i].toLowerCase())));
+  const novel = original.map((_, i) => i).filter(i => !scaffold.has(i));
+  const useScaffold = scaffold.size > 0 && novel.length > 0 && novel.length < original.length;
+
+  if (useScaffold) {
+    body.appendChild(el(`<div class="prompt-sub">The words you know are placed — add the rest.</div>`));
+    body.appendChild(ans); body.appendChild(bank);
+    const slotOf = {};                            // novel position -> slot element
+    const fill = {};                              // novel position -> placed bank index (tile's original idx)
+    original.forEach((w, i) => {
+      if (scaffold.has(i)) { ans.appendChild(el(`<span class="word locked">${w}</span>`)); return; }
+      const s = el(`<span class="slot" data-i="${i}"></span>`);
+      s.addEventListener("click", () => {                       // tap a filled slot → return the tile
+        if (run.answered || fill[i] == null) return;
+        const bi = fill[i]; delete fill[i]; s.textContent = ""; s.classList.remove("filled");
+        bank.querySelector(`.word[data-i="${bi}"]`).classList.remove("used"); refresh();
+      });
+      slotOf[i] = s; ans.appendChild(s);
+    });
+    const nextEmpty = () => novel.find(i => fill[i] == null);
+    shuffle(novel.slice()).forEach(bi => {
+      const tile = el(`<button class="word" data-i="${bi}">${display(bi)}</button>`);
+      tile.addEventListener("click", () => {
+        if (run.answered || tile.classList.contains("used")) return;
+        const sp = nextEmpty(); if (sp == null) return;
+        fill[sp] = bi; tile.classList.add("used");
+        slotOf[sp].textContent = original[bi]; slotOf[sp].classList.add("filled"); refresh();
+      });
+      bank.appendChild(tile);
+    });
+    const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
+    function refresh() { $("#check").disabled = novel.some(i => fill[i] == null); }
+    f.querySelector("#check").addEventListener("click", () => {
+      if (run.answered) return;
+      const built = original.map((w, i) => scaffold.has(i) ? bankWords[i] : bankWords[fill[i]]).join(" ").toLowerCase();
+      grade(built === target(), item);
+    });
+    return;
+  }
+
+  // ---- standard build: all tiles in the bank, appended in order ----
+  body.appendChild(el(`<div class="prompt-sub">Tap the words in order.</div>`));
   body.appendChild(ans); body.appendChild(bank);
-  const chosen = [];                              // placed original indices, in order
+  const chosen = [];
   shuffle(original.map((_, i) => i)).forEach(i => {
-    const tile = el(`<button class="word" data-i="${i}">${display[i]}</button>`);
+    const tile = el(`<button class="word" data-i="${i}">${display(i)}</button>`);
     tile.addEventListener("click", () => {
       if (run.answered || tile.classList.contains("used")) return;
       tile.classList.add("used"); chosen.push(i);
-      const slot = el(`<button class="word">${original[i]}</button>`);   // punctuation shows in the built line
+      const slot = el(`<button class="word">${original[i]}</button>`);
       slot.addEventListener("click", () => {
         if (run.answered) return;
         tile.classList.remove("used"); slot.remove();
@@ -494,7 +598,7 @@ function renderBuild(q) {
   f.querySelector("#check").addEventListener("click", () => {
     if (run.answered) return;
     const built = chosen.map(i => bankWords[i]).join(" ").toLowerCase();
-    grade(built === bankWords.join(" ").toLowerCase(), item);
+    grade(built === target(), item);
   });
 }
 
@@ -552,6 +656,8 @@ function finishGrade(ok, item, extra) {
   const q = run.qs[run.idx];
   if (!ok) { run.wrong++; if (run.hearts > 0) run.hearts--; if (run.missed) run.missed.set(itemId(item), item); }
   recordAnswer(itemId(item), ok, { mode: q && q.type });
+  // §4b.2: count correct one-blank fills so the item graduates to two-blank fills
+  if (ok && q && q.type === "fill_blank" && (q.blanks || 1) === 1) { const st = state.learn && state.learn[itemId(item)]; if (st) st.fill1 = (st.fill1 || 0) + 1; }
   playSound(ok ? "correct" : "wrong");
   const notes = [];
   if (extra) notes.push(`<span class="note-chip"><b>note</b> ${extra}</span>`);

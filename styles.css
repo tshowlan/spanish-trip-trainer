@@ -330,6 +330,16 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 }
 .word:active { transform: translateY(2px); box-shadow: none; }
 .word.used { visibility: hidden; }
+/* §1b.4 scaffolded build: pre-placed (locked) chunks + empty slots for the novel words */
+.word.locked { opacity: .5; box-shadow: none; cursor: default; }
+.build-answer .slot {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 52px; min-height: 42px;
+  border: 2px dashed var(--border); border-radius: 12px; padding: 0 10px; font-weight: 700; color: var(--text);
+}
+.build-answer .slot.filled { border-style: solid; border-color: var(--primary); cursor: pointer; }
+/* §4b.2 two-blank fill: inline slots in the sentence */
+.fillslot { display: inline-flex; align-items: center; justify-content: center; min-width: 58px; min-height: 32px; border: 2px dashed var(--border); border-radius: 8px; margin: 0 3px; padding: 0 8px; vertical-align: middle; font-weight: 800; }
+.fillslot.filled { border-style: solid; border-color: var(--primary); cursor: pointer; color: var(--accent-2); }
 
 /* footer / feedback */
 .footer {
