@@ -231,14 +231,14 @@ const CURRICULUM = {
           title: "Check In / Out",
           reward: "You can claim your reservation and ask about checkout. The front desk respects you now.",
           items: [
-            { es: "Tengo una reserva", en: "I have a reservation" },
-            { es: "a nombre de...", en: "under the name of..." },
-            { es: "una habitación doble", en: "a double room" },
-            { es: "¿A qué hora es la salida?", en: "What time is checkout?" },
-            { es: "¿El desayuno está incluido?", en: "Is breakfast included?" },
-            { es: "¿Tienen wifi?", en: "Do you have wifi?" },
-            { es: "¿Puedo dejar las maletas?", en: "Can I leave my bags?" },
-            { es: "la llave", en: "the key" }
+            { es: "Tengo una reserva", en: "I have a reservation", note: "Spain: 'reserva'. (Latin America: 'reservación'.)", tier: 2, tags: ["hotel", "lodging"], keywords: ["reserva"] },
+            { es: "a nombre de...", en: "under the name of...", tier: 2, tags: ["hotel", "lodging"], contextEs: "A nombre de García", contextEn: "Under the name of García", keywords: ["nombre"] },
+            { es: "una habitación doble", en: "a double room", tier: 2, tags: ["hotel", "lodging"], keywords: ["habitación"], variants: ["una doble"] },
+            { es: "¿A qué hora es la salida?", en: "What time is checkout?", tier: 2, tags: ["hotel", "time"], keywords: ["hora", "salida"], reply: { es: "A las doce del mediodía", en: "At noon" } },
+            { es: "¿El desayuno está incluido?", en: "Is breakfast included?", tier: 2, tags: ["hotel", "food"], keywords: ["desayuno"] },
+            { es: "¿Tienen wifi?", en: "Do you have wifi?", tier: 1, tags: ["hotel", "lodging"], contextEs: "¿Tienen wifi en la habitación?", contextEn: "Is there wifi in the room?", keywords: ["wifi"] },
+            { es: "¿Puedo dejar las maletas?", en: "Can I leave my bags?", tier: 2, tags: ["hotel", "lodging"], keywords: ["maletas"] },
+            { es: "la llave", en: "the key", tier: 1, tags: ["hotel", "lodging"], contextEs: "¿Me da la llave?", contextEn: "Can I have the key?", keywords: ["llave"] }
           ]
         },
         {
@@ -247,14 +247,14 @@ const CURRICULUM = {
           title: "Towels & Pillows",
           reward: "Wow — now you can ask for another mint for your pillow. Or at least a clean towel. Baby steps.",
           items: [
-            { es: "¿Puede limpiar la habitación?", en: "Can you clean the room?" },
-            { es: "Necesito más toallas", en: "I need more towels" },
-            { es: "¿Puede traer otra almohada?", en: "Can you bring another pillow?" },
-            { es: "No molestar", en: "Do not disturb (sign)" },
-            { es: "El aire acondicionado no funciona", en: "The AC isn't working" },
-            { es: "el papel higiénico", en: "toilet paper" },
-            { es: "jabón", en: "soap" },
-            { es: "Muchas gracias por todo", en: "Thank you very much for everything", note: "Cleaning staff appreciate it — and a small tip." }
+            { es: "¿Puede limpiar la habitación?", en: "Can you clean the room?", tier: 2, tags: ["hotel", "lodging"], keywords: ["limpiar", "habitación"] },
+            { es: "Necesito más toallas", en: "I need more towels", tier: 2, tags: ["hotel", "lodging"], keywords: ["toallas"] },
+            { es: "¿Puede traer otra almohada?", en: "Can you bring another pillow?", tier: 2, tags: ["hotel", "lodging"], keywords: ["almohada"] },
+            { es: "No molestar", en: "Do not disturb (sign)", tier: 1, tags: ["hotel", "signs"], contextEs: "El cartel de 'no molestar'", contextEn: "The 'do not disturb' sign", keywords: ["molestar"] },
+            { es: "El aire acondicionado no funciona", en: "The AC isn't working", tier: 2, tags: ["hotel", "lodging"], keywords: ["aire"] },
+            { es: "el papel higiénico", en: "toilet paper", note: "Spain: 'papel higiénico'.", tier: 1, tags: ["hotel", "bathroom"], contextEs: "No hay papel higiénico", contextEn: "There's no toilet paper", keywords: ["papel"] },
+            { es: "jabón", en: "soap", tier: 1, tags: ["hotel", "bathroom"], contextEs: "No hay jabón", contextEn: "There's no soap", keywords: ["jabón"] },
+            { es: "Muchas gracias por todo", en: "Thank you very much for everything", note: "Cleaning staff appreciate it — and a small tip.", tier: 2, tags: ["politeness"] }
           ]
         },
         {
@@ -263,14 +263,14 @@ const CURRICULUM = {
           title: "Sightseeing",
           reward: "Two tickets to the Sagrada Família, please — and you said it in Spanish. Gaudí is proud.",
           items: [
-            { es: "¿A qué hora abre la Sagrada Família?", en: "What time does the Sagrada Família open?" },
-            { es: "dos entradas, por favor", en: "two tickets, please" },
-            { es: "¿Hay que reservar?", en: "Do you have to book in advance?" },
-            { es: "¿Dónde está la taquilla?", en: "Where is the ticket office?" },
-            { es: "¿Se pueden hacer fotos?", en: "Can you take photos?" },
-            { es: "la cola", en: "the queue / line" },
-            { es: "el casco antiguo", en: "the old town" },
-            { es: "¿Está abierto los domingos?", en: "Is it open on Sundays?" }
+            { es: "¿A qué hora abre la Sagrada Família?", en: "What time does the Sagrada Família open?", tier: 2, tags: ["sights", "time"], keywords: ["hora", "abre"] },
+            { es: "dos entradas, por favor", en: "two tickets, please", tier: 2, tags: ["sights"], keywords: ["entradas"] },
+            { es: "¿Hay que reservar?", en: "Do you have to book in advance?", tier: 2, tags: ["sights"], keywords: ["reservar"] },
+            { es: "¿Dónde está la taquilla?", en: "Where is the ticket office?", note: "'Taquilla' = ticket window.", tier: 2, tags: ["sights", "directions"], keywords: ["taquilla"] },
+            { es: "¿Se pueden hacer fotos?", en: "Can you take photos?", tier: 2, tags: ["sights"], keywords: ["fotos"] },
+            { es: "la cola", en: "the queue / line", note: "Spain: 'la cola' = the line/queue.", tier: 1, tags: ["sights"], contextEs: "Hay que hacer cola", contextEn: "You have to wait in line", keywords: ["cola"] },
+            { es: "el casco antiguo", en: "the old town", tier: 2, tags: ["sights", "directions"], keywords: ["casco"] },
+            { es: "¿Está abierto los domingos?", en: "Is it open on Sundays?", tier: 2, tags: ["sights", "time"], keywords: ["abierto", "domingos"] }
           ]
         },
         {
@@ -279,14 +279,14 @@ const CURRICULUM = {
           title: "Things They'll Say to You",
           reward: "You can now understand what's being said TO you. Eavesdropping unlocked. Use responsibly.",
           items: [
-            { es: "¿Algo más?", en: "Anything else?" },
-            { es: "Aquí tiene", en: "Here you go" },
-            { es: "Un momento", en: "One moment" },
-            { es: "¿Está todo bien?", en: "Is everything okay?" },
-            { es: "Que aproveche", en: "Enjoy your meal", note: "Spain's 'bon appétit'." },
-            { es: "Dígame", en: "Go ahead / Tell me", note: "Shopkeepers & phone calls say this to mean 'how can I help?'" },
-            { es: "Pase, pase", en: "Come in / Go ahead" },
-            { es: "Que tenga un buen día", en: "Have a good day" }
+            { es: "¿Algo más?", en: "Anything else?", tier: 1, tags: ["social", "restaurant"], contextEs: "—¿Algo más? —No, gracias.", contextEn: "—Anything else? —No, thanks.", keywords: ["más"] },
+            { es: "Aquí tiene", en: "Here you go", tier: 1, tags: ["social", "restaurant"], contextEs: "Aquí tiene su cambio", contextEn: "Here's your change", keywords: ["tiene"] },
+            { es: "Un momento", en: "One moment", tier: 1, tags: ["social"], contextEs: "Un momento, por favor", contextEn: "One moment, please", keywords: ["momento"] },
+            { es: "¿Está todo bien?", en: "Is everything okay?", tier: 1, tags: ["social", "restaurant"], contextEs: "—¿Está todo bien? —Sí, gracias.", contextEn: "—Is everything okay? —Yes, thanks.", keywords: ["todo"] },
+            { es: "Que aproveche", en: "Enjoy your meal", note: "Spain's 'bon appétit'.", tier: 1, tags: ["social", "food"], keywords: ["aproveche"] },
+            { es: "Dígame", en: "Go ahead / Tell me", note: "Shopkeepers & phone calls say this to mean 'how can I help?'", tier: 1, tags: ["social", "politeness"], keywords: ["dígame"] },
+            { es: "Pase, pase", en: "Come in / Go ahead", tier: 1, tags: ["social", "politeness"], contextEs: "Pase, pase, siéntese", contextEn: "Come in, come in, sit down", keywords: ["pase"] },
+            { es: "Que tenga un buen día", en: "Have a good day", tier: 2, tags: ["social", "politeness"], keywords: ["día"] }
           ]
         }
       ]
@@ -438,14 +438,14 @@ const TRANSPORT_OPTIONS = [
     title: "Your Airbnb",
     reward: "Keys, wifi, trash day, the lockbox that won't open — you can handle a host like a pro.",
     items: [
-      { es: "¿Dónde recojo las llaves?", en: "Where do I pick up the keys?" },
-      { es: "¿Cuál es la contraseña del wifi?", en: "What's the wifi password?" },
-      { es: "¿Cómo funciona la calefacción?", en: "How does the heating work?" },
-      { es: "¿Dónde se tira la basura?", en: "Where do I take out the trash?" },
-      { es: "La caja de seguridad no abre", en: "The lockbox won't open" },
-      { es: "No hay agua caliente", en: "There's no hot water" },
-      { es: "¿A qué hora tengo que salir?", en: "What time do I have to check out?" },
-      { es: "¿Me puede dar la dirección exacta?", en: "Can you give me the exact address?" }
+      { es: "¿Dónde recojo las llaves?", en: "Where do I pick up the keys?", tier: 2, tags: ["lodging"], keywords: ["llaves"] },
+      { es: "¿Cuál es la contraseña del wifi?", en: "What's the wifi password?", tier: 2, tags: ["lodging"], keywords: ["contraseña", "wifi"] },
+      { es: "¿Cómo funciona la calefacción?", en: "How does the heating work?", tier: 2, tags: ["lodging"], keywords: ["calefacción"] },
+      { es: "¿Dónde se tira la basura?", en: "Where do I take out the trash?", tier: 2, tags: ["lodging"], keywords: ["basura"] },
+      { es: "La caja de seguridad no abre", en: "The lockbox won't open", tier: 3, tags: ["lodging"], keywords: ["caja", "abre"] },
+      { es: "No hay agua caliente", en: "There's no hot water", tier: 2, tags: ["lodging"], keywords: ["agua", "caliente"] },
+      { es: "¿A qué hora tengo que salir?", en: "What time do I have to check out?", tier: 2, tags: ["lodging", "time"], keywords: ["hora", "salir"] },
+      { es: "¿Me puede dar la dirección exacta?", en: "Can you give me the exact address?", tier: 2, tags: ["lodging", "directions"], keywords: ["dirección"] }
     ]
   });
 
@@ -461,12 +461,12 @@ const TRANSPORT_OPTIONS = [
         title: "Real Conversations",
         reward: "Look at you — full sentences now. People might mistake you for someone who lives here.",
         items: [
-          { es: "¿Podría recomendarme un plato típico de aquí?", en: "Could you recommend a typical local dish?" },
-          { es: "Disculpe, creo que hay un error en la cuenta", en: "Excuse me, I think there's a mistake on the bill" },
-          { es: "¿A qué hora cierra la cocina?", en: "What time does the kitchen close?" },
-          { es: "Estamos buscando un sitio para cenar cerca de aquí", en: "We're looking for somewhere to have dinner near here" },
-          { es: "Perdone, ¿este tren va al centro?", en: "Excuse me, does this train go to the center?" },
-          { es: "¿Sería posible cambiar de habitación?", en: "Would it be possible to change rooms?" }
+          { es: "¿Podría recomendarme un plato típico de aquí?", en: "Could you recommend a typical local dish?", tier: 3, tags: ["restaurant", "food"], difficulty: 4, keywords: ["plato", "típico"] },
+          { es: "Disculpe, creo que hay un error en la cuenta", en: "Excuse me, I think there's a mistake on the bill", tier: 3, tags: ["restaurant", "money"], difficulty: 4, keywords: ["error", "cuenta"] },
+          { es: "¿A qué hora cierra la cocina?", en: "What time does the kitchen close?", tier: 3, tags: ["restaurant", "time"], difficulty: 3, keywords: ["hora", "cocina"] },
+          { es: "Estamos buscando un sitio para cenar cerca de aquí", en: "We're looking for somewhere to have dinner near here", tier: 3, tags: ["restaurant", "directions"], difficulty: 4, keywords: ["buscando", "cenar", "cerca"] },
+          { es: "Perdone, ¿este tren va al centro?", en: "Excuse me, does this train go to the center?", tier: 3, tags: ["train", "transport"], difficulty: 3, keywords: ["tren", "centro"] },
+          { es: "¿Sería posible cambiar de habitación?", en: "Would it be possible to change rooms?", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["cambiar", "habitación"] }
         ]
       },
       {
@@ -475,12 +475,12 @@ const TRANSPORT_OPTIONS = [
         title: "When It Goes Wrong",
         reward: "Lost, overcharged, double-booked — you can talk your way out of it. Travel boss mode.",
         items: [
-          { es: "Reservé una habitación pero no aparece", en: "I booked a room but it's not showing up" },
-          { es: "Creo que me he perdido, ¿me puede ayudar?", en: "I think I'm lost, can you help me?" },
-          { es: "Se me ha olvidado la cartera en el taxi", en: "I left my wallet in the taxi" },
-          { es: "¿Puede llamar a un médico, por favor?", en: "Can you call a doctor, please?" },
-          { es: "Esto no es lo que he pedido", en: "This isn't what I ordered" },
-          { es: "¿Dónde está la comisaría más cercana?", en: "Where's the nearest police station?" }
+          { es: "Reservé una habitación pero no aparece", en: "I booked a room but it's not showing up", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["reservé", "aparece"] },
+          { es: "Creo que me he perdido, ¿me puede ayudar?", en: "I think I'm lost, can you help me?", tier: 3, tags: ["directions", "emergency"], difficulty: 3, keywords: ["perdido", "ayudar"] },
+          { es: "Se me ha olvidado la cartera en el taxi", en: "I left my wallet in the taxi", tier: 3, tags: ["taxi", "emergency"], difficulty: 4, keywords: ["cartera", "taxi"] },
+          { es: "¿Puede llamar a un médico, por favor?", en: "Can you call a doctor, please?", tier: 3, tags: ["emergency", "health"], difficulty: 3, keywords: ["llamar", "médico"] },
+          { es: "Esto no es lo que he pedido", en: "This isn't what I ordered", tier: 2, tags: ["restaurant"], keywords: ["pedido"] },
+          { es: "¿Dónde está la comisaría más cercana?", en: "Where's the nearest police station?", note: "Spain: 'comisaría' = police station.", tier: 3, tags: ["emergency", "directions"], difficulty: 4, keywords: ["comisaría", "cercana"] }
         ]
       }
     ]
