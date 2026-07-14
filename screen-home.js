@@ -118,11 +118,12 @@ function renderHome() {
     const sd = hero.querySelector(".set-date"); if (sd) sd.addEventListener("click", renderOnboarding);
   }
 
-  // Action region (learning-engine spec §8b): hero tile + review row + standing line
+  // §3.2 Home = state + action only: the smart action tile, a quiet Practice chooser, and
+  // (optionally) one line of divergence narration. The content library lives in the Learn tab.
   if (started) {
     home.appendChild(heroTile());
-    home.appendChild(reviewRow());
-    const sl = standingLine(); if (sl) home.appendChild(sl);
+    home.appendChild(practiceButton());
+    const dv = divergenceLine(); if (dv) home.appendChild(dv);
   }
 
   if (!state.account) {
@@ -131,40 +132,6 @@ function renderHome() {
     home.appendChild(banner);
   }
 
-  const recId = recommendedLessonId();
-  const passName = { 1: "Survival", 2: "Comfort", 3: "Fluent" };
-  DECK.stages.forEach(st => {
-    const visible = st.lessons.filter(l => !l.bonus);          // pass % / bar ignore bonus lessons
-    const total = visible.length || 1;
-    const done = visible.filter(l => lessonDone(l.id)).length;
-    const stage = el(`<div class="stage"></div>`);
-    stage.appendChild(el(`
-      <div class="stage-head"><h2>${st.title}</h2><span class="blurb">${st.blurb}</span></div>
-      <div class="stage-bar"><i style="width:${Math.round(done / total * 100)}%"></i></div>`));
-    const list = el(`<div class="lessons"></div>`);
-    st.lessons.forEach(l => {
-      const isDone = lessonDone(l.id);
-      const isRec = l.id === recId;
-      const fading = isDone ? lessonFadingCount(l) : 0;
-      const stored = state.lessons[l.id];
-      const stars = stored ? stored.stars : (isDone ? 3 : 0);
-      const chip = l.bonus ? `<span class="tier-chip bonus">Bonus</span>`
-        : (st.pass ? `<span class="tier-chip p${st.pass}">${passName[st.pass]}</span>` : "");   // no chip for un-tiered packs (Spain)
-      const card = el(`
-        <div class="lesson ${isDone ? "done" : ""} ${isRec ? "rec" : ""}">
-          <div class="badge">${isDone ? "✓" : "▶"}</div>
-          <div class="meta">
-            <div class="t">${l.title}${isRec ? ` <span class="rec-tag">Next</span>` : ""}</div>
-            <div class="s">${chip ? chip + " · " : ""}${l.chain ? "Conversation" : `${l.items.length} phrases`}${fading ? ` · <span class="fade-badge">${fading} to review</span>` : ""}</div>
-            ${isDone && stars ? `<div class="stars">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</div>` : ""}
-          </div>
-          <div class="chev">${icon('caret-right', 18)}</div>`);
-      card.addEventListener("click", () => startLesson(l));
-      list.appendChild(card);
-    });
-    stage.appendChild(list);
-    home.appendChild(stage);
-  });
   app.appendChild(home);
   maybeStatusMoment();
 }
@@ -327,49 +294,59 @@ function heroTile() {
   return t;
 }
 
-/* 8b.3 — persistent review row: three always-present tiles (spatial stability; 0 = disabled-quiet) */
-function reviewRow() {
-  const mistakes = mistakesPool(), due = dueForReview();
-  const row = el(`<div class="review-row"></div>`);
-  const chip = (cls, ic, n, label, disabled, run) => {
-    const c = el(`<button class="review-chip ${cls} ${disabled ? "off" : ""}">
-      <span class="chip-top"><span class="chip-ic">${icon(ic, 16)}</span>${n != null ? `<b>${n}</b>` : ""}</span>
-      <span class="chip-label">${label}</span></button>`);
-    if (!disabled) c.addEventListener("click", run); else c.disabled = true;
-    return c;
+/* §3.2.4 — quiet Practice chooser (replaces the Due/Mistakes tiles §3.3 kills). One secondary
+   button → a sheet with Recommended / By scenario / Weakest phrases. */
+function practiceButton() {
+  const b = el(`<button class="practice-btn">${icon('arrows-clockwise', 18)} Practice</button>`);
+  b.addEventListener("click", practiceChooser);
+  return b;
+}
+function practiceChooser() {
+  document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
+  const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div>
+    <div class="sheet"><div class="sheet-grab"></div><div class="sheet-title">Practice</div>
+      <div class="practice-opts"></div></div></div>`);
+  const opts = wrap.querySelector(".practice-opts");
+  const add = (title, sub, run, disabled) => {
+    const b = el(`<button class="practice-opt" ${disabled ? "disabled" : ""}><div class="po-t">${title}</div><div class="po-s">${sub}</div></button>`);
+    if (!disabled) b.addEventListener("click", () => { closeSheet(); run(); });
+    opts.appendChild(b);
   };
-  row.appendChild(chip("c-mistakes", "warning", mistakes.length, "Mistakes", !mistakes.length, () => startReview(mistakes)));
-  row.appendChild(chip("c-due", "arrows-clockwise", due.length, "Due", !due.length, () => startReview(due)));
-  row.appendChild(chip("c-practice", "lightning", null, "Practice", !seenItems().length, () => startReview(seenItems())));
-  return row;
+  const h = heroState();
+  const weak = fadingItems().slice(0, 15).map(x => ITEM_INDEX[x.id]).filter(Boolean);
+  add("Recommended", h.title, h.run);
+  add("By scenario", "Pick a category to drill", scenarioChooser);
+  add("Weakest phrases", weak.length ? `${weak.length} phrases need the most work` : "Nothing weak right now", () => startReview(weak), !weak.length);
+  document.body.appendChild(wrap);
+  requestAnimationFrame(() => wrap.classList.add("show"));
+  wrap.querySelector(".sheet-backdrop").addEventListener("click", closeSheet);
 }
-
-/* 8b.4 — standing line: exactly three slots (phrases ready · focus area · trip pace) */
-function phrasesReadyCount() {
-  // phrases you're producing reliably (2+ correct in a row after a few looks)
-  return Object.values(state.learn || {}).filter(s => s && s.streak >= 2 && s.exposures >= 3).length;
+function scenarioChooser() {
+  document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
+  const cats = (typeof coverageCats === "function") ? coverageCats() : {};
+  const keys = Object.keys(cats).filter(c => cats[c].seen > 0);
+  const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div>
+    <div class="sheet"><div class="sheet-grab"></div><div class="sheet-title">By scenario</div>
+      <div class="practice-opts"></div></div></div>`);
+  const opts = wrap.querySelector(".practice-opts");
+  keys.forEach(c => {
+    const strong = Math.round((cats[c].credit / cats[c].total) * 100);
+    const b = el(`<button class="practice-opt"><div class="po-t">${c}</div><div class="po-s">${strong}% strong</div></button>`);
+    b.addEventListener("click", () => { closeSheet(); const its = itemsInCategory(c); if (its.length) startReview(its); });
+    opts.appendChild(b);
+  });
+  if (!keys.length) opts.appendChild(el(`<p class="onb-dim">Finish a lesson first.</p>`));
+  document.body.appendChild(wrap);
+  requestAnimationFrame(() => wrap.classList.add("show"));
+  wrap.querySelector(".sheet-backdrop").addEventListener("click", closeSheet);
 }
-function focusCategory() {
-  const cats = Object.entries(state.topicStats || {}).filter(([, v]) => v && v.total >= 10)
-    .map(([k, v]) => ({ k, acc: v.correct / v.total })).sort((a, b) => a.acc - b.acc);
-  return cats.length ? cats[0].k : null;
-}
-function standingLine() {
-  const slots = [];
-  const pr = phrasesReadyCount();
-  slots.push(`<div class="stand-slot"><b>${pr}</b> phrase${pr === 1 ? "" : "s"} ready</div>`);
-  const focus = focusCategory();
-  const s = state.scoresCache || computeScores();
-  const pace = s.pace;
-  const line = el(`<div class="standing-line"></div>`);
-  line.appendChild(el(slots[0]));
-  if (focus) {
-    const f = el(`<button class="stand-slot stand-btn">Focus: <b>${focus}</b></button>`);
-    f.addEventListener("click", () => { const its = itemsInCategory(focus); if (its.length) startReview(its); });
-    line.appendChild(f);
-  }
-  const days = (state.profile || {}).tripDate ? daysUntil(state.profile.tripDate) : null;
-  if (pace) line.appendChild(el(`<div class="stand-slot ${pace.onTrack ? "pace-ok" : "pace-behind"}">${pace.onTrack ? "On pace" : `Behind · ~${pace.projected}%`}</div>`));
-  else if (days !== null && days >= 0) line.appendChild(el(`<div class="stand-slot">Pace: baseline building</div>`));  // <5 sessions → too noisy to project yet
-  return line.children.length ? line : null;
+/* §3.2.5 — one line of divergence narration, only when §7.3 has something to say (else null) */
+function divergenceLine() {
+  const dv = (typeof scoreDivergence === "function") ? scoreDivergence() : null;
+  if (!dv) return null;
+  const destL = destInfo((state.profile || {}).destination).label;
+  const txt = dv.kind === "review"
+    ? `You're putting in the work, but ${dv.fading} earlier phrases are fading. Point today at review.`
+    : `What you've learned is solid. ${destL} needs more, ${dv.untouched} categories still untouched.`;
+  return el(`<div class="home-diverge">${txt}</div>`);
 }

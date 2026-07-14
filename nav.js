@@ -1,8 +1,11 @@
 /* ---------- floating bottom tab bar ---------- */
+// §3.1 tab map: Home = state + action only; Learn = the content library; Phrases = reference;
+// Progress = reflection (trends, archive, tier). Quests dissolved — its jobs are category
+// coverage (Learn) + the tier system (Progress).
 const TABS = [
-  { id: "home",     label: "Learn",    icon: "house",         render: () => renderHome() },
-  { id: "quests",   label: "Quests",   icon: "trophy",        render: () => renderQuests() },
-  { id: "phrases",  label: "Phrases",  icon: "book-open",     render: () => renderPhrasebook() },
+  { id: "home",     label: "Home",     icon: "house",         render: () => renderHome() },
+  { id: "learn",    label: "Learn",    icon: "book-open",     render: () => renderLearn() },
+  { id: "phrases",  label: "Phrases",  icon: "bookmark",      render: () => renderPhrasebook() },
   { id: "progress", label: "Progress", icon: "chart-line-up", render: () => renderProgress() }
 ];
 function initTabbar() {

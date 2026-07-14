@@ -197,6 +197,9 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
   background: var(--bg-elevated); border: 2px solid var(--border);
 }
 .lesson.done .badge { background: var(--green); border-color: var(--green-dark); }
+/* §3.3 strength ring replaces stars — when the badge holds a ring, drop the filled disc */
+.lesson .badge:has(.ls-ring), .lesson.done .badge:has(.ls-ring) { background: none; border: none; }
+.badge-new { color: var(--text-dim); display: inline-flex; }
 .lesson.locked { opacity: .45; cursor: not-allowed; }
 .lesson .meta { flex: 1; min-width: 0; }
 .lesson .meta .t { font-weight: 800; font-size: 16px; }
@@ -687,6 +690,35 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .hero-tile.hero-review { background: var(--green-dark); }
 .hero-tile.hero-caught { background: var(--bg-elevated); color: var(--text); box-shadow: none; border: 1px solid var(--border); }
 .hero-tile.hero-caught .hero-go { color: var(--text-dim); }
+
+/* §3.2 home Practice chooser + divergence line */
+.practice-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 12px;
+  background: var(--bg-card); border: 1px solid var(--border); color: var(--text-dim); border-radius: var(--radius);
+  padding: 13px; font-weight: 700; font-size: 15px; cursor: pointer; }
+.practice-opts { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+.practice-opt { text-align: left; width: 100%; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; cursor: pointer; }
+.practice-opt[disabled] { opacity: .5; cursor: default; }
+.po-t { font-weight: 800; font-size: 16px; }
+.po-s { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.home-diverge { margin-top: 14px; background: var(--bg-card); border: 1px solid var(--accent-2); border-radius: 12px;
+  padding: 12px 14px; font-size: 14px; line-height: 1.45; }
+/* §3.1 Learn: per-category coverage + per-lesson strength ring */
+.cat-cover { display: flex; flex-direction: column; gap: 10px; margin-bottom: 6px; }
+.cat-row { display: grid; grid-template-columns: 1fr 84px auto; align-items: center; gap: 10px; }
+.cat-name { font-weight: 700; font-size: 14px; }
+.cat-bar { height: 8px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }
+.cat-bar > i { display: block; height: 100%; border-radius: 99px; }
+.cat-bar > i.band-top, .cat-meta .band-top { color: var(--green); background: var(--green); }
+.cat-bar > i.band-good, .cat-meta .band-good { color: var(--secondary); background: var(--secondary); }
+.cat-bar > i.band-mid, .cat-meta .band-mid { color: var(--accent-2); background: var(--accent-2); }
+.cat-bar > i.band-low, .cat-meta .band-low { color: var(--text-dim); background: var(--text-dim); }
+.cat-meta { font-size: 12px; color: var(--text-dim); font-weight: 700; white-space: nowrap; }
+.cat-meta span { background: none !important; }
+.ls-ring { display: block; }
+.ls-ring .ls-bg { fill: none; stroke: var(--bg-elevated); stroke-width: 4; }
+.ls-ring .ls-fg { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset .6s; }
+.ls-ring.band-top .ls-fg { stroke: var(--green); } .ls-ring.band-good .ls-fg { stroke: var(--secondary); }
+.ls-ring.band-mid .ls-fg { stroke: var(--accent-2); } .ls-ring.band-low .ls-fg { stroke: var(--text-dim); }
 
 .review-row { display: flex; gap: 8px; margin-bottom: 8px; }
 .review-chip {
