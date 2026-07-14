@@ -256,9 +256,9 @@ function renderPrimer(lesson, onDone) {
       <div class="primer-body reveal">
         <div class="primer-label ok">Here it is</div>
         <div class="primer-guess-es big">${guess.es}</div>
-        <button class="speak-btn" id="psp">🔊 Hear it</button>
+        <button class="speak-btn" id="psp">${icon('speaker', 18)} Hear it</button>
         <div class="primer-en">${guess.en}</div>
-        ${guess.anchor ? `<div class="primer-anchor">💡 ${guess.anchor}</div>` : ""}
+        ${guess.anchor ? `<div class="primer-anchor">${icon('bulb', 16)} ${guess.anchor}</div>` : ""}
       </div></div>`));
     speak(guess.es);
     $("#psp").addEventListener("click", () => speak(guess.es));
@@ -270,7 +270,7 @@ function renderPrimer(lesson, onDone) {
 // startReview() → due-item session; startReview(items) → focused review of those items (e.g. mistakes)
 function startReview(items) {
   const qs = items && items.length ? items.map(it => reviewQuestion(it, items)) : composeReview();
-  if (!qs.length) { toast("Nothing to review yet, finish a lesson first 📚"); return; }
+  if (!qs.length) { toast("Nothing to review yet. Finish a lesson first."); return; }
   run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map() };
   renderQuestion();
 }
@@ -287,7 +287,7 @@ function speedPool() {
 }
 function startSpeedRound() {
   const pool = speedPool();
-  if (pool.length < 4) { toast("Speed rounds need phrases you know, finish a few lessons first 🏁"); return; }
+  if (pool.length < 4) { toast("Speed rounds need phrases you know. Finish a few lessons first."); return; }
   renderSpeedRound(pool);
 }
 function renderSpeedRound(pool) {
@@ -364,7 +364,7 @@ function renderQuestion() {
     <div class="progress-row">
       <button class="close-btn" id="quit">${icon('x',24)}</button>
       <div class="pbar"><i style="width:${run.pct}%"></i></div>
-      <div class="lesson-flame" title="Day streak">🔥 ${state.streak || 0}</div>
+      <div class="lesson-flame" title="Day streak">${icon('flame', 15)} ${state.streak || 0}</div>
     </div>`));
   wrap.appendChild(el(`<div id="qbody" class="qenter"></div>`));   // §8.3 each question springs in
   app.appendChild(wrap);
@@ -373,7 +373,7 @@ function renderQuestion() {
   $("#quit").addEventListener("click", () => { if (confirm("Quit this lesson? Progress in it is lost.")) renderHome(); });
   run.answered = false;
   // make the mistake re-queue visible: label a phrase you missed coming back around
-  if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">↩ Second chance, you missed this one</div>`));
+  if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">${icon('arrows-clockwise', 15)} Second chance, you missed this one</div>`));
   ({ intro: renderIntro, present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
      respond: renderRespond, listen_choice: renderListenChoice, reply_listen: renderReply }[q.type])(q);
@@ -413,7 +413,7 @@ function renderIntro(q) {
           <div class="intro-es-big">${it.es}</div>
           <div class="intro-en-big">${it.en}</div>
           ${it.note ? `<div class="intro-note-big">${it.note}</div>` : ""}
-          <button class="speak-btn intro-hear">🔊 Hear it</button>
+          <button class="speak-btn intro-hear">${icon('speaker', 18)} Hear it</button>
         </div>
       </div>`));
       body.querySelector(".intro-hear").addEventListener("click", () => speak(it.es));
@@ -427,7 +427,7 @@ function renderIntro(q) {
       items.forEach(it => {
         const row = el(`<button class="intro-row">
           <div class="intro-txt"><div class="intro-es">${it.es}</div><div class="intro-en">${it.en}</div>${it.note ? `<div class="intro-note">${it.note}</div>` : ""}</div>
-          <span class="intro-spk">🔊</span></button>`);
+          <span class="intro-spk">${icon('speaker', 20)}</span></button>`);
         row.addEventListener("click", () => speak(it.es));
         list.appendChild(row);
       });
@@ -452,15 +452,25 @@ function renderPresent(q) {
       <div class="present-en">${item.en}</div>
       ${short && item.contextEs ? `<div class="present-ctx">${item.contextEs}${item.contextEn ? ` <span>${item.contextEn}</span>` : ""}</div>` : ""}
       ${item.note ? `<div class="present-note">${item.note}</div>` : ""}
-      ${item.anchor ? `<div class="present-anchor">💡 ${item.anchor}</div>` : ""}
+      ${item.anchor ? `<div class="present-anchor">${icon('bulb', 16)} ${item.anchor}</div>` : ""}
     </div>`);
   body.appendChild(card);
-  const replay = el(`<button class="speak-btn">🔊 Hear it</button>`);
+  const replay = el(`<button class="speak-btn">${icon('speaker', 18)} Hear it</button>`);
   replay.addEventListener("click", () => speak(item.es));
   body.appendChild(replay);
   setTimeout(() => speak(item.es), 250);
-  const f = footer(`<button class="btn" id="got">Got it</button>`);
-  f.querySelector("#got").addEventListener("click", () => { recordExposure(itemId(item)); next(); });
+  // §feedback #1: Back button while phrases are being introduced — step back to the previous new-phrase
+  // card (only within a run of present cards, so we never rewind into an already-graded question).
+  const canBack = run.idx > 0 && run.qs[run.idx - 1] && run.qs[run.idx - 1].type === "present";
+  const back = canBack ? `<button class="btn grey" id="pback">${icon('caret-left', 18)} Back</button>` : "";
+  const f = footer(`<div class="present-nav">${back}<button class="btn" id="got">Got it</button></div>`);
+  f.querySelector("#got").addEventListener("click", () => {
+    run.exposed = run.exposed || new Set();
+    const id = itemId(item);
+    if (!run.exposed.has(id)) { run.exposed.add(id); recordExposure(id); }   // idempotent — Back can't inflate exposures
+    next();
+  });
+  if (canBack) f.querySelector("#pback").addEventListener("click", () => { run.idx--; renderQuestion(); });
 }
 function footer(html) {
   const old = $("#footer"); if (old) old.remove();
@@ -469,6 +479,16 @@ function footer(html) {
   return f;
 }
 function clearFooter() { const f = $("#footer"); if (f) f.remove(); }
+// §feedback #5: audio prompt for the "what did you hear" exercises — a waveform that sweeps across
+// on play (replaces the bare 🔊). onPlay fires on tap; the bars animate while audio is speaking.
+function waveButton(onPlay) {
+  const bars = Array.from({ length: 13 }, (_, i) => `<span class="wv" style="--i:${i}"></span>`).join("");
+  const b = el(`<button class="wave-btn" aria-label="Play audio"><span class="wave">${bars}</span></button>`);
+  const pulse = () => { b.classList.add("playing"); clearTimeout(b._t); b._t = setTimeout(() => b.classList.remove("playing"), 1600); };
+  b.addEventListener("click", () => { pulse(); onPlay(); });
+  b._pulse = pulse;
+  return b;
+}
 
 /* distractors must be the same KIND as the answer. §4b.4 distractor ladder: prefer siblings that
    share a CATEGORY (tags) — other numbers for a number, other dishes for a dish — tightened by
@@ -511,7 +531,7 @@ function presentEs(item) {
 function coldEffortNote(body) {
   if (state.effortColdShown) return;
   state.effortColdShown = true; save();
-  body.appendChild(el(`<div class="effort-line">✍️ Typing it cold is what makes it stick. This is the rep that counts.</div>`));
+  body.appendChild(el(`<div class="effort-line">${icon('pencil', 16)} Typing it cold is what makes it stick. This is the rep that counts.</div>`));
 }
 function renderMC(q) {
   const es2en = q.type === "mc_es2en";
@@ -523,21 +543,26 @@ function renderMC(q) {
     const pe = presentEs(item);
     body.appendChild(el(`<div class="prompt">${pe.text}</div>`));
     if (pe.variant) body.appendChild(el(`<div class="prompt-sub">Another common way to say it</div>`));
-    const sb = el(`<button class="speak-btn">🔊 Hear it</button>`); sb.addEventListener("click", () => speak(pe.text)); body.appendChild(sb);
+    const sb = el(`<button class="speak-btn">${icon('speaker', 18)} Hear it</button>`); sb.addEventListener("click", () => speak(pe.text)); body.appendChild(sb);
   } else {
     body.appendChild(el(`<div class="prompt">${item.en}</div>`));
   }
   body.appendChild(mcChoices(options, answer, item));
 }
-// shared choice grid → grades opt===answer
+// shared choice grid → grades opt===answer.
+// §feedback #2: strip leading/trailing punctuation (¿ ¡ ? ! . , : ; " «») from the DISPLAYED
+// options so a lone question mark / inverted mark can't hand away which one is right. Grading works
+// in the same stripped space; the fully-punctuated form is revealed in the feedback afterward.
+const choiceLabel = s => String(s).replace(/^[¿¡("«“‘\s]+|[?!).,;:"»”’\s]+$/g, "");
 function mcChoices(options, answer, item) {
+  const ans = choiceLabel(answer);
   const choices = el(`<div class="choices"></div>`);
   options.forEach(opt => {
-    const c = el(`<button class="choice">${opt}</button>`);
+    const c = el(`<button class="choice">${choiceLabel(opt)}</button>`);
     c.addEventListener("click", () => {
       if (run.answered) return;
-      [...choices.children].forEach(ch => ch.classList.add(ch.textContent === answer ? "correct" : (ch === c ? "wrong" : "dim")));
-      grade(opt === answer, item);
+      [...choices.children].forEach(ch => ch.classList.add(ch.textContent === ans ? "correct" : (ch === c ? "wrong" : "dim")));
+      grade(choiceLabel(opt) === ans, item);
     });
     choices.appendChild(c);
   });
@@ -561,11 +586,10 @@ function renderReply(q) {
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Understand the reply</div>`));
   body.appendChild(el(`<div class="prompt-sub" style="margin-bottom:8px">You said: “${item.es}”</div>`));
-  const play = el(`<button class="big-speak">🔊</button>`);
-  play.addEventListener("click", () => speak(r.es));
+  const play = waveButton(() => speak(r.es));
   body.appendChild(play);
   body.appendChild(el(`<div class="prompt-sub">They answer. What did they say?</div>`));
-  setTimeout(() => speak(r.es), 300);
+  setTimeout(() => { speak(r.es); play._pulse(); }, 300);
   const answer = r.en;
   const pool = [...new Set((ALL_ITEMS || []).flatMap(x => x.reply && x.reply.en !== answer ? [x.reply.en] : []).concat((ALL_ITEMS || []).filter(x => x.en !== answer).map(x => x.en)))];
   const options = shuffle([answer, ...sample(pool, 3)]);
@@ -579,10 +603,9 @@ function renderListenChoice(q) {
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">What did you hear?</div>`));
   const pe = presentEs(item);                          // §4b.3: listening may play a natural variant
-  const play = el(`<button class="big-speak">🔊</button>`);
-  play.addEventListener("click", () => speak(pe.text));
+  const play = waveButton(() => speak(pe.text));
   body.appendChild(play);
-  setTimeout(() => speak(pe.text), 300);
+  setTimeout(() => { speak(pe.text); play._pulse(); }, 300);
   body.appendChild(mcChoices(options, answer, item));
 }
 
@@ -611,12 +634,11 @@ function renderListen(q) {
   body.appendChild(el(`<div class="qtype">Type what you hear</div>`));
   coldEffortNote(body);                                // §4c.5 one-time cold-production framing
   const pe = presentEs(item);                          // §4b.3: may play a natural variant (grading accepts it)
-  const play = el(`<button class="big-speak">🔊</button>`);
-  play.addEventListener("click", () => speak(pe.text));
+  const play = waveButton(() => speak(pe.text));
   body.appendChild(play);
-  setTimeout(() => speak(pe.text), 350);
+  setTimeout(() => { speak(pe.text); play._pulse(); }, 350);
   // §5.4: 0.75× slower replay is scaffolding — using it means this rep doesn't earn the `native` axis
-  const slow = el(`<button class="slow-btn">🐢 0.75× slower</button>`);
+  const slow = el(`<button class="slow-btn">${icon('clock', 16)} 0.75× slower</button>`);
   slow.addEventListener("click", () => { q.slow = true; speak(pe.text, 0.55); });
   body.appendChild(slow);
   const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe en español…">`);
@@ -932,18 +954,18 @@ function finishGrade(ok, item, extra) {
   const notes = [];
   if (extra) notes.push(`<span class="note-chip"><b>note</b> ${extra}</span>`);
   if (item.note) notes.push(`<span class="note-chip"><b>tip</b> ${item.note}</span>`);
-  if (item.anchor) notes.push(`<span class="note-chip"><b>💡</b> ${item.anchor}</span>`);   // §4c.2 memory hook at the moment of error
+  if (item.anchor) notes.push(`<span class="note-chip"><b>${icon('bulb', 13)}</b> ${item.anchor}</span>`);   // §4c.2 memory hook at the moment of error
   if (item.latam) notes.push(`<span class="note-chip"><b>L. America</b> ${item.latam}</span>`);
   if (item.cat) notes.push(`<span class="note-chip"><b>Català</b> ${item.cat}</span>`);
   const f = footer(`
     <div class="fb-title ${ok ? "ok" : "no"}">${ok ? CHECK_SVG : ""}<span>${ok ? pick(PRAISE) : pick(NEAR_MISS)}</span></div>
     ${restored ? `<div class="restored-chip">${ARC_SVG}<span>Restored — you beat the forgetting curve</span></div>` : ""}
-    <div class="fb-sub"><b>${item.es}</b>${item.en}</div>
+    <div class="fb-sub"><b>${item.es}</b><span class="fb-en">${item.en}</span></div>
     <div>${notes.join("")}</div>
     <div style="height:10px"></div>
     <button class="btn ${ok ? "" : "accent"}" id="cont">Continue</button>`);
   f.classList.add(ok ? "correct" : "wrong");
-  const sb = el(`<button class="speak-btn" style="margin:0 0 10px">🔊 ${item.es}</button>`);
+  const sb = el(`<button class="speak-btn" style="margin:0 0 10px">${icon('speaker', 18)} ${item.es}</button>`);
   sb.addEventListener("click", () => speak(item.es));
   f.insertBefore(sb, f.querySelector("#cont"));
   speak(item.es);                                     // §4c.2: always replay the correct audio — the miss is the moment it matters

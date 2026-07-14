@@ -148,6 +148,7 @@ const CURRICULUM = {
         {
           id: "s4-hear", topic: "Common phrases you'll hear", title: "What locals say to you",
           reward: "You can now understand what's being said TO you. Eavesdropping unlocked. Use responsibly.",
+          primer: { scene: "It's not just you talking now. Montse rattles something off as she sets your plate down, the shopkeeper next door calls out as you pass, and you catch the tune but not the words. Time to tune your ear the other way.", mission: "Catch what locals say to you, and know what they mean.", guessItem: "Que aproveche" },
           items: [
             { es: "¿Algo más?", en: "Anything else?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Algo más? No, gracias.", contextEn: "Anything else? No, thanks.", keywords: ["más"] },
             { es: "Aquí tiene", en: "Here you go", tier: 1, tags: ["social", "restaurant"], contextEs: "Aquí tiene su cambio", contextEn: "Here's your change", keywords: ["tiene"] },

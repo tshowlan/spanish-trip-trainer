@@ -184,6 +184,7 @@ const MEXICO_PACK = {
         {
           id: "mx-hear", topic: "Common phrases you'll hear", title: "What locals say to you",
           reward: "You can understand what's said TO you. 'Ahorita' will still confuse you, that's normal.",
+          primer: { scene: "It's not just you talking now. Doña Lupe says something as she sets your plate down, a stranger nods a word as they pass your table, and you catch the melody but not the meaning. Time to tune your ear the other way.", mission: "Catch what locals say to you, and know what they mean.", guessItem: "Provecho" },
           items: [
             { es: "¿Algo más?", en: "Anything else?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Algo más? No, gracias.", contextEn: "Anything else? No, thanks.", keywords: ["más"] },
             { es: "Mande", en: "Pardon? / Yes?", note: "Very Mexican polite way to say 'what?' or 'go ahead'.", tier: 1, tags: ["social", "politeness"], contextEs: "Disculpe. ¿Mande?", contextEn: "Excuse me. Yes?", keywords: ["mande"] },

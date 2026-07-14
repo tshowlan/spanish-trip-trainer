@@ -126,16 +126,16 @@ async function loadMembers(list, code) {
     list.innerHTML = "";
     rows.forEach((m, i) => {
       const s = strengths(m.stats);
-      const medal = ["🥇", "🥈", "🥉"][i] || `${i + 1}.`;
-      const best = s ? `<span class="skill good">💪 ${s.best.k}</span>` : `<span class="skill">just getting started</span>`;
-      const worst = s && s.worst.k !== s.best.k ? `<span class="skill bad">😬 ${s.worst.k}</span>` : "";
+      const medal = `${i + 1}`;
+      const best = s ? `<span class="skill good">${icon('trophy', 14)} ${s.best.k}</span>` : `<span class="skill">just getting started</span>`;
+      const worst = s && s.worst.k !== s.best.k ? `<span class="skill bad">${icon('warning', 14)} ${s.worst.k}</span>` : "";
       const you = m.name === (state.cloud.name || "") ? ` <span class="you">you</span>` : "";
       list.appendChild(el(`
         <div class="member">
           <div class="m-rank">${medal}</div>
           <div class="m-main">
             <div class="m-name">${m.name}${you}</div>
-            <div class="m-stats">🔥 ${m.streak} · ⚡ ${m.xp} XP</div>
+            <div class="m-stats">${icon('flame', 14)} ${m.streak} · ${icon('lightning', 14)} ${m.xp} XP</div>
             <div class="m-skills">${best} ${worst}</div>
           </div>
         </div>`));

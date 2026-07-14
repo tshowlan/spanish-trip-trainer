@@ -60,10 +60,20 @@ const PH = {
   "book-open": "M232,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H24a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h72a8,8,0,0,0,8-8V56A8,8,0,0,0,232,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64Z",
   "chart-line-up": "M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0V156.69l50.34-50.35a8,8,0,0,1,11.32,0L128,132.69,180.69,80H160a8,8,0,0,1,0-16h40a8,8,0,0,1,8,8v40a8,8,0,0,1-16,0V91.31l-58.34,58.35a8,8,0,0,1-11.32,0L96,123.31l-56,56V200H224A8,8,0,0,1,232,208Z",
   "bookmark": "M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,177.57-51.77-32.35a8,8,0,0,0-8.48,0L72,209.57V48H184Z",
-  "microphone": "M128,176a48.05,48.05,0,0,0,48-48V64a48,48,0,0,0-96,0v64A48.05,48.05,0,0,0,128,176ZM96,64a32,32,0,0,1,64,0v64a32,32,0,0,1-64,0Zm40,143.6V232a8,8,0,0,1-16,0V207.6A80.11,80.11,0,0,1,48,128a8,8,0,0,1,16,0,64,64,0,0,0,128,0,8,8,0,0,1,16,0A80.11,80.11,0,0,1,136,207.6Z"
+  "microphone": "M128,176a48.05,48.05,0,0,0,48-48V64a48,48,0,0,0-96,0v64A48.05,48.05,0,0,0,128,176ZM96,64a32,32,0,0,1,64,0v64a32,32,0,0,1-64,0Zm40,143.6V232a8,8,0,0,1-16,0V207.6A80.11,80.11,0,0,1,48,128a8,8,0,0,1,16,0,64,64,0,0,0,128,0,8,8,0,0,1,16,0A80.11,80.11,0,0,1,136,207.6Z",
+  // ---- multi-element icons (value starts with "<" → injected as-is; replaces emoji, §feedback #4) ----
+  "speaker": `<polygon points="120,56 76,96 40,96 40,160 76,160 120,200"/><path d="M156 100 a44 44 0 0 1 0 56" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/><path d="M184 80 a80 80 0 0 1 0 96" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>`,
+  "bulb": `<path d="M128 36 a64 64 0 0 0 -40 114 v10 a10 10 0 0 0 10 10 h60 a10 10 0 0 0 10 -10 v-10 a64 64 0 0 0 -40 -114 Z"/><rect x="104" y="186" width="48" height="12" rx="6"/><rect x="110" y="204" width="36" height="10" rx="5"/>`,
+  "pencil": `<polygon points="172,44 212,84 100,196 60,196 60,156"/>`,
+  "flame": `<path d="M128 28 C 176 84 184 112 184 148 a56 56 0 0 1 -112 0 C 72 108 96 72 128 28 Z"/>`,
+  "lock": `<rect x="52" y="112" width="152" height="108" rx="16"/><path d="M88 112 V84 a40 40 0 0 1 80 0 v28" fill="none" stroke="currentColor" stroke-width="16"/>`,
+  "clock": `<circle cx="128" cy="128" r="88" fill="none" stroke="currentColor" stroke-width="16"/><line x1="128" y1="128" x2="128" y2="76" stroke="currentColor" stroke-width="16" stroke-linecap="round"/><line x1="128" y1="128" x2="164" y2="148" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>`,
+  "mobile": `<rect x="72" y="28" width="112" height="200" rx="18" fill="none" stroke="currentColor" stroke-width="16"/><line x1="112" y1="196" x2="144" y2="196" stroke="currentColor" stroke-width="14" stroke-linecap="round"/>`
 };
 function icon(name, size = 22) {
-  return `<svg class="ph" viewBox="0 0 256 256" width="${size}" height="${size}" fill="currentColor" aria-hidden="true">${PH[name] ? `<path d="${PH[name]}"/>` : ""}</svg>`;
+  const v = PH[name];
+  const inner = !v ? "" : (v[0] === "<" ? v : `<path d="${v}"/>`);
+  return `<svg class="ph" viewBox="0 0 256 256" width="${size}" height="${size}" fill="currentColor" aria-hidden="true">${inner}</svg>`;
 }
 
 /* ---------- lighthouse mark (geometric, brand palette) ---------- */

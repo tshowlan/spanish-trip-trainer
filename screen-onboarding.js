@@ -150,7 +150,7 @@ function renderOnboarding() {
           <h2>${days <= 0 ? "Your trip is here!" : cram ? `${days} days until ${d.label} — cram mode on` : `${weeks} weeks until ${d.label}`}</h2>
           <p>Here's your trip-ready path: <b>~${sessions} sessions</b>, about <b>6 minutes a day</b>. By departure you'll be able to:</p>
           <ul class="plan-list">${outcomes.map(o => `<li>${o}</li>`).join("")}</ul>
-          <p class="onb-dim">All in ${d.dialect}. Change anything later in ⚙️ Settings.</p>
+          <p class="onb-dim">All in ${d.dialect}. Change anything later in Settings.</p>
         </div>`));
       const btn = el(`<button class="btn">Start my first lesson →</button>`);
       btn.addEventListener("click", finish);

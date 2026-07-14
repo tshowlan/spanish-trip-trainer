@@ -57,7 +57,7 @@ function renderReminders() {
 
   const test = el(`<button class="btn grey" style="margin-top:16px">Send a test notification</button>`);
   wrap.appendChild(test);
-  wrap.appendChild(el(`<p class="onb-dim" style="margin-top:14px">📱 On iPhone, reminders only work after you <b>Add to Home Screen</b> and allow notifications. iOS may deliver them a little late.</p>`));
+  wrap.appendChild(el(`<p class="onb-dim" style="margin-top:14px">${icon('mobile', 15)} On iPhone, reminders only work after you <b>Add to Home Screen</b> and allow notifications. iOS may deliver them a little late.</p>`));
   app.appendChild(wrap);
 
   $("#back").addEventListener("click", renderSettings);

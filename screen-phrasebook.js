@@ -28,7 +28,7 @@ function renderPhrasebook() {
   wrap.appendChild(search);
   const seg = el(`<div class="pb-seg">
     <button class="pill ${_pbSavedOnly ? "" : "on"}" data-s="all">All</button>
-    <button class="pill ${_pbSavedOnly ? "on" : ""}" data-s="saved">★ Saved (${(state.saved || []).length})</button>
+    <button class="pill ${_pbSavedOnly ? "on" : ""}" data-s="saved">${icon('bookmark', 15)} Saved (${(state.saved || []).length})</button>
   </div>`);
   wrap.appendChild(seg);
   const list = el(`<div id="pb-list"></div>`);
@@ -43,7 +43,7 @@ function renderPhrasebook() {
     const kws = (it.keywords || []).filter(k => threadCount(k) >= 2);
     const chips = kws.map(k => `<button class="pb-kw ${k === _pbThread ? "on" : ""}" data-kw="${k}">${k}<span class="pb-kw-n">${threadCount(k)}</span></button>`).join("");
     const row = el(`<div class="pb-row">
-      <button class="pb-speak" aria-label="Play">🔊</button>
+      <button class="pb-speak" aria-label="Play">${icon('speaker', 20)}</button>
       <div class="pb-text"><div class="pb-es">${it.es}</div><div class="pb-en">${it.en}</div>${chips ? `<div class="pb-kws">${chips}</div>` : ""}</div>
       <button class="pb-save ${isSaved(it.es) ? "on" : ""}" aria-label="Save">${icon("bookmark", 20)}</button>
     </div>`);
@@ -94,7 +94,7 @@ function renderPhrasebook() {
     }));
     if (!count) list.appendChild(el(`<p class="onb-dim" style="margin-top:20px">${_pbSavedOnly ? "No saved phrases yet, tap the bookmark on any phrase to keep it here." : "No matches."}</p>`));
   }
-  function refreshSeg() { const b = seg.querySelector('[data-s="saved"]'); if (b) b.textContent = `★ Saved (${(state.saved || []).length})`; }
+  function refreshSeg() { const b = seg.querySelector('[data-s="saved"]'); if (b) b.innerHTML = `${icon('bookmark', 15)} Saved (${(state.saved || []).length})`; }
 
   search.addEventListener("input", () => { _pbFilter = search.value; _pbThread = null; draw(); });
   seg.querySelectorAll(".pill").forEach(b => b.addEventListener("click", () => {

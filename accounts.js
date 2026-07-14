@@ -94,7 +94,7 @@ function renderAuth(mode) {
     submit.disabled = true; submit.textContent = "…";
     try {
       mode === "signup" ? await doSignup(e, p) : await doLogin(e, p);
-      toast(mode === "signup" ? "Account created, progress backed up ☁️" : "Logged in, progress restored ☁️");
+      toast(mode === "signup" ? "Account created, progress backed up." : "Logged in, progress restored.");
       renderHome();
     } catch (err) {
       submit.disabled = false; submit.textContent = title;

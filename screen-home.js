@@ -126,7 +126,7 @@ function renderHome() {
   }
 
   if (!state.account) {
-    const banner = el(`<div class="backup-banner"><span>🔒 Back up your progress, create an account so a reinstall never wipes your progress.</span><button class="btn" style="margin-top:10px">Create account</button></div>`);
+    const banner = el(`<div class="backup-banner"><span>${icon('lock', 16)} Back up your progress, create an account so a reinstall never wipes your progress.</span><button class="btn" style="margin-top:10px">Create account</button></div>`);
     banner.querySelector("button").addEventListener("click", () => renderAuth("signup"));
     home.appendChild(banner);
   }
