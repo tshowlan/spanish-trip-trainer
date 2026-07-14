@@ -25,6 +25,22 @@ function renderProgress() {
   </div>`));
   wrap.appendChild(el(streakStrip()));
 
+  // §3.1 Progress = reflection: status tier, trends, divergence, and the trip archive live here.
+  if (typeof currentTier === "function") {
+    wrap.appendChild(el(`<div class="q-head">Status</div>`));
+    wrap.appendChild(el(`<div class="prog-tier"><div class="pt-name">${currentTier()}</div><div class="pt-next">${nextTierCondition()}</div></div>`));
+  }
+
+  // §7.2 trend charts (data-gated — nothing shows until a couple of days of history)
+  const labels = { readiness: "Readiness", momentum: "Momentum", retention: "Retention" };
+  const trends = Object.keys(labels).map(m => ({ m, html: (typeof trendBlock === "function") ? trendBlock(m) : "" })).filter(t => t.html);
+  if (trends.length) {
+    wrap.appendChild(el(`<div class="q-head">Trends</div>`));
+    trends.forEach(t => wrap.appendChild(el(`<div class="prog-trend"><div class="pt-label">${labels[t.m]}</div>${t.html}</div>`)));
+  }
+  const dv = (typeof divergenceLine === "function") ? divergenceLine() : null;
+  if (dv) wrap.appendChild(dv);
+
   const cats = Object.entries(state.topicStats || {}).filter(([, v]) => v && v.total >= 4)
     .sort((a, b) => b[1].correct / b[1].total - a[1].correct / a[1].total);
   if (cats.length) {
@@ -32,6 +48,16 @@ function renderProgress() {
     cats.forEach(([k, v]) => {
       const pct = Math.round(v.correct / v.total * 100);
       wrap.appendChild(el(`<div class="prog-row"><span>${k}</span><span class="prog-pct">${pct}%</span></div>`));
+    });
+  }
+
+  // §5.2 trip archive — permanent trophies
+  const arch = (typeof completedTrips === "function") ? completedTrips() : [];
+  if (arch.length) {
+    wrap.appendChild(el(`<div class="q-head">Trips</div>`));
+    arch.slice().reverse().forEach(t => {
+      const di = destInfo(t.destination), band = readinessBand(t.readinessAtDeparture);
+      wrap.appendChild(el(`<div class="archive-row"><div class="arch-dest">${di.flag} ${di.label}</div><div class="arch-meta">${t.tripDate}</div><div class="arch-score ${band.cls}">${t.readinessAtDeparture}%</div></div>`));
     });
   }
 

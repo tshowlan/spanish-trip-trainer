@@ -691,6 +691,13 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .hero-tile.hero-caught { background: var(--bg-elevated); color: var(--text); box-shadow: none; border: 1px solid var(--border); }
 .hero-tile.hero-caught .hero-go { color: var(--text-dim); }
 
+/* §3.1 Progress: status tier + labeled trend blocks */
+.prog-tier { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; }
+.pt-name { font-family: var(--font-display); font-weight: 800; font-size: 22px; }
+.pt-next { font-size: 13px; color: var(--text-dim); margin-top: 4px; line-height: 1.45; }
+.prog-trend { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 10px; }
+.pt-label { font-size: 13px; font-weight: 800; margin-bottom: 2px; }
+
 /* §3.2 home Practice chooser + divergence line */
 .practice-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 12px;
   background: var(--bg-card); border: 1px solid var(--border); color: var(--text-dim); border-radius: var(--radius);
