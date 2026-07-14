@@ -553,7 +553,9 @@ function renderMC(q) {
 // §feedback #2: strip leading/trailing punctuation (¿ ¡ ? ! . , : ; " «») from the DISPLAYED
 // options so a lone question mark / inverted mark can't hand away which one is right. Grading works
 // in the same stripped space; the fully-punctuated form is revealed in the feedback afterward.
-const choiceLabel = s => String(s).replace(/^[¿¡("«“‘\s]+|[?!).,;:"»”’\s]+$/g, "");
+// strips only the telltale marks (¿ ¡ ? ! . , : ; and wrapping quotes) — NOT parentheses, which are
+// content (e.g. "Rare (steak)" must keep its closing bracket).
+const choiceLabel = s => String(s).replace(/^[¿¡"«“‘\s]+|[?!.,;:"»”’\s]+$/g, "");
 function mcChoices(options, answer, item) {
   const ans = choiceLabel(answer);
   const choices = el(`<div class="choices"></div>`);
@@ -590,6 +592,9 @@ function renderReply(q) {
   body.appendChild(play);
   body.appendChild(el(`<div class="prompt-sub">They answer. What did they say?</div>`));
   setTimeout(() => { speak(r.es); play._pulse(); }, 300);
+  const slow = el(`<button class="slow-btn">${icon('clock', 16)} 0.75× slower</button>`);
+  slow.addEventListener("click", () => { q.slow = true; play._pulse(); speak(r.es, 0.55); });
+  body.appendChild(slow);
   const answer = r.en;
   const pool = [...new Set((ALL_ITEMS || []).flatMap(x => x.reply && x.reply.en !== answer ? [x.reply.en] : []).concat((ALL_ITEMS || []).filter(x => x.en !== answer).map(x => x.en)))];
   const options = shuffle([answer, ...sample(pool, 3)]);
@@ -606,6 +611,9 @@ function renderListenChoice(q) {
   const play = waveButton(() => speak(pe.text));
   body.appendChild(play);
   setTimeout(() => { speak(pe.text); play._pulse(); }, 300);
+  const slow = el(`<button class="slow-btn">${icon('clock', 16)} 0.75× slower</button>`);
+  slow.addEventListener("click", () => { q.slow = true; play._pulse(); speak(pe.text, 0.55); });
+  body.appendChild(slow);
   body.appendChild(mcChoices(options, answer, item));
 }
 
