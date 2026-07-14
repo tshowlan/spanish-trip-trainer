@@ -23,16 +23,16 @@ const CURRICULUM = {
           title: "Hello & Polite",
           reward: "Look at you go — you can now greet a waiter without pointing. Diplomatic immunity pending.",
           items: [
-            { es: "Hola", en: "Hello" },
-            { es: "Buenos días", en: "Good morning" },
-            { es: "Buenas tardes", en: "Good afternoon" },
-            { es: "Buenas noches", en: "Good evening / night" },
-            { es: "Por favor", en: "Please" },
-            { es: "Gracias", en: "Thank you" },
-            { es: "De nada", en: "You're welcome" },
-            { es: "Perdón", en: "Excuse me / Sorry" },
-            { es: "Sí", en: "Yes" },
-            { es: "No", en: "No" }
+            { es: "Hola", en: "Hello", tier: 1, tags: ["greetings"], contextEs: "Hola, buenos días", contextEn: "Hi, good morning" },
+            { es: "Buenos días", en: "Good morning", tier: 1, tags: ["greetings"], contextEs: "Buenos días, ¿qué tal?", contextEn: "Good morning, how are you?", keywords: ["días"] },
+            { es: "Buenas tardes", en: "Good afternoon", tier: 1, tags: ["greetings"], contextEs: "Buenas tardes, señor", contextEn: "Good afternoon, sir", keywords: ["tardes"] },
+            { es: "Buenas noches", en: "Good evening / night", tier: 1, tags: ["greetings"], contextEs: "Buenas noches, hasta mañana", contextEn: "Good night, see you tomorrow", keywords: ["noches"] },
+            { es: "Por favor", en: "Please", tier: 1, tags: ["politeness"], contextEs: "Un café, por favor", contextEn: "A coffee, please", keywords: ["por favor"] },
+            { es: "Gracias", en: "Thank you", tier: 1, tags: ["politeness"], contextEs: "Muchas gracias por todo", contextEn: "Thank you very much for everything", anchor: "Think: 'gratitude.'", variants: ["Muchas gracias"], reply: { es: "De nada", en: "You're welcome" } },
+            { es: "De nada", en: "You're welcome", tier: 1, tags: ["politeness"], contextEs: "—Gracias. —De nada.", contextEn: "—Thanks. —You're welcome." },
+            { es: "Perdón", en: "Excuse me / Sorry", tier: 1, tags: ["politeness"], contextEs: "Perdón, ¿me ayuda?", contextEn: "Excuse me, can you help me?", keywords: ["perdón"] },
+            { es: "Sí", en: "Yes", tier: 1, tags: ["basics"], contextEs: "Sí, por favor", contextEn: "Yes, please" },
+            { es: "No", en: "No", tier: 1, tags: ["basics"], contextEs: "No, gracias", contextEn: "No, thanks" }
           ]
         },
         {
@@ -41,14 +41,14 @@ const CURRICULUM = {
           title: "I Only Speak a Little",
           reward: "Now you can confess your Spanish is bad — in Spanish. Meta. Keep going so you don't have to.",
           items: [
-            { es: "Hablo solo un poco de español", en: "I only speak a little Spanish" },
-            { es: "No entiendo", en: "I don't understand" },
-            { es: "¿Habla inglés?", en: "Do you speak English?", note: "Formal (usted). Polite default with strangers." },
-            { es: "¿Cómo se dice...?", en: "How do you say...?" },
-            { es: "¿Puede repetir, por favor?", en: "Can you repeat that, please?" },
-            { es: "Más despacio, por favor", en: "Slower, please" },
-            { es: "¿Qué significa?", en: "What does it mean?" },
-            { es: "No lo sé", en: "I don't know" }
+            { es: "Hablo solo un poco de español", en: "I only speak a little Spanish", tier: 2, tags: ["communication"], keywords: ["español"] },
+            { es: "No entiendo", en: "I don't understand", tier: 1, tags: ["communication"], contextEs: "Perdón, no entiendo bien", contextEn: "Sorry, I don't understand well", keywords: ["entiendo"] },
+            { es: "¿Habla inglés?", en: "Do you speak English?", note: "Formal (usted). Polite default with strangers.", tier: 1, tags: ["communication"], contextEs: "Perdone, ¿habla inglés?", contextEn: "Excuse me, do you speak English?", anchor: "'inglés' = English.", keywords: ["inglés"] },
+            { es: "¿Cómo se dice...?", en: "How do you say...?", tier: 2, tags: ["communication"], keywords: ["dice"] },
+            { es: "¿Puede repetir, por favor?", en: "Can you repeat that, please?", tier: 2, tags: ["communication"], keywords: ["repetir"], variants: ["¿Me lo repite, por favor?"] },
+            { es: "Más despacio, por favor", en: "Slower, please", tier: 2, tags: ["communication"], keywords: ["despacio"] },
+            { es: "¿Qué significa?", en: "What does it mean?", tier: 2, tags: ["communication"], contextEs: "¿Qué significa esta palabra?", contextEn: "What does this word mean?", keywords: ["significa"] },
+            { es: "No lo sé", en: "I don't know", tier: 1, tags: ["communication"], contextEs: "No lo sé, lo siento", contextEn: "I don't know, sorry" }
           ]
         },
         {
@@ -57,17 +57,17 @@ const CURRICULUM = {
           title: "Numbers 1–10",
           reward: "You can count to ten. That's enough fingers to order tapas for the whole table.",
           items: [
-            { es: "uno", en: "one" },
-            { es: "dos", en: "two" },
-            { es: "tres", en: "three" },
-            { es: "cuatro", en: "four" },
-            { es: "cinco", en: "five" },
-            { es: "seis", en: "six" },
-            { es: "siete", en: "seven" },
-            { es: "ocho", en: "eight" },
-            { es: "nueve", en: "nine" },
-            { es: "diez", en: "ten" },
-            { es: "¿Cuánto cuesta?", en: "How much is it?" }
+            { es: "uno", en: "one", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Uno, por favor", contextEn: "One, please" },
+            { es: "dos", en: "two", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Una mesa para dos", contextEn: "A table for two" },
+            { es: "tres", en: "three", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Tres cañas, por favor", contextEn: "Three beers, please" },
+            { es: "cuatro", en: "four", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Somos cuatro", contextEn: "There are four of us" },
+            { es: "cinco", en: "five", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Cinco euros", contextEn: "Five euros" },
+            { es: "seis", en: "six", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "A las seis", contextEn: "At six" },
+            { es: "siete", en: "seven", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Siete de la tarde", contextEn: "Seven in the evening" },
+            { es: "ocho", en: "eight", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "A las ocho", contextEn: "At eight" },
+            { es: "nueve", en: "nine", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Abre a las nueve", contextEn: "It opens at nine" },
+            { es: "diez", en: "ten", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Diez euros", contextEn: "Ten euros" },
+            { es: "¿Cuánto cuesta?", en: "How much is it?", tier: 2, tags: ["money", "shopping"], keywords: ["cuánto", "cuesta"], variants: ["¿Qué precio tiene?"], reply: { es: "Son cinco euros", en: "It's five euros" } }
           ]
         },
         {
@@ -76,14 +76,14 @@ const CURRICULUM = {
           title: "Yes, Chef",
           reward: "You can now say 'I'll have the steak' and 'still water.' Maybe after 50 more you'll order it at the right temperature.",
           items: [
-            { es: "Una mesa para dos, por favor", en: "A table for two, please" },
-            { es: "La carta, por favor", en: "The menu, please", note: "In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día." },
-            { es: "Para mí, el filete", en: "For me, the steak", latam: "Latin America: 'el bife' or 'la carne'." },
-            { es: "Agua sin gas", en: "Still water (no bubbles)" },
-            { es: "Agua con gas", en: "Sparkling water" },
-            { es: "Una caña, por favor", en: "A small draft beer, please", note: "Very Spain. A 'caña' is a small draft beer." },
-            { es: "La cuenta, por favor", en: "The check, please" },
-            { es: "Está muy rico", en: "It's delicious" }
+            { es: "Una mesa para dos, por favor", en: "A table for two, please", tier: 2, tags: ["restaurant", "food"], keywords: ["mesa"], variants: ["Mesa para dos, por favor"] },
+            { es: "La carta, por favor", en: "The menu, please", note: "In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día.", tier: 2, tags: ["restaurant", "food"], keywords: ["carta"], variants: ["¿Me trae la carta?"] },
+            { es: "Para mí, el filete", en: "For me, the steak", latam: "Latin America: 'el bife' or 'la carne'.", tier: 2, tags: ["restaurant", "food"], keywords: ["filete"] },
+            { es: "Agua sin gas", en: "Still water (no bubbles)", tier: 1, tags: ["drink", "restaurant"], contextEs: "Una botella de agua sin gas", contextEn: "A bottle of still water", keywords: ["agua"] },
+            { es: "Agua con gas", en: "Sparkling water", tier: 1, tags: ["drink", "restaurant"], contextEs: "Agua con gas, por favor", contextEn: "Sparkling water, please", keywords: ["agua"] },
+            { es: "Una caña, por favor", en: "A small draft beer, please", note: "Very Spain. A 'caña' is a small draft beer.", tier: 2, tags: ["drink"], keywords: ["caña"], variants: ["Ponme una caña"] },
+            { es: "La cuenta, por favor", en: "The check, please", tier: 2, tags: ["restaurant", "money"], keywords: ["cuenta"], variants: ["¿Me trae la cuenta?"] },
+            { es: "Está muy rico", en: "It's delicious", tier: 2, tags: ["food"], keywords: ["rico"], variants: ["Está buenísimo"] }
           ]
         }
       ]
