@@ -6,12 +6,12 @@ function voiceFor(lang) {
       || vs.find(v => /^es/i.test(v.lang))                                             // any Spanish
       || null;
 }
-function speak(text) {
+function speak(text, rate) {
   if (!("speechSynthesis" in window)) return;
   speechSynthesis.cancel();
   const lang = (typeof activePack === "function" ? activePack().tts : "es-ES");
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = lang; const v = voiceFor(lang); if (v) u.voice = v; u.rate = 0.9;
+  u.lang = lang; const v = voiceFor(lang); if (v) u.voice = v; u.rate = rate || 0.9;
   speechSynthesis.speak(u);
 }
 

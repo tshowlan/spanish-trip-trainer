@@ -246,6 +246,73 @@ function startReview(items) {
   run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map() };
   renderQuestion();
 }
+
+/* ----- speed round (M4, §6.4/§7.6): 60s timed match over phrases you already own. Advances nothing —
+   pure retention + fun. The "you're ahead" payoff, and the fallback when nothing's due. ----- */
+function speedPool() {
+  const all = ALL_ITEMS || [];
+  const grad = all.filter(it => { const s = learnPeek(it); return s && s.axes && s.axes.production && s.axes.cold && s.axes.native && s.axes.chained; });
+  if (grad.length >= 4) return grad;
+  const strong = all.filter(it => { const s = learnPeek(it); return s && s.exposures >= 5 && s.streak >= 2; });
+  if (strong.length >= 4) return strong;
+  return all.filter(it => exposuresOf(it) >= 1);                 // any seen phrase
+}
+function startSpeedRound() {
+  const pool = speedPool();
+  if (pool.length < 4) { toast("Speed rounds need phrases you know — finish a few lessons first 🏁"); return; }
+  renderSpeedRound(pool);
+}
+function renderSpeedRound(pool) {
+  const app = $("#app"); clearFooter(); hideTabbar(); app.innerHTML = "";
+  let timeLeft = 60, matched = 0, sel = null, timer = null;
+  app.appendChild(el(`<div class="runner speed">
+    <div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button>
+      <div class="speed-timer" id="stime">0:60</div><div class="speed-score" id="sscore">0</div></div>
+    <div class="qtype" style="text-align:center;margin:6px 0 12px">Match them — fast!</div>
+    <div class="match" id="sgrid"></div></div>`));
+  const grid = $("#sgrid");
+  const stop = () => { if (timer) clearInterval(timer); timer = null; };
+  $("#quit").addEventListener("click", () => { stop(); renderHome(); });
+  function loadBatch() {
+    grid.innerHTML = "";
+    const batch = shuffle(pool.slice()).slice(0, 5);
+    const left = shuffle(batch.map(it => ({ key: it.es, label: it.es })));
+    const right = shuffle(batch.map(it => ({ key: it.es, label: it.en })));
+    for (let r = 0; r < batch.length; r++) [[left[r], "L"], [right[r], "R"]].forEach(([d, side]) => {
+      const tile = el(`<button class="tile" data-key="${encodeURIComponent(d.key)}" data-side="${side}">${d.label}</button>`);
+      tile.addEventListener("click", () => tap(tile));
+      grid.appendChild(tile);
+    });
+    grid._left = batch.length;
+  }
+  function tap(tile) {
+    if (tile.classList.contains("gone") || !timer) return;
+    if (!sel) { [...grid.children].forEach(c => c.classList.remove("sel")); tile.classList.add("sel"); sel = tile; return; }
+    if (sel === tile) { tile.classList.remove("sel"); sel = null; return; }
+    if (sel.dataset.key === tile.dataset.key && sel.dataset.side !== tile.dataset.side) {
+      [sel, tile].forEach(c => { c.classList.remove("sel"); c.classList.add("gone"); }); sel = null;
+      matched++; $("#sscore").textContent = matched; playSound("correct");
+      if (--grid._left === 0) loadBatch();
+    } else {
+      const a = sel, b = tile; [a, b].forEach(c => c.classList.add("bad")); sel = null;
+      setTimeout(() => [a, b].forEach(c => c.classList.remove("sel", "bad")), 300);
+    }
+  }
+  function tick() { timeLeft--; $("#stime").textContent = `0:${String(Math.max(0, timeLeft)).padStart(2, "0")}`; if (timeLeft <= 0) { stop(); results(); } }
+  function results() {
+    app.innerHTML = "";
+    app.appendChild(el(`<div class="complete">
+      <h2>Speed round</h2>
+      <div class="scorebar"><div class="score"><div class="n">${matched}</div><div class="l">pairs matched</div></div></div>
+      <div class="reward">Pure practice — nothing on the line, just reps that keep your phrases sharp.</div>
+      <button class="btn accent" id="again">Go again</button><div style="height:10px"></div>
+      <button class="btn grey" id="done">Done</button></div>`));
+    $("#again").addEventListener("click", startSpeedRound);
+    $("#done").addEventListener("click", renderHome);
+  }
+  loadBatch();
+  timer = setInterval(tick, 1000);
+}
 function renderQuestion() {
   const app = $("#app");
   const q = run.qs[run.idx];
@@ -508,6 +575,10 @@ function renderListen(q) {
   play.addEventListener("click", () => speak(pe.text));
   body.appendChild(play);
   setTimeout(() => speak(pe.text), 350);
+  // §5.4: 0.75× slower replay is scaffolding — using it means this rep doesn't earn the `native` axis
+  const slow = el(`<button class="slow-btn">🐢 0.75× slower</button>`);
+  slow.addEventListener("click", () => { q.slow = true; speak(pe.text, 0.55); });
+  body.appendChild(slow);
   const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe en español…">`);
   body.appendChild(input);
   setTimeout(() => input.focus(), 50);
@@ -806,7 +877,7 @@ function finishGrade(ok, item, extra) {
   run.answered = true;
   const q = run.qs[run.idx];
   if (!ok) { run.wrong++; if (run.hearts > 0) run.hearts--; if (run.missed) run.missed.set(itemId(item), item); }
-  recordAnswer(itemId(item), ok, { mode: q && q.type });
+  recordAnswer(itemId(item), ok, { mode: q && q.type, scaffolded: q && q.slow });   // q.slow = used the 0.75× replay
   // §4b.2: count correct one-blank fills so the item graduates to two-blank fills
   if (ok && q && q.type === "fill_blank" && (q.blanks || 1) === 1) { const st = state.learn && state.learn[itemId(item)]; if (st) st.fill1 = (st.fill1 || 0) + 1; }
   playSound(ok ? "correct" : "wrong");

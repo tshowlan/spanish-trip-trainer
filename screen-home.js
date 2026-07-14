@@ -243,7 +243,7 @@ function heroState() {
     return { kind: "momentum", title: "Momentum's dipping — 3 minutes brings it back", run: () => startReview(backlog.slice(0, 8)) };
   if (next)   // §7.3 coverage problem: retention solid but too little covered → new content, said plainly
     return { kind: "lesson", title: `Start: ${next.title}`, sub: dv && dv.kind === "cover" ? `${destInfo(p.destination).label} needs more — ${dv.untouched} categories untouched` : next.topic, run: () => startLesson(next) };
-  return { kind: "caught", title: "You're ahead — a quick practice round?", run: () => startReview(seenItems()) };
+  return { kind: "caught", title: "You're ahead — up for a speed round?", run: () => startSpeedRound() };   // §7.6 pure fun, advances nothing
 }
 function heroTile() {
   const h = heroState();

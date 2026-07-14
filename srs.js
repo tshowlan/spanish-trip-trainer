@@ -45,7 +45,7 @@ function recordAnswer(id, ok, opts) {
     const m = opts && opts.mode;                                  // mastery axes (as modes exist)
     if (m === "type_translation") { s.axes.production = 1; s.axes.cold = 1; }
     else if (m === "speak_it") { s.axes.production = 1; s.axes.cold = 1; }   // speaking = cold production
-    else if (m === "listen_type") { s.axes.production = 1; s.axes.native = 1; }
+    else if (m === "listen_type") { s.axes.production = 1; if (!(opts && opts.scaffolded)) s.axes.native = 1; }  // native only at full speed (§5.4)
     else if (m === "chained") { s.axes.chained = 1; }                        // produced a turn inside a dialogue (§5.4)
     if (s.axes.production && s.axes.cold && s.axes.native && s.axes.chained) s.interval *= 2;  // graduated
     s.interval = Math.min(s.interval, daysLeft);                  // never schedule past the trip
