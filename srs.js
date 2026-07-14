@@ -150,8 +150,24 @@ function _baseTier(exposures, difficulty) {
   return 1;                           // recognition
 }
 
+// §8.5 exercise-type families, for shaping session rhythm (recognition → production → audio).
+// A preference only ever picks among modes the item's own tier already allows — never over-tests.
+const MODE_FAMILY = {
+  recognition: ["mc_es2en", "mc_en2es", "listen_choice"],
+  production:  ["build", "fill_blank", "type_translation", "speak_it"],
+  audio:       ["listen_choice", "listen_type"]
+};
+function _pickPreferred(tier, item, prefer) {
+  const want = MODE_FAMILY[prefer]; if (!want) return null;
+  const cand = [];
+  for (let t = 1; t <= Math.max(1, Math.min(tier, LADDER.length - 1)); t++)
+    LADDER[t].forEach(m => { if (want.includes(m) && _modeFeasible(m, item)) cand.push(m); });
+  return cand.length ? pick(cand) : null;   // null → caller falls back to the normal tier pick
+}
+
 // pick the graded mode for an item this session. opts.cap limits the max rung
 // (first-pass cap, §4.1 — a lesson introducing new material never goes cold).
+// opts.prefer (§8.5) softly steers toward a mode family when the tier allows one.
 function chooseType(item, opts) {
   const s = learnPeek(item);
   const exp = s ? s.exposures : 0;
@@ -159,6 +175,7 @@ function chooseType(item, opts) {
   if (s && s.streak === 0 && s.lapses > 0) tier = Math.max(1, tier - 1);  // rung-down after a recent miss
   const cap = opts && opts.cap;
   if (cap) tier = Math.min(tier, cap);
+  if (opts && opts.prefer) { const p = _pickPreferred(tier, item, opts.prefer); if (p) return p; }
   return _pickModeForTier(tier, item);
 }
 // re-serve a missed item one rung easier than the mode it failed (0 → presentation card)

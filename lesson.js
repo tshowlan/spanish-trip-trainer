@@ -57,7 +57,7 @@ function composeSession(lesson) {
   // redo of a completed lesson → no new items to weave, just drill
   if (!newItems.length) {
     shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap))).forEach(q => qs.push(q));
-    return qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it }));
+    return applyRhythm(qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it })));
   }
 
   // §6.1b micro-batch weave: never >2 presentation cards in a row; each new item gets a rung-1
@@ -79,7 +79,29 @@ function composeSession(lesson) {
     if (later.length) qs.push(later.shift());
     const r = nextReview(); if (r) qs.push(r);
   }
-  return qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it }));  // safety net
+  return applyRhythm(qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it })));  // safety net
+}
+// §8.5 exercise-variety rhythm: shape the *type* of graded slots by position — open on
+// recognition warm-ups, lean production through the middle, close on an audio item — without
+// reordering (the §6.1b weave stays intact) and without ever exceeding an item's earned tier.
+// Only retypes; a slot whose item/pool can't honor the preference keeps its natural type.
+function applyRhythm(qs) {
+  const needsPool = t => t === "mc_es2en" || t === "mc_en2es" || t === "listen_choice";
+  const idx = [];
+  qs.forEach((q, i) => { if (q && q.item && q.type !== "present" && q.type !== "intro") idx.push(i); });
+  if (idx.length < 3) return qs;                          // too short to have a rhythm
+  const steer = (i, prefer) => {
+    const q = qs[i], t = chooseType(q.item, { prefer });
+    if (t === q.type) return;
+    if (needsPool(t) && !(Array.isArray(q.pool) && q.pool.length >= 3)) return;   // no distractors → leave as-is
+    q.type = t;
+  };
+  steer(idx[0], "recognition");                           // ease in
+  if (idx.length >= 6) steer(idx[1], "recognition");
+  const midFrom = Math.floor(idx.length / 3), midTo = Math.ceil(idx.length * 2 / 3);
+  for (let k = midFrom; k < midTo; k += 2) steer(idx[k], "production");   // production through the middle
+  steer(idx[idx.length - 1], "audio");                    // close on audio
+  return qs;
 }
 // pure-review session (Home "Review" entry / all lessons complete): mistakes first, then due
 function composeReview() {
@@ -87,7 +109,7 @@ function composeReview() {
   const due = dueForReview();
   const seen = [...new Set([...mistakes, ...due])];
   const pool = (seen.length ? seen : dueForReview(0)).slice(0, 14);
-  return pool.map(it => reviewQuestion(it, pool));
+  return applyRhythm(pool.map(it => reviewQuestion(it, pool)));
 }
 
 let run = null;
