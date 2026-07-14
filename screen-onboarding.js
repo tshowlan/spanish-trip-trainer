@@ -28,7 +28,7 @@ const daysUntil = d => Math.ceil((new Date(d + "T00:00:00") - new Date(todayStr(
 
 function renderOnboarding() {
   const app = $("#app");
-  const draft = { destination: null, date: "", tripType: null, needs: [], allergies: [], pIdx: 0, pScore: 0, level: null };
+  const draft = { destination: null, date: "", tripType: null, lodging: [], transport: [], needs: [], allergies: [], pIdx: 0, pScore: 0, level: null };
   let screen = "welcome";
 
   const go = s => { screen = s; render(); };
@@ -76,10 +76,44 @@ function renderOnboarding() {
       TRIP_TYPES.forEach(([key, label, desc]) => {
         const chip = el(`<button class="chip ${draft.tripType === key ? "on" : ""}">
           <span class="chip-l">${label}</span>${desc ? `<span class="chip-d">${desc}</span>` : ""}</button>`);
-        chip.addEventListener("click", () => { draft.tripType = key; go("needs"); });
+        chip.addEventListener("click", () => { draft.tripType = key; go("lodging"); });
         chips.appendChild(chip);
       });
       wrap.appendChild(chips);
+
+    } else if (screen === "lodging") {
+      wrap.appendChild(el(`<div class="onb-q">Where are you staying?</div>`));
+      wrap.appendChild(el(`<div class="onb-sub">An apartment or Airbnb unlocks host and check-out phrases hotels don't need.</div>`));
+      const chips = el(`<div class="chips"></div>`);
+      LODGING_OPTIONS.forEach(o => {
+        const on = draft.lodging.includes(o.key);
+        const chip = el(`<button class="chip ${on ? "on" : ""}"><span class="chip-l">${o.label}</span></button>`);
+        chip.addEventListener("click", () => {
+          const i = draft.lodging.indexOf(o.key); i >= 0 ? draft.lodging.splice(i, 1) : draft.lodging.push(o.key); render();
+        });
+        chips.appendChild(chip);
+      });
+      wrap.appendChild(chips);
+      const next = el(`<button class="btn" style="margin-top:18px">Continue</button>`);
+      next.addEventListener("click", () => go("transport"));
+      wrap.appendChild(next);
+
+    } else if (screen === "transport") {
+      wrap.appendChild(el(`<div class="onb-q">How will you get around?</div>`));
+      wrap.appendChild(el(`<div class="onb-sub">Pick any. Each mode adds the phrases for tickets, stops, and reading the signs.</div>`));
+      const chips = el(`<div class="chips"></div>`);
+      TRANSPORT_OPTIONS.forEach(o => {
+        const on = draft.transport.includes(o.key);
+        const chip = el(`<button class="chip ${on ? "on" : ""}"><span class="chip-l">${o.label}</span></button>`);
+        chip.addEventListener("click", () => {
+          const i = draft.transport.indexOf(o.key); i >= 0 ? draft.transport.splice(i, 1) : draft.transport.push(o.key); render();
+        });
+        chips.appendChild(chip);
+      });
+      wrap.appendChild(chips);
+      const next = el(`<button class="btn" style="margin-top:18px">Continue</button>`);
+      next.addEventListener("click", () => go("needs"));
+      wrap.appendChild(next);
 
     } else if (screen === "needs") {
       wrap.appendChild(el(`<div class="onb-q">Anything we should tailor for?</div>`));
@@ -162,9 +196,9 @@ function renderOnboarding() {
   function finish() {
     const d = destInfo(draft.destination);
     const newProfile = {
-      destination: draft.destination, dialect: d.dialect, tripDate: draft.date,
+      destination: draft.destination, tripDate: draft.date,
       tripType: draft.tripType, needs: draft.needs, allergies: draft.allergies,
-      level: draft.level || "new", lodging: [], transport: []
+      level: draft.level || "new", lodging: draft.lodging, transport: draft.transport
     };
     snapshotActive();                          // stash the trip we're leaving
     state.active = draft.destination;

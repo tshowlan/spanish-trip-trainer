@@ -27,21 +27,39 @@ function momentumSpark() {
   return out;
 }
 
-/* ---- Coverage (0-100): average per-category completion across the active pack ---- */
+/* ---- Coverage (0-100): strength-aware, demand-weighted category credit across the active pack ----
+   §1.1 (scores) each seen phrase contributes coverageCredit = max(0.3, strength/100), unseen = 0, so
+   Coverage behaves as STATE (dormancy fades it, no separate decay timer). §1.2 (personalization) each
+   category's credit is then weighted by real interaction demand, so Readiness means "ready for the
+   interactions THIS trip contains," not "% of lessons ticked." Per category: {total phrases, done
+   lessons, seen phrases, credit sum}. */
 function coverageCats() {
   const cats = {};
   (typeof DECK !== "undefined" && DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
     const c = categoryOf(l.topic);
-    (cats[c] = cats[c] || { total: 0, done: 0 }).total++;
-    if (lessonDone(l.id)) cats[c].done++;
+    const e = cats[c] || (cats[c] = { total: 0, done: 0, seen: 0, credit: 0 });
+    const ldone = lessonDone(l.id);
+    if (ldone) e.done++;
+    l.items.forEach(it => {
+      e.total++;
+      const s = (state.learn || {})[it.id];
+      if (s && s.exposures >= 1) { e.seen++; e.credit += Math.max(0.3, itemStrength(s) / 100); }        // drilled phrase
+      else if (ldone) { e.seen++; e.credit += Math.max(0.3, lessonBaselineStrength(l.id) / 100); }       // taught via a completed lesson
+      // unseen phrase → 0 credit (counts against Coverage, never against Retention)
+    });
   }));
   return cats;
 }
 function coverageScore() {
   const cats = coverageCats(), keys = Object.keys(cats);
   if (!keys.length) return 0;
-  const avg = keys.reduce((a, c) => a + cats[c].done / cats[c].total, 0) / keys.length;
-  return Math.round(avg * 100);
+  const credit = c => cats[c].total ? cats[c].credit / cats[c].total : 0;                 // §1.2 categoryCredit
+  const w = (typeof effectiveWeights === "function") ? effectiveWeights(state.profile, keys) : null;
+  if (w) {                                                                                  // demand-weighted
+    const wsum = keys.reduce((a, c) => a + (w[c] || 0), 0) || 1;
+    return Math.round(keys.reduce((a, c) => a + credit(c) * (w[c] || 0), 0) / wsum * 100);
+  }
+  return Math.round(keys.reduce((a, c) => a + credit(c), 0) / keys.length * 100);          // fallback: equal weight
 }
 
 /* ---- Recency (0-100): decays from last completed session ---- */
@@ -172,7 +190,7 @@ function scoreDivergence(s) {
   if (s.lifetimeSessions < 5) return null;                     // too early to diagnose honestly
   const fading = fadingItems().filter(x => x.strength < 55).length;
   const cats = coverageCats();
-  const untouched = Object.values(cats).filter(c => c.done === 0).length;
+  const untouched = Object.values(cats).filter(c => c.seen === 0).length;   // no phrases seen in the category
   // (a) quality problem — putting in the work, but earlier phrases decay: steer next session to review
   if (s.momentum >= 50 && fading >= 12 && s.retention < s.coverage - 5) return { kind: "review", fading };
   // (b) coverage problem — what's learned is solid, but too little of the trip is covered: new content
