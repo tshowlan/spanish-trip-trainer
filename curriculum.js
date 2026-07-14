@@ -101,14 +101,14 @@ const CURRICULUM = {
           title: "At the Table",
           reward: "Wow — now you can order your steak 'al punto' and warn them about your shellfish allergy. Survival level: rising.",
           items: [
-            { es: "¿Qué recomienda?", en: "What do you recommend?" },
-            { es: "Poco hecho", en: "Rare (steak)" },
-            { es: "Al punto", en: "Medium" },
-            { es: "Muy hecho", en: "Well done" },
-            { es: "Soy alérgico al marisco", en: "I'm allergic to shellfish" },
-            { es: "Sin gluten", en: "Gluten-free" },
-            { es: "Vino tinto", en: "Red wine" },
-            { es: "Para llevar", en: "To go / takeaway", latam: "Also 'para llevar'; Mexico: 'para llevar' too." }
+            { es: "¿Qué recomienda?", en: "What do you recommend?", tier: 2, tags: ["restaurant", "food"], keywords: ["recomienda"], reply: { es: "La paella está muy buena", en: "The paella is very good" } },
+            { es: "Poco hecho", en: "Rare (steak)", tier: 2, tags: ["restaurant", "food"], contextEs: "El filete, poco hecho", contextEn: "The steak, rare", keywords: ["hecho"] },
+            { es: "Al punto", en: "Medium", tier: 2, tags: ["restaurant", "food"], contextEs: "Lo quiero al punto", contextEn: "I'd like it medium", keywords: ["punto"] },
+            { es: "Muy hecho", en: "Well done", tier: 2, tags: ["restaurant", "food"], contextEs: "El filete muy hecho", contextEn: "The steak well done", keywords: ["hecho"] },
+            { es: "Soy alérgico al marisco", en: "I'm allergic to shellfish", note: "Women: 'alérgica'.", tier: 2, tags: ["dietary", "health"], anchor: "'alérgico' = allergic.", keywords: ["alérgico", "marisco"] },
+            { es: "Sin gluten", en: "Gluten-free", tier: 1, tags: ["dietary", "food"], contextEs: "¿Tienen algo sin gluten?", contextEn: "Do you have anything gluten-free?", keywords: ["gluten"] },
+            { es: "Vino tinto", en: "Red wine", tier: 1, tags: ["drink"], contextEs: "Una copa de vino tinto", contextEn: "A glass of red wine", keywords: ["vino", "tinto"] },
+            { es: "Para llevar", en: "To go / takeaway", latam: "Also 'para llevar'; Mexico: 'para llevar' too.", tier: 1, tags: ["restaurant", "food"], contextEs: "Es para llevar", contextEn: "It's to take away", keywords: ["llevar"] }
           ]
         },
         {
@@ -117,14 +117,14 @@ const CURRICULUM = {
           title: "Where's the Loo",
           reward: "You can find a bathroom and read a door. Push vs. pull humiliation: avoided.",
           items: [
-            { es: "¿Dónde está el servicio?", en: "Where is the bathroom?", note: "Spain says 'el servicio / los servicios'. Signs read 'Aseos'." , latam: "Latin America: '¿Dónde está el baño?'" },
-            { es: "los aseos", en: "the restrooms (sign)" },
-            { es: "Caballeros", en: "Men (sign)" },
-            { es: "Señoras", en: "Women (sign)" },
-            { es: "Salida", en: "Exit", cat: "Catalan sign: 'Sortida'." },
-            { es: "Entrada", en: "Entrance", cat: "Catalan sign: 'Entrada'." },
-            { es: "Empujar", en: "Push (sign)" },
-            { es: "Tirar", en: "Pull (sign)", note: "On doors 'Tirar' = pull. Confusingly it also means 'to throw'." }
+            { es: "¿Dónde está el servicio?", en: "Where is the bathroom?", note: "Spain says 'el servicio / los servicios'. Signs read 'Aseos'.", latam: "Latin America: '¿Dónde está el baño?'", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "servicio"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
+            { es: "los aseos", en: "the restrooms (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "Los aseos están al fondo", contextEn: "The restrooms are at the back", keywords: ["aseos"] },
+            { es: "Caballeros", en: "Men (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "El aseo de caballeros", contextEn: "The men's room", keywords: ["caballeros"] },
+            { es: "Señoras", en: "Women (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "El aseo de señoras", contextEn: "The women's room", keywords: ["señoras"] },
+            { es: "Salida", en: "Exit", cat: "Catalan sign: 'Sortida'.", tier: 1, tags: ["signs"], contextEs: "La salida está por allí", contextEn: "The exit is over there", keywords: ["salida"] },
+            { es: "Entrada", en: "Entrance", cat: "Catalan sign: 'Entrada'.", tier: 1, tags: ["signs"], contextEs: "La entrada principal", contextEn: "The main entrance", anchor: "'entrada' = entrance (to enter).", keywords: ["entrada"] },
+            { es: "Empujar", en: "Push (sign)", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'empujar'", contextEn: "The door says 'push'", keywords: ["empujar"] },
+            { es: "Tirar", en: "Pull (sign)", note: "On doors 'Tirar' = pull. Confusingly it also means 'to throw'.", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'tirar'", contextEn: "The door says 'pull'", keywords: ["tirar"] }
           ]
         },
         {
@@ -133,14 +133,14 @@ const CURRICULUM = {
           title: "Paying Up",
           reward: "You can pay by card, in cash, and survive a broken card machine. The economy thanks you.",
           items: [
-            { es: "¿Puedo pagar con tarjeta?", en: "Can I pay by card?" },
-            { es: "En efectivo", en: "In cash" },
-            { es: "¿Aceptan tarjeta?", en: "Do you accept card?" },
-            { es: "El datáfono no funciona", en: "The card machine isn't working", note: "'Datáfono' is the card terminal in Spain." },
-            { es: "¿Está incluido el servicio?", en: "Is service included?", note: "Tipping in Spain is small/optional — rounding up is normal." },
-            { es: "Quédese con el cambio", en: "Keep the change" },
-            { es: "¿Hay un cajero cerca?", en: "Is there an ATM nearby?" },
-            { es: "una propina", en: "a tip" }
+            { es: "¿Puedo pagar con tarjeta?", en: "Can I pay by card?", tier: 2, tags: ["money"], keywords: ["tarjeta"], variants: ["¿Aceptan tarjeta?"] },
+            { es: "En efectivo", en: "In cash", tier: 1, tags: ["money"], contextEs: "Voy a pagar en efectivo", contextEn: "I'll pay in cash", keywords: ["efectivo"] },
+            { es: "¿Aceptan tarjeta?", en: "Do you accept card?", tier: 2, tags: ["money"], keywords: ["tarjeta"], reply: { es: "Sí, sin problema", en: "Yes, no problem" } },
+            { es: "El datáfono no funciona", en: "The card machine isn't working", note: "'Datáfono' is the card terminal in Spain.", tier: 2, tags: ["money"], keywords: ["datáfono"] },
+            { es: "¿Está incluido el servicio?", en: "Is service included?", note: "Tipping in Spain is small/optional — rounding up is normal.", tier: 2, tags: ["money", "restaurant"], keywords: ["servicio"] },
+            { es: "Quédese con el cambio", en: "Keep the change", tier: 2, tags: ["money", "restaurant"], keywords: ["cambio"] },
+            { es: "¿Hay un cajero cerca?", en: "Is there an ATM nearby?", note: "Spain: 'cajero' = ATM.", tier: 2, tags: ["money", "directions"], keywords: ["cajero", "cerca"] },
+            { es: "una propina", en: "a tip", tier: 1, tags: ["money", "restaurant"], contextEs: "Dejar una propina", contextEn: "To leave a tip", keywords: ["propina"] }
           ]
         },
         {
@@ -149,14 +149,14 @@ const CURRICULUM = {
           title: "Numbers & Time",
           reward: "You can ask what time the thing opens AND understand the answer. Punctuality unlocked (optional in Spain).",
           items: [
-            { es: "veinte", en: "twenty" },
-            { es: "treinta", en: "thirty" },
-            { es: "cincuenta", en: "fifty" },
-            { es: "cien", en: "one hundred" },
-            { es: "¿Qué hora es?", en: "What time is it?" },
-            { es: "Son las dos", en: "It's two o'clock" },
-            { es: "a las ocho", en: "at eight" },
-            { es: "¿A qué hora abre?", en: "What time does it open?" }
+            { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte euros", contextEn: "Twenty euros" },
+            { es: "treinta", en: "thirty", tier: 1, tags: ["numbers", "time"], contextEs: "Treinta minutos", contextEn: "Thirty minutes" },
+            { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta euros", contextEn: "Fifty euros" },
+            { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien euros", contextEn: "One hundred euros", anchor: "Think: 'century / percent' — 100." },
+            { es: "¿Qué hora es?", en: "What time is it?", tier: 2, tags: ["time"], keywords: ["hora"], reply: { es: "Son las dos", en: "It's two o'clock" } },
+            { es: "Son las dos", en: "It's two o'clock", tier: 1, tags: ["time"], contextEs: "Son las dos de la tarde", contextEn: "It's two in the afternoon", keywords: ["dos"] },
+            { es: "a las ocho", en: "at eight", tier: 1, tags: ["time"], contextEs: "Quedamos a las ocho", contextEn: "Let's meet at eight", keywords: ["ocho"] },
+            { es: "¿A qué hora abre?", en: "What time does it open?", tier: 2, tags: ["time"], keywords: ["hora", "abre"], reply: { es: "A las nueve de la mañana", en: "At nine in the morning" } }
           ]
         }
       ]
@@ -335,14 +335,14 @@ const TRANSPORT_OPTIONS = [
     title: "Coffee Shop",
     reward: "You can order a cortado and survive a 'cash only' barista. Caffeine: secured.",
     items: [
-      { es: "Un café con leche, por favor", en: "A coffee with milk, please" },
-      { es: "Un cortado, por favor", en: "An espresso with a dash of milk, please", note: "A 'cortado' is espresso 'cut' with a little warm milk — a Spain classic." },
-      { es: "Un café solo", en: "A black espresso", latam: "Latin America: 'un espresso' / 'un café negro'." },
-      { es: "Un croissant, por favor", en: "A croissant, please", note: "Also spelled 'un cruasán'." },
-      { es: "¿Qué pasteles tienen?", en: "What pastries do you have?" },
-      { es: "¿Para tomar aquí o para llevar?", en: "For here or to take away?", note: "What the barista asks you." },
-      { es: "¿Me puede dar cambio?", en: "Can you give me change?" },
-      { es: "Solo efectivo, el datáfono no funciona", en: "Cash only, the card machine's down", note: "You might hear this — 'datáfono' is the card terminal." }
+      { es: "Un café con leche, por favor", en: "A coffee with milk, please", tier: 2, tags: ["coffee", "drink"], keywords: ["café", "leche"] },
+      { es: "Un cortado, por favor", en: "An espresso with a dash of milk, please", note: "A 'cortado' is espresso 'cut' with a little warm milk — a Spain classic.", tier: 2, tags: ["coffee", "drink"], keywords: ["cortado"] },
+      { es: "Un café solo", en: "A black espresso", latam: "Latin America: 'un espresso' / 'un café negro'.", tier: 2, tags: ["coffee", "drink"], keywords: ["café", "solo"] },
+      { es: "Un croissant, por favor", en: "A croissant, please", note: "Also spelled 'un cruasán'.", tier: 2, tags: ["coffee", "food"], keywords: ["croissant"] },
+      { es: "¿Qué pasteles tienen?", en: "What pastries do you have?", tier: 2, tags: ["coffee", "food"], keywords: ["pasteles"] },
+      { es: "¿Para tomar aquí o para llevar?", en: "For here or to take away?", note: "What the barista asks you.", tier: 2, tags: ["coffee"], keywords: ["llevar"], reply: { es: "Para llevar, por favor", en: "To take away, please" } },
+      { es: "¿Me puede dar cambio?", en: "Can you give me change?", tier: 2, tags: ["money"], keywords: ["cambio"] },
+      { es: "Solo efectivo, el datáfono no funciona", en: "Cash only, the card machine's down", note: "You might hear this — 'datáfono' is the card terminal.", tier: 1, tags: ["money"], keywords: ["efectivo", "datáfono"] }
     ]
   });
 
