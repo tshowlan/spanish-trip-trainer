@@ -686,6 +686,18 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .sheet-role { font-size: 13px; color: var(--text-dim); line-height: 1.45; margin: 0 0 14px; }
 .sheet-diverge { margin-top: 12px; background: var(--bg-card); border: 1px solid var(--accent-2); border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.45; }
 
+/* §7.2 daily trend sparkline in the score detail sheet */
+.sheet-trend { margin: 16px 0 2px; }
+.trend-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+.trend-title { font-size: 12px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: .5px; }
+.trend-delta { font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--text-dim); }
+.trend-delta.up { color: var(--green); }
+.trend-delta.down { color: var(--red); }
+.trend-svg { width: 100%; height: auto; display: block; }
+.trend-area { fill: color-mix(in srgb, var(--tc) 15%, transparent); stroke: none; }
+.trend-line { fill: none; stroke: var(--tc); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.trend-dot { fill: var(--tc); }
+
 /* profile */
 .profile-status { text-align: center; padding: 8px 0 22px; }
 .tier-name { font-family: var(--font-display); font-weight: 800; font-size: 28px; }

@@ -190,6 +190,26 @@ function _recordDaily(s) {
   else { h.push(rec); if (h.length > 120) h.splice(0, h.length - 120); save(); }  // new day → persist
 }
 
+/* ---- §7.2 trend series for one dial, from the daily history ----
+   Returns null until at least two distinct days exist (data-gated — no fake trend
+   from a single point). `pts` carry the real date so the sheet can space the x-axis
+   honestly across gaps in practice. */
+function scoreTrend(metric, days) {
+  const win = days || 30;
+  const cutoff = Date.now() - win * _DAY;
+  const pts = (state.scoreHistory || [])
+    .filter(r => r && r[metric] != null && new Date(r.date).getTime() >= cutoff)
+    .map(r => ({ t: new Date(r.date).getTime(), v: r[metric] }));
+  if (pts.length < 2) return null;
+  const vals = pts.map(p => p.v);
+  const first = pts[0].v, last = pts[pts.length - 1].v;
+  return {
+    pts, first, last, delta: last - first,
+    min: Math.min(...vals), max: Math.max(...vals),
+    spanDays: Math.max(1, Math.round((pts[pts.length - 1].t - pts[0].t) / _DAY))
+  };
+}
+
 /* ---- bundle + cache (for instant render + count-up from previous value) ---- */
 function computeScores() {
   const s = {

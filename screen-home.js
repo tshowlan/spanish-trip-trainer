@@ -10,6 +10,36 @@ function sparkBars(arr) {
   const max = Math.max(1, ...arr);
   return arr.map(v => `<i style="height:${v ? Math.max(16, Math.round(v / max * 100)) : 6}%" class="${v ? "on" : ""}"></i>`).join("");
 }
+// §7.2 inline trend sparkline for a dial's detail sheet (area + line, x spaced by real date)
+function trendSvg(tr, accent) {
+  const W = 300, H = 60, pad = 6;
+  const t0 = tr.pts[0].t, span = Math.max(1, tr.pts[tr.pts.length - 1].t - t0);
+  const dmin = Math.max(0, tr.min - 8), dmax = Math.min(100, tr.max + 8), rng = Math.max(1, dmax - dmin);
+  const X = t => (pad + (W - 2 * pad) * (t - t0) / span);
+  const Y = v => (pad + (H - 2 * pad) * (1 - (v - dmin) / rng));
+  const line = tr.pts.map((p, i) => `${i ? "L" : "M"}${X(p.t).toFixed(1)} ${Y(p.v).toFixed(1)}`).join(" ");
+  const last = tr.pts[tr.pts.length - 1];
+  const area = `${line} L${X(last.t).toFixed(1)} ${(H - pad).toFixed(1)} L${X(t0).toFixed(1)} ${(H - pad).toFixed(1)} Z`;
+  return `<svg class="trend-svg" viewBox="0 0 ${W} ${H}" style="--tc:${accent}">
+    <path class="trend-area" d="${area}"/>
+    <path class="trend-line" d="${line}"/>
+    <circle class="trend-dot" cx="${X(last.t).toFixed(1)}" cy="${Y(last.v).toFixed(1)}" r="3.4"/>
+  </svg>`;
+}
+// the whole trend block for a sheet — empty string until history accrues (data-gated)
+function trendBlock(which) {
+  const tr = scoreTrend(which, 30);
+  if (!tr) return "";
+  const accent = which === "momentum" ? "var(--secondary)" : which === "retention" ? "var(--green)" : "var(--accent-2)";
+  const d = tr.delta, cls = d > 0 ? "up" : d < 0 ? "down" : "flat", arrow = d > 0 ? "↑" : d < 0 ? "↓" : "→";
+  return `<div class="sheet-trend">
+    <div class="trend-head">
+      <span class="trend-title">Last ${tr.spanDays} day${tr.spanDays === 1 ? "" : "s"}</span>
+      <span class="trend-delta ${cls}">${arrow} ${Math.abs(d)}</span>
+    </div>
+    ${trendSvg(tr, accent)}
+  </div>`;
+}
 function _lastSessionDays() {
   const last = (state.sessions || []).reduce((m, s) => Math.max(m, new Date(s.at).getTime()), 0);
   return last ? Math.floor((Date.now() - last) / 864e5) : null;
@@ -178,6 +208,7 @@ function scoreSheet(which) {
       ${sub ? `<div class="sheet-sub">${sub}</div>` : ``}
       <div class="sheet-role">${role}</div>
       <div class="drivers">${drivers.map(x => `<div class="driver">${x}</div>`).join("")}</div>
+      ${trendBlock(which)}
       ${diverge ? `<div class="sheet-diverge">${diverge.line}</div>` : ``}
     </div>
   </div>`);
