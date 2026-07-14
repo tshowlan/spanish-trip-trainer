@@ -256,7 +256,7 @@ function renderPrimer(lesson, onDone) {
       <div class="primer-body reveal">
         <div class="primer-label ok">Here it is</div>
         <div class="primer-guess-es big">${guess.es}</div>
-        <button class="speak-btn" id="psp">${icon('speaker', 18)} Hear it</button>
+        <button class="speak-btn" id="psp">${soundIcon()} Hear it</button>
         <div class="primer-en">${guess.en}</div>
         ${guess.anchor ? `<div class="primer-anchor">${icon('bulb', 16)} ${guess.anchor}</div>` : ""}
       </div></div>`));
@@ -413,7 +413,7 @@ function renderIntro(q) {
           <div class="intro-es-big">${it.es}</div>
           <div class="intro-en-big">${it.en}</div>
           ${it.note ? `<div class="intro-note-big">${it.note}</div>` : ""}
-          <button class="speak-btn intro-hear">${icon('speaker', 18)} Hear it</button>
+          <button class="speak-btn intro-hear">${soundIcon()} Hear it</button>
         </div>
       </div>`));
       body.querySelector(".intro-hear").addEventListener("click", () => speak(it.es));
@@ -427,7 +427,7 @@ function renderIntro(q) {
       items.forEach(it => {
         const row = el(`<button class="intro-row">
           <div class="intro-txt"><div class="intro-es">${it.es}</div><div class="intro-en">${it.en}</div>${it.note ? `<div class="intro-note">${it.note}</div>` : ""}</div>
-          <span class="intro-spk">${icon('speaker', 20)}</span></button>`);
+          <span class="intro-spk">${soundIcon(24)}</span></button>`);
         row.addEventListener("click", () => speak(it.es));
         list.appendChild(row);
       });
@@ -455,7 +455,7 @@ function renderPresent(q) {
       ${item.anchor ? `<div class="present-anchor">${icon('bulb', 16)} ${item.anchor}</div>` : ""}
     </div>`);
   body.appendChild(card);
-  const replay = el(`<button class="speak-btn">${icon('speaker', 18)} Hear it</button>`);
+  const replay = el(`<button class="speak-btn">${soundIcon()} Hear it</button>`);
   replay.addEventListener("click", () => speak(item.es));
   body.appendChild(replay);
   setTimeout(() => speak(item.es), 250);
@@ -543,7 +543,7 @@ function renderMC(q) {
     const pe = presentEs(item);
     body.appendChild(el(`<div class="prompt">${pe.text}</div>`));
     if (pe.variant) body.appendChild(el(`<div class="prompt-sub">Another common way to say it</div>`));
-    const sb = el(`<button class="speak-btn">${icon('speaker', 18)} Hear it</button>`); sb.addEventListener("click", () => speak(pe.text)); body.appendChild(sb);
+    const sb = el(`<button class="speak-btn">${soundIcon()} Hear it</button>`); sb.addEventListener("click", () => speak(pe.text)); body.appendChild(sb);
   } else {
     body.appendChild(el(`<div class="prompt">${item.en}</div>`));
   }
@@ -965,7 +965,7 @@ function finishGrade(ok, item, extra) {
     <div style="height:10px"></div>
     <button class="btn ${ok ? "" : "accent"}" id="cont">Continue</button>`);
   f.classList.add(ok ? "correct" : "wrong");
-  const sb = el(`<button class="speak-btn" style="margin:0 0 10px">${icon('speaker', 18)} ${item.es}</button>`);
+  const sb = el(`<button class="speak-btn" style="margin:0 0 10px">${soundIcon(24)} ${item.es}</button>`);
   sb.addEventListener("click", () => speak(item.es));
   f.insertBefore(sb, f.querySelector("#cont"));
   speak(item.es);                                     // §4c.2: always replay the correct audio — the miss is the moment it matters

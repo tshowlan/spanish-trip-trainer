@@ -75,6 +75,17 @@ function icon(name, size = 22) {
   const inner = !v ? "" : (v[0] === "<" ? v : `<path d="${v}"/>`);
   return `<svg class="ph" viewBox="0 0 256 256" width="${size}" height="${size}" fill="currentColor" aria-hidden="true">${inner}</svg>`;
 }
+// §feedback: the "Hear it" / play sound mark — a gold animated waveform (its own accent color,
+// distinct from the blue button text, and larger). Bars are centered at y=112 so they pulse in place.
+function soundIcon(size = 26) {
+  return `<svg class="sound-ic" viewBox="0 0 256 224" width="${size}" height="${Math.round(size * 224 / 256)}" aria-hidden="true">
+    <rect x="24"  y="86" width="22" height="52"  rx="11" style="--d:0"/>
+    <rect x="70"  y="52" width="22" height="120" rx="11" style="--d:1"/>
+    <rect x="116" y="30" width="22" height="164" rx="11" style="--d:2"/>
+    <rect x="162" y="62" width="22" height="100" rx="11" style="--d:3"/>
+    <rect x="208" y="94" width="22" height="36"  rx="11" style="--d:4"/>
+  </svg>`;
+}
 
 /* ---------- lighthouse mark (geometric, brand palette) ---------- */
 let _lhId = 0;

@@ -419,6 +419,12 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .present-nav #pback { flex: 0 0 auto; width: auto; padding: 12px 18px; display: inline-flex; align-items: center; gap: 4px; }
 .present-nav #got { flex: 1; }
 
+/* §feedback: gold animated waveform "Hear it" mark — distinct accent color, bigger, gently pulsing */
+.sound-ic { flex: none; vertical-align: -0.3em; }
+.sound-ic rect { fill: var(--accent-2); transform-origin: center; animation: sndwv 1.05s ease-in-out infinite; animation-delay: calc(var(--d) * 90ms); }
+@keyframes sndwv { 0%, 100% { transform: scaleY(.55); } 50% { transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) { .sound-ic rect { animation: none; } }
+
 /* §feedback #5: audio waveform play button for the "what did you hear" exercises */
 .wave-btn { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%;
   background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius);

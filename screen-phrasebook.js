@@ -43,7 +43,7 @@ function renderPhrasebook() {
     const kws = (it.keywords || []).filter(k => threadCount(k) >= 2);
     const chips = kws.map(k => `<button class="pb-kw ${k === _pbThread ? "on" : ""}" data-kw="${k}">${k}<span class="pb-kw-n">${threadCount(k)}</span></button>`).join("");
     const row = el(`<div class="pb-row">
-      <button class="pb-speak" aria-label="Play">${icon('speaker', 20)}</button>
+      <button class="pb-speak" aria-label="Play">${soundIcon(22)}</button>
       <div class="pb-text"><div class="pb-es">${it.es}</div><div class="pb-en">${it.en}</div>${chips ? `<div class="pb-kws">${chips}</div>` : ""}</div>
       <button class="pb-save ${isSaved(it.es) ? "on" : ""}" aria-label="Save">${icon("bookmark", 20)}</button>
     </div>`);
