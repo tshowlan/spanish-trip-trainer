@@ -172,6 +172,16 @@ function renderHome() {
 /* XP→Status §4.4 migration card (one-time) + §2.3 tier-up moment. Both are quiet, typographic
    full-screen overlays — same restraint as the completion screens; no confetti, no badges. */
 function maybeStatusMoment() {
+  if (state.pendingTripSummary) {   // §5.1.2 one-time finish-line summary — the app's closest thing to a finish line
+    const r = state.pendingTripSummary; state.pendingTripSummary = null; save();
+    const di = destInfo(r.destination), band = readinessBand(r.readinessAtDeparture);
+    return statusOverlay({
+      kicker: `${di.flag} ${di.label} — trip complete`,
+      title: `${r.readinessAtDeparture}%`, titleClass: band.cls,
+      body: `${band.label}. You put in ${r.sessionsCompleted} session${r.sessionsCompleted === 1 ? "" : "s"} and carried ${r.phrasesLearned} phrases into the trip. It's on your profile now, for good.`,
+      cta: "Continue"
+    });
+  }
   if (state.needsMigrationCard) { state.needsMigrationCard = false; save(); return statusOverlay({
     kicker: "A new way to track your trip",
     title: (typeof currentTier === "function" ? currentTier() : "Culturist"),
@@ -185,12 +195,12 @@ function maybeStatusMoment() {
     cta: "Continue"
   }); }
 }
-function statusOverlay({ kicker, title, body, cta }) {
+function statusOverlay({ kicker, title, body, cta, titleClass }) {
   document.querySelectorAll(".tierup-wrap").forEach(n => n.remove());
   const w = el(`<div class="tierup-wrap">
     <div class="tierup">
       <div class="tierup-kicker">${kicker}</div>
-      <div class="tierup-name">${title}</div>
+      <div class="tierup-name ${titleClass || ""}">${title}</div>
       <div class="tierup-body">${body}</div>
       <button class="btn" id="tuok" style="margin-top:22px">${cta}</button>
     </div>

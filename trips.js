@@ -9,6 +9,32 @@ function applyTrip(key) {
   const defaults = { profile: null, lessons: {}, topicStats: {}, xp: 0, sessions: [], learn: {} };
   DEST_FIELDS.forEach(f => { state[f] = (t[f] !== undefined ? t[f] : defaults[f]); });
 }
+/* §5.1 trip completion: when the active trip's date passes, freeze a permanent record into the
+   archive, de-anchor home, and run tier evaluation. Returns the frozen record (for the one-time
+   summary) or null. Readiness is the value AS OF the trip date (nearest daily snapshot ≤ date),
+   never recomputed later from decayed state. */
+function checkTripCompletion() {
+  const p = state.profile;
+  if (!p || !p.tripDate || daysUntil(p.tripDate) > 0) return null;
+  state.archive = state.archive || [];
+  if (state.archive.some(a => a.destination === state.active && a.tripDate === p.tripDate)) { p.tripDate = null; return null; }
+  const hist = (state.scoreHistory || []).filter(h => h.date <= p.tripDate).sort((a, b) => (a.date < b.date ? 1 : -1));
+  const readiness = hist.length ? hist[0].readiness : (state.scoresCache || computeScores()).readiness;
+  const rec = {
+    destination: state.active, tripDate: p.tripDate,
+    language: (activePack().tts || "es").slice(0, 2),
+    readinessAtDeparture: readiness, bandLabel: readinessBand(readiness).label,
+    sessionsCompleted: (state.sessions || []).length,
+    phrasesLearned: Object.keys(state.learn || {}).length,
+    completedAt: new Date().toISOString()
+  };
+  state.archive.push(rec);
+  p.completedTripDate = p.tripDate; p.tripDate = null;   // §5.1.3 home reverts to non-anchored mode
+  save();
+  if (typeof applyTierUpdate === "function") applyTierUpdate();   // §5.1.4 trip completion is a tier trigger
+  state.pendingTripSummary = rec;
+  return rec;
+}
 // One-time: give already-completed lessons a timestamp so Retention has data, and ensure
 // every trip has a sessions log. (Scores build forward from here for existing users.)
 function migrateScoring() {

@@ -799,6 +799,8 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .tierup-wrap.show .tierup { transform: none; }
 .tierup-kicker { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-2); margin-bottom: 14px; }
 .tierup-name { font-family: var(--font-display); font-weight: 800; font-size: 44px; line-height: 1.05; margin-bottom: 16px; }
+.tierup-name.band-top { color: var(--green); } .tierup-name.band-good { color: var(--secondary); }
+.tierup-name.band-mid { color: var(--accent-2); } .tierup-name.band-low { color: var(--text-dim); }
 .tierup-body { color: var(--text-dim); font-size: 15px; line-height: 1.5; }
 
 .complete .stars-n { color: var(--accent-2); }
