@@ -174,14 +174,14 @@ const CURRICULUM = {
           title: "Taxi!",
           reward: "You can tell a driver where to go and when to stop. Backseat fluency achieved.",
           items: [
-            { es: "Al aeropuerto, por favor", en: "To the airport, please" },
-            { es: "A esta dirección, por favor", en: "To this address, please" },
-            { es: "¿Cuánto cuesta hasta el centro?", en: "How much to the center?" },
-            { es: "Pare aquí, por favor", en: "Stop here, please" },
-            { es: "¿Puede esperar un momento?", en: "Can you wait a moment?" },
-            { es: "¿A dónde va?", en: "Where are you going?", note: "What the DRIVER asks you." },
-            { es: "Tengo prisa", en: "I'm in a hurry" },
-            { es: "el maletero", en: "the trunk (boot)", latam: "Latin America: 'la cajuela' (Mexico) / 'el baúl'." }
+            { es: "Al aeropuerto, por favor", en: "To the airport, please", tier: 1, tags: ["taxi", "airport"], keywords: ["aeropuerto"] },
+            { es: "A esta dirección, por favor", en: "To this address, please", tier: 2, tags: ["taxi", "transport"], keywords: ["dirección"], variants: ["Lléveme a esta dirección"] },
+            { es: "¿Cuánto cuesta hasta el centro?", en: "How much to the center?", tier: 2, tags: ["taxi", "money"], keywords: ["cuánto", "centro"], reply: { es: "Unos veinte euros", en: "About twenty euros" } },
+            { es: "Pare aquí, por favor", en: "Stop here, please", tier: 2, tags: ["taxi"], keywords: ["pare"], variants: ["Aquí está bien, gracias"] },
+            { es: "¿Puede esperar un momento?", en: "Can you wait a moment?", tier: 2, tags: ["taxi"], keywords: ["esperar"] },
+            { es: "¿A dónde va?", en: "Where are you going?", note: "What the DRIVER asks you.", tier: 1, tags: ["taxi"], keywords: ["dónde"] },
+            { es: "Tengo prisa", en: "I'm in a hurry", tier: 2, tags: ["taxi"], keywords: ["prisa"] },
+            { es: "el maletero", en: "the trunk (boot)", latam: "Latin America: 'la cajuela' (Mexico) / 'el baúl'.", tier: 1, tags: ["taxi"], contextEs: "¿Puede abrir el maletero?", contextEn: "Can you open the trunk?", keywords: ["maletero"] }
           ]
         },
         {
@@ -190,14 +190,14 @@ const CURRICULUM = {
           title: "Reading the Airport",
           reward: "Arrivals, departures, your gate — all decoded. You will not miss the flight because of a sign.",
           items: [
-            { es: "Salidas", en: "Departures", cat: "Catalan: 'Sortides'." },
-            { es: "Llegadas", en: "Arrivals", cat: "Catalan: 'Arribades'." },
-            { es: "Puerta de embarque", en: "Boarding gate" },
-            { es: "Facturación", en: "Check-in (bag drop)", latam: "Latin America: 'registro' / 'check-in'." },
-            { es: "Recogida de equipajes", en: "Baggage claim" },
-            { es: "Control de seguridad", en: "Security control" },
-            { es: "Aduana", en: "Customs" },
-            { es: "el vuelo", en: "the flight" }
+            { es: "Salidas", en: "Departures", cat: "Catalan: 'Sortides'.", tier: 1, tags: ["airport", "signs"], contextEs: "La sala de salidas", contextEn: "The departures hall", keywords: ["salidas"] },
+            { es: "Llegadas", en: "Arrivals", cat: "Catalan: 'Arribades'.", tier: 1, tags: ["airport", "signs"], contextEs: "La zona de llegadas", contextEn: "The arrivals area", keywords: ["llegadas"] },
+            { es: "Puerta de embarque", en: "Boarding gate", tier: 2, tags: ["airport", "signs"], keywords: ["puerta", "embarque"] },
+            { es: "Facturación", en: "Check-in (bag drop)", latam: "Latin America: 'registro' / 'check-in'.", tier: 1, tags: ["airport", "signs"], contextEs: "El mostrador de facturación", contextEn: "The check-in counter", keywords: ["facturación"] },
+            { es: "Recogida de equipajes", en: "Baggage claim", tier: 2, tags: ["airport", "signs"], keywords: ["equipajes"] },
+            { es: "Control de seguridad", en: "Security control", tier: 1, tags: ["airport", "signs"], contextEs: "Pasar el control de seguridad", contextEn: "To go through security", anchor: "'seguridad' = security.", keywords: ["seguridad"] },
+            { es: "Aduana", en: "Customs", tier: 1, tags: ["airport", "signs"], contextEs: "Pasar por aduana", contextEn: "To go through customs", keywords: ["aduana"] },
+            { es: "el vuelo", en: "the flight", tier: 1, tags: ["airport"], contextEs: "¿A qué hora sale el vuelo?", contextEn: "What time does the flight leave?", keywords: ["vuelo"] }
           ]
         },
         {
@@ -206,14 +206,14 @@ const CURRICULUM = {
           title: "How Do I Get To…",
           reward: "Left, right, straight ahead — you can now get lost on purpose. Gaudí's buildings await.",
           items: [
-            { es: "¿Cómo llego a...?", en: "How do I get to...?" },
-            { es: "a la derecha", en: "to the right" },
-            { es: "a la izquierda", en: "to the left" },
-            { es: "todo recto", en: "straight ahead", latam: "Latin America: 'todo derecho' / 'derecho'." },
-            { es: "¿Está lejos?", en: "Is it far?" },
-            { es: "cerca", en: "near" },
-            { es: "la esquina", en: "the corner" },
-            { es: "la plaza", en: "the square" }
+            { es: "¿Cómo llego a...?", en: "How do I get to...?", tier: 2, tags: ["directions"], keywords: ["llego"] },
+            { es: "a la derecha", en: "to the right", tier: 1, tags: ["directions"], contextEs: "Gire a la derecha", contextEn: "Turn right", keywords: ["derecha"] },
+            { es: "a la izquierda", en: "to the left", tier: 1, tags: ["directions"], contextEs: "Gire a la izquierda", contextEn: "Turn left", keywords: ["izquierda"] },
+            { es: "todo recto", en: "straight ahead", latam: "Latin America: 'todo derecho' / 'derecho'.", tier: 1, tags: ["directions"], contextEs: "Siga todo recto", contextEn: "Go straight ahead", keywords: ["recto"] },
+            { es: "¿Está lejos?", en: "Is it far?", tier: 1, tags: ["directions"], keywords: ["lejos"], reply: { es: "No, está aquí cerca", en: "No, it's close by" } },
+            { es: "cerca", en: "near", tier: 1, tags: ["directions"], contextEs: "Está aquí cerca", contextEn: "It's close by", keywords: ["cerca"] },
+            { es: "la esquina", en: "the corner", tier: 2, tags: ["directions"], contextEs: "En la esquina, a la derecha", contextEn: "At the corner, on the right", keywords: ["esquina"] },
+            { es: "la plaza", en: "the square", tier: 1, tags: ["directions", "sights"], contextEs: "La plaza está cerca", contextEn: "The square is nearby", keywords: ["plaza"] }
           ]
         }
       ]
@@ -353,14 +353,14 @@ const TRANSPORT_OPTIONS = [
     title: "On the Plane",
     reward: "Chicken or pasta, juice or wine — you can now run the whole drinks cart in Spanish.",
     items: [
-      { es: "¿Pollo o pasta?", en: "Chicken or pasta?", note: "What the flight attendant asks you." },
-      { es: "Pollo, por favor", en: "Chicken, please" },
-      { es: "Pasta, por favor", en: "Pasta, please" },
-      { es: "¿Para beber?", en: "Anything to drink?", note: "What they ask you." },
-      { es: "Un zumo de naranja", en: "An orange juice", latam: "Latin America: 'un jugo de naranja'." },
-      { es: "Una copa de vino tinto", en: "A glass of red wine" },
-      { es: "Un café, por favor", en: "A coffee, please" },
-      { es: "¿Me puede dar una manta?", en: "Can I have a blanket?" }
+      { es: "¿Pollo o pasta?", en: "Chicken or pasta?", note: "What the flight attendant asks you.", tier: 2, tags: ["plane", "food"], keywords: ["pollo", "pasta"] },
+      { es: "Pollo, por favor", en: "Chicken, please", tier: 1, tags: ["plane", "food"], contextEs: "Pollo, por favor, gracias", contextEn: "Chicken, please, thank you", keywords: ["pollo"] },
+      { es: "Pasta, por favor", en: "Pasta, please", tier: 1, tags: ["plane", "food"], contextEs: "Pasta, por favor", contextEn: "Pasta, please", keywords: ["pasta"] },
+      { es: "¿Para beber?", en: "Anything to drink?", note: "What they ask you.", tier: 2, tags: ["plane", "drink"], keywords: ["beber"], reply: { es: "Un zumo, por favor", en: "A juice, please" } },
+      { es: "Un zumo de naranja", en: "An orange juice", latam: "Latin America: 'un jugo de naranja'.", tier: 2, tags: ["drink"], keywords: ["zumo"] },
+      { es: "Una copa de vino tinto", en: "A glass of red wine", tier: 2, tags: ["drink"], keywords: ["vino", "tinto"] },
+      { es: "Un café, por favor", en: "A coffee, please", tier: 1, tags: ["plane", "drink"], contextEs: "Un café con leche, por favor", contextEn: "A coffee with milk, please", keywords: ["café"] },
+      { es: "¿Me puede dar una manta?", en: "Can I have a blanket?", tier: 2, tags: ["plane"], keywords: ["manta"] }
     ]
   });
 
@@ -371,13 +371,13 @@ const TRANSPORT_OPTIONS = [
     title: "Metro",
     reward: "You can buy a T-casual and not ride the wrong line. Barcelona underground: conquered.",
     items: [
-      { es: "¿Dónde está la estación de metro?", en: "Where's the metro station?" },
-      { es: "una T-casual", en: "a 10-trip travel card", note: "Barcelona's pay-per-ride metro/bus card." },
-      { es: "¿Qué línea va a...?", en: "Which line goes to...?" },
-      { es: "¿Tengo que hacer transbordo?", en: "Do I have to change lines?" },
-      { es: "¿Cuántas paradas faltan?", en: "How many stops are left?" },
-      { es: "el andén", en: "the platform" },
-      { es: "la salida", en: "the exit", cat: "Catalan sign: 'Sortida'." }
+      { es: "¿Dónde está la estación de metro?", en: "Where's the metro station?", tier: 1, tags: ["metro", "transport", "directions"], keywords: ["dónde", "metro"] },
+      { es: "una T-casual", en: "a 10-trip travel card", note: "Barcelona's pay-per-ride metro/bus card.", tier: 1, tags: ["metro", "transport"], contextEs: "Una T-casual, por favor", contextEn: "A T-casual, please", keywords: ["casual"] },
+      { es: "¿Qué línea va a...?", en: "Which line goes to...?", tier: 2, tags: ["metro", "transport"], keywords: ["línea"] },
+      { es: "¿Tengo que hacer transbordo?", en: "Do I have to change lines?", note: "'Transbordo' = changing lines.", tier: 2, tags: ["metro", "transport"], keywords: ["transbordo"] },
+      { es: "¿Cuántas paradas faltan?", en: "How many stops are left?", tier: 2, tags: ["metro", "transport"], keywords: ["paradas"] },
+      { es: "el andén", en: "the platform", tier: 1, tags: ["metro", "transport"], contextEs: "El tren llega al andén", contextEn: "The train arrives at the platform", keywords: ["andén"] },
+      { es: "la salida", en: "the exit", cat: "Catalan sign: 'Sortida'.", tier: 1, tags: ["metro", "signs"], contextEs: "¿Dónde está la salida?", contextEn: "Where's the exit?", keywords: ["salida"] }
     ]
   });
 
@@ -388,13 +388,13 @@ const TRANSPORT_OPTIONS = [
     title: "Trains",
     reward: "Platforms, seats, delays — you can ride the AVE like a commuter.",
     items: [
-      { es: "¿De qué andén sale el tren?", en: "Which platform does the train leave from?" },
-      { es: "un billete a Madrid", en: "a ticket to Madrid", latam: "Latin America: 'un boleto'." },
-      { es: "¿Este asiento está libre?", en: "Is this seat free?" },
-      { es: "el AVE", en: "the high-speed train", note: "Spain's high-speed rail." },
-      { es: "¿El tren va con retraso?", en: "Is the train delayed?" },
-      { es: "ida y vuelta", en: "round trip" },
-      { es: "¿Dónde valido el billete?", en: "Where do I validate the ticket?" }
+      { es: "¿De qué andén sale el tren?", en: "Which platform does the train leave from?", tier: 2, tags: ["train", "transport"], keywords: ["andén", "tren"] },
+      { es: "un billete a Madrid", en: "a ticket to Madrid", latam: "Latin America: 'un boleto'.", tier: 1, tags: ["train", "transport"], contextEs: "Un billete a Madrid, por favor", contextEn: "A ticket to Madrid, please", keywords: ["billete"] },
+      { es: "¿Este asiento está libre?", en: "Is this seat free?", tier: 2, tags: ["train"], keywords: ["asiento"] },
+      { es: "el AVE", en: "the high-speed train", note: "Spain's high-speed rail.", tier: 1, tags: ["train", "transport"], contextEs: "El AVE a Madrid", contextEn: "The high-speed train to Madrid", keywords: ["ave"] },
+      { es: "¿El tren va con retraso?", en: "Is the train delayed?", tier: 2, tags: ["train"], keywords: ["retraso", "tren"] },
+      { es: "ida y vuelta", en: "round trip", tier: 2, tags: ["train", "transport"], contextEs: "Un billete de ida y vuelta", contextEn: "A round-trip ticket", keywords: ["vuelta"] },
+      { es: "¿Dónde valido el billete?", en: "Where do I validate the ticket?", tier: 2, tags: ["train"], keywords: ["valido", "billete"] }
     ]
   });
 
@@ -405,12 +405,12 @@ const TRANSPORT_OPTIONS = [
     title: "Buses",
     reward: "You can flag the right bus and get off at the right stop. No more mystery tours.",
     items: [
-      { es: "¿Este autobús va al centro?", en: "Does this bus go downtown?" },
-      { es: "¿Dónde está la parada?", en: "Where's the bus stop?" },
-      { es: "¿Cuánto cuesta el billete?", en: "How much is the ticket?" },
-      { es: "¿Me avisa cuando lleguemos?", en: "Will you let me know when we arrive?" },
-      { es: "¿Para en...?", en: "Does it stop at...?" },
-      { es: "el conductor", en: "the driver" }
+      { es: "¿Este autobús va al centro?", en: "Does this bus go downtown?", note: "Spain: 'autobús' / 'el bus'.", tier: 2, tags: ["bus", "transport"], keywords: ["autobús", "centro"] },
+      { es: "¿Dónde está la parada?", en: "Where's the bus stop?", tier: 2, tags: ["bus", "directions"], keywords: ["parada"] },
+      { es: "¿Cuánto cuesta el billete?", en: "How much is the ticket?", tier: 2, tags: ["bus", "money"], keywords: ["billete"], reply: { es: "Son dos euros con veinte", en: "It's two euros twenty" } },
+      { es: "¿Me avisa cuando lleguemos?", en: "Will you let me know when we arrive?", tier: 2, tags: ["bus"], keywords: ["avisa"] },
+      { es: "¿Para en...?", en: "Does it stop at...?", tier: 2, tags: ["bus"], contextEs: "¿Para en la playa?", contextEn: "Does it stop at the beach?" },
+      { es: "el conductor", en: "the driver", tier: 1, tags: ["bus", "transport"], contextEs: "Pregúntele al conductor", contextEn: "Ask the driver", keywords: ["conductor"] }
     ]
   });
 
@@ -421,13 +421,13 @@ const TRANSPORT_OPTIONS = [
     title: "Ferries & Boats",
     reward: "Docks, crossings, round-trips — you can board a boat without getting on the wrong one.",
     items: [
-      { es: "¿Dónde se compran los billetes del ferry?", en: "Where do you buy ferry tickets?" },
-      { es: "¿A qué hora sale el próximo ferry?", en: "What time does the next ferry leave?" },
-      { es: "¿Cuánto dura la travesía?", en: "How long is the crossing?" },
-      { es: "¿Desde qué muelle sale?", en: "Which dock does it leave from?" },
-      { es: "un billete de ida y vuelta", en: "a return (round-trip) ticket" },
-      { es: "¿Está incluido el equipaje?", en: "Is luggage included?" },
-      { es: "Se mueve mucho", en: "It's rough / it moves a lot" }
+      { es: "¿Dónde se compran los billetes del ferry?", en: "Where do you buy ferry tickets?", tier: 2, tags: ["ferry", "transport"], keywords: ["billetes", "ferry"] },
+      { es: "¿A qué hora sale el próximo ferry?", en: "What time does the next ferry leave?", tier: 2, tags: ["ferry", "time"], keywords: ["ferry", "hora"] },
+      { es: "¿Cuánto dura la travesía?", en: "How long is the crossing?", tier: 2, tags: ["ferry", "transport"], keywords: ["travesía"] },
+      { es: "¿Desde qué muelle sale?", en: "Which dock does it leave from?", tier: 2, tags: ["ferry"], keywords: ["muelle"] },
+      { es: "un billete de ida y vuelta", en: "a return (round-trip) ticket", tier: 2, tags: ["ferry", "transport"], keywords: ["billete"] },
+      { es: "¿Está incluido el equipaje?", en: "Is luggage included?", tier: 2, tags: ["ferry"], keywords: ["equipaje"] },
+      { es: "Se mueve mucho", en: "It's rough / it moves a lot", tier: 2, tags: ["ferry"], keywords: ["mueve"] }
     ]
   });
 
