@@ -624,9 +624,9 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .pb-group .pb-gtitle { flex: 1; min-width: 0; }
 .pb-group .pb-count { font-weight: 800; font-size: 12px; color: var(--text-dim); background: var(--bg-elevated); border-radius: 999px; padding: 2px 9px; flex: none; }
 .pb-rows.collapsed { display: none; }
-/* §feedback #2: sub-phrase rows sit flush (no nested indent) and read a shade lighter than the
-   bold group-header cards, so the hierarchy comes from color, not indentation */
-.pb-rows { margin: 2px 0 10px; }
+/* §feedback #2: sub-phrase rows are indented under their group header (with a subtle guide line)
+   and read a shade lighter than the bold group-header cards — hierarchy from indent + color */
+.pb-rows { margin: 2px 0 10px 6px; padding-left: 14px; border-left: 2px solid var(--border); }
 /* segmented toggle (Settings → Appearance) */
 .seg-toggle { display: inline-flex; background: var(--bg-elevated); border-radius: 999px; padding: 3px; gap: 2px; flex: none; }
 .seg-toggle .seg { border: none; background: none; cursor: pointer; border-radius: 999px; padding: 6px 12px; font-weight: 700; font-size: 13px; color: var(--text-dim); }
