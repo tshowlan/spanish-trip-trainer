@@ -1,10 +1,37 @@
 /* ============================== HOME (scores + map) ============================== */
-function ringSVG(val, cls) {
+function ringSVG(val, cls, tick) {
   const r = 52, C = 2 * Math.PI * r, off = C * (1 - Math.max(0, Math.min(100, val)) / 100);
+  let tickEl = "";
+  if (tick != null) {   // §3.2.2 pace tick: where the glide path says you should be today (zero words)
+    const a = (Math.max(0, Math.min(100, tick)) / 100) * 2 * Math.PI - Math.PI / 2;
+    const x1 = 60 + (r - 8) * Math.cos(a), y1 = 60 + (r - 8) * Math.sin(a);
+    const x2 = 60 + (r + 8) * Math.cos(a), y2 = 60 + (r + 8) * Math.sin(a);
+    tickEl = `<line class="ring-tick" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+  }
   return `<svg class="ring ${cls}" viewBox="0 0 120 120">
     <circle class="ring-bg" cx="60" cy="60" r="${r}"/>
     <circle class="ring-fg" cx="60" cy="60" r="${r}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${C.toFixed(1)}" data-fill="${off.toFixed(1)}" transform="rotate(-90 60 60)"/>
+    ${tickEl}
   </svg>`;
+}
+// §3.2.2 glide-path target for today (0-100), or null when there's no trip / too little data to be honest
+function _glideToday() {
+  const p = state.profile || {};
+  const s = state.scoresCache || {};
+  if (!p.tripDate || typeof daysUntil !== "function" || daysUntil(p.tripDate) <= 0) return null;
+  if ((s.lifetimeSessions || 0) < 5) return null;                 // pace too noisy to draw (§4 cold start)
+  const h = state.scoreHistory || []; if (!h.length) return null;
+  const gap = (a, b) => Math.round((new Date(b + "T00:00:00") - new Date(a + "T00:00:00")) / 864e5);
+  const total = gap(h[0].date, p.tripDate); if (total <= 0) return null;
+  const frac = Math.max(0, Math.min(1, gap(h[0].date, todayStr()) / total));
+  return Math.max(0, Math.min(100, Math.round((h[0].readiness || 0) + (90 - (h[0].readiness || 0)) * frac)));
+}
+// tiny 7-day delta for a flanking dial ("+6" / "−2"), or "" when history is too short
+function _dialDelta(metric) {
+  const tr = (typeof scoreTrend === "function") ? scoreTrend(metric, 8) : null;
+  if (!tr || tr.delta === 0) return tr ? `<div class="dial-delta flat">±0</div>` : "";
+  const up = tr.delta > 0;
+  return `<div class="dial-delta ${up ? "up" : "down"}">${up ? "+" : "−"}${Math.abs(tr.delta)}</div>`;
 }
 function sparkBars(arr) {
   const max = Math.max(1, ...arr);
@@ -73,25 +100,29 @@ function renderHome() {
   if (!started) {
     hero.appendChild(el(`<div class="empty-hero">Complete your first lesson to start your Trip Readiness score.</div>`));
   } else {
+    const glide = _glideToday();
+    const onPace = glide != null && s.readiness >= glide;
     const scores = el(`<div class="scores">
       <button class="ring-card m-momentum" id="sc-momentum">
         <div class="ring-wrap">${ringSVG(s.momentum, "m-momentum")}
           <div class="ring-center"><div class="ring-num" data-to="${s.momentum}">0</div></div>
         </div>
         <div class="ring-label">Momentum</div>
+        ${_dialDelta("momentum")}
       </button>
       <button class="ring-card readiness ${rClass}" id="sc-readiness">
-        <div class="ring-wrap">${ringSVG(s.readiness, "readiness")}
+        <div class="ring-wrap">${ringSVG(s.readiness, "readiness", glide)}
           <div class="ring-center"><div class="ring-num" data-to="${s.readiness}">0<span class="pct">%</span></div></div>
         </div>
         <div class="ring-label">Trip Readiness</div>
-        ${days !== null ? `<div class="ring-days">${days}d out</div>` : `<div class="ring-days set-date">Set date</div>`}
+        ${days !== null ? `<div class="ring-days">${days}d out${glide != null ? (onPace ? " · on pace" : " · behind") : ""}</div>` : `<div class="ring-days set-date">Set date</div>`}
       </button>
       <button class="ring-card m-retention" id="sc-retention">
         <div class="ring-wrap">${ringSVG(s.retention, "m-retention")}
           <div class="ring-center"><div class="ring-num" data-to="${s.retention}">0</div></div>
         </div>
         <div class="ring-label">Retention</div>
+        ${_dialDelta("retention")}
       </button>
     </div>`);
     hero.appendChild(scores);

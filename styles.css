@@ -752,7 +752,13 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .ring-card.readiness.r-high { --ring: var(--green); }   /* ≥ 65  */
 .ring-wrap { position: relative; display: grid; place-items: center; }
 .ring { width: min(108px, 29vw); height: auto; display: block; }
-.ring.m-momentum, .ring.m-retention { width: min(86px, 23vw); }   /* 20% smaller — hero readiness in the middle */
+/* §3.2.2 push the size asymmetry well beyond near-peer — the hierarchy must read at a glance */
+.ring.readiness { width: min(140px, 42vw); }
+.ring.m-momentum, .ring.m-retention { width: min(72px, 21vw); }
+.ring-tick { stroke: var(--text); stroke-width: 3.5; stroke-linecap: round; opacity: .8; }
+/* §3.2.2 delta whispers under the flanking dials */
+.dial-delta { font-size: 12px; font-weight: 800; margin-top: 2px; color: var(--text-dim); }
+.dial-delta.up { color: var(--green); } .dial-delta.down { color: var(--red); }
 .ring-bg { fill: none; stroke: var(--bg-elevated); stroke-width: 6.5; }
 .ring-fg { fill: none; stroke: var(--ring, var(--secondary)); stroke-width: 6.5; stroke-linecap: round;
   transition: stroke-dashoffset .85s cubic-bezier(.3,.7,.3,1); }
