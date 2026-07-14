@@ -47,9 +47,9 @@ const MEXICO_PACK = {
       lessons: [
         {
           id: "mx-greet", topic: "Greetings & politeness", title: "Hola & gracias",
-          reward: "First words down — the taquero already likes you better.",
-          cultureNote: "In small shops and comedores, a 'buenos días' to the whole room when you walk in isn't optional — it's basic courtesy, and it warms everyone up before you say another word.",
-          primer: { scene: "Your first morning in Oaxaca. You duck into a café on a quiet street off the Zócalo, and the woman behind the counter looks up with a warm 'buenos días.'", mission: "Greet her back — and say please and thank you like you mean it.", guessItem: "Gracias" },
+          reward: "First words down, the taquero already likes you better.",
+          cultureNote: "In small shops and comedores, a 'buenos días' to the whole room when you walk in isn't optional, it's basic courtesy, and it warms everyone up before you say another word.",
+          primer: { scene: "Your first morning in Oaxaca. You duck into a café on a quiet street off the Zócalo, and the woman behind the counter looks up with a warm 'buenos días.'", mission: "Greet her back, and say please and thank you like you mean it.", guessItem: "Gracias" },
           items: [
             { es: "Hola", en: "Hi", tier: 1, tags: ["greetings"], contextEs: "Hola, buenos días", contextEn: "Hi, good morning" },
             { es: "Buenos días", en: "Good morning", tier: 1, tags: ["greetings"], contextEs: "Buenos días, ¿cómo está?", contextEn: "Good morning, how are you?", keywords: ["días"] },
@@ -57,14 +57,14 @@ const MEXICO_PACK = {
             { es: "Buenas noches", en: "Good evening / night", tier: 1, tags: ["greetings"], contextEs: "Buenas noches, hasta mañana", contextEn: "Good night, see you tomorrow", keywords: ["noches"] },
             { es: "Por favor", en: "Please", tier: 1, tags: ["politeness"], contextEs: "Un café, por favor", contextEn: "A coffee, please", keywords: ["por favor"] },
             { es: "Gracias", en: "Thank you", tier: 1, tags: ["politeness"], contextEs: "Muchas gracias por todo", contextEn: "Thank you very much for everything", anchor: "Think: 'gratitude.'", variants: ["Muchas gracias"], reply: { es: "De nada", en: "You're welcome" } },
-            { es: "De nada", en: "You're welcome", tier: 1, tags: ["politeness"], contextEs: "—Gracias. —De nada.", contextEn: "—Thanks. —You're welcome." },
-            { es: "Con permiso", en: "Excuse me (getting past)", tier: 1, tags: ["politeness"], note: "Very Mexican — say it squeezing by or leaving a table.", contextEs: "Con permiso, voy a pasar", contextEn: "Excuse me, I'm coming through", keywords: ["permiso"] },
+            { es: "De nada", en: "You're welcome", tier: 1, tags: ["politeness"], contextEs: "Gracias. De nada.", contextEn: "Thanks. You're welcome." },
+            { es: "Con permiso", en: "Excuse me (getting past)", tier: 1, tags: ["politeness"], note: "Very Mexican, say it squeezing by or leaving a table.", contextEs: "Con permiso, voy a pasar", contextEn: "Excuse me, I'm coming through", keywords: ["permiso"] },
             { es: "Disculpe", en: "Excuse me (to get attention)", tier: 1, tags: ["politeness"], contextEs: "Disculpe, ¿me ayuda?", contextEn: "Excuse me, can you help me?", keywords: ["disculpe"] }
           ]
         },
         {
-          id: "mx-numbers1", topic: "Numbers", title: "Numbers 1–10",
-          reward: "You can count to ten — enough to order tacos for the whole table.",
+          id: "mx-numbers1", topic: "Numbers", title: "Numbers 1-10",
+          reward: "You can count to ten, enough to order tacos for the whole table.",
           items: [
             { es: "uno", en: "one", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Uno, por favor", contextEn: "One, please" },
             { es: "dos", en: "two", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Una mesa para dos", contextEn: "A table for two" },
@@ -80,13 +80,13 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-rescue", topic: "How do you say", title: "I only speak a little",
-          reward: "Now you can admit your Spanish is shaky — in Spanish. Locals will slow down for you.",
-          primer: { scene: "Doña Lupe just rattled off the day's specials at her comedor — and you caught maybe one word. She waits, dish towel over her shoulder, patient.", mission: "Admit your Spanish is shaky — and ask her to slow down.", guessItem: "¿Habla inglés?" },
+          reward: "Now you can admit your Spanish is shaky, in Spanish. Locals will slow down for you.",
+          primer: { scene: "Doña Lupe just rattled off the day's specials at her comedor, and you caught maybe one word. She waits, dish towel over her shoulder, patient.", mission: "Admit your Spanish is shaky, and ask her to slow down.", guessItem: "¿Habla inglés?" },
           items: [
             { es: "Hablo poquito español", en: "I speak a little Spanish", note: "'Poquito' is friendly and very Mexican.", tier: 2, tags: ["communication"], keywords: ["español"] },
             { es: "Estoy aprendiendo español", en: "I'm learning Spanish", note: "Buys patience instantly.", tier: 2, tags: ["communication"], keywords: ["aprendiendo", "español"] },
             { es: "No entiendo", en: "I don't understand", tier: 1, tags: ["communication"], contextEs: "Perdón, no entiendo bien", contextEn: "Sorry, I don't understand well", keywords: ["entiendo"] },
-            { es: "¿Habla inglés?", en: "Do you speak English?", note: "Formal (usted) — polite default with strangers.", tier: 1, tags: ["communication"], contextEs: "Disculpe, ¿habla inglés?", contextEn: "Excuse me, do you speak English?", anchor: "'inglés' = English.", keywords: ["inglés"] },
+            { es: "¿Habla inglés?", en: "Do you speak English?", note: "Formal (usted), polite default with strangers.", tier: 1, tags: ["communication"], contextEs: "Disculpe, ¿habla inglés?", contextEn: "Excuse me, do you speak English?", anchor: "'inglés' = English.", keywords: ["inglés"] },
             { es: "¿Cómo se dice...?", en: "How do you say...?", tier: 2, tags: ["communication"], keywords: ["dice"] },
             { es: "¿Puede repetir, por favor?", en: "Can you repeat that, please?", tier: 2, tags: ["communication"], keywords: ["repetir"], variants: ["¿Me lo repite, por favor?"] },
             { es: "Más despacio, por favor", en: "Slower, please", tier: 2, tags: ["communication"], keywords: ["despacio"] },
@@ -96,8 +96,8 @@ const MEXICO_PACK = {
         {
           id: "mx-table", topic: "Ordering food & drink", title: "First words at the table",
           reward: "You can get a table, read the menu, order, and ask for the check. Night one: handled.",
-          cultureNote: "'Provecho' is said to strangers as you pass their table mid-meal — a quick nod and a word. Say it back when it's said to you.",
-          primer: { scene: "It's loud and packed at Doña Lupe's comedor by the Mercado 20 de Noviembre. She grabs two menus and raises an eyebrow — '¿Para cuántos?'", mission: "Get a table, see the menu, order the tlayudas, and settle the check.", guessItem: "El menú, por favor" },
+          cultureNote: "'Provecho' is said to strangers as you pass their table mid-meal, a quick nod and a word. Say it back when it's said to you.",
+          primer: { scene: "It's loud and packed at Doña Lupe's comedor by the Mercado 20 de Noviembre. She grabs two menus and raises an eyebrow, '¿Para cuántos?'", mission: "Get a table, see the menu, order the tlayudas, and settle the check.", guessItem: "El menú, por favor" },
           items: [
             { es: "Una mesa para dos, por favor", en: "A table for two, please", tier: 2, tags: ["restaurant", "food"], keywords: ["mesa"], variants: ["Mesa para dos, por favor"] },
             { es: "El menú, por favor", en: "The menu, please", tier: 2, tags: ["restaurant", "food"], anchor: "'menú' = menu.", keywords: ["menú"], variants: ["¿Me trae el menú?", "La carta, por favor"] },
@@ -108,9 +108,9 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-diet-safe", topic: "Dietary needs & allergies", title: "Allergy essentials",
-          reward: "Crucial unlock — you can keep yourself safe at the table. Gluten, begone.",
-          cultureNote: "'No pica' (not spicy) is relative here — a 'mild' salsa can still surprise you. If you truly can't take heat, say 'sin chile' and mean it.",
-          primer: { scene: "Doña Lupe is lowering a plate toward your table — and you're pretty sure there's camarón in it. You have about three seconds.", mission: "Tell her what you can't eat, and that it really matters.", guessItem: "Soy alérgico a..." },
+          reward: "Crucial unlock, you can keep yourself safe at the table. Gluten, begone.",
+          cultureNote: "'No pica' (not spicy) is relative here, a 'mild' salsa can still surprise you. If you truly can't take heat, say 'sin chile' and mean it.",
+          primer: { scene: "Doña Lupe is lowering a plate toward your table, and you're pretty sure there's camarón in it. You have about three seconds.", mission: "Tell her what you can't eat, and that it really matters.", guessItem: "Soy alérgico a..." },
           items: [
             { es: "Soy alérgico a...", en: "I'm allergic to...", note: "Women: 'alérgica'.", tier: 2, tags: ["dietary", "health"], anchor: "'alérgico' = allergic.", keywords: ["alérgico"] },
             { es: "Soy celíaco", en: "I'm celiac", note: "Women: 'celíaca'.", tier: 2, tags: ["dietary", "health"], contextEs: "Soy celíaco, sin gluten por favor", contextEn: "I'm celiac, gluten-free please", keywords: ["celíaco"] },
@@ -123,8 +123,8 @@ const MEXICO_PACK = {
         {
           id: "mx-bathroom", topic: "Bathrooms & signs", title: "Where's the bathroom",
           reward: "You can find a bathroom and read the door. Push-vs-pull humiliation: avoided.",
-          cultureNote: "Carry a few coins and your own tissue — many public restrooms charge a couple of pesos and don't stock paper.",
-          primer: { scene: "Two unmarked doors at the back of Doña Lupe's comedor, and a server rushing past with a tray of caldo. You really need to pick the right one.", mission: "Ask where the bathroom is — and read the door before you push.", guessItem: "Entrada" },
+          cultureNote: "Carry a few coins and your own tissue, many public restrooms charge a couple of pesos and don't stock paper.",
+          primer: { scene: "Two unmarked doors at the back of Doña Lupe's comedor, and a server rushing past with a tray of caldo. You really need to pick the right one.", mission: "Ask where the bathroom is, and read the door before you push.", guessItem: "Entrada" },
           items: [
             { es: "¿Dónde está el baño?", en: "Where's the bathroom?", note: "Mexico: 'baño'.", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "baño"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
             { es: "¿Tienen baño?", en: "Do you have a bathroom?", tier: 1, tags: ["bathroom"], contextEs: "Disculpe, ¿tienen baño?", contextEn: "Excuse me, do you have a bathroom?", keywords: ["baño"] },
@@ -138,20 +138,20 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-cash", topic: "Numbers, money & paying", title: "Pesos & paying cash",
-          reward: "Pesos, cash, and the total — you can pay without pointing at the register.",
-          cultureNote: "Cash is king at markets and street stalls. Break big bills at a chain store first — vendors rarely have change for a 500-peso note.",
+          reward: "Pesos, cash, and the total, you can pay without pointing at the register.",
+          cultureNote: "Cash is king at markets and street stalls. Break big bills at a chain store first, vendors rarely have change for a 500-peso note.",
           primer: { scene: "At the Mercado 20 de Noviembre, Beto weighs out a bag of chapulines and rattles off the price. Taped to his puesto: a hand-lettered 'solo efectivo.'", mission: "Handle pesos and pay Beto in cash without fumbling.", guessItem: "cien" },
           items: [
             { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte pesos", contextEn: "Twenty pesos" },
             { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta pesos", contextEn: "Fifty pesos" },
-            { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien pesos", contextEn: "One hundred pesos", anchor: "Think: 'century / percent' — 100." },
+            { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien pesos", contextEn: "One hundred pesos", anchor: "Think: 'century / percent', 100." },
             { es: "En efectivo", en: "In cash", tier: 1, tags: ["money"], contextEs: "Voy a pagar en efectivo", contextEn: "I'll pay in cash", keywords: ["efectivo"] },
             { es: "¿Cuánto es?", en: "How much is it (total)?", tier: 2, tags: ["money"], keywords: ["cuánto"] }
           ]
         },
         {
           id: "mx-dir", topic: "Directions", title: "Which way?",
-          reward: "Left, right, derecho — you won't get lost in the mercado maze.",
+          reward: "Left, right, derecho, you won't get lost in the mercado maze.",
           items: [
             { es: "¿Dónde está...?", en: "Where is...?", tier: 1, tags: ["directions"], contextEs: "¿Dónde está el metro?", contextEn: "Where is the metro?", keywords: ["dónde"], reply: { es: "Está a dos cuadras", en: "It's two blocks away" } },
             { es: "¿Cómo llego a...?", en: "How do I get to...?", tier: 2, tags: ["directions"], keywords: ["llego"] },
@@ -167,8 +167,8 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-airport", topic: "Airport signs", title: "Reading the airport",
-          reward: "Arrivals, departures, your gate — all decoded. You won't miss the flight over a sign.",
-          primer: { scene: "You step off the jet bridge into a wall of Spanish signage. Somewhere past customs, Andrés is waiting with a cab — but first you have to find your bag.", mission: "Read the signs — departures, arrivals, security, customs.", guessItem: "Seguridad" },
+          reward: "Arrivals, departures, your gate, all decoded. You won't miss the flight over a sign.",
+          primer: { scene: "You step off the jet bridge into a wall of Spanish signage. Somewhere past customs, Andrés is waiting with a cab, but first you have to find your bag.", mission: "Read the signs, departures, arrivals, security, customs.", guessItem: "Seguridad" },
           items: [
             { es: "Salidas", en: "Departures", tier: 1, tags: ["airport", "signs"], contextEs: "La sala de salidas", contextEn: "The departures hall", keywords: ["salidas"] },
             { es: "Llegadas", en: "Arrivals", tier: 1, tags: ["airport", "signs"], contextEs: "La zona de llegadas", contextEn: "The arrivals area", keywords: ["llegadas"] },
@@ -183,13 +183,13 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-hear", topic: "Common phrases you'll hear", title: "What locals say to you",
-          reward: "You can understand what's said TO you. 'Ahorita' will still confuse you — that's normal.",
+          reward: "You can understand what's said TO you. 'Ahorita' will still confuse you, that's normal.",
           items: [
-            { es: "¿Algo más?", en: "Anything else?", tier: 1, tags: ["social", "restaurant"], contextEs: "—¿Algo más? —No, gracias.", contextEn: "—Anything else? —No, thanks.", keywords: ["más"] },
-            { es: "Mande", en: "Pardon? / Yes?", note: "Very Mexican polite way to say 'what?' or 'go ahead'.", tier: 1, tags: ["social", "politeness"], contextEs: "—Disculpe. —¿Mande?", contextEn: "—Excuse me. —Yes?", keywords: ["mande"] },
-            { es: "Con gusto", en: "My pleasure", note: "Common Mexican reply to 'gracias'.", tier: 1, tags: ["social", "politeness"], contextEs: "—Gracias. —Con gusto.", contextEn: "—Thanks. —My pleasure." },
+            { es: "¿Algo más?", en: "Anything else?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Algo más? No, gracias.", contextEn: "Anything else? No, thanks.", keywords: ["más"] },
+            { es: "Mande", en: "Pardon? / Yes?", note: "Very Mexican polite way to say 'what?' or 'go ahead'.", tier: 1, tags: ["social", "politeness"], contextEs: "Disculpe. ¿Mande?", contextEn: "Excuse me. Yes?", keywords: ["mande"] },
+            { es: "Con gusto", en: "My pleasure", note: "Common Mexican reply to 'gracias'.", tier: 1, tags: ["social", "politeness"], contextEs: "Gracias. Con gusto.", contextEn: "Thanks. My pleasure." },
             { es: "Ahorita", en: "Right now / in a bit", note: "Famously flexible Mexican timing.", tier: 1, tags: ["social", "time"], contextEs: "Ahorita se lo traigo", contextEn: "I'll bring it right away", keywords: ["ahorita"] },
-            { es: "¿Es todo?", en: "Is that all?", tier: 1, tags: ["social", "restaurant"], contextEs: "—¿Es todo? —Sí, gracias.", contextEn: "—Is that all? —Yes, thanks.", keywords: ["todo"] },
+            { es: "¿Es todo?", en: "Is that all?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Es todo? Sí, gracias.", contextEn: "Is that all? Yes, thanks.", keywords: ["todo"] },
             { es: "Provecho", en: "Enjoy your meal", note: "Said when passing people who are eating.", tier: 1, tags: ["social", "food"], contextEs: "Buen provecho", contextEn: "Enjoy your meal", keywords: ["provecho"] },
             { es: "Aquí tiene", en: "Here you go", tier: 1, tags: ["social", "restaurant"], contextEs: "Aquí tiene su cambio", contextEn: "Here's your change", keywords: ["tiene"] },
             { es: "Que le vaya bien", en: "Take care / have a good one", tier: 2, tags: ["social", "politeness"], keywords: ["vaya"] }
@@ -197,9 +197,9 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-help", topic: "Problems & emergencies", title: "If something's wrong",
-          reward: "The safety net is in place. Now go enjoy Oaxaca — you're covered.",
-          cultureNote: "Mexico's emergency number is 911. For minor stuff, the farmacia often has a doctor in a back consultorio — cheap, fast, no appointment.",
-          primer: { scene: "You pat every pocket twice — your wallet's gone. Sra. Elena, the pharmacist across the street, catches your face and asks if you're okay.", mission: "Get help fast — a doctor, the police, or her farmacia.", guessItem: "Es una emergencia" },
+          reward: "The safety net is in place. Now go enjoy Oaxaca, you're covered.",
+          cultureNote: "Mexico's emergency number is 911. For minor stuff, the farmacia often has a doctor in a back consultorio, cheap, fast, no appointment.",
+          primer: { scene: "You pat every pocket twice, your wallet's gone. Sra. Elena, the pharmacist across the street, catches your face and asks if you're okay.", mission: "Get help fast, a doctor, the police, or her farmacia.", guessItem: "Es una emergencia" },
           items: [
             { es: "Ayuda", en: "Help", tier: 1, tags: ["emergency"], contextEs: "¡Ayuda, por favor!", contextEn: "Help, please!", keywords: ["ayuda"] },
             { es: "Necesito un médico", en: "I need a doctor", tier: 1, tags: ["emergency", "health"], keywords: ["médico"], variants: ["Necesito un doctor"] },
@@ -218,11 +218,11 @@ const MEXICO_PACK = {
 
     /* ============================ PASS 2 · COMFORT ============================ */
     {
-      id: "mx-p2", pass: 2, title: "Comfort", blurb: "Handle the day — order, pay, get around, check in.",
+      id: "mx-p2", pass: 2, title: "Comfort", blurb: "Handle the day, order, pay, get around, check in.",
       lessons: [
         {
           id: "mx-order", topic: "Ordering food & drink", title: "Order like a regular",
-          reward: "Recommendations, spice level, a round of beers, splitting the check — you run the table.",
+          reward: "Recommendations, spice level, a round of beers, splitting the check, you run the table.",
           items: [
             { es: "¿Qué me recomienda?", en: "What do you recommend?", tier: 2, tags: ["restaurant", "food"], keywords: ["recomienda"], reply: { es: "Los tacos al pastor están buenísimos", en: "The al pastor tacos are amazing" } },
             { es: "Un jugo de naranja", en: "An orange juice", note: "Mexico: 'jugo'. (Spain says 'zumo'.)", tier: 2, tags: ["drink"], keywords: ["jugo"] },
@@ -235,12 +235,12 @@ const MEXICO_PACK = {
         {
           id: "mx-coffee", topic: "Coffee shop", title: "Coffee shop",
           reward: "You can order a café de olla and survive a 'cash only' counter. Caffeine: secured.",
-          cultureNote: "Café de olla is brewed in a clay pot with cinnamon and piloncillo — order it at a comedor, and let it be slow.",
+          cultureNote: "Café de olla is brewed in a clay pot with cinnamon and piloncillo, order it at a comedor, and let it be slow.",
           items: [
             { es: "Un café con leche, por favor", en: "A coffee with milk, please", tier: 2, tags: ["coffee", "drink"], keywords: ["café", "leche"] },
             { es: "Un café americano", en: "An americano (black coffee)", note: "The standard black coffee in Mexico.", tier: 2, tags: ["coffee", "drink"], keywords: ["café", "americano"] },
             { es: "Un café de olla", en: "A spiced pot coffee", note: "Traditional Mexican coffee with cinnamon and piloncillo.", tier: 2, tags: ["coffee", "drink"], keywords: ["café"] },
-            { es: "Un pan dulce", en: "A sweet pastry", note: "Mexican bakery staple — like a 'concha'.", tier: 2, tags: ["coffee", "food"], keywords: ["pan"] },
+            { es: "Un pan dulce", en: "A sweet pastry", note: "Mexican bakery staple, like a 'concha'.", tier: 2, tags: ["coffee", "food"], keywords: ["pan"] },
             { es: "¿Qué pan tienen?", en: "What pastries do you have?", tier: 2, tags: ["coffee", "food"], keywords: ["pan"] },
             { es: "¿Para aquí o para llevar?", en: "For here or to go?", note: "What the barista asks you.", tier: 2, tags: ["coffee"], keywords: ["llevar"], reply: { es: "Para llevar, por favor", en: "To go, please" } },
             { es: "¿Me da un vaso de agua?", en: "Can I get a glass of water?", tier: 2, tags: ["drink"], keywords: ["agua", "vaso"] },
@@ -250,7 +250,7 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-diet", topic: "Dietary needs & allergies", title: "Ask about your food",
-          reward: "You can quiz a waiter on what's in a dish — and stay safe while you do.",
+          reward: "You can quiz a waiter on what's in a dish, and stay safe while you do.",
           items: [
             { es: "¿Esto lleva...?", en: "Does this contain...?", tier: 2, tags: ["dietary", "food"], contextEs: "¿Esto lleva chile?", contextEn: "Does this contain chili?", keywords: ["lleva"] },
             { es: "¿Tiene harina de trigo?", en: "Does it have wheat flour?", tier: 2, tags: ["dietary", "food"], keywords: ["tiene", "harina", "trigo"] },
@@ -266,7 +266,7 @@ const MEXICO_PACK = {
             { es: "¿Aceptan tarjeta?", en: "Do you accept card?", tier: 2, tags: ["money"], keywords: ["tarjeta"], variants: ["¿Puedo pagar con tarjeta?"], reply: { es: "Solo efectivo", en: "Cash only" } },
             { es: "Es muy caro", en: "It's too expensive", tier: 2, tags: ["money", "shopping"], keywords: ["caro"], variants: ["Está muy caro"] },
             { es: "¿Hay un cajero cerca?", en: "Is there an ATM nearby?", note: "Mexico: 'cajero' = ATM.", tier: 2, tags: ["money", "directions"], keywords: ["cajero", "cerca"] },
-            { es: "¿La propina está incluida?", en: "Is the tip included?", note: "Tip ~10–15% in Mexico.", tier: 2, tags: ["money", "restaurant"], keywords: ["propina"] }
+            { es: "¿La propina está incluida?", en: "Is the tip included?", note: "Tip ~10-15% in Mexico.", tier: 2, tags: ["money", "restaurant"], keywords: ["propina"] }
           ]
         },
         {
@@ -286,7 +286,7 @@ const MEXICO_PACK = {
         {
           id: "mx-taxi", topic: "Taxis & rideshare", title: "Taxis & Uber",
           reward: "You can survive a taxi without overpaying. Backseat boss.",
-          cultureNote: "In CDMX, skip street-hailed taxis — use Uber/Didi or an authorized 'sitio' stand. No meter? Agree the fare before you get in.",
+          cultureNote: "In CDMX, skip street-hailed taxis, use Uber/Didi or an authorized 'sitio' stand. No meter? Agree the fare before you get in.",
           items: [
             { es: "Lléveme a esta dirección", en: "Take me to this address", tier: 2, tags: ["taxi", "transport"], keywords: ["dirección"], variants: ["¿Me lleva a esta dirección?"] },
             { es: "¿Cuánto al centro?", en: "How much to downtown?", tier: 2, tags: ["taxi", "money"], keywords: ["cuánto", "centro"], reply: { es: "Como cien pesos", en: "About a hundred pesos" } },
@@ -329,7 +329,7 @@ const MEXICO_PACK = {
         {
           id: "mx-ferry", requires: { transport: "ferry" },
           topic: "Ferry", title: "Ferries & boats",
-          reward: "Docks, crossings, round-trips — you can board the ferry to Cozumel without boarding the wrong one.",
+          reward: "Docks, crossings, round-trips, you can board the ferry to Cozumel without boarding the wrong one.",
           items: [
             { es: "¿Dónde compro el boleto del ferry?", en: "Where do I buy the ferry ticket?", tier: 2, tags: ["ferry", "transport"], keywords: ["boleto", "ferry"] },
             { es: "¿A qué hora sale el próximo ferry?", en: "What time does the next ferry leave?", tier: 2, tags: ["ferry", "time"], keywords: ["ferry", "hora"] },
@@ -342,7 +342,7 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-hotel", topic: "Hotel & check-in", title: "Checking in",
-          reward: "Check-in, wifi, towels, a working shower — you can run the whole front desk and your room.",
+          reward: "Check-in, wifi, towels, a working shower, you can run the whole front desk and your room.",
           items: [
             { es: "Tengo una reservación", en: "I have a reservation", note: "Mexico: 'reservación'. (Spain: 'reserva'.)", tier: 2, tags: ["hotel", "lodging"], keywords: ["reservación"] },
             { es: "a nombre de...", en: "under the name of...", tier: 2, tags: ["hotel", "lodging"], contextEs: "A nombre de García", contextEn: "Under the name of García", keywords: ["nombre"] },
@@ -359,13 +359,13 @@ const MEXICO_PACK = {
             { es: "No hay agua caliente", en: "There's no hot water", tier: 2, tags: ["hotel", "lodging"], keywords: ["agua", "caliente"] },
             { es: "papel de baño", en: "toilet paper", note: "Mexico: 'papel de baño'.", tier: 2, tags: ["hotel", "bathroom"], keywords: ["papel", "baño"] },
             { es: "No molestar", en: "Do not disturb (sign)", tier: 1, tags: ["hotel", "signs"], contextEs: "El letrero de 'no molestar'", contextEn: "The 'do not disturb' sign", keywords: ["molestar"] },
-            { es: "Muchas gracias por todo", en: "Thank you very much for everything", note: "Housekeeping appreciates it — and a small tip.", tier: 2, tags: ["politeness"] }
+            { es: "Muchas gracias por todo", en: "Thank you very much for everything", note: "Housekeeping appreciates it, and a small tip.", tier: 2, tags: ["politeness"] }
           ]
         },
         {
           id: "mx-airbnb", requires: { lodging: "airbnb" },
           topic: "Airbnb / apartment", title: "Your Airbnb",
-          reward: "Keys, wifi, the boiler, trash day — you can handle a host like a pro.",
+          reward: "Keys, wifi, the boiler, trash day, you can handle a host like a pro.",
           items: [
             { es: "¿Dónde recojo las llaves?", en: "Where do I pick up the keys?", tier: 2, tags: ["lodging"], keywords: ["llaves"] },
             { es: "¿Cuál es la contraseña del wifi?", en: "What's the wifi password?", tier: 2, tags: ["lodging"], keywords: ["contraseña", "wifi"] },
@@ -379,7 +379,7 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-landmarks", topic: "Sights & ruins", title: "Sightseeing",
-          reward: "Two tickets to the ruins, please — and you said it in Spanish. Teotihuacán awaits.",
+          reward: "Two tickets to the ruins, please, and you said it in Spanish. Teotihuacán awaits.",
           items: [
             { es: "¿A qué hora abren las ruinas?", en: "What time do the ruins open?", tier: 2, tags: ["sights", "time"], keywords: ["hora", "ruinas"] },
             { es: "dos boletos, por favor", en: "two tickets, please", tier: 2, tags: ["sights"], keywords: ["boletos"] },
@@ -394,7 +394,7 @@ const MEXICO_PACK = {
         {
           id: "mx-market", topic: "Markets & shopping", title: "At the market",
           reward: "Markets decoded. ¿A cómo los aguacates? You got this.",
-          cultureNote: "'¿A cómo?' opens the price. A little back-and-forth is expected, but stay friendly — a smile drops the price faster than hard bargaining.",
+          cultureNote: "'¿A cómo?' opens the price. A little back-and-forth is expected, but stay friendly, a smile drops the price faster than hard bargaining.",
           items: [
             { es: "¿Tiene...?", en: "Do you have...?", tier: 1, tags: ["market", "shopping"], contextEs: "¿Tiene aguacates?", contextEn: "Do you have avocados?", keywords: ["tiene"] },
             { es: "¿A cómo?", en: "How much (per unit)?", note: "Classic market phrase for prices.", tier: 2, tags: ["market", "money"], keywords: ["cómo"], reply: { es: "A treinta pesos el kilo", en: "Thirty pesos a kilo" } },
@@ -415,7 +415,7 @@ const MEXICO_PACK = {
             { es: "¿De dónde eres?", en: "Where are you from?", tier: 2, tags: ["social"], keywords: ["dónde", "eres"], reply: { es: "Soy de aquí, de la ciudad", en: "I'm from here, from the city" } },
             { es: "Soy de...", en: "I'm from...", tier: 1, tags: ["social"], contextEs: "Soy de Estados Unidos", contextEn: "I'm from the United States", keywords: ["soy"] },
             { es: "Mucho gusto", en: "Nice to meet you", tier: 1, tags: ["social", "greetings"], contextEs: "Mucho gusto, me llamo Ana", contextEn: "Nice to meet you, I'm Ana", reply: { es: "Igualmente", en: "Likewise" } },
-            { es: "¿Qué me recomienda?", en: "What do you recommend?", note: "Callback from ordering — locals love being asked.", tier: 2, tags: ["social", "food"], keywords: ["recomienda"] },
+            { es: "¿Qué me recomienda?", en: "What do you recommend?", note: "Callback from ordering, locals love being asked.", tier: 2, tags: ["social", "food"], keywords: ["recomienda"] },
             { es: "¿Cuál es tu mezcal favorito?", en: "What's your favorite mezcal?", tier: 2, tags: ["social", "drink"], keywords: ["mezcal"] },
             { es: "Está buenísimo", en: "It's really good", tier: 2, tags: ["social", "food"], keywords: ["buenísimo"], variants: ["Está riquísimo"] },
             { es: "Una más, por favor", en: "One more, please", tier: 1, tags: ["social", "drink"], contextEs: "Otra cerveza, una más por favor", contextEn: "Another beer, one more please", keywords: ["más"] },
@@ -425,7 +425,7 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-plane", bonus: true, topic: "On the plane", title: "On the plane",
-          reward: "Chicken or pasta, juice or coffee — you can run the whole drinks cart in Spanish.",
+          reward: "Chicken or pasta, juice or coffee, you can run the whole drinks cart in Spanish.",
           items: [
             { es: "¿Pollo o pasta?", en: "Chicken or pasta?", note: "What the flight attendant asks you.", tier: 2, tags: ["plane", "food"], keywords: ["pollo", "pasta"] },
             { es: "Pollo, por favor", en: "Chicken, please", tier: 1, tags: ["plane", "food"], contextEs: "Pollo, por favor, gracias", contextEn: "Chicken, please, thank you", keywords: ["pollo"] },
@@ -456,7 +456,7 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-fix", topic: "Advanced · When things go wrong", title: "Complaints & mix-ups",
-          reward: "Lost, overcharged, double-booked — you can talk your way out of it. Travel boss mode.",
+          reward: "Lost, overcharged, double-booked, you can talk your way out of it. Travel boss mode.",
           items: [
             { es: "Hice una reservación pero no aparece", en: "I made a reservation but it's not showing up", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["reservación", "aparece"] },
             { es: "Creo que estoy perdido, ¿me puede ayudar?", en: "I think I'm lost, can you help me?", tier: 3, tags: ["directions", "emergency"], difficulty: 3, keywords: ["perdido", "ayudar"] },
@@ -470,7 +470,7 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-haggle", topic: "Advanced · Markets", title: "Market haggling",
-          reward: "You can talk a price down without switching to English. The vendor smiles — you won.",
+          reward: "You can talk a price down without switching to English. The vendor smiles, you won.",
           items: [
             { es: "¿Me hace un descuento?", en: "Can you give me a discount?", tier: 3, tags: ["market", "money", "shopping"], difficulty: 3, keywords: ["descuento"] },
             { es: "¿Es lo más barato que tiene?", en: "Is that the cheapest you have?", tier: 3, tags: ["market", "money", "shopping"], difficulty: 4, keywords: ["barato"] },
@@ -482,8 +482,8 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-mezcal", topic: "Advanced · Bars", title: "Mezcal & cocktail bars",
-          reward: "You can chat up a bartender and order like a local. Salud — the good stuff finds you now.",
-          cultureNote: "Mezcal is sipped, never shot — kissing the glass is the local tell. As they say: 'para todo mal, mezcal; para todo bien, también.'",
+          reward: "You can chat up a bartender and order like a local. Salud, the good stuff finds you now.",
+          cultureNote: "Mezcal is sipped, never shot, kissing the glass is the local tell. As they say: 'para todo mal, mezcal; para todo bien, también.'",
           items: [
             { es: "¿Qué mezcal me recomienda?", en: "Which mezcal do you recommend?", tier: 3, tags: ["drink", "social"], difficulty: 3, keywords: ["mezcal", "recomienda"] },
             { es: "Un mezcal derecho, por favor", en: "A mezcal neat, please", note: "Mexico: 'derecho' = neat/straight up.", tier: 3, tags: ["drink", "social"], difficulty: 3, keywords: ["mezcal"] },
@@ -495,7 +495,7 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-guide", topic: "Advanced · Tours", title: "Touring with a guide",
-          reward: "Times, tickets, what's included — you can join a tour and actually follow along. Teotihuacán, decoded.",
+          reward: "Times, tickets, what's included, you can join a tour and actually follow along. Teotihuacán, decoded.",
           items: [
             { es: "¿Cuánto dura el recorrido?", en: "How long is the tour?", note: "Mexico: 'recorrido' = tour/route.", tier: 3, tags: ["sights", "tour"], difficulty: 3, keywords: ["cuánto", "recorrido"] },
             { es: "¿A qué hora empieza el recorrido?", en: "What time does the tour start?", tier: 3, tags: ["sights", "tour", "time"], difficulty: 3, keywords: ["hora", "recorrido"] },
@@ -508,7 +508,7 @@ const MEXICO_PACK = {
         {
           id: "mx-chain-dinner", topic: "Advanced · Boss", title: "Dinner at Doña Lupe's",
           reward: "Greeting to check, you handled a whole dinner without switching to English. That's the trip, rehearsed.",
-          cultureNote: "'Buen provecho' isn't just a waiter's line — diners say it to each other and to strangers passing a table. Say it back.",
+          cultureNote: "'Buen provecho' isn't just a waiter's line, diners say it to each other and to strangers passing a table. Say it back.",
           items: [],
           chain: {
             title: "Dinner at Doña Lupe's",
@@ -531,18 +531,18 @@ const MEXICO_PACK = {
         },
         {
           id: "mx-chain-lastnight", topic: "Advanced · Capstone", title: "Your last night",
-          reward: "That was the whole trip in one evening — greeting, ordering, a mix-up, small talk, paying, goodbyes. You didn't switch to English once. You're ready.",
-          cultureNote: "When someone says 'buen viaje,' the warm reply is 'gracias, nos vemos' — 'see you' — even if you both know you won't. It's the leaving-well that matters.",
+          reward: "That was the whole trip in one evening, greeting, ordering, a mix-up, small talk, paying, goodbyes. You didn't switch to English once. You're ready.",
+          cultureNote: "When someone says 'buen viaje,' the warm reply is 'gracias, nos vemos', 'see you', even if you both know you won't. It's the leaving-well that matters.",
           items: [],
           chain: {
             title: "Your last night",
             turns: [
-              { narr: "Your last night in Oaxaca. Andrés dropped you near the Zócalo, and your feet carried you back to Doña Lupe's comedor — one more time." },
+              { narr: "Your last night in Oaxaca. Andrés dropped you near the Zócalo, and your feet carried you back to Doña Lupe's comedor, one more time." },
               { npc: { es: "¡Buenas noches! Tu última noche, ¿verdad? Pásale, pásale.", en: "Good evening! Your last night, right? Come in, come in." } },
               { user: "Buenas noches" },
               { npc: { es: "Siéntate, siéntate. ¿Qué te traigo esta vez?", en: "Sit, sit. What can I get you this time?" } },
               { user: "¿Qué me recomienda?" },
-              { npc: { es: "Las tlayudas, para despedirte bien de Oaxaca.", en: "The tlayudas — a proper goodbye to Oaxaca." } },
+              { npc: { es: "Las tlayudas, para despedirte bien de Oaxaca.", en: "The tlayudas, a proper goodbye to Oaxaca." } },
               { user: "Soy alérgico a..." },
               { npc: { es: "No te preocupes, yo te cuido. ¿Y de tomar?", en: "Don't worry, I'll look after you. And to drink?" } },
               { user: "Una cerveza, por favor" },
@@ -556,10 +556,10 @@ const MEXICO_PACK = {
               { npc: { es: "Claro. Gracias por venir todos estos días.", en: "Of course. Thank you for coming all these days." } },
               { user: "Muchas gracias por todo" },
               { npc: { es: "Que te vaya muy bien. ¡Buen viaje!", en: "Take care. Have a good trip!" } },
-              { narr: "On your way out, Beto waves you over to his mezcal stand — one for the road." },
+              { narr: "On your way out, Beto waves you over to his mezcal stand, one for the road." },
               { npc: { es: "¡Amigo! La última, va por la casa.", en: "My friend! The last one, on the house." } },
               { user: "¿Cuál es tu mezcal favorito?" },
-              { npc: { es: "El de pechuga. Pruébalo, es una despedida.", en: "The pechuga. Try it — it's a farewell." } },
+              { npc: { es: "El de pechuga. Pruébalo, es una despedida.", en: "The pechuga. Try it, it's a farewell." } },
               { user: "¡Salud!" },
               { npc: { es: "¡Salud! Vuelve pronto a Oaxaca.", en: "Cheers! Come back to Oaxaca soon." } }
             ]

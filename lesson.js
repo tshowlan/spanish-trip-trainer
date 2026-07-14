@@ -136,7 +136,7 @@ function chainProduce(item, onDone) {
   const original = item.es.split(" ");
   const bankWords = original.map(strip);
   const display = i => (i === 0 ? bankWords[i].charAt(0).toLowerCase() + bankWords[i].slice(1) : bankWords[i]);
-  const f = footer(`<div class="chain-you">Your turn — say: "${item.en}"</div>
+  const f = footer(`<div class="chain-you">Your turn, say: "${item.en}"</div>
     <div class="build-answer" id="cans"></div><div class="bank" id="cbank"></div>
     <button class="btn" id="ccheck" disabled>Say it</button>`);
   const ans = f.querySelector("#cans"), bank = f.querySelector("#cbank");
@@ -174,7 +174,7 @@ function finishChain(lesson) {
   const app = $("#app"); app.innerHTML = "";
   app.appendChild(el(`<div class="complete">
     <h2>¡Conversación completa!</h2>
-    <div class="reward">${lesson.reward || "You held a whole conversation in Spanish — start to finish."}</div>
+    <div class="reward">${lesson.reward || "You held a whole conversation in Spanish, start to finish."}</div>
     ${lesson.cultureNote ? `<div class="culture-note"><b>Local tip</b> ${lesson.cultureNote}</div>` : ""}
     <button class="btn" id="home">Continue</button></div>`));
   $("#home").addEventListener("click", renderHome);
@@ -211,14 +211,14 @@ function renderPrimer(lesson, onDone) {
     const opts = shuffle([guess.en, ...[...new Set(others)].filter(Boolean).sort(() => Math.random() - .5).slice(0, 2)]);
     app.appendChild(el(`<div class="runner primer">
       <div class="primer-body">
-        <div class="primer-label">Take a guess — no penalty</div>
+        <div class="primer-label">Take a guess, no penalty</div>
         <div class="primer-guess-es">${guess.es}</div>
         <div class="qtype">What do you think it means?</div>
         <div class="choices" id="pchoices"></div>
       </div></div>`));
     const cc = $("#pchoices");
     opts.forEach(o => { const b = el(`<button class="choice">${o}</button>`); b.addEventListener("click", reveal); cc.appendChild(b); });
-    footer(`<button class="btn grey" id="pskip">Skip — just show me</button>`);
+    footer(`<button class="btn grey" id="pskip">Skip, just show me</button>`);
     $("#pskip").addEventListener("click", reveal);
   };
   const reveal = () => {
@@ -242,7 +242,7 @@ function renderPrimer(lesson, onDone) {
 // startReview() → due-item session; startReview(items) → focused review of those items (e.g. mistakes)
 function startReview(items) {
   const qs = items && items.length ? items.map(it => reviewQuestion(it, items)) : composeReview();
-  if (!qs.length) { toast("Nothing to review yet — finish a lesson first 📚"); return; }
+  if (!qs.length) { toast("Nothing to review yet, finish a lesson first 📚"); return; }
   run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map() };
   renderQuestion();
 }
@@ -259,7 +259,7 @@ function speedPool() {
 }
 function startSpeedRound() {
   const pool = speedPool();
-  if (pool.length < 4) { toast("Speed rounds need phrases you know — finish a few lessons first 🏁"); return; }
+  if (pool.length < 4) { toast("Speed rounds need phrases you know, finish a few lessons first 🏁"); return; }
   renderSpeedRound(pool);
 }
 function renderSpeedRound(pool) {
@@ -268,7 +268,7 @@ function renderSpeedRound(pool) {
   app.appendChild(el(`<div class="runner speed">
     <div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button>
       <div class="speed-timer" id="stime">0:60</div><div class="speed-score" id="sscore">0</div></div>
-    <div class="qtype" style="text-align:center;margin:6px 0 12px">Match them — fast!</div>
+    <div class="qtype" style="text-align:center;margin:6px 0 12px">Match them, fast!</div>
     <div class="match" id="sgrid"></div></div>`));
   const grid = $("#sgrid");
   const stop = () => { if (timer) clearInterval(timer); timer = null; };
@@ -304,7 +304,7 @@ function renderSpeedRound(pool) {
     app.appendChild(el(`<div class="complete">
       <h2>Speed round</h2>
       <div class="scorebar"><div class="score"><div class="n">${matched}</div><div class="l">pairs matched</div></div></div>
-      <div class="reward">Pure practice — nothing on the line, just reps that keep your phrases sharp.</div>
+      <div class="reward">Pure practice, nothing on the line, just reps that keep your phrases sharp.</div>
       <button class="btn accent" id="again">Go again</button><div style="height:10px"></div>
       <button class="btn grey" id="done">Done</button></div>`));
     $("#again").addEventListener("click", startSpeedRound);
@@ -333,7 +333,7 @@ function renderQuestion() {
   $("#quit").addEventListener("click", () => { if (confirm("Quit this lesson? Progress in it is lost.")) renderHome(); });
   run.answered = false;
   // make the mistake re-queue visible: label a phrase you missed coming back around
-  if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">↩ Second chance — you missed this one</div>`));
+  if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">↩ Second chance, you missed this one</div>`));
   ({ intro: renderIntro, present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
      respond: renderRespond, listen_choice: renderListenChoice, reply_listen: renderReply }[q.type])(q);
@@ -410,7 +410,7 @@ function renderPresent(q) {
   const card = el(`<div class="present-card">
       <div class="present-es">${item.es}</div>
       <div class="present-en">${item.en}</div>
-      ${short && item.contextEs ? `<div class="present-ctx">${item.contextEs}${item.contextEn ? ` <span>— ${item.contextEn}</span>` : ""}</div>` : ""}
+      ${short && item.contextEs ? `<div class="present-ctx">${item.contextEs}${item.contextEn ? ` <span>${item.contextEn}</span>` : ""}</div>` : ""}
       ${item.note ? `<div class="present-note">${item.note}</div>` : ""}
       ${item.anchor ? `<div class="present-anchor">💡 ${item.anchor}</div>` : ""}
     </div>`);
@@ -471,7 +471,7 @@ function presentEs(item) {
 function coldEffortNote(body) {
   if (state.effortColdShown) return;
   state.effortColdShown = true; save();
-  body.appendChild(el(`<div class="effort-line">✍️ Typing it cold is what makes it stick — this is the rep that counts.</div>`));
+  body.appendChild(el(`<div class="effort-line">✍️ Typing it cold is what makes it stick. This is the rep that counts.</div>`));
 }
 function renderMC(q) {
   const es2en = q.type === "mc_es2en";
@@ -524,7 +524,7 @@ function renderReply(q) {
   const play = el(`<button class="big-speak">🔊</button>`);
   play.addEventListener("click", () => speak(r.es));
   body.appendChild(play);
-  body.appendChild(el(`<div class="prompt-sub">They answer — what did they say?</div>`));
+  body.appendChild(el(`<div class="prompt-sub">They answer. What did they say?</div>`));
   setTimeout(() => speak(r.es), 300);
   const answer = r.en;
   const pool = [...new Set((ALL_ITEMS || []).flatMap(x => x.reply && x.reply.en !== answer ? [x.reply.en] : []).concat((ALL_ITEMS || []).filter(x => x.en !== answer).map(x => x.en)))];
@@ -582,7 +582,7 @@ function renderListen(q) {
   const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe en español…">`);
   body.appendChild(input);
   setTimeout(() => input.focus(), 50);
-  const f = footer(`<button class="btn grey" id="skip">Can't tell — skip</button><div style="height:10px"></div><button class="btn" id="check" disabled>Check</button>`);
+  const f = footer(`<button class="btn grey" id="skip">Can't tell, skip</button><div style="height:10px"></div><button class="btn" id="check" disabled>Check</button>`);
   input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
   input.addEventListener("keydown", e => { if (e.key === "Enter" && input.value.trim() && !run.answered) gradeTyped(input.value, item); });
   f.querySelector("#check").addEventListener("click", () => { if (!run.answered && input.value.trim()) gradeTyped(input.value, item); });
@@ -627,7 +627,7 @@ function renderSpeak(q) {
       mic.classList.remove("live"); status.textContent = `Heard: “${alts[0]}”`;
       grade(alts.some(a => speechMatch(a, item)), item);
     };
-    rec.onerror = () => { mic.classList.remove("live"); status.textContent = "Didn't catch that — tap to try again."; };
+    rec.onerror = () => { mic.classList.remove("live"); status.textContent = "Didn't catch that, tap to try again."; };
     rec.onend = () => { mic.classList.remove("live"); if (!done && !run.answered) status.textContent = "Tap the mic and say it aloud."; };
     try { rec.start(); } catch (_) { mic.classList.remove("live"); }
   });
@@ -761,7 +761,7 @@ function renderBuild(q) {
   const useScaffold = scaffold.size > 0 && novel.length > 0 && novel.length < original.length;
 
   if (useScaffold) {
-    body.appendChild(el(`<div class="prompt-sub">The words you know are placed — add the rest.</div>`));
+    body.appendChild(el(`<div class="prompt-sub">The words you know are placed, add the rest.</div>`));
     body.appendChild(ans); body.appendChild(bank);
     const slotOf = {};                            // novel position -> slot element
     const fill = {};                              // novel position -> placed bank index (tile's original idx)
@@ -870,7 +870,7 @@ function gradeTyped(raw, item) {
   // §4b.3: accept the canonical form OR any authored variant (same typo tolerance)
   let j = { ok: false };
   for (const t of [item.es].concat(item.variants || [])) { const r = judgeTyped(raw, t); if (r.ok) { j = r; break; } }
-  const extra = j.accent ? "Almost — watch the accent." : (j.typo ? "Close — mind the spelling." : null);
+  const extra = j.accent ? "Almost, watch the accent." : (j.typo ? "Close, mind the spelling." : null);
   finishGrade(j.ok, item, extra);
 }
 function finishGrade(ok, item, extra) {
@@ -889,7 +889,7 @@ function finishGrade(ok, item, extra) {
   if (item.cat) notes.push(`<span class="note-chip"><b>Català</b> ${item.cat}</span>`);
   const f = footer(`
     <div class="fb-title ${ok ? "ok" : "no"}">${ok ? pick(PRAISE) : pick(NEAR_MISS)}</div>
-    <div class="fb-sub"><b>${item.es}</b> — ${item.en}</div>
+    <div class="fb-sub"><b>${item.es}</b>${item.en}</div>
     <div>${notes.join("")}</div>
     <div style="height:10px"></div>
     <button class="btn ${ok ? "" : "accent"}" id="cont">Continue</button>`);
@@ -913,7 +913,7 @@ function requeueMiss(item, failedType) {
   if (run.reasks[id] >= 2) return;                       // cap at 2 re-asks/item; M2 warm-up catches the rest
   run.reasks[id]++;
   const type = rungDownType(failedType, item);
-  const pos = Math.min(run.qs.length, run.idx + 3 + Math.floor(Math.random() * 3));   // 3–5 slots later
+  const pos = Math.min(run.qs.length, run.idx + 3 + Math.floor(Math.random() * 3));   // 3-5 slots later
   run.qs.splice(pos, 0, { type, item, requeued: true });
 }
 function next() {
@@ -992,7 +992,7 @@ function finishReview() {
         <div class="score"><div class="n">${correct}/${total}</div><div class="l">recalled</div></div>
         <div class="score"><div class="n">${scores.readiness}<span class="pct">%</span></div><div class="l">trip readiness${delta > 0 ? ` <span class="up">▲${delta}</span>` : ""}</div></div>
       </div>
-      <div class="reward">Nice — keeping older phrases warm is how they stick for the trip.</div>
+      <div class="reward">Nice, keeping older phrases warm is how they stick for the trip.</div>
       <button class="btn" id="home">Continue</button>
     </div>`));
   $("#home").addEventListener("click", renderHome);

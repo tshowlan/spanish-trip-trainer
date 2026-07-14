@@ -66,7 +66,7 @@ function renderGroup() {
 }
 
 function renderGroupJoin(wrap, rerender = renderGroup) {
-  wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">Learn together. Create a group, share the code with your travel buddies, and see who's best — and worst — at what.</p>`));
+  wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">Learn together. Create a group, share the code with your travel buddies, and see who's best, and worst, at what.</p>`));
   wrap.appendChild(el(`<div class="set-t" style="margin:10px 0 6px">Your name</div>`));
   const name = el(`<input class="text-input" placeholder="Your name" value="${(state.cloud && state.cloud.name) || ""}">`);
   wrap.appendChild(name);
@@ -122,7 +122,7 @@ async function loadMembers(list, code) {
   list.innerHTML = `<p class="onb-dim">Loading…</p>`;
   try {
     const rows = await rpc("get_group", { p_group: code });
-    if (!rows || !rows.length) { list.innerHTML = `<p class="onb-dim">No members yet — share the code!</p>`; return; }
+    if (!rows || !rows.length) { list.innerHTML = `<p class="onb-dim">No members yet, share the code!</p>`; return; }
     list.innerHTML = "";
     rows.forEach((m, i) => {
       const s = strengths(m.stats);

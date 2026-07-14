@@ -44,7 +44,7 @@ function renderOnboarding() {
       wrap.appendChild(el(`
         <div class="onb-card">
           <div class="hero-mark" style="margin-bottom:16px">${wordmark(36)}${lighthouse(48)}</div>
-          <p>Not a fluency app — a get-ready-for-<i>this trip</i> app. A few quick questions and I'll build a plan timed to your departure.</p>
+          <p>Not a fluency app, a get-ready-for-<i>this trip</i> app. A few quick questions and I'll build a plan timed to your departure.</p>
         </div>`));
       const btn = el(`<button class="btn">Plan my trip</button>`);
       btn.addEventListener("click", () => go("where"));
@@ -83,7 +83,7 @@ function renderOnboarding() {
 
     } else if (screen === "needs") {
       wrap.appendChild(el(`<div class="onb-q">Anything we should tailor for?</div>`));
-      wrap.appendChild(el(`<div class="onb-sub">Pick any. Dietary needs get their own safety phrases — our specialty.</div>`));
+      wrap.appendChild(el(`<div class="onb-sub">Pick any. Dietary needs get their own safety phrases, our specialty.</div>`));
       const chips = el(`<div class="chips"></div>`);
       NEEDS.forEach(([key, label]) => {
         const on = draft.needs.includes(key);
@@ -117,7 +117,7 @@ function renderOnboarding() {
 
     } else if (screen === "placement") {
       const q = PLACEMENT[draft.pIdx];
-      wrap.appendChild(el(`<div class="onb-sub">Quick check (${draft.pIdx + 1}/${PLACEMENT.length}) — no studying, just tap.</div>`));
+      wrap.appendChild(el(`<div class="onb-sub">Quick check (${draft.pIdx + 1}/${PLACEMENT.length}), no studying, just tap.</div>`));
       wrap.appendChild(el(`<div class="onb-q">What does this mean?</div>`));
       wrap.appendChild(el(`<div class="prompt">${q.es}</div>`));
       const choices = el(`<div class="choices"></div>`);

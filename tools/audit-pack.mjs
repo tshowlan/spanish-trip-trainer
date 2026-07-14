@@ -150,7 +150,7 @@ if (tagCount.size) {
 // ---- 7. narrative smells (§9b / §11.2.7) -----------------------------------
 H("7. Narrative smells (§9b — real specifics + cast, not generic placeholders)");
 const PLACEHOLDERS = ["the waiter", "the waitress", "the restaurant", "the market", "the driver", "the hotel", "the shop", "the store", "a drink", "the food", "the bartender", "the clerk", "the host"];
-const CAST = ["andres", "lupe", "marisol", "beto", "elena"];   // cast tokens (accent-stripped); tune per pack
+const CAST = ["andres", "lupe", "marisol", "beto", "elena", "jordi", "montse", "toni", "nuria"];   // MX + ES cast tokens (accent-stripped); tune per pack
 let narrWarn0 = warnings;
 const scanText = (txt, where) => { if (!txt) return; const low = txt.toLowerCase(); PLACEHOLDERS.forEach(p => { if (low.includes(p)) warn(`generic "${p}" in ${where}: "${txt.slice(0, 60)}…"`); }); };
 items.forEach(({ it, lesson }) => { scanText(it.en, `${lesson.id} en`); scanText(it.contextEn, `${lesson.id} contextEn`); });

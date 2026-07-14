@@ -17,7 +17,7 @@ const PRAISE = [
 
 const NEAR_MISS = [
   "So close the steak was almost yours.",
-  "Nope — but a confident nope.",
+  "Nope, but a confident nope.",
   "The tour guide winced. Try again.",
   "Not quite. The pillow mint is on hold.",
   "Almost! The taxi is still circling."
@@ -26,7 +26,7 @@ const NEAR_MISS = [
 const STREAK_LINES = [
   d => `${d}-day streak. Your future waiter thanks you.`,
   d => `${d} days straight. Duolingo owl is shaking.`,
-  d => `${d} in a row — practically a local now.`,
+  d => `${d} in a row, practically a local now.`,
   d => `Day ${d}. The tapas are getting closer.`
 ];
 

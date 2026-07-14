@@ -24,7 +24,7 @@ async function vaultPull(token) {
 
 async function doSignup(email, pw) {
   const r = await authFetch("signup", { email, password: pw });
-  if (!r.access_token) throw new Error("Account created — check your email to confirm, then log in.");
+  if (!r.access_token) throw new Error("Account created, check your email to confirm, then log in.");
   ensureIdentity();
   await vaultPush(r.access_token, r.user.id);
   state.cloud.optedIn = true;
@@ -63,7 +63,7 @@ function renderAuth(mode) {
   wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>${title}</h2></div>`));
   wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">${mode === "signup"
     ? "Back up your progress so a reinstall or new phone never wipes it."
-    : "Welcome back — log in to restore your progress."}</p>`));
+    : "Welcome back, log in to restore your progress."}</p>`));
   wrap.appendChild(el(`<div class="set-t" style="margin:12px 0 6px">Email</div>`));
   const email = el(`<input class="text-input" type="email" autocomplete="email" autocapitalize="off" autocorrect="off" placeholder="you@example.com">`);
   wrap.appendChild(email);
@@ -80,7 +80,7 @@ function renderAuth(mode) {
     forgot.addEventListener("click", async () => {
       const e = email.value.trim() || prompt("Enter your account email:");
       if (!e) return;
-      try { await doRecover(e); toast("Reset email sent — check your inbox."); }
+      try { await doRecover(e); toast("Reset email sent, check your inbox."); }
       catch (err) { toast("Couldn't send reset: " + err.message); }
     });
   }
@@ -94,7 +94,7 @@ function renderAuth(mode) {
     submit.disabled = true; submit.textContent = "…";
     try {
       mode === "signup" ? await doSignup(e, p) : await doLogin(e, p);
-      toast(mode === "signup" ? "Account created — progress backed up ☁️" : "Logged in — progress restored ☁️");
+      toast(mode === "signup" ? "Account created, progress backed up ☁️" : "Logged in, progress restored ☁️");
       renderHome();
     } catch (err) {
       submit.disabled = false; submit.textContent = title;

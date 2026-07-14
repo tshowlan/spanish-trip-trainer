@@ -10,7 +10,7 @@ function _sessions7() {
   return _sessions().filter(s => now - new Date(s.at).getTime() <= 7 * _DAY);
 }
 
-/* ---- Momentum (0–100): 7-day rolling activity, smooth decay (no streak resets) ---- */
+/* ---- Momentum (0-100): 7-day rolling activity, smooth decay (no streak resets) ---- */
 function momentumScore() {
   const r = _sessions7();
   const days = new Set(r.map(s => s.at.slice(0, 10))).size;   // distinct active days (target 5)
@@ -27,7 +27,7 @@ function momentumSpark() {
   return out;
 }
 
-/* ---- Coverage (0–100): average per-category completion across the active pack ---- */
+/* ---- Coverage (0-100): average per-category completion across the active pack ---- */
 function coverageCats() {
   const cats = {};
   (typeof DECK !== "undefined" && DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
@@ -44,14 +44,14 @@ function coverageScore() {
   return Math.round(avg * 100);
 }
 
-/* ---- Recency (0–100): decays from last completed session ---- */
+/* ---- Recency (0-100): decays from last completed session ---- */
 function recencyScore() {
   const last = _sessions().reduce((m, s) => Math.max(m, new Date(s.at).getTime()), 0);
   if (!last) return 0;
   return Math.round(100 * Math.exp(-((Date.now() - last) / _DAY) / 7));
 }
 
-/* ---- Retention (0–100): mean per-phrase strength across EVERYTHING you've been taught ---- */
+/* ---- Retention (0-100): mean per-phrase strength across EVERYTHING you've been taught ---- */
 function retentionScore() {
   const strengths = [];
   (typeof DECK !== "undefined" && DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {

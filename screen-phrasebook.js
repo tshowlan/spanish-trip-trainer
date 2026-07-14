@@ -92,7 +92,7 @@ function renderPhrasebook() {
       header.addEventListener("click", () => { _pbOpen.has(les.id) ? _pbOpen.delete(les.id) : _pbOpen.add(les.id); draw(); });
       list.appendChild(header); list.appendChild(rows);
     }));
-    if (!count) list.appendChild(el(`<p class="onb-dim" style="margin-top:20px">${_pbSavedOnly ? "No saved phrases yet — tap the bookmark on any phrase to keep it here." : "No matches."}</p>`));
+    if (!count) list.appendChild(el(`<p class="onb-dim" style="margin-top:20px">${_pbSavedOnly ? "No saved phrases yet, tap the bookmark on any phrase to keep it here." : "No matches."}</p>`));
   }
   function refreshSeg() { const b = seg.querySelector('[data-s="saved"]'); if (b) b.textContent = `★ Saved (${(state.saved || []).length})`; }
 

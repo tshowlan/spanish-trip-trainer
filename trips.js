@@ -78,7 +78,7 @@ function renderTrips() {
   const app = $("#app"); app.innerHTML = "";
   const wrap = el(`<div class="settings"></div>`);
   wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>Your trips</h2></div>`));
-  wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">Each destination keeps its own progress. Switch anytime — nothing is lost.</p>`));
+  wrap.appendChild(el(`<p class="onb-dim" style="margin-top:0">Each destination keeps its own progress. Switch anytime, nothing is lost.</p>`));
   app.appendChild(wrap);
   $("#back").addEventListener("click", renderHome);
   const have = new Set([...Object.keys(state.trips), state.active].filter(Boolean));

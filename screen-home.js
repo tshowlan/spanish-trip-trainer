@@ -126,7 +126,7 @@ function renderHome() {
   }
 
   if (!state.account) {
-    const banner = el(`<div class="backup-banner"><span>🔒 Back up your progress — create an account so a reinstall never wipes your progress.</span><button class="btn" style="margin-top:10px">Create account</button></div>`);
+    const banner = el(`<div class="backup-banner"><span>🔒 Back up your progress, create an account so a reinstall never wipes your progress.</span><button class="btn" style="margin-top:10px">Create account</button></div>`);
     banner.querySelector("button").addEventListener("click", () => renderAuth("signup"));
     home.appendChild(banner);
   }
@@ -179,16 +179,16 @@ function scoreSheet(which) {
     title = "Trip Readiness";
     sub = `${band.label}${s.lifetimeSessions < 5 ? " · establishing baseline" : ""}`;
     // §7.1: Readiness is the OUTPUT — never steered directly
-    role = "Will you be ready? This score is the output — you move it through Momentum and Retention, never directly.";
+    role = "Will you be ready? This score is the output: you move it through Momentum and Retention, never directly.";
     drivers = [`Coverage ${s.coverage}`, `Retention ${s.retention}`, `Last practiced ${_recencyText()}`];
     if (s.pace && !s.pace.onTrack && s.pace.reachable && s.pace.addSessions > 0)
       diverge = { line: `At this pace you'll be ~${s.pace.projected}% ready. About ${s.pace.addSessions} more session${s.pace.addSessions === 1 ? "" : "s"}/week gets you to 90%.` };
     const dv = scoreDivergence(s);   // §7.3 — a divergence overrides the generic pace line
-    if (dv && dv.kind === "cover") diverge = { line: `What you've learned is solid — but ${destL} needs more. ${dv.untouched} scenario categories still untouched.`, cta: { label: "Start the next lesson", fn: () => { closeSheet(); const n = firstOpenLesson(); n ? startLesson(n) : startReview(seenItems()); } } };
-    else if (dv && dv.kind === "review") diverge = { line: `You're putting in the work — but ${dv.fading} earlier phrases are fading. Point the next session at review.`, cta: { label: "Review fading phrases", fn: () => { closeSheet(); startReview(fadingItems().filter(x => x.strength < 55).slice(0, 12).map(x => ITEM_INDEX[x.id]).filter(Boolean)); } } };
+    if (dv && dv.kind === "cover") diverge = { line: `What you've learned is solid, but ${destL} needs more. ${dv.untouched} scenario categories still untouched.`, cta: { label: "Start the next lesson", fn: () => { closeSheet(); const n = firstOpenLesson(); n ? startLesson(n) : startReview(seenItems()); } } };
+    else if (dv && dv.kind === "review") diverge = { line: `You're putting in the work, but ${dv.fading} earlier phrases are fading. Point the next session at review.`, cta: { label: "Review fading phrases", fn: () => { closeSheet(); startReview(fadingItems().filter(x => x.strength < 55).slice(0, 12).map(x => ITEM_INDEX[x.id]).filter(Boolean)); } } };
   } else if (which === "momentum") {
     title = "Momentum";
-    role = "Are you doing the work? This is your only same-day lever — one session and it moves today.";
+    role = "Are you doing the work? This is your only same-day lever: one session and it moves today.";
     drivers = [`${s.activeDays7} of 5 active days`, `${s.sessions7} sessions this week`];
   } else {
     title = "Retention";
@@ -262,19 +262,19 @@ function heroState() {
   const next = firstOpenLesson();
   const dv = scoreDivergence();                        // §7.3: the divergence steers the recommendation, not just copy
   if (days !== null && days <= 14)
-    return { kind: "cram", title: `${days} day${days === 1 ? "" : "s"} out — drill your essentials`, run: () => startReview(backlog.length ? backlog : seenItems()) };
+    return { kind: "cram", title: `${days} day${days === 1 ? "" : "s"} out, drill your essentials`, run: () => startReview(backlog.length ? backlog : seenItems()) };
   // §7.3 quality problem: doing the work but earlier phrases decaying → steer today to review
   if (dv && dv.kind === "review") {
     const fad = fadingItems().filter(x => x.strength < 55).slice(0, 12).map(x => ITEM_INDEX[x.id]).filter(Boolean);
-    if (fad.length) return { kind: "review", title: `${dv.fading} phrases are fading — bring them back`, sub: "Point today at review, not new content", run: () => startReview(fad) };
+    if (fad.length) return { kind: "review", title: `${dv.fading} phrases are fading, bring them back`, sub: "Point today at review, not new content", run: () => startReview(fad) };
   }
   if (backlog.length >= 15)
     return { kind: "review", title: `Review ${backlog.length} due items`, sub: "Quickest way to lift Retention", run: () => startReview(backlog) };
   if (lastDays !== null && lastDays >= 2 && backlog.length)
-    return { kind: "momentum", title: "Momentum's dipping — 3 minutes brings it back", run: () => startReview(backlog.slice(0, 8)) };
+    return { kind: "momentum", title: "Momentum's dipping, 3 minutes brings it back", run: () => startReview(backlog.slice(0, 8)) };
   if (next)   // §7.3 coverage problem: retention solid but too little covered → new content, said plainly
-    return { kind: "lesson", title: `Start: ${next.title}`, sub: dv && dv.kind === "cover" ? `${destInfo(p.destination).label} needs more — ${dv.untouched} categories untouched` : next.topic, run: () => startLesson(next) };
-  return { kind: "caught", title: "You're ahead — up for a speed round?", run: () => startSpeedRound() };   // §7.6 pure fun, advances nothing
+    return { kind: "lesson", title: `Start: ${next.title}`, sub: dv && dv.kind === "cover" ? `${destInfo(p.destination).label} needs more, ${dv.untouched} categories untouched` : next.topic, run: () => startLesson(next) };
+  return { kind: "caught", title: "You're ahead, up for a speed round?", run: () => startSpeedRound() };   // §7.6 pure fun, advances nothing
 }
 function heroTile() {
   const h = heroState();

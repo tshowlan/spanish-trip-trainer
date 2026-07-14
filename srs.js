@@ -56,7 +56,7 @@ function recordAnswer(id, ok, opts) {
   }
   s.due = _dateAdd(todayStr(), s.interval);
 }
-// per-phrase strength (0–100) = maturity × recency.
+// per-phrase strength (0-100) = maturity × recency.
 //   recency  : retrievability decaying from the LAST CORRECT recall over the item's stability
 //   maturity : how cemented the memory is (a phrase seen right once is fragile, not 100%)
 //   production mastery lifts the ceiling — cold recall counts for more than recognition.
@@ -116,8 +116,8 @@ function cramActive() {
    not a single-item mode here. An item's rung is chosen from its exposure count. */
 const LADDER = [
   ["present"],                                    // 0    first sight — teach, never test
-  ["mc_es2en", "listen_choice"],                  // 1–2  recognition (incl. hear-and-pick)
-  ["mc_en2es", "build", "fill_blank"],            // 3–4  scaffolded production
+  ["mc_es2en", "listen_choice"],                  // 1-2  recognition (incl. hear-and-pick)
+  ["mc_en2es", "build", "fill_blank"],            // 3-4  scaffolded production
   ["type_translation", "listen_type", "speak_it"] // 5+   cold production
 ];
 
@@ -141,7 +141,7 @@ function _pickModeForTier(tier, item) {
   }
   return "mc_es2en";                                // recognition always works
 }
-// §4.1: rung thresholds scale with the item's own difficulty (1–5, default 2),
+// §4.1: rung thresholds scale with the item's own difficulty (1-5, default 2),
 // so short easy phrases graduate quickly and elaborate ones get more runway.
 function _baseTier(exposures, difficulty) {
   const d = difficulty || 2;
