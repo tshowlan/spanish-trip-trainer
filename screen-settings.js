@@ -6,11 +6,27 @@ function renderProfile() {
   const wrap = el(`<div class="screen"></div>`);
   wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon("caret-left", 26)}</button><h2>Profile</h2></div>`));
 
-  // status tier (permanent) — tier logic lands with the Status milestone; everyone starts Newcomer
+  // status tier (permanent, XP→Status spec §2.3) — passport stamp, not a game HUD
+  const tier = (typeof currentTier === "function") ? currentTier() : "Newcomer";
   wrap.appendChild(el(`<div class="profile-status">
-    <div class="tier-name">Newcomer</div>
-    <div class="tier-sub">Build your Trip Readiness to earn your first status.</div>
+    <div class="tier-name">${tier}</div>
+    <div class="tier-sub">${typeof nextTierCondition === "function" ? nextTierCondition() : "Build your Trip Readiness to earn your first status."}</div>
   </div>`));
+
+  // trip archive (§5.2) — permanent trophies; a user can see WHY they're their tier
+  const arch = completedTrips ? completedTrips() : [];
+  if (arch.length) {
+    wrap.appendChild(el(`<div class="q-head" style="margin-top:8px">Trips</div>`));
+    arch.slice().reverse().forEach(t => {
+      const di = destInfo(t.destination);
+      const band = readinessBand(t.readinessAtDeparture);
+      wrap.appendChild(el(`<div class="archive-row">
+        <div class="arch-dest">${di.flag} ${di.label}</div>
+        <div class="arch-meta">${t.tripDate}</div>
+        <div class="arch-score ${band.cls}">${t.readinessAtDeparture}%</div>
+      </div>`));
+    });
+  }
 
   // account
   if (state.account) {

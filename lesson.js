@@ -1025,6 +1025,7 @@ function finishLesson() {
   state.sessions.push({ at: now, lessonId: lesson.id, category: cat, phrases: total, correct });
   registerActivity();
   const scores = computeScores();
+  applyTierUpdate();                                   // §2.2: session completion is a tier trigger
   save(); renderTopbar();
   cloudSync().catch(() => {});
   playSound("win"); haptic("complete");
@@ -1059,6 +1060,7 @@ function finishReview() {
   state.sessions.push({ at: now, lessonId: "__review__", category: "Review", phrases: total, correct });
   registerActivity();
   const scores = computeScores();
+  applyTierUpdate();                                   // §2.2: session completion is a tier trigger
   save(); renderTopbar();
   cloudSync().catch(() => {});
   playSound("win"); haptic("complete");

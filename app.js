@@ -9,6 +9,8 @@ migrateTrips();
 migrateScoring();
 migrateItemIds();     // remap SRS keys to lesson-independent ids (pack:slug) — before deck/scores read them
 rebuildDeck();
+migrateXpToFloor();   // one-time XP→legacy-tier-floor grandfather (§4.1); no-op once migrated
+applyTierUpdate();    // evaluate status tier on app open (§2.2)
 initTabbar();
 $("#gear").addEventListener("click", renderSettings);
 $("#profile").addEventListener("click", renderProfile);

@@ -166,6 +166,38 @@ function renderHome() {
     home.appendChild(stage);
   });
   app.appendChild(home);
+  maybeStatusMoment();
+}
+
+/* XP→Status §4.4 migration card (one-time) + §2.3 tier-up moment. Both are quiet, typographic
+   full-screen overlays — same restraint as the completion screens; no confetti, no badges. */
+function maybeStatusMoment() {
+  if (state.needsMigrationCard) { state.needsMigrationCard = false; save(); return statusOverlay({
+    kicker: "A new way to track your trip",
+    title: (typeof currentTier === "function" ? currentTier() : "Culturist"),
+    body: "Tripfluent now tracks three live scores and five permanent status tiers instead of points. Your history carries over — this is where it places you.",
+    cta: "See my scores"
+  }); }
+  if (state.pendingTierUp) { const t = state.pendingTierUp; state.pendingTierUp = null; save(); return statusOverlay({
+    kicker: "New status earned",
+    title: t,
+    body: (typeof nextTierCondition === "function" ? nextTierCondition() : ""),
+    cta: "Continue"
+  }); }
+}
+function statusOverlay({ kicker, title, body, cta }) {
+  document.querySelectorAll(".tierup-wrap").forEach(n => n.remove());
+  const w = el(`<div class="tierup-wrap">
+    <div class="tierup">
+      <div class="tierup-kicker">${kicker}</div>
+      <div class="tierup-name">${title}</div>
+      <div class="tierup-body">${body}</div>
+      <button class="btn" id="tuok" style="margin-top:22px">${cta}</button>
+    </div>
+  </div>`);
+  document.body.appendChild(w);
+  requestAnimationFrame(() => w.classList.add("show"));
+  w.querySelector("#tuok").addEventListener("click", () => w.remove());
 }
 
 /* ---- score detail sheet (every score explains itself in one tap) ---- */
