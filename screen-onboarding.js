@@ -26,10 +26,24 @@ const PLACEMENT = [
   { es: "¿Dónde está el baño?", answer: "Where is the bathroom?", opts: ["Where is the bathroom?", "How do I get there?", "Is it far?", "What is this?"] }
 ];
 const daysUntil = d => Math.ceil((new Date(d + "T00:00:00") - new Date(todayStr() + "T00:00:00")) / 864e5);
+// §2.1: pull the account-scoped answers (skill level, dietary/allergies) from any prior trip profile,
+// so a returning user creating a new trip doesn't retake the quiz or re-declare their diet.
+function priorAccountAnswers() {
+  const profs = [];
+  if (state.profile) profs.push(state.profile);
+  Object.values(state.trips || {}).forEach(t => { if (t && t.profile) profs.push(t.profile); });
+  const p = profs.find(x => x && x.level);
+  return p ? { level: p.level, allergies: p.allergies || [], needs: p.needs || [] } : null;
+}
 
 function renderOnboarding() {
   const app = $("#app");
   const draft = { destination: null, date: "", tripType: null, lodging: [], transport: [], needs: [], allergies: [], pIdx: 0, pScore: 0, level: null };
+  // §2.1: level and dietary/allergies are ACCOUNT-scoped — a returning user making a new trip
+  // carries them forward and only answers the trip-scoped questions (type, lodging, transport).
+  const prior = priorAccountAnswers();
+  const returning = !!prior;
+  if (returning) { draft.level = prior.level; draft.allergies = prior.allergies.slice(); draft.needs = prior.needs.slice(); }
   let screen = "welcome";
 
   const go = s => { screen = s; render(); };
@@ -113,7 +127,8 @@ function renderOnboarding() {
       });
       wrap.appendChild(chips);
       const next = el(`<button class="btn" style="margin-top:18px">Continue</button>`);
-      next.addEventListener("click", () => go("needs"));
+      // returning user already answered the account-scoped questions → straight to the plan
+      next.addEventListener("click", () => go(returning ? "plan" : "needs"));
       wrap.appendChild(next);
 
     } else if (screen === "needs") {
