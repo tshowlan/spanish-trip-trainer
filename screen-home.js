@@ -119,13 +119,13 @@ function renderHome() {
       const stored = state.lessons[l.id];
       const stars = stored ? stored.stars : (isDone ? 3 : 0);
       const chip = l.bonus ? `<span class="tier-chip bonus">Bonus</span>`
-        : `<span class="tier-chip p${st.pass}">${passName[st.pass] || ""}</span>`;
+        : (st.pass ? `<span class="tier-chip p${st.pass}">${passName[st.pass]}</span>` : "");   // no chip for un-tiered packs (Spain)
       const card = el(`
         <div class="lesson ${isDone ? "done" : ""} ${isRec ? "rec" : ""}">
           <div class="badge">${isDone ? "✓" : "▶"}</div>
           <div class="meta">
             <div class="t">${l.title}${isRec ? ` <span class="rec-tag">Next</span>` : ""}</div>
-            <div class="s">${chip} · ${l.chain ? "Conversation" : `${l.items.length} phrases`}${fading ? ` · <span class="fade-badge">${fading} to review</span>` : ""}</div>
+            <div class="s">${chip ? chip + " · " : ""}${l.chain ? "Conversation" : `${l.items.length} phrases`}${fading ? ` · <span class="fade-badge">${fading} to review</span>` : ""}</div>
             ${isDone && stars ? `<div class="stars">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</div>` : ""}
           </div>
           <div class="chev">${icon('caret-right', 18)}</div>`);
