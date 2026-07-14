@@ -9,6 +9,16 @@
             contextEs?, contextEn?, variants?, anchor?, reply? }
    ========================================================================= */
 
+/* ---- BARCELONA CAST (§9b.2) — fictional recurring characters; food/places are real.
+   Cast names live ONLY in English scene/primer text, never in a graded `es` answer.
+   - Jordi   — the taxi driver who picks you up at El Prat; dry, knows every shortcut.
+   - Montse  — runs a tiny tasca (comedor) off the Barri Gòtic; feeds you like family.
+   - Toni    — the bartender at a vermutería; pours vermut and opinions in equal measure.
+   - Núria   — a vendor at La Boqueria market; will let you taste before you buy.
+   - Sra. Rosa — the farmacéutica on the corner; unflappable in an emergency.
+   Real anchors: pa amb tomàquet / pan con tomate, vermut, jamón, patatas bravas, cava,
+   La Boqueria, el Barri Gòtic, Plaça Reial, la Sagrada Família, Montjuïc. ---- */
+
 const CURRICULUM = {
   stages: [
     /* ============================ PASS 1 · SURVIVAL ============================ */
@@ -18,6 +28,8 @@ const CURRICULUM = {
         {
           id: "s1-hello", topic: "Basics", title: "Hola & gracias",
           reward: "Look at you go — you can now greet a waiter without pointing. Diplomatic immunity pending.",
+          cultureNote: "In Spain you greet with dos besos — one on each cheek, starting to your left. A handshake with new friends can read as a little cold.",
+          primer: { scene: "Your first morning in Barcelona. You duck into a café down a narrow lane in the Barri Gòtic, and the woman behind the counter looks up with a bright 'bon dia.'", mission: "Greet her back — and say please and thank you like you mean it.", guessItem: "Gracias" },
           items: [
             { es: "Hola", en: "Hello", tier: 1, tags: ["greetings"], contextEs: "Hola, buenos días", contextEn: "Hi, good morning" },
             { es: "Buenos días", en: "Good morning", tier: 1, tags: ["greetings"], contextEs: "Buenos días, ¿qué tal?", contextEn: "Good morning, how are you?", keywords: ["días"] },
@@ -50,6 +62,7 @@ const CURRICULUM = {
         {
           id: "s1-rescue", topic: "How do you say", title: "I only speak a little",
           reward: "Now you can confess your Spanish is bad — in Spanish. Meta. Keep going so you don't have to.",
+          primer: { scene: "Montse, who runs the little tasca on the corner, just reeled off today's specials — and you caught maybe one word. She waits, order pad in hand, patient.", mission: "Admit your Spanish is shaky — and ask her to slow down.", guessItem: "¿Habla inglés?" },
           items: [
             { es: "Hablo solo un poco de español", en: "I only speak a little Spanish", tier: 2, tags: ["communication"], keywords: ["español"] },
             { es: "No entiendo", en: "I don't understand", tier: 1, tags: ["communication"], contextEs: "Perdón, no entiendo bien", contextEn: "Sorry, I don't understand well", keywords: ["entiendo"] },
@@ -64,6 +77,8 @@ const CURRICULUM = {
         {
           id: "sp-table", topic: "Restaurant · Ordering", title: "First words at the table",
           reward: "You can get a table, order, ask for the check, and flag your shellfish allergy. Night one at the tapas bar: handled.",
+          cultureNote: "Pa amb tomàquet — bread rubbed with ripe tomato, olive oil, and salt — comes with almost everything in Barcelona. You rub it on yourself; don't go asking for butter.",
+          primer: { scene: "It's packed at Montse's tasca. She wipes down a table, waves you into a chair, and asks '¿para cuántos?'", mission: "Get a table, order, and warn her about the shellfish before the tapas land.", guessItem: "Soy alérgico al marisco" },
           items: [
             { es: "Una mesa para dos, por favor", en: "A table for two, please", tier: 2, tags: ["restaurant", "food"], keywords: ["mesa"], variants: ["Mesa para dos, por favor"] },
             { es: "La carta, por favor", en: "The menu, please", note: "In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día.", tier: 2, tags: ["restaurant", "food"], keywords: ["carta"], variants: ["¿Me trae la carta?"] },
@@ -76,6 +91,8 @@ const CURRICULUM = {
         {
           id: "s2-bathroom", topic: "Restaurant · Bathrooms", title: "Where's the loo",
           reward: "You can find a bathroom and read a door. Push vs. pull humiliation: avoided.",
+          cultureNote: "Ask for 'los servicios' or 'los aseos' — 'baño' is understood but marks you as not-from-here. In Catalonia the door signs may be in Catalan too: 'Lavabos'.",
+          primer: { scene: "Two unmarked doors at the back of Montse's place, and a waiter squeezing past with a tray of vermut. You need to pick the right one.", mission: "Ask where the loo is — and read the door before you push.", guessItem: "Entrada" },
           items: [
             { es: "¿Dónde está el servicio?", en: "Where is the bathroom?", note: "Spain says 'el servicio / los servicios'. Signs read 'Aseos'.", latam: "Latin America: '¿Dónde está el baño?'", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "servicio"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
             { es: "los aseos", en: "the restrooms (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "Los aseos están al fondo", contextEn: "The restrooms are at the back", keywords: ["aseos"] },
@@ -90,6 +107,7 @@ const CURRICULUM = {
         {
           id: "sp-cash", topic: "Numbers, money & paying", title: "Euros & paying cash",
           reward: "Euros, cash, and the total — you can pay without pointing at the till.",
+          primer: { scene: "At La Boquería, Núria weighs out a paper cone of jamón and holds out her hand. Taped to her stall: a hand-lettered 'solo efectivo.'", mission: "Handle euros and pay Núria in cash without fumbling.", guessItem: "cien" },
           items: [
             { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte euros", contextEn: "Twenty euros" },
             { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta euros", contextEn: "Fifty euros" },
@@ -115,6 +133,7 @@ const CURRICULUM = {
         {
           id: "s3-airport", topic: "Transport · Airport signs", title: "Reading the airport",
           reward: "Arrivals, departures, your gate — all decoded. You will not miss the flight because of a sign.",
+          primer: { scene: "You step off the plane at El Prat into a wall of signage — half Spanish, half Catalan. Somewhere past security, Jordi is waiting with a cab.", mission: "Read the signs — departures, arrivals, security, customs.", guessItem: "Control de seguridad" },
           items: [
             { es: "Salidas", en: "Departures", cat: "Catalan: 'Sortides'.", tier: 1, tags: ["airport", "signs"], contextEs: "La sala de salidas", contextEn: "The departures hall", keywords: ["salidas"] },
             { es: "Llegadas", en: "Arrivals", cat: "Catalan: 'Arribades'.", tier: 1, tags: ["airport", "signs"], contextEs: "La zona de llegadas", contextEn: "The arrivals area", keywords: ["llegadas"] },
@@ -143,6 +162,8 @@ const CURRICULUM = {
         {
           id: "sp-help", topic: "Problems & emergencies", title: "If something's wrong",
           reward: "The safety net's in place. Now go enjoy Barcelona — you're covered.",
+          cultureNote: "The EU emergency number is 112, and they'll find you an English speaker. For minor things, look for the 'farmacia de guardia' — the 24-hour pharmacy, marked with a flashing green cross.",
+          primer: { scene: "You pat every pocket twice — your wallet's gone. Sra. Rosa, the farmacéutica on the corner, catches your face and asks if you're okay.", mission: "Get help fast — a doctor, the police, or her farmacia.", guessItem: "Es una emergencia" },
           items: [
             { es: "Ayuda", en: "Help", tier: 1, tags: ["emergency"], contextEs: "¡Ayuda, por favor!", contextEn: "Help, please!", keywords: ["ayuda"] },
             { es: "Necesito un médico", en: "I need a doctor", tier: 1, tags: ["emergency", "health"], keywords: ["médico"], variants: ["Necesito un doctor"] },
@@ -163,6 +184,7 @@ const CURRICULUM = {
         {
           id: "sp-order", topic: "Restaurant · Ordering", title: "Order like a regular",
           reward: "Steak temperature, a caña, 'what do you recommend' — you order like a regular now.",
+          cultureNote: "A 'caña' is a small draft; a 'doble' is bigger. Before lunch, do as locals do and order a 'vermut' — house vermouth on tap, with an olive. Patatas bravas make it official.",
           items: [
             { es: "¿Qué recomienda?", en: "What do you recommend?", tier: 2, tags: ["restaurant", "food"], keywords: ["recomienda"], reply: { es: "La paella está muy buena", en: "The paella is very good" } },
             { es: "Para mí, el filete", en: "For me, the steak", latam: "Latin America: 'el bife' or 'la carne'.", tier: 2, tags: ["restaurant", "food"], keywords: ["filete"] },
@@ -179,6 +201,7 @@ const CURRICULUM = {
         {
           id: "s2-coffee", topic: "Coffee shop", title: "Coffee shop",
           reward: "You can order a cortado and survive a 'cash only' barista. Caffeine: secured.",
+          cultureNote: "A 'cortado' — espresso cut with a little warm milk — is the local default. Ordering a 'café con leche' after lunch is a tourist tell; locals switch to cortado or solo.",
           items: [
             { es: "Un café con leche, por favor", en: "A coffee with milk, please", tier: 2, tags: ["coffee", "drink"], keywords: ["café", "leche"] },
             { es: "Un cortado, por favor", en: "An espresso with a dash of milk, please", note: "A 'cortado' is espresso 'cut' with a little warm milk — a Spain classic.", tier: 2, tags: ["coffee", "drink"], keywords: ["cortado"] },
@@ -193,6 +216,7 @@ const CURRICULUM = {
         {
           id: "sp-pay", topic: "Restaurant · Paying", title: "Paying & prices",
           reward: "Card, cash, tip, a broken datáfono, the nearest cajero — the bill holds no fear.",
+          cultureNote: "Tipping is modest in Spain — round up or leave the coins, never the 15–20% from back home. And you almost always ask for the bill; it won't come until you do.",
           items: [
             { es: "¿Puedo pagar con tarjeta?", en: "Can I pay by card?", tier: 2, tags: ["money"], keywords: ["tarjeta"], variants: ["¿Aceptan tarjeta?"] },
             { es: "¿Aceptan tarjeta?", en: "Do you accept card?", tier: 2, tags: ["money"], keywords: ["tarjeta"], reply: { es: "Sí, sin problema", en: "Yes, no problem" } },
@@ -217,6 +241,7 @@ const CURRICULUM = {
         {
           id: "s3-taxi", topic: "Transport · Taxi", title: "Taxi!",
           reward: "You can tell a driver where to go and when to stop. Backseat fluency achieved.",
+          cultureNote: "Barcelona taxis are black-and-yellow and metered — a green rooftop light means free. Apps like Free Now work too. There's a small surcharge from the airport and El Prat.",
           items: [
             { es: "Al aeropuerto, por favor", en: "To the airport, please", tier: 1, tags: ["taxi", "airport"], keywords: ["aeropuerto"] },
             { es: "A esta dirección, por favor", en: "To this address, please", tier: 2, tags: ["taxi", "transport"], keywords: ["dirección"], variants: ["Lléveme a esta dirección"] },
@@ -232,6 +257,7 @@ const CURRICULUM = {
           id: "s3-metro", requires: { transport: "metro" },
           topic: "Transport · Metro", title: "Metro",
           reward: "You can buy a T-casual and not ride the wrong line. Barcelona underground: conquered.",
+          cultureNote: "The T-casual is 10 rides for one person; the T-usual is unlimited for a set period. Validate on the way in and hold onto the ticket — inspectors do check.",
           items: [
             { es: "¿Dónde está la estación de metro?", en: "Where's the metro station?", tier: 1, tags: ["metro", "transport", "directions"], keywords: ["dónde", "metro"] },
             { es: "una T-casual", en: "a 10-trip travel card", note: "Barcelona's pay-per-ride metro/bus card.", tier: 1, tags: ["metro", "transport"], contextEs: "Una T-casual, por favor", contextEn: "A T-casual, please", keywords: ["casual"] },
@@ -323,6 +349,7 @@ const CURRICULUM = {
         {
           id: "s4-landmarks", topic: "Landmarks", title: "Sightseeing",
           reward: "Two tickets to the Sagrada Família, please — and you said it in Spanish. Gaudí is proud.",
+          cultureNote: "Book the Sagrada Família online days ahead — the on-site queue can eat your afternoon. Same for Park Güell. Go early or near closing to dodge the crowds.",
           items: [
             { es: "¿A qué hora abre la Sagrada Família?", en: "What time does the Sagrada Família open?", tier: 2, tags: ["sights", "time"], keywords: ["hora", "abre"] },
             { es: "dos entradas, por favor", en: "two tickets, please", tier: 2, tags: ["sights"], keywords: ["entradas"] },
@@ -378,6 +405,66 @@ const CURRICULUM = {
             { es: "Esto no es lo que he pedido", en: "This isn't what I ordered", tier: 2, tags: ["restaurant"], keywords: ["pedido"] },
             { es: "¿Dónde está la comisaría más cercana?", en: "Where's the nearest police station?", note: "Spain: 'comisaría' = police station.", tier: 3, tags: ["emergency", "directions"], difficulty: 4, keywords: ["comisaría", "cercana"] }
           ]
+        },
+        {
+          id: "sp-chain-dinner", topic: "Advanced · Boss", title: "Dinner at Montse's",
+          reward: "Greeting to bill, you ran a whole dinner at the tasca without switching to English. That's the trip, rehearsed.",
+          cultureNote: "In a tasca you don't wait to be seated formally — you catch Montse's eye and she waves you to a table. And when your plate lands, 'que aproveche' is the local 'enjoy' — say it back to the next table over.",
+          items: [],
+          chain: {
+            title: "Dinner at Montse's",
+            turns: [
+              { npc: { es: "¡Buenas noches! ¿Mesa para cuántos?", en: "Good evening! Table for how many?" } },
+              { user: "Una mesa para dos, por favor" },
+              { npc: { es: "Perfecto, sentaos aquí. Enseguida os traigo la carta.", en: "Perfect, sit here. I'll bring the menu right over." } },
+              { user: "La carta, por favor" },
+              { npc: { es: "Aquí tenéis. Hoy el pulpo está espectacular.", en: "Here you go. The octopus is spectacular today." } },
+              { user: "¿Qué recomienda?" },
+              { npc: { es: "El filete a la brasa, sin duda.", en: "The grilled steak, no question." } },
+              { user: "Para mí, el filete" },
+              { npc: { es: "Muy bien. ¿Y para beber?", en: "Very good. And to drink?" } },
+              { user: "Una caña, por favor" },
+              { npc: { es: "Marchando. Que aproveche.", en: "Coming right up. Enjoy your meal." } },
+              { user: "La cuenta, por favor" },
+              { npc: { es: "Enseguida. Son treinta euros.", en: "Right away. That's thirty euros." } },
+              { user: "¿Aceptan tarjeta?" },
+              { npc: { es: "Claro que sí. ¡Buenas noches!", en: "Of course. Good night!" } }
+            ]
+          }
+        },
+        {
+          id: "sp-chain-lastnight", topic: "Advanced · Capstone", title: "Your last night",
+          reward: "That was the whole trip in one evening — greeting, ordering, an allergy, a mix-up, paying, goodbyes. You didn't switch to English once. You're ready for Barcelona.",
+          cultureNote: "When someone says 'buen viaje,' the warm reply is 'gracias, hasta la próxima' — 'until next time' — even if you both know it may be a while. In Catalonia you'll also hear 'adéu' for goodbye; 'adéu-siau' is the fond, old-fashioned version.",
+          items: [],
+          chain: {
+            title: "Your last night",
+            turns: [
+              { narr: "Your last night in Barcelona. Jordi dropped you near Plaça Reial, and your feet carried you back to Montse's tasca — one more time." },
+              { npc: { es: "¡Buenas noches! Tu última noche, ¿verdad? Pasa, pasa.", en: "Good evening! Your last night, right? Come in, come in." } },
+              { user: "Buenas noches" },
+              { npc: { es: "Siéntate. ¿Qué te pongo esta vez?", en: "Sit down. What can I get you this time?" } },
+              { user: "¿Qué recomienda?" },
+              { npc: { es: "Las gambas al ajillo, para despedirte bien.", en: "The garlic prawns — a proper goodbye." } },
+              { user: "Soy alérgico al marisco" },
+              { npc: { es: "¡Ay, es verdad! Perdona. Entonces el filete. ¿Y de beber?", en: "Oh, that's right! Sorry. The steak, then. And to drink?" } },
+              { user: "Una caña, por favor" },
+              { npc: { es: "Marchando.", en: "Coming right up." } },
+              { npc: { es: "…Aquí tienes tu plato.", en: "…Here's your dish." } },
+              { user: "Esto no es lo que he pedido" },
+              { npc: { es: "¡Uy! Perdona, ahora mismo te lo cambio.", en: "Oops! Sorry, I'll change it right now." } },
+              { user: "La cuenta, por favor" },
+              { npc: { es: "Claro. Son veinticinco euros.", en: "Of course. That's twenty-five euros." } },
+              { user: "¿Aceptan tarjeta?" },
+              { npc: { es: "Por supuesto. Gracias por venir todos estos días.", en: "Of course. Thank you for coming all these days." } },
+              { user: "Muchas gracias por todo" },
+              { npc: { es: "Que te vaya muy bien. ¡Buen viaje!", en: "Take good care. Have a good trip!" } },
+              { narr: "On your way home, Toni waves you over to the vermutería — one last vermut, on the house." },
+              { npc: { es: "¡Campeón! La última, invita la casa.", en: "Champ! The last one's on the house." } },
+              { user: "Está muy rico" },
+              { npc: { es: "¡Salud! Vuelve pronto a Barcelona.", en: "Cheers! Come back to Barcelona soon." } }
+            ]
+          }
         }
       ]
     }
