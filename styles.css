@@ -218,8 +218,9 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
 .close-btn { background: none; border: none; color: var(--text-dim); font-size: 26px; cursor: pointer; padding: 0 4px; }
 .pbar { flex: 1; height: 14px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }
-.pbar > i { display: block; height: 100%; background: var(--green); border-radius: 99px; transition: width .3s; }
-.hearts { color: var(--red); font-weight: 800; }
+.pbar > i { display: block; height: 100%; background: var(--green); border-radius: 99px; transition: width .5s cubic-bezier(.34,1.42,.5,1); }   /* §8.3 spring overshoot */
+/* §8.1/§8.6 passive daily-flame marker in the lesson header — a mirror, not a leash (muted, never red-alarm) */
+.lesson-flame { font-size: 14px; font-weight: 700; color: var(--text-dim); white-space: nowrap; }
 
 .retry-chip {
   display: inline-block; margin: 0 0 12px; padding: 6px 12px; border-radius: 999px;
@@ -303,9 +304,9 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .choice {
   text-align: left; background: var(--bg-card); border: 2px solid var(--border);
   color: var(--text); border-radius: var(--radius); padding: 16px; font-size: 17px;
-  font-weight: 600; cursor: pointer; box-shadow: var(--shadow); transition: transform .06s;
+  font-weight: 600; cursor: pointer; box-shadow: var(--shadow); transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s;
 }
-.choice:active { transform: translateY(2px); box-shadow: none; }
+.choice:active { transform: scale(.98); box-shadow: none; }   /* §8.3 press = spring scale, not a flat nudge */
 .choice.correct { border-color: var(--green); background: color-mix(in srgb, var(--green) 15%, transparent); }
 .choice.wrong { border-color: var(--red); background: color-mix(in srgb, var(--red) 15%, transparent); }
 .choice.dim { opacity: .4; }
@@ -315,7 +316,9 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .match .tile {
   background: var(--bg-card); border: 2px solid var(--border); color: var(--text);
   border-radius: 12px; padding: 14px 10px; font-weight: 700; cursor: pointer; font-size: 15px;
+  transition: transform .12s cubic-bezier(.34,1.56,.64,1), border-color .12s, background .12s;
 }
+.match .tile:active { transform: scale(.97); }
 .match .tile.sel { border-color: var(--accent-2); background: color-mix(in srgb, var(--accent) 16%, transparent); }
 .match .tile.gone { opacity: 0; pointer-events: none; transition: opacity .3s; }
 .match .tile.bad { border-color: var(--red); animation: shake .3s; }
@@ -324,6 +327,42 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .speed-score { font-weight: 800; font-size: 18px; color: var(--green); min-width: 28px; text-align: right; }
 .slow-btn { display: block; margin: 12px auto 0; background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-dim); border-radius: 999px; padding: 7px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+
+/* §8.3 each question springs in — continuous motion is most of "feels alive" */
+#qbody.qenter { animation: qenter .28s cubic-bezier(.22,.9,.3,1.08) both; }
+@keyframes qenter { from { opacity: 0; transform: translateX(22px); } to { opacity: 1; transform: none; } }
+/* §8.3 wrong answer — restrained iOS-passcode shake, no red splash */
+.shake-x { animation: shake .34s; }
+@media (prefers-reduced-motion: reduce) { #qbody.qenter, .shake-x, .pbar > i { animation: none; transition: none; } }
+
+/* §8.3 correct check that draws itself in (~200ms), paired with the success haptic */
+.draw-check { width: 20px; height: 20px; flex: none; vertical-align: -4px; }
+.draw-check path { fill: none; stroke: var(--green); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 26; stroke-dashoffset: 26; animation: drawcheck .22s ease-out .04s forwards; }
+@keyframes drawcheck { to { stroke-dashoffset: 0; } }
+
+/* §8.4 "Restored" moment — a fading phrase brought back; a small strength arc fills as proof */
+.restored-chip { display: inline-flex; align-items: center; gap: 8px; margin: 2px 0 12px;
+  padding: 6px 12px 6px 8px; border-radius: 999px; font-size: 13px; font-weight: 800; color: var(--accent-2);
+  background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--accent-2) 40%, transparent); }
+.restored-ring { width: 18px; height: 18px; flex: none; transform: rotate(-90deg); }
+.restored-ring .rr-bg { fill: none; stroke: color-mix(in srgb, var(--accent-2) 25%, transparent); stroke-width: 4; }
+.restored-ring .rr-fg { fill: none; stroke: var(--accent-2); stroke-width: 4; stroke-linecap: round;
+  stroke-dasharray: 94.2; stroke-dashoffset: 94.2; animation: fillarc .5s cubic-bezier(.3,.7,.3,1) .05s forwards; }
+@keyframes fillarc { to { stroke-dashoffset: 14; } }   /* fills ~85% of the ring */
+
+/* §8.3 ambient scenario tint — barely-there gradient keyed to category, gives a sense of place */
+.runner { position: relative; }
+.runner::before { content: ""; position: absolute; inset: -16px -18px auto; height: 240px; z-index: -1;
+  background: radial-gradient(120% 80% at 50% 0%, var(--scene-tint, transparent) 0%, transparent 70%); pointer-events: none; }
+.runner.scene-food       { --scene-tint: color-mix(in srgb, #e0952a 12%, transparent); }
+.runner.scene-transit    { --scene-tint: color-mix(in srgb, #4a7fc1 12%, transparent); }
+.runner.scene-directions { --scene-tint: color-mix(in srgb, #2f9e57 11%, transparent); }
+.runner.scene-lodging    { --scene-tint: color-mix(in srgb, #8a6dc1 12%, transparent); }
+.runner.scene-sights     { --scene-tint: color-mix(in srgb, #d8b713 12%, transparent); }
+.runner.scene-numbers    { --scene-tint: color-mix(in srgb, #4aa6b0 11%, transparent); }
+.runner.scene-advanced   { --scene-tint: color-mix(in srgb, #c1566a 11%, transparent); }
+.runner.scene-basics     { --scene-tint: color-mix(in srgb, var(--secondary) 10%, transparent); }
 
 /* build (tap to assemble) */
 .build-answer {
@@ -334,8 +373,9 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .word {
   background: var(--bg-card); border: 2px solid var(--border); color: var(--text);
   border-radius: 12px; padding: 10px 14px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow);
+  transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s;
 }
-.word:active { transform: translateY(2px); box-shadow: none; }
+.word:active { transform: scale(.96); box-shadow: none; }
 .word.used { visibility: hidden; }
 /* §1b.4 scaffolded build: pre-placed (locked) chunks + empty slots for the novel words */
 .word.locked { opacity: .5; box-shadow: none; cursor: default; }
@@ -356,7 +396,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 }
 .footer.correct { background: color-mix(in srgb, var(--green) 12%, var(--bg)); }
 .footer.wrong { background: color-mix(in srgb, var(--red) 12%, var(--bg)); }
-.fb-title { font-weight: 800; font-size: 17px; margin-bottom: 2px; }
+.fb-title { font-weight: 800; font-size: 17px; margin-bottom: 2px; display: flex; align-items: center; gap: 7px; }
 .fb-title.ok { color: var(--green); } .fb-title.no { color: var(--red); }
 .fb-sub { color: var(--text-dim); font-size: 13px; margin-bottom: 12px; }
 .note-chip { display:inline-block; font-size:12px; margin:2px 6px 0 0; padding:3px 8px; border-radius:8px; background:var(--bg-elevated); color:var(--text-dim); }
@@ -706,3 +746,5 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .complete .stars-n { color: var(--accent-2); }
 .complete .pct { font-size: 20px; color: var(--text-dim); }
 .complete .up { color: var(--green); font-weight: 800; }
+/* §8.4 session-complete score result line ("+3 Readiness · 2 phrases restored") — a result, not a reward drip */
+.session-delta { margin: 4px 0 16px; font-weight: 800; font-size: 14px; color: var(--accent-2); }

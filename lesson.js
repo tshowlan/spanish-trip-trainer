@@ -2,6 +2,12 @@
 // chooseType() + the exposure ladder live in srs.js; review pools (dueForReview,
 // recentMisses, cramActive) too. composeSession() weaves them into one queue.
 
+// §8.4 a phrase is "fading" below this strength — the retention-notification threshold (§6.1)
+const RETENTION_FADE = 40;
+// §8.3 correct-answer check that draws itself in (stroke animated in CSS); §8.4 restored strength arc
+const CHECK_SVG = `<svg class="draw-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>`;
+const ARC_SVG = `<svg class="restored-ring" viewBox="0 0 36 36" aria-hidden="true"><circle class="rr-bg" cx="18" cy="18" r="15"/><circle class="rr-fg" cx="18" cy="18" r="15"/></svg>`;
+
 // a graded review rep for a seen item — mostly its ladder rung, sometimes a
 // situational "which do you say?" for texture. cram pushes production.
 function reviewQuestion(item, pool, cap) {
@@ -89,7 +95,7 @@ function startLesson(lesson) {
   if (lesson.chain) return renderChain(lesson);   // M4 boss lesson — a chat-style dialogue (§7.5)
   // Compose FIRST (so the primer's guess item is still "new" here and stays in the session),
   // then run the primer on a first pass before the lesson proper. Replays/reviews skip straight in.
-  run = { lesson, qs: composeSession(lesson), idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map() };
+  run = { lesson, qs: composeSession(lesson), idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map() };
   if (!lessonDone(lesson.id) && lesson.primer && lesson.primer.guessItem) renderPrimer(lesson, renderQuestion);
   else renderQuestion();
 }
@@ -243,7 +249,7 @@ function renderPrimer(lesson, onDone) {
 function startReview(items) {
   const qs = items && items.length ? items.map(it => reviewQuestion(it, items)) : composeReview();
   if (!qs.length) { toast("Nothing to review yet, finish a lesson first 📚"); return; }
-  run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map() };
+  run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map() };
   renderQuestion();
 }
 
@@ -313,23 +319,35 @@ function renderSpeedRound(pool) {
   loadBatch();
   timer = setInterval(tick, 1000);
 }
+// §8.3 ambient scenario tint — map a lesson's category to a barely-there background class
+function sceneClass(topic) {
+  return "scene-" + ({
+    "Food & Drink": "food", "Transport": "transit", "Directions": "directions",
+    "Lodging": "lodging", "Sights": "sights", "Numbers & Time": "numbers", "Advanced": "advanced"
+  }[categoryOf(topic || "")] || "basics");
+}
 function renderQuestion() {
   const app = $("#app");
   const q = run.qs[run.idx];
   // progress only moves forward — re-queued misses extend the lesson, never rewind the bar
-  run.pct = Math.max(run.pct || 0, Math.round(run.idx / run.qs.length * 100));
+  const prevPct = run.pct || 0;
+  run.pct = Math.max(prevPct, Math.round(run.idx / run.qs.length * 100));
+  // §8.2 progress-milestone haptic: a slightly richer notch as the bar passes 25/50/75%
+  if ([25, 50, 75].some(m => prevPct < m && run.pct >= m)) haptic("milestone");
   clearFooter();
   hideTabbar();
   app.innerHTML = "";
-  const wrap = el(`<div class="runner"></div>`);
+  const wrap = el(`<div class="runner ${sceneClass(run.lesson && run.lesson.topic)}"></div>`);   // §8.3 ambient scenario tint
   wrap.appendChild(el(`
     <div class="progress-row">
       <button class="close-btn" id="quit">${icon('x',24)}</button>
       <div class="pbar"><i style="width:${run.pct}%"></i></div>
-      <div class="hearts">♥ ${run.hearts}</div>
+      <div class="lesson-flame" title="Day streak">🔥 ${state.streak || 0}</div>
     </div>`));
-  wrap.appendChild(el(`<div id="qbody"></div>`));
+  wrap.appendChild(el(`<div id="qbody" class="qenter"></div>`));   // §8.3 each question springs in
   app.appendChild(wrap);
+  // §8.2 card-press haptic — one delegated listener covers every interactive card in the runner
+  wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile,.speak-btn")) haptic("press"); });
   $("#quit").addEventListener("click", () => { if (confirm("Quit this lesson? Progress in it is lost.")) renderHome(); });
   run.answered = false;
   // make the mistake re-queue visible: label a phrase you missed coming back around
@@ -854,11 +872,11 @@ function onMatchTap(tile, grid, q) {
     grid._sel = null; grid._left--;
     const it = q.items.find(i => i.es === decodeURIComponent(tile.dataset.key));
     if (it) { speak(it.es); recordExposure(itemId(it)); }   // warm-up match counts as an exposure
-    if (grid._left === 0) { playSound("correct"); setTimeout(() => next(), 350); }
+    if (grid._left === 0) { playSound("correct"); haptic("correct"); setTimeout(() => next(), 350); }
   } else {
     tile.classList.add("bad"); sel.classList.add("bad");
-    run.wrong++; if (run.hearts > 0) run.hearts--; if ($(".hearts")) $(".hearts").textContent = "♥ " + run.hearts;
-    playSound("wrong");
+    run.wrong++;
+    playSound("wrong"); haptic("wrong");
     setTimeout(() => { tile.classList.remove("bad", "sel"); sel.classList.remove("bad", "sel"); grid._sel = null; }, 350);
   }
 }
@@ -876,11 +894,19 @@ function gradeTyped(raw, item) {
 function finishGrade(ok, item, extra) {
   run.answered = true;
   const q = run.qs[run.idx];
-  if (!ok) { run.wrong++; if (run.hearts > 0) run.hearts--; if (run.missed) run.missed.set(itemId(item), item); }
-  recordAnswer(itemId(item), ok, { mode: q && q.type, scaffolded: q && q.slow });   // q.slow = used the 0.75× replay
+  const id = itemId(item);
+  // §8.4: was this phrase fading BEFORE we graded it? (seen ≥once + strength under the notify threshold)
+  const pre = id && state.learn && state.learn[id];
+  const wasFading = !!(pre && pre.exposures >= 1 && itemStrength(pre) < RETENTION_FADE);
+  if (!ok) { run.wrong++; if (run.missed) run.missed.set(id, item); }
+  recordAnswer(id, ok, { mode: q && q.type, scaffolded: q && q.slow });   // q.slow = used the 0.75× replay
+  const restored = ok && wasFading;                    // correctly recalled a fading phrase → the sawtooth jump (§8.4)
+  if (restored) run.restored = (run.restored || 0) + 1;
   // §4b.2: count correct one-blank fills so the item graduates to two-blank fills
-  if (ok && q && q.type === "fill_blank" && (q.blanks || 1) === 1) { const st = state.learn && state.learn[itemId(item)]; if (st) st.fill1 = (st.fill1 || 0) + 1; }
+  if (ok && q && q.type === "fill_blank" && (q.blanks || 1) === 1) { const st = state.learn && state.learn[id]; if (st) st.fill1 = (st.fill1 || 0) + 1; }
   playSound(ok ? "correct" : "wrong");
+  haptic(restored ? "restored" : ok ? "correct" : "wrong");
+  if (!ok) { const qb = $("#qbody"); if (qb) { qb.classList.add("shake-x"); setTimeout(() => qb.classList.remove("shake-x"), 380); } }   // §8.3 restrained iOS-passcode shake
   const notes = [];
   if (extra) notes.push(`<span class="note-chip"><b>note</b> ${extra}</span>`);
   if (item.note) notes.push(`<span class="note-chip"><b>tip</b> ${item.note}</span>`);
@@ -888,7 +914,8 @@ function finishGrade(ok, item, extra) {
   if (item.latam) notes.push(`<span class="note-chip"><b>L. America</b> ${item.latam}</span>`);
   if (item.cat) notes.push(`<span class="note-chip"><b>Català</b> ${item.cat}</span>`);
   const f = footer(`
-    <div class="fb-title ${ok ? "ok" : "no"}">${ok ? pick(PRAISE) : pick(NEAR_MISS)}</div>
+    <div class="fb-title ${ok ? "ok" : "no"}">${ok ? CHECK_SVG : ""}<span>${ok ? pick(PRAISE) : pick(NEAR_MISS)}</span></div>
+    ${restored ? `<div class="restored-chip">${ARC_SVG}<span>Restored — you beat the forgetting curve</span></div>` : ""}
     <div class="fb-sub"><b>${item.es}</b>${item.en}</div>
     <div>${notes.join("")}</div>
     <div style="height:10px"></div>
@@ -948,7 +975,7 @@ function finishLesson() {
   const scores = computeScores();
   save(); renderTopbar();
   cloudSync().catch(() => {});
-  playSound("win");
+  playSound("win"); haptic("complete");
 
   const delta = (prevReadiness != null) ? scores.readiness - prevReadiness : null;
   const missed = run.missed ? [...run.missed.values()] : [];
@@ -961,6 +988,7 @@ function finishLesson() {
         <div class="score"><div class="n stars-n">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</div><div class="l">accuracy</div></div>
         <div class="score"><div class="n">${scores.readiness}<span class="pct">%</span></div><div class="l">trip readiness${delta > 0 ? ` <span class="up">▲${delta}</span>` : ""}</div></div>
       </div>
+      ${(delta > 0 || run.restored) ? `<div class="session-delta">${delta > 0 ? `+${delta} Readiness` : ""}${delta > 0 && run.restored ? " · " : ""}${run.restored ? `${run.restored} phrase${run.restored === 1 ? "" : "s"} restored` : ""}</div>` : ""}
       <div class="reward">${lesson.reward}</div>
       ${lesson.cultureNote ? `<div class="culture-note"><span class="cn-label">Local tip</span> ${lesson.cultureNote}</div>` : ""}
       ${missed.length ? `<button class="btn accent" id="reviewmiss">Review your ${missed.length} mistake${missed.length === 1 ? "" : "s"}</button><div style="height:10px"></div>` : ""}
@@ -981,7 +1009,7 @@ function finishReview() {
   const scores = computeScores();
   save(); renderTopbar();
   cloudSync().catch(() => {});
-  playSound("win");
+  playSound("win"); haptic("complete");
   const delta = (prevReadiness != null) ? scores.readiness - prevReadiness : null;
   const app = $("#app");
   app.innerHTML = "";
@@ -992,6 +1020,7 @@ function finishReview() {
         <div class="score"><div class="n">${correct}/${total}</div><div class="l">recalled</div></div>
         <div class="score"><div class="n">${scores.readiness}<span class="pct">%</span></div><div class="l">trip readiness${delta > 0 ? ` <span class="up">▲${delta}</span>` : ""}</div></div>
       </div>
+      ${(delta > 0 || run.restored) ? `<div class="session-delta">${delta > 0 ? `+${delta} Readiness` : ""}${delta > 0 && run.restored ? " · " : ""}${run.restored ? `${run.restored} phrase${run.restored === 1 ? "" : "s"} restored` : ""}</div>` : ""}
       <div class="reward">Nice, keeping older phrases warm is how they stick for the trip.</div>
       <button class="btn" id="home">Continue</button>
     </div>`));
