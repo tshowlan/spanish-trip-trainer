@@ -41,8 +41,6 @@ function renderTopbar() {
   if (brand) brand.innerHTML = wordmark(22);
   const flag = $("#lang-flag");
   if (flag) flag.textContent = destInfo(state.profile && state.profile.destination).flag;
-  const xp = $("#stat-xp"); if (xp) xp.textContent = state.xp;
-  const gems = $("#stat-gems"); if (gems) gems.textContent = state.gems;
 }
 
 /* ---------- Phosphor icons (inline SVG, one consistent family) ---------- */

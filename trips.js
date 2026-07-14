@@ -6,7 +6,7 @@ function snapshotActive() {
 }
 function applyTrip(key) {
   const t = state.trips[key] || {};
-  const defaults = { profile: null, lessons: {}, topicStats: {}, xp: 0, sessions: [], learn: {} };
+  const defaults = { profile: null, lessons: {}, topicStats: {}, sessions: [], learn: {} };
   DEST_FIELDS.forEach(f => { state[f] = (t[f] !== undefined ? t[f] : defaults[f]); });
 }
 /* §5.1 trip completion: when the active trip's date passes, freeze a permanent record into the
@@ -87,16 +87,16 @@ function migrateTrips() {
   const prof = state.profile
     ? Object.assign({}, state.profile, { destination: "spain", dialect: "Castilian Spanish" })
     : null;
-  state.trips.spain = { profile: prof, lessons: state.lessons, topicStats: state.topicStats, xp: state.xp };
+  state.trips.spain = { profile: prof, lessons: state.lessons, topicStats: state.topicStats };
   state.active = "spain";
   applyTrip("spain");
   save();
 }
 function tripSummary(key) {
   const t = key === state.active
-    ? { profile: state.profile, lessons: state.lessons, xp: state.xp }
+    ? { profile: state.profile, lessons: state.lessons }
     : (state.trips[key] || {});
-  return { done: Object.keys(t.lessons || {}).length, xp: t.xp || 0, tripDate: (t.profile || {}).tripDate };
+  return { done: Object.keys(t.lessons || {}).length, tripDate: (t.profile || {}).tripDate };
 }
 function renderTrips() {
   clearFooter();
@@ -115,7 +115,7 @@ function renderTrips() {
     const days = s.tripDate ? Math.max(0, daysUntil(s.tripDate)) : null;
     const row = el(`<div class="set-row" style="cursor:pointer;${active ? "border-color:var(--green)" : ""}">
       <div><div class="set-t">${d.flag} ${d.label} ${active ? '<span class="you">active</span>' : ""}</div>
-      <div class="set-d">${s.done} lesson${s.done === 1 ? "" : "s"} done · ${s.xp} XP${days !== null ? ` · ${days}d to go` : ""}</div></div>
+      <div class="set-d">${s.done} lesson${s.done === 1 ? "" : "s"} done${days !== null ? ` · ${days}d to go` : ""}</div></div>
       <span class="chev">${active ? "✓" : icon('caret-right',20)}</span></div>`);
     if (!active) row.addEventListener("click", () => switchDestination(d.key));
     wrap.appendChild(row);

@@ -17,9 +17,10 @@ function renderProgress() {
   const done = Object.keys(state.lessons).length;
   const total = (typeof LESSON_ORDER !== "undefined" && LESSON_ORDER.length) || 1;
   wrap.appendChild(el(`<div class="screen-head"><h2>Progress</h2></div>`));
+  const readiness = (state.scoresCache || {}).readiness;
   wrap.appendChild(el(`<div class="scorebar" style="margin-top:0">
     <div class="score"><div class="n">${icon('flame', 20)} ${state.streak}</div><div class="l">day streak</div></div>
-    <div class="score"><div class="n">${icon('lightning', 20)} ${state.xp}</div><div class="l">XP · ${d.label}</div></div>
+    <div class="score"><div class="n">${readiness != null ? readiness + "<span class='pct'>%</span>" : "–"}</div><div class="l">readiness · ${d.label}</div></div>
     <div class="score"><div class="n">${done}/${total}</div><div class="l">lessons</div></div>
   </div>`));
   wrap.appendChild(el(streakStrip()));

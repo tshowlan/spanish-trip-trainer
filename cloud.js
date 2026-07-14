@@ -33,10 +33,17 @@ async function cloudSync(opts) {
   if (!state.cloud || !state.cloud.optedIn) return;          // nothing leaves the device until you join a group
   ensureIdentity();
   snapshotActive();                                          // make sure the active trip is current in state.trips
+  // §3 group rework: with XP gone, the `xp` column is repurposed to carry Trip Readiness so the
+  // existing `get_group ... order by xp desc` sorts members by Readiness with zero schema change.
+  // Tier + weekly Momentum ride inside the stats JSON under a reserved __score key.
+  const sc = state.scoresCache || (typeof computeScores === "function" ? computeScores() : {});
+  const scoreBundle = { tier: (typeof currentTier === "function" ? currentTier() : (state.tier || "Newcomer")),
+    readiness: sc.readiness || 0, momentum: sc.momentum || 0, sessions7: sc.sessions7 || 0 };
   await rpc("sync_player", {
     p_id: state.cloud.playerId, p_secret: state.cloud.secret,
     p_name: state.cloud.name || "Traveler", p_group: state.cloud.group || null,
-    p_xp: state.xp, p_streak: state.streak, p_stats: state.topicStats || {},
+    p_xp: Math.round(sc.readiness || 0), p_streak: state.streak,
+    p_stats: Object.assign({ __score: scoreBundle }, state.topicStats || {}),
     // notif = the honest score snapshot the (server-side) notification engine cites; stored in the
     // existing progress JSON so no backend schema change is needed to start collecting it.
     p_progress: { history: state.history, trips: state.trips, active: state.active, notif: notifSnapshot() }
@@ -118,26 +125,33 @@ function renderGroupView(wrap, rerender = renderGroup) {
   loadMembers(list, code);
 }
 
+// §3 group view: members compared by Trip Readiness (server sorts by the repurposed xp column desc).
+// Warm, comparative, no ranks/podium — the sort order is the ranking.
 async function loadMembers(list, code) {
   list.innerHTML = `<p class="onb-dim">Loading…</p>`;
   try {
     const rows = await rpc("get_group", { p_group: code });
     if (!rows || !rows.length) { list.innerHTML = `<p class="onb-dim">No members yet, share the code!</p>`; return; }
+    const read = m => { const sc = (m.stats && m.stats.__score) || {}; return Math.max(0, Math.min(100, sc.readiness != null ? sc.readiness : (m.xp || 0))); };
+    const wk = m => ((m.stats && m.stats.__score) || {}).sessions7 || 0;
+    const rows2 = rows.slice().sort((a, b) => read(b) - read(a));   // defend the sort client-side too
     list.innerHTML = "";
-    rows.forEach((m, i) => {
-      const s = strengths(m.stats);
-      const medal = `${i + 1}`;
-      const best = s ? `<span class="skill good">${icon('trophy', 14)} ${s.best.k}</span>` : `<span class="skill">just getting started</span>`;
-      const worst = s && s.worst.k !== s.best.k ? `<span class="skill bad">${icon('warning', 14)} ${s.worst.k}</span>` : "";
+    // §3.1.3 weekly pulse strip
+    const top = rows2.reduce((a, m) => (wk(m) > wk(a) ? m : a), rows2[0]);
+    if (wk(top) > 0) list.appendChild(el(`<div class="pulse-strip">${icon('lightning', 14)} Most sessions this week: <b>${top.name}</b> (${wk(top)})</div>`));
+    rows2.forEach(m => {
+      const sc = (m.stats && m.stats.__score) || {};
+      const r = read(m), band = readinessBand(r), tier = sc.tier || "Newcomer";
+      const sessions = wk(m);
+      const stale = m.updated_at && (Date.now() - new Date(m.updated_at).getTime()) / 864e5 > 3;   // §3.2 staleness
       const you = m.name === (state.cloud.name || "") ? ` <span class="you">you</span>` : "";
       list.appendChild(el(`
         <div class="member">
-          <div class="m-rank">${medal}</div>
           <div class="m-main">
-            <div class="m-name">${m.name}${you}</div>
-            <div class="m-stats">${icon('flame', 14)} ${m.streak} · ${icon('lightning', 14)} ${m.xp} XP</div>
-            <div class="m-skills">${best} ${worst}</div>
+            <div class="m-name">${m.name}${you} <span class="m-tier">${tier}</span></div>
+            <div class="m-stats">${sessions} session${sessions === 1 ? "" : "s"} this week</div>
           </div>
+          <div class="m-readiness ${band.cls} ${stale ? "stale" : ""}" title="${stale ? "Not updated in a while" : band.label}">${r}<span class="pct">%</span></div>
         </div>`));
     });
   } catch (e) { list.innerHTML = `<p class="onb-dim">Couldn't load: ${e.message}</p>`; }
@@ -188,7 +202,6 @@ function mergeTrip(local, server) {
     profile: local.profile || server.profile || null,
     lessons: _mergeLessons(local.lessons, server.lessons),
     topicStats: _mergeStats(local.topicStats, server.topicStats),
-    xp: Math.max(local.xp || 0, server.xp || 0),
     sessions: _mergeSessions(local.sessions, server.sessions),
     learn: _mergeLearn(_remapLearnKeys(local.learn), _remapLearnKeys(server.learn))   // normalize old ids on either side
   };
@@ -211,7 +224,6 @@ function applyPlayer(r) {
     } else {                                                 // legacy single-trip backup
       if (r.progress.lessons) state.lessons = _mergeLessons(state.lessons, r.progress.lessons);
       if (r.progress.profile && !state.profile) state.profile = r.progress.profile;
-      state.xp = Math.max(state.xp, r.xp || 0);
       state.topicStats = _mergeStats(state.topicStats, r.stats);
     }
   }

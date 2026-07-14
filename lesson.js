@@ -196,8 +196,7 @@ function finishChain(lesson) {
   state.sessions = state.sessions || [];
   state.sessions.push({ at: now, lessonId: lesson.id, category: "Conversation", phrases: userTurns, correct: userTurns });
   registerActivity();
-  if (first) { state.xp += 20; state.gems = (state.gems || 0) + 1; }
-  computeScores(); save(); renderTopbar(); playSound("win");
+  computeScores(); applyTierUpdate(); save(); renderTopbar(); playSound("win");
   cloudSync().catch(() => {});
   const app = $("#app"); app.innerHTML = "";
   app.appendChild(el(`<div class="complete">
@@ -1008,11 +1007,9 @@ function finishLesson() {
   const lesson = run.lesson;
   if (run.review) return finishReview();               // pure-review session: no lesson to mark
   const stars = run.wrong === 0 ? 3 : run.wrong <= 2 ? 2 : 1;
-  const firstTime = !lessonDone(lesson.id);
   const prev = state.lessons[lesson.id];
   const now = new Date().toISOString();
   state.lessons[lesson.id] = { stars: Math.max(stars, prev ? prev.stars : 0), at: now };
-  if (firstTime) { state.xp += 20; state.gems += 1; } else state.xp += 8;   // kept in state for the group view
   // per-category accuracy → powers the group "best/worst at" view
   const cat = categoryOf(lesson.topic);
   const total = run.qs.length, correct = Math.max(0, total - run.wrong);
