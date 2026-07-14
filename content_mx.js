@@ -528,6 +528,42 @@ const MEXICO_PACK = {
               { npc: { es: "Claro que sí. ¡Que le vaya bien!", en: "Of course. Take care!" } }
             ]
           }
+        },
+        {
+          id: "mx-chain-lastnight", topic: "Advanced · Capstone", title: "Your last night",
+          reward: "That was the whole trip in one evening — greeting, ordering, a mix-up, small talk, paying, goodbyes. You didn't switch to English once. You're ready.",
+          cultureNote: "When someone says 'buen viaje,' the warm reply is 'gracias, nos vemos' — 'see you' — even if you both know you won't. It's the leaving-well that matters.",
+          items: [],
+          chain: {
+            title: "Your last night",
+            turns: [
+              { narr: "Your last night in Oaxaca. Andrés dropped you near the Zócalo, and your feet carried you back to Doña Lupe's comedor — one more time." },
+              { npc: { es: "¡Buenas noches! Tu última noche, ¿verdad? Pásale, pásale.", en: "Good evening! Your last night, right? Come in, come in." } },
+              { user: "Buenas noches" },
+              { npc: { es: "Siéntate, siéntate. ¿Qué te traigo esta vez?", en: "Sit, sit. What can I get you this time?" } },
+              { user: "¿Qué me recomienda?" },
+              { npc: { es: "Las tlayudas, para despedirte bien de Oaxaca.", en: "The tlayudas — a proper goodbye to Oaxaca." } },
+              { user: "Soy alérgico a..." },
+              { npc: { es: "No te preocupes, yo te cuido. ¿Y de tomar?", en: "Don't worry, I'll look after you. And to drink?" } },
+              { user: "Una cerveza, por favor" },
+              { npc: { es: "Enseguida. Buen provecho.", en: "Right away. Enjoy your meal." } },
+              { npc: { es: "…Aquí tienes tu plato.", en: "…Here's your dish." } },
+              { user: "Esto no es lo que pedí" },
+              { npc: { es: "¡Ay, perdón! Ahorita te lo cambio.", en: "Oh, sorry! I'll change it right away." } },
+              { user: "La cuenta, por favor" },
+              { npc: { es: "Con gusto. Son doscientos pesos.", en: "My pleasure. That's two hundred pesos." } },
+              { user: "¿Aceptan tarjeta?" },
+              { npc: { es: "Claro. Gracias por venir todos estos días.", en: "Of course. Thank you for coming all these days." } },
+              { user: "Muchas gracias por todo" },
+              { npc: { es: "Que te vaya muy bien. ¡Buen viaje!", en: "Take care. Have a good trip!" } },
+              { narr: "On your way out, Beto waves you over to his mezcal stand — one for the road." },
+              { npc: { es: "¡Amigo! La última, va por la casa.", en: "My friend! The last one, on the house." } },
+              { user: "¿Cuál es tu mezcal favorito?" },
+              { npc: { es: "El de pechuga. Pruébalo, es una despedida.", en: "The pechuga. Try it — it's a farewell." } },
+              { user: "¡Salud!" },
+              { npc: { es: "¡Salud! Vuelve pronto a Oaxaca.", en: "Cheers! Come back to Oaxaca soon." } }
+            ]
+          }
         }
       ]
     }

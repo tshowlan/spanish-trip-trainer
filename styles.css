@@ -457,6 +457,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .cbub.user { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 5px; }
 .cbub.user .cbub-en { color: rgba(255,255,255,.72); }
 .chain-you { font-size: 13px; font-weight: 700; color: var(--text-dim); margin-bottom: 10px; }
+.cnarr { align-self: center; text-align: center; max-width: 92%; color: var(--text-dim); font-family: var(--font-display); font-size: 16px; line-height: 1.5; padding: 10px 4px; }
 .blank { display: inline-block; min-width: 60px; border-bottom: 3px solid var(--accent-2); color: var(--accent-2); text-align: center; }
 
 /* ---------- group ---------- */

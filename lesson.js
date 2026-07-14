@@ -113,7 +113,11 @@ function renderChain(lesson) {
     clearFooter();
     if (idx >= turns.length) return finishChain(lesson);
     const t = turns[idx];
-    if (t.npc) {
+    if (t.narr) {                                   // scene-setting beat (capstone opener, §9b.5)
+      log.appendChild(el(`<div class="cnarr">${t.narr}</div>`)); log.scrollTop = 1e6;
+      const f = footer(`<button class="btn" id="cnext">${idx === 0 ? "Begin →" : "Continue →"}</button>`);
+      f.querySelector("#cnext").addEventListener("click", () => { idx++; step(); });
+    } else if (t.npc) {
       bubble("npc", t.npc.es, t.npc.en); speak(t.npc.es);
       const nextIsUser = turns[idx + 1] && turns[idx + 1].user;
       const f = footer(`<button class="btn" id="cnext">${nextIsUser ? "Your turn →" : "Continue →"}</button>`);
