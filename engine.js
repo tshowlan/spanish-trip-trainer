@@ -37,6 +37,44 @@ function buildAllergyLesson(keys) {
     items
   };
 }
+// §2/§5 personalization spec: veg / gluten-free get their own safety lesson, cloning the allergy pattern
+function buildDietaryLesson(needs) {
+  const items = [];
+  if (needs.includes("vegetarian")) items.push(
+    { es: "Soy vegetariano", en: "I'm vegetarian", note: 'Women say "vegetariana".' },
+    { es: "¿Esto lleva carne?", en: "Does this have meat?" },
+    { es: "¿Tienen algo sin carne?", en: "Do you have anything without meat?" });
+  if (needs.includes("gluten_free")) items.push(
+    { es: "Soy celíaco", en: "I'm celiac / gluten-free", note: 'Women say "celíaca".' },
+    { es: "¿Esto lleva gluten?", en: "Does this contain gluten?" },
+    { es: "¿Tienen algo sin gluten?", en: "Do you have anything gluten-free?" });
+  if (!items.length) return null;
+  return {
+    id: "personal-dietary", topic: "Your group · Dietary", title: "Your Dietary Needs",
+    reward: "You can keep every meal on-plan without a translation app mid-order.", items
+  };
+}
+// §4 personalization spec: skill level → entry depth. Seed known stages as review-strength items
+// (moderate strength, S≈7) so they count honestly toward scores and the map starts further in. A
+// failed review resets an item's strength and reopens the tree below it — the SRS self-corrects.
+function seedPlacement(level) {
+  if (!level || level === "new") return;
+  const stageCount = level === "confident" ? 2 : 1;   // some → stage 0; confident → stages 0-1
+  const now = new Date().toISOString();
+  state.learn = state.learn || {}; state.lessons = state.lessons || {};
+  (DECK ? DECK.stages : []).slice(0, stageCount).forEach(st => st.lessons.forEach(l => {
+    if (l.bonus || l.id.indexOf("personal-") === 0) return;   // never pre-seed safety (allergy/dietary) lessons
+    if (!state.lessons[l.id]) state.lessons[l.id] = { stars: 2, at: now, seeded: true };   // start past this stage
+    l.items.forEach(it => {
+      const id = it.id; if (!id || state.learn[id]) return;                                  // never overwrite real history
+      state.learn[id] = {
+        exposures: 1, streak: 1, lapses: 0, interval: 7, ease: 2.3,
+        lastSeen: todayStr(), lastCorrect: todayStr(), due: _dateAdd(todayStr(), 7),
+        axes: { production: 0, cold: 0, native: 0, chained: 0 }, seeded: true
+      };
+    });
+  }));
+}
 function rebuildDeck() {
   const p = state.profile;
   DECK = { stages: [] };
@@ -46,6 +84,10 @@ function rebuildDeck() {
   if (p && p.allergies && p.allergies.length && DECK.stages[0]) {
     const s0 = DECK.stages[0];                 // inject the personalized allergy lesson early
     s0.lessons.splice(Math.min(1, s0.lessons.length), 0, buildAllergyLesson(p.allergies));
+  }
+  if (p && p.needs && (p.needs.includes("vegetarian") || p.needs.includes("gluten_free")) && DECK.stages[0]) {
+    const dl = buildDietaryLesson(p.needs);    // veg / gluten-free safety lesson, right after allergies
+    if (dl) DECK.stages[0].lessons.splice(Math.min(2, DECK.stages[0].lessons.length), 0, dl);
   }
   LESSON_ORDER = []; ALL_ITEMS = []; ITEM_INDEX = {};
   const packKey = activePack().key;

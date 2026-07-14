@@ -13,10 +13,11 @@ const TRIP_TYPES = [
   ["family", "👪 Visiting family", ""],
   ["sightseeing", "📸 General sightseeing", ""]
 ];
+// every option must do something (personalization spec §2): dietary → its own lesson, chat → smalltalk
+// weight. The old solo / off-beaten / cities options informed nothing and were cut.
 const NEEDS = [
-  ["solo", "Traveling solo"], ["gluten_free", "Gluten-free"], ["vegetarian", "Vegetarian / vegan"],
-  ["allergies", "Food allergies"], ["off_beaten", "Off the beaten path"], ["cities", "Mostly cities"],
-  ["chat", "Want to chat with locals"]
+  ["gluten_free", "Gluten-free"], ["vegetarian", "Vegetarian / vegan"],
+  ["allergies", "Food allergies"], ["chat", "Want to chat with locals"]
 ];
 const PLACEMENT = [
   { es: "Gracias", answer: "Thank you", opts: ["Thank you", "Goodbye", "Please", "Sorry"] },
@@ -205,6 +206,7 @@ function renderOnboarding() {
     applyTrip(draft.destination);              // load existing progress for this destination (if any)
     state.profile = newProfile;                // refresh the plan with the new answers
     save(); rebuildDeck();
+    seedPlacement(draft.level); save();        // §4: skill level → entry depth (no-op for "new")
     toast(`¡Vamos! ${d.flag} ${Math.max(0, daysUntil(draft.date))} days to go`);
     const first = DECK.stages[0] && DECK.stages[0].lessons[0];
     const fresh = Object.keys(state.lessons).length === 0;
