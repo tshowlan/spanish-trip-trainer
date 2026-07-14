@@ -181,7 +181,7 @@ function renderQuestion() {
   // make the mistake re-queue visible: label a phrase you missed coming back around
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">↩ Second chance — you missed this one</div>`));
   ({ intro: renderIntro, present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
-     type_translation: renderType, listen_type: renderListen, fill_blank: renderFill,
+     type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
      respond: renderRespond, listen_choice: renderListenChoice, reply_listen: renderReply }[q.type])(q);
 }
 
@@ -429,6 +429,50 @@ function renderListen(q) {
   input.addEventListener("keydown", e => { if (e.key === "Enter" && input.value.trim() && !run.answered) gradeTyped(input.value, item); });
   f.querySelector("#check").addEventListener("click", () => { if (!run.answered && input.value.trim()) gradeTyped(input.value, item); });
   f.querySelector("#skip").addEventListener("click", () => { if (!run.answered) grade(false, item); });
+}
+
+/* ----- speak it (M4): say the phrase aloud; Web Speech recognition, lenient match (§7.4).
+   "I can't speak now" swaps to type-the-translation — an equally-hard cold rep for the same item,
+   so a user in a quiet room / on a bus is never blocked and still gets a real production credit. ----- */
+function speechMatch(heard, item) {
+  const h = norm(heard).split(/\s+/).filter(Boolean);
+  return [item.es].concat(item.variants || []).some(t => {   // ≥70% token overlap with any accepted form
+    const ts = norm(t).split(/\s+/).filter(Boolean);
+    return ts.length && ts.filter(w => h.includes(w)).length / ts.length >= 0.7;
+  });
+}
+function renderSpeak(q) {
+  const Rec = (typeof window !== "undefined") && (window.SpeechRecognition || window.webkitSpeechRecognition);
+  if (!Rec) { q.type = "type_translation"; return renderType(q); }        // unsupported → type instead
+  const item = q.item;
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Say it in Spanish</div>`));
+  body.appendChild(el(`<div class="prompt">${item.en}</div>`));
+  const status = el(`<div class="prompt-sub" id="spk-status">Tap the mic and say it aloud.</div>`);
+  body.appendChild(status);
+  body.appendChild(el(`<button class="mic-btn" id="mic">${icon("microphone", 30)}</button>`));
+  const f = footer(`<button class="btn grey" id="cant">I can't speak right now</button>`);
+  // equally-hard substitute: retype the current slot as a cold typed rep (same production axis)
+  f.querySelector("#cant").addEventListener("click", () => { q.type = "type_translation"; renderQuestion(); });
+
+  const mic = $("#mic");
+  let done = false;
+  mic.addEventListener("click", () => {
+    if (run.answered || done) return;
+    const rec = new Rec();
+    rec.lang = (typeof activePack === "function" ? activePack().tts : "es-MX");
+    rec.interimResults = false; rec.maxAlternatives = 3;
+    mic.classList.add("live"); status.textContent = "Listening…";
+    rec.onresult = e => {
+      done = true;
+      const alts = [...e.results[0]].map(r => r.transcript);
+      mic.classList.remove("live"); status.textContent = `Heard: “${alts[0]}”`;
+      grade(alts.some(a => speechMatch(a, item)), item);
+    };
+    rec.onerror = () => { mic.classList.remove("live"); status.textContent = "Didn't catch that — tap to try again."; };
+    rec.onend = () => { mic.classList.remove("live"); if (!done && !run.answered) status.textContent = "Tap the mic and say it aloud."; };
+    try { rec.start(); } catch (_) { mic.classList.remove("live"); }
+  });
 }
 
 /* ----- fill in the blank ----- */

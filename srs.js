@@ -44,6 +44,7 @@ function recordAnswer(id, ok, opts) {
     s.interval = s.interval === 0 ? seedInterval(s.difficulty) : Math.round(s.interval * s.ease);
     const m = opts && opts.mode;                                  // mastery axes (as modes exist)
     if (m === "type_translation") { s.axes.production = 1; s.axes.cold = 1; }
+    else if (m === "speak_it") { s.axes.production = 1; s.axes.cold = 1; }   // speaking = cold production
     else if (m === "listen_type") { s.axes.production = 1; s.axes.native = 1; }
     if (s.axes.production && s.axes.cold && s.axes.native && s.axes.chained) s.interval *= 2;  // graduated
     s.interval = Math.min(s.interval, daysLeft);                  // never schedule past the trip
@@ -116,14 +117,16 @@ const LADDER = [
   ["present"],                                    // 0    first sight — teach, never test
   ["mc_es2en", "listen_choice"],                  // 1–2  recognition (incl. hear-and-pick)
   ["mc_en2es", "build", "fill_blank"],            // 3–4  scaffolded production
-  ["type_translation", "listen_type"]             // 5+   cold production
+  ["type_translation", "listen_type", "speak_it"] // 5+   cold production
 ];
 
+function _speechSupported() { return typeof window !== "undefined" && !!(window.SpeechRecognition || window.webkitSpeechRecognition); }
 function _wordCount(item) { return item.es.trim().split(/\s+/).length; }
 function _modeFeasible(mode, item) {
   const n = _wordCount(item);
   if (mode === "build") return n >= 4 && n <= 8;   // §1b.3: no tap-to-build under 4 tokens
   if (mode === "fill_blank") return n >= 3;        // §1b.3: no fill-in-the-blank under 3 tokens
+  if (mode === "speak_it") return _speechSupported();  // M4: only where Web Speech exists (else the rung uses type/listen)
   return true;
 }
 function _tierOfType(type) {
