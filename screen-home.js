@@ -125,7 +125,7 @@ function renderHome() {
           <div class="badge">${isDone ? "✓" : "▶"}</div>
           <div class="meta">
             <div class="t">${l.title}${isRec ? ` <span class="rec-tag">Next</span>` : ""}</div>
-            <div class="s">${chip} · ${l.items.length} phrases${fading ? ` · <span class="fade-badge">${fading} to review</span>` : ""}</div>
+            <div class="s">${chip} · ${l.chain ? "Conversation" : `${l.items.length} phrases`}${fading ? ` · <span class="fade-badge">${fading} to review</span>` : ""}</div>
             ${isDone && stars ? `<div class="stars">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</div>` : ""}
           </div>
           <div class="chev">${icon('caret-right', 18)}</div>`);

@@ -447,6 +447,16 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .mic-btn:active { transform: scale(.94); }
 .mic-btn.live { background: var(--red); border-color: var(--red); color: #fff; animation: micpulse 1s ease-in-out infinite; }
 @keyframes micpulse { 0%,100% { box-shadow: 0 0 0 0 rgba(232,88,106,.5); } 50% { box-shadow: 0 0 0 14px rgba(232,88,106,0); } }
+/* M4 chained exchange — chat-style boss dialogue */
+.chain-title { flex: 1; font-weight: 800; font-size: 15px; text-align: center; margin-right: 24px; }
+.chain-log { display: flex; flex-direction: column; gap: 12px; padding: 14px 2px 30px; }
+.cbub { max-width: 82%; border-radius: 16px; padding: 10px 14px; }
+.cbub-es { font-weight: 700; font-size: 16px; line-height: 1.3; }
+.cbub-en { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.cbub.npc { align-self: flex-start; background: var(--bg-card); border: 1px solid var(--border); border-bottom-left-radius: 5px; }
+.cbub.user { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 5px; }
+.cbub.user .cbub-en { color: rgba(255,255,255,.72); }
+.chain-you { font-size: 13px; font-weight: 700; color: var(--text-dim); margin-bottom: 10px; }
 .blank { display: inline-block; min-width: 60px; border-bottom: 3px solid var(--accent-2); color: var(--accent-2); text-align: center; }
 
 /* ---------- group ---------- */

@@ -86,11 +86,94 @@ function composeReview() {
 
 let run = null;
 function startLesson(lesson) {
+  if (lesson.chain) return renderChain(lesson);   // M4 boss lesson — a chat-style dialogue (§7.5)
   // Compose FIRST (so the primer's guess item is still "new" here and stays in the session),
   // then run the primer on a first pass before the lesson proper. Replays/reviews skip straight in.
   run = { lesson, qs: composeSession(lesson), idx: 0, hearts: 5, wrong: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map() };
   if (!lessonDone(lesson.id) && lesson.primer && lesson.primer.guessItem) renderPrimer(lesson, renderQuestion);
   else renderQuestion();
+}
+
+/* ----- chained exchange (M4, §7.5): a chat-style dialogue used as a stage "boss." NPC lines are
+   comprehension (shown + spoken, not tested); the learner PRODUCES each user turn via tap-to-build.
+   Correct turns set the `chained` axis — the fourth mastery axis graduation otherwise can't feel. ----- */
+function renderChain(lesson) {
+  const turns = (lesson.chain && lesson.chain.turns) || [];
+  const app = $("#app"); clearFooter(); hideTabbar(); app.innerHTML = "";
+  app.appendChild(el(`<div class="runner chain">
+    <div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button><div class="chain-title">${(lesson.chain || {}).title || lesson.title}</div></div>
+    <div class="chain-log" id="clog"></div>
+  </div>`));
+  $("#quit").addEventListener("click", () => { if (confirm("Leave the conversation? Your progress in it is lost.")) renderHome(); });
+  const log = $("#clog");
+  const bubble = (side, es, en) => { log.appendChild(el(`<div class="cbub ${side}"><div class="cbub-es">${es}</div><div class="cbub-en">${en}</div></div>`)); log.scrollTop = 1e6; };
+  const resolve = ref => (ALL_ITEMS || []).find(x => x.es === ref || x.id === ref);
+  let idx = 0;
+  function step() {
+    clearFooter();
+    if (idx >= turns.length) return finishChain(lesson);
+    const t = turns[idx];
+    if (t.npc) {
+      bubble("npc", t.npc.es, t.npc.en); speak(t.npc.es);
+      const nextIsUser = turns[idx + 1] && turns[idx + 1].user;
+      const f = footer(`<button class="btn" id="cnext">${nextIsUser ? "Your turn →" : "Continue →"}</button>`);
+      f.querySelector("#cnext").addEventListener("click", () => { idx++; step(); });
+    } else {
+      const item = resolve(t.user);
+      if (!item) { idx++; return step(); }
+      chainProduce(item, () => { bubble("user", item.es, item.en); recordAnswer(itemId(item), true, { mode: "chained" }); idx++; step(); });
+    }
+  }
+  step();
+}
+// tap-to-build a single user turn inside the chain; retry-on-miss (a boss line, not a graded question)
+function chainProduce(item, onDone) {
+  const strip = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "") || w;
+  const original = item.es.split(" ");
+  const bankWords = original.map(strip);
+  const display = i => (i === 0 ? bankWords[i].charAt(0).toLowerCase() + bankWords[i].slice(1) : bankWords[i]);
+  const f = footer(`<div class="chain-you">Your turn — say: "${item.en}"</div>
+    <div class="build-answer" id="cans"></div><div class="bank" id="cbank"></div>
+    <button class="btn" id="ccheck" disabled>Say it</button>`);
+  const ans = f.querySelector("#cans"), bank = f.querySelector("#cbank");
+  const chosen = [];
+  const refresh = () => { f.querySelector("#ccheck").disabled = chosen.length !== original.length; };
+  shuffle(original.map((_, i) => i)).forEach(i => {
+    const tile = el(`<button class="word" data-i="${i}">${display(i)}</button>`);
+    tile.addEventListener("click", () => {
+      if (tile.classList.contains("used")) return;
+      tile.classList.add("used"); chosen.push(i);
+      const slot = el(`<button class="word">${original[i]}</button>`);
+      slot.addEventListener("click", () => { tile.classList.remove("used"); slot.remove(); chosen.splice(chosen.indexOf(i), 1); refresh(); });
+      ans.appendChild(slot); refresh();
+    });
+    bank.appendChild(tile);
+  });
+  f.querySelector("#ccheck").addEventListener("click", () => {
+    const built = chosen.map(i => bankWords[i]).join(" ").toLowerCase();
+    if (built === bankWords.join(" ").toLowerCase()) { playSound("correct"); onDone(); }
+    else { playSound("wrong"); [...ans.children].forEach(s => s.remove()); bank.querySelectorAll(".used").forEach(t => t.classList.remove("used")); chosen.length = 0; refresh(); }
+  });
+}
+function finishChain(lesson) {
+  clearFooter();
+  const first = !lessonDone(lesson.id);
+  const now = new Date().toISOString();
+  state.lessons[lesson.id] = { stars: 3, at: now };
+  const userTurns = (lesson.chain.turns || []).filter(t => t.user).length;
+  state.sessions = state.sessions || [];
+  state.sessions.push({ at: now, lessonId: lesson.id, category: "Conversation", phrases: userTurns, correct: userTurns });
+  registerActivity();
+  if (first) { state.xp += 20; state.gems = (state.gems || 0) + 1; }
+  computeScores(); save(); renderTopbar(); playSound("win");
+  cloudSync().catch(() => {});
+  const app = $("#app"); app.innerHTML = "";
+  app.appendChild(el(`<div class="complete">
+    <h2>¡Conversación completa!</h2>
+    <div class="reward">${lesson.reward || "You held a whole conversation in Spanish — start to finish."}</div>
+    ${lesson.cultureNote ? `<div class="culture-note"><b>Local tip</b> ${lesson.cultureNote}</div>` : ""}
+    <button class="btn" id="home">Continue</button></div>`));
+  $("#home").addEventListener("click", renderHome);
 }
 /* §4c.4 scenario primer — a ~20s first-pass-only pre-lesson flow. Its job is as much emotional as
    cognitive: it connects the next 6 minutes of effort to the trip the user is excited about, by

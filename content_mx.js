@@ -504,6 +504,30 @@ const MEXICO_PACK = {
             { es: "¿Nos recomienda un buen lugar?", en: "Can you recommend a good spot?", tier: 3, tags: ["sights", "tour"], difficulty: 3, keywords: ["recomienda"] },
             { es: "¿Cuánto cuesta la entrada?", en: "How much is admission?", tier: 3, tags: ["sights", "tour", "money"], difficulty: 3, keywords: ["cuánto"] }
           ]
+        },
+        {
+          id: "mx-chain-dinner", topic: "Advanced · Boss", title: "Dinner at Doña Lupe's",
+          reward: "Greeting to check, you handled a whole dinner without switching to English. That's the trip, rehearsed.",
+          cultureNote: "'Buen provecho' isn't just a waiter's line — diners say it to each other and to strangers passing a table. Say it back.",
+          items: [],
+          chain: {
+            title: "Dinner at Doña Lupe's",
+            turns: [
+              { npc: { es: "¡Buenas noches! ¿Mesa para cuántos?", en: "Good evening! Table for how many?" } },
+              { user: "Una mesa para dos, por favor" },
+              { npc: { es: "Claro, por aquí. Aquí está el menú.", en: "Sure, right this way. Here's the menu." } },
+              { user: "¿Qué me recomienda?" },
+              { npc: { es: "Las tlayudas están buenísimas hoy.", en: "The tlayudas are excellent today." } },
+              { user: "Me gustaría los tacos" },
+              { npc: { es: "¿Y algo de tomar?", en: "And something to drink?" } },
+              { user: "Una cerveza, por favor" },
+              { npc: { es: "Enseguida. Buen provecho.", en: "Right away. Enjoy your meal." } },
+              { user: "La cuenta, por favor" },
+              { npc: { es: "Con gusto. Son doscientos pesos.", en: "My pleasure. That's two hundred pesos." } },
+              { user: "¿Aceptan tarjeta?" },
+              { npc: { es: "Claro que sí. ¡Que le vaya bien!", en: "Of course. Take care!" } }
+            ]
+          }
         }
       ]
     }
