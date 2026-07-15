@@ -69,7 +69,6 @@ function renderProfile() {
   });
   wrap.appendChild(reset);
 
-  // DEV-FONT-FLAG — hidden trigger: 5 rapid taps cycles the font candidate (remove after decision, spec §6)
   const ver = el(`<div class="app-version" id="app-version">Tripfluent</div>`);
   wrap.appendChild(ver);
   // build version — the SW cache name (sts-vNN) is the single source of truth, read at runtime
@@ -79,11 +78,6 @@ function renderProfile() {
       if (c) ver.textContent = "Tripfluent " + c.replace(/^sts-/, "");
     }).catch(() => {});
   }
-  let _vTaps = 0, _vLast = 0;
-  ver.addEventListener("click", () => {
-    const now = Date.now(); _vTaps = (now - _vLast < 600) ? _vTaps + 1 : 1; _vLast = now;
-    if (_vTaps >= 5) { _vTaps = 0; cycleDevFont(); }
-  });
 
   app.appendChild(wrap);
   $("#snd").addEventListener("click", e => {

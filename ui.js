@@ -10,21 +10,6 @@ function toast(msg) {
   const t = $("#toast"); t.textContent = msg; t.classList.add("show");
   clearTimeout(t._tmo); t._tmo = setTimeout(() => t.classList.remove("show"), 2600);
 }
-/* DEV-FONT-FLAG — temporary typography A/B (device-local; never synced). Remove after decision (spec §6).
-   Reads ?font=schibsted for desktop testing, else state.devFontFlag; sets <html data-font>. */
-function applyDevFont() {
-  const q = new URLSearchParams(location.search).get("font");
-  if (q) { state.devFontFlag = q; save(); }
-  const f = state.devFontFlag;
-  if (f && f !== "jakarta") document.documentElement.dataset.font = f;
-  else document.documentElement.removeAttribute("data-font");
-}
-function cycleDevFont() {
-  const order = ["jakarta", "inter", "schibsted"];
-  const next = order[(order.indexOf(state.devFontFlag || "jakarta") + 1) % order.length];
-  state.devFontFlag = next; save(); applyDevFont(); toast("Font: " + next);
-}
-
 // theme: "system" follows the OS (prefers-color-scheme); "light"/"dark" force it.
 function applyTheme() {
   const root = document.documentElement;
