@@ -25,13 +25,22 @@ Every session that produces a decision, spec change, or code change must end wit
 2. If a decision was made, append it to `docs/decisions.md` with rationale.
 3. If a spec changed, edit the spec file itself. Do not leave spec changes only in STATUS.md or chat. **"Spec change" includes a new reusable component or pattern discovered while building, or a spec line the build contradicted** — fold it back into the relevant spec doc (e.g. the design system §3) in the same commit, not just STATUS. Build sessions feed the docs too.
 
-Chat sessions cannot write to the repo: instead, output the exact markdown for Tom to commit, clearly labeled with the target file path. Keep it copy-paste ready.
+Chat sessions cannot write to the repo. Output changes as **targeted edits** (which file, which section, old text → new text), NOT a whole replacement file. Tom relays those edits to a Code session, which applies them against the *live* repo file and commits. Never paste a chat-produced whole file into the repo (see "Single-writer rule" below).
 
 If Tom ends a session without asking for the handoff update, prompt him: "Want me to write the handoff update before we stop?"
 
+## Single-writer rule for repo files
+
+Code is the only session that writes files into the repo. This exists because a real collision happened: a chat-edited copy of `design-system.md`, authored from a base that predated newer commits, was dropped in wholesale and silently reverted the committed §5 acceptance gate, §3.1 press physics, and §3.3 sheet docs. Three mechanics caused it, and this rule removes all three.
+
+- **Chat authors; Code integrates.** Chat produces rule text, prose, and design artifacts. Tom relays the substance; a Code session merges it into the current file and commits. Chat's own edited copy never re-enters the repo.
+- **Edits are diffs, not whole files.** A whole-file drop can't be git-merged, so anything committed after the author's copy is silently lost. Hand over "in §2.2, replace the Duration bullet with X" — not a 200-line file.
+- **Author from HEAD.** If chat must see a doc to change it, seed it with the *current* repo version first (Tom pastes it, or Code prints it). Editing a stale copy is what starts the divergence.
+- **Applies to every tracked file** — `design-system.md`, specs, `STATUS.md`, `decisions.md`, code. Design artifacts (`design/*.html`) go through a Code session so they get read + run through the §5 acceptance diff before landing.
+
 ## Division of labor
 
-- **Chat sessions**: product thinking, spec drafting, strategy, content design. Output ends as markdown destined for `docs/` or `STATUS.md`.
+- **Chat sessions**: product thinking, spec drafting, strategy, content design. Output is proposed edits (targeted diffs) and design artifacts, relayed to a Code session for integration — never a whole file dropped into the repo (see the single-writer rule).
 - **Claude Code sessions**: implementation. Build from the specs in `docs/`, not from memory of prior conversations. If a spec is ambiguous or missing, say so and ask, rather than inventing behavior.
 
 ## Rules for all sessions
