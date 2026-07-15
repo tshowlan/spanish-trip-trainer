@@ -31,12 +31,12 @@ function renderProgress() {
     wrap.appendChild(el(`<div class="prog-tier"><div class="pt-name">${currentTier()}</div><div class="pt-next">${nextTierCondition()}</div></div>`));
   }
 
-  // §7.2 trend charts (data-gated — nothing shows until a couple of days of history)
-  const labels = { readiness: "Readiness", momentum: "Momentum", retention: "Retention" };
-  const trends = Object.keys(labels).map(m => ({ m, html: (typeof trendBlock === "function") ? trendBlock(m) : "" })).filter(t => t.html);
+  // §7.2 trend charts — each a different shape (data-gated: nothing until history accrues)
+  const labels = { readiness: ["Readiness", "the climb"], momentum: ["Momentum", "the rhythm"], retention: ["Retention", "the sawtooth"] };
+  const trends = Object.keys(labels).map(m => ({ m, svg: (typeof trendChart === "function") ? trendChart(m) : "" })).filter(t => t.svg);
   if (trends.length) {
     wrap.appendChild(el(`<div class="q-head">Trends</div>`));
-    trends.forEach(t => wrap.appendChild(el(`<div class="prog-trend"><div class="pt-label">${labels[t.m]}</div>${t.html}</div>`)));
+    trends.forEach(t => wrap.appendChild(el(`<div class="prog-trend"><div class="pt-label">${labels[t.m][0]} <span class="pt-story">${labels[t.m][1]}</span></div>${t.svg}</div>`)));
   }
   const dv = (typeof divergenceLine === "function") ? divergenceLine() : null;
   if (dv) wrap.appendChild(dv);

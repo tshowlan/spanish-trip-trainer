@@ -696,7 +696,18 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .pt-name { font-family: var(--font-display); font-weight: 800; font-size: 22px; }
 .pt-next { font-size: 13px; color: var(--text-dim); margin-top: 4px; line-height: 1.45; }
 .prog-trend { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 10px; }
-.pt-label { font-size: 13px; font-weight: 800; margin-bottom: 2px; }
+.pt-label { font-size: 13px; font-weight: 800; margin-bottom: 6px; }
+.pt-story { font-weight: 600; font-style: italic; color: var(--text-dim); font-family: var(--font-display); }
+/* §7.2 chart marks — each dial a different shape */
+.trend-chart { width: 100%; height: auto; display: block; }
+.tc-line { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.tc-line.rd { stroke: var(--accent-2); }   /* readiness — the climb */
+.tc-line.mo { stroke: var(--secondary); }  /* momentum — the rhythm */
+.tc-line.re { stroke: var(--green); }       /* retention — the sawtooth */
+.tc-glide { stroke: var(--text-dim); stroke-width: 1.5; stroke-dasharray: 3 4; opacity: .7; }
+.tc-mark { fill: var(--accent-2); }
+.tc-bar { fill: var(--secondary); opacity: .28; }
+.tc-dot { fill: var(--green); }
 
 /* §3.2 home Practice chooser + divergence line */
 .practice-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 12px;
