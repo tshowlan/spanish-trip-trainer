@@ -4,6 +4,18 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 
 ---
 
+## 2026-07-14 — Boot hardening + small fixes (Claude Code)
+
+- **Stuck-splash fix (root cause: mid-deploy version skew).** Boot render is now wrapped so a
+  render/auth throw can never strand the splash — `runSplash()` always runs (`.finally`), with a
+  fallback to `renderOnboarding()`. Diagnosed via browser repro: current code renders fine across
+  fresh/returning/past-trip states; the crash was a stale cached `app.js` (`$("#gear")` null-deref)
+  loading against the new `index.html`. Resolved on Tom's device by re-fetching.
+- **Em dashes** removed from two rendered strings (trip-complete overlay kicker, migration-card body).
+- **Onboarding date input clipping:** `type="date"` got `-webkit-appearance:none` + indicator/value
+  styling so the native iOS control stops overflowing its box.
+- SW → v109.
+
 ## 2026-07-14 — Reconcile build to edited §3 tab map + §1b.5 (Claude Code)
 
 Tom edited the scores/learning-engine/xp specs; reconciled the build to match.

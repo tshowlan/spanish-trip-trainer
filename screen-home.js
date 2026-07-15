@@ -174,7 +174,7 @@ function maybeStatusMoment() {
     const r = state.pendingTripSummary; state.pendingTripSummary = null; save();
     const di = destInfo(r.destination), band = readinessBand(r.readinessAtDeparture);
     return statusOverlay({
-      kicker: `${di.flag} ${di.label} — trip complete`,
+      kicker: `${di.flag} ${di.label} · trip complete`,
       title: `${r.readinessAtDeparture}%`, titleClass: band.cls,
       body: `${band.label}. You put in ${r.sessionsCompleted} session${r.sessionsCompleted === 1 ? "" : "s"} and carried ${r.phrasesLearned} phrases into the trip. It's on your profile now, for good.`,
       cta: "Continue"
@@ -183,7 +183,7 @@ function maybeStatusMoment() {
   if (state.needsMigrationCard) { state.needsMigrationCard = false; save(); return statusOverlay({
     kicker: "A new way to track your trip",
     title: (typeof currentTier === "function" ? currentTier() : "Culturist"),
-    body: "Tripfluent now tracks three live scores and five permanent status tiers instead of points. Your history carries over — this is where it places you.",
+    body: "Tripfluent now tracks three live scores and five permanent status tiers instead of points. Your history carries over, and this is where it places you.",
     cta: "See my scores"
   }); }
   if (state.pendingTierUp) { const t = state.pendingTierUp; state.pendingTierUp = null; save(); return statusOverlay({

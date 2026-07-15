@@ -14,11 +14,17 @@ checkTripCompletion();// §5.1: archive a trip whose date has passed (also runs 
 applyTierUpdate();    // evaluate status tier on app open (§2.2)
 initTabbar();
 const _lf = $("#lang-flag"); if (_lf) _lf.addEventListener("click", renderTrips);   // §3.2 header language switcher
-handleAuthRedirect().then(handled => {
-  if (!handled) { if (!state.profile) renderOnboarding(); else renderHome(); }
-  runSplash();                       // play the intro once the first screen is rendered
-  cloudSync().catch(() => {});       // refresh the notification snapshot on app open (no-op unless opted in)
-});
+// Robust boot: a render/auth error must NEVER strand the user on the splash. runSplash() always
+// runs (even on throw), so worst case they still land on a usable screen. This defends against
+// mid-deploy version skew (new index.html + a stale cached script) bricking startup.
+function _bootRender(handled) {
+  try { if (!handled) { if (!state.profile) renderOnboarding(); else renderHome(); } }
+  catch (e) { console.error("Tripfluent: boot render failed", e); try { renderOnboarding(); } catch (_) {} }
+}
+handleAuthRedirect()
+  .then(handled => { _bootRender(handled); })
+  .catch(e => { console.error("Tripfluent: auth redirect failed", e); _bootRender(false); })
+  .finally(() => { runSplash(); cloudSync().catch(() => {}); });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
 
 // Flush progress to the cloud when the app is backgrounded or closed, so recent work is never
