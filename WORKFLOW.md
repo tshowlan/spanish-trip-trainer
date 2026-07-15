@@ -23,7 +23,7 @@ Every session that produces a decision, spec change, or code change must end wit
 
 1. Update `STATUS.md` with: date, what was decided or built, any deviations from spec, and what's next.
 2. If a decision was made, append it to `docs/decisions.md` with rationale.
-3. If a spec changed, edit the spec file itself. Do not leave spec changes only in STATUS.md or chat.
+3. If a spec changed, edit the spec file itself. Do not leave spec changes only in STATUS.md or chat. **"Spec change" includes a new reusable component or pattern discovered while building, or a spec line the build contradicted** — fold it back into the relevant spec doc (e.g. the design system §3) in the same commit, not just STATUS. Build sessions feed the docs too.
 
 Chat sessions cannot write to the repo: instead, output the exact markdown for Tom to commit, clearly labeled with the target file path. Keep it copy-paste ready.
 
