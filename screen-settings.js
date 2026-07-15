@@ -1,13 +1,13 @@
-/* ============================== PROFILE ============================== */
+/* ============================== PROFILE TAB (settings + account, §3.1) ============================== */
+function renderSettings() { return renderProfile(); }   // gear removed; settings folded into the Profile tab
 function renderProfile() {
+  showTabbar("profile");
   clearFooter();
-  hideTabbar();
   const app = $("#app"); app.innerHTML = "";
-  const wrap = el(`<div class="screen"></div>`);
-  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon("caret-left", 26)}</button><h2>Profile</h2></div>`));
+  const wrap = el(`<div class="screen tab-screen settings"></div>`);
+  wrap.appendChild(el(`<div class="screen-head"><h2>Profile</h2></div>`));
 
-  // status tier headline (permanent, §2.3). The full tier + nearest condition + trip archive
-  // live in Progress (§3.1); Profile just shows the current stamp.
+  // status tier stamp (§2.3) — full tier + nearest condition + archive live in Progress (§3.1)
   const tier = (typeof currentTier === "function") ? currentTier() : "Newcomer";
   wrap.appendChild(el(`<div class="profile-status">
     <div class="tier-name">${tier}</div>
@@ -16,45 +16,12 @@ function renderProfile() {
 
   // account
   if (state.account) {
-    const acct = el(`<div class="set-row"><div><div class="set-t">Account</div><div class="set-d">${state.account.email} · backed up</div></div>
+    const acct = el(`<div class="set-row"><div><div class="set-t">Account</div><div class="set-d">${state.account.email} · progress backed up</div></div>
       <button class="btn grey" id="logout" style="width:auto;padding:8px 14px;box-shadow:none">Log out</button></div>`);
     wrap.appendChild(acct);
     acct.querySelector("#logout").addEventListener("click", () => { if (confirm("Log out? Your progress stays on this device and in your account.")) { doLogout(); renderProfile(); } });
   } else {
-    const acct = el(`<div class="set-row" style="cursor:pointer;border-color:var(--accent-2)"><div><div class="set-t">Create an account</div><div class="set-d">Back up your progress & join trips</div></div>
-      <span class="chev">${icon("caret-right", 20)}</span></div>`);
-    acct.addEventListener("click", () => renderAuth("signup"));
-    wrap.appendChild(acct);
-  }
-
-  // trips
-  const nTrips = new Set([...Object.keys(state.trips || {}), state.active].filter(Boolean)).size;
-  const tripsRow = el(`<div class="set-row" style="cursor:pointer"><div><div class="set-t">Your trips</div><div class="set-d">${nTrips} destination${nTrips === 1 ? "" : "s"}</div></div>
-    <span class="chev">${icon("caret-right", 20)}</span></div>`);
-  tripsRow.addEventListener("click", renderTrips);
-  wrap.appendChild(tripsRow);
-
-  app.appendChild(wrap);
-  $("#back").addEventListener("click", renderHome);
-}
-
-/* ============================== SETTINGS ============================== */
-function renderSettings() {
-  clearFooter();
-  hideTabbar();
-  const app = $("#app");
-  app.innerHTML = "";
-  const wrap = el(`<div class="settings"></div>`);
-  wrap.appendChild(el(`<div class="set-head"><button class="close-btn" id="back">${icon('caret-left',26)}</button><h2>Settings</h2></div>`));
-
-  // account
-  if (state.account) {
-    const acct = el(`<div class="set-row"><div><div class="set-t">Account</div><div class="set-d">${state.account.email} · progress backed up</div></div>
-      <button class="btn grey" id="logout" style="width:auto;padding:8px 14px;box-shadow:none">Log out</button></div>`);
-    wrap.appendChild(acct);
-    acct.querySelector("#logout").addEventListener("click", () => { if (confirm("Log out? Your progress stays on this device and in your account.")) { doLogout(); renderSettings(); } });
-  } else {
-    const acct = el(`<div class="set-row" style="border-color:var(--accent-2)"><div><div class="set-t">Back up your progress</div><div class="set-d">Create an account so a reinstall never wipes your progress</div></div>
+    const acct = el(`<div class="set-row" style="cursor:pointer;border-color:var(--accent-2)"><div><div class="set-t">Back up your progress</div><div class="set-d">Create an account so a reinstall never wipes your progress</div></div>
       <span class="chev">${icon('caret-right',20)}</span></div>`);
     acct.addEventListener("click", () => renderAuth("signup"));
     wrap.appendChild(acct);
@@ -119,7 +86,6 @@ function renderSettings() {
   });
 
   app.appendChild(wrap);
-  $("#back").addEventListener("click", renderHome);
   $("#snd").addEventListener("click", e => {
     state.sound = !state.sound; save();
     e.currentTarget.classList.toggle("on", state.sound);

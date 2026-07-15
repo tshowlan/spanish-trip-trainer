@@ -1,12 +1,12 @@
 /* ---------- floating bottom tab bar ---------- */
-// §3.1 tab map: Home = state + action only; Learn = the content library; Phrases = reference;
-// Progress = reflection (trends, archive, tier). Quests dissolved — its jobs are category
-// coverage (Learn) + the tier system (Progress).
+// §3.1 tab map: Home = state + action; Learn = content library + Phrases (folded in as a view);
+// Progress = reflection (trends, archive, tier); Profile = settings/reminder/account. Quests and
+// Phrases both dissolved as tabs (Phrases lives on inside Learn).
 const TABS = [
   { id: "home",     label: "Home",     icon: "house",         render: () => renderHome() },
   { id: "learn",    label: "Learn",    icon: "book-open",     render: () => renderLearn() },
-  { id: "phrases",  label: "Phrases",  icon: "bookmark",      render: () => renderPhrasebook() },
-  { id: "progress", label: "Progress", icon: "chart-line-up", render: () => renderProgress() }
+  { id: "progress", label: "Progress", icon: "chart-line-up", render: () => renderProgress() },
+  { id: "profile",  label: "Profile",  icon: "user",          render: () => renderProfile() }
 ];
 function initTabbar() {
   const bar = document.getElementById("tabbar");

@@ -134,11 +134,13 @@ Follow the existing design token system. Aesthetic reference: Whoop/Oura — typ
 | Tab | Contains |
 |---|---|
 | **Home** | State + action only (3.2) |
-| **Learn** | The content library, relocated from home: scenario categories with per-category strength-aware coverage ("Restaurant · 82% strong · 3 fading"), Survival section, search |
+| **Learn** | Two views: (1) the **lesson library**, relocated from home — scenario categories with per-category strength-aware coverage ("Restaurant · 82% strong · 3 fading"), Survival section; (2) **Phrases** — the existing Phrases tab folds in here as a searchable phrase reference organized by scenario, each phrase showing its strength indicator. Library is the default view pre-trip. |
 | **Progress** | Trend charts (§7.2), divergence narrations, trip archive, tier + nearest-unmet-condition line |
 | **Profile** | Settings, practice reminder, account |
 
 **Quests dissolves as a tab.** "Quests" is Duolingo-coded naming and its jobs are already covered: scenario-completion goals = category coverage in Learn; achievements = the tier system. Two progression systems compete for meaning — there is one (tiers).
+
+**Phrases dissolves as a tab but not as a surface** — it folds into Learn (above). The phrasebook serves the *during-trip* user (quick lookup in a pharmacy) where the lesson library serves the pre-trip user; different mode, not redundant. **Future note:** when in-country mode is built, the phrase reference is the obvious surface that mode promotes to the front — potentially earning contextual tab status while a trip is live. Preserve it as a distinct view so that promotion stays cheap.
 
 ### 3.2 Home layout (top to bottom)
 

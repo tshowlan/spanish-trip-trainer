@@ -4,6 +4,27 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 
 ---
 
+## 2026-07-14 — Reconcile build to edited §3 tab map + §1b.5 (Claude Code)
+
+Tom edited the scores/learning-engine/xp specs; reconciled the build to match.
+
+- **Tabs (scores §3.1):** now **Home / Learn / Progress / Profile**. Phrases dissolved as a tab and
+  **folded into Learn** as a second view (Library / Phrases segmented toggle; `phrasebookBody(wrap)`
+  refactored out of `renderPhrasebook`). Quests already gone.
+- **Header (scores §3.2):** removed the profile icon + settings gear; flame + wordmark + language flag
+  only. Flag is now a tappable destination switcher (→ `renderTrips`). Dropped the `#gear`/`#profile`
+  boot listeners.
+- **Profile tab (scores §3.1):** `renderProfile` is now the tab and absorbs all Settings rows (theme,
+  sound, reminder, trips, group, edit profile, reset, version). `renderSettings` aliased to it. Added a
+  `user` icon to the PH map.
+- **Seeded items (learning §1b.5):** `seedPlacement` now seeds ladder state — `exposures: 4` (scaffold-
+  ready, never presentation-carded) with the S≈7 strength — was `exposures: 1`.
+- **Spec edit committed:** `docs/tripfluent-scores-mvp-spec.md` (Tom's tab-map resolution).
+
+Pending from the same spec edits (not yet built): learning §1b.5 audit additions (weight-vs-share report
++ depth checklist in `tools/audit-pack.mjs`) and content sizing to weights; xp §6 master notifications
+toggle (rides with the §6 notifications engine).
+
 ## 2026-07-14 — Scores/IA + Personalization + XP→Status (Claude Code)
 
 Large multi-track pass. Deployed through `sw.js` `sts-v107`. Specs: `docs/tripfluent-scores-mvp-spec.md`,

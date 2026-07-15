@@ -13,8 +13,7 @@ migrateXpToFloor();   // one-time XP→legacy-tier-floor grandfather (§4.1); no
 checkTripCompletion();// §5.1: archive a trip whose date has passed (also runs tier eval)
 applyTierUpdate();    // evaluate status tier on app open (§2.2)
 initTabbar();
-$("#gear").addEventListener("click", renderSettings);
-$("#profile").addEventListener("click", renderProfile);
+const _lf = $("#lang-flag"); if (_lf) _lf.addEventListener("click", renderTrips);   // §3.2 header language switcher
 handleAuthRedirect().then(handled => {
   if (!handled) { if (!state.profile) renderOnboarding(); else renderHome(); }
   runSplash();                       // play the intro once the first screen is rendered

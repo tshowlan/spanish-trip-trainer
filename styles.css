@@ -152,7 +152,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
   background: linear-gradient(180deg, var(--bg) 85%, transparent);
 }
 /* language flag sits just left of the gear (mirrors the flame→profile spacing) */
-.topbar .lang-flag-top { margin-left: auto; font-size: 18px; line-height: 1; }
+.topbar .lang-flag-top { margin-left: auto; font-size: 18px; line-height: 1; background: none; border: none; padding: 4px; cursor: pointer; }
 .stat { display: flex; align-items: center; gap: 5px; font-weight: 800; font-size: 16px; }
 .stat .ic { font-size: 18px; }
 .stat .ic.flame { display: inline-flex; }

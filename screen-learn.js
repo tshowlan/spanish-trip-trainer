@@ -18,12 +18,22 @@ function strengthRing(pct) {
   </svg>`;
 }
 
+let _learnView = "library";   // §3.1: Learn hosts two views — the lesson library and the phrase reference
 function renderLearn() {
   showTabbar("learn");
   clearFooter();
   const app = $("#app"); app.innerHTML = "";
   const wrap = el(`<div class="screen tab-screen"></div>`);
   wrap.appendChild(el(`<div class="screen-head"><h2>Learn</h2></div>`));
+
+  const seg = el(`<div class="pb-seg" style="margin-top:0">
+    <button class="pill ${_learnView === "library" ? "on" : ""}" data-v="library">Library</button>
+    <button class="pill ${_learnView === "phrases" ? "on" : ""}" data-v="phrases">Phrases</button>
+  </div>`);
+  seg.querySelectorAll(".pill").forEach(b => b.addEventListener("click", () => { _learnView = b.dataset.v; renderLearn(); }));
+  wrap.appendChild(seg);
+
+  if (_learnView === "phrases") { phrasebookBody(wrap); app.appendChild(wrap); return; }
 
   // §3.1 per-category strength-aware coverage ("Restaurant · 82% strong · 3 fading")
   const cats = (typeof coverageCats === "function") ? coverageCats() : {};

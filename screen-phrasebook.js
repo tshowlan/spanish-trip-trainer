@@ -17,13 +17,9 @@ function buildKwIndex() {
     (it.keywords || []).forEach(k => { if (!idx.has(k)) idx.set(k, []); idx.get(k).push(it); }))));
   return idx;
 }
-function renderPhrasebook() {
-  showTabbar("phrases");
-  clearFooter();
-  const app = $("#app"); app.innerHTML = "";
-  const wrap = el(`<div class="screen tab-screen"></div>`);
-  wrap.appendChild(el(`<div class="screen-head"><h2>Phrasebook</h2></div>`));
-
+// §3.1: the phrase reference is no longer a tab — it renders as a view inside Learn. This appends
+// the search + All/Saved toggle + list into a given container and wires everything.
+function phrasebookBody(wrap) {
   const search = el(`<input class="text-input" placeholder="Search phrases…" autocapitalize="off" value="${_pbFilter}">`);
   wrap.appendChild(search);
   const seg = el(`<div class="pb-seg">
@@ -33,7 +29,6 @@ function renderPhrasebook() {
   wrap.appendChild(seg);
   const list = el(`<div id="pb-list"></div>`);
   wrap.appendChild(list);
-  app.appendChild(wrap);
 
   const kwIndex = buildKwIndex();
   const threadCount = k => (kwIndex.get(k) || []).length;

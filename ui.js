@@ -66,7 +66,8 @@ const PH = {
   "flame": `<path d="M128 28 C 176 84 184 112 184 148 a56 56 0 0 1 -112 0 C 72 108 96 72 128 28 Z"/>`,
   "lock": `<rect x="52" y="112" width="152" height="108" rx="16"/><path d="M88 112 V84 a40 40 0 0 1 80 0 v28" fill="none" stroke="currentColor" stroke-width="16"/>`,
   "clock": `<circle cx="128" cy="128" r="88" fill="none" stroke="currentColor" stroke-width="16"/><line x1="128" y1="128" x2="128" y2="76" stroke="currentColor" stroke-width="16" stroke-linecap="round"/><line x1="128" y1="128" x2="164" y2="148" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>`,
-  "mobile": `<rect x="72" y="28" width="112" height="200" rx="18" fill="none" stroke="currentColor" stroke-width="16"/><line x1="112" y1="196" x2="144" y2="196" stroke="currentColor" stroke-width="14" stroke-linecap="round"/>`
+  "mobile": `<rect x="72" y="28" width="112" height="200" rx="18" fill="none" stroke="currentColor" stroke-width="16"/><line x1="112" y1="196" x2="144" y2="196" stroke="currentColor" stroke-width="14" stroke-linecap="round"/>`,
+  "user": "M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"
 };
 function icon(name, size = 22) {
   const v = PH[name];

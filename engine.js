@@ -68,7 +68,9 @@ function seedPlacement(level) {
     l.items.forEach(it => {
       const id = it.id; if (!id || state.learn[id]) return;                                  // never overwrite real history
       state.learn[id] = {
-        exposures: 1, streak: 1, lapses: 0, interval: 7, ease: 2.3,
+        // §1b.5: seed LADDER state, not just strength — exposures:4 = recognition-cleared, scaffold-ready
+        // (never presentation-carded), with reduced S≈7 stability so the claim survives its first review.
+        exposures: 4, streak: 1, lapses: 0, interval: 7, ease: 2.3,
         lastSeen: todayStr(), lastCorrect: todayStr(), due: _dateAdd(todayStr(), 7),
         axes: { production: 0, cold: 0, native: 0, chained: 0 }, seeded: true
       };
