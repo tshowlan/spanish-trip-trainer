@@ -448,6 +448,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 
 .btn {
   width: 100%; border: none; border-radius: var(--radius); padding: var(--space-4);
+  font-family: var(--font-display);       /* buttons don't inherit font: without this they fall back to UA Arial */
   font-size: 17px; font-weight: 800; cursor: pointer; box-shadow: var(--shadow);
   background: var(--primary); color: #fff;                 /* default = primary */
 }
