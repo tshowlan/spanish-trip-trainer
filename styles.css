@@ -490,6 +490,9 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 /* ---------- onboarding ---------- */
 .onb { padding: 24px 20px 40px; }
 .onb-card { border-radius: var(--radius); padding: 24px; margin-bottom: 22px; }
+/* §5.3 returning-user seam line — record vs faded state, framed as physics not failure */
+.onb-seam { background: color-mix(in srgb, var(--secondary) 10%, transparent); border: 1px solid color-mix(in srgb, var(--secondary) 35%, transparent);
+  border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; font-size: 14px; line-height: 1.5; color: var(--text); }
 .onb-emoji { font-size: 44px; }
 .onb-card h2 { font-size: 23px; margin: 8px 0 10px; }
 .onb-card p { color: var(--text-dim); line-height: 1.5; margin: 0 0 8px; }

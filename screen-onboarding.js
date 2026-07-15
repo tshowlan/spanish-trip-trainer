@@ -35,6 +35,13 @@ function priorAccountAnswers() {
   const p = profs.find(x => x && x.level);
   return p ? { level: p.level, allergies: p.allergies || [], needs: p.needs || [] } : null;
 }
+// §5.3 seam: the most recent completed trip + the current (decayed) mean phrase strength, for the
+// "record vs faded state" line a returning user sees. Language-scoped, DECK-independent.
+function _priorArchived() { const a = (state.archive || []); return a.length ? a[a.length - 1] : null; }
+function _currentLangStrength() {
+  const vals = Object.values(state.learn || {}).filter(s => s && s.exposures >= 1).map(s => itemStrength(s));
+  return vals.length ? Math.round(vals.reduce((x, y) => x + y, 0) / vals.length) : null;
+}
 
 function renderOnboarding() {
   const app = $("#app");
@@ -194,10 +201,15 @@ function renderOnboarding() {
       if (draft.needs.includes("chat")) outcomes.push("chat with locals and bartenders");
       outcomes.push("recover when a conversation goes sideways");
       const sessions = cram ? Math.max(6, days) : 24;
+      // §5.3 returning-user seam: acknowledge the record and the faded state together, once.
+      const prior = _priorArchived(), cur = _currentLangStrength();
+      if (returning && prior && cur != null && cur < prior.readinessAtDeparture - 5) {
+        wrap.appendChild(el(`<div class="onb-seam">${destInfo(prior.destination).label}: ${prior.readinessAtDeparture}%. Your Spanish has faded to about ${cur}% since, but with that foundation you'll rebuild far faster than you built it.</div>`));
+      }
       wrap.appendChild(el(`
         <div class="onb-card plan">
           <div class="onb-emoji">${d.flag}</div>
-          <h2>${days <= 0 ? "Your trip is here!" : cram ? `${days} days until ${d.label} — cram mode on` : `${weeks} weeks until ${d.label}`}</h2>
+          <h2>${days <= 0 ? "Your trip is here!" : cram ? `${days} days until ${d.label}, cram mode on` : `${weeks} weeks until ${d.label}`}</h2>
           <p>Here's your trip-ready path: <b>~${sessions} sessions</b>, about <b>6 minutes a day</b>. By departure you'll be able to:</p>
           <ul class="plan-list">${outcomes.map(o => `<li>${o}</li>`).join("")}</ul>
           <p class="onb-dim">All in ${d.dialect}. Change anything later in Settings.</p>
