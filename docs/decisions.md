@@ -33,3 +33,14 @@ Tom explicitly reopens. Do not relitigate.
 - **No emoji in rendered UI; use `icon()`/`soundIcon()`.** — Consistent monochrome icon system. Exceptions:
   country flags and the one-time onboarding trip-style picker.
 - **Peru is scaffolded-for but not to be built.** — Standing content direction.
+
+## 2026-07-15
+
+- 2026-07-15 — Design-first pipeline: no user-facing UI ships from a text description alone; artifact in design/ → build to match → side-by-side comparison is acceptance (design system §0/§5). Rationale: kills "Code invented something mediocre" failure mode; makes design quality checkable.
+- 2026-07-15 — design/ directory at repo root holds approved UI artifacts; docs/ holds specs. Artifacts override text descriptions of visuals. Canonical names, no version suffixes (git history is the versioning).
+- 2026-07-15 — Font: Plus Jakarta Sans wins the A/B; --font-display stays Jakarta, --font-text stays Inter. Remove the dev font flag. Rationale: decided after live comparison.
+- 2026-07-15 — Gold sound wave is a brand element: all audio glyphs render in --accent-2, never navy/gray (design system §2.1/§3.2). Rationale: integral identity element; candidate motif for future lighthouse logo evolution.
+- 2026-07-15 — Press physics: raised interactive elements press DOWN (translateY 2px + shadow collapse from 0 3px 0 to 0 1px 0), never scale. Rationale: the hard offset shadow reads as elements sitting proud; push-down is the honest interpretation and the app's signature feel.
+- 2026-07-15 — UI copy rules (design system §1.1): no em dashes in user-facing copy (colon/period/parentheses instead); buttons are verbs (1–2 words); labels are nouns; no exclamation points outside reward lines; approved-artifact copy ships verbatim. Internal docs exempt.
+- 2026-07-15 — All modal content is a bottom sheet; JS alert()/confirm(), centered popups banned (design system §3.3/§7). Correction sheet: scrim-tap does NOT dismiss — Continue is the only exit (tap-through is the pedagogy, learning spec §4c.2).
+- 2026-07-15 — styles.css:1–61 is the single token source of truth; design system references it, never duplicates values. Dark tokens must be added to BOTH dark blocks. --accent/--accent-2 are a pair (fill vs text-legible), not interchangeable.

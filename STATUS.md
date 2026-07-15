@@ -4,6 +4,15 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 
 ---
 
+## 2026-07-15 — Design system + design-first pipeline
+- NEW: `docs/tripfluent-design-system.md` — design constitution: feel principles, UI copy rules (§1.1), token rules referencing styles.css:1–61 as source of truth (§2), component standards (§3: buttons, AudioControl, sheets, tappable text/chunk pills, exercise chrome, cards), interaction rules (§4), design-first workflow (§5), remediation audit plan (§6), banned list (§7).
+- NEW: `design/` directory at repo root (sibling to docs/). Approved UI artifacts live here; Code matches them exactly. First artifact committed: `design/correction-sheet.html` (v2, real tokens, light+dark, live interactions).
+- Correction sheet designed and approved as the pipeline pilot (learning spec §4c.2 + design system §3.3). Implements: 300ms sheet slide + scrim, struck-through wrong answer, chunk pills with known-chunk green outline, gold audio button with push-down press, anchor line, single Continue exit (scrim-tap does not dismiss).
+- Font flag decided: Plus Jakarta Sans wins. Remove dev-font-flag machinery per tripfluent-dev-font-flag.md §6 (grep DEV-FONT-FLAG).
+- IN PROGRESS: remediation audit (design system §6) — inventory interactive elements, cluster into patterns, redesign per pattern. Queue after correction sheet: presentation card w/ chunk pills → AudioControl component sheet → hint popover → home hero tile + chips.
+- PENDING DECISION: design system §2.2 proposed token additions (--t-slow 300ms tier, weight rules, prefers-reduced-motion, semantic-color usage rule) — adopt/reject as a block.
+- NEXT: Code reads docs/tripfluent-design-system.md; build correction sheet to match design/correction-sheet.html (side-by-side comparison = acceptance); run §6 inventory; add design/ rule line to CLAUDE.md.
+
 ## 2026-07-14 — Chunk pipeline Phase 1 (learning §4b.5) (Claude Code)
 
 Long-phrase chunking, foundation phase. Spec edit (learning-engine §4b.5 + §11.2 #10) committed.

@@ -66,6 +66,7 @@ Momentum, Retention), deliberately anti-Duolingo.
 - **Verification without a browser:** the preview/SW pins stale scripts, so verify via `node --check` +
   served-file/sandbox extraction (brace-match a function, `new Function`, stub globals), not a live preview.
 - Commits end with: `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`.
+- `design/` contains approved UI artifacts (HTML). Any UI element with an artifact there must match it exactly (see docs/tripfluent-design-system.md §5); artifacts override text descriptions of visuals.
 
 ## Current priorities (see STATUS.md for detail)
 - **Done:** scores + lesson experience (spec §8), personalization/intake (demand-weighted Coverage,

@@ -1,0 +1,124 @@
+# Tripfluent — Design System & Constitution
+
+*Companion to `tripfluent-learning-engine-spec.md`, `tripfluent-scores-mvp-spec.md`, and the working rules. This document governs how every user-facing element looks, moves, and feels. Claude Code sessions: read this before building ANY user-facing UI. Where a feature spec says what an element does, this document says how it feels — both bind.*
+
+---
+
+## 0. The rule that governs the rest
+
+**No user-facing UI ships from a text description alone.** Every new user-facing element follows: design artifact (Claude Design / approved mockup) → Tom approves → build to match → side-by-side comparison against the artifact is the acceptance test. "Match this exactly, adapted to our tokens" is the build instruction — Code implements designs, it does not invent them.
+
+For elements too small to warrant an artifact (a label, a spacing fix), the component standards (§3) and motion rules (§4) below fully determine the outcome — there should be no design decisions left to make at build time.
+
+---
+
+## 1. Feel principles
+
+These play the same role as the scores spec's copy guardrail ("recommends, never threatens") — short rules any session can hold:
+
+1. **Calm, never busy.** One focal point per screen. If two elements compete for attention, one of them is wrong.
+2. **Motion explains, never decorates.** Every animation must communicate state change (arriving, leaving, updating). Zero ambient/idle animation.
+3. **Respond in 100ms.** Every interactive element gives visible feedback within 100ms of touch — before any work completes.
+4. **Nothing flashes, nothing jumps.** No layout shift after first paint; values update in place with transitions; loading states reserve their space.
+5. **Premium is quiet.** Restraint over spectacle: the count-up hero number and a color crossfade ARE the celebration (scores spec §3). No confetti, mascots, bouncing.
+6. **Data-forward, human-warm.** Numbers and type carry the interface (Whoop/Oura); warmth comes from the cream palette, the serif moments, and the narrative copy — never from cartoon elements.
+7. **Reference anchors:** Whoop (dials, data hierarchy, restraint), Oura (sheets, insight cards, calm motion), Airbnb (trip warmth, photography discipline). When designing a component, name which anchor it steals from.
+
+### 1.1 UI copy rules
+Apply to ALL user-facing text: labels, buttons, exercise prompts, anchors, primers, culture notes, hero copy. (Internal specs/docs are exempt.)
+- **No em dashes (—) in UI copy.** Use a colon, a period, or parentheses instead. Punctuation in the UI should be as quiet as the motion.
+- Copy tone rules from the other specs bind here too: the §8b.1 guardrail (recommends, never threatens), narrative specifics over generic placeholders (learning spec §9b.1), wit lives in reward lines and culture notes, not in labels.
+- Buttons are verbs, one or two words ("Continue," "Start the lesson"). Labels are nouns. No exclamation points outside reward lines.
+- Every design artifact's copy is reviewed against these rules before approval — copy in an approved artifact ships verbatim.
+
+---
+
+## 2. Tokens (single source of truth: `styles.css` lines 1–61)
+
+**The app's real token block in `styles.css` is the source of truth — this document references it, never duplicates values.** No hardcoded colors, fonts, radii, shadows, or durations anywhere else in the codebase; the remediation audit (§6) enforces this. Design artifacts (`design/`) copy the token block verbatim so approved mockups are transplantable.
+
+### 2.1 Rules of the existing system (bind everywhere)
+- **Dual dark blocks:** dark theme is deliberately defined twice (`prefers-color-scheme` for "system" + `:root[data-theme="dark"]` for the manual toggle). Any token added to one dark block MUST be added to the other, or the themes drift. Every design artifact must be checked in both themes.
+- **Gold pairing:** `--accent` (bright gold) is fills/highlights; `--accent-2` (deep gold) is text/numbers legible on cream. A pair, not interchangeable.
+- **Score bands reuse core tokens** (`--green` / `--secondary` / `--accent-2` / `--text-dim` per the scores spec) — palette changes ripple system-wide by design.
+- **Type split:** `--font-display` (Plus Jakarta Sans — headings, phrases, buttons, labels) vs `--font-text` (Inter — body, captions). Jakarta won the font flag; the flag machinery should be removed per `tripfluent-dev-font-flag.md` §6.
+- **The press interaction is a push-down, not a scale:** `--shadow: 0 3px 0` reads as elements sitting proud of the surface, so pressed states translate down 2px while the shadow collapses (`0 1px 0`). This is the app's signature button physics — use it on every raised interactive element; never scale-transforms.
+- **Gold sound wave:** audio controls render their speaker/wave glyph in `--accent-2` (gold). This is a brand element, integral to the identity (candidate motif for a future lighthouse-logo evolution) — audio glyphs are never navy, never gray.
+
+### 2.2 Proposed token ADDITIONS (adopt or reject deliberately; add to styles.css + both dark blocks if adopted)
+- **Duration scale:** the system has one `--transition` (160ms). Proposed: keep 160ms as the micro-interaction default, add `--t-slow: 300ms` for sheets/screen transitions (already used de facto by the correction sheet artifact). Nothing exceeds 300ms except the sanctioned 600ms hero count-up (scores spec §3).
+- **Weight rule (rule, not token):** Jakarta at 500/600 for display, Inter at 400/500 for text. 700+ banned — hierarchy from size and color, not heaviness.
+- **Reduced motion:** honor `prefers-reduced-motion` — transitions collapse to instant state changes.
+- Semantic-color usage rule: `--green`/`--red` appear as accents (borders, text, small fills) — never full-bleed panels.
+
+---
+
+## 3. Component standards
+
+Every recurring element is one of these components. Building a one-off variant of an existing component is a defect.
+
+### 3.1 Buttons
+- Primary (filled `--accent`, `--r-md`, 48px min height), Secondary (bordered, transparent), Tertiary (text-only). One primary per screen, max.
+- Press state: scale to 0.97 + slight darken, `--t-fast`. Disabled: 40% opacity, no interaction.
+- Min touch target 44×44px including padding — applies to EVERYTHING tappable (this is the fix-class for small icon buttons).
+
+### 3.2 Audio controls (the slow-voice fix)
+One `AudioControl` component, three variants — never ad-hoc speaker buttons. **All audio glyphs in `--accent-2` gold (§2.1) — the gold sound wave is a brand element.**
+- **Inline speaker** (in cards/exercises): 44px target, icon-only, plays at 1.0×. Playing state: icon swaps to animated gold bars (the one sanctioned "active" animation, tied to actual playback).
+- **Speed toggle**: a paired pill on the speaker — tap cycles 1.0× → 0.75× (shows "0.75×" label while slowed). Slow state persists for the current item only, resets on next item. Never a separate turtle button floating elsewhere.
+- **Chunk-pill audio** (§4b.5 cards): tapping the pill IS the audio trigger — no separate icon inside pills.
+- Raised speaker buttons use the push-down press physics (§2.1).
+
+### 3.3 Sheets & popovers (the correction-moment fix)
+- **All modal content is a bottom sheet.** No centered popups, no JS alerts, no toasts carrying important content. Enter: slide-up + scrim fade, `--t-slow`, `--ease-out`. Exit: reverse with `--ease-in`. Drag-to-dismiss where dismissal is allowed.
+- **Correction sheet spec** (learning spec §4c.2): scrim over the exercise (context stays visible behind), sheet with — correct answer large in `--font-ui` 20, chunk-segmented if the item has `chunks`, auto-played audio with replay control, `anchor` line in `--ink-secondary`, single Continue button. Not dismissible by scrim-tap (the tap-through is the pedagogy). Wrong answer shown small and struck-through above the correct one — acknowledgment without dwelling.
+- Non-blocking notices (e.g. dev-font toast) are small top pills, `--t-base` fade, auto-dismiss 1.5s.
+
+### 3.4 Tappable text & chunk pills (the phrase-tap fix)
+- Any tappable text region gets a visible affordance: chunk pills have `--surface-sunken` fill + `--r-sm`; keyword hints get a dotted underline in `--ink-muted`. **No invisible tap targets.**
+- Tap response: pill/underline press-darkens in 100ms; meaning appears as a small anchored popover (`--t-base`), not a sheet. One popover at a time; tapping elsewhere dismisses.
+- Known-chunk state (§4b.5): tinted with a translucent `--accent` wash + subtle check glyph. Unknown chunks: neutral. The contrast between them is the feature.
+
+### 3.5 Exercise chrome
+- Progress bar: hairline, top of screen, `--accent`, moves only forward (learning spec), animates `--t-base`.
+- Correct feedback: input border + subtle background wash to `--accent`, `--t-base`; one soft confirmation sound (optional, respects mute). No full-screen green flash.
+- Incorrect: wash to `--danger` at low opacity, then the correction sheet. Never shake animations.
+- Tiles (tap-to-build): `--r-md`, `--surface` with border; picked = lifted to raised elevation in the answer row; chunk tiles are visually wider pills vs word tiles (granularity should be *visible*).
+
+### 3.6 Cards, chips, dials
+- Presentation card, primer card, pattern-moment interstitial: `--r-xl`, generous padding (24px), serif for the scene/phrase moment per the font decision.
+- Home chips and standing line: per the §8b mockups — `--r-md`, fixed positions, counts update in place with a number-roll transition (`--t-base`).
+- Dials: per scores spec — number + trend, band color as the arc, no evaluative labels.
+
+---
+
+## 4. Interaction rules (bind everywhere)
+
+1. Every tap: visible state change ≤100ms.
+2. Every async action >300ms: skeleton or spinner *in the element's reserved space* — no layout shift, no full-screen blockers under 2s.
+3. Keyboard: never covers the input being typed into; exercise input areas scroll into view above it.
+4. Haptics (Capacitor later): light tick on correct, none on incorrect (the sheet is the feedback), medium on lesson complete. Never on ordinary taps.
+5. Audio autoplay only where specced (presentation cards, correction sheet, listening exercises) — never on screen entry elsewhere.
+6. Empty/zero states are designed states with copy, never blank regions (e.g. Mistakes chip at 0: disabled-quiet, §8b.3).
+
+---
+
+## 5. Workflow (add to working rules)
+
+1. New user-facing element → design in **Claude Design** (design.claude.ai) using this document as the brief (paste §1–§4 relevant parts). Iterate there until exciting — "acceptable" is not the bar.
+2. Quick single-component explorations may start as chat mockups; winners graduate to Claude Design for full fidelity.
+3. Approved artifact → committed to `design/` in the repo (HTML or image + a line naming its component in §3) → build instruction is "match exactly, adapt to tokens."
+4. Acceptance: side-by-side screenshot comparison, artifact vs build.
+5. Any new recurring pattern discovered during design gets ADDED to §3 in the same PR — the constitution grows; one-offs don't.
+
+## 6. Remediation audit (one-time, do first)
+
+1. Inventory every interactive element in the current app; score each against §3/§4 (pass / fix / redesign).
+2. Cluster failures into component patterns (expected: audio controls, popups→sheets, tappable text, small touch targets, progress/feedback states).
+3. Redesign each PATTERN once in Claude Design; one Code sweep replaces all instances per pattern.
+4. Migrate any hardcoded style values into tokens as encountered (same cleanup spirit as the font-flag task).
+5. Exit criteria: zero JS alerts/centered popups, zero <44px touch targets, zero off-token values, all audio through `AudioControl`, all modals through the sheet component.
+
+## 7. Explicitly banned
+
+JS `alert()`/`confirm()`; centered modal popups; confetti/particles/mascots; bold-weight UI text; ambient animation; shake-on-error; layout shift after paint; more than one primary button per screen; new easing curves; durations >300ms (except the hero count-up); invisible tap targets; full-bleed semantic-color panels.
