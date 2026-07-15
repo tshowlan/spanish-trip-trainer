@@ -986,24 +986,19 @@ function finishGrade(ok, item, extra, wrong) {
   // §3.3/§4c.2: a wrong answer opens the correction sheet (no footer, no shake — the sheet is the feedback)
   if (!ok) { showCorrection(item, extra, wrong); return; }
 
-  // ---- correct: lightweight footer ----
-  const notes = [];
-  if (item.note) notes.push(`<span class="note-chip"><b>tip</b> ${item.note}</span>`);
-  if (item.latam) notes.push(`<span class="note-chip"><b>L. America</b> ${item.latam}</span>`);
-  if (item.cat) notes.push(`<span class="note-chip"><b>Català</b> ${item.cat}</span>`);
-  const f = footer(`
-    <div class="fb-title ok">${CHECK_SVG}<span>${pick(PRAISE)}</span></div>
-    ${restored ? `<div class="restored-chip">${ARC_SVG}<span>Restored, you beat the forgetting curve</span></div>` : ""}
-    <div class="fb-sub"><b>${item.es}</b><span class="fb-en">${item.en}</span></div>
-    <div>${notes.join("")}</div>
-    <div style="height:10px"></div>
-    <button class="btn" id="cont">Continue</button>`);
-  f.classList.add("correct");
-  const sb = el(`<button class="speak-btn" style="margin:0 0 10px">${soundIcon(24)} ${item.es}</button>`);
-  sb.addEventListener("click", () => speak(item.es));
-  f.insertBefore(sb, f.querySelector("#cont"));
-  speak(item.es);
-  $("#cont").addEventListener("click", next);
+  // ---- correct: §3.5 wash + auto-advance (built to design/correct-feedback.html) — no tap ----
+  const qb = $("#qbody"); if (qb) qb.classList.add("qcorrect");       // green border + 8% wash on the input
+  const barEl = document.querySelector(".pbar > i");                 // progress advances
+  if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
+  const prow = document.querySelector(".progress-row");              // gold tick pops by the bar
+  if (prow && !prow.querySelector(".answer-tick")) {
+    const t = el(`<span class="answer-tick"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>`);
+    prow.appendChild(t); requestAnimationFrame(() => t.classList.add("show"));
+  }
+  if (restored) toast("Restored, you beat the forgetting curve");    // §8.4 preserved as a non-blocking pill (§3.3)
+  else if (extra) toast(extra);                                      // typo/accent nudge, non-blocking
+  // hold ~650ms, then swap: current item fades out (200ms), next renders + enters
+  setTimeout(() => { if (qb) qb.classList.add("leaving"); setTimeout(next, 200); }, 650);
 }
 // §3.3 correction sheet (built to design/correction-sheet.html): scrim over the dimmed exercise,
 // the phrase as chunk pills (known ones outlined green, tappable for meaning), gold replay audio,

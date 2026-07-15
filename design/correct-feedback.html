@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Correct-Answer Feedback (design artifact, §3.5)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — verbatim from styles.css:1–61 ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --green-dark: #25814a; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-xs: 12px; --text-sm: 14px; --text-base: 16px;
+    --space-2: 8px; --space-3: 12px; --space-4: 16px;
+    --radius-sm: 10px; --radius-md: 14px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #000000; --bg-card: #201e15; --bg-elevated: #2b2820;
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: #34301f;
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:340px; height:560px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+
+  /* ============ EXERCISE ============ */
+  .exercise { padding:22px 20px; }
+  .progress-row { display:flex; align-items:center; gap:8px; margin-bottom:22px; }
+  .progress { flex:1; height:4px; background:var(--bg-elevated); border-radius:2px; overflow:hidden; }
+  .progress > div { width:45%; height:100%; background:var(--accent); border-radius:2px; transition: width 300ms cubic-bezier(.2,.7,.3,1); }
+  .tick { width:16px; height:16px; color:var(--accent-2); opacity:0; transform:scale(0.6); transition: opacity var(--transition), transform var(--transition); }
+  .tick.show { opacity:1; transform:scale(1); }
+  .tick.hidden-mode { display:none; }
+
+  .ex-label { font-size:var(--text-xs); color:var(--text-dim); margin-bottom:var(--space-2); }
+  .ex-prompt { font-family:var(--font-display); font-size:var(--text-base); font-weight:500; color:var(--text); line-height:1.4; margin-bottom:var(--space-4); }
+
+  .ex-input {
+    border:1.5px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    padding:13px 14px; font-size:15px; color:var(--text); margin-bottom:var(--space-4); min-height:48px;
+    transition: border-color var(--transition), background-color var(--transition);
+  }
+  /* THE WASH (§3.5): border + low-opacity green background, 160ms in */
+  .ex-input.correct {
+    border-color:var(--green);
+    background-color: color-mix(in srgb, var(--green) 8%, var(--bg-card));
+  }
+
+  .check-btn {
+    width:100%; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
+    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px;
+    cursor:pointer; box-shadow:var(--shadow);
+    transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+  }
+  .check-btn:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .check-btn:disabled { opacity:0.4; }
+
+  /* Item swap: outgoing fades, incoming enters — momentum, no layout shift */
+  .card-zone { position:relative; }
+  .item { transition: opacity 200ms cubic-bezier(.2,.7,.3,1), transform 200ms cubic-bezier(.2,.7,.3,1); }
+  .item.leaving { opacity:0; transform:translateY(-6px); }
+  .item.entering { opacity:0; transform:translateY(10px); }
+
+  /* Artifact chrome */
+  .chrome { display:flex; gap:16px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button, .chrome label { border:none; background:none; font-family:var(--font-text); font-size:12px; color:var(--text-dim); text-decoration:underline; cursor:pointer; }
+  .chrome label { text-decoration:none; display:flex; align-items:center; gap:5px; }
+  .caption { text-align:center; font-size:12px; color:var(--text-dim); margin-top:12px; max-width:360px; line-height:1.55; }
+  .timing { font-family:var(--font-text); font-size:11px; color:var(--text-dim); text-align:center; margin-top:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="exercise">
+      <div class="progress-row">
+        <div class="progress"><div id="bar"></div></div>
+        <svg id="tick" class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+
+      <div class="card-zone">
+        <div class="item" id="item">
+          <div class="ex-label">Type it in Spanish</div>
+          <div class="ex-prompt" id="prompt">A beer, please</div>
+          <div class="ex-input" id="input">Una cerveza, por favor</div>
+          <button class="check-btn" id="check" onclick="answerCorrect()">Check</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="reset()">reset</button>
+    <button onclick="toggleTheme()">toggle dark theme</button>
+  </div>
+
+  <div class="timing">Timing: wash 160ms in → hold 650ms → item swap 200ms out / 200ms in. Total dwell ≈ 850ms, no tap required.</div>
+
+  <div class="caption">
+    Correct-answer feedback (§3.5) — APPROVED 2026-07-15. The wash: border + 8% green fill on the input, progress advances, gold tick appears by the bar, auto-advance. No full-screen flash, no tap. Haptic tick + optional confirm sound arrive with Capacitor (§4.4), not now.
+  </div>
+</div>
+
+<script>
+  const items = [
+    { prompt: "A beer, please", answer: "Una cerveza, por favor" },
+    { prompt: "The check, please", answer: "La cuenta, por favor" },
+    { prompt: "Is it very spicy?", answer: "¿Está muy picante?" },
+    { prompt: "A table for two, please", answer: "Una mesa para dos, por favor" }
+  ];
+  let idx = 0, pct = 45, busy = false;
+  const input = document.getElementById('input');
+  const promptEl = document.getElementById('prompt');
+  const bar = document.getElementById('bar');
+  const tick = document.getElementById('tick');
+  const item = document.getElementById('item');
+  const check = document.getElementById('check');
+
+  function answerCorrect(){
+    if (busy) return; busy = true;
+    check.disabled = true;
+
+    // 1. THE WASH — 160ms in
+    input.classList.add('correct');
+    // 2. Progress advances + tick appears (if variant on)
+    pct = Math.min(100, pct + 11);
+    bar.style.width = pct + '%';
+    tick.classList.add('show');
+
+    // 3. Hold 650ms — long enough to register, short enough to keep the rally
+    setTimeout(() => {
+      // 4. Item swap: out 200ms
+      item.classList.add('leaving');
+      tick.classList.remove('show');
+      setTimeout(() => {
+        idx = (idx + 1) % items.length;
+        promptEl.textContent = items[idx].prompt;
+        input.textContent = items[idx].answer;
+        input.classList.remove('correct');
+        item.classList.remove('leaving');
+        item.classList.add('entering');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          item.classList.remove('entering');
+          check.disabled = false; busy = false;
+        }));
+      }, 200);
+    }, 650);
+  }
+
+  function reset(){ idx = 0; pct = 45; bar.style.width = '45%'; promptEl.textContent = items[0].prompt; input.textContent = items[0].answer; input.classList.remove('correct'); check.disabled = false; busy = false; }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+</script>
+</body>
+</html>

@@ -4,6 +4,23 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 
 ---
 
+## 2026-07-15 — Correct-answer wash (§3.5), built to design/correct-feedback.html (Claude Code)
+
+Closes the last visible-feedback gap: correct answers no longer keep the old footer.
+
+- NEW artifact `design/correct-feedback.html` (APPROVED 2026-07-15) committed to `design/`.
+- **The wash (§3.5):** on a right answer `finishGrade` adds `.qcorrect` to `#qbody` → input gets green
+  border + `color-mix(green 8%, --bg-card)` fill (160ms). Progress bar advances; a gold `.answer-tick`
+  (checkmark polyline, `--accent-2`) pops in beside it. Hold 650ms, then the item fades out
+  (`.leaving`, opacity/translateY-6, 200ms) and `next()` swaps in — **auto-advance, no tap**. Any
+  "Restored"/extra note rides as a toast. Haptic/confirm-sound deferred to Capacitor (§4.4), per artifact.
+- Correction sheet (wrong path, committed 4275624) unchanged. Both feedback states now verified
+  side-by-side against their `design/` artifacts in the browser.
+- SW → v115.
+
+**Remaining §6:** off-token migration (~25 hex); artifact-gated components (AudioControl §3.2, hint
+popover §3.4, home hero tile §3.6) still blocked on chat design artifacts.
+
 ## 2026-07-15 — Design system build: press physics, sheets, correction-sheet pilot (Claude Code)
 
 Built from `docs/tripfluent-design-system.md` + `design/correction-sheet.html`.
