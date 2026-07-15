@@ -862,7 +862,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .corr-chunk.known { background: transparent; border-color: var(--green); }
 .corr-chunk.plain { cursor: default; }
 .corr-check { font-size: 11px; color: var(--green); margin-left: 4px; }
-.corr-audio { width: 40px; height: 40px; min-width: 40px; border-radius: 50%; border: 1px solid var(--border);
+.corr-audio { width: 40px; height: 40px; min-width: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--border);
   background: var(--bg-card); color: var(--accent-2); box-shadow: var(--shadow); display: inline-flex; align-items: center; justify-content: center;
   cursor: pointer; transition: transform var(--transition), box-shadow var(--transition); }
 .corr-audio:active { transform: translateY(2px); box-shadow: var(--shadow-press); }

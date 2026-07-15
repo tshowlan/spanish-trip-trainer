@@ -109,7 +109,14 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 1. New user-facing element → design in **Claude Design** (design.claude.ai) using this document as the brief (paste §1–§4 relevant parts). Iterate there until exciting — "acceptable" is not the bar.
 2. Quick single-component explorations may start as chat mockups; winners graduate to Claude Design for full fidelity.
 3. Approved artifact → committed to `design/` in the repo (HTML or image + a line naming its component in §3) → build instruction is "match exactly, adapt to tokens."
-4. Acceptance: side-by-side screenshot comparison, artifact vs build.
+4. **Acceptance is a mechanical computed-style diff, not an eyeball.** A screenshot glance let a green-not-gold, 14px-not-4px progress bar ship twice. Because `design/` artifacts embed the real tokens verbatim, a correctly-built element must *compute to the same value* as the artifact element. So:
+   1. **Map every element the artifact draws** to its app selector, up front. The artifact defines the *whole screen* — chrome you assumed was already correct (the progress bar) is in scope. Record the map in `tools/design-diff.js` (`DESIGN_PAIRS`); "assumed unchanged" is where the misses hide.
+   2. **Run the diff:** serve the repo, drive the app to the exact state the artifact depicts, then `designDiff('/design/<artifact>.html', DESIGN_PAIRS.<name>)` in the Browser-pane console. It loads the artifact in a theme-matched iframe and reports every property that differs per element pair. (Theme is handled: it bakes the app's effective theme into the artifact at parse time.)
+   3. **Triage each diff into one of three** — this is judgment, the tool only surfaces candidates:
+      - **Build miss** → the artifact wins; fix the app. (e.g. tick 18px→16px.)
+      - **Shared-component stand-in** → the artifact approximated a global component (`.ex-input` for the app-wide `.text-input`, `.continue` for `.btn`). Do NOT restyle the global from one feedback artifact; note it and move on.
+      - **Intentional divergence** → the app deviates on purpose (the §8.3 bar spring vs the artifact's plainer transition). Flag it back to chat to resolve; never silently overwrite either side.
+   4. **Then** the side-by-side screenshot, for what computed-style can't judge (rhythm, balance). Screenshot-only is never acceptance on its own.
 5. Any new recurring pattern discovered during design gets ADDED to §3 in the same PR — the constitution grows; one-offs don't.
 
 ## 6. Remediation audit (one-time, do first)

@@ -4,6 +4,33 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 
 ---
 
+## 2026-07-15 — Design-diff acceptance gate + diff-caught fixes (Claude Code)
+
+Built after two silent artifact mismatches (progress bar green-not-gold, 14px-not-4px) passed a
+screenshot-only check. Root cause: "side-by-side = acceptance" relied on the eye. Fix: make acceptance
+a **mechanical computed-style diff**.
+
+- NEW `tools/design-diff.js` (dev-only, not an app asset / not in sw.js): `designDiff(artifactUrl, pairs)`
+  loads a `design/` artifact in a theme-matched iframe and diffs computed styles of mapped element pairs
+  vs the live app. `DESIGN_PAIRS` records the artifact→app selector map for correctFeedback + correctionSheet.
+  Theme parity via srcdoc parse-time injection (a Chromium bug leaves descendant `var(--token)` used-values
+  stale when data-theme is toggled post-paint — pre-injection sidesteps it). Container-independent property
+  set; width/height treated as advisory.
+- Design system §5 rewritten: acceptance = map every element the artifact draws → run the diff → triage
+  each row into build-miss (fix) / shared-component stand-in (leave global) / intentional divergence (flag
+  to chat) → *then* screenshot. Screenshot-only is never acceptance.
+- **Diff-caught fixes (build misses):** correct-answer tick 18px→16px (`lesson.js`); `.corr-audio` stray
+  UA button padding → `padding:0` (`styles.css`).
+- **Flagged, NOT changed (need Tom/chat decision):**
+  - **Global `.btn` has no `font-family` → every button renders in Arial**, not the display font. Both
+    artifacts spec the button in `--font-display` 600 / 15px / radius-md; app `.btn` is 17px / 800 / --radius.
+    This is a systemic component-spec reconciliation, not a one-sheet fix — needs a decision before I touch
+    the global button.
+  - `.pbar > i` transition 0.5s spring (§8.3) vs artifact 0.3s — confirm the spring stays.
+  - `.text-input` geometry (58/18/600) vs artifacts' generic input (48/15/400) — app design-system input is
+    presumably intended; artifacts used a stand-in. Confirm, no action expected.
+- SW → v118 (lesson.js/styles.css touched).
+
 ## 2026-07-15 — Correct-answer wash (§3.5), built to design/correct-feedback.html (Claude Code)
 
 Closes the last visible-feedback gap: correct answers no longer keep the old footer.

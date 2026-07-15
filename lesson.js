@@ -992,7 +992,7 @@ function finishGrade(ok, item, extra, wrong) {
   if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
   const prow = document.querySelector(".progress-row");              // gold tick pops by the bar
   if (prow && !prow.querySelector(".answer-tick")) {
-    const t = el(`<span class="answer-tick"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>`);
+    const t = el(`<span class="answer-tick"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>`);
     prow.appendChild(t); requestAnimationFrame(() => t.classList.add("show"));
   }
   if (restored) toast("Restored, you beat the forgetting curve");    // §8.4 preserved as a non-blocking pill (§3.3)
