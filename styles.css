@@ -247,6 +247,19 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .present-ctx { font-size: 15px; color: var(--text); margin-top: 12px; line-height: 1.4; opacity: .9; }
 .present-ctx span { color: var(--text-dim); }
 .present-anchor { font-size: 13px; color: var(--accent-2); margin-top: 12px; background: var(--bg-elevated); border-radius: 10px; padding: 8px 12px; display: inline-block; }
+/* §4b.5 segmented chunk card — pieces of a long phrase; "known" pieces muted, new ones accented */
+.present-card.chunked { padding: 20px 16px; }
+.chunk-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.chunk-pill { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer;
+  border-radius: 12px; padding: 10px 14px; font-weight: 800; font-size: 18px; line-height: 1.2;
+  border: 2px solid; transition: transform .12s cubic-bezier(.34,1.56,.64,1); }
+.chunk-pill:active { transform: scale(.97); }
+.chunk-pill.fresh { color: var(--text); background: color-mix(in srgb, var(--accent) 15%, transparent); border-color: var(--accent-2); }
+.chunk-pill.known { color: var(--text-dim); background: var(--bg-elevated); border-color: var(--border); font-weight: 700; }
+.chunk-pill .cp-en { font-size: 12px; font-weight: 700; color: var(--text-dim); max-height: 0; overflow: hidden; opacity: 0; transition: max-height .2s, opacity .2s; }
+.chunk-pill.show-en .cp-en { max-height: 24px; opacity: 1; }
+.chunk-tip { font-size: 12px; color: var(--text-dim); margin-top: 14px; text-align: center; }
+.present-card.chunked .present-en { margin-top: 14px; font-size: 16px; text-align: center; }
 /* intro page — all the section's new phrases at once */
 /* full-bleed regional photo card (one phrase at a time, Oura-style) */
 .intro-photo {

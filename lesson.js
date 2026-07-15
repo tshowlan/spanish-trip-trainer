@@ -440,19 +440,43 @@ function renderIntro(q) {
 }
 
 /* ----- presentation card (single-phrase re-teach after a miss — teach, never grade) ----- */
+// §4b.5: a chunk is "known" if the learner already owns matching material — any seen phrase whose
+// text equals, contains, or is contained by the chunk. Marks the parts of a long phrase they have.
+function _chunkKnown(chunkEs) {
+  const c = norm(chunkEs); if (!c) return false;
+  return (ALL_ITEMS || []).some(it => {
+    if (exposuresOf(it) <= 0) return false;
+    const e = norm(it.es);
+    return e === c || e.includes(c) || c.includes(e);
+  });
+}
 function renderPresent(q) {
   const item = q.item;
   const body = $("#qbody");
   // no "New phrase" label on a re-teach — the "Second chance" chip already frames it
   if (!q.requeued) body.appendChild(el(`<div class="qtype">New phrase</div>`));
   const short = item.es.trim().split(/\s+/).length < 3;
-  const card = el(`<div class="present-card">
+  let card;
+  if (Array.isArray(item.chunks) && item.chunks.length) {
+    // §4b.5 segmented tappable card — the long phrase shown as pieces, the ones you already own marked
+    // "known" so a tier-3 sentence reads as one new chunk attached to things you have. Tap = meaning + audio.
+    const pills = item.chunks.map((c, i) =>
+      `<button class="chunk-pill ${_chunkKnown(c[0]) ? "known" : "fresh"}" data-i="${i}"><span class="cp-es">${c[0]}</span><span class="cp-en">${c[1]}</span></button>`).join("");
+    card = el(`<div class="present-card chunked">
+        <div class="chunk-row">${pills}</div>
+        <div class="present-en">${item.en}</div>
+        <div class="chunk-tip">Tap a piece to hear it. The muted ones you already know.</div>
+      </div>`);
+    card.querySelectorAll(".chunk-pill").forEach(p => p.addEventListener("click", () => { p.classList.toggle("show-en"); speak(item.chunks[+p.dataset.i][0]); }));
+  } else {
+    card = el(`<div class="present-card">
       <div class="present-es">${item.es}</div>
       <div class="present-en">${item.en}</div>
       ${short && item.contextEs ? `<div class="present-ctx">${item.contextEs}${item.contextEn ? ` <span>${item.contextEn}</span>` : ""}</div>` : ""}
       ${item.note ? `<div class="present-note">${item.note}</div>` : ""}
       ${item.anchor ? `<div class="present-anchor">${icon('bulb', 16)} ${item.anchor}</div>` : ""}
     </div>`);
+  }
   body.appendChild(card);
   const replay = el(`<button class="speak-btn">${soundIcon()} Hear it</button>`);
   replay.addEventListener("click", () => speak(item.es));

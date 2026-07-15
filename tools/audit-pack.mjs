@@ -159,6 +159,25 @@ let castErr = 0;
 items.forEach(({ it, lesson }) => { const nes = norm(it.es); CAST.forEach(c => { if (new RegExp(`\\b${c}\\b`).test(nes)) { err(`cast name "${c}" in graded es "${it.es}" (${lesson.id}) — §9b.6 rule 2`); castErr++; } }); });
 if (warnings === narrWarn0 && !castErr) ok("no generic placeholders; no cast names in graded answers");
 
+// ---- 10. chunk checks (§4b.5): verbatim + in-order + concatenation ----------
+H("10. Chunk pipeline (§4b.5 — tier-2/3 long phrases)");
+let chunkErr = 0, chunked = 0;
+items.forEach(({ it, lesson }) => {
+  if (!Array.isArray(it.chunks) || !it.chunks.length) return;
+  chunked++;
+  // each chunk's es must appear verbatim, in order, left-to-right in the phrase
+  let cursor = 0, orderOk = true;
+  it.chunks.forEach(c => { const frag = (c && c[0]) || ""; const at = it.es.indexOf(frag, cursor); if (at < 0) orderOk = false; else cursor = at + frag.length; });
+  if (!orderOk) { err(`${lesson.id}: chunks not found verbatim/in-order in "${it.es}"`); chunkErr++; }
+  // concatenation must equal the phrase (normalized — punctuation/spacing don't count)
+  const joined = norm(it.chunks.map(c => (c && c[0]) || "").join(" "));
+  if (joined !== norm(it.es)) { err(`${lesson.id}: chunks don't concatenate to "${it.es}" (got "${joined}")`); chunkErr++; }
+});
+// informational: long tier-2/3 items with no chunks (pipeline falls back to word-level; card is the point)
+const longNoChunks = items.filter(({ it }) => tierOf(it) >= 2 && tokens(it.es).length > 6 && !(it.chunks && it.chunks.length));
+if (longNoChunks.length) console.log(`  · ${longNoChunks.length} tier-2/3 phrase(s) over 6 tokens have no \x1b[1mchunks\x1b[0m yet (segmented card unavailable)`);
+if (!chunkErr) ok(chunked ? `${chunked} chunked item(s), all verbatim + concatenating` : "no chunked items yet");
+
 // ---- summary ---------------------------------------------------------------
 console.log(`\n\x1b[1mSummary:\x1b[0m ${hardErrors} hard error${hardErrors === 1 ? "" : "s"}, ${warnings} warning${warnings === 1 ? "" : "s"}.`);
 console.log(hardErrors ? "\x1b[31mFix hard errors before shipping.\x1b[0m\n" : "\x1b[32mNo hard errors.\x1b[0m\n");

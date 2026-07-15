@@ -4,6 +4,24 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 
 ---
 
+## 2026-07-14 — Chunk pipeline Phase 1 (learning §4b.5) (Claude Code)
+
+Long-phrase chunking, foundation phase. Spec edit (learning-engine §4b.5 + §11.2 #10) committed.
+
+- **Schema:** items may carry `chunks: [[es-fragment, en-meaning], …]` (tier-2/3 long phrases; optional).
+- **Segmented tappable present card:** chunked items render as pills; `_chunkKnown()` marks pieces the
+  learner already owns (muted) vs the new one (accented) — a long sentence reads as one new chunk on
+  known material. Tap a pill = meaning reveal + chunk audio (TTS). Non-chunked items unchanged.
+- **Audit (§11.2 #10):** chunks must appear verbatim in order and concatenate (normalized) to `es` —
+  hard error otherwise; long tier-2/3 phrases missing chunks flagged informationally.
+- **Seed content:** `chunks` authored on 4 long Spain phrases (s5-real/s5-fix). Both packs audit clean.
+- Verified in browser: card renders, known/new split correct, tap-toggle reveal works. SW → v111.
+
+**Phase 2 (next):** chunk-granularity exercises — chunk-match (rung 1), blank-a-chunk + chunk-tile build
+with descending granularity (rung 2→3), whole-phrase-MC demotion rule, `chooseType` routing.
+**Phase 3:** tappable hint layer across all exercises + hint-tap logging + cold-axis gating in review.
+**Content pass (parallel):** author `chunks` on remaining long phrases (~6 Spain, ~8 Mexico flagged).
+
 ## 2026-07-14 — Back up scoreHistory to the cloud (Claude Code)
 
 - **Bug:** `scoreHistory` (daily dial snapshots — the substrate for the pace tick, delta whispers,
