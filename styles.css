@@ -211,7 +211,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
 .close-btn { background: none; border: none; color: var(--text-dim); font-size: 26px; cursor: pointer; padding: 0 4px; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
 .pbar { flex: 1; height: 14px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }
-.pbar > i { display: block; height: 100%; background: var(--green); border-radius: 99px; transition: width .5s cubic-bezier(.34,1.42,.5,1); }   /* §8.3 spring overshoot */
+.pbar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width .5s cubic-bezier(.34,1.42,.5,1); }   /* §8.3 spring overshoot; gold = progress (green stays reserved for "correct"), per design/correct-feedback.html */
 /* §8.1/§8.6 passive daily-flame marker in the lesson header — a mirror, not a leash (muted, never red-alarm) */
 .lesson-flame { font-size: 14px; font-weight: 700; color: var(--text-dim); white-space: nowrap; }
 
