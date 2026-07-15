@@ -46,7 +46,7 @@ async function cloudSync(opts) {
     p_stats: Object.assign({ __score: scoreBundle }, state.topicStats || {}),
     // notif = the honest score snapshot the (server-side) notification engine cites; stored in the
     // existing progress JSON so no backend schema change is needed to start collecting it.
-    p_progress: { history: state.history, trips: state.trips, active: state.active, notif: notifSnapshot() }
+    p_progress: { history: state.history, scoreHistory: state.scoreHistory || [], trips: state.trips, active: state.active, notif: notifSnapshot() }
   }, opts);
 }
 function genCode() {
@@ -196,6 +196,13 @@ function _mergeSessions(a, b) {
   });
   return out.sort((p, q) => (p.at || "") < (q.at || "") ? -1 : 1);
 }
+// scoreHistory: one snapshot per day. Union by date (local wins on same-day — it's this device's
+// freshest view), sorted ascending, capped to the newest 120 days. Server fills back dates a device lost.
+function _mergeHistory(local, server) {
+  const by = new Map();
+  [...(server || []), ...(local || [])].forEach(r => { if (r && r.date) by.set(r.date, r); });
+  return [...by.values()].sort((a, b) => (a.date < b.date ? -1 : 1)).slice(-120);
+}
 function mergeTrip(local, server) {
   local = local || {}; server = server || {};
   return {
@@ -214,6 +221,7 @@ function applyPlayer(r) {
   if (state.cloud) { if (r.name) state.cloud.name = r.name; state.cloud.group = r.group_code || state.cloud.group; }
   if (r.progress) {
     if (r.progress.history) state.history = [...new Set([...(state.history || []), ...r.progress.history])];
+    if (r.progress.scoreHistory) state.scoreHistory = _mergeHistory(state.scoreHistory, r.progress.scoreHistory);   // trend log is now durable
     if (r.progress.trips) {                                  // per-destination restore
       snapshotActive();                                     // fold live top-level progress into its trip first
       Object.keys(r.progress.trips).forEach(k => {

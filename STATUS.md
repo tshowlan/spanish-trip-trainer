@@ -4,6 +4,17 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 
 ---
 
+## 2026-07-14 — Back up scoreHistory to the cloud (Claude Code)
+
+- **Bug:** `scoreHistory` (daily dial snapshots — the substrate for the pace tick, delta whispers,
+  and §7.2 charts) was local-only: not in the sync payload, not in DEST_FIELDS. So it didn't restore
+  on login/device change, and a reset silently blanked those three features until it re-accumulated
+  (one row/day). Core progress (lessons/learn/sessions) was never at risk — those are backed up.
+- **Fix:** `scoreHistory` added to the `p_progress` sync payload and merged back in `applyPlayer` via
+  `_mergeHistory` (union by date, local wins same-day, sorted, cap 120). Now durable across reloads/devices.
+  Does not retroactively recover history already lost locally; those features self-heal over ~1-2 days of use.
+- SW → v110.
+
 ## 2026-07-14 — Boot hardening + small fixes (Claude Code)
 
 - **Stuck-splash fix (root cause: mid-deploy version skew).** Boot render is now wrapped so a
