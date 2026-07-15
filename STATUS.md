@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-15 — AudioControl designed + approved
+- NEW: design/audio-control.html (§3.2 component sheet, live states). Three variants: inline speaker (44px, gold glyph → animated gold bars while playing), speaker + speed pill (1× → 0.75×, gold when slowed, resets per item), chunk pill (pill is the trigger, gold ring while playing). Disabled = 40% opacity, never hidden.
+- Build: replace every ad-hoc speaker/turtle button in the app with AudioControl instances per variant. This completes the original offender list (slow-voice button, phrase taps, correction popup).
+- Behavioral rules in the artifact's rules block are normative: restart-not-pause; speed pill scoped to listening exercises only; bars freeze under prefers-reduced-motion; autoplay only where specced.
+
 ---
 
 ## 2026-07-15 — Design-diff acceptance gate + diff-caught fixes (Claude Code)
