@@ -4,6 +4,29 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 
 ---
 
+## 2026-07-15 — Design system build: press physics, sheets, correction-sheet pilot (Claude Code)
+
+Built from `docs/tripfluent-design-system.md` + `design/correction-sheet.html`.
+
+- §2.2 tokens adopted: `--shadow-press` (both dark blocks), `--t-slow` 300ms, global
+  `prefers-reduced-motion`. Weight/semantic-color are rules (no token).
+- Press physics (§2.1): every `:active` is push-down now (translateY; raised elements collapse the
+  offset shadow to `--shadow-press`). No scale-transforms remain. NOTE: doc §3.1 still says "scale to
+  0.97" — stale, §2.1 governs; reconcile the doc line.
+- Dialogs (§3.3/§7): all five `confirm()` → `confirmSheet()` bottom sheet (safe action primary,
+  destructive as quiet ghost).
+- Correction sheet (§3.3 pilot, built to `design/correction-sheet.html`): `showCorrection()` replaces
+  the wrong-answer footer — scrim over dimmed exercise, struck-through attempt, gold "The phrase"
+  label, chunk pills (known = green outline + check, tappable → meaning popover), gold replay audio,
+  anchor line, single Continue (scrim-tap does NOT dismiss). Shake-on-error removed. Correct answers
+  keep the light footer for now.
+- Font flag removed (Jakarta won): all DEV-FONT-FLAG machinery + Schibsted/Source-Serif faces gone.
+- Verified in browser: confirm sheet + correction sheet render and match the artifact. SW → v114.
+
+**Remaining §6 remediation:** run the full interactive-element inventory; AudioControl component
+(unify speaker buttons + speed toggle); §3.4 tappable-text hint popovers (chunk pipeline Phase 3);
+correct-answer feedback → §3.5 wash (currently still a footer); off-token audit.
+
 ## 2026-07-15 — Design system + design-first pipeline
 - NEW: `docs/tripfluent-design-system.md` — design constitution: feel principles, UI copy rules (§1.1), token rules referencing styles.css:1–61 as source of truth (§2), component standards (§3: buttons, AudioControl, sheets, tappable text/chunk pills, exercise chrome, cards), interaction rules (§4), design-first workflow (§5), remediation audit plan (§6), banned list (§7).
 - NEW: `design/` directory at repo root (sibling to docs/). Approved UI artifacts live here; Code matches them exactly. First artifact committed: `design/correction-sheet.html` (v2, real tokens, light+dark, live interactions).

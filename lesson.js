@@ -963,10 +963,10 @@ function gradeTyped(raw, item) {
   // §4b.3: accept the canonical form OR any authored variant (same typo tolerance)
   let j = { ok: false };
   for (const t of [item.es].concat(item.variants || [])) { const r = judgeTyped(raw, t); if (r.ok) { j = r; break; } }
-  const extra = j.accent ? "Almost, watch the accent." : (j.typo ? "Close, mind the spelling." : null);
-  finishGrade(j.ok, item, extra);
+  const extra = j.accent ? "Almost: watch the accent." : (j.typo ? "Close: mind the spelling." : null);
+  finishGrade(j.ok, item, extra, raw);                 // pass the raw attempt for the struck-through line
 }
-function finishGrade(ok, item, extra) {
+function finishGrade(ok, item, extra, wrong) {
   run.answered = true;
   const q = run.qs[run.idx];
   const id = itemId(item);
@@ -981,32 +981,76 @@ function finishGrade(ok, item, extra) {
   if (ok && q && q.type === "fill_blank" && (q.blanks || 1) === 1) { const st = state.learn && state.learn[id]; if (st) st.fill1 = (st.fill1 || 0) + 1; }
   playSound(ok ? "correct" : "wrong");
   haptic(restored ? "restored" : ok ? "correct" : "wrong");
-  if (!ok) { const qb = $("#qbody"); if (qb) { qb.classList.add("shake-x"); setTimeout(() => qb.classList.remove("shake-x"), 380); } }   // §8.3 restrained iOS-passcode shake
+  if (!ok && q && q.item) requeueMiss(item, q.type);
+
+  // §3.3/§4c.2: a wrong answer opens the correction sheet (no footer, no shake — the sheet is the feedback)
+  if (!ok) { showCorrection(item, extra, wrong); return; }
+
+  // ---- correct: lightweight footer ----
   const notes = [];
-  if (extra) notes.push(`<span class="note-chip"><b>note</b> ${extra}</span>`);
   if (item.note) notes.push(`<span class="note-chip"><b>tip</b> ${item.note}</span>`);
-  if (item.anchor) notes.push(`<span class="note-chip"><b>${icon('bulb', 13)}</b> ${item.anchor}</span>`);   // §4c.2 memory hook at the moment of error
   if (item.latam) notes.push(`<span class="note-chip"><b>L. America</b> ${item.latam}</span>`);
   if (item.cat) notes.push(`<span class="note-chip"><b>Català</b> ${item.cat}</span>`);
   const f = footer(`
-    <div class="fb-title ${ok ? "ok" : "no"}">${ok ? CHECK_SVG : ""}<span>${ok ? pick(PRAISE) : pick(NEAR_MISS)}</span></div>
-    ${restored ? `<div class="restored-chip">${ARC_SVG}<span>Restored — you beat the forgetting curve</span></div>` : ""}
+    <div class="fb-title ok">${CHECK_SVG}<span>${pick(PRAISE)}</span></div>
+    ${restored ? `<div class="restored-chip">${ARC_SVG}<span>Restored, you beat the forgetting curve</span></div>` : ""}
     <div class="fb-sub"><b>${item.es}</b><span class="fb-en">${item.en}</span></div>
     <div>${notes.join("")}</div>
     <div style="height:10px"></div>
-    <button class="btn ${ok ? "" : "accent"}" id="cont">Continue</button>`);
-  f.classList.add(ok ? "correct" : "wrong");
+    <button class="btn" id="cont">Continue</button>`);
+  f.classList.add("correct");
   const sb = el(`<button class="speak-btn" style="margin:0 0 10px">${soundIcon(24)} ${item.es}</button>`);
   sb.addEventListener("click", () => speak(item.es));
   f.insertBefore(sb, f.querySelector("#cont"));
-  speak(item.es);                                     // §4c.2: always replay the correct audio — the miss is the moment it matters
-  if (!ok && q && q.item) requeueMiss(item, q.type);
-  const cont = $("#cont");
-  if (!ok) {                                          // §4c.2 forced processing beat: a miss can't be blown past — attend to the correction
-    cont.disabled = true;
-    setTimeout(() => { if (cont) cont.disabled = false; }, 1400);
-  }
-  cont.addEventListener("click", () => { if (!cont.disabled) next(); });
+  speak(item.es);
+  $("#cont").addEventListener("click", next);
+}
+// §3.3 correction sheet (built to design/correction-sheet.html): scrim over the dimmed exercise,
+// the phrase as chunk pills (known ones outlined green, tappable for meaning), gold replay audio,
+// the anchor line, one Continue exit. Not dismissible by scrim-tap — the tap-through is the pedagogy.
+function showCorrection(item, extra, wrong) {
+  document.querySelectorAll(".corr-wrap").forEach(n => n.remove());
+  const chunked = Array.isArray(item.chunks) && item.chunks.length;
+  const pills = chunked
+    ? item.chunks.map((c, i) => `<span class="corr-chunk ${_chunkKnown(c[0]) ? "known" : ""}" data-i="${i}">${c[0]}${_chunkKnown(c[0]) ? '<span class="corr-check">✓</span>' : ""}</span>`).join("")
+    : `<span class="corr-chunk plain">${item.es}</span>`;
+  const anchor = item.anchor ? `<div class="corr-anchor"><span class="lead">Think:</span> ${item.anchor}</div>`
+    : (extra ? `<div class="corr-anchor">${extra}</div>` : "");
+  const wrap = el(`<div class="corr-wrap">
+    <div class="corr-scrim"></div>
+    <div class="corr-sheet" role="dialog" aria-label="Correction">
+      <div class="corr-grab"></div>
+      ${wrong ? `<div class="corr-wrong">${wrong}</div>` : ""}
+      <div class="corr-label">The phrase</div>
+      <div class="corr-chunks">${pills}<button class="corr-audio" aria-label="Replay audio">${icon('speaker', 18)}</button></div>
+      <div class="corr-trans">${item.en}</div>
+      ${anchor}
+      <button class="btn corr-continue" id="corr-cont">Continue</button>
+      <div class="corr-pop" id="corr-pop"></div>
+    </div>
+  </div>`);
+  document.body.appendChild(wrap);
+  requestAnimationFrame(() => wrap.classList.add("show"));
+  wrap.querySelector(".corr-audio").addEventListener("click", () => speak(item.es));
+  speak(item.es);                                      // §3.3 auto-play with a replay control
+  // chunk meaning popover (§3.4 — a popover, not a sheet); tapping a pill also speaks that chunk
+  const pop = wrap.querySelector("#corr-pop"); let hideT;
+  wrap.querySelectorAll(".corr-chunk[data-i]").forEach(ch => ch.addEventListener("click", e => {
+    e.stopPropagation(); clearTimeout(hideT);
+    pop.textContent = item.chunks[+ch.dataset.i][1]; pop.classList.add("show");
+    const s = ch.closest(".corr-sheet").getBoundingClientRect(), r = ch.getBoundingClientRect();
+    pop.style.left = Math.max(8, r.left - s.left) + "px"; pop.style.top = (r.top - s.top - 38) + "px";
+    speak(item.chunks[+ch.dataset.i][0]);
+    hideT = setTimeout(() => pop.classList.remove("show"), 1800);
+  }));
+  wrap.addEventListener("click", () => pop.classList.remove("show"));
+  // Continue is the only exit; a forced beat first so the correction can't be blown past (§4c.2)
+  const cont = wrap.querySelector("#corr-cont"); cont.disabled = true;
+  setTimeout(() => { cont.disabled = false; }, 1200);
+  cont.addEventListener("click", () => {
+    if (cont.disabled) return;
+    wrap.classList.remove("show"); setTimeout(() => wrap.remove(), 300); next();
+  });
 }
 // missed item → re-serve later in the session, one ladder rung easier (capped to avoid spirals)
 function requeueMiss(item, failedType) {
