@@ -42,7 +42,7 @@ Apply to ALL user-facing text: labels, buttons, exercise prompts, anchors, prime
 - **Gold pairing:** `--accent` (bright gold) is fills/highlights; `--accent-2` (deep gold) is text/numbers legible on cream. A pair, not interchangeable.
 - **Score bands reuse core tokens** (`--green` / `--secondary` / `--accent-2` / `--text-dim` per the scores spec) — palette changes ripple system-wide by design.
 - **Type split:** `--font-display` (Plus Jakarta Sans — headings, phrases, buttons, labels) vs `--font-text` (Inter — body, captions). Jakarta won the font flag; the flag machinery should be removed per `tripfluent-dev-font-flag.md` §6.
-- **The press interaction is a push-down, not a scale:** `--shadow: 0 3px 0` reads as elements sitting proud of the surface, so pressed states translate down 2px while the shadow collapses (`0 1px 0`). This is the app's signature button physics — use it on every raised interactive element; never scale-transforms.
+- **The press interaction is a push-down, not a scale:** `--shadow: 0 3px 0` reads as elements sitting proud of the surface, so pressed states translate down 2px while the shadow collapses to `--shadow-press` (`0 1px 0`, added §2.2). This is the app's signature button physics — use it on every raised interactive element; never scale-transforms.
 - **Gold sound wave:** audio controls render their speaker/wave glyph in `--accent-2` (gold). This is a brand element, integral to the identity (candidate motif for a future lighthouse-logo evolution) — audio glyphs are never navy, never gray.
 
 ### 2.2 Proposed token ADDITIONS (adopt or reject deliberately; add to styles.css + both dark blocks if adopted)
@@ -59,7 +59,7 @@ Every recurring element is one of these components. Building a one-off variant o
 
 ### 3.1 Buttons
 - Primary (filled `--accent`, `--r-md`, 48px min height), Secondary (bordered, transparent), Tertiary (text-only). One primary per screen, max.
-- Press state: scale to 0.97 + slight darken, `--t-fast`. Disabled: 40% opacity, no interaction.
+- Press state: **push-down** — `translateY(2px)` + shadow collapse to `--shadow-press` (§2.1 governs); never scale. Disabled: 40% opacity, no interaction.
 - Min touch target 44×44px including padding — applies to EVERYTHING tappable (this is the fix-class for small icon buttons).
 
 ### 3.2 Audio controls (the slow-voice fix)
@@ -71,8 +71,9 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 
 ### 3.3 Sheets & popovers (the correction-moment fix)
 - **All modal content is a bottom sheet.** No centered popups, no JS alerts, no toasts carrying important content. Enter: slide-up + scrim fade, `--t-slow`, `--ease-out`. Exit: reverse with `--ease-in`. Drag-to-dismiss where dismissal is allowed.
-- **Correction sheet spec** (learning spec §4c.2): scrim over the exercise (context stays visible behind), sheet with — correct answer large in `--font-ui` 20, chunk-segmented if the item has `chunks`, auto-played audio with replay control, `anchor` line in `--ink-secondary`, single Continue button. Not dismissible by scrim-tap (the tap-through is the pedagogy). Wrong answer shown small and struck-through above the correct one — acknowledgment without dwelling.
-- Non-blocking notices (e.g. dev-font toast) are small top pills, `--t-base` fade, auto-dismiss 1.5s.
+- **Correction sheet spec** (learning spec §4c.2): scrim over the exercise (context stays visible behind), sheet with — correct answer large in `--font-ui` 20, chunk-segmented if the item has `chunks`, auto-played audio with replay control, `anchor` line in `--ink-secondary`, single Continue button. Not dismissible by scrim-tap (the tap-through is the pedagogy). Wrong answer shown small and struck-through above the correct one — acknowledgment without dwelling. **Non-chunked items** (no `chunks` field): the phrase renders as a single plain (non-tappable) pill in the same slot — same layout, no popover. **Built:** `showCorrection()` in `lesson.js`, matches `design/correction-sheet.html`. A short forced beat (~1.2s) disables Continue so the correction can't be blown past.
+- **Confirm sheet** (`confirmSheet()` in `ui.js` — replaces all `alert()`/`confirm()`): grabber, title, one-line body, the **safe/stay action as the filled primary**, the destructive choice as a quiet ghost below it (`--red` ghost when `danger:true`). Scrim-tap or the safe button cancels (these ARE dismissible, unlike the correction sheet). Copy per §1.1 (verb buttons).
+- Non-blocking notices (e.g. a transient status) are small top pills, `--t-base` fade, auto-dismiss 1.5s.
 
 ### 3.4 Tappable text & chunk pills (the phrase-tap fix)
 - Any tappable text region gets a visible affordance: chunk pills have `--surface-sunken` fill + `--r-sm`; keyword hints get a dotted underline in `--ink-muted`. **No invisible tap targets.**
