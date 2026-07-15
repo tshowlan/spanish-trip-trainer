@@ -19,7 +19,7 @@ function renderProfile() {
     const acct = el(`<div class="set-row"><div><div class="set-t">Account</div><div class="set-d">${state.account.email} · progress backed up</div></div>
       <button class="btn grey" id="logout" style="width:auto;padding:8px 14px;box-shadow:none">Log out</button></div>`);
     wrap.appendChild(acct);
-    acct.querySelector("#logout").addEventListener("click", () => { if (confirm("Log out? Your progress stays on this device and in your account.")) { doLogout(); renderProfile(); } });
+    acct.querySelector("#logout").addEventListener("click", () => confirmSheet({ title: "Log out?", body: "Your progress stays on this device and in your account.", confirmLabel: "Log out", cancelLabel: "Stay signed in", onConfirm: () => { doLogout(); renderProfile(); } }));
   } else {
     const acct = el(`<div class="set-row" style="cursor:pointer;border-color:var(--accent-2)"><div><div class="set-t">Back up your progress</div><div class="set-d">Create an account so a reinstall never wipes your progress</div></div>
       <span class="chev">${icon('caret-right',20)}</span></div>`);
@@ -62,11 +62,11 @@ function renderProfile() {
   wrap.appendChild(editP);
 
   const reset = el(`<button class="btn btn--danger" style="margin-top:12px">Reset all progress</button>`);
-  reset.addEventListener("click", () => {
-    if (confirm("Erase all progress and profile? This can't be undone.")) {
-      state = Object.assign({}, DEFAULT_STATE); save(); rebuildDeck(); renderOnboarding();
-    }
-  });
+  reset.addEventListener("click", () => confirmSheet({
+    title: "Erase everything?", body: "All progress and your profile will be deleted. This can't be undone.",
+    confirmLabel: "Erase everything", cancelLabel: "Cancel", danger: true,
+    onConfirm: () => { state = Object.assign({}, DEFAULT_STATE); save(); rebuildDeck(); renderOnboarding(); }
+  }));
   wrap.appendChild(reset);
 
   const ver = el(`<div class="app-version" id="app-version">Tripfluent</div>`);

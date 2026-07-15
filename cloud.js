@@ -119,7 +119,7 @@ function renderGroupView(wrap, rerender = renderGroup) {
   copySync.addEventListener("click", () => { navigator.clipboard && navigator.clipboard.writeText(sync); toast("Sync code copied"); });
   refresh.addEventListener("click", () => loadMembers(list, code));
   leave.addEventListener("click", () => {
-    if (confirm("Leave this group?")) { state.cloud.group = null; save(); cloudSync().catch(() => {}); rerender(); }
+    confirmSheet({ title: "Leave this group?", body: "You can rejoin anytime with the code.", confirmLabel: "Leave group", cancelLabel: "Stay", onConfirm: () => { state.cloud.group = null; save(); cloudSync().catch(() => {}); rerender(); } });
   });
   restoreBtn.addEventListener("click", () => doRestore(restore.value.trim()));
   loadMembers(list, code);

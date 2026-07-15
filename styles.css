@@ -836,6 +836,10 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .sheet-wrap.show .sheet { transform: none; }
 .sheet-grab { width: 40px; height: 5px; border-radius: 99px; background: var(--border); margin: 2px auto 14px; }
 .sheet-title { font-family: var(--font-display); font-weight: 800; font-size: 20px; margin-bottom: 12px; }
+/* §3.3 confirm sheet body + quiet destructive ghost button */
+.confirm-body { font-size: 15px; color: var(--text-dim); line-height: 1.5; margin: -4px 0 16px; }
+.confirm-ghost { width: 100%; background: none; border: none; box-shadow: none; color: var(--text-dim); font-weight: 800; font-size: 15px; padding: 13px; margin-top: 4px; cursor: pointer; }
+.confirm-ghost.danger { color: var(--red); }
 .sheet-sub { font-size: 13px; font-weight: 700; color: var(--secondary); text-transform: capitalize; margin: -8px 0 12px; }
 .drivers { display: flex; flex-direction: column; gap: 8px; }
 .driver { background: var(--bg-elevated); border-radius: 10px; padding: 12px 14px; font-weight: 700; font-size: 15px; }

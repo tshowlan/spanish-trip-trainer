@@ -10,6 +10,26 @@ function toast(msg) {
   const t = $("#toast"); t.textContent = msg; t.classList.add("show");
   clearTimeout(t._tmo); t._tmo = setTimeout(() => t.classList.remove("show"), 2600);
 }
+// §3.3 bottom-sheet confirm — replaces the banned confirm(). Primary button is the safe/stay
+// action; the destructive choice is the quiet ghost below it. Scrim-tap or the safe button cancels.
+function confirmSheet({ title, body, confirmLabel, cancelLabel, danger, onConfirm }) {
+  document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
+  const wrap = el(`<div class="sheet-wrap">
+    <div class="sheet-backdrop"></div>
+    <div class="sheet">
+      <div class="sheet-grab"></div>
+      <div class="sheet-title">${title}</div>
+      ${body ? `<div class="confirm-body">${body}</div>` : ""}
+      <button class="btn" id="cs-cancel">${cancelLabel || "Cancel"}</button>
+      <button class="confirm-ghost ${danger ? "danger" : ""}" id="cs-ok">${confirmLabel || "Confirm"}</button>
+    </div></div>`);
+  const close = () => { wrap.classList.remove("show"); setTimeout(() => wrap.remove(), 260); };
+  document.body.appendChild(wrap);
+  requestAnimationFrame(() => wrap.classList.add("show"));
+  wrap.querySelector(".sheet-backdrop").addEventListener("click", close);
+  wrap.querySelector("#cs-cancel").addEventListener("click", close);
+  wrap.querySelector("#cs-ok").addEventListener("click", () => { close(); onConfirm && onConfirm(); });
+}
 // theme: "system" follows the OS (prefers-color-scheme); "light"/"dark" force it.
 function applyTheme() {
   const root = document.documentElement;

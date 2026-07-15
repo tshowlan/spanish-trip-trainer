@@ -132,7 +132,7 @@ function renderChain(lesson) {
     <div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button><div class="chain-title">${(lesson.chain || {}).title || lesson.title}</div></div>
     <div class="chain-log" id="clog"></div>
   </div>`));
-  $("#quit").addEventListener("click", () => { if (confirm("Leave the conversation? Your progress in it is lost.")) renderHome(); });
+  $("#quit").addEventListener("click", () => confirmSheet({ title: "Leave the conversation?", body: "Your progress in it is lost.", confirmLabel: "Leave", cancelLabel: "Keep going", onConfirm: renderHome }));
   const log = $("#clog");
   const bubble = (side, es, en) => { log.appendChild(el(`<div class="cbub ${side}"><div class="cbub-es">${es}</div><div class="cbub-en">${en}</div></div>`)); log.scrollTop = 1e6; };
   const resolve = ref => (ALL_ITEMS || []).find(x => x.es === ref || x.id === ref);
@@ -369,7 +369,7 @@ function renderQuestion() {
   app.appendChild(wrap);
   // §8.2 card-press haptic — one delegated listener covers every interactive card in the runner
   wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile,.speak-btn")) haptic("press"); });
-  $("#quit").addEventListener("click", () => { if (confirm("Quit this lesson? Progress in it is lost.")) renderHome(); });
+  $("#quit").addEventListener("click", () => confirmSheet({ title: "Quit lesson?", body: "Your progress in it is lost.", confirmLabel: "Quit lesson", cancelLabel: "Keep going", onConfirm: renderHome }));
   run.answered = false;
   // make the mistake re-queue visible: label a phrase you missed coming back around
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">${icon('arrows-clockwise', 15)} Second chance, you missed this one</div>`));
