@@ -46,9 +46,9 @@ Apply to ALL user-facing text: labels, buttons, exercise prompts, anchors, prime
 - **Gold sound wave:** audio controls render their speaker/wave glyph in `--accent-2` (gold). This is a brand element, integral to the identity (candidate motif for a future lighthouse-logo evolution) — audio glyphs are never navy, never gray.
 
 ### 2.2 Proposed token ADDITIONS (adopt or reject deliberately; add to styles.css + both dark blocks if adopted)
-- **Duration scale:** the system has one `--transition` (160ms). Proposed: keep 160ms as the micro-interaction default, add `--t-slow: 300ms` for sheets/screen transitions (already used de facto by the correction sheet artifact). Nothing exceeds 300ms except the sanctioned 600ms hero count-up (scores spec §3).
+- **Duration rule (two classes):** interaction/state transitions (presses, sheets, swaps, crossfades) cap at 300ms; **value-change animations** (count-ups, bar fills/springs, number rolls) may run up to 600ms — they run in parallel and gate nothing. Sanctioned examples: the 600ms hero count-up (scores spec §3), the progress bar's 0.5s spring. Keep 160ms `--transition` as the micro-interaction default; `--t-slow: 300ms` for sheets/screen transitions.
 - **Weight rule (rule, not token):** Jakarta at 500/600 for display, Inter at 400/500 for text. 700+ banned — hierarchy from size and color, not heaviness.
-- **Reduced motion:** honor `prefers-reduced-motion` — transitions collapse to instant state changes.
+- **Reduced motion:** honor `prefers-reduced-motion` — transitions collapse to instant state changes; springs settle instantly.
 - Semantic-color usage rule: `--green`/`--red` appear as accents (borders, text, small fills) — never full-bleed panels.
 
 ---
@@ -109,7 +109,8 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 1. New user-facing element → design in **Claude Design** (design.claude.ai) using this document as the brief (paste §1–§4 relevant parts). Iterate there until exciting — "acceptable" is not the bar.
 2. Quick single-component explorations may start as chat mockups; winners graduate to Claude Design for full fidelity.
 3. Approved artifact → committed to `design/` in the repo (HTML or image + a line naming its component in §3) → build instruction is "match exactly, adapt to tokens."
-4. **Acceptance is a mechanical computed-style diff, not an eyeball.** A screenshot glance let a green-not-gold, 14px-not-4px progress bar ship twice. Because `design/` artifacts embed the real tokens verbatim, a correctly-built element must *compute to the same value* as the artifact element. So:
+4. **Precedence rule: built components override artifact stand-ins.** "Match exactly" applies to the element the artifact designs and its behavior; surrounding chrome (inputs, nav, existing components) composes from what's already built in the app. Artifacts mark stand-in elements in their captions. This is exactly what the acceptance diff's "shared-component stand-in" bucket (rule 5) enforces: a generic `.ex-input` or `.continue` in a feedback artifact never restyles the global `.text-input` / `.btn`.
+5. **Acceptance is a mechanical computed-style diff, not an eyeball.** A screenshot glance let a green-not-gold, 14px-not-4px progress bar ship twice. Because `design/` artifacts embed the real tokens verbatim, a correctly-built element must *compute to the same value* as the artifact element. So:
    1. **Map every element the artifact draws** to its app selector, up front. The artifact defines the *whole screen* — chrome you assumed was already correct (the progress bar) is in scope. Record the map in `tools/design-diff.js` (`DESIGN_PAIRS`); "assumed unchanged" is where the misses hide.
    2. **Run the diff:** serve the repo, drive the app to the exact state the artifact depicts, then `designDiff('/design/<artifact>.html', DESIGN_PAIRS.<name>)` in the Browser-pane console. It loads the artifact in a theme-matched iframe and reports every property that differs per element pair. (Theme is handled: it bakes the app's effective theme into the artifact at parse time.)
    3. **Triage each diff into one of three** — this is judgment, the tool only surfaces candidates:
@@ -117,7 +118,7 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
       - **Shared-component stand-in** → the artifact approximated a global component (`.ex-input` for the app-wide `.text-input`, `.continue` for `.btn`). Do NOT restyle the global from one feedback artifact; note it and move on.
       - **Intentional divergence** → the app deviates on purpose (the §8.3 bar spring vs the artifact's plainer transition). Flag it back to chat to resolve; never silently overwrite either side.
    4. **Then** the side-by-side screenshot, for what computed-style can't judge (rhythm, balance). Screenshot-only is never acceptance on its own.
-5. Any new recurring pattern discovered during design gets ADDED to §3 in the same PR — the constitution grows; one-offs don't.
+6. Any new recurring pattern discovered during design gets ADDED to §3 in the same PR — the constitution grows; one-offs don't.
 
 ## 6. Remediation audit (one-time, do first)
 

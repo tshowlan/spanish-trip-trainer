@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — AudioControl component sheet (design artifact, §3.2)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — verbatim from styles.css:1–61 ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --green-dark: #25814a; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-xs: 12px; --text-sm: 14px; --text-base: 16px;
+    --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #000000; --bg-card: #201e15; --bg-elevated: #2b2820;
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: #34301f;
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg); color:var(--text); display:flex; justify-content:center; padding:28px 16px 48px; min-height:100vh; }
+  .sheet-wrap { width:100%; max-width:420px; }
+
+  h1 { font-family:var(--font-display); font-size:20px; font-weight:600; margin-bottom:4px; }
+  .sub { font-size:var(--text-sm); color:var(--text-dim); margin-bottom:var(--space-5); }
+  h2 { font-family:var(--font-display); font-size:13px; font-weight:600; letter-spacing:0.05em; color:var(--accent-2); text-transform:uppercase; margin:var(--space-5) 0 var(--space-3); }
+  .row { display:flex; align-items:center; gap:14px; padding:14px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-md); margin-bottom:var(--space-2); }
+  .row .desc { font-size:var(--text-sm); color:var(--text-dim); line-height:1.45; flex:1; }
+  .row .desc b { color:var(--text); font-weight:500; }
+
+  /* ============ THE COMPONENT ============ */
+
+  /* Variant A: inline speaker — 44px target, raised, push-down press */
+  .ac-speaker {
+    width:44px; height:44px; min-width:44px; border-radius:50%;
+    border:1px solid var(--border); background:var(--bg-card); color:var(--accent-2);
+    box-shadow:var(--shadow); cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .ac-speaker:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  /* Playing state: gold bars, animated ONLY while actually playing */
+  .bars { display:none; align-items:flex-end; gap:2.5px; height:16px; }
+  .bars span { width:3px; background:var(--accent-2); border-radius:1.5px; animation:bar 900ms ease-in-out infinite; }
+  .bars span:nth-child(1){ height:7px; animation-delay:0ms; }
+  .bars span:nth-child(2){ height:14px; animation-delay:150ms; }
+  .bars span:nth-child(3){ height:10px; animation-delay:300ms; }
+  .bars span:nth-child(4){ height:15px; animation-delay:450ms; }
+  @keyframes bar { 0%,100%{ transform:scaleY(0.55);} 50%{ transform:scaleY(1);} }
+  .ac-speaker.playing .glyph { display:none; }
+  .ac-speaker.playing .bars { display:inline-flex; }
+  @media (prefers-reduced-motion: reduce){ .bars span { animation:none; } }
+
+  /* Variant A2: speaker + speed toggle (paired pill) */
+  .ac-group { display:inline-flex; align-items:center; }
+  .ac-speed {
+    height:30px; margin-left:8px; padding:0 11px; border-radius:15px;
+    border:1px solid var(--border); background:var(--bg-elevated);
+    font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--text-dim);
+    cursor:pointer; transition: background var(--transition), color var(--transition), border-color var(--transition);
+    display:inline-flex; align-items:center; gap:4px; min-width:44px; justify-content:center;
+  }
+  .ac-speed.slowed { background:var(--bg-card); color:var(--accent-2); border-color:var(--accent-2); }
+
+  /* Variant C: chunk pill — the pill IS the trigger, no icon inside */
+  .ac-chunk {
+    background:var(--bg-elevated); border:1px solid transparent; border-radius:var(--radius-sm);
+    padding:7px 11px; font-family:var(--font-display); font-size:17px; font-weight:500; color:var(--text);
+    cursor:pointer; user-select:none; display:inline-block;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+  .ac-chunk:active { transform:scale(0.97); }
+  .ac-chunk.playing { border-color:var(--accent-2); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+
+  .ac-speaker:disabled, .ac-speed:disabled { opacity:0.4; pointer-events:none; }
+
+  /* chrome */
+  .chrome { display:flex; gap:16px; margin-top:var(--space-4); }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:var(--text-dim); text-decoration:underline; cursor:pointer; }
+  .rules { font-size:12px; color:var(--text-dim); line-height:1.6; margin-top:var(--space-4); border-top:1px solid var(--border); padding-top:var(--space-3); }
+</style>
+</head>
+<body>
+<div class="sheet-wrap">
+  <h1>AudioControl</h1>
+  <div class="sub">One component, three variants (design system §3.2). Everything on this page is live: tap to hear the states. Simulated playback is 2s.</div>
+
+  <h2>A · Inline speaker</h2>
+  <div class="row">
+    <button class="ac-speaker" onclick="play(this)" aria-label="Play audio">
+      <svg class="glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+    </button>
+    <div class="desc"><b>Default → playing.</b> Gold glyph swaps to animated gold bars only while audio is actually playing (the one sanctioned active animation). 44px target, push-down press.</div>
+  </div>
+
+  <h2>A2 · Speaker + speed toggle</h2>
+  <div class="row">
+    <span class="ac-group">
+      <button class="ac-speaker" onclick="play(this)" aria-label="Play audio">
+        <svg class="glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+        <span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      </button>
+      <button class="ac-speed" id="speed" onclick="toggleSpeed(this)" aria-label="Playback speed">1×</button>
+    </span>
+    <div class="desc"><b>Speed pill.</b> Tap cycles 1× → 0.75×. Slowed state: gold text + gold border. Resets to 1× on next item (per-item, never sticky). Used in listening exercises only.</div>
+  </div>
+
+  <h2>C · Chunk pill (tap = hear the chunk)</h2>
+  <div class="row">
+    <span class="ac-chunk" onclick="playChunk(this)">la cuenta</span>
+    <div class="desc"><b>The pill IS the trigger.</b> No icon inside. Playing state: gold border + soft gold ring while its audio plays. On presentation cards and the correction sheet.</div>
+  </div>
+
+  <h2>Disabled</h2>
+  <div class="row">
+    <button class="ac-speaker" disabled aria-label="Audio unavailable">
+      <svg class="glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+    </button>
+    <div class="desc"><b>40% opacity, no interaction.</b> Only legitimate case: TTS unavailable/errored. Never hide the control (layout stability, §4).</div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="toggleTheme()">toggle dark theme</button>
+  </div>
+
+  <div class="rules">
+    <b>Component rules (§3.2) — APPROVED 2026-07-15:</b> all audio glyphs in --accent-2 gold, never navy/gray (brand element). One AudioControl per audible thing; never two speakers for the same audio. Tapping while playing restarts (no pause button; clips are 1–4s). Bars animate only during real playback and freeze under prefers-reduced-motion. Speed pill appears only where slow-listening is pedagogically relevant (listen-and-type, understand-the-reply); presentation cards and correction sheet get plain speakers. Autoplay only where specced (presentation card, correction sheet, listening prompts).
+  </div>
+</div>
+
+<script>
+  let timers = new WeakMap();
+  function play(btn){
+    clearTimeout(timers.get(btn));
+    btn.classList.add('playing');
+    timers.set(btn, setTimeout(()=> btn.classList.remove('playing'), 2000));
+  }
+  function playChunk(pill){
+    clearTimeout(timers.get(pill));
+    pill.classList.add('playing');
+    timers.set(pill, setTimeout(()=> pill.classList.remove('playing'), 1200));
+  }
+  function toggleSpeed(p){
+    const slowed = p.classList.toggle('slowed');
+    p.textContent = slowed ? '0.75×' : '1×';
+  }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+</script>
+</body>
+</html>
