@@ -26,15 +26,14 @@ a **mechanical computed-style diff**.
   to chat) → *then* screenshot. Screenshot-only is never acceptance.
 - **Diff-caught fixes (build misses):** correct-answer tick 18px→16px (`lesson.js`); `.corr-audio` stray
   UA button padding → `padding:0` (`styles.css`).
-- **Flagged, NOT changed (need Tom/chat decision):**
-  - **Global `.btn` has no `font-family` → every button renders in Arial**, not the display font. Both
-    artifacts spec the button in `--font-display` 600 / 15px / radius-md; app `.btn` is 17px / 800 / --radius.
-    This is a systemic component-spec reconciliation, not a one-sheet fix — needs a decision before I touch
-    the global button.
-  - `.pbar > i` transition 0.5s spring (§8.3) vs artifact 0.3s — confirm the spring stays.
-  - `.text-input` geometry (58/18/600) vs artifacts' generic input (48/15/400) — app design-system input is
-    presumably intended; artifacts used a stand-in. Confirm, no action expected.
-- SW → v118 (lesson.js/styles.css touched).
+- **Flagged for decision — all three now RESOLVED:**
+  - **Global `.btn` had no `font-family` → every button rendered in Arial.** Tom's call: fix the font only,
+    keep existing 17px/800 sizing. Done — `.btn` now `font-family: var(--font-display)` (SW v119).
+  - `.pbar > i` 0.5s spring vs artifact 0.3s → **spring stays**, now sanctioned under the refined §2.2
+    duration rule (value-change animations may run to 600ms). No change.
+  - `.text-input` geometry vs artifacts' generic stand-in input → **app geometry wins** per the new
+    shared-component precedence rule (design system). Artifacts' input was a stand-in. No change.
+- SW → v118, then v119 (button font). Design system §2.2 (duration rule) + §5 (precedence) updated by Tom.
 
 ## 2026-07-15 — Correct-answer wash (§3.5), built to design/correct-feedback.html (Claude Code)
 
