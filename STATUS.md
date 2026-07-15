@@ -27,6 +27,24 @@ Built from `docs/tripfluent-design-system.md` + `design/correction-sheet.html`.
 (unify speaker buttons + speed toggle); §3.4 tappable-text hint popovers (chunk pipeline Phase 3);
 correct-answer feedback → §3.5 wash (currently still a footer); off-token audit.
 
+## 2026-07-15 — §6 remediation: inventory + touch-target sweep (Claude Code)
+
+Design system §6 remediation started (correction sheet, confirm sheets, press physics, font flag
+already done in earlier commits).
+
+- **Inventory triage** of the interactive surface:
+  - Needs a CHAT ARTIFACT before build (§0 rule — user-facing components): **AudioControl** (§3.2 — unify
+    the 8 ad-hoc audio patterns: soundIcon/waveButton/slow-btn/pb-speak/corr-audio/intro-hear/speak-btn),
+    **hint popover** (§3.4, also chunk Phase 3), **home hero tile + chips** redesign. Correct-answer wash
+    (§3.5) already in progress with chat.
+  - Mechanical (no artifact, done/queued here): touch targets (done), off-token migration (~25 hardcoded
+    hex in styles.css >L70 — mostly #fff on filled buttons + the scene-tint hues; queued).
+- **Touch-target sweep (§3.1 / §6 exit criterion):** icon-btn, lang-flag-top, close-btn, pb-speak, pb-save
+  now min 44×44 (centered). Tabs (~51px) and mic-btn (100px) already pass; corr-audio stays 40px to match
+  the approved artifact. SW → v114.
+
+**Remaining §6:** off-token migration; and the three artifact-gated components above (blocked on chat).
+
 ## 2026-07-15 — Design system + design-first pipeline
 - NEW: `docs/tripfluent-design-system.md` — design constitution: feel principles, UI copy rules (§1.1), token rules referencing styles.css:1–61 as source of truth (§2), component standards (§3: buttons, AudioControl, sheets, tappable text/chunk pills, exercise chrome, cards), interaction rules (§4), design-first workflow (§5), remediation audit plan (§6), banned list (§7).
 - NEW: `design/` directory at repo root (sibling to docs/). Approved UI artifacts live here; Code matches them exactly. First artifact committed: `design/correction-sheet.html` (v2, real tokens, light+dark, live interactions).
