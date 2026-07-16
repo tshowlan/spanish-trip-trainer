@@ -841,7 +841,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .stand-slot.pace-ok { color: var(--green); }
 .stand-slot.pace-behind { color: var(--accent-2); }
 
-.scores { display: flex; align-items: flex-start; justify-content: center; gap: 8px; margin-bottom: 8px; }
+.scores { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }   /* §3.2 flankers center against the big Readiness ring (design .dials align-items:center) */
 .ring-card { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; min-width: 0; padding: 0; }
 .ring-card.readiness { --ring: var(--accent-2); }
 .ring-card.readiness.r-low  { --ring: var(--red); }     /* < 40  */
