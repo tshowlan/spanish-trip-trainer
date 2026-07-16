@@ -37,6 +37,7 @@ Code is the only session that writes files into the repo. This exists because a 
 - **Edits are diffs, not whole files.** A whole-file drop can't be git-merged, so anything committed after the author's copy is silently lost. Hand over "in §2.2, replace the Duration bullet with X" — not a 200-line file.
 - **Author from HEAD.** If chat must see a doc to change it, seed it with the *current* repo version first (Tom pastes it, or Code prints it). Editing a stale copy is what starts the divergence.
 - **Applies to every tracked file** — `design-system.md`, specs, `STATUS.md`, `decisions.md`, code. Design artifacts (`design/*.html`) go through a Code session so they get read + run through the §5 acceptance diff before landing.
+- **Propagating a ratified decision into an existing artifact is integration, not authoring.** When a settled rule (a logged decision, an app-wide semantic) leaves an already-committed artifact stale or self-contradicting, Code makes the targeted edit to bring it in sync — and flags it — rather than leaving the artifact contradicting the rule while waiting on a chat re-cut. Chat still owns net-new design; this is just keeping the truth consistent. (Origin: the correction-sheet green→gold error-chunk change, 2026-07-15.)
 
 ## Division of labor
 
