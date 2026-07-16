@@ -8,6 +8,13 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - Verified in browser: dark = gradient ground + frosted cards + gold nav; light = unchanged cream + opaque cards + gold nav; readable both; no console errors. SW → v122.
 - **Next stages:** (2) home screen composition to `design/home.html` via the §5 gate; (3) photo plumbing + free-licensed placeholders (user chose Unsplash/Pexels). Photo licensing still a ship blocker for final images.
 
+## 2026-07-16 — Home build STAGE 2a: dial cluster (bands + crown + pace tick) (Claude Code)
+- `readinessBand` labels → **Low / Fair / Strong / Tripfluent** (scoring.js). Readiness ring arc now tracks the band color (green/blue/gold/dim) via `band.cls` (was red/yellow/green `r-*`, now unused).
+- Readiness hero: "Trip Readiness" ring label removed; the band renders as a **chip** (`.band-chip`, band-colored 13% fill) beneath the arc. **Tripfluent = crown** (metallic gold gradient border) with a **one-time sheen that fires only on crossing into the top band** (`state.lastBandTop` tracks it; `.just-crossed` gates the animation; reduced-motion disables it).
+- Pace tick now **gold** (`--accent-2`, was `--text`) = the sole ambient pace signal. Countdown subline is **pure countdown** ("121d out"), the "· on pace / · behind" text removed. Negative dial delta is **dim, not red**.
+- Verified in browser (dial cluster for Strong 72 + Tripfluent 91): gold tick, band chip, metallic crown, dim delta all correct; new labels confirmed in the served file (browser showed stale labels = HTTP script cache only). SW → v123.
+- **Stage 2 remaining:** fade action tile, insight line (gold spark + green delta), presence line + weather tile. Header/photo-crown deferred to Tom's design session + Stage 3 photos.
+
 ## 2026-07-16 — Home screen designed + approved (design/home.html)
 - Atmosphere: photo + tint. Photo crowns top, dissolves via SELF-MASK (mask-don't-paint rule, see decisions); destination ground-glow sweeps diagonally from bottom-left (26% peak, full height), stacked BENEATH the photo. Dark theme = gradient ground (navy linear + warm top radial), cards translucent + blur — this is a styles.css token change: dark --bg becomes the gradient treatment, --bg-card translucent; APPLY TO BOTH DARK BLOCKS.
 - Wordmark: real SVG, fills → --wordmark-1/-2 tokens (update source SVG in repo); white letterform halo in photo contexts; halo forces standard navy/blue fills in both themes.

@@ -798,10 +798,10 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 /* §3.2.2 push the size asymmetry well beyond near-peer — the hierarchy must read at a glance */
 .ring.readiness { width: min(140px, 42vw); }
 .ring.m-momentum, .ring.m-retention { width: min(72px, 21vw); }
-.ring-tick { stroke: var(--text); stroke-width: 3.5; stroke-linecap: round; opacity: .8; }
+.ring-tick { stroke: var(--accent-2); stroke-width: 3.5; stroke-linecap: round; opacity: 1; }   /* §3.2 gold pace tick — the sole ambient pace signal */
 /* §3.2.2 delta whispers under the flanking dials */
 .dial-delta { font-size: 12px; font-weight: 800; margin-top: 2px; color: var(--text-dim); }
-.dial-delta.up { color: var(--green); } .dial-delta.down { color: var(--red); }
+.dial-delta.up { color: var(--green); } .dial-delta.down { color: var(--text-dim); }   /* §3.2 negative = dim, never red */
 .ring-bg { fill: none; stroke: var(--bg-elevated); stroke-width: 6.5; }
 .ring-fg { fill: none; stroke: var(--ring, var(--secondary)); stroke-width: 6.5; stroke-linecap: round;
   transition: stroke-dashoffset .85s cubic-bezier(.3,.7,.3,1); }
@@ -829,6 +829,28 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .ring-card.band-good { --ring: var(--secondary); }
 .ring-card.band-mid  { --ring: var(--accent-2); }
 .ring-card.band-low  { --ring: var(--text-dim); }
+
+/* §3.2 band chip: the Readiness status as a soft band-colored pill (a contained reading, not a title);
+   replaces the "Trip Readiness" ring label. Color tracks the band; sentence case. */
+.band-chip { display: inline-block; font-family: var(--font-display); font-size: 12px; font-weight: 600;
+  letter-spacing: .01em; padding: 4px 11px; border-radius: 20px; line-height: 1.1;
+  background: color-mix(in srgb, currentColor 13%, transparent); }
+.band-chip.band-top  { color: var(--green); }
+.band-chip.band-good { color: var(--secondary); }
+.band-chip.band-mid  { color: var(--accent-2); }
+.band-chip.band-low  { color: var(--text-dim); }
+/* Tripfluent (85+) wears the brand's metal: a specular gold gradient border (padding-box fill + border-box gold). */
+.band-chip.crown { position: relative; overflow: hidden; border: 1.5px solid transparent; padding: 3px 12px;
+  background:
+    linear-gradient(color-mix(in srgb, var(--green) 12%, var(--bg-card)), color-mix(in srgb, var(--green) 12%, var(--bg-card))) padding-box,
+    linear-gradient(118deg, #8a6a1c 0%, #e9c85c 18%, #fdf0a8 34%, #b8862e 52%, #f7e07e 72%, #fff3b0 84%, #a97c1f 100%) border-box;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent), 0 1px 2px rgba(169,124,31,.35); }
+/* one-time sheen: fires ONLY when just crossed into the top band (§4 explanatory motion), never on plain renders */
+.band-chip.crown.just-crossed::after { content: ""; position: absolute; top: -4px; bottom: -4px; width: 34%;
+  background: linear-gradient(105deg, transparent 0%, rgba(255,248,214,.85) 48%, transparent 100%);
+  transform: translateX(-160%) skewX(-12deg); animation: chip-sheen 1100ms cubic-bezier(.2,.7,.3,1) 400ms 1 both; }
+@keyframes chip-sheen { to { transform: translateX(420%) skewX(-12deg); } }
+@media (prefers-reduced-motion: reduce) { .band-chip.crown.just-crossed::after { animation: none; opacity: 0; } }
 
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
 .tile { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md);

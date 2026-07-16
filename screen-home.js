@@ -93,7 +93,6 @@ function renderHome() {
   const started = s.lifetimeSessions > 0 || Object.keys(state.lessons).length > 0;
   const days = p.tripDate ? Math.max(0, daysUntil(p.tripDate)) : null;
   const band = readinessBand(s.readiness);
-  const rClass = s.readiness < 40 ? "r-low" : s.readiness < 65 ? "r-mid" : "r-high";   // red / yellow / green
 
   const hero = el(`<div class="hero"></div>`);
 
@@ -101,7 +100,11 @@ function renderHome() {
     hero.appendChild(el(`<div class="empty-hero">Complete your first lesson to start your Trip Readiness score.</div>`));
   } else {
     const glide = _glideToday();
-    const onPace = glide != null && s.readiness >= glide;
+    // §3.2 crown: the Tripfluent chip's one-time sheen fires only when the user just CROSSED into
+    // the top band (not on every render). Track the last top-band state; a genuine re-crossing re-fires.
+    const isTop = s.readiness >= 85;
+    const crossed = isTop && !state.lastBandTop;
+    if ((state.lastBandTop || false) !== isTop) { state.lastBandTop = isTop; save(); }
     const scores = el(`<div class="scores">
       <button class="ring-card m-momentum" id="sc-momentum">
         <div class="ring-wrap">${ringSVG(s.momentum, "m-momentum")}
@@ -110,12 +113,12 @@ function renderHome() {
         <div class="ring-label">Momentum</div>
         ${_dialDelta("momentum")}
       </button>
-      <button class="ring-card readiness ${rClass}" id="sc-readiness">
+      <button class="ring-card readiness ${band.cls}" id="sc-readiness">
         <div class="ring-wrap">${ringSVG(s.readiness, "readiness", glide)}
           <div class="ring-center"><div class="ring-num" data-to="${s.readiness}">0<span class="pct">%</span></div></div>
         </div>
-        <div class="ring-label">Trip Readiness</div>
-        ${days !== null ? `<div class="ring-days">${days}d out${glide != null ? (onPace ? " · on pace" : " · behind") : ""}</div>` : `<div class="ring-days set-date">Set date</div>`}
+        <div class="band-chip ${band.cls}${isTop ? " crown" : ""}${crossed ? " just-crossed" : ""}">${band.label}</div>
+        ${days !== null ? `<div class="ring-days">${days}d out</div>` : `<div class="ring-days set-date">Set date</div>`}
       </button>
       <button class="ring-card m-retention" id="sc-retention">
         <div class="ring-wrap">${ringSVG(s.retention, "m-retention")}

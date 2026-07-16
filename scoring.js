@@ -109,11 +109,13 @@ function fadingItems() {
 function readinessScore() {
   return Math.round(0.40 * coverageScore() + 0.40 * retentionScore() + 0.20 * recencyScore());
 }
+// Bands are stative + bidirectional (scores spec §1.1, decisions 2026-07-16): each completes
+// "Readiness: ___", equally true arriving from above or below. Top band = the brand name.
 function readinessBand(r) {
-  if (r >= 85) return { label: "Fluent for your trip", cls: "band-top" };
-  if (r >= 65) return { label: "On track", cls: "band-good" };
-  if (r >= 40) return { label: "Building", cls: "band-mid" };
-  return { label: "Getting started", cls: "band-low" };
+  if (r >= 85) return { label: "Tripfluent", cls: "band-top" };
+  if (r >= 65) return { label: "Strong", cls: "band-good" };
+  if (r >= 40) return { label: "Fair", cls: "band-mid" };
+  return { label: "Low", cls: "band-low" };
 }
 
 /* ---- Pace check (scores spec §1.1): project Readiness at the trip date ---- */
