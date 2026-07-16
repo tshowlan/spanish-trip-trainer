@@ -2,6 +2,12 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-15 — Presentation card designed + approved
+- NEW: design/presentation-card.html (§4c.1 / §4b.5), both layouts: chunked long phrase + short item w/ tappable context sentence. Composes built components (chunk pills, popover, AudioControl); STAND-IN: progress bar.
+- New attention-semantics system ratified (see decisions): gold marks the NEW chunk (soft --accent fill + NEW tag, ≤-half rule); known chunks unmarked, popover carries provenance ("from Ordering Tacos").
+- FOLLOW-UP on built correction sheet: replace the known-chunk green outline with gold on the ERROR chunk (cuenta/cuento chunk in the reference example). Small edit; same semantics.
+- Build order: presentation card ships with M1's ladder work (it's the exposure-0 slot type).
+
 ## 2026-07-15 — AudioControl built (§3.2), first run through the diff gate (Claude Code)
 
 Built the unified `AudioControl` to `design/audio-control.html`; retired every ad-hoc audio button.

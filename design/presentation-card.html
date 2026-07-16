@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Presentation Card (design artifact, §4c.1 / §4b.5)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — verbatim from styles.css:1–61 ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --green-dark: #25814a; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-xs: 12px; --text-sm: 14px; --text-base: 16px; --text-lg: 20px;
+    --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #000000; --bg-card: #201e15; --bg-elevated: #2b2820;
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: #34301f;
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:340px; height:640px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+
+  .screen { padding:22px 20px; height:100%; display:flex; flex-direction:column; }
+
+  /* STAND-IN: progress bar composes from the app's built exercise chrome */
+  .progress { height:4px; background:var(--bg-elevated); border-radius:2px; margin-bottom:26px; }
+  .progress > div { width:30%; height:100%; background:var(--accent); border-radius:2px; }
+
+  .card-body { flex:1; display:flex; flex-direction:column; opacity:1; transition: opacity 200ms cubic-bezier(.2,.7,.3,1), transform 200ms cubic-bezier(.2,.7,.3,1); }
+  .card-body.swap { opacity:0; transform:translateY(8px); }
+
+  .new-label { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.06em; color:var(--accent-2); margin-bottom:var(--space-4); }
+
+  /* ===== The phrase: chunk pills (from design/correction-sheet.html — canonical) ===== */
+  .chunks { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:var(--space-3); }
+  .chunk {
+    background:var(--bg-elevated); border:1px solid transparent; border-radius:var(--radius-sm);
+    padding:9px 13px; font-family:var(--font-display); font-size:21px; font-weight:500; color:var(--text);
+    line-height:1.25; cursor:pointer; user-select:none;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+  .chunk:active { transform:scale(0.97); }
+  .chunk.playing { border-color:var(--accent-2); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+  .chunk.new-piece { background:color-mix(in srgb, var(--accent) 14%, var(--bg-card)); border-color:var(--accent-2); }
+  .chunk.new-piece .tag { font-family:var(--font-display); font-size:10px; font-weight:600; letter-spacing:0.05em; color:var(--accent-2); margin-left:6px; vertical-align:2px; }
+
+  /* Short-item variant: single big phrase pill + context sentence */
+  .phrase-solo { font-family:var(--font-display); font-size:28px; font-weight:600; color:var(--text); margin-bottom:var(--space-2); }
+  .context { font-size:var(--text-sm); color:var(--text-dim); line-height:1.5; margin-bottom:var(--space-3); }
+  .context .es { color:var(--text); font-family:var(--font-display); font-weight:500; cursor:pointer; border-bottom:1px dotted var(--text-dim); }
+  .context .es.playing { color:var(--accent-2); border-bottom-color:var(--accent-2); }
+
+  .translation { font-size:var(--text-base); color:var(--text-dim); margin-bottom:var(--space-4); }
+
+  .meta { margin-top:auto; }
+  .note { font-size:13px; color:var(--text-dim); line-height:1.5; margin-bottom:var(--space-2); }
+  .anchor { font-size:13px; color:var(--text-dim); line-height:1.5; margin-bottom:var(--space-4); }
+  .anchor .lead { color:var(--accent-2); font-weight:500; }
+  .anchor em, .note em { color:var(--text); }
+
+  /* ===== AudioControl inline speaker (from design/audio-control.html — canonical) ===== */
+  .audio-row { display:flex; align-items:center; gap:12px; margin-bottom:var(--space-4); }
+  .ac-speaker {
+    width:44px; height:44px; min-width:44px; border-radius:50%;
+    border:1px solid var(--border); background:var(--bg-card); color:var(--accent-2);
+    box-shadow:var(--shadow); cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .ac-speaker:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .bars { display:none; align-items:flex-end; gap:2.5px; height:16px; }
+  .bars span { width:3px; background:var(--accent-2); border-radius:1.5px; animation:bar 900ms ease-in-out infinite; }
+  .bars span:nth-child(1){ height:7px; } .bars span:nth-child(2){ height:14px; animation-delay:150ms; }
+  .bars span:nth-child(3){ height:10px; animation-delay:300ms; } .bars span:nth-child(4){ height:15px; animation-delay:450ms; }
+  @keyframes bar { 0%,100%{ transform:scaleY(0.55);} 50%{ transform:scaleY(1);} }
+  .ac-speaker.playing .glyph { display:none; }
+  .ac-speaker.playing .bars { display:inline-flex; }
+  @media (prefers-reduced-motion: reduce){ .bars span { animation:none; } }
+  .audio-hint { font-size:var(--text-xs); color:var(--text-dim); }
+
+  .gotit {
+    width:100%; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
+    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px;
+    cursor:pointer; box-shadow:var(--shadow);
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .gotit:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  /* Chunk meaning popover (from correction-sheet — canonical) */
+  .popover {
+    position:absolute; background:var(--primary); color:#fff; font-size:12.5px;
+    padding:7px 11px; border-radius:var(--radius-sm); pointer-events:none;
+    opacity:0; transform:translateY(4px); transition: opacity var(--transition), transform var(--transition);
+    white-space:nowrap; z-index:10;
+  }
+  .popover.show { opacity:1; transform:translateY(0); }
+
+  /* chrome */
+  .chrome { display:flex; gap:16px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:var(--text-dim); text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:var(--text-dim); margin-top:12px; max-width:380px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+      <!-- STAND-IN: app's built progress bar -->
+      <div class="progress"><div></div></div>
+
+      <div class="card-body" id="body"></div>
+      <div class="popover" id="pop"></div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="switchVariant()" id="switchBtn">show short-item variant</button>
+    <button onclick="toggleTheme()">toggle dark theme</button>
+  </div>
+
+  <div class="caption">
+    Presentation card (§4c.1 / §4b.5), both layouts — APPROVED 2026-07-15. Attention semantics: <b>gold marks the NEW piece</b> (soft gold fill + NEW tag); known chunks are unmarked — their tap-popover carries provenance ("from Ordering Tacos"). Rule: mark new chunks only when they're ≤ half the chunks; if most/all are new, no marks (the header label carries it). Chunk taps play chunk audio (gold ring) + meaning popover. Short item: solo phrase + tappable context sentence. Phrase audio autoplays on card entry. "Got it" advances — never graded, counts exposure 1. Composed from approved artifacts (chunk pills, popover, AudioControl). STAND-IN: progress bar (use built exercise chrome). NOTE for correction sheet: same gold treatment should mark the ERROR chunk there; green "known" outline retired app-wide (gold = attend here, green = success confirmation only).
+  </div>
+</div>
+
+<script>
+  const variants = {
+    chunked: `
+      <div class="new-label">NEW PHRASE · ONE NEW PIECE</div>
+      <div class="chunks">
+        <span class="chunk" data-meaning="could you bring me · you know this pattern" onclick="tapChunk(this,event)">¿Me puede traer</span>
+        <span class="chunk" data-meaning="the check · from Ordering Tacos" onclick="tapChunk(this,event)">la cuenta</span>
+        <span class="chunk new-piece" data-meaning="when you have a moment" onclick="tapChunk(this,event)">cuando tenga un momento?<span class="tag">NEW</span></span>
+      </div>
+      <div class="translation">Could you bring me the check when you have a moment?</div>
+      <div class="audio-row">
+        <button class="ac-speaker" id="spk" onclick="play(this)" aria-label="Play phrase audio">
+          <svg class="glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        </button>
+        <span class="audio-hint">Tap any part to hear it alone</span>
+      </div>
+      <div class="meta">
+        <div class="anchor"><span class="lead">Think:</span> <em>traer</em> is to bring. You're asking them to bring, not asking to get.</div>
+        <button class="gotit" onclick="advance()">Got it</button>
+      </div>`,
+    short: `
+      <div class="new-label">NEW WORD</div>
+      <div class="phrase-solo">el maletero</div>
+      <div class="translation">the trunk</div>
+      <div class="context">In a taxi: <span class="es" data-meaning="Can you open the trunk?" onclick="tapChunk(this,event)">¿Puede abrir el maletero?</span> (Can you open the trunk?)</div>
+      <div class="audio-row">
+        <button class="ac-speaker" id="spk" onclick="play(this)" aria-label="Play word audio">
+          <svg class="glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        </button>
+        <span class="audio-hint">Tap the sentence to hear it in context</span>
+      </div>
+      <div class="meta">
+        <div class="anchor"><span class="lead">Think:</span> <em>maleta</em> is a suitcase. The maletero is where the maletas go.</div>
+        <button class="gotit" onclick="advance()">Got it</button>
+      </div>`
+  };
+
+  let current = 'chunked';
+  const body = document.getElementById('body');
+  const pop = document.getElementById('pop');
+  let hideTimer, timers = new WeakMap();
+
+  function render(){
+    body.innerHTML = variants[current];
+    // Autoplay on entry: bars run 2s
+    setTimeout(()=> { const s = document.getElementById('spk'); if (s) play(s); }, 350);
+  }
+  function play(btn){
+    clearTimeout(timers.get(btn));
+    btn.classList.add('playing');
+    timers.set(btn, setTimeout(()=> btn.classList.remove('playing'), 2000));
+  }
+  function tapChunk(el, e){
+    clearTimeout(timers.get(el));
+    el.classList.add('playing');
+    timers.set(el, setTimeout(()=> el.classList.remove('playing'), 1200));
+    clearTimeout(hideTimer);
+    pop.textContent = el.dataset.meaning;
+    pop.classList.add('show');
+    const scr = el.closest('.screen').getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    pop.style.left = Math.max(8, r.left - scr.left) + 'px';
+    pop.style.top = (r.top - scr.top - 38) + 'px';
+    hideTimer = setTimeout(()=> pop.classList.remove('show'), 1800);
+    e.stopPropagation();
+  }
+  function advance(){
+    body.classList.add('swap');
+    setTimeout(()=> { render(); body.classList.remove('swap'); }, 200);
+  }
+  function switchVariant(){
+    current = current === 'chunked' ? 'short' : 'chunked';
+    document.getElementById('switchBtn').textContent = current === 'chunked' ? 'show short-item variant' : 'show chunked variant';
+    advance();
+  }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  document.body.addEventListener('click', ()=> pop.classList.remove('show'));
+  render();
+</script>
+</body>
+</html>

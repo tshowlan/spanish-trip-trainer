@@ -79,7 +79,7 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 ### 3.4 Tappable text & chunk pills (the phrase-tap fix)
 - Any tappable text region gets a visible affordance: chunk pills have `--surface-sunken` fill + `--r-sm`; keyword hints get a dotted underline in `--ink-muted`. **No invisible tap targets.**
 - Tap response: pill/underline press-darkens in 100ms; meaning appears as a small anchored popover (`--t-base`), not a sheet. One popover at a time; tapping elsewhere dismisses.
-- Known-chunk state (§4b.5): tinted with a translucent `--accent` wash + subtle check glyph. Unknown chunks: neutral. The contrast between them is the feature.
+- Chunk states (§4b.5): NEW = soft `--accent` fill + small NEW tag (only when new chunks are ≤ half; all-new phrases unmarked). Known = unmarked; tap-popover carries meaning + provenance. Gold = attend here, green = success only, app-wide.
 
 ### 3.5 Exercise chrome
 - Progress bar: hairline, top of screen, `--accent`, moves only forward (learning spec), animates `--t-base`.
