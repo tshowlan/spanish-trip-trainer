@@ -147,7 +147,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .topbar {
   position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; gap: 9px;
-  padding: calc(16px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) 12px calc(18px + env(safe-area-inset-left));
+  padding: calc(16px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) 12px calc(24px + env(safe-area-inset-left));
   background: linear-gradient(180deg, var(--bg) 85%, transparent);
 }
 /* language flag sits just left of the gear (mirrors the flame→profile spacing) */
@@ -167,10 +167,10 @@ body.home-lit .topbar .lang-flag-top { background: rgba(255,255,255,.14); border
 .topbar-brand {
   order: -1; display: flex; align-items: center; gap: 5px;
 }
-.topbar-brand .wordmark { height: 20px; }
+.topbar-brand .wordmark { height: 19px; }
 
 /* ---------- home / map ---------- */
-.home { padding: 8px 18px 120px; position: relative; z-index: 1; }
+.home { padding: 8px 24px 120px; position: relative; z-index: 1; }
 
 /* §3.2 home atmosphere: a destination photo crowns the top and MASKS into the ground (mask-don't-paint),
    with a warm destination ground-glow beneath it. Fixed layer behind the content (torn down off-home). */
@@ -181,7 +181,7 @@ body.home-lit .topbar .lang-flag-top { background: rgba(255,255,255,.14); border
   background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); } }
 :root[data-theme="dark"] .home-atmo .atmo-ground {
   background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); }
-.home-atmo .atmo-photo { position: absolute; top: 0; left: 0; right: 0; height: 232px; }
+.home-atmo .atmo-photo { position: absolute; top: 0; left: 0; right: 0; height: 264px; }
 .home-atmo .atmo-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.72) brightness(.82) contrast(.95);
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%);
           mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%); }
@@ -190,10 +190,9 @@ body.home-lit .topbar .lang-flag-top { background: rgba(255,255,255,.14); border
 :root[data-theme="dark"] .home-atmo .atmo-photo img { filter: saturate(.6) brightness(.55) contrast(1.02); }
 
 /* §3.2 trip header — destination name anchors over the photo, subline is pure countdown */
-/* trip header — dest bumped from the artifact's 28px (drawn on a 340px phone) for prominence on the
-   real 375px+ screen; extra bottom margin drops the dials a little farther down the crown. */
-.trip { margin: 10px 0 30px; }
-.trip .dest { font-family: var(--font-display); font-size: 33px; font-weight: 700; color: var(--text); letter-spacing: -.02em; }
+/* trip header — matches the re-mocked 390px artifact (dest 28px; the ~12% scale-up lives in the dials). */
+.trip { margin: 4px 0 20px; }
+.trip .dest { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -.01em; }
 .trip .sub { font-size: 14px; color: var(--text-dim); margin-top: 3px; }
 
 /* photo-on (§2.1 halo rule): header over the photo — transparent topbar, wordmark halo forcing the
@@ -792,7 +791,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* §3.2 insight line: gold spark + green delta, in rhythm under Practice (not pinned to the bottom) */
 .whisper { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 14px;
   font-size: 12.5px; color: var(--text-dim); line-height: 1.5; }
-.whisper .spark { color: var(--accent-2); display: flex; align-items: center; }
+/* override the bar-chart .spark (line ~914) that collides on the class name (height:32px/gap:4px) */
+.whisper .spark { color: var(--accent-2); display: flex; align-items: center; height: auto; gap: 0; }
 .whisper .spark svg { display: block; }
 .whisper .num { font-family: var(--font-display); font-weight: 600; color: var(--green); }
 /* §3.2 destination presence line (local time now; temp appends when weather lands) */
@@ -850,8 +850,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .ring-wrap { position: relative; display: grid; place-items: center; }
 .ring { width: min(108px, 29vw); height: auto; display: block; }
 /* §3.2.2 push the size asymmetry well beyond near-peer — the hierarchy must read at a glance */
-.ring.readiness { width: min(140px, 42vw); }
-.ring.m-momentum, .ring.m-retention { width: min(72px, 21vw); }
+.ring.readiness { width: min(168px, 45vw); }
+.ring.m-momentum, .ring.m-retention { width: min(80px, 22vw); }
 .ring-tick { stroke: var(--accent-2); stroke-width: 3.5; stroke-linecap: round; opacity: 1; }   /* §3.2 gold pace tick — the sole ambient pace signal */
 /* §3.2.2 delta whispers under the flanking dials */
 .dial-delta { font-size: 12px; font-weight: 800; margin-top: 2px; color: var(--text-dim); }
@@ -860,8 +860,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .ring-fg { fill: none; stroke: var(--ring, var(--secondary)); stroke-width: 6.5; stroke-linecap: round;
   transition: stroke-dashoffset .85s cubic-bezier(.3,.7,.3,1); }
 .ring-center { position: absolute; inset: 0; display: grid; place-items: center; }
-.ring-num { font-family: var(--font-display); font-weight: 800; font-size: 27px; color: var(--text); line-height: 1; }
-.ring-card.m-momentum .ring-num, .ring-card.m-retention .ring-num { font-size: 22px; }
+.ring-num { font-family: var(--font-display); font-weight: 800; font-size: 38px; color: var(--text); line-height: 1; }
+.ring-card.m-momentum .ring-num, .ring-card.m-retention .ring-num { font-size: 21px; }
 .ring-num .pct { font-size: 14px; color: var(--text-dim); font-weight: 800; }
 .ring-label { font-weight: 600; font-size: 12.5px; color: var(--text-dim); text-align: center; line-height: 1.25; }
 .m-momentum { --ring: var(--secondary); }

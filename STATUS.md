@@ -42,6 +42,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - Verified in the real app (seeded returning-user state, fresh port to beat the HTTP cache) in **dark + light**: photo crown + masking, trip header, band chip, fade tile, presence line all present and matching the design; atmosphere correctly torn down off-home. SW → v127.
 - **Home now matches design/home.html.** Genuinely remaining: the header treatment on **other pages** (Tom's design session) and the **weather tile + temperature** (cached weather edge function).
 
+## 2026-07-16 — Reconcile app to the re-mocked 390px home artifact (Claude Code)
+- Tom re-mocked `design/home.html` at **390px** (the new baseline). It scales the design up ~12% for the wider frame: hero ring 150→168 / number 34→38, flank rings 72→80 / number 19→21, photo crown 230→264, screen padding 18/20→20/24. **`.trip .dest` stayed 28px** — so my earlier 33px "prominence" bump was wrong (font px don't scale with frame width; the re-mock put the size increase in the dials, not the hero).
+- Reconciled the app to match (ran the §5 diff): readiness ring `min(168px,45vw)` + num 38px; flank rings `min(80px,22vw)` + num 21px; dest back to **28px**; `.atmo-photo` 264px; header/home horizontal padding → 24px; wordmark 20→19px.
+- **Bug fixed:** the insight spark was 32px tall (never truly inline) due to a **class-name collision** — a bar-chart `.spark { height:32px; gap:4px }` was also hitting `.whisper .spark`. Overrode height/gap; spark is now a true 12px. (This was the real cause behind two rounds of "spark isn't in line.")
+- Diff clean vs the re-mock bar render-identical noise (uppercased kicker, inline-vs-flex chevron box). SW → v133.
+
 ## 2026-07-16 — Home fidelity round 3: header space, countdown, light tint (Claude Code)
 - **Header top space:** topbar padding-top 6→16px (+ safe-area). More breathing room above the wordmark/flame/lang on every screen.
 - **Countdown de-duplicated:** removed the `Nd out` subline from under the Readiness dial — the countdown now lives only in the top-left trip block ("Spain / 128 days out"), per design/home.html (which has no dial subline). Set-date affordance moved to the trip sub when no trip date.
