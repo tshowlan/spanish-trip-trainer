@@ -392,9 +392,12 @@ function introPhoto(lesson) {
     /number|money|peso|time|pay/.test(t) ? "market" :
     /food|order|taco|eat|diet|allerg|bar|mezcal|table/.test(t) ? "food" :
     "cafe";                                   // greetings / small talk / rescue → a warm café
-  const region = state.active === "spain" ? "mx" : "mx";   // TODO: add /img/es set for Spain
+  // Spain photos we actually have (img/es/, CC0 placeholders); other categories fall back to the
+  // img/mx set until Spain versions are chosen. Add a name to ES_PHOTOS when its img/es/<name>.jpg lands.
+  const region = (state.active === "spain" && ES_PHOTOS.has(pick)) ? "es" : "mx";
   return `./img/${region}/${pick}.jpg`;
 }
+const ES_PHOTOS = new Set(["cafe", "market", "default"]);
 function renderIntro(q) {
   const items = q.items || [];
   const photo = introPhoto(run.lesson);

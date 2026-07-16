@@ -27,6 +27,13 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - Verified in browser (lesson + review tiles with real photos): photo bleed + gradient + gold kicker + readable text all correct. SW → v125.
 - **Stage 3 remaining:** free-licensed Spain placeholders into `img/es/` + region fix (so Spain stops reusing Mexico photos); then the photo-crown header + weather tile (both gated on Tom's design session / the weather fetch).
 
+## 2026-07-16 — Home build STAGE 3b: Spain placeholder photos (Claude Code)
+- Pulled CC0 (public-domain, no-attribution) Spain photos via Openverse, **verified by eye** (titles were unreliable — the first pass returned an exhibition banner, a museum reliquary, a football stadium, a UK street named "Seville", and one non-image SVG). Kept the 3 that are genuinely good Spain scenes: `img/es/cafe.jpg` (Café Moka, Barcelona), `market.jpg` (Mercado Central, Valencia), `default.jpg` (Plaza Mayor, Madrid). Resized to ~200-350KB. Provenance in `img/es/CREDITS.txt`.
+- `introPhoto` now resolves Spain's café/market/default to `img/es/`; every other category **falls back to the good `img/mx` set** (`ES_PHOTOS` gates per-name, so no 404s and nothing off-topic). Add a name to `ES_PHOTOS` when its `img/es/<name>.jpg` is chosen.
+- Verified path resolution (Spain vs Mexico) + all three are valid JPEGs viewed. SW → v126.
+- **Deliberately did NOT chase all 6 via CC0** — the pool is noisy and curated placeholders want a human eye (Tom is choosing final photos anyway). Food/transport/sights use the on-topic mx photos until Spain versions land.
+- **Home build remaining (all externally gated):** photo-crown header (Tom's design session on header↔gradient), weather tile + temperature (cached weather edge function). The data-driven home is complete.
+
 ## 2026-07-16 — Home screen designed + approved (design/home.html)
 - Atmosphere: photo + tint. Photo crowns top, dissolves via SELF-MASK (mask-don't-paint rule, see decisions); destination ground-glow sweeps diagonally from bottom-left (26% peak, full height), stacked BENEATH the photo. Dark theme = gradient ground (navy linear + warm top radial), cards translucent + blur — this is a styles.css token change: dark --bg becomes the gradient treatment, --bg-card translucent; APPLY TO BOTH DARK BLOCKS.
 - Wordmark: real SVG, fills → --wordmark-1/-2 tokens (update source SVG in repo); white letterform halo in photo contexts; halo forces standard navy/blue fills in both themes.

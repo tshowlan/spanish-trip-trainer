@@ -1,0 +1,7 @@
+Spain placeholder photos (img/es/) — all CC0 1.0 (public domain, no attribution required).
+Sourced via Openverse; verified by eye. Replace with final chosen photos anytime (keep filenames).
+Categories not listed here fall back to the img/mx set until Spain versions are chosen.
+
+cafe.jpg    <-  "Cafe Moka, Barcelona"        [cc0 1.0, wikimedia]  https://commons.wikimedia.org/w/index.php?curid=23939868
+market.jpg  <-  "Valencia - Mercado Central"  [cc0 1.0, flickr]     https://www.flickr.com/photos/16763028465
+default.jpg <-  "Plaza Mayor, Madrid"         [cc0 1.0, flickr]     https://www.flickr.com/photos/23434386680
