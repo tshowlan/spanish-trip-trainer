@@ -63,8 +63,13 @@ Momentum, Retention), deliberately anti-Duolingo.
   en dashes → hyphen. (Code comments may keep em dashes — they're not rendered.)
 - **No emoji in rendered UI** — use `icon()` / `soundIcon()`. Exceptions kept on purpose: country flags and
   the one-time onboarding trip-style picker.
-- **Verification without a browser:** the preview/SW pins stale scripts, so verify via `node --check` +
-  served-file/sandbox extraction (brace-match a function, `new Function`, stub globals), not a live preview.
+- **Browser verification: serve with `python3 tools/serve.py` (a no-cache server), never plain
+  `python3 -m http.server`.** The plain server sends no `Cache-Control`, so the preview browser
+  heuristically caches JS/CSS and keeps running STALE code after edits — this has silently masked
+  changes and produced "verified" screenshots of old code. `tools/serve.py` sends `Cache-Control:
+  no-store`, so a reload always loads fresh. (Real deploy still needs the `sw.js` `CACHE` bump.) For
+  logic the browser can't exercise, `node --check` + served-file/sandbox extraction (brace-match a
+  function, `new Function`, stub globals) still applies.
 - Commits end with: `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`.
 - `design/` contains approved UI artifacts (HTML). Any UI element with an artifact there must match it exactly (see docs/tripfluent-design-system.md §5); artifacts override text descriptions of visuals.
 
