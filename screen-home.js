@@ -83,7 +83,7 @@ function findLesson(id) {
 // §3.2 home atmosphere: a destination photo crowns the top and masks into the ground; a warm
 // destination ground-glow sweeps beneath it (mask-don't-paint, decisions 2026-07-16). Fixed layer
 // behind the content, torn down when leaving home (nav.js). The wide destination hero photo.
-function destHero() { return (state.active === "spain") ? "./img/es/market.jpg" : "./img/mx/sights.jpg"; }
+function destHero() { return (state.active === "spain") ? "./img/es/hero.jpg" : "./img/mx/sights.jpg"; }
 function setHomeAtmo() {
   clearHomeAtmo();
   const a = el(`<div class="home-atmo" aria-hidden="true"><div class="atmo-ground"></div><div class="atmo-photo"><img src="${destHero()}" alt=""></div></div>`);
