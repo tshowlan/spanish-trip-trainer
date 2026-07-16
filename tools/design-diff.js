@@ -115,6 +115,14 @@
       [".tick", ".answer-tick"],
       [".ex-input.correct", "#qbody.qcorrect .text-input"],
     ],
+    // App state: any audioControl(_, {speed:true}) mounted in the DOM (e.g. a listening exercise,
+    // or inject one). Same class names in artifact and app, so selectors match 1:1.
+    audioControl: [
+      [".ac-speaker", ".ac-speaker"],
+      [".ac-bars", ".ac-bars"],
+      [".ac-bars span", ".ac-bars span"],
+      [".ac-speed", ".ac-speed"],
+    ],
     // App state: showCorrection() open — .corr-wrap.show in the DOM.
     correctionSheet: [
       [".scrim", ".corr-scrim"],

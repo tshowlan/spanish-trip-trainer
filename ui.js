@@ -79,16 +79,35 @@ function icon(name, size = 22) {
   const inner = !v ? "" : (v[0] === "<" ? v : `<path d="${v}"/>`);
   return `<svg class="ph" viewBox="0 0 256 256" width="${size}" height="${size}" fill="currentColor" aria-hidden="true">${inner}</svg>`;
 }
-// §feedback: the "Hear it" / play sound mark — a gold animated waveform (its own accent color,
-// distinct from the blue button text, and larger). Bars are centered at y=112 so they pulse in place.
-function soundIcon(size = 26) {
-  return `<svg class="sound-ic" viewBox="0 0 256 224" width="${size}" height="${Math.round(size * 224 / 256)}" aria-hidden="true">
-    <rect x="24"  y="86" width="22" height="52"  rx="11" style="--d:0"/>
-    <rect x="70"  y="52" width="22" height="120" rx="11" style="--d:1"/>
-    <rect x="116" y="30" width="22" height="164" rx="11" style="--d:2"/>
-    <rect x="162" y="62" width="22" height="100" rx="11" style="--d:3"/>
-    <rect x="208" y="94" width="22" height="36"  rx="11" style="--d:4"/>
-  </svg>`;
+/* ---------- AudioControl (§3.2) — one component, three variants (built to design/audio-control.html).
+   All glyphs gold (--accent-2); the speaker swaps to animated gold bars only while audio actually plays;
+   tapping restarts (no pause — clips are 1-4s). audioControl(play, {speed}) → variant A (inline speaker)
+   or A2 (+ speed pill, listening exercises only). play(slow) is the caller's speak hook; `slow` is true
+   while the speed pill is engaged. The returned node exposes _fire() (play + pulse) for autoplay. ---------- */
+function acSpeakerGlyph() {
+  return `<svg class="ac-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>`;
+}
+function audioControl(play, opts) {
+  opts = opts || {};
+  const wrap = el(`<span class="ac-group"></span>`);
+  const speaker = el(`<button class="ac-speaker" aria-label="Play audio">${acSpeakerGlyph()}<span class="ac-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span></button>`);
+  wrap.appendChild(speaker);
+  let slow = false, t;
+  const pulse = ms => { speaker.classList.add("playing"); clearTimeout(t); t = setTimeout(() => speaker.classList.remove("playing"), ms || 1600); };
+  const fire = () => { pulse(); play(slow); };
+  speaker.addEventListener("click", () => { haptic("press"); fire(); });
+  if (opts.speed) {
+    // A2: speed pill — 1x → 0.75x, gold while slowed, resets per item (a fresh control each render)
+    const pill = el(`<button class="ac-speed" aria-label="Playback speed">1×</button>`);
+    pill.addEventListener("click", () => {
+      slow = pill.classList.toggle("slowed");
+      pill.textContent = slow ? "0.75×" : "1×";
+      haptic("press"); fire();
+    });
+    wrap.appendChild(pill);
+  }
+  wrap._fire = fire; wrap._pulse = pulse; wrap._speaker = speaker;
+  return wrap;
 }
 
 /* ---------- lighthouse mark (geometric, brand palette) ---------- */

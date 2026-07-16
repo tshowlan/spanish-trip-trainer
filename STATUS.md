@@ -2,6 +2,30 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-15 — AudioControl built (§3.2), first run through the diff gate (Claude Code)
+
+Built the unified `AudioControl` to `design/audio-control.html`; retired every ad-hoc audio button.
+
+- NEW `audioControl(play, {speed})` in `ui.js` — variant A (44px gold inline speaker, glyph → animated
+  gold bars only while playing, tap restarts) and A2 (+ speed pill 1x/0.75x, gold when slowed, resets per
+  item). `.ac-*` CSS in `styles.css` matches the artifact.
+- **Replaced:** all `speak-btn`/`soundIcon` "Hear it" buttons (present card, intro card, primer reveal,
+  es→en MC) → variant A plain speaker; `waveButton`+`slow-btn` in the three listening exercises
+  (renderReply/renderListenChoice/renderListen) → variant A2; `pb-speak` (phrasebook) → variant A; intro
+  list rows → row-as-trigger with the gold speaker visual (variant C). Chunk pills (present + correction)
+  gained the variant-C gold-ring `.playing` state. Fixes an off-brand bug too: the old wave button was
+  `--secondary` blue, not gold.
+- **Removed dead code:** `soundIcon()`, `waveButton()`, and `.speak-btn/.wave-btn/.wv/.slow-btn/.sound-ic/
+  .intro-spk/.pb-speak` CSS. `corr-audio` left as-is (governed by the correction-sheet artifact, which is a
+  plain speaker per the AudioControl rules).
+- **Acceptance (§5 gate): clean.** `designDiff('/design/audio-control.html', DESIGN_PAIRS.audioControl)`
+  returned zero mismatches on `.ac-speaker/.ac-bars/.ac-bars span/.ac-speed`. All four component states
+  screenshot-verified; listening exercise renders fresh with speaker+pill; no boot errors. Phrasebook
+  visual blocked only by the preview's stale HTTP script cache (source verified correct; same pattern as
+  the verified listening integration) — fresh on deploy via the SW bump.
+- Minor accepted deviation: speed pill is 30px tall (matches the approved artifact) vs the §6 44px
+  touch-target target, consistent with how `corr-audio` (40px) was handled. SW → v120.
+
 ## 2026-07-15 — AudioControl designed + approved
 - NEW: design/audio-control.html (§3.2 component sheet, live states). Three variants: inline speaker (44px, gold glyph → animated gold bars while playing), speaker + speed pill (1× → 0.75×, gold when slowed, resets per item), chunk pill (pill is the trigger, gold ring while playing). Disabled = 40% opacity, never hidden.
 - Build: replace every ad-hoc speaker/turtle button in the app with AudioControl instances per variant. This completes the original offender list (slow-voice button, phrase taps, correction popup).

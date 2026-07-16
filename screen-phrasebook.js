@@ -38,11 +38,11 @@ function phrasebookBody(wrap) {
     const kws = (it.keywords || []).filter(k => threadCount(k) >= 2);
     const chips = kws.map(k => `<button class="pb-kw ${k === _pbThread ? "on" : ""}" data-kw="${k}">${k}<span class="pb-kw-n">${threadCount(k)}</span></button>`).join("");
     const row = el(`<div class="pb-row">
-      <button class="pb-speak" aria-label="Play">${soundIcon(22)}</button>
+      <span class="pb-speak-mount"></span>
       <div class="pb-text"><div class="pb-es">${it.es}</div><div class="pb-en">${it.en}</div>${chips ? `<div class="pb-kws">${chips}</div>` : ""}</div>
       <button class="pb-save ${isSaved(it.es) ? "on" : ""}" aria-label="Save">${icon("bookmark", 20)}</button>
     </div>`);
-    row.querySelector(".pb-speak").addEventListener("click", () => speak(it.es));
+    row.querySelector(".pb-speak-mount").replaceWith(audioControl(() => speak(it.es)));
     row.querySelector(".pb-save").addEventListener("click", () => { toggleSave(it.es); draw(); refreshSeg(); });
     row.querySelectorAll(".pb-kw").forEach(c => c.addEventListener("click", () => {
       _pbThread = c.dataset.kw; _pbFilter = ""; search.value = ""; draw();

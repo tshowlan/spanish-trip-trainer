@@ -284,7 +284,6 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .primer-guess-es.big { font-size: 34px; }
 .primer-body .qtype { margin: 8px 0 4px; }
 .primer-body .choices { width: 100%; margin-top: 8px; }
-.primer-body .speak-btn { margin: 10px 0; }
 .primer-en { font-size: 18px; color: var(--text-dim); margin-top: 4px; }
 .primer-anchor { margin-top: 18px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; font-size: 14px; color: var(--secondary); }
 
@@ -298,12 +297,31 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .intro-es { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
 .intro-en { font-size: 14px; color: var(--text-dim); margin-top: 2px; }
 .intro-note { font-size: 12px; color: var(--secondary); margin-top: 5px; line-height: 1.35; }
-.intro-spk { flex: none; font-size: 18px; color: var(--secondary); }
-.speak-btn {
-  display: inline-flex; align-items: center; gap: 8px; margin: 4px 0 18px;
-  background: var(--bg-elevated); border: 1px solid var(--border); color: var(--secondary);
-  border-radius: 12px; padding: 8px 14px; font-weight: 700; cursor: pointer; font-size: 14px;
-}
+/* ---- AudioControl (§3.2), built to design/audio-control.html ---- */
+.ac-group { display: inline-flex; align-items: center; }
+.ac-speaker { width: 44px; height: 44px; min-width: 44px; padding: 0; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--bg-card); color: var(--accent-2); box-shadow: var(--shadow);
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  transition: transform var(--transition), box-shadow var(--transition); }
+.ac-speaker:active { transform: translateY(2px); box-shadow: var(--shadow-press); }   /* §2.1 push-down (token, not the artifact's hardcoded light shadow) */
+.ac-bars { display: none; align-items: flex-end; gap: 2.5px; height: 16px; }
+.ac-bars span { width: 3px; background: var(--accent-2); border-radius: 1.5px; animation: acbar 900ms ease-in-out infinite; }
+.ac-bars span:nth-child(1) { height: 7px;  animation-delay: 0ms; }
+.ac-bars span:nth-child(2) { height: 14px; animation-delay: 150ms; }
+.ac-bars span:nth-child(3) { height: 10px; animation-delay: 300ms; }
+.ac-bars span:nth-child(4) { height: 15px; animation-delay: 450ms; }
+@keyframes acbar { 0%,100% { transform: scaleY(0.55); } 50% { transform: scaleY(1); } }
+.ac-speaker.playing .ac-glyph { display: none; }
+.ac-speaker.playing .ac-bars { display: inline-flex; }
+.ac-speed { height: 30px; margin-left: 8px; padding: 0 11px; border-radius: 15px;
+  border: 1px solid var(--border); background: var(--bg-elevated);
+  font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--text-dim);
+  cursor: pointer; transition: background var(--transition), color var(--transition), border-color var(--transition);
+  display: inline-flex; align-items: center; gap: 4px; min-width: 44px; justify-content: center; }
+.ac-speed.slowed { background: var(--bg-card); color: var(--accent-2); border-color: var(--accent-2); }
+/* variant C playing state on the existing chunk pills (present card + correction sheet) */
+.chunk-pill.playing, .corr-chunk.playing { border-color: var(--accent-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+@media (prefers-reduced-motion: reduce) { .ac-bars span { animation: none; } }
 
 /* choices */
 .choices { display: flex; flex-direction: column; gap: 12px; }
@@ -331,7 +349,6 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 /* M4 speed round + listen 0.75× toggle */
 .speed-timer { flex: 1; text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 22px; }
 .speed-score { font-weight: 800; font-size: 18px; color: var(--green); min-width: 28px; text-align: right; }
-.slow-btn { display: block; margin: 12px auto 0; background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-dim); border-radius: 999px; padding: 7px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
 
 /* §8.3 each question springs in — continuous motion is most of "feels alive" */
@@ -424,27 +441,6 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .present-nav .btn { margin: 0; }
 .present-nav #pback { flex: 0 0 auto; width: auto; padding: 12px 18px; display: inline-flex; align-items: center; gap: 4px; }
 .present-nav #got { flex: 1; }
-
-/* §feedback: gold animated waveform "Hear it" mark — distinct accent color, bigger, gently pulsing */
-.sound-ic { flex: none; vertical-align: -0.3em; }
-.sound-ic rect { fill: var(--accent-2); transform-origin: center; animation: sndwv 1.05s ease-in-out infinite; animation-delay: calc(var(--d) * 90ms); }
-@keyframes sndwv { 0%, 100% { transform: scaleY(.55); } 50% { transform: scaleY(1); } }
-@media (prefers-reduced-motion: reduce) { .sound-ic rect { animation: none; } }
-
-/* §feedback #5: audio waveform play button for the "what did you hear" exercises */
-.wave-btn { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%;
-  background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius);
-  padding: 22px 16px; margin: 8px 0 18px; cursor: pointer; box-shadow: var(--shadow);
-  transition: border-color .2s, transform .12s cubic-bezier(.34,1.56,.64,1); }
-.wave-btn:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
-.wave-btn.playing { border-color: var(--secondary); }
-.wave { display: flex; align-items: center; gap: 4px; height: 36px; }
-.wv { width: 5px; height: 100%; border-radius: 99px; background: var(--secondary); opacity: .55;
-  transform: scaleY(.22); transform-origin: center;
-  animation: wave 1.15s ease-in-out calc(var(--i) * 75ms) infinite; }
-.wave-btn.playing .wv { opacity: 1; }
-@keyframes wave { 0%,100% { transform: scaleY(.22); } 50% { transform: scaleY(1); } }
-@media (prefers-reduced-motion: reduce) { .wv { animation: none; transform: scaleY(.5); } }
 
 .btn {
   width: 100%; border: none; border-radius: var(--radius); padding: var(--space-4);
@@ -657,7 +653,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .seg-toggle .seg.on { background: var(--bg-card); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
 .pb-row { display: flex; align-items: center; gap: 12px; background: var(--bg-elevated); border: 1px solid transparent;
   border-radius: var(--radius-md); padding: 11px 14px; margin-bottom: 6px; }
-.pb-speak { background: var(--bg-elevated); border: none; border-radius: 10px; padding: 6px 10px; cursor: pointer; font-size: 15px; flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+.pb-row .ac-group { flex: none; }
 .pb-text { flex: 1; min-width: 0; }
 .pb-es { font-weight: 700; }
 .pb-en { color: var(--text-dim); font-size: 13px; margin-top: 1px; }

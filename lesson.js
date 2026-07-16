@@ -255,12 +255,13 @@ function renderPrimer(lesson, onDone) {
       <div class="primer-body reveal">
         <div class="primer-label ok">Here it is</div>
         <div class="primer-guess-es big">${guess.es}</div>
-        <button class="speak-btn" id="psp">${soundIcon()} Hear it</button>
+        <span id="psp" class="ac-mount"></span>
         <div class="primer-en">${guess.en}</div>
         ${guess.anchor ? `<div class="primer-anchor">${icon('bulb', 16)} ${guess.anchor}</div>` : ""}
       </div></div>`));
-    speak(guess.es);
-    $("#psp").addEventListener("click", () => speak(guess.es));
+    const pspAc = audioControl(() => speak(guess.es));
+    $("#psp").replaceWith(pspAc);
+    setTimeout(() => pspAc._fire(), 200);
     footer(`<button class="btn accent" id="pstart">Start the lesson →</button>`);
     $("#pstart").addEventListener("click", onDone);
   };
@@ -368,7 +369,7 @@ function renderQuestion() {
   wrap.appendChild(el(`<div id="qbody" class="qenter"></div>`));   // §8.3 each question springs in
   app.appendChild(wrap);
   // §8.2 card-press haptic — one delegated listener covers every interactive card in the runner
-  wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile,.speak-btn")) haptic("press"); });
+  wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile")) haptic("press"); });
   $("#quit").addEventListener("click", () => confirmSheet({ title: "Quit lesson?", body: "Your progress in it is lost.", confirmLabel: "Quit lesson", cancelLabel: "Keep going", onConfirm: renderHome }));
   run.answered = false;
   // make the mistake re-queue visible: label a phrase you missed coming back around
@@ -412,11 +413,12 @@ function renderIntro(q) {
           <div class="intro-es-big">${it.es}</div>
           <div class="intro-en-big">${it.en}</div>
           ${it.note ? `<div class="intro-note-big">${it.note}</div>` : ""}
-          <button class="speak-btn intro-hear">${soundIcon()} Hear it</button>
+          <span class="intro-hear ac-mount"></span>
         </div>
       </div>`));
-      body.querySelector(".intro-hear").addEventListener("click", () => speak(it.es));
-      if (!seen.has(it.id)) { seen.add(it.id); setTimeout(() => speak(it.es), 250); }
+      const introAc = audioControl(() => speak(it.es));
+      body.querySelector(".intro-hear").replaceWith(introAc);
+      if (!seen.has(it.id)) { seen.add(it.id); setTimeout(() => introAc._fire(), 250); }
       const f = footer(`<div class="intro-nav">${i > 0 ? `<button class="btn grey" id="iback">← Back</button>` : `<span class="nav-gap"></span>`}<button class="btn" id="inext">${i === items.length - 1 ? "See all →" : "Next →"}</button></div>`);
       if (i > 0) f.querySelector("#iback").addEventListener("click", () => { i--; draw(); });
       f.querySelector("#inext").addEventListener("click", () => { i++; draw(); });
@@ -424,10 +426,15 @@ function renderIntro(q) {
       body.appendChild(el(`<div class="qtype">All ${items.length} new phrases · tap to hear</div>`));
       const list = el(`<div class="intro-list"></div>`);
       items.forEach(it => {
-        const row = el(`<button class="intro-row">
+        // whole row is the trigger (variant C): a gold speaker visual that animates while it plays
+        const row = el(`<div class="intro-row" role="button" tabindex="0">
           <div class="intro-txt"><div class="intro-es">${it.es}</div><div class="intro-en">${it.en}</div>${it.note ? `<div class="intro-note">${it.note}</div>` : ""}</div>
-          <span class="intro-spk">${soundIcon(24)}</span></button>`);
-        row.addEventListener("click", () => speak(it.es));
+          <span class="ac-speaker" aria-hidden="true">${acSpeakerGlyph()}<span class="ac-bars"><span></span><span></span><span></span><span></span></span></span></div>`);
+        const spk = row.querySelector(".ac-speaker");
+        row.addEventListener("click", () => {
+          haptic("press"); speak(it.es);
+          spk.classList.add("playing"); clearTimeout(spk._t); spk._t = setTimeout(() => spk.classList.remove("playing"), 1600);
+        });
         list.appendChild(row);
       });
       body.appendChild(list);
@@ -467,7 +474,10 @@ function renderPresent(q) {
         <div class="present-en">${item.en}</div>
         <div class="chunk-tip">Tap a piece to hear it. The muted ones you already know.</div>
       </div>`);
-    card.querySelectorAll(".chunk-pill").forEach(p => p.addEventListener("click", () => { p.classList.toggle("show-en"); speak(item.chunks[+p.dataset.i][0]); }));
+    card.querySelectorAll(".chunk-pill").forEach(p => p.addEventListener("click", () => {
+      p.classList.toggle("show-en"); speak(item.chunks[+p.dataset.i][0]);
+      p.classList.add("playing"); clearTimeout(p._t); p._t = setTimeout(() => p.classList.remove("playing"), 1200);
+    }));
   } else {
     card = el(`<div class="present-card">
       <div class="present-es">${item.es}</div>
@@ -478,10 +488,9 @@ function renderPresent(q) {
     </div>`);
   }
   body.appendChild(card);
-  const replay = el(`<button class="speak-btn">${soundIcon()} Hear it</button>`);
-  replay.addEventListener("click", () => speak(item.es));
+  const replay = audioControl(() => speak(item.es));
   body.appendChild(replay);
-  setTimeout(() => speak(item.es), 250);
+  setTimeout(() => replay._fire(), 250);
   // §feedback #1: Back button while phrases are being introduced — step back to the previous new-phrase
   // card (only within a run of present cards, so we never rewind into an already-graded question).
   const canBack = run.idx > 0 && run.qs[run.idx - 1] && run.qs[run.idx - 1].type === "present";
@@ -502,16 +511,6 @@ function footer(html) {
   return f;
 }
 function clearFooter() { const f = $("#footer"); if (f) f.remove(); }
-// §feedback #5: audio prompt for the "what did you hear" exercises — a waveform that sweeps across
-// on play (replaces the bare 🔊). onPlay fires on tap; the bars animate while audio is speaking.
-function waveButton(onPlay) {
-  const bars = Array.from({ length: 13 }, (_, i) => `<span class="wv" style="--i:${i}"></span>`).join("");
-  const b = el(`<button class="wave-btn" aria-label="Play audio"><span class="wave">${bars}</span></button>`);
-  const pulse = () => { b.classList.add("playing"); clearTimeout(b._t); b._t = setTimeout(() => b.classList.remove("playing"), 1600); };
-  b.addEventListener("click", () => { pulse(); onPlay(); });
-  b._pulse = pulse;
-  return b;
-}
 
 /* distractors must be the same KIND as the answer. §4b.4 distractor ladder: prefer siblings that
    share a CATEGORY (tags) — other numbers for a number, other dishes for a dish — tightened by
@@ -566,7 +565,7 @@ function renderMC(q) {
     const pe = presentEs(item);
     body.appendChild(el(`<div class="prompt">${pe.text}</div>`));
     if (pe.variant) body.appendChild(el(`<div class="prompt-sub">Another common way to say it</div>`));
-    const sb = el(`<button class="speak-btn">${soundIcon()} Hear it</button>`); sb.addEventListener("click", () => speak(pe.text)); body.appendChild(sb);
+    body.appendChild(audioControl(() => speak(pe.text)));
   } else {
     body.appendChild(el(`<div class="prompt">${item.en}</div>`));
   }
@@ -611,13 +610,10 @@ function renderReply(q) {
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Understand the reply</div>`));
   body.appendChild(el(`<div class="prompt-sub" style="margin-bottom:8px">You said: “${item.es}”</div>`));
-  const play = waveButton(() => speak(r.es));
+  const play = audioControl(slow => { if (slow) q.slow = true; slow ? speak(r.es, 0.55) : speak(r.es); }, { speed: true });
   body.appendChild(play);
   body.appendChild(el(`<div class="prompt-sub">They answer. What did they say?</div>`));
-  setTimeout(() => { speak(r.es); play._pulse(); }, 300);
-  const slow = el(`<button class="slow-btn">${icon('clock', 16)} 0.75× slower</button>`);
-  slow.addEventListener("click", () => { q.slow = true; play._pulse(); speak(r.es, 0.55); });
-  body.appendChild(slow);
+  setTimeout(() => play._fire(), 300);
   const answer = r.en;
   const pool = [...new Set((ALL_ITEMS || []).flatMap(x => x.reply && x.reply.en !== answer ? [x.reply.en] : []).concat((ALL_ITEMS || []).filter(x => x.en !== answer).map(x => x.en)))];
   const options = shuffle([answer, ...sample(pool, 3)]);
@@ -631,12 +627,9 @@ function renderListenChoice(q) {
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">What did you hear?</div>`));
   const pe = presentEs(item);                          // §4b.3: listening may play a natural variant
-  const play = waveButton(() => speak(pe.text));
+  const play = audioControl(slow => { if (slow) q.slow = true; slow ? speak(pe.text, 0.55) : speak(pe.text); }, { speed: true });
   body.appendChild(play);
-  setTimeout(() => { speak(pe.text); play._pulse(); }, 300);
-  const slow = el(`<button class="slow-btn">${icon('clock', 16)} 0.75× slower</button>`);
-  slow.addEventListener("click", () => { q.slow = true; play._pulse(); speak(pe.text, 0.55); });
-  body.appendChild(slow);
+  setTimeout(() => play._fire(), 300);
   body.appendChild(mcChoices(options, answer, item));
 }
 
@@ -665,13 +658,10 @@ function renderListen(q) {
   body.appendChild(el(`<div class="qtype">Type what you hear</div>`));
   coldEffortNote(body);                                // §4c.5 one-time cold-production framing
   const pe = presentEs(item);                          // §4b.3: may play a natural variant (grading accepts it)
-  const play = waveButton(() => speak(pe.text));
+  // §5.4: 0.75× slower replay is scaffolding — using it (slow=true) means this rep doesn't earn the `native` axis
+  const play = audioControl(slow => { if (slow) q.slow = true; slow ? speak(pe.text, 0.55) : speak(pe.text); }, { speed: true });
   body.appendChild(play);
-  setTimeout(() => { speak(pe.text); play._pulse(); }, 350);
-  // §5.4: 0.75× slower replay is scaffolding — using it means this rep doesn't earn the `native` axis
-  const slow = el(`<button class="slow-btn">${icon('clock', 16)} 0.75× slower</button>`);
-  slow.addEventListener("click", () => { q.slow = true; speak(pe.text, 0.55); });
-  body.appendChild(slow);
+  setTimeout(() => play._fire(), 350);
   const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe en español…">`);
   body.appendChild(input);
   setTimeout(() => input.focus(), 50);
@@ -1036,6 +1026,7 @@ function showCorrection(item, extra, wrong) {
     const s = ch.closest(".corr-sheet").getBoundingClientRect(), r = ch.getBoundingClientRect();
     pop.style.left = Math.max(8, r.left - s.left) + "px"; pop.style.top = (r.top - s.top - 38) + "px";
     speak(item.chunks[+ch.dataset.i][0]);
+    ch.classList.add("playing"); clearTimeout(ch._t); ch._t = setTimeout(() => ch.classList.remove("playing"), 1200);
     hideT = setTimeout(() => pop.classList.remove("show"), 1800);
   }));
   wrap.addEventListener("click", () => pop.classList.remove("show"));
