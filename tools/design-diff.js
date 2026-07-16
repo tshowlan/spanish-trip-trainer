@@ -115,6 +115,22 @@
       [".tick", ".answer-tick"],
       [".ex-input.correct", "#qbody.qcorrect .text-input"],
     ],
+    // App state: renderHome() with a seeded returning-user state (serve via tools/serve.py so JS is fresh).
+    home: [
+      [".wordmark .wm", ".topbar-brand .wordmark"],
+      [".flame", ".stat.streak"],
+      [".lang", ".lang-flag-top"],
+      [".trip .dest", ".trip .dest"],
+      [".trip .sub", ".trip .sub"],
+      [".band", ".band-chip"],
+      [".tile.fade .k", ".hero-tile .hero-k"],
+      [".tile.fade .t", ".hero-tile .hero-title"],
+      [".tile.fade .s", ".hero-tile .hero-sub"],
+      [".whisper", ".whisper"],
+      [".whisper .spark", ".whisper .spark"],
+      [".whisper .num", ".whisper .num"],
+      [".presence", ".presence"],
+    ],
     // App state: any audioControl(_, {speed:true}) mounted in the DOM (e.g. a listening exercise,
     // or inject one). Same class names in artifact and app, so selectors match 1:1.
     audioControl: [
