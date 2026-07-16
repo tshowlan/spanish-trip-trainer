@@ -2,6 +2,12 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-16 — Home build STAGE 1: atmosphere everywhere (Claude Code)
+- App-wide dark-theme atmosphere shipped (both dark blocks): `--bg` #05060d, `--bg-card`/`--bg-elevated`/`--bg-nav`/`--border` now translucent; new `--ground` token (navy linear + warm top radial) and `--card-blur`. `body` background = `var(--ground, var(--bg))` fixed — gradient ground in dark, cream fallback in light (token fallback = zero light-theme change, verified). Curated surface classes get `backdrop-filter: var(--card-blur)` (frosted only in dark).
+- Nav: active tab now **gold** (`--accent-2`) with the Whoop under-glow (`::before` radial from the bottom edge) + notch (`::after`), replacing the blue pill. Applies in both themes ("gold is the app's light").
+- Verified in browser: dark = gradient ground + frosted cards + gold nav; light = unchanged cream + opaque cards + gold nav; readable both; no console errors. SW → v122.
+- **Next stages:** (2) home screen composition to `design/home.html` via the §5 gate; (3) photo plumbing + free-licensed placeholders (user chose Unsplash/Pexels). Photo licensing still a ship blocker for final images.
+
 ## 2026-07-16 — Home screen designed + approved (design/home.html)
 - Atmosphere: photo + tint. Photo crowns top, dissolves via SELF-MASK (mask-don't-paint rule, see decisions); destination ground-glow sweeps diagonally from bottom-left (26% peak, full height), stacked BENEATH the photo. Dark theme = gradient ground (navy linear + warm top radial), cards translucent + blur — this is a styles.css token change: dark --bg becomes the gradient treatment, --bg-card translucent; APPLY TO BOTH DARK BLOCKS.
 - Wordmark: real SVG, fills → --wordmark-1/-2 tokens (update source SVG in repo); white letterform halo in photo contexts; halo forces standard navy/blue fills in both themes.

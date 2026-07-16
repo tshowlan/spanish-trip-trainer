@@ -53,17 +53,23 @@
    user is on "system", or when the root is stamped data-theme="dark". ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { color-scheme: dark;
-    --bg: #000000; --bg-nav: #000000; --bg-card: #201e15; --bg-elevated: #2b2820; --text: #f6f4ea; --text-dim: #a7a494;
+    --bg: #05060d; --bg-nav: rgba(28,26,18,0.82); --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.55); --text: #f6f4ea; --text-dim: #a7a494;
     --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
-    --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: #34301f;
+    --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: rgba(120,112,80,0.35);
     --wordmark-1: #c8d2f5; --wordmark-2: #7aa6db; --shadow: 0 3px 0 rgba(0,0,0,.45); --shadow-press: 0 1px 0 rgba(0,0,0,.45);
+    /* atmosphere (§2.1): dark sits on a gradient ground, not flat black; surfaces frost over it */
+    --ground: radial-gradient(120% 52% at 50% -6%, rgba(201,106,43,0.22) 0%, rgba(216,183,19,0.08) 34%, transparent 62%), linear-gradient(180deg, #101226 0%, #0a0b18 40%, #05060d 100%);
+    --card-blur: blur(12px);
   }
 }
 :root[data-theme="dark"] { color-scheme: dark;
-  --bg: #000000; --bg-nav: #000000; --bg-card: #201e15; --bg-elevated: #2b2820; --text: #f6f4ea; --text-dim: #a7a494;
+  --bg: #05060d; --bg-nav: rgba(28,26,18,0.82); --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.55); --text: #f6f4ea; --text-dim: #a7a494;
   --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
-  --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: #34301f;
+  --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: rgba(120,112,80,0.35);
   --wordmark-1: #c8d2f5; --wordmark-2: #7aa6db; --shadow: 0 3px 0 rgba(0,0,0,.45); --shadow-press: 0 1px 0 rgba(0,0,0,.45);
+  /* atmosphere (§2.1): dark sits on a gradient ground, not flat black; surfaces frost over it */
+  --ground: radial-gradient(120% 52% at 50% -6%, rgba(201,106,43,0.22) 0%, rgba(216,183,19,0.08) 34%, transparent 62%), linear-gradient(180deg, #101226 0%, #0a0b18 40%, #05060d 100%);
+  --card-blur: blur(12px);
 }
 
 .app-version { text-align: center; color: var(--text-dim); font-size: 11px; font-weight: 700; opacity: .5; margin: 22px 0 6px; cursor: default; user-select: none; }
@@ -117,7 +123,10 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
-body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior: none; }
+/* atmosphere ground: gradient in dark (via --ground), cream fallback in light; fixed = stable ground while scrolling */
+body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior: none; background: var(--ground, var(--bg)); background-attachment: fixed; }
+/* frosted translucent surfaces over the ground (dark only — --card-blur is unset in light) */
+.tile, .sheet, .quest, .prog-row, .prog-tier, .prog-trend, .home-diverge, .sheet-diverge, .archive-row, .pb-thread, .culture-note, .backup-banner, #tabbar { backdrop-filter: var(--card-blur, none); -webkit-backdrop-filter: var(--card-blur, none); }
 
 .hidden { display: none !important; }
 
@@ -613,7 +622,16 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
   transition: color .15s, background .15s;
 }
 .tab svg { width: 23px; height: 23px; }
-.tab.active { color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, transparent); }
+/* active tab = gold (§2.1 "gold is the app's light"), lit from beneath: a Whoop-style
+   under-glow rising from the bar's bottom edge + a bright notch. Replaced the blue pill. */
+.tab.active { color: var(--accent-2); position: relative; background: none; }
+.tab.active::before { content: ""; position: absolute; left: -8px; right: -8px; top: 0; bottom: -8px;
+  background: radial-gradient(72% 100% at 50% 106%, color-mix(in srgb, var(--accent) 32%, transparent) 0%, color-mix(in srgb, var(--accent) 12%, transparent) 44%, transparent 76%);
+  pointer-events: none; }
+.tab.active::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); bottom: -6px;
+  width: 22px; height: 2.5px; border-radius: 2px; background: var(--accent-2);
+  box-shadow: 0 0 7px 1px color-mix(in srgb, var(--accent) 55%, transparent); pointer-events: none; }
+.tab.active svg, .tab.active span { position: relative; }
 .tab:active { transform: translateY(1px); }
 
 /* ---------- tab screens (quests / phrasebook / progress) ---------- */
