@@ -132,7 +132,7 @@
       [".sheet-label", ".corr-label"],
       [".chunks", ".corr-chunks"],
       [".chunk", ".corr-chunk"],
-      [".chunk.known", ".corr-chunk.known"],
+      [".chunk.error", ".corr-chunk.error"],
       [".audio-btn", ".corr-audio"],
       [".translation", ".corr-trans"],
       [".anchor", ".corr-anchor"],

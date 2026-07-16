@@ -856,9 +856,8 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
   font-family: var(--font-display); font-size: 17px; font-weight: 500; color: var(--text); cursor: pointer; user-select: none;
   transition: transform var(--transition), background var(--transition); }
 .corr-chunk[data-i]:active { transform: translateY(2px); }
-.corr-chunk.known { background: transparent; border-color: var(--green); }
+.corr-chunk.error { background: color-mix(in srgb, var(--accent) 14%, var(--bg-card)); border-color: var(--accent-2); }   /* gold = attend here (error locus); green retired from chunk marking */
 .corr-chunk.plain { cursor: default; }
-.corr-check { font-size: 11px; color: var(--green); margin-left: 4px; }
 .corr-audio { width: 40px; height: 40px; min-width: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--border);
   background: var(--bg-card); color: var(--accent-2); box-shadow: var(--shadow); display: inline-flex; align-items: center; justify-content: center;
   cursor: pointer; transition: transform var(--transition), box-shadow var(--transition); }

@@ -996,8 +996,18 @@ function finishGrade(ok, item, extra, wrong) {
 function showCorrection(item, extra, wrong) {
   document.querySelectorAll(".corr-wrap").forEach(n => n.remove());
   const chunked = Array.isArray(item.chunks) && item.chunks.length;
+  // Attention semantics (decisions 2026-07-15): gold marks the ERROR chunk (the piece missing from the
+  // attempt) so the eye lands where the mistake was. Green retired from chunk marking (success-only);
+  // "known" is now the unmarked default. Mark only when the error is a minority (≤ half of the chunks) —
+  // a mostly-wrong attempt gets no marks, since the struck-through line already carries that.
+  const errSet = new Set();
+  if (chunked && wrong) {
+    const w = norm(wrong);
+    item.chunks.forEach((c, i) => { if (!w.includes(norm(c[0]))) errSet.add(i); });
+    if (errSet.size > item.chunks.length / 2) errSet.clear();
+  }
   const pills = chunked
-    ? item.chunks.map((c, i) => `<span class="corr-chunk ${_chunkKnown(c[0]) ? "known" : ""}" data-i="${i}">${c[0]}${_chunkKnown(c[0]) ? '<span class="corr-check">✓</span>' : ""}</span>`).join("")
+    ? item.chunks.map((c, i) => `<span class="corr-chunk ${errSet.has(i) ? "error" : ""}" data-i="${i}">${c[0]}</span>`).join("")
     : `<span class="corr-chunk plain">${item.es}</span>`;
   const anchor = item.anchor ? `<div class="corr-anchor"><span class="lead">Think:</span> ${item.anchor}</div>`
     : (extra ? `<div class="corr-anchor">${extra}</div>` : "");

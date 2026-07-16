@@ -70,8 +70,7 @@
     cursor:pointer; user-select:none; transition: transform var(--transition), background var(--transition);
   }
   .chunk:active { transform:scale(0.97); }
-  .chunk.known { background:transparent; border-color:var(--green); }
-  .chunk.known .check { font-size:11px; color:var(--green); margin-left:4px; }
+  .chunk.error { background:color-mix(in srgb, var(--accent) 14%, var(--bg-card)); border-color:var(--accent-2); }  /* gold = attend here (error locus); green retired from chunk marking */
 
   .audio-btn {
     width:40px; height:40px; min-width:40px; border-radius:50%; border:1px solid var(--border);
@@ -134,7 +133,7 @@
 
       <div class="chunks">
         <span class="chunk" data-meaning="could you bring me">¿Me puede traer</span>
-        <span class="chunk known" data-meaning="the check — you know this one">la cuenta<span class="check">✓</span></span>
+        <span class="chunk error" data-meaning="the check (you wrote cuento: a story)">la cuenta</span>
         <span class="chunk" data-meaning="when you have a moment">cuando tenga un momento?</span>
         <button class="audio-btn" aria-label="Replay audio"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg></button>
       </div>
@@ -156,7 +155,7 @@
   </div>
 
   <div class="caption">
-    Correction sheet v2 — real tokens from styles.css, Jakarta display / Inter text. Sheet: 300ms slide + scrim. Chunk pills tappable for meanings; known chunk outlined in --green. Buttons use the app's press-down shadow (translateY + shadow collapse). Scrim-tap does not dismiss.
+    Correction sheet v2 — real tokens from styles.css, Jakarta display / Inter text. Sheet: 300ms slide + scrim. Chunk pills tappable for meanings; the ERROR chunk (la cuenta) is filled gold (attend here) — green retired from chunk marking app-wide, gold = attend / green = success only. Buttons use the app's press-down shadow (translateY + shadow collapse). Scrim-tap does not dismiss.
   </div>
 </div>
 

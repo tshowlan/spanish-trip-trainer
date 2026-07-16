@@ -6,6 +6,7 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - NEW: design/presentation-card.html (§4c.1 / §4b.5), both layouts: chunked long phrase + short item w/ tappable context sentence. Composes built components (chunk pills, popover, AudioControl); STAND-IN: progress bar.
 - New attention-semantics system ratified (see decisions): gold marks the NEW chunk (soft --accent fill + NEW tag, ≤-half rule); known chunks unmarked, popover carries provenance ("from Ordering Tacos").
 - FOLLOW-UP on built correction sheet: replace the known-chunk green outline with gold on the ERROR chunk (cuenta/cuento chunk in the reference example). Small edit; same semantics.
+  - DONE (Claude Code): `showCorrection` now marks the error chunk gold (`.corr-chunk.error`) instead of the green known-outline+check (both retired). Error locus = chunk whose normalized text is absent from the typed attempt (`wrong`), capped at ≤ half (a mostly-wrong attempt gets no marks; the struck-through line carries it). No `wrong` text (e.g. MC misses) → no marks. Updated `design/correction-sheet.html` to match (la cuenta = gold error). Diff gate clean; error detection verified (only "la cuenta" marked for the cuento attempt). SW v121.
 - Build order: presentation card ships with M1's ladder work (it's the exposure-0 slot type).
 
 ## 2026-07-15 — AudioControl built (§3.2), first run through the diff gate (Claude Code)
