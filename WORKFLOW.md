@@ -24,6 +24,7 @@ Every session that produces a decision, spec change, or code change must end wit
 1. Update `STATUS.md` with: date, what was decided or built, any deviations from spec, and what's next.
 2. If a decision was made, append it to `docs/decisions.md` with rationale.
 3. If a spec changed, edit the spec file itself. Do not leave spec changes only in STATUS.md or chat. **"Spec change" includes a new reusable component or pattern discovered while building, or a spec line the build contradicted** — fold it back into the relevant spec doc (e.g. the design system §3) in the same commit, not just STATUS. Build sessions feed the docs too.
+4. **Flag deltas from prior verbal direction.** When a handoff (or a re-mocked artifact) reverses or refines something Tom said earlier in chat, call the delta out explicitly — don't just ship the new final state and let Code infer it. Example: after "make Spain bigger," the re-mocked home kept `.dest` at 28px and put the size increase in the dials; the handoff should say *"note: dest stays 28px, the scale-up is in the dials,"* so Code doesn't carry the stale assumption (Code guessed 33px before this rule). State what changed since the last verbal round, not only the end result.
 
 Chat sessions cannot write to the repo. Output changes as **targeted edits** (which file, which section, old text → new text), NOT a whole replacement file. Tom relays those edits to a Code session, which applies them against the *live* repo file and commits. Never paste a chat-produced whole file into the repo (see "Single-writer rule" below).
 
