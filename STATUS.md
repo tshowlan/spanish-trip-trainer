@@ -15,6 +15,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - Verified in browser (dial cluster for Strong 72 + Tripfluent 91): gold tick, band chip, metallic crown, dim delta all correct; new labels confirmed in the served file (browser showed stale labels = HTTP script cache only). SW → v123.
 - **Stage 2 remaining:** fade action tile, insight line (gold spark + green delta), presence line + weather tile. Header/photo-crown deferred to Tom's design session + Stage 3 photos.
 
+## 2026-07-16 — Home build STAGE 2b: insight line + presence line (Claude Code)
+- **Insight line** (`insightLine()`): gold spark + "Your last 2 weeks moved Readiness +N" with N in green display weight. Real data via `scoreTrend("readiness", 14)`; shows only the encouraging positive case (silence otherwise — never a negative nudge).
+- **Presence line** (`presenceLine()`): green dot + the destination's LOCAL time ("7:06pm in Spain") via `Intl.DateTimeFormat` + a new `tz` field on `DESTINATIONS` (Europe/Madrid, America/Mexico_City) — free, no fetch. **Temperature omitted** (optional until the cached weather fetch lands, per §3.2) rather than faked; the weather TILE (inside ~3 weeks) also waits on that fetch.
+- Both wired into `renderHome` under Practice, in rhythm (not bottom-pinned). Verified in browser: styling + real tz math correct. SW → v124.
+- **Fade action tile moved to Stage 3** — its payoff is the session photo bleeding in, so it bundles with the photo work rather than half-building a navy block now. **Stage 3** = photo plumbing + free-licensed placeholders + fade tile + (with Tom's design session) the photo-crown header + weather tile when the fetch exists.
+
 ## 2026-07-16 — Home screen designed + approved (design/home.html)
 - Atmosphere: photo + tint. Photo crowns top, dissolves via SELF-MASK (mask-don't-paint rule, see decisions); destination ground-glow sweeps diagonally from bottom-left (26% peak, full height), stacked BENEATH the photo. Dark theme = gradient ground (navy linear + warm top radial), cards translucent + blur — this is a styles.css token change: dark --bg becomes the gradient treatment, --bg-card translucent; APPLY TO BOTH DARK BLOCKS.
 - Wordmark: real SVG, fills → --wordmark-1/-2 tokens (update source SVG in repo); white letterform halo in photo contexts; halo forces standard navy/blue fills in both themes.

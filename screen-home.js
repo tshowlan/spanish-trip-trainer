@@ -158,6 +158,8 @@ function renderHome() {
     home.appendChild(heroTile());
     home.appendChild(practiceButton());
     const dv = divergenceLine(); if (dv) home.appendChild(dv);
+    const ins = insightLine(); if (ins) home.appendChild(ins);   // §3.2 gold-spark insight, in rhythm under Practice
+    const pr = presenceLine(); if (pr) home.appendChild(pr);     // §3.2 destination presence (local time; temp later)
   }
 
   if (!state.account) {
@@ -383,4 +385,23 @@ function divergenceLine() {
     ? `You're putting in the work, but ${dv.fading} earlier phrases are fading. Point today at review.`
     : `What you've learned is solid. ${destL} needs more, ${dv.untouched} categories still untouched.`;
   return el(`<div class="home-diverge">${txt}</div>`);
+}
+
+/* §3.2 insight line: a gold spark + one short "how far you've come" delta (green num). Only the
+   encouraging case — a positive 2-week Readiness move; silence otherwise (never a negative nudge). */
+function insightLine() {
+  const tr = (typeof scoreTrend === "function") ? scoreTrend("readiness", 14) : null;
+  if (!tr || tr.delta <= 0) return null;
+  return el(`<div class="whisper"><span class="spark"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg></span><span>Your last 2 weeks moved Readiness <span class="num">+${tr.delta}</span></span></div>`);
+}
+
+/* §3.2 destination presence: a quiet line with the destination's LOCAL time (tz math, free).
+   Temperature is optional until the cached weather fetch lands (§3.2) — omitted for now, not faked. */
+function presenceLine() {
+  const di = destInfo((state.profile || {}).destination);
+  if (!di || !di.tz) return null;
+  let t;
+  try { t = new Intl.DateTimeFormat("en-US", { timeZone: di.tz, hour: "numeric", minute: "2-digit" }).format(new Date()).replace(" ", "").toLowerCase(); }
+  catch (e) { return null; }
+  return el(`<div class="presence on"><span class="dot"></span><span>${t} in ${di.label}</span></div>`);
 }

@@ -745,6 +745,15 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .po-s { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
 .home-diverge { margin-top: 14px; background: var(--bg-card); border: 1px solid var(--accent-2); border-radius: 12px;
   padding: 12px 14px; font-size: 14px; line-height: 1.45; }
+/* §3.2 insight line: gold spark + green delta, in rhythm under Practice (not pinned to the bottom) */
+.whisper { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 14px;
+  font-size: 12.5px; color: var(--text-dim); line-height: 1.5; }
+.whisper .spark { color: var(--accent-2); display: inline-flex; }
+.whisper .num { font-family: var(--font-display); font-weight: 600; color: var(--green); }
+/* §3.2 destination presence line (local time now; temp appends when weather lands) */
+.presence { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px;
+  font-size: 12px; color: var(--text-dim); }
+.presence .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex: none; }
 /* §3.1 Learn: per-category coverage + per-lesson strength ring */
 .cat-cover { display: flex; flex-direction: column; gap: 10px; margin-bottom: 6px; }
 .cat-row { display: grid; grid-template-columns: 1fr 84px auto; align-items: center; gap: 10px; }

@@ -1,8 +1,8 @@
 /* ============================== ONBOARDING ============================== */
 /* ---- Tripfluent onboarding config ---- */
 const DESTINATIONS = [
-  { key: "mexico", label: "Mexico", flag: "🇲🇽", dialect: "Mexican Spanish", blurb: "Oaxaca, CDMX & beyond" },
-  { key: "spain", label: "Spain", flag: "🇪🇸", dialect: "Castilian Spanish", blurb: "Barcelona, Madrid & beyond" }
+  { key: "mexico", label: "Mexico", flag: "🇲🇽", dialect: "Mexican Spanish", blurb: "Oaxaca, CDMX & beyond", tz: "America/Mexico_City" },
+  { key: "spain", label: "Spain", flag: "🇪🇸", dialect: "Castilian Spanish", blurb: "Barcelona, Madrid & beyond", tz: "Europe/Madrid" }
 ];
 const destInfo = k => DESTINATIONS.find(d => d.key === k) || DESTINATIONS[0];
 const TRIP_TYPES = [
