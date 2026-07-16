@@ -162,6 +162,7 @@ if (warnings === narrWarn0 && !castErr) ok("no generic placeholders; no cast nam
 // ---- 10. chunk checks (§4b.5): verbatim + in-order + concatenation ----------
 H("10. Chunk pipeline (§4b.5 — tier-2/3 long phrases)");
 let chunkErr = 0, chunked = 0;
+const granularity = [];   // §11.1 rule 9: >4 chunks or single-word chunks — too-fine / word-layer granularity
 items.forEach(({ it, lesson }) => {
   if (!Array.isArray(it.chunks) || !it.chunks.length) return;
   chunked++;
@@ -172,10 +173,15 @@ items.forEach(({ it, lesson }) => {
   // concatenation must equal the phrase (normalized — punctuation/spacing don't count)
   const joined = norm(it.chunks.map(c => (c && c[0]) || "").join(" "));
   if (joined !== norm(it.es)) { err(`${lesson.id}: chunks don't concatenate to "${it.es}" (got "${joined}")`); chunkErr++; }
+  // §11.1 rule 9 granularity smells (informational): coarse chunks are the point — word-level is a different layer
+  const single = it.chunks.filter(c => tokens((c && c[0]) || "").length === 1).map(c => c[0]);
+  if (it.chunks.length > 4) granularity.push(`${lesson.id}: "${it.es}" has ${it.chunks.length} chunks (>4 — likely too fine)`);
+  if (single.length) granularity.push(`${lesson.id}: single-word chunk(s) [${single.join(", ")}] in "${it.es}" (word-layer granularity — see rule 9)`);
 });
 // informational: long tier-2/3 items with no chunks (pipeline falls back to word-level; card is the point)
 const longNoChunks = items.filter(({ it }) => tierOf(it) >= 2 && tokens(it.es).length > 6 && !(it.chunks && it.chunks.length));
 if (longNoChunks.length) console.log(`  · ${longNoChunks.length} tier-2/3 phrase(s) over 6 tokens have no \x1b[1mchunks\x1b[0m yet (segmented card unavailable)`);
+if (granularity.length) { console.log(`  · ${granularity.length} chunk granularity smell(s) (§11.1 rule 9, informational):`); granularity.forEach(g => console.log(`      ${g}`)); }
 if (!chunkErr) ok(chunked ? `${chunked} chunked item(s), all verbatim + concatenating` : "no chunked items yet");
 
 // ---- summary ---------------------------------------------------------------

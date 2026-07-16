@@ -78,6 +78,7 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 
 ### 3.4 Tappable text & chunk pills (the phrase-tap fix)
 - Any tappable text region gets a visible affordance: chunk pills have `--surface-sunken` fill + `--r-sm`; keyword hints get a dotted underline in `--ink-muted`. **No invisible tap targets.**
+- **Context rule:** pill fill for chunk *display* (presentation card, correction sheet); dotted underline for *hintable text inside exercises* — an exercise sentence must read as a sentence, never a wall of buttons. Tap on a hint: text + underline go gold while the chunk audio plays, meaning in the canonical navy popover. No hint button/lightbulb — the sentence is the interface (§4b.5 hint layer, `design/hint-popover.html`).
 - Tap response: pill/underline press-darkens in 100ms; meaning appears as a small anchored popover (`--t-base`), not a sheet. One popover at a time; tapping elsewhere dismisses.
 - Chunk states (§4b.5): NEW = soft `--accent` fill + small NEW tag (only when new chunks are ≤ half; all-new phrases unmarked). Known = unmarked; tap-popover carries meaning + provenance. Gold = attend here, green = success only, app-wide.
 

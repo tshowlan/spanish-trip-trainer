@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Hint Popover (design artifact, §4b.5 hint layer / §3.4)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — verbatim from styles.css:1–61 ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --green-dark: #25814a; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-xs: 12px; --text-sm: 14px; --text-base: 16px;
+    --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+    --radius-sm: 10px; --radius-md: 14px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #000000; --bg-card: #201e15; --bg-elevated: #2b2820;
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: #34301f;
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:340px; height:560px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  .screen { padding:22px 20px; height:100%; display:flex; flex-direction:column; position:relative; }
+
+  /* STAND-IN: built exercise chrome */
+  .progress { height:4px; background:var(--bg-elevated); border-radius:2px; margin-bottom:26px; }
+  .progress > div { width:62%; height:100%; background:var(--accent); border-radius:2px; }
+  .ex-label { font-size:var(--text-xs); color:var(--text-dim); margin-bottom:var(--space-3); }
+
+  /* The exercise sentence with a blank and hintable chunks */
+  .sentence { font-family:var(--font-display); font-size:21px; font-weight:500; color:var(--text); line-height:1.7; margin-bottom:var(--space-5); }
+
+  /* ===== THE HINT AFFORDANCE (§3.4): dotted underline, no pill fill in exercises ===== */
+  .hint {
+    cursor:pointer; user-select:none;
+    border-bottom:1.5px dotted var(--text-dim);
+    transition: color var(--transition), border-color var(--transition);
+  }
+  .hint:active, .hint.playing { color:var(--accent-2); border-bottom-color:var(--accent-2); }
+
+  .blank {
+    display:inline-block; min-width:96px; border-bottom:2px solid var(--secondary);
+    text-align:center; color:var(--secondary); font-weight:600;
+  }
+
+  /* Answer options (STAND-IN geometry) */
+  .options { display:flex; flex-direction:column; gap:8px; }
+  .opt {
+    border:1px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    padding:12px 14px; font-family:var(--font-display); font-size:16px; font-weight:500; color:var(--text);
+    cursor:pointer; box-shadow:var(--shadow); min-height:48px; text-align:left;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .opt:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  /* ===== THE POPOVER (canonical, from correction-sheet/presentation-card) ===== */
+  .popover {
+    position:absolute; background:var(--primary); color:#fff; font-size:12.5px;
+    padding:7px 11px; border-radius:var(--radius-sm); pointer-events:none;
+    opacity:0; transform:translateY(4px); transition: opacity var(--transition), transform var(--transition);
+    white-space:nowrap; z-index:10;
+  }
+  .popover.show { opacity:1; transform:translateY(0); }
+
+  /* chrome */
+  .chrome { display:flex; gap:16px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:var(--text-dim); text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:var(--text-dim); margin-top:12px; max-width:390px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+      <!-- STAND-IN: built exercise chrome -->
+      <div class="progress"><div></div></div>
+      <div class="ex-label">Fill in the missing piece</div>
+
+      <div class="sentence">
+        <span class="hint" data-meaning="could you bring me" onclick="tapHint(this,event)">¿Me puede traer</span>
+        <span class="blank">______</span>
+        <span class="hint" data-meaning="when you have a moment" onclick="tapHint(this,event)">cuando tenga un momento?</span>
+      </div>
+
+      <!-- STAND-IN: option geometry from built exercise components -->
+      <div class="options">
+        <button class="opt">la cuenta</button>
+        <button class="opt">el cambio</button>
+        <button class="opt">la carta</button>
+      </div>
+
+      <div class="popover" id="pop"></div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="toggleTheme()">toggle dark theme</button>
+  </div>
+
+  <div class="caption">
+    Hint popover (§4b.5 hint layer) — APPROVED 2026-07-15. Affordance in exercises: <b>dotted underline only</b> — no pill fill (pills are for presentation/correction contexts; inside an exercise the sentence must read as a sentence). Tap: underline + text go gold while the chunk's audio plays, meaning appears in the canonical navy popover (one at a time, 1.8s auto-dismiss). Behavior rules: hints are free on a lesson's first pass; in review, a used hint means that rep cannot set the cold axis — <b>accounted silently, no UI acknowledgment</b> (axes aren't user-facing; flagging it would shame the safety net). Hint-taps logged per item; high rate = silent rung-down signal. The blank itself is never hintable. No hint button/lightbulb — the sentence is the interface; discoverability via one-time first-exercise tooltip if needed. STAND-INS: progress bar, option buttons (use built components).
+  </div>
+</div>
+
+<script>
+  const pop = document.getElementById('pop');
+  let hideTimer, timers = new WeakMap();
+  function tapHint(el, e){
+    clearTimeout(timers.get(el));
+    el.classList.add('playing');
+    timers.set(el, setTimeout(()=> el.classList.remove('playing'), 1200));
+    clearTimeout(hideTimer);
+    pop.textContent = el.dataset.meaning;
+    pop.classList.add('show');
+    const scr = el.closest('.screen').getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    pop.style.left = Math.max(8, r.left - scr.left) + 'px';
+    pop.style.top = (r.top - scr.top - 38) + 'px';
+    hideTimer = setTimeout(()=> pop.classList.remove('show'), 1800);
+    e.stopPropagation();
+  }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  document.body.addEventListener('click', ()=> pop.classList.remove('show'));
+</script>
+</body>
+</html>

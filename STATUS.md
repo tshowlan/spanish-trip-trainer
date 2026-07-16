@@ -2,6 +2,12 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-15 — Hint popover approved + chunking authoring rule ratified
+- NEW: design/hint-popover.html. Exercise hint affordance = dotted underline (no pill fill in exercises); tap = gold + chunk audio + canonical navy popover. Hints free on first pass; in review a used hint silently blocks the cold axis (no UI acknowledgment). Blank never hintable. No hint button — ambient layer; one-time discoverability tooltip only if needed. STAND-INS: progress bar, option buttons.
+- Chunking authoring rule (5 criteria) added to learning-engine spec §11.1 + audit check — governs the ~150-phrase chunking pass. Chunk segmentations are content: revisable when hint-tap telemetry flags confusing cuts.
+- Remediation queue remaining: home hero tile + chips re-cut in real tokens.
+  - DONE (Claude Code): committed design/hint-popover.html; threaded §11.1 rule 9 + §11.2 check-10 extension + design-system §3.4 context rule + decisions. **Audit check implemented** in `tools/audit-pack.mjs` (>4 chunks / any single-word chunk → informational). The hint-layer *build* (dotted-underline affordance in exercises + hint-tap logging + cold-axis gate in review) is unbuilt — that's chunk-pipeline Phase 3, still pending.
+
 ## 2026-07-15 — Presentation card designed + approved
 - NEW: design/presentation-card.html (§4c.1 / §4b.5), both layouts: chunked long phrase + short item w/ tappable context sentence. Composes built components (chunk pills, popover, AudioControl); STAND-IN: progress bar.
 - New attention-semantics system ratified (see decisions): gold marks the NEW chunk (soft --accent fill + NEW tag, ≤-half rule); known chunks unmarked, popover carries provenance ("from Ordering Tacos").
