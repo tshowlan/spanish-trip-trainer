@@ -110,7 +110,9 @@ function renderHome() {
   const band = readinessBand(s.readiness);
   setHomeAtmo();
   // §3.2 trip header: the destination name is the anchor over the photo; subline is pure countdown
-  home.appendChild(el(`<div class="trip"><div class="dest">${d.label}</div><div class="sub">${days !== null ? days + " days out" : "Set your trip date"}</div></div>`));
+  const tripEl = el(`<div class="trip"><div class="dest">${d.label}</div><div class="sub${days === null ? " set-date" : ""}">${days !== null ? days + " days out" : "Set your trip date"}</div></div>`);
+  if (days === null) tripEl.querySelector(".set-date").addEventListener("click", renderOnboarding);
+  home.appendChild(tripEl);
 
   const hero = el(`<div class="hero"></div>`);
 
@@ -136,7 +138,6 @@ function renderHome() {
           <div class="ring-center"><div class="ring-num" data-to="${s.readiness}">0<span class="pct">%</span></div></div>
         </div>
         <div class="band-chip ${band.cls}${isTop ? " crown" : ""}${crossed ? " just-crossed" : ""}">${band.label}</div>
-        ${days !== null ? `<div class="ring-days">${days}d out</div>` : `<div class="ring-days set-date">Set date</div>`}
       </button>
       <button class="ring-card m-retention" id="sc-retention">
         <div class="ring-wrap">${ringSVG(s.retention, "m-retention")}
@@ -167,7 +168,6 @@ function renderHome() {
     hero.querySelector("#sc-readiness").addEventListener("click", () => scoreSheet("readiness"));
     hero.querySelector("#sc-momentum").addEventListener("click", () => scoreSheet("momentum"));
     hero.querySelector("#sc-retention").addEventListener("click", () => scoreSheet("retention"));
-    const sd = hero.querySelector(".set-date"); if (sd) sd.addEventListener("click", renderOnboarding);
   }
 
   // §3.2 Home = state + action only: the smart action tile, a quiet Practice chooser, and

@@ -42,6 +42,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - Verified in the real app (seeded returning-user state, fresh port to beat the HTTP cache) in **dark + light**: photo crown + masking, trip header, band chip, fade tile, presence line all present and matching the design; atmosphere correctly torn down off-home. SW → v127.
 - **Home now matches design/home.html.** Genuinely remaining: the header treatment on **other pages** (Tom's design session) and the **weather tile + temperature** (cached weather edge function).
 
+## 2026-07-16 — Home fidelity round 3: header space, countdown, light tint (Claude Code)
+- **Header top space:** topbar padding-top 6→16px (+ safe-area). More breathing room above the wordmark/flame/lang on every screen.
+- **Countdown de-duplicated:** removed the `Nd out` subline from under the Readiness dial — the countdown now lives only in the top-left trip block ("Spain / 128 days out"), per design/home.html (which has no dial subline). Set-date affordance moved to the trip sub when no trip date.
+- **Light-theme ground tint now visible:** `.atmo-ground` was too weak on cream. Matched the design's dark values (rgba warm) and pushed the LIGHT peak stronger than the artifact (40% terracotta → gold) so the warm bottom-left glow reads on cream. Both themes verified.
+- **Artifact-width fix (the "reads small" pattern):** design-system §5 now says mock at a **390px** `.phone` (was 340px) so px transfer 1:1 and the diff stays exact — briefed to chat. SW → v132.
+
 ## 2026-07-16 — Home fidelity round 2: practice row, spark, hero size (Claude Code)
 - **Practice button** rebuilt to the design's bordered-row pattern (`.practice`: gold icon-circle + `.lbl` + chevron) — was the old centered `.practice-btn`.
 - **Insight spark** now truly inline: `.whisper .spark` → `display:flex; align-items:center` + `svg{display:block}` (the `inline-flex`/baseline gap dropped it below the text). Verified: spark center-y == text center-y.

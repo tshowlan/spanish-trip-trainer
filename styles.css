@@ -147,7 +147,7 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .topbar {
   position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; gap: 9px;
-  padding: calc(6px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) 12px calc(18px + env(safe-area-inset-left));
+  padding: calc(16px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) 12px calc(18px + env(safe-area-inset-left));
   background: linear-gradient(180deg, var(--bg) 85%, transparent);
 }
 /* language flag sits just left of the gear (mirrors the flame→profile spacing) */
@@ -176,7 +176,11 @@ body.home-lit .topbar .lang-flag-top { background: rgba(255,255,255,.14); border
    with a warm destination ground-glow beneath it. Fixed layer behind the content (torn down off-home). */
 .home-atmo { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; z-index: 0; pointer-events: none; }
 .home-atmo .atmo-ground { position: absolute; inset: 0;
-  background: radial-gradient(185% 165% at -14% 116%, color-mix(in srgb, #c96a2b 20%, transparent) 0%, color-mix(in srgb, var(--accent) 12%, transparent) 34%, color-mix(in srgb, var(--accent) 6%, transparent) 58%, transparent 90%); }
+  background: radial-gradient(190% 170% at -14% 116%, color-mix(in srgb, #c96a2b 40%, transparent) 0%, color-mix(in srgb, #e0952b 24%, transparent) 30%, color-mix(in srgb, var(--accent) 14%, transparent) 55%, color-mix(in srgb, var(--accent) 6%, transparent) 76%, transparent 94%); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .home-atmo .atmo-ground {
+  background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); } }
+:root[data-theme="dark"] .home-atmo .atmo-ground {
+  background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); }
 .home-atmo .atmo-photo { position: absolute; top: 0; left: 0; right: 0; height: 232px; }
 .home-atmo .atmo-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.72) brightness(.82) contrast(.95);
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%);
