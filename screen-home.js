@@ -318,14 +318,22 @@ function heroState() {
   if (lastDays !== null && lastDays >= 2 && backlog.length)
     return { kind: "momentum", title: "Momentum's dipping, 3 minutes brings it back", run: () => startReview(backlog.slice(0, 8)) };
   if (next)   // §7.3 coverage problem: retention solid but too little covered → new content, said plainly
-    return { kind: "lesson", title: `Start: ${next.title}`, sub: dv && dv.kind === "cover" ? `${destInfo(p.destination).label} needs more, ${dv.untouched} categories untouched` : next.topic, run: () => startLesson(next) };
+    return { kind: "lesson", lesson: next, title: `Start: ${next.title}`, sub: dv && dv.kind === "cover" ? `${destInfo(p.destination).label} needs more, ${dv.untouched} categories untouched` : next.topic, run: () => startLesson(next) };
   return { kind: "caught", title: "You're ahead, up for a speed round?", run: () => startSpeedRound() };   // §7.6 pure fun, advances nothing
 }
 function heroTile() {
   const h = heroState();
+  // §3.2 fade tile: a navy block with the session photo bleeding in from the right (the lesson's primer
+  // photo double-duty; other actions get a warm destination default). Kicker replaces the old color-coding.
+  const kicker = { cram: "Countdown", review: "Review", momentum: "Keep it going", lesson: "Next lesson", caught: "You're ahead" }[h.kind] || "Next up";
+  const photo = (typeof introPhoto === "function") ? introPhoto(h.lesson || {}) : "";
   const t = el(`<button class="hero-tile hero-${h.kind}">
-    <div class="hero-txt"><div class="hero-title">${h.title}</div>${h.sub ? `<div class="hero-sub">${h.sub}</div>` : ""}</div>
-    <span class="hero-go">${icon("caret-right", 22)}</span></button>`);
+    ${photo ? `<div class="hero-img" style="background-image:url('${photo}')" aria-hidden="true"></div>` : ""}
+    <div class="hero-inner">
+      <div class="hero-k">${kicker}</div>
+      <div class="hero-title">${h.title}</div>
+      ${h.sub ? `<div class="hero-sub">${h.sub}</div>` : ""}
+    </div></button>`);
   t.addEventListener("click", h.run);
   return t;
 }

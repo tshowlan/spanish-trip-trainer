@@ -701,20 +701,22 @@ body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior:
 .lang-flag { font-size: 22px; line-height: 1; }
 .empty-hero { text-align: center; color: var(--text-dim); font-size: 15px; line-height: 1.5; padding: 16px 12px 26px; }
 /* ---- home action region (§8b): hero tile · review row · standing line ---- */
+/* §3.2 action tile — "fade" style: navy block with the session photo bleeding in from the right.
+   Kicker (gold) replaces the old kind-coded background colors. */
 .hero-tile {
-  display: flex; align-items: center; gap: 12px; width: 100%; cursor: pointer; text-align: left;
-  margin: 6px 0 10px; padding: 16px 18px; border-radius: var(--radius-lg);
-  background: var(--primary); color: #fff; border: none;
-  box-shadow: 0 3px 0 rgba(0,0,0,.18);
+  position: relative; overflow: hidden; display: block; width: 100%; text-align: left; cursor: pointer;
+  margin: 6px 0 10px; min-height: 104px; border-radius: var(--radius-lg);
+  background: var(--primary); color: #fff; border: none; box-shadow: var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
 }
-.hero-tile .hero-txt { flex: 1; min-width: 0; }
-.hero-title { font-family: var(--font-display); font-weight: 800; font-size: 17px; line-height: 1.25; }
-.hero-sub { font-size: 13px; opacity: .8; margin-top: 3px; }
-.hero-go { flex: none; display: inline-flex; opacity: .85; }
-.hero-tile.hero-cram { background: var(--accent-2); }
-.hero-tile.hero-review { background: var(--green-dark); }
-.hero-tile.hero-caught { background: var(--bg-elevated); color: var(--text); box-shadow: none; border: 1px solid var(--border); }
-.hero-tile.hero-caught .hero-go { color: var(--text-dim); }
+.hero-tile:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
+.hero-tile .hero-img { position: absolute; top: 0; right: 0; bottom: 0; width: 58%; background-size: cover; background-position: center; }
+.hero-tile .hero-img::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--primary) 0%, color-mix(in srgb, var(--primary) 55%, transparent) 38%, transparent 78%); }
+.hero-tile .hero-inner { position: relative; padding: 16px 18px; width: 66%; }
+.hero-k { font-family: var(--font-display); font-size: 10.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.hero-title { font-family: var(--font-display); font-weight: 600; font-size: 18px; line-height: 1.25; }
+.hero-sub { font-size: 13px; color: rgba(255,255,255,.82); margin-top: 3px; line-height: 1.4; }
 
 /* §3.1 Progress: status tier + labeled trend blocks */
 .prog-tier { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; }

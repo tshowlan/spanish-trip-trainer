@@ -21,6 +21,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - Both wired into `renderHome` under Practice, in rhythm (not bottom-pinned). Verified in browser: styling + real tz math correct. SW → v124.
 - **Fade action tile moved to Stage 3** — its payoff is the session photo bleeding in, so it bundles with the photo work rather than half-building a navy block now. **Stage 3** = photo plumbing + free-licensed placeholders + fade tile + (with Tom's design session) the photo-crown header + weather tile when the fetch exists.
 
+## 2026-07-16 — Home build STAGE 3a: fade action tile (Claude Code)
+- Photo plumbing already existed: `introPhoto(lesson)` → `./img/<region>/<name>.jpg`, with 6 real Mexico photos tracked in `img/mx/` (Spain currently reuses them — `img/es/` is a TODO, being filled next).
+- `heroTile` rebuilt to the **fade composition** (`design/home.html`): navy block + gold kicker (kind → "Next lesson"/"Review"/"Countdown"/etc.) + title + sub, with the session photo bleeding in from the right under a navy→transparent gradient. `heroState` now returns the `lesson` so the tile shows that lesson's primer photo; other actions get a warm destination default. Kind-coded background colors retired (kicker carries the kind now).
+- Verified in browser (lesson + review tiles with real photos): photo bleed + gradient + gold kicker + readable text all correct. SW → v125.
+- **Stage 3 remaining:** free-licensed Spain placeholders into `img/es/` + region fix (so Spain stops reusing Mexico photos); then the photo-crown header + weather tile (both gated on Tom's design session / the weather fetch).
+
 ## 2026-07-16 — Home screen designed + approved (design/home.html)
 - Atmosphere: photo + tint. Photo crowns top, dissolves via SELF-MASK (mask-don't-paint rule, see decisions); destination ground-glow sweeps diagonally from bottom-left (26% peak, full height), stacked BENEATH the photo. Dark theme = gradient ground (navy linear + warm top radial), cards translucent + blur — this is a styles.css token change: dark --bg becomes the gradient treatment, --bg-card translucent; APPLY TO BOTH DARK BLOCKS.
 - Wordmark: real SVG, fills → --wordmark-1/-2 tokens (update source SVG in repo); white letterform halo in photo contexts; halo forces standard navy/blue fills in both themes.
