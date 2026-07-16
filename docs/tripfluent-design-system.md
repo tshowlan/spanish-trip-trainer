@@ -29,6 +29,7 @@ Apply to ALL user-facing text: labels, buttons, exercise prompts, anchors, prime
 - **No em dashes (—) in UI copy.** Use a colon, a period, or parentheses instead. Punctuation in the UI should be as quiet as the motion.
 - Copy tone rules from the other specs bind here too: the §8b.1 guardrail (recommends, never threatens), narrative specifics over generic placeholders (learning spec §9b.1), wit lives in reward lines and culture notes, not in labels.
 - Buttons are verbs, one or two words ("Continue," "Start the lesson"). Labels are nouns. No exclamation points outside reward lines.
+- **If the data can only mean one thing, don't caption the meaning** (decisions 2026-07-16): no "right now" next to a live clock, no "on pace" restating a tick the eye already reads. The reading is the label.
 - Every design artifact's copy is reviewed against these rules before approval — copy in an approved artifact ships verbatim.
 
 ---
@@ -44,6 +45,10 @@ Apply to ALL user-facing text: labels, buttons, exercise prompts, anchors, prime
 - **Type split:** `--font-display` (Plus Jakarta Sans — headings, phrases, buttons, labels) vs `--font-text` (Inter — body, captions). Jakarta won the font flag; the flag machinery should be removed per `tripfluent-dev-font-flag.md` §6.
 - **The press interaction is a push-down, not a scale:** `--shadow: 0 3px 0` reads as elements sitting proud of the surface, so pressed states translate down 2px while the shadow collapses to `--shadow-press` (`0 1px 0`, added §2.2). This is the app's signature button physics — use it on every raised interactive element; never scale-transforms.
 - **Gold sound wave:** audio controls render their speaker/wave glyph in `--accent-2` (gold). This is a brand element, integral to the identity (candidate motif for a future lighthouse-logo evolution) — audio glyphs are never navy, never gray.
+- **Gold is the app's light** (decisions 2026-07-16): gold marks what is lit / current / alive — the flame, audio glyphs, the pace tick, NEW material, kickers, the active nav tab, the Tripfluent crown. **Blue** marks interactive/secondary plus the Strong band. The active nav tab is gold with a Whoop-style under-glow + notch rising from the bar's bottom edge (light comes from beneath, matching the ground glow) — this replaced the old blue active state.
+- **Mask-don't-paint** (decisions 2026-07-16): any surface fading over the gradient ground (atmosphere photos, primer images, the top crown) fades via **mask / transparency**, never by painting toward a background color — painting to a flat color seams against a gradient; masking dissolves into the true ground by construction.
+- **Halo rule** (decisions 2026-07-16): a mark on a **light ground** (a white letterform halo over a photo) uses the **standard brand colors in both themes**; no halo → theme-token colors. Applies to the wordmark and any future mark placed over imagery.
+- **Dark theme is a gradient ground, not a flat fill:** dark `--bg` is a navy linear gradient + a warm top radial, and `--bg-card` / `--bg-elevated` are **translucent + blurred** (Oura-style). This is a `styles.css` token change that MUST be applied to **both dark blocks** (`prefers-color-scheme` and `[data-theme="dark"]`), per the dual-dark-block rule above.
 
 ### 2.2 Proposed token ADDITIONS (adopt or reject deliberately; add to styles.css + both dark blocks if adopted)
 - **Duration rule (two classes):** interaction/state transitions (presses, sheets, swaps, crossfades) cap at 300ms; **value-change animations** (count-ups, bar fills/springs, number rolls) may run up to 600ms — they run in parallel and gate nothing. Sanctioned examples: the 600ms hero count-up (scores spec §3), the progress bar's 0.5s spring. Keep 160ms `--transition` as the micro-interaction default; `--t-slow: 300ms` for sheets/screen transitions.
@@ -103,6 +108,7 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 4. Haptics (Capacitor later): light tick on correct, none on incorrect (the sheet is the feedback), medium on lesson complete. Never on ordinary taps.
 5. Audio autoplay only where specced (presentation cards, correction sheet, listening exercises) — never on screen entry elsewhere.
 6. Empty/zero states are designed states with copy, never blank regions (e.g. Mistakes chip at 0: disabled-quiet, §8b.3).
+7. **One-time celebratory motion is sanctioned when it EXPLAINS a state change** (decisions 2026-07-16): the Tripfluent crown's sheen sweep fires once, only on a band-crossing event, to say "this was just achieved." Looping or ambient versions of the same effect remain banned (§1 feel principle 2) — the test is whether the motion communicates a change that just happened. Always disabled under `prefers-reduced-motion`.
 
 ---
 

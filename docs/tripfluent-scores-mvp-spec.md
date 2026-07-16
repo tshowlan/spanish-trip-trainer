@@ -31,14 +31,14 @@ Readiness = 0.40 × Coverage + 0.40 × Retention + 0.20 × Recency
 
 **Trip date anchoring (the differentiator):**
 - If a trip date is set, display "X% ready · N days out."
-- Compute a **pace check**: project Readiness at departure assuming current 7-day Momentum continues. If projection < 85, surface one line of copy: "At this pace you'll be ~72% ready. Add ~2 sessions/week to hit 90%." Keep it to a single sentence — informative, never nagging.
+- Compute a **pace check**: project Readiness at departure assuming current 7-day Momentum continues. If projection < 85, surface one line of copy: "At this pace you'll be ~72% ready. Add ~2 sessions/week to hit 90%." Keep it to a single sentence — informative, never nagging. This copy is the **divergence case only**: the home subline stays pure countdown and the gold pace tick carries pace ambiently (§3.2, decisions 2026-07-16).
 - If no trip date is set: show Readiness without countdown; show a quiet "Set your trip date" affordance in the Readiness detail view (not a blocking prompt).
 
-**Display bands** (color/label, no emoji):
-- 85–100: **"Fluent for your trip"** (brand moment — use it)
-- 65–84: "On track"
-- 40–64: "Building"
-- 0–39: "Getting started"
+**Display bands** (color/label, no emoji) — labels are **stative and bidirectional**: each completes "Readiness: ___," and crossings from decay are routine (a week off costs ~13pts at 72), so no progression/arrival words. Newness is the baseline state's job, not the bottom band's. See decisions 2026-07-16.
+- 85–100: **Tripfluent** — the brand name; reaching it *is* becoming tripfluent. Renders as the metallic crown chip (§3.2).
+- 65–84: **Strong**
+- 40–64: **Fair**
+- 0–39: **Low**
 
 ### 1.2 Momentum (0–100)
 
@@ -146,13 +146,17 @@ Follow the existing design token system. Aesthetic reference: Whoop/Oura — typ
 
 1. **Header:** flame (per §8.6), wordmark, language switcher. No profile icon or settings gear — account and settings live in the Profile tab (§3.1); one entry point, Whoop/Oura-style.
 2. **Dial cluster:** Readiness hero ring, meaningfully larger than the Momentum/Retention flankers — push the size asymmetry beyond near-peer; the hierarchy must be legible at a glance.
-   - **Pace tick:** small tick mark on the Readiness arc at "where the glide path says you should be today." Fill past the tick = ahead; visible gap = behind. Zero words; same math as the Progress glide-path chart and the pace notification — one concept, three surfaces.
-   - **Countdown subline:** "121d out" (optionally "· on pace"). Only when a trip exists.
-   - **Delta whispers:** tiny 7-day delta under each flanking dial ("+6" / "−2"). This is the only trend presence on home — full charts live in Progress, where reflection is visited deliberately instead of becoming wallpaper.
+   - **Pace tick:** small gold tick mark on the Readiness arc at "where the glide path says you should be today." Fill past the tick = ahead; visible gap = behind. Zero words. This is the **sole ambient pace signal** (decisions 2026-07-16) — same math as the Progress glide-path chart and the pace notification, one concept across surfaces.
+   - **Countdown subline:** pure countdown ("121d out"), only when a trip exists. No pace words here — the gold pace tick above carries pace ambiently; pace *copy* appears only on divergence (detail view / whisper slot, §3.4).
+   - **Band chip:** the Readiness band renders as a **chip** (band-colored 13% fill, sentence case), distinct from the dim-caps metric *names* — a contained live reading, not a title. Bands are Low / Fair / Strong / Tripfluent (§1.1). The **Tripfluent** chip wears the metallic crown: a specular gold gradient border + soft gold halo + a **one-time sheen sweep fired only on a band-crossing event** (disabled under prefers-reduced-motion, §4). Color = level, tick = pace, deltas = trend: three questions, three channels, no red anywhere.
+   - **No ring label:** the Readiness ring carries no text label under the arc — the hero number plus the band chip already name it.
+   - **Delta whispers:** tiny 7-day delta under each flanking dial ("+6" / "−2"), negative dim (never red). This is the only trend presence on home — full charts live in Progress, where reflection is visited deliberately instead of becoming wallpaper.
    - **Precision rules:** no decimals on Momentum, no % on Retention. Readiness alone carries % (it is genuinely a proportion of a goal); the flankers stay bare indices — a different unit signals a different instrument (§7.1). Decimals claim precision the model doesn't have and make daily noise look like signal.
 3. **Smart action tile:** the single recommended next session (synthesizes due phrases, fading phrases, and coverage gaps per §7.3). One answer.
 4. **Practice** (quiet secondary): opens a chooser — *Recommended / By scenario / Weakest phrases*. "Weakest phrases" is the mistakes-drill use case, correctly framed as strength-based (honest) rather than mistake-based (shame-coded).
 5. **Optionally:** one line of divergence narration, only when §7.3 has something to say. Silence is a feature.
+6. **Insight line:** a gold spark + one short delta, the number in `--green` display weight, sitting in rhythm under Practice (never pinned to the bottom with `margin-auto` — the leftover space above the tab bar is a deliberate quiet zone, not an orphan gap).
+7. **Destination presence:** a quiet line by default ("6:12pm in Mallorca · 74°"). Inside ~3 weeks to the trip it upgrades to the **weather tile** — a sky gradient keyed to the destination's *local* time, with conditions as **static texture** (no ambient animation, §4). Local time is free (tz math); temperature needs a cached weather fetch (edge function), so build both the line and the tile with **temperature optional** until that lands. (The app leaning toward the trip as it nears — same instinct as cram mode; see decisions 2026-07-16.)
 
 ### 3.3 Kill list (remove from home)
 
