@@ -17,8 +17,12 @@ function initTabbar() {
 function navTo(tabId) { (TABS.find(t => t.id === tabId) || TABS[0]).render(); }
 function showTabbar(active) {
   const bar = document.getElementById("tabbar");
+  if (active !== "home" && typeof clearHomeAtmo === "function") clearHomeAtmo();   // tear down the home photo/glow off-home
   if (!bar) return;
   bar.classList.add("show");
   bar.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === active));
 }
-function hideTabbar() { const bar = document.getElementById("tabbar"); if (bar) bar.classList.remove("show"); }
+function hideTabbar() {
+  if (typeof clearHomeAtmo === "function") clearHomeAtmo();
+  const bar = document.getElementById("tabbar"); if (bar) bar.classList.remove("show");
+}

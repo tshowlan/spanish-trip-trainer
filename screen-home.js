@@ -80,6 +80,21 @@ function findLesson(id) {
   return null;
 }
 
+// §3.2 home atmosphere: a destination photo crowns the top and masks into the ground; a warm
+// destination ground-glow sweeps beneath it (mask-don't-paint, decisions 2026-07-16). Fixed layer
+// behind the content, torn down when leaving home (nav.js). The wide destination hero photo.
+function destHero() { return (state.active === "spain") ? "./img/es/market.jpg" : "./img/mx/sights.jpg"; }
+function setHomeAtmo() {
+  clearHomeAtmo();
+  const a = el(`<div class="home-atmo" aria-hidden="true"><div class="atmo-ground"></div><div class="atmo-photo"><img src="${destHero()}" alt=""></div></div>`);
+  document.body.insertBefore(a, document.body.firstChild);
+  document.body.classList.add("home-lit");                 // photo-on: transparent topbar, wordmark halo, white header text
+}
+function clearHomeAtmo() {
+  document.querySelectorAll(".home-atmo").forEach(n => n.remove());
+  document.body.classList.remove("home-lit");
+}
+
 function renderHome() {
   renderTopbar();
   clearFooter();
@@ -93,6 +108,9 @@ function renderHome() {
   const started = s.lifetimeSessions > 0 || Object.keys(state.lessons).length > 0;
   const days = p.tripDate ? Math.max(0, daysUntil(p.tripDate)) : null;
   const band = readinessBand(s.readiness);
+  setHomeAtmo();
+  // §3.2 trip header: the destination name is the anchor over the photo; subline is pure countdown
+  home.appendChild(el(`<div class="trip"><div class="dest">${d.label}</div><div class="sub">${days !== null ? days + " days out" : "Set your trip date"}</div></div>`));
 
   const hero = el(`<div class="hero"></div>`);
 

@@ -34,6 +34,14 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - **Deliberately did NOT chase all 6 via CC0** — the pool is noisy and curated placeholders want a human eye (Tom is choosing final photos anyway). Food/transport/sights use the on-topic mx photos until Spain versions land.
 - **Home build remaining (all externally gated):** photo-crown header (Tom's design session on header↔gradient), weather tile + temperature (cached weather edge function). The data-driven home is complete.
 
+## 2026-07-16 — Home build STAGE 3c: photo crown + trip header + atmosphere (Claude Code)
+- **Correction:** I had wrongly deferred the whole photo crown — Tom clarified the design session is about how the header works on the OTHER pages, not the home itself. The home must match `design/home.html` fully, photo included. Built it.
+- **Home atmosphere** (`setHomeAtmo`/`clearHomeAtmo` in screen-home.js): a fixed layer behind the content — a destination **photo crown** (`destHero()` → the wide es/mx scenic) that **masks into the ground** (mask-don't-paint) + a warm **destination ground-glow** sweeping from bottom-left. Torn down when leaving home (nav.js `showTabbar`/`hideTabbar`), verified restored on return.
+- **Trip header block**: big destination name + countdown ("Spain · 128 days out") anchoring over the photo.
+- **photo-on treatment** (`body.home-lit`): transparent topbar, wordmark **halo forcing standard brand colors** (halo rule), white header text with shadow — both themes.
+- Verified in the real app (seeded returning-user state, fresh port to beat the HTTP cache) in **dark + light**: photo crown + masking, trip header, band chip, fade tile, presence line all present and matching the design; atmosphere correctly torn down off-home. SW → v127.
+- **Home now matches design/home.html.** Genuinely remaining: the header treatment on **other pages** (Tom's design session) and the **weather tile + temperature** (cached weather edge function).
+
 ## 2026-07-16 — Home screen designed + approved (design/home.html)
 - Atmosphere: photo + tint. Photo crowns top, dissolves via SELF-MASK (mask-don't-paint rule, see decisions); destination ground-glow sweeps diagonally from bottom-left (26% peak, full height), stacked BENEATH the photo. Dark theme = gradient ground (navy linear + warm top radial), cards translucent + blur — this is a styles.css token change: dark --bg becomes the gradient treatment, --bg-card translucent; APPLY TO BOTH DARK BLOCKS.
 - Wordmark: real SVG, fills → --wordmark-1/-2 tokens (update source SVG in repo); white letterform halo in photo contexts; halo forces standard navy/blue fills in both themes.
