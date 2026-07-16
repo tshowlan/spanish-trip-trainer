@@ -359,7 +359,12 @@ function heroTile() {
 /* §3.2.4 — quiet Practice chooser (replaces the Due/Mistakes tiles §3.3 kills). One secondary
    button → a sheet with Recommended / By scenario / Weakest phrases. */
 function practiceButton() {
-  const b = el(`<button class="practice-btn">${icon('arrows-clockwise', 18)} Practice</button>`);
+  // §3.2 bordered-row pattern (design/home.html .practice): gold icon-circle + label + chevron
+  const b = el(`<button class="practice" role="button">
+    <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
+    <span class="lbl">Practice</span>
+    <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+  </button>`);
   b.addEventListener("click", practiceChooser);
   return b;
 }
