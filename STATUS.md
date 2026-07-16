@@ -42,6 +42,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - Verified in the real app (seeded returning-user state, fresh port to beat the HTTP cache) in **dark + light**: photo crown + masking, trip header, band chip, fade tile, presence line all present and matching the design; atmosphere correctly torn down off-home. SW → v127.
 - **Home now matches design/home.html.** Genuinely remaining: the header treatment on **other pages** (Tom's design session) and the **weather tile + temperature** (cached weather edge function).
 
+## 2026-07-16 — Header layout applied app-wide (Claude Code)
+- Clarified: the header as designed in `design/home.html` (`.approw`) IS the app-wide header spec — not a separate design session. Restructured the shared `.topbar`: **wordmark LEFT** (`order:-1`, was absolute-centered), **flame + language grouped RIGHT** (`.stat.streak` gets `margin-left:auto`; lang-flag no longer `margin-left:auto`). Wordmark height 22→20 to match.
+- Applies to every screen. Photo-on treatment (wordmark halo + standard colors + white text) stays **home-only** via `body.home-lit`; other pages show the wordmark in normal brand colors, no halo.
+- Verified in the real app: home (halo over photo) + Progress (plain), both correct. SW → v128.
+- **Home + header now complete.** Only genuinely remaining home item: **weather tile + temperature** (cached weather edge function).
+
 ## 2026-07-16 — Home screen designed + approved (design/home.html)
 - Atmosphere: photo + tint. Photo crowns top, dissolves via SELF-MASK (mask-don't-paint rule, see decisions); destination ground-glow sweeps diagonally from bottom-left (26% peak, full height), stacked BENEATH the photo. Dark theme = gradient ground (navy linear + warm top radial), cards translucent + blur — this is a styles.css token change: dark --bg becomes the gradient treatment, --bg-card translucent; APPLY TO BOTH DARK BLOCKS.
 - Wordmark: real SVG, fills → --wordmark-1/-2 tokens (update source SVG in repo); white letterform halo in photo contexts; halo forces standard navy/blue fills in both themes.
