@@ -66,8 +66,9 @@ Every recurring element is one of these components. Building a one-off variant o
 One `AudioControl` component, three variants — never ad-hoc speaker buttons. **All audio glyphs in `--accent-2` gold (§2.1) — the gold sound wave is a brand element.**
 - **Inline speaker** (in cards/exercises): 44px target, icon-only, plays at 1.0×. Playing state: icon swaps to animated gold bars (the one sanctioned "active" animation, tied to actual playback).
 - **Speed toggle**: a paired pill on the speaker — tap cycles 1.0× → 0.75× (shows "0.75×" label while slowed). Slow state persists for the current item only, resets on next item. Never a separate turtle button floating elsewhere.
-- **Chunk-pill audio** (§4b.5 cards): tapping the pill IS the audio trigger — no separate icon inside pills.
+- **Chunk-pill audio** (§4b.5 cards): tapping the pill IS the audio trigger — no separate icon inside pills. Playing state: gold border + soft gold ring.
 - Raised speaker buttons use the push-down press physics (§2.1).
+- **Built:** `audioControl(play, {speed})` in `ui.js` (`.ac-*` in `styles.css`), matches `design/audio-control.html`; passed the §5 diff clean. Replaced every ad-hoc audio button (speak-btn/waveButton/slow-btn/pb-speak/intro rows); `corr-audio` stays a plain speaker per the correction-sheet artifact. Note: the speed pill is 30px tall (the approved artifact) rather than the §3.1 44px target, same accepted exception as `corr-audio` (40px).
 
 ### 3.3 Sheets & popovers (the correction-moment fix)
 - **All modal content is a bottom sheet.** No centered popups, no JS alerts, no toasts carrying important content. Enter: slide-up + scrim fade, `--t-slow`, `--ease-out`. Exit: reverse with `--ease-in`. Drag-to-dismiss where dismissal is allowed.
