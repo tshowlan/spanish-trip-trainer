@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <!-- base rewrites all document-relative URLs (JS "./img/...", script src, css href) to the repo root,
+       so the real app code runs unmodified from this dev/ subdirectory. -->
+  <base href="../" />
+  <title>Tripfluent · component harness</title>
+  <link rel="stylesheet" href="fonts.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* harness chrome only — never shipped; app.js is NOT loaded so nothing here boots the real app */
+    #hbar { position: fixed; top: 0; right: 0; z-index: 100000; display: flex; gap: 6px; align-items: center;
+      background: rgba(20,18,14,.92); color: #fff; padding: 6px 8px; border-bottom-left-radius: 10px;
+      font: 500 12px/1 system-ui, sans-serif; box-shadow: 0 2px 12px rgba(0,0,0,.4); backdrop-filter: blur(6px); }
+    #hbar select, #hbar button { font: inherit; border-radius: 7px; border: 1px solid #4a463c; background: #2a271f;
+      color: #fff; padding: 6px 8px; cursor: pointer; }
+    #hbar select { max-width: 190px; }
+    #hbar button:active { transform: translateY(1px); }
+    #hbar .dot { width: 7px; height: 7px; border-radius: 50%; background: #d9b24a; margin-left: 2px; }
+  </style>
+</head>
+<body>
+  <!-- seed a valid returning-user Spain state BEFORE state.js runs load(), so `state` picks it up.
+       GUARD: the harness shares the app's localStorage key, so it must never run on a real origin and
+       clobber a user's progress. Localhost / file only. -->
+  <script>
+    window.__HARNESS_LOCAL__ = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname) || location.protocol === "file:";
+    (function () {
+      if (!window.__HARNESS_LOCAL__) return;
+      const K = "sts_state_v1";
+      if (!localStorage.getItem(K)) {
+        const d = new Date(); d.setDate(d.getDate() + 34);
+        const tripDate = d.toISOString().slice(0, 10);
+        const today = new Date().toISOString().slice(0, 10);
+        localStorage.setItem(K, JSON.stringify({
+          streak: 9, lastActive: today, active: "spain", theme: "system",
+          profile: { destination: "spain", tripDate, tripType: "leisure", needs: [], allergies: [],
+                     level: "some", lodging: ["hotel"], transport: ["metro", "walk"] },
+          sessions: [], history: [], lessons: {}
+        }));
+      }
+    })();
+  </script>
+
+  <div id="hbar">
+    <select id="hstory" aria-label="Story"></select>
+    <button id="htheme" title="Toggle light/dark">◐</button>
+    <button id="hreset" title="Reset seeded state">reset</button>
+    <span class="dot" title="harness (app.js not booted)"></span>
+  </div>
+
+  <!-- app shell (mirrors index.html so real screens have their mount points) -->
+  <div id="splash"></div>
+  <div class="topbar">
+    <div class="stat streak"><span class="ic flame"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 4-3 5.5-3 9a5 5 0 0 0 10 0c0-1.5-.5-2.7-1.3-3.8C17 9.5 15 10 15 8c0-2.2-1.4-4.6-3-6z"/></svg></span><span id="stat-streak">0</span></div>
+    <div class="topbar-brand" id="topbar-brand"></div>
+    <button class="lang-flag-top" id="lang-flag" aria-label="Switch destination"></button>
+  </div>
+  <main id="app"></main>
+  <nav id="tabbar"></nav>
+  <div class="toast" id="toast"></div>
+
+  <!-- real app modules, in index.html order, EXCEPT app.js (which auto-boots + registers the SW) -->
+  <script src="config.js"></script>
+  <script src="curriculum.js"></script>
+  <script src="content_mx.js"></script>
+  <script src="messages.js"></script>
+  <script src="state.js"></script>
+  <script src="engine.js"></script>
+  <script src="audio.js"></script>
+  <script src="ui.js"></script>
+  <script src="srs.js"></script>
+  <script src="weights.js"></script>
+  <script src="scoring.js"></script>
+  <script src="tiers.js"></script>
+  <script src="screen-onboarding.js"></script>
+  <script src="charts.js"></script>
+  <script src="screen-home.js"></script>
+  <script src="screen-learn.js"></script>
+  <script src="screen-quests.js"></script>
+  <script src="screen-phrasebook.js"></script>
+  <script src="screen-progress.js"></script>
+  <script src="screen-settings.js"></script>
+  <script src="lesson.js"></script>
+  <script src="cloud.js"></script>
+  <script src="accounts.js"></script>
+  <script src="push.js"></script>
+  <script src="trips.js"></script>
+  <script src="nav.js"></script>
+
+  <!-- harness controller: a classic script, so it shares scope with the app and can set `run`, `state`, etc. -->
+  <script>
+    (function () {
+      if (!window.__HARNESS_LOCAL__) {
+        document.getElementById("hbar").style.display = "none";
+        const sp = document.getElementById("splash"); if (sp) sp.remove();
+        document.getElementById("app").innerHTML =
+          '<div style="padding:40px 24px;font:500 15px/1.5 system-ui,sans-serif;color:#888">' +
+          'The component harness only runs on localhost (it shares the app’s local storage). ' +
+          'Serve the repo with <code>python3 tools/serve.py</code> and open ' +
+          '<code>/dev/harness.html</code>.</div>';
+        return;
+      }
+      // controlled boot (mirror app.js, minus SW + auto-render). Each step is optional/defensive.
+      const safe = fn => { try { fn(); } catch (e) { console.warn("harness boot:", e); } };
+      const sp = document.getElementById("splash"); if (sp) sp.remove();   // no runSplash() here; drop the overlay
+      safe(applyTheme);
+      safe(migrateTrips); safe(migrateScoring); safe(migrateItemIds);
+      safe(rebuildDeck);
+      safe(migrateXpToFloor); safe(checkTripCompletion); safe(applyTierUpdate);
+      safe(renderTopbar); safe(initTabbar);
+
+      // pick representative real items so exercises get genuine distractors
+      const items = (typeof ALL_ITEMS !== "undefined" && ALL_ITEMS.length) ? ALL_ITEMS : [];
+      const chunkItem = items.find(i => Array.isArray(i.chunks) && i.chunks.length) ||
+        { es: "Disculpe, creo que hay un error en la cuenta", en: "Excuse me, I think there's a mistake on the bill",
+          anchor: "creo que hay is 'I think there is', the pattern you reuse to soften any complaint.",
+          chunks: [["Disculpe", "excuse me"], ["creo que hay", "I think there's", "new"], ["un error", "a mistake"], ["en la cuenta", "on the bill"]] };
+      const shortItem = items.find(i => i.es.trim().split(/\s+/).length < 3 && i.contextEs) ||
+        items.find(i => i.es.trim().split(/\s+/).length < 3) ||
+        { es: "la cuenta", en: "the check", contextEs: "¿Me trae la cuenta?", contextEn: "Can you bring me the check?",
+          anchor: "cuenta is the bill, and also an account, you settle both." };
+      const normItem = items.find(i => i.es.split(/\s+/).length >= 3 && !i.chunks) ||
+        { es: "¿Dónde está la estación?", en: "Where is the station?" };
+
+      function clean() {
+        document.querySelectorAll(".footer, .corr-wrap, .confirm-wrap, .primer-wrap, .sheet-wrap").forEach(n => n.remove());
+        const app = $("#app"); if (app) app.innerHTML = "";
+        const tb = $("#tabbar"); if (tb) tb.innerHTML = "";
+      }
+      // build a one-question run and render the REAL lesson runner for any exercise type
+      function ask(type, item, extra) {
+        clean();
+        run = { lesson: { id: "__harness__", topic: "Ordering food", title: "At the restaurant" },
+          qs: [Object.assign({ type, item }, extra || {})], idx: 0, pct: 35, wrong: 0, restored: 0,
+          answered: false, reasks: {}, review: false, missed: new Map() };
+        renderQuestion();
+      }
+
+      const screen = (fn, tab) => () => { clean(); renderTopbar(); fn(); showTabbar(tab); };
+      const STORIES = {
+        "Home — returning user": screen(renderHome, "home"),
+        "Present card — chunked (one new piece)": () => ask("present", chunkItem),
+        "Present card — short (new word)": () => ask("present", shortItem),
+        "Present card — re-teach (Second chance)": () => ask("present", chunkItem, { requeued: true }),
+        "Correction sheet (gold error chunk)": () => { ask("type_translation", chunkItem); showCorrection(chunkItem, null, "creo que un error en la cuenta"); },
+        "Exercise — match pairs": () => ask("match", normItem),
+        "Exercise — multiple choice (ES→EN)": () => ask("mc_es2en", normItem),
+        "Exercise — multiple choice (EN→ES)": () => ask("mc_en2es", normItem),
+        "Exercise — type the translation": () => ask("type_translation", normItem),
+        "Exercise — build the sentence": () => ask("build", normItem),
+        "Exercise — fill the blank": () => ask("fill_blank", normItem),
+        "Exercise — listen & choose": () => ask("listen_choice", normItem),
+        "Learn tab": screen(renderLearn, "learn"),
+        "Progress tab": screen(renderProgress, "progress"),
+        "Profile / settings": screen(renderProfile, "profile")
+      };
+
+      // wire the picker
+      const sel = document.getElementById("hstory");
+      Object.keys(STORIES).forEach(name => {
+        const o = document.createElement("option"); o.value = name; o.textContent = name; sel.appendChild(o);
+      });
+      function run_story(name) {
+        try { STORIES[name](); }
+        catch (e) { const a = $("#app"); if (a) a.innerHTML = `<pre style="padding:24px;color:#c0392b;white-space:pre-wrap">${name}\n\n${e.stack || e.message}</pre>`; }
+        try { localStorage.setItem("harness-last", name); } catch (_) {}
+        // keep the harness bar clickable above whatever the app mounts
+        document.getElementById("hbar").style.zIndex = 100000;
+      }
+      sel.addEventListener("change", () => run_story(sel.value));
+
+      // theme toggle
+      document.getElementById("htheme").addEventListener("click", () => {
+        state.theme = state.theme === "dark" ? "light" : "dark";
+        try { save(); } catch (_) {}
+        applyTheme();
+        document.documentElement.setAttribute("data-theme", state.theme);
+      });
+      // reset seeded state
+      document.getElementById("hreset").addEventListener("click", () => {
+        localStorage.removeItem("sts_state_v1"); localStorage.removeItem("harness-last"); location.reload();
+      });
+
+      // restore last story (or default to the first)
+      const last = (() => { try { return localStorage.getItem("harness-last"); } catch (_) { return null; } })();
+      const start = (last && STORIES[last]) ? last : Object.keys(STORIES)[0];
+      sel.value = start; run_story(start);
+    })();
+  </script>
+</body>
+</html>

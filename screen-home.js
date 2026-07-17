@@ -1,16 +1,28 @@
 /* ============================== HOME (scores + map) ============================== */
 function ringSVG(val, cls, tick) {
   const r = 52, C = 2 * Math.PI * r, off = C * (1 - Math.max(0, Math.min(100, val)) / 100);
-  let tickEl = "";
-  if (tick != null) {   // §3.2.2 pace tick: where the glide path says you should be today (zero words)
-    const a = (Math.max(0, Math.min(100, tick)) / 100) * 2 * Math.PI - Math.PI / 2;
-    const x1 = 60 + (r - 8) * Math.cos(a), y1 = 60 + (r - 8) * Math.sin(a);
-    const x2 = 60 + (r + 8) * Math.cos(a), y2 = 60 + (r + 8) * Math.sin(a);
-    tickEl = `<line class="ring-tick" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+  // readiness widens its canvas so the pace index can protrude outside the track (ring geometry unchanged)
+  const isHero = /\breadiness\b/.test(cls);
+  const vb = isHero ? "-10 -10 140 140" : "0 0 120 120";
+  let tickEl = "", gap = "";
+  if (tick != null) {   // §3.2.1 pace tick — Submariner-style gold triangle index outside the track (readiness only)
+    const t = Math.max(0, Math.min(100, tick));
+    const a = (t / 100) * 2 * Math.PI - Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a);
+    const tipR = 57.5, baseR = 66, hw = 4;   // apex just outside the track pointing inward; base further out
+    const tx = 60 + tipR * ca, ty = 60 + tipR * sa;
+    const b1x = 60 + baseR * ca - hw * sa, b1y = 60 + baseR * sa + hw * ca;
+    const b2x = 60 + baseR * ca + hw * sa, b2y = 60 + baseR * sa - hw * ca;
+    tickEl = `<polygon class="ring-tick" points="${tx.toFixed(1)},${ty.toFixed(1)} ${b1x.toFixed(1)},${b1y.toFixed(1)} ${b2x.toFixed(1)},${b2y.toFixed(1)}"/>`;
+    // ahead-gap wash: soft green on the arc between tick and fill when ahead; behind = unpainted (no shame-coloring)
+    if (val > t) {
+      const seg = C * (val - t) / 100;
+      gap = `<circle class="ring-gap" cx="60" cy="60" r="${r}" stroke-dasharray="${seg.toFixed(1)} ${(C - seg).toFixed(1)}" transform="rotate(${(-90 + t * 3.6).toFixed(2)} 60 60)"/>`;
+    }
   }
-  return `<svg class="ring ${cls}" viewBox="0 0 120 120">
+  return `<svg class="ring ${cls}" viewBox="${vb}">
     <circle class="ring-bg" cx="60" cy="60" r="${r}"/>
     <circle class="ring-fg" cx="60" cy="60" r="${r}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${C.toFixed(1)}" data-fill="${off.toFixed(1)}" transform="rotate(-90 60 60)"/>
+    ${gap}
     ${tickEl}
   </svg>`;
 }

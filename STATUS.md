@@ -2,6 +2,20 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-16 — Button reconciliation + token precedence (from correction-sheet audit)
+- DECIDED (B): global `.btn` reconciles to the design-system button spec — 15px / weight 600 / radius-md (14) / 48px min-height. One CSS change, sweeps all buttons; retires the last pre-constitution component dialect. Press physics (translateY 2px + shadow collapse) preserved (separate `:active` rule) and verified.
+- Token-precedence rule added to design system §5: live styles.css tokens outrank artifact token blocks — ends the frosted-glass class of diff noise; artifacts refresh tokens opportunistically on revision only.
+- text-transform diff: confirmed non-issue, no action.
+- No artifact re-issues needed for the button change (approved artifacts already ARE the B spec — the app moves to them, not vice versa). Correction-sheet spacing also aligned (gap 3/9, chunk line-heights, sheet padding 24). SW → v148.
+
+## 2026-07-16 — Pacing model specced + tick redesigned (design/home.html re-stamped)
+- Pace tick is now a Submariner-style bezel index: solid gold inverted triangle pointing inward from OUTSIDE the ring track, thin `--bg` keyline (fixes gold-on-gold at the Fair band; marker beside the dial, not on it).
+- Ahead-gap between tick and fill washes soft `--green` (opacity ~0.38) on the arc; behind = deliberately unpainted.
+- State-vs-progression model clarified (see decisions): home = state/pacing, Learn = progression; Tripfluent = HELD title; "Landed Tripfluent" = permanent trip record (PENCILED, own spec, do not build).
+- Scores-spec edits in this batch: north-star opener, tick definition [tune], gap-wash rule, two education moments, held-title copy rules.
+- Built to the artifact (v146): triangle index + green wash in `ringSVG` (readiness only), verified both themes + ahead/behind/crown in the harness.
+- Design queue next: (1) Readiness detail sheet, (2) first-score-reveal card, (3) Learn tab, (4) Landed-Tripfluent moment (after its spec). Carry-overs: presentation-card re-approved by Tom (2026-07-17) — shipped; correction-sheet chunk conversion done.
+
 ## 2026-07-16 — Home build STAGE 1: atmosphere everywhere (Claude Code)
 - App-wide dark-theme atmosphere shipped (both dark blocks): `--bg` #05060d, `--bg-card`/`--bg-elevated`/`--bg-nav`/`--border` now translucent; new `--ground` token (navy linear + warm top radial) and `--card-blur`. `body` background = `var(--ground, var(--bg))` fixed — gradient ground in dark, cream fallback in light (token fallback = zero light-theme change, verified). Curated surface classes get `backdrop-filter: var(--card-blur)` (frosted only in dark).
 - Nav: active tab now **gold** (`--accent-2`) with the Whoop under-glow (`::before` radial from the bottom edge) + notch (`::after`), replacing the blue pill. Applies in both themes ("gold is the app's light").

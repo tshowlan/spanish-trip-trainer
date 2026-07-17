@@ -269,8 +269,6 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .close-btn { background: none; border: none; color: var(--text-dim); font-size: 26px; cursor: pointer; padding: 0 4px; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
 .pbar { flex: 1; height: 4px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }   /* thin hairline per design/correct-feedback.html */
 .pbar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width .5s cubic-bezier(.34,1.42,.5,1); }   /* §8.3 spring overshoot; gold = progress (green stays reserved for "correct"), per design/correct-feedback.html */
-/* §8.1/§8.6 passive daily-flame marker in the lesson header — a mirror, not a leash (muted, never red-alarm) */
-.lesson-flame { font-size: 14px; font-weight: 700; color: var(--text-dim); white-space: nowrap; }
 
 .retry-chip {
   display: inline-block; margin: 0 0 12px; padding: 6px 12px; border-radius: 999px;
@@ -283,30 +281,43 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .prompt-sub { color: var(--text-dim); font-size: 14px; margin-bottom: 18px; }
 .effort-line { background: color-mix(in srgb, var(--secondary) 12%, transparent); border: 1px solid var(--secondary); color: var(--secondary); border-radius: 12px; padding: 10px 14px; font-size: 13px; font-weight: 600; line-height: 1.4; margin: 10px 0 16px; }
 /* presentation card — first sight of a new phrase (teach, not test) */
-.present-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-left: 4px solid var(--accent-2); border-radius: var(--radius-md);
-  padding: 22px 20px; margin: 14px 0 16px; text-align: center;
-}
-.present-es { font-size: 26px; font-weight: 800; line-height: 1.25; color: var(--text); }
+/* gold display label — matches design/presentation-card.html .new-label (and the correction sheet's .corr-label) */
+.present-label { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-2); margin: 4px 0 10px; }
+/* no card box: the design sits the words directly on the screen (the chunk pills carry their own fills) */
+.present-card { margin: 8px 0 16px; }
+.present-es { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.25; color: var(--text); }
 .present-en { font-size: 16px; color: var(--text-dim); margin-top: 8px; }
 .present-note { font-size: 13px; color: var(--secondary); margin-top: 12px; line-height: 1.4; }
-.present-ctx { font-size: 15px; color: var(--text); margin-top: 12px; line-height: 1.4; opacity: .9; }
-.present-ctx span { color: var(--text-dim); }
-.present-anchor { font-size: 13px; color: var(--accent-2); margin-top: 12px; background: var(--bg-elevated); border-radius: 10px; padding: 8px 12px; display: inline-block; }
-/* §4b.5 segmented chunk card — pieces of a long phrase; "known" pieces muted, new ones accented */
-.present-card.chunked { padding: 20px 16px; }
-.chunk-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-.chunk-pill { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer;
-  border-radius: 12px; padding: 10px 14px; font-weight: 800; font-size: 18px; line-height: 1.2;
-  border: 2px solid; transition: transform .12s cubic-bezier(.34,1.56,.64,1); }
-.chunk-pill:active { transform: translateY(2px); }
-.chunk-pill.fresh { color: var(--text); background: color-mix(in srgb, var(--accent) 15%, transparent); border-color: var(--accent-2); }
-.chunk-pill.known { color: var(--text-dim); background: var(--bg-elevated); border-color: var(--border); font-weight: 700; }
-.chunk-pill .cp-en { font-size: 12px; font-weight: 700; color: var(--text-dim); max-height: 0; overflow: hidden; opacity: 0; transition: max-height .2s, opacity .2s; }
-.chunk-pill.show-en .cp-en { max-height: 24px; opacity: 1; }
-.chunk-tip { font-size: 12px; color: var(--text-dim); margin-top: 14px; text-align: center; }
-.present-card.chunked .present-en { margin-top: 14px; font-size: 16px; text-align: center; }
+.present-ctx { font-size: 15px; color: var(--text-dim); margin-top: 12px; line-height: 1.5; }
+.present-ctx .es { color: var(--text); font-family: var(--font-display); font-weight: 500; cursor: pointer; border-bottom: 1px dotted var(--text-dim); }
+.present-ctx .es.playing { color: var(--accent-2); border-bottom-color: var(--accent-2); }
+/* anchor: "Think:" lead, same treatment as the correction sheet's .corr-anchor (bulb chip retired) */
+.present-anchor { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-top: 12px; }
+.present-anchor .lead { color: var(--accent-2); font-weight: 500; }
+/* §4b.5 segmented chunk card — one new piece gold + NEW tag, known pieces unmarked. Same pill treatment
+   as design/correction-sheet.html (.corr-chunk / .corr-chunk.error) so the two cards read identically. */
+.present-card.chunked { position: relative; }
+/* unified chunk semantics (decisions 2026-07-16): known chunks = flowing text with the dotted hint
+   underline (same affordance as the exercise hint layer); only the NEW piece is a gold box. */
+.chunk-row { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.chunk-pill { background: none; border: 0; border-bottom: 1.5px dotted var(--text-dim); border-radius: 0;
+  padding: 0 0 2px; font-family: var(--font-display); font-size: 21px; font-weight: 500; color: var(--text);
+  line-height: 1.35; cursor: pointer; user-select: none;
+  transition: color var(--transition), border-color var(--transition); }
+.chunk-pill:active, .chunk-pill.playing { color: var(--accent-2); border-bottom-color: var(--accent-2); }
+.chunk-pill.new { background: color-mix(in srgb, var(--accent) 14%, var(--bg-card));
+  border: 1px solid var(--accent-2); border-radius: var(--radius-sm); padding: 9px 13px; line-height: 1.25;
+  transition: transform var(--transition), box-shadow var(--transition); }
+.chunk-pill.new:active { transform: scale(0.97); color: var(--text); }
+.chunk-pill.new.playing { color: var(--text); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+.chunk-pill .cp-tag { font-family: var(--font-display); font-size: 10px; font-weight: 600; letter-spacing: .05em; color: var(--accent-2); margin-left: 6px; vertical-align: 2px; }
+.present-card.chunked .present-en { margin-top: 14px; font-size: 16px; }
+.present-pop { position: absolute; background: var(--primary); color: #fff; font-size: 12.5px; padding: 7px 11px; border-radius: var(--radius-sm);
+  pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity var(--transition), transform var(--transition); white-space: nowrap; z-index: 10; }
+.present-pop.show { opacity: 1; transform: translateY(0); }
+/* audio row: 44px speaker + inline hint, matching the artifact's AudioControl composition */
+.present-audio { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
+.present-audio .audio-hint { font-size: var(--text-xs); color: var(--text-dim); }
 /* intro page — all the section's new phrases at once */
 /* full-bleed regional photo card (one phrase at a time, Oura-style) */
 .intro-photo {
@@ -376,8 +387,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   cursor: pointer; transition: background var(--transition), color var(--transition), border-color var(--transition);
   display: inline-flex; align-items: center; gap: 4px; min-width: 44px; justify-content: center; }
 .ac-speed.slowed { background: var(--bg-card); color: var(--accent-2); border-color: var(--accent-2); }
-/* variant C playing state on the existing chunk pills (present card + correction sheet) */
-.chunk-pill.playing, .corr-chunk.playing { border-color: var(--accent-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+/* playing ring only on the boxed attend-here chunks (new piece / error chunk); text chunks go gold-underline */
+.chunk-pill.new.playing, .corr-chunk.error.playing { border-color: var(--accent-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
 @media (prefers-reduced-motion: reduce) { .ac-bars span { animation: none; } }
 
 /* choices */
@@ -487,9 +498,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 
 /* §feedback #4: inline icons standing in for emoji — align them on the text baseline */
 .ph { vertical-align: -0.15em; }
-.lesson-flame { display: inline-flex; align-items: center; gap: 5px; }
 .retry-chip { display: inline-flex; align-items: center; gap: 6px; }
-.present-anchor, .primer-anchor { display: inline-flex; align-items: center; gap: 7px; }
+.primer-anchor { display: inline-flex; align-items: center; gap: 7px; }
 .effort-line { display: flex; align-items: flex-start; gap: 8px; }
 .effort-line .ph { flex: none; margin-top: 1px; }
 
@@ -500,10 +510,12 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .present-nav #got { flex: 1; }
 
 .btn {
-  width: 100%; border: none; border-radius: var(--radius); padding: var(--space-4);
+  /* design-system button spec (decisions 2026-07-16): 15/600/radius-md/48min — the constitution's button */
+  width: 100%; border: none; border-radius: var(--radius-md); padding: 14px; min-height: 48px;
   font-family: var(--font-display);       /* buttons don't inherit font: without this they fall back to UA Arial */
-  font-size: 17px; font-weight: 800; cursor: pointer; box-shadow: var(--shadow);
+  font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: var(--shadow);
   background: var(--primary); color: #fff;                 /* default = primary */
+  transition: transform var(--transition), box-shadow var(--transition);   /* smooth press, matches the artifact */
 }
 .btn:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
 .btn--primary { background: var(--primary); color: #fff; }
@@ -581,7 +593,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 
 /* ---------- text input (type / listen) ---------- */
 .text-input { width: 100%; background: var(--bg-card); border: 2px solid var(--border); color: var(--text);
-  border-radius: var(--radius); padding: 16px; font-size: 18px; font-weight: 600; outline: none; }
+  border-radius: var(--radius); padding: 16px; font-size: 18px; font-weight: 600; outline: none;
+  transition: border-color var(--transition), background-color var(--transition); }   /* §3.5 wash eases in over 160ms, not a snap */
 .text-input:focus { border-color: var(--accent-2); }
 /* date inputs: kill the native iOS control that overflows/clips its box; render as a normal field */
 .text-input[type="date"] { -webkit-appearance: none; appearance: none; min-width: 0; min-height: 56px; line-height: 1.2; }
@@ -867,9 +880,11 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .ring-wrap { position: relative; display: grid; place-items: center; }
 .ring { width: min(108px, 29vw); height: auto; display: block; }
 /* §3.2.2 push the size asymmetry well beyond near-peer — the hierarchy must read at a glance */
-.ring.readiness { width: min(168px, 45vw); }
+.ring.readiness { width: min(196px, 52vw); }   /* widened for the protruding pace index; ring renders same size (viewBox padded to 140) */
 .ring.m-momentum, .ring.m-retention { width: min(80px, 22vw); }
-.ring-tick { stroke: var(--accent-2); stroke-width: 3.5; stroke-linecap: round; opacity: 1; }   /* §3.2 gold pace tick — the sole ambient pace signal */
+/* §3.2.1 pace index: solid gold inverted triangle outside the track, thin --bg keyline (Submariner bezel language) */
+.ring-tick { fill: var(--accent-2); stroke: var(--bg); stroke-width: 1.2; stroke-linejoin: round; }
+.ring-gap { fill: none; stroke: var(--green); stroke-width: 8; opacity: .38; }   /* ahead-gap wash on the arc between tick and fill */
 /* §3.2.2 delta whispers under the flanking dials */
 .dial-delta { font-size: 12px; font-weight: 800; margin-top: 2px; color: var(--text-dim); }
 .dial-delta.up { color: var(--green); } .dial-delta.down { color: var(--text-dim); }   /* §3.2 negative = dim, never red */
@@ -959,19 +974,23 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .corr-wrap.show .corr-scrim { opacity: 1; }
 .corr-sheet { position: absolute; left: 0; right: 0; bottom: 0; max-width: 480px; margin: 0 auto;
   background: var(--bg-card); border: 1px solid var(--border); border-bottom: none;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 14px 20px calc(20px + env(safe-area-inset-bottom));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 14px 24px calc(22px + env(safe-area-inset-bottom));
   transform: translateY(105%); transition: transform var(--t-slow) cubic-bezier(.2,.7,.3,1); }
 .corr-wrap.show .corr-sheet { transform: none; }
 .corr-grab { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
 .corr-wrong { font-size: 14px; color: var(--text-dim); text-decoration: line-through; text-decoration-color: var(--red); margin-bottom: 12px; }
 .corr-label { font-family: var(--font-display); font-size: 11px; letter-spacing: .06em; font-weight: 600; color: var(--accent-2); text-transform: uppercase; margin-bottom: 8px; }
-.corr-chunks { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px; }
-.corr-chunk { background: var(--bg-elevated); border: 1px solid transparent; border-radius: var(--radius-sm); padding: 7px 11px;
-  font-family: var(--font-display); font-size: 17px; font-weight: 500; color: var(--text); cursor: pointer; user-select: none;
-  transition: transform var(--transition), background var(--transition); }
-.corr-chunk[data-i]:active { transform: translateY(2px); }
-.corr-chunk.error { background: color-mix(in srgb, var(--accent) 14%, var(--bg-card)); border-color: var(--accent-2); }   /* gold = attend here (error locus); green retired from chunk marking */
-.corr-chunk.plain { cursor: default; }
+/* unified chunk semantics (decisions 2026-07-16): known chunks = dotted-underline text; only the ERROR
+   chunk is the gold box (box + gold = attend here). Mirrors the presentation card's .chunk-pill. */
+.corr-chunks { display: flex; flex-wrap: wrap; gap: 3px 9px; align-items: baseline; margin-bottom: 8px; }
+.corr-chunk { background: none; border: 0; border-bottom: 1.5px dotted var(--text-dim); border-radius: 0; padding: 0 0 2px;
+  font-family: var(--font-display); font-size: 17px; font-weight: 500; line-height: 1.4; color: var(--text); cursor: pointer; user-select: none;
+  transition: color var(--transition), border-color var(--transition); }
+.corr-chunk[data-i]:active, .corr-chunk.playing { color: var(--accent-2); border-bottom-color: var(--accent-2); }
+.corr-chunk.error { background: color-mix(in srgb, var(--accent) 14%, var(--bg-card)); border: 1px solid var(--accent-2);
+  border-radius: var(--radius-sm); padding: 7px 11px; line-height: 1.25; }   /* gold = attend here (error locus); green retired from chunk marking */
+.corr-chunk.error.playing { color: var(--text); }
+.corr-chunk.plain { cursor: default; border-bottom: 0; padding: 0; }   /* whole-phrase (non-chunked) correction: not tappable, no hint underline */
 .corr-audio { width: 40px; height: 40px; min-width: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--border);
   background: var(--bg-card); color: var(--accent-2); box-shadow: var(--shadow); display: inline-flex; align-items: center; justify-content: center;
   cursor: pointer; transition: transform var(--transition), box-shadow var(--transition); }

@@ -198,7 +198,7 @@ Example: a difficulty-2 phrase scaffolds at 4 exposures, goes cold at 7. A diffi
 - An item's first appearance in the app is ALWAYS the presentation card. No exercise may test an item with `exposures === 0`.
 - **First-pass cap:** during a lesson's *first* completion, the ladder is capped at rung 2 — cold-production modes never appear, regardless of counters. Cold modes live only in review sessions and lesson replays. (Principle: **lessons introduce, reviews interrogate.**)
 
-**Rung-down on failure:** two consecutive misses on an item → silently serve its next appearance one rung lower (never announced). Reset on next success.
+**Rung-down on failure:** two consecutive misses on an item → silently serve its next appearance one rung lower (never announced). Reset on next success. **Multi-chunk miss weighting:** a diffuse miss on a chunked item (the correction sheet's 2+-chunk case, where no single error locus exists — see decisions 2026-07-16) signals the phrase isn't encoded and is a stronger rung-down input than a single-chunk miss of equal count; weight it accordingly (arguably harder than a localized miss). A single-chunk error is a surgical discrimination slip, not a failure to hold the phrase.
 
 **Mode selection within a rung:** prefer the mode that advances an unmastered axis (§5.4); within rung 2, prefer one-blank fill until the item has passed it twice, then widen. Otherwise vary randomly for texture.
 

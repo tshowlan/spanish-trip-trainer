@@ -33,9 +33,9 @@
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
   .wrap { display:flex; flex-direction:column; align-items:center; }
-  .phone { width:340px; height:640px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  .phone { width:390px; height:720px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
 
-  .screen { padding:22px 20px; height:100%; display:flex; flex-direction:column; }
+  .screen { padding:24px 24px; height:100%; display:flex; flex-direction:column; }
 
   /* STAND-IN: progress bar composes from the app's built exercise chrome */
   .progress { height:4px; background:var(--bg-elevated); border-radius:2px; margin-bottom:26px; }
@@ -46,17 +46,27 @@
 
   .new-label { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.06em; color:var(--accent-2); margin-bottom:var(--space-4); }
 
-  /* ===== The phrase: chunk pills (from design/correction-sheet.html — canonical) ===== */
-  .chunks { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:var(--space-3); }
+  /* ===== The phrase: unified chunk semantics =====
+     KNOWN chunks = plain text + dotted hint underline (same affordance as the
+     exercise hint layer — tappable for meaning/provenance + chunk audio).
+     Only the NEW piece is a contained gold box: box + gold = attend here.
+     The sentence reads as a sentence; segmentation shows via per-chunk underlines. */
+  .chunks { display:flex; flex-wrap:wrap; gap:4px 10px; align-items:baseline; margin-bottom:var(--space-3); }
   .chunk {
-    background:var(--bg-elevated); border:1px solid transparent; border-radius:var(--radius-sm);
-    padding:9px 13px; font-family:var(--font-display); font-size:21px; font-weight:500; color:var(--text);
-    line-height:1.25; cursor:pointer; user-select:none;
-    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    font-family:var(--font-display); font-size:21px; font-weight:500; color:var(--text);
+    line-height:1.35; cursor:pointer; user-select:none;
+    border-bottom:1.5px dotted var(--text-dim); padding-bottom:2px;
+    transition: color var(--transition), border-color var(--transition);
   }
-  .chunk:active { transform:scale(0.97); }
-  .chunk.playing { border-color:var(--accent-2); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
-  .chunk.new-piece { background:color-mix(in srgb, var(--accent) 14%, var(--bg-card)); border-color:var(--accent-2); }
+  .chunk:active, .chunk.playing { color:var(--accent-2); border-bottom-color:var(--accent-2); }
+  .chunk.new-piece {
+    background:color-mix(in srgb, var(--accent) 14%, var(--bg-card));
+    border:1px solid var(--accent-2); border-radius:var(--radius-sm);
+    padding:9px 13px; line-height:1.25;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .chunk.new-piece:active { transform:scale(0.97); color:var(--text); }
+  .chunk.new-piece.playing { color:var(--text); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
   .chunk.new-piece .tag { font-family:var(--font-display); font-size:10px; font-weight:600; letter-spacing:0.05em; color:var(--accent-2); margin-left:6px; vertical-align:2px; }
 
   /* Short-item variant: single big phrase pill + context sentence */
@@ -134,7 +144,7 @@
   </div>
 
   <div class="caption">
-    Presentation card (§4c.1 / §4b.5), both layouts — APPROVED 2026-07-15. Attention semantics: <b>gold marks the NEW piece</b> (soft gold fill + NEW tag); known chunks are unmarked — their tap-popover carries provenance ("from Ordering Tacos"). Rule: mark new chunks only when they're ≤ half the chunks; if most/all are new, no marks (the header label carries it). Chunk taps play chunk audio (gold ring) + meaning popover. Short item: solo phrase + tappable context sentence. Phrase audio autoplays on card entry. "Got it" advances — never graded, counts exposure 1. Composed from approved artifacts (chunk pills, popover, AudioControl). STAND-IN: progress bar (use built exercise chrome). NOTE for correction sheet: same gold treatment should mark the ERROR chunk there; green "known" outline retired app-wide (gold = attend here, green = success confirmation only).
+    Presentation card (§4c.1 / §4b.5), both layouts — REVISED 2026-07-16 (was approved 2026-07-15; re-approval needed). DELTA vs last round: known chunks changed pill→plain text with dotted hint underline (unifies with the exercise hint layer; tap behavior/popover/audio unchanged); ONLY the new piece keeps the gold box (box+gold = attend here, app-wide); all-new cards now render as a fully dotted-underlined sentence, no boxes; frame resized 340→390 (structural only — type sizes deliberately unchanged, incl. 21px chunks / 28px solo).  Attention semantics: <b>gold marks the NEW piece</b> (soft gold fill + NEW tag); known chunks are unmarked — their tap-popover carries provenance ("from Ordering Tacos"). Rule: mark new chunks only when they're ≤ half the chunks; if most/all are new, no marks (the header label carries it). Chunk taps play chunk audio (gold ring) + meaning popover. Short item: solo phrase + tappable context sentence. Phrase audio autoplays on card entry. "Got it" advances — never graded, counts exposure 1. Composed from approved artifacts (chunk pills, popover, AudioControl). STAND-IN: progress bar (use built exercise chrome). NOTE for correction sheet: same gold treatment should mark the ERROR chunk there; green "known" outline retired app-wide (gold = attend here, green = success confirmation only).
   </div>
 </div>
 

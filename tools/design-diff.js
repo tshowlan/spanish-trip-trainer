@@ -143,6 +143,24 @@
       [".ac-bars span", ".ac-bars span"],
       [".ac-speed", ".ac-speed"],
     ],
+    // App state: renderPresent() in #qbody. Chunked variant = the artifact's default layout; the short
+    // variant's .phrase-solo/.context map to .present-es/.present-ctx (switch the artifact with switchVariant()).
+    presentationCard: [
+      [".new-label", ".present-label"],
+      [".chunk", ".chunk-pill"],
+      [".chunk.new-piece", ".chunk-pill.new"],
+      [".chunk.new-piece .tag", ".chunk-pill.new .cp-tag"],
+      [".translation", ".present-card.chunked .present-en"],
+      [".ac-speaker", ".present-audio .ac-speaker"],
+      [".audio-hint", ".present-audio .audio-hint"],
+      [".anchor", ".present-anchor"],
+      [".anchor .lead", ".present-anchor .lead"],
+      [".popover", ".present-pop"],
+      // short variant (render an item with < 3 words):
+      [".phrase-solo", ".present-es"],
+      [".context", ".present-ctx"],
+      [".context .es", ".present-ctx .es"],
+    ],
     // App state: showCorrection() open — .corr-wrap.show in the DOM.
     correctionSheet: [
       [".scrim", ".corr-scrim"],

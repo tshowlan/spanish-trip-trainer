@@ -364,7 +364,6 @@ function renderQuestion() {
     <div class="progress-row">
       <button class="close-btn" id="quit">${icon('x',24)}</button>
       <div class="pbar"><i style="width:${run.pct}%"></i></div>
-      <div class="lesson-flame" title="Day streak">${icon('flame', 15)} ${state.streak || 0}</div>
     </div>`));
   wrap.appendChild(el(`<div id="qbody" class="qenter"></div>`));   // §8.3 each question springs in
   app.appendChild(wrap);
@@ -450,49 +449,69 @@ function renderIntro(q) {
 }
 
 /* ----- presentation card (single-phrase re-teach after a miss — teach, never grade) ----- */
-// §4b.5: a chunk is "known" if the learner already owns matching material — any seen phrase whose
-// text equals, contains, or is contained by the chunk. Marks the parts of a long phrase they have.
-function _chunkKnown(chunkEs) {
-  const c = norm(chunkEs); if (!c) return false;
-  return (ALL_ITEMS || []).some(it => {
-    if (exposuresOf(it) <= 0) return false;
-    const e = norm(it.es);
-    return e === c || e.includes(c) || c.includes(e);
-  });
-}
 function renderPresent(q) {
   const item = q.item;
   const body = $("#qbody");
-  // no "New phrase" label on a re-teach — the "Second chance" chip already frames it
-  if (!q.requeued) body.appendChild(el(`<div class="qtype">New phrase</div>`));
+  const chunked = Array.isArray(item.chunks) && item.chunks.length;
   const short = item.es.trim().split(/\s+/).length < 3;
-  let card;
-  if (Array.isArray(item.chunks) && item.chunks.length) {
-    // §4b.5 segmented tappable card — the long phrase shown as pieces, the ones you already own marked
-    // "known" so a tier-3 sentence reads as one new chunk attached to things you have. Tap = meaning + audio.
+  // Attention semantics (decisions 2026-07-15, per design/presentation-card.html): GOLD + a NEW tag mark
+  // the one new piece; everything already-known is unmarked (green "known" outline retired app-wide). The
+  // new piece is content-flagged (chunks[i][2] === "new"). Tap any pill → meaning popover + chunk audio.
+  // no "New phrase" label on a re-teach — the "Second chance" chip already frames it
+  if (!q.requeued) {
+    const newCount = chunked ? item.chunks.filter(c => c[2] === "new").length : 0;
+    const label = short && !chunked ? "NEW WORD"
+      : "NEW PHRASE" + (newCount === 1 ? " · ONE NEW PIECE" : "");
+    body.appendChild(el(`<div class="present-label">${label}</div>`));
+  }
+  let card, pop = null;
+  if (chunked) {
     const pills = item.chunks.map((c, i) =>
-      `<button class="chunk-pill ${_chunkKnown(c[0]) ? "known" : "fresh"}" data-i="${i}"><span class="cp-es">${c[0]}</span><span class="cp-en">${c[1]}</span></button>`).join("");
+      `<button class="chunk-pill ${c[2] === "new" ? "new" : ""}" data-i="${i}">${c[0]}${c[2] === "new" ? `<span class="cp-tag">NEW</span>` : ""}</button>`).join("");
     card = el(`<div class="present-card chunked">
         <div class="chunk-row">${pills}</div>
         <div class="present-en">${item.en}</div>
-        <div class="chunk-tip">Tap a piece to hear it. The muted ones you already know.</div>
+        <div class="present-pop" id="present-pop"></div>
       </div>`);
-    card.querySelectorAll(".chunk-pill").forEach(p => p.addEventListener("click", () => {
-      p.classList.toggle("show-en"); speak(item.chunks[+p.dataset.i][0]);
+    pop = card.querySelector("#present-pop"); let hideT;
+    card.querySelectorAll(".chunk-pill").forEach(p => p.addEventListener("click", e => {
+      e.stopPropagation(); clearTimeout(hideT);
+      const i = +p.dataset.i;
+      pop.textContent = item.chunks[i][1]; pop.classList.add("show");
+      const s = card.getBoundingClientRect(), r = p.getBoundingClientRect();
+      pop.style.left = Math.max(8, r.left - s.left) + "px"; pop.style.top = (r.top - s.top - 38) + "px";
+      speak(item.chunks[i][0]);
       p.classList.add("playing"); clearTimeout(p._t); p._t = setTimeout(() => p.classList.remove("playing"), 1200);
+      hideT = setTimeout(() => pop.classList.remove("show"), 1800);
     }));
+    document.addEventListener("click", () => pop && pop.classList.remove("show"));
   } else {
+    const ctx = short && item.contextEs
+      ? `<div class="present-ctx"><span class="es" data-es="${item.contextEs.replace(/"/g, "&quot;")}">${item.contextEs}</span>${item.contextEn ? ` <span class="ctx-en">(${item.contextEn})</span>` : ""}</div>`
+      : "";
     card = el(`<div class="present-card">
       <div class="present-es">${item.es}</div>
       <div class="present-en">${item.en}</div>
-      ${short && item.contextEs ? `<div class="present-ctx">${item.contextEs}${item.contextEn ? ` <span>${item.contextEn}</span>` : ""}</div>` : ""}
+      ${ctx}
       ${item.note ? `<div class="present-note">${item.note}</div>` : ""}
-      ${item.anchor ? `<div class="present-anchor">${icon('bulb', 16)} ${item.anchor}</div>` : ""}
+      ${item.anchor ? `<div class="present-anchor"><span class="lead">Think:</span> ${item.anchor}</div>` : ""}
     </div>`);
+    const ctxEs = card.querySelector(".present-ctx .es");
+    if (ctxEs) ctxEs.addEventListener("click", () => {
+      speak(ctxEs.dataset.es);
+      ctxEs.classList.add("playing"); clearTimeout(ctxEs._t); ctxEs._t = setTimeout(() => ctxEs.classList.remove("playing"), 1200);
+    });
   }
   body.appendChild(card);
+  // audio row: 44px speaker + inline hint, matching the artifact's AudioControl composition
   const replay = audioControl(() => speak(item.es));
-  body.appendChild(replay);
+  const hint = chunked ? "Tap any part to hear it alone" : "Tap the sentence to hear it in context";
+  const audioRow = el(`<div class="present-audio"></div>`);
+  audioRow.appendChild(replay);
+  audioRow.appendChild(el(`<span class="audio-hint">${hint}</span>`));
+  body.appendChild(audioRow);
+  // the chunked card's "Think:" anchor sits below the audio row (its meta block); plain card carries it inline
+  if (chunked && item.anchor) body.appendChild(el(`<div class="present-anchor"><span class="lead">Think:</span> ${item.anchor}</div>`));
   setTimeout(() => replay._fire(), 250);
   // §feedback #1: Back button while phrases are being introduced — step back to the previous new-phrase
   // card (only within a run of present cards, so we never rewind into an already-graded question).
@@ -999,15 +1018,15 @@ function finishGrade(ok, item, extra, wrong) {
 function showCorrection(item, extra, wrong) {
   document.querySelectorAll(".corr-wrap").forEach(n => n.remove());
   const chunked = Array.isArray(item.chunks) && item.chunks.length;
-  // Attention semantics (decisions 2026-07-15): gold marks the ERROR chunk (the piece missing from the
-  // attempt) so the eye lands where the mistake was. Green retired from chunk marking (success-only);
-  // "known" is now the unmarked default. Mark only when the error is a minority (≤ half of the chunks) —
-  // a mostly-wrong attempt gets no marks, since the struck-through line already carries that.
+  // Attention semantics (decisions 2026-07-16): gold marks a POINT, never a region. Box the error chunk
+  // ONLY when the error is localized to exactly one chunk (you know the phrase except this spot). A diffuse
+  // miss (2+ chunks) has no single locus — the whole phrase is the correction, so no boxes: it renders as
+  // the clean dotted-underline sentence. Green retired from chunk marking; "known" is the unmarked default.
   const errSet = new Set();
   if (chunked && wrong) {
     const w = norm(wrong);
     item.chunks.forEach((c, i) => { if (!w.includes(norm(c[0]))) errSet.add(i); });
-    if (errSet.size > item.chunks.length / 2) errSet.clear();
+    if (errSet.size !== 1) errSet.clear();   // singular error locus only; diffuse miss → plain phrase
   }
   const pills = chunked
     ? item.chunks.map((c, i) => `<span class="corr-chunk ${errSet.has(i) ? "error" : ""}" data-i="${i}">${c[0]}</span>`).join("")

@@ -388,9 +388,9 @@ const CURRICULUM = {
           reward: "Look at you, full sentences now. People might mistake you for someone who lives here.",
           items: [
             { es: "¿Podría recomendarme un plato típico de aquí?", en: "Could you recommend a typical local dish?", tier: 3, tags: ["restaurant", "food"], difficulty: 4, keywords: ["plato", "típico"] },
-            { es: "Disculpe, creo que hay un error en la cuenta", en: "Excuse me, I think there's a mistake on the bill", tier: 3, tags: ["restaurant", "money"], difficulty: 4, keywords: ["error", "cuenta"], chunks: [["Disculpe", "excuse me"], ["creo que hay", "I think there's"], ["un error", "a mistake"], ["en la cuenta", "on the bill"]] },
+            { es: "Disculpe, creo que hay un error en la cuenta", en: "Excuse me, I think there's a mistake on the bill", tier: 3, tags: ["restaurant", "money"], difficulty: 4, keywords: ["error", "cuenta"], chunks: [["Disculpe", "excuse me"], ["creo que hay", "I think there's", "new"], ["un error", "a mistake"], ["en la cuenta", "on the bill"]] },
             { es: "¿A qué hora cierra la cocina?", en: "What time does the kitchen close?", tier: 3, tags: ["restaurant", "time"], difficulty: 3, keywords: ["hora", "cocina"] },
-            { es: "Estamos buscando un sitio para cenar cerca de aquí", en: "We're looking for somewhere to have dinner near here", tier: 3, tags: ["restaurant", "directions"], difficulty: 4, keywords: ["buscando", "cenar", "cerca"], chunks: [["Estamos buscando", "we're looking for"], ["un sitio para cenar", "a place to have dinner"], ["cerca de aquí", "near here"]] },
+            { es: "Estamos buscando un sitio para cenar cerca de aquí", en: "We're looking for somewhere to have dinner near here", tier: 3, tags: ["restaurant", "directions"], difficulty: 4, keywords: ["buscando", "cenar", "cerca"], chunks: [["Estamos buscando", "we're looking for"], ["un sitio para cenar", "a place to have dinner", "new"], ["cerca de aquí", "near here"]] },
             { es: "Perdone, ¿este tren va al centro?", en: "Excuse me, does this train go to the center?", tier: 3, tags: ["train", "transport"], difficulty: 3, keywords: ["tren", "centro"] },
             { es: "¿Sería posible cambiar de habitación?", en: "Would it be possible to change rooms?", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["cambiar", "habitación"] }
           ]
@@ -400,8 +400,8 @@ const CURRICULUM = {
           reward: "Lost, overcharged, double-booked, you can talk your way out of it. Travel boss mode.",
           items: [
             { es: "Reservé una habitación pero no aparece", en: "I booked a room but it's not showing up", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["reservé", "aparece"] },
-            { es: "Creo que me he perdido, ¿me puede ayudar?", en: "I think I'm lost, can you help me?", tier: 3, tags: ["directions", "emergency"], difficulty: 3, keywords: ["perdido", "ayudar"], chunks: [["Creo que me he perdido", "I think I'm lost"], ["¿me puede ayudar?", "can you help me?"]] },
-            { es: "Se me ha olvidado la cartera en el taxi", en: "I left my wallet in the taxi", tier: 3, tags: ["taxi", "emergency"], difficulty: 4, keywords: ["cartera", "taxi"], chunks: [["Se me ha olvidado", "I've left"], ["la cartera", "my wallet"], ["en el taxi", "in the taxi"]] },
+            { es: "Creo que me he perdido, ¿me puede ayudar?", en: "I think I'm lost, can you help me?", tier: 3, tags: ["directions", "emergency"], difficulty: 3, keywords: ["perdido", "ayudar"], chunks: [["Creo que me he perdido", "I think I'm lost", "new"], ["¿me puede ayudar?", "can you help me?"]] },
+            { es: "Se me ha olvidado la cartera en el taxi", en: "I left my wallet in the taxi", tier: 3, tags: ["taxi", "emergency"], difficulty: 4, keywords: ["cartera", "taxi"], chunks: [["Se me ha olvidado", "I've left", "new"], ["la cartera", "my wallet"], ["en el taxi", "in the taxi"]] },
             { es: "¿Puede llamar a un médico, por favor?", en: "Can you call a doctor, please?", tier: 3, tags: ["emergency", "health"], difficulty: 3, keywords: ["llamar", "médico"] },
             { es: "Esto no es lo que he pedido", en: "This isn't what I ordered", tier: 2, tags: ["restaurant"], keywords: ["pedido"] },
             { es: "¿Dónde está la comisaría más cercana?", en: "Where's the nearest police station?", note: "Spain: 'comisaría' = police station.", tier: 3, tags: ["emergency", "directions"], difficulty: 4, keywords: ["comisaría", "cercana"] }

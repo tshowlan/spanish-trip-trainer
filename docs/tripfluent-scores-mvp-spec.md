@@ -40,6 +40,8 @@ Readiness = 0.40 × Coverage + 0.40 × Retention + 0.20 × Recency
 - 40–64: **Fair**
 - 0–39: **Low**
 
+**Held-title semantics:** Tripfluent is a held title, not a trophy: copy says "holding," never "achieved"; the crown sheen fires on every crossing including re-earning. At T-0 with Readiness ≥ 85, "Landed Tripfluent" is recorded as an immutable per-trip fact (feeds prestige tiers) — PENCILED as its own small spec; do not build with this batch.
+
 ### 1.2 Momentum (0–100)
 
 *"What you're doing about it."* Rolling activity, analogous to Whoop Strain.
@@ -117,6 +119,8 @@ Adapt names to existing conventions. Suggested localStorage keys/schema:
 
 ## 3. Home Screen & Information Architecture
 
+**North star:** Home answers one question — will I be ready when I land — through three channels: the ring (state today), the pace tick (the glide path's demand today), the deltas (trajectory). Anything answering "how much have I finished" belongs to the Learn tab. Every home addition must pass this test.
+
 Follow the existing design token system. Aesthetic reference: Whoop/Oura — typography scale, generous whitespace, muted palette, one accent color per score band. **No mascots, no confetti, no badge icons.**
 
 ### 3.0 User hierarchy (every layout decision derives from this)
@@ -146,7 +150,7 @@ Follow the existing design token system. Aesthetic reference: Whoop/Oura — typ
 
 1. **Header:** flame (per §8.6), wordmark, language switcher. No profile icon or settings gear — account and settings live in the Profile tab (§3.1); one entry point, Whoop/Oura-style.
 2. **Dial cluster:** Readiness hero ring, meaningfully larger than the Momentum/Retention flankers — push the size asymmetry beyond near-peer; the hierarchy must be legible at a glance.
-   - **Pace tick:** small gold tick mark on the Readiness arc at "where the glide path says you should be today." Fill past the tick = ahead; visible gap = behind. Zero words. This is the **sole ambient pace signal** (decisions 2026-07-16) — same math as the Progress glide-path chart and the pace notification, one concept across surfaces.
+   - **Pace tick:** a gold **inverted-triangle index** (Submariner bezel language) at "where the glide path says you should be today," pointing inward from **outside the ring track** (a marker beside the dial, not on it — the gold-on-gold fix). Fill past the tick = ahead (soft-green gap wash); visible gap = behind (unpainted). Zero words. This is the **sole ambient pace signal** (decisions 2026-07-16) — same math as the Progress glide-path chart and the pace notification, one concept across surfaces. Full definition: §3.2.1.
    - **Countdown subline:** pure countdown ("121d out"), only when a trip exists. No pace words here — the gold pace tick above carries pace ambiently; pace *copy* appears only on divergence (detail view / whisper slot, §3.4).
    - **Band chip:** the Readiness band renders as a **chip** (band-colored 13% fill, sentence case), distinct from the dim-caps metric *names* — a contained live reading, not a title. Bands are Low / Fair / Strong / Tripfluent (§1.1). The **Tripfluent** chip wears the metallic crown: a specular gold gradient border + soft gold halo + a **one-time sheen sweep fired only on a band-crossing event** (disabled under prefers-reduced-motion, §4). Color = level, tick = pace, deltas = trend: three questions, three channels, no red anywhere.
    - **No ring label:** the Readiness ring carries no text label under the arc — the hero number plus the band chip already name it.
@@ -157,6 +161,12 @@ Follow the existing design token system. Aesthetic reference: Whoop/Oura — typ
 5. **Optionally:** one line of divergence narration, only when §7.3 has something to say. Silence is a feature.
 6. **Insight line:** a gold spark + one short delta, the number in `--green` display weight, sitting in rhythm under Practice (never pinned to the bottom with `margin-auto` — the leftover space above the tab bar is a deliberate quiet zone, not an orphan gap).
 7. **Destination presence:** a quiet line by default ("6:12pm in Mallorca · 74°"). Inside ~3 weeks to the trip it upgrades to the **weather tile** — a sky gradient keyed to the destination's *local* time, with conditions as **static texture** (no ambient animation, §4). Local time is free (tz math); temperature needs a cached weather fetch (edge function), so build both the line and the tile with **temperature optional** until that lands. (The app leaning toward the trip as it nears — same instinct as cram mode; see decisions 2026-07-16.)
+
+### 3.2.1 Pace tick — definition & rendering
+
+`tickTarget(today)` = the readiness required today to plausibly hold 85+ at T-0. v1: linear glide from baseline-at-trip-creation to 85 at the trip date `[tune — real glide likely front-loads less; cram window may steepen]`. The tick rises over the trip, converging on the crown threshold at landing. No trip date → no tick. Post-trip → tick retires.
+
+**Rendering:** solid gold inverted-triangle index (Submariner bezel language) pointing inward from OUTSIDE the ring track, thin `--bg` keyline; never overlaps the fill (legible at every band, including gold-on-gold Fair). Ahead (fill > tick): soft `--green` wash on the arc between them. Behind: unpainted — the empty track is the gap; no shame-coloring. Detail-sheet driver line: "N pts ahead of/behind pace."
 
 ### 3.3 Kill list (remove from home)
 
@@ -189,6 +199,12 @@ Follow the existing design token system. Aesthetic reference: Whoop/Oura — typ
 | Trip date passed | Prompt once to set the next trip (or clear); Readiness reverts to non-anchored mode. |
 | Long absence (14+ days) | Recency/Retention have decayed naturally — no shame copy. Detail view leads with the fastest path back up: "A review session is the quickest way to rebuild." |
 | All content covered | Coverage sits near 100 only while retention is strong; it fades with phrase strength (by design — reviewing stays valuable and dormancy shows honestly). Detail copy doubles as re-engagement CTA: "Coverage fading — 14 restaurant phrases need review." |
+
+**Education moments (decay explained exactly twice, then geometry carries it):**
+- **First score reveal** appends: "Readiness works like fitness — it reflects today, moving with practice and fading with time. The gold mark is your pace: stay ahead of it and you'll land Tripfluent."
+- **First downward band crossing** fires the §7.3 whisper once: "Readiness eased with the week off — a session brings it back fast."
+
+(Both are one-time education cards; the reveal card is a queued artifact, not built with this batch.)
 
 ---
 
