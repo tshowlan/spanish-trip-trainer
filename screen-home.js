@@ -1,9 +1,9 @@
 /* ============================== HOME (scores + map) ============================== */
 function ringSVG(val, cls, tick) {
   const r = 52, C = 2 * Math.PI * r, off = C * (1 - Math.max(0, Math.min(100, val)) / 100);
-  // readiness widens its canvas so the pace index can protrude outside the track (ring geometry unchanged)
-  const isHero = /\breadiness\b/.test(cls);
-  const vb = isHero ? "-10 -10 140 140" : "0 0 120 120";
+  // viewBox stays ring-sized; the pace index protrudes past it and shows via overflow:visible on
+  // .ring.readiness — so the tick never widens the dial's LAYOUT box (keeps the 3 dials centered).
+  const vb = "0 0 120 120";
   let tickEl = "", gap = "";
   if (tick != null) {   // §3.2.1 pace tick — Submariner-style gold triangle index outside the track (readiness only)
     const t = Math.max(0, Math.min(100, tick));

@@ -871,7 +871,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 
 /* §3.2 dials (design .dials): align-items center + space-between pushes flankers to the edges, away from
    the big Readiness ring; cards size to content (flex:none) so the hero doesn't crowd the flankers. */
-.scores { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; margin-bottom: 8px; }
+.scores { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }   /* flanker outer edges align to the action tile edges */
 .ring-card { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none; min-width: 0; padding: 0; }
 .ring-card.readiness { --ring: var(--accent-2); }
 .ring-card.readiness.r-low  { --ring: var(--red); }     /* < 40  */
@@ -880,7 +880,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .ring-wrap { position: relative; display: grid; place-items: center; }
 .ring { width: min(108px, 29vw); height: auto; display: block; }
 /* §3.2.2 push the size asymmetry well beyond near-peer — the hierarchy must read at a glance */
-.ring.readiness { width: min(196px, 52vw); }   /* widened for the protruding pace index; ring renders same size (viewBox padded to 140) */
+.ring.readiness { width: min(168px, 45vw); overflow: visible; }   /* box = ring size; pace index overflows it so the dial layout stays centered */
 .ring.m-momentum, .ring.m-retention { width: min(80px, 22vw); }
 /* §3.2.1 pace index: solid gold inverted triangle outside the track, thin --bg keyline (Submariner bezel language) */
 .ring-tick { fill: var(--accent-2); stroke: var(--bg); stroke-width: 1.2; stroke-linejoin: round; }
