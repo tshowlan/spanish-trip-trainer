@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-17 — Pattern moment approved (design/pattern-moment.html) + §4c.3 amendments
+- NEW artifact stamped (both views + themes): §4c.3 interstitial ("A pattern is forming", blue-slot machine, dotted fillers, one-time fill sequence, active-dismissal generalization rep on a never-drilled cognate) + §6.3 fast-path callout ("New word, same pattern").
+- Head/tail split settled: HEAD frames = Stage-0 machines (deliberate, §6.3 callout); TAIL frames = §4c.3 pattern moment (organic reveal); never both. Cross-refs added to §1b.0 + §4c.3.
+- Spec: §4c.3 rewritten (scoping, active-dismissal generalization rep, generalization-filler authoring rule, `frameGloss` field, fixed the wrong "sin ___" head-frame example → tail "¿Tiene ___?"). Design system §3.6: "dismissals are active app-wide" principle. decisions synced.
+- Doc/design only — §4c.3 is Milestone 2 (needs `frame`/`frameGloss` data + composer trigger); NO app build this round.
+- Design queue: readiness detail sheet → Learn tab (renders pass 0 as Survival kit chapter).
+
 ## 2026-07-17 — Presentation card v2.1 approved + built (design/presentation-card.html)
 - Active dismissal: 'Got it' removed; ONE pattern on every variant — a two-soft-option meaning check on the NEW material (chunked: the new chunk; short: the item). Options unmarked (gold NEW box doesn't trivialize); wrong → gold-ring the correct option, correct → green + 650ms advance. Card cannot be failed; nothing recorded beyond exposure 1.
 - Chunk taps stay PURE exploration (popover + audio) — tap-the-part machinery from v2 never built (chat caught the non-sequitur first). §4c.1 + decisions corrected to the v2.1 rule.

@@ -95,6 +95,7 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 
 ### 3.6 Cards, chips, dials
 - Presentation card, primer card, pattern-moment interstitial: `--r-xl`, generous padding (24px), serif for the scene/phrase moment per the font decision.
+- **Dismissals are active, app-wide.** Teaching surfaces (presentation card §4c.1, pattern moment §4c.3) exit via a one-tap **ungraded** recognition micro-rep — a two-soft-option meaning check on the NEW material — never a passive "Got it"/Continue. Options render unmarked so the card's own gold marker doesn't trivialize the check; wrong → gold-ring the correct one (card can't be failed), correct → green + 650ms auto-advance. Keeps the card from being skimmable without becoming a test. (Exception: the correction sheet's Continue stays a button — it's a forced processing beat, §3.3, not a teach-then-exit card.)
 - Home chips and standing line: per the §8b mockups — `--r-md`, fixed positions, counts update in place with a number-roll transition (`--t-base`).
 - Dials: per scores spec — number + trend, band color as the arc, no evaluative labels.
 

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Pattern Moment (design artifact, §4c.3 + §6.3 callout)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-xs: 12px; --text-sm: 14px; --text-base: 16px;
+    --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:720px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  .screen { padding:24px; height:100%; display:flex; flex-direction:column; }
+
+  /* STAND-IN: built exercise chrome */
+  .progress { height:4px; background:var(--bg-elevated); border-radius:2px; margin-bottom:28px; }
+  .progress > div { width:52%; height:100%; background:var(--accent); border-radius:2px; }
+
+  .body { flex:1; display:flex; flex-direction:column; opacity:1; transition: opacity 200ms cubic-bezier(.2,.7,.3,1), transform 200ms cubic-bezier(.2,.7,.3,1); }
+  .body.swap { opacity:0; transform:translateY(8px); }
+
+  /* ============ INTERSTITIAL ============ */
+  .kicker { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.06em; color:var(--accent-2); margin-bottom:var(--space-3); }
+  .headline { font-family:var(--font-display); font-size:23px; font-weight:600; color:var(--text); line-height:1.3; margin-bottom:var(--space-5); }
+
+  /* The machine: frame large, slot in the exercise-blank vocabulary (blue underline —
+     gold is new/error; the slot is neither, it's the generator's mouth). */
+  .machine { font-family:var(--font-display); font-size:30px; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .machine .slot { display:inline-block; min-width:110px; border-bottom:2.5px solid var(--secondary); color:var(--secondary); text-align:center; transition: color 300ms cubic-bezier(.2,.7,.3,1), border-color 300ms cubic-bezier(.2,.7,.3,1); }
+  .machine .slot.filled { color:var(--text); border-bottom-color:var(--border); }
+  .machine-gloss { font-size:var(--text-sm); color:var(--text-dim); margin-bottom:var(--space-5); }
+
+  /* Known fillers: dotted-underline known-material vocabulary, tappable (audio + gold while playing) */
+  .fillers { display:flex; flex-direction:column; gap:14px; margin-bottom:var(--space-5); }
+  .filler { display:flex; align-items:baseline; gap:12px; }
+  .filler .es { font-family:var(--font-display); font-size:18px; font-weight:500; color:var(--text);
+    border-bottom:1.5px dotted var(--text-dim); padding-bottom:2px; cursor:pointer;
+    transition: color var(--transition), border-color var(--transition); }
+  .filler .es.playing { color:var(--accent-2); border-bottom-color:var(--accent-2); }
+  .filler .en { font-size:13px; color:var(--text-dim); }
+  .filler.open .es { border-bottom:2px solid var(--secondary); color:var(--secondary); font-weight:600; padding:0 14px 2px; }
+  .filler.open .en { color:var(--secondary); }
+
+  .meta { margin-top:auto; }
+  /* Active dismissal (§4c.1 pattern, applied here as a GENERALIZATION rep):
+     the frame runs on a never-drilled cognate filler — the aha IS the exit.
+     Ungraded; the arriving member's real rep still comes from the weave. */
+  .microrep { font-size:var(--text-sm); color:var(--text-dim); line-height:1.5; margin-bottom:10px; }
+  .microrep .q { font-family:var(--font-display); font-weight:600; color:var(--text); }
+  .opts2 { display:flex; gap:8px; }
+  .opt2 { flex:1; border:1px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    padding:12px; font-family:var(--font-display); font-size:15px; font-weight:500; color:var(--text);
+    cursor:pointer; min-height:48px; text-align:center;
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition); }
+  .opt2:active { transform:translateY(1px); }
+  .opt2.got { border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+  .opt2.hinted { border-color:var(--accent-2); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+  .cont {
+    width:100%; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
+    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px;
+    cursor:pointer; box-shadow:var(--shadow);
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .cont:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  /* ============ §6.3 FAST-PATH CALLOUT (inline, above a skipping item) ============ */
+  .callout { display:flex; align-items:center; gap:9px; background:var(--bg-card); border:1px solid var(--border);
+    border-radius:var(--radius-md); padding:10px 13px; margin-bottom:var(--space-4); }
+  .callout .glyph { color:var(--accent-2); display:flex; }
+  .callout .txt { font-size:13.5px; color:var(--text-dim); }
+  .callout .frame { font-family:var(--font-display); font-weight:600; color:var(--text); }
+  .callout .frame .s { color:var(--secondary); }
+  .ex-label { font-size:var(--text-xs); color:var(--text-dim); margin-bottom:var(--space-2); }
+  .ex-sentence { font-family:var(--font-display); font-size:21px; font-weight:500; color:var(--text); line-height:1.6; margin-bottom:var(--space-4); }
+  .ex-sentence .blank { display:inline-block; min-width:96px; border-bottom:2px solid var(--secondary); color:var(--secondary); text-align:center; font-weight:600; }
+  .opts { display:flex; flex-direction:column; gap:8px; }
+  .opt { border:1px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    padding:12px 14px; font-family:var(--font-display); font-size:16px; font-weight:500; color:var(--text);
+    cursor:pointer; box-shadow:var(--shadow); min-height:48px; text-align:left;
+    transition: transform var(--transition), box-shadow var(--transition); }
+  .opt:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  /* chrome */
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:420px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+      <div class="progress"><div></div></div>
+      <div class="body" id="body"></div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="switchView()" id="viewBtn">show §6.3 inline callout</button>
+    <button onclick="replayFill()" id="replayBtn">replay fill sequence</button>
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    Pattern moment (§4c.3) + frame fast-path callout (§6.3) — NEW ARTIFACT 2026-07-17, needs approval.
+    Interstitial fires once per frame per trip when the 2nd/3rd family member arrives — ONLY for frames WITHOUT a completed Stage-0 pattern machine (machine frames were introduced deliberately; they use the §6.3 callout exclusively — this moment is the ORGANIC REVEAL for TAIL frames — patterns forming across 2–3 phrases that don't merit pass-0 real estate. Head frames (quiero, sin, dónde está...) are taught FIRST via Stage-0 machines and never see this screen. Demo frame is deliberately a tail example (¿Tiene ___?); headline copy claims no user agency (the pattern formed in them; the app points at it)). Generated purely from frame/slot data. The machine's slot renders in the EXERCISE-BLANK vocabulary (blue underline) — gold is
+    new/error, and the slot is neither: it's the generator's mouth. Known fillers are dotted-underline known
+    material (tap = audio, gold while playing). ONE-TIME fill sequence on entry: known fillers drop through the
+    slot (600ms each), then the slot rests OPEN — motion that explains "this is a machine," sanctioned class,
+    static under prefers-reduced-motion (fillers listed, slot open). Dismissal is ACTIVE, as a GENERALIZATION rep: the frame applied to a never-drilled cognate filler ('sin cilantro means: without/extra cilantro') — the aha (I understood a phrase I never learned) IS the exit; ungraded, wrong → gold-ring the right option. Authoring rule: generalization filler must be a cognate or known noun; the distractor varies the FRAME's meaning, never the noun's. No Continue button.
+    Inline callout: one quiet row above a presentation-skipping item ("New word, same pattern"), pattern glyph
+    in gold, frame with blue slot; the item enters at recognition below it. STAND-INS: progress bar, option buttons.
+  </div>
+</div>
+
+<script>
+  const fillers = [
+    { es: "sin gluten", en: "without gluten" },
+    { es: "sin chile", en: "without chili" }
+  ];
+
+  const views = {
+    moment: `
+      <div class="kicker">PATTERN</div>
+      <div class="headline">A pattern is forming</div>
+      <div class="machine">¿Tiene <span class="slot" id="slot">___</span>?</div>
+      <div class="machine-gloss">¿Tiene...? = do you have...? Point it at anything you need.</div>
+      <div class="fillers">
+        <div class="filler"><span class="es" onclick="playFiller(this,event)">¿Tiene cambio?</span><span class="en">do you have change?</span></div>
+        <div class="filler"><span class="es" onclick="playFiller(this,event)">¿Tiene wifi?</span><span class="en">do you have wifi?</span></div>
+        <div class="filler open"><span class="es">¿Tiene ___?</span><span class="en">do you have anything you need?</span></div>
+      </div>
+      <div class="meta">
+        <div class="microrep"><span>Your first try — one you've never drilled: <span class="q">¿Tiene menú?</span> means:</span></div>
+        <div class="opts2">
+          <button class="opt2" onclick="tapOpt(this,true)">Do you have a menu?</button>
+          <button class="opt2" onclick="tapOpt(this,false)">Where is the menu?</button>
+        </div>
+      </div>`,
+    callout: `
+      <div class="callout">
+        <span class="glyph"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></span>
+        <span class="txt">New word, same pattern: <span class="frame">¿Tiene <span class="s">___</span>?</span></span>
+      </div>
+      <div class="ex-label">Which one means "do you have a table for two?"</div>
+      <div class="ex-sentence">¿Tiene <span class="blank">______</span>?</div>
+      <div class="opts">
+        <button class="opt">mesa para dos</button>
+        <button class="opt">cambio de quinientos</button>
+        <button class="opt">agua de jamaica</button>
+      </div>`
+  };
+
+  let view = 'moment';
+  const body = document.getElementById('body');
+  let timers = new WeakMap();
+
+  function render(){ body.innerHTML = views[view]; if (view === 'moment') runFill(); }
+
+  // ONE-TIME explanatory fill sequence: known fillers drop through the slot, then it rests open.
+  function runFill(){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const slot = document.getElementById('slot');
+    if (!slot) return;
+    const seq = ["cambio", "wifi", "___"];
+    let i = 0;
+    slot.textContent = "___";
+    const step = () => {
+      if (!document.getElementById('slot')) return;
+      slot.textContent = seq[i];
+      slot.classList.toggle('filled', seq[i] !== "___");
+      i++;
+      if (i < seq.length) setTimeout(step, 600);
+    };
+    setTimeout(step, 500);
+  }
+  function replayFill(){ if (view === 'moment') runFill(); }
+
+  function playFiller(el, e){
+    clearTimeout(timers.get(el));
+    el.classList.add('playing');
+    timers.set(el, setTimeout(()=> el.classList.remove('playing'), 1200));
+    e.stopPropagation();
+  }
+  function tapOpt(btn, right){
+    if (right){ btn.classList.add('got'); setTimeout(cont, 650); }
+    else { [...btn.parentElement.children].forEach(o => { if (o !== btn) o.classList.add('hinted'); }); }
+  }
+  function cont(){
+    body.classList.add('swap');
+    setTimeout(()=>{ render(); body.classList.remove('swap'); }, 200);
+  }
+  function switchView(){
+    view = view === 'moment' ? 'callout' : 'moment';
+    document.getElementById('viewBtn').textContent = view === 'moment' ? 'show §6.3 inline callout' : 'show §4c.3 interstitial';
+    cont();
+  }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  render();
+</script>
+</body>
+</html>
