@@ -127,7 +127,9 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
 /* atmosphere ground: gradient in dark (via --ground), cream fallback in light; fixed = stable ground while scrolling */
-body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior: none; background: var(--ground, var(--bg)); background-attachment: fixed; }
+/* keep the native rubber-band (feedback, not ambient animation) but contain it so a drag-down can't
+   fire the browser's pull-to-refresh (decisions 2026-07-16). `none` killed the bounce → felt frozen. */
+body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; background: var(--ground, var(--bg)); background-attachment: fixed; }
 /* frosted translucent surfaces over the ground (dark only — --card-blur is unset in light) */
 .tile, .sheet, .quest, .prog-row, .prog-tier, .prog-trend, .home-diverge, .sheet-diverge, .archive-row, .pb-thread, .culture-note, .backup-banner, #tabbar { backdrop-filter: var(--card-blur, none); -webkit-backdrop-filter: var(--card-blur, none); }
 
@@ -174,9 +176,11 @@ body.home-lit .topbar .lang-flag-top { background: rgba(255,255,255,.14); border
 
 /* ---------- home / map ---------- */
 .home { padding: 8px 24px 104px; position: relative; z-index: 1; }
-/* home is a fixed one-screen composition (design .screen) — nothing to scroll to; prevent the
-   overscroll/clip against the transparent header. Other tabs (Learn/Progress) still scroll. */
-body.home-lit { overflow: hidden; }
+/* home is a one-screen composition (design .screen) with nothing to scroll to — but keep the native
+   rubber-band so it doesn't read as a frozen web page. Force a 1px overflow so iOS engages the bounce
+   even when content fits (imperceptible; no real scroll). Body's overscroll-behavior-y:contain stops
+   pull-to-refresh. Retires when the Capacitor WKWebView bounce is used (decisions 2026-07-16). */
+body.home-lit { min-height: calc(100vh + 1px); }
 
 /* §3.2 home atmosphere: a destination photo crowns the top and MASKS into the ground (mask-don't-paint),
    with a warm destination ground-glow beneath it. Fixed layer behind the content (torn down off-home). */

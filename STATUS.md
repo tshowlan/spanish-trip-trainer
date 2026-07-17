@@ -42,6 +42,11 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - Verified in the real app (seeded returning-user state, fresh port to beat the HTTP cache) in **dark + light**: photo crown + masking, trip header, band chip, fade tile, presence line all present and matching the design; atmosphere correctly torn down off-home. SW → v127.
 - **Home now matches design/home.html.** Genuinely remaining: the header treatment on **other pages** (Tom's design session) and the **weather tile + temperature** (cached weather edge function).
 
+## 2026-07-17 — Home keeps native rubber-band (chat decision) (Claude Code)
+- Reversed the earlier `overflow: hidden` on home. Root cause of "frozen" feel was `body { overscroll-behavior: none }` (killed the bounce entirely). Changed to `overscroll-behavior-y: contain` (bounce yes, pull-to-refresh no) + `-webkit-overflow-scrolling: touch`. Home forces a **1px overflow** (`min-height: calc(100vh + 1px)`) so iOS engages the rubber-band even though content fits — imperceptible, no real scroll, no persistent header clip.
+- Decision (decisions.md, chat): surfaces keep native scroll physics even when content fits — user-driven physics is feedback, not ambient animation; suppress pull-to-refresh wherever bounce is enabled. Generalizes to all screens. Capacitor WKWebView bounce retires the CSS trick later.
+- iOS-only physics — not observable in the desktop preview; device-check. SW → v138.
+
 ## 2026-07-16 — Fix: light-theme dial track + status-bar theme-color regression (Claude Code)
 - **Light-theme dials** were still washing out (I'd only added `--ring-track` to the dark blocks). Added a light `--ring-track` (translucent dark) so the tracks read over the bright photo + cream. Both themes now legible.
 - **Status bar "black in both themes"** root cause: `applyTheme()` (ui.js) already syncs the single `theme-color` meta to `--bg` for the ACTIVE app theme — but the two `media`-query `theme-color` metas I'd added overrode it with the SYSTEM scheme, so a dark *system* pinned #05060d regardless of the app's theme toggle. Reverted to the single meta; theme-color follows the app theme again (light app → cream, dark app → #05060d). `black-translucent` kept for the edge-to-edge atmosphere (needs a PWA re-add to take effect — iOS caches status-bar-style at install). SW → v136.
