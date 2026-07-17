@@ -151,6 +151,12 @@ function initSplash() {
   if (!s) return;
   s.classList.add(SPLASH_STYLE);
   s.innerHTML = splashMarkup();
+  // small build marker — the SW cache name (sts-vNN) is the source of truth; also handy for spotting stale caches
+  const ver = el(`<div class="splash-ver" id="splash-ver"></div>`);
+  s.appendChild(ver);
+  if (window.caches && caches.keys) {
+    caches.keys().then(keys => { const c = keys.find(k => /^sts-v\d+/.test(k)); if (c) ver.textContent = c.replace(/^sts-/, ""); }).catch(() => {});
+  }
 }
 function runSplash() {
   const splash = document.getElementById("splash");
