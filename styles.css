@@ -882,8 +882,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* §3.2.2 push the size asymmetry well beyond near-peer — the hierarchy must read at a glance */
 .ring.readiness { width: min(168px, 45vw); overflow: visible; }   /* box = ring size; pace index overflows it so the dial layout stays centered */
 .ring.m-momentum, .ring.m-retention { width: min(80px, 22vw); }
-/* §3.2.1 pace index: solid gold inverted triangle outside the track, thin --bg keyline (Submariner bezel language) */
-.ring-tick { fill: var(--accent-2); stroke: var(--bg); stroke-width: 1.2; stroke-linejoin: round; }
+/* §3.2.1 pace index: solid gold inverted triangle outside the track (no keyline — it no longer overlaps the arc) */
+.ring-tick { fill: var(--accent-2); stroke-linejoin: round; }
 .ring-gap { fill: none; stroke: var(--green); stroke-width: 8; opacity: .38; }   /* ahead-gap wash on the arc between tick and fill */
 /* §3.2.2 delta whispers under the flanking dials */
 .dial-delta { font-size: 12px; font-weight: 800; margin-top: 2px; color: var(--text-dim); }
