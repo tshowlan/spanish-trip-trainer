@@ -996,7 +996,7 @@ function finishGrade(ok, item, extra, wrong) {
   if (!ok && q && q.item) requeueMiss(item, q.type);
 
   // §3.3/§4c.2: a wrong answer opens the correction sheet (no footer, no shake — the sheet is the feedback)
-  if (!ok) { showCorrection(item, extra, wrong); return; }
+  if (!ok) { clearFooter(); showCorrection(item, extra, wrong); return; }   // drop the exercise's Check footer so its shadow doesn't sit behind Continue
 
   // ---- correct: §3.5 wash + auto-advance (built to design/correct-feedback.html) — no tap ----
   const qb = $("#qbody"); if (qb) qb.classList.add("qcorrect");       // green border + 8% wash on the input
