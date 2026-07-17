@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
-  <meta name="theme-color" content="#fcfcf3" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#05060d" media="(prefers-color-scheme: dark)" />
+  <!-- single meta; applyTheme() (ui.js) syncs content to --bg for the ACTIVE app theme (not the system scheme) -->
+  <meta name="theme-color" content="#fcfcf3" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <!-- translucent so the home atmosphere (photo + ground) reaches the top edge under the status bar; safe-area padding on the topbar keeps content clear of the notch -->
+  <!-- translucent so the home atmosphere reaches the top edge under the status bar; safe-area padding on the topbar keeps content clear of the notch -->
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Tripfluent</title>
   <link rel="manifest" href="./manifest.webmanifest" />
