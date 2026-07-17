@@ -2,6 +2,12 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-17 — Learning-engine amendment batch (curriculum architecture)
+- Spec edits 1–8 per handoff: Stage 0 (§1b.0), meet-the-piece (§4b.5/§6.1), active dismissal (§4c.1), authoring rules 10–11 + audit checks 11–12, primer through-line (§9b.3), graded-reader pencil (§10).
+- Content-pass impact: Mexico map gains a pass-0 chunk (survival kit + ~8–12 pattern machines) BEFORE existing pass 1; existing pass 1 lessons should be re-audited for frame-prerequisite compliance once machines are named.
+- Design queue (chat): presentation-card v2 → pattern-moment interstitial → readiness detail sheet → Learn tab (must render pass 0 as "Survival kit" chapter).
+- Doc-only batch: no app code touched; presentation-card v2 active-dismissal build waits on the v2 artifact.
+
 ## 2026-07-16 — Button reconciliation + token precedence (from correction-sheet audit)
 - DECIDED (B): global `.btn` reconciles to the design-system button spec — 15px / weight 600 / radius-md (14) / 48px min-height. One CSS change, sweeps all buttons; retires the last pre-constitution component dialect. Press physics (translateY 2px + shadow collapse) preserved (separate `:active` rule) and verified.
 - Token-precedence rule added to design system §5: live styles.css tokens outrank artifact token blocks — ends the frosted-glass class of diff noise; artifacts refresh tokens opportunistically on revision only.
