@@ -103,13 +103,23 @@
   @media (prefers-reduced-motion: reduce){ .bars span { animation:none; } }
   .audio-hint { font-size:var(--text-xs); color:var(--text-dim); }
 
-  .gotit {
-    width:100%; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
-    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px;
-    cursor:pointer; box-shadow:var(--shadow);
-    transition: transform var(--transition), box-shadow var(--transition);
+  /* ===== Active dismissal (§4c.1 v2): the card's exit is a one-tap
+     ungraded recognition micro-rep. No button. Wrong taps INFORM (popover)
+     while the correct target earns the gold attend-ring; only tapping the
+     target advances. Cannot be failed; nothing recorded beyond exposure 1. */
+  .microrep { font-size:var(--text-sm); color:var(--text-dim); line-height:1.5; min-height:44px;
+    display:flex; align-items:center; gap:8px; }
+  .microrep .q { color:var(--text); font-weight:500; }
+  .opts { display:flex; gap:8px; }
+  .opt {
+    flex:1; border:1px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    padding:12px; font-family:var(--font-display); font-size:15px; font-weight:500; color:var(--text);
+    cursor:pointer; min-height:48px; text-align:center;
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
   }
-  .gotit:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .opt:active { transform:translateY(1px); }
+  .opt.got { border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+  .opt.hinted { border-color:var(--accent-2); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
 
   /* Chunk meaning popover (from correction-sheet — canonical) */
   .popover {
@@ -139,12 +149,12 @@
   </div>
 
   <div class="chrome">
-    <button onclick="switchVariant()" id="switchBtn">show short-item variant</button>
+    <button onclick="switchVariant()" id="switchBtn">variant: short item</button>
     <button onclick="toggleTheme()">toggle dark theme</button>
   </div>
 
   <div class="caption">
-    Presentation card (§4c.1 / §4b.5), both layouts — REVISED 2026-07-16 (was approved 2026-07-15; re-approval needed). DELTA vs last round: known chunks changed pill→plain text with dotted hint underline (unifies with the exercise hint layer; tap behavior/popover/audio unchanged); ONLY the new piece keeps the gold box (box+gold = attend here, app-wide); all-new cards now render as a fully dotted-underlined sentence, no boxes; frame resized 340→390 (structural only — type sizes deliberately unchanged, incl. 21px chunks / 28px solo).  Attention semantics: <b>gold marks the NEW piece</b> (soft gold fill + NEW tag); known chunks are unmarked — their tap-popover carries provenance ("from Ordering Tacos"). Rule: mark new chunks only when they're ≤ half the chunks; if most/all are new, no marks (the header label carries it). Chunk taps play chunk audio (gold ring) + meaning popover. Short item: solo phrase + tappable context sentence. Phrase audio autoplays on card entry. "Got it" advances — never graded, counts exposure 1. Composed from approved artifacts (chunk pills, popover, AudioControl). STAND-IN: progress bar (use built exercise chrome). NOTE for correction sheet: same gold treatment should mark the ERROR chunk there; green "known" outline retired app-wide (gold = attend here, green = success confirmation only).
+    Presentation card v2.1 (§4c.1 active dismissal / §4b.5) — REVISED 2026-07-17, needs approval. DELTA vs v2: tap-the-part dismissal RETIRED (it targeted a known chunk — a non-sequitur against the card's own attend-here pointer). Dismissal is now ONE pattern on every variant: a two-soft-option meaning check on the NEW material ('cuando tenga un momento means: ...'; correct → green + 650ms advance; wrong → gold ring the right option). Chunk taps are pure exploration again — no gesture conflict, machinery removed. Options aren't marked on the card, so the gold NEW box doesn't trivialize the check. NEW third variant: meet-the-piece micro-intro (§4b.5) — short-item layout, NEW PIECE kicker, host phrase as context with the piece bolded. Nothing else changed: chunk semantics, popovers, audio autoplay, 390 frame, type sizes all held. DELTA vs last round: known chunks changed pill→plain text with dotted hint underline (unifies with the exercise hint layer; tap behavior/popover/audio unchanged); ONLY the new piece keeps the gold box (box+gold = attend here, app-wide); all-new cards now render as a fully dotted-underlined sentence, no boxes; frame resized 340→390 (structural only — type sizes deliberately unchanged, incl. 21px chunks / 28px solo).  Attention semantics: <b>gold marks the NEW piece</b> (soft gold fill + NEW tag); known chunks are unmarked — their tap-popover carries provenance ("from Ordering Tacos"). Rule: mark new chunks only when they're ≤ half the chunks; if most/all are new, no marks (the header label carries it). Chunk taps play chunk audio (gold ring) + meaning popover. Short item: solo phrase + tappable context sentence. Phrase audio autoplays on card entry. "Got it" advances — never graded, counts exposure 1. Composed from approved artifacts (chunk pills, popover, AudioControl). STAND-IN: progress bar (use built exercise chrome). NOTE for correction sheet: same gold treatment should mark the ERROR chunk there; green "known" outline retired app-wide (gold = attend here, green = success confirmation only).
   </div>
 </div>
 
@@ -167,7 +177,11 @@
       </div>
       <div class="meta">
         <div class="anchor"><span class="lead">Think:</span> <em>traer</em> is to bring. You're asking them to bring, not asking to get.</div>
-        <button class="gotit" onclick="advance()">Got it</button>
+        <div class="microrep" style="margin-bottom:8px"><span><span class="q">cuando tenga un momento</span> means:</span></div>
+        <div class="opts">
+          <button class="opt" onclick="tapOpt(this,true)">when you have a moment</button>
+          <button class="opt" onclick="tapOpt(this,false)">as soon as you can</button>
+        </div>
       </div>`,
     short: `
       <div class="new-label">NEW WORD</div>
@@ -183,7 +197,30 @@
       </div>
       <div class="meta">
         <div class="anchor"><span class="lead">Think:</span> <em>maleta</em> is a suitcase. The maletero is where the maletas go.</div>
-        <button class="gotit" onclick="advance()">Got it</button>
+        <div class="microrep" style="margin-bottom:8px"><span>Tap the meaning</span></div>
+        <div class="opts">
+          <button class="opt" onclick="tapOpt(this,true)">the trunk</button>
+          <button class="opt" onclick="tapOpt(this,false)">the suitcase</button>
+        </div>
+      </div>`,
+    piece: `
+      <div class="new-label">NEW PIECE</div>
+      <div class="phrase-solo" style="font-size:24px">cuando tenga un momento</div>
+      <div class="translation">when you have a moment</div>
+      <div class="context">You'll use it in: <span class="es" data-meaning="Could you bring me the check when you have a moment?" onclick="tapChunk(this,event)">¿Me puede traer la cuenta <b>cuando tenga un momento</b>?</span></div>
+      <div class="audio-row">
+        <button class="ac-speaker" id="spk" onclick="play(this)" aria-label="Play audio">
+          <svg class="glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        </button>
+        <span class="audio-hint">The piece alone · then you'll meet the full phrase</span>
+      </div>
+      <div class="meta">
+        <div class="microrep" style="margin-bottom:8px"><span>Tap the meaning</span></div>
+        <div class="opts">
+          <button class="opt" onclick="tapOpt(this,true)">when you have a moment</button>
+          <button class="opt" onclick="tapOpt(this,false)">right away</button>
+        </div>
       </div>`
   };
 
@@ -201,6 +238,15 @@
     clearTimeout(timers.get(btn));
     btn.classList.add('playing');
     timers.set(btn, setTimeout(()=> btn.classList.remove('playing'), 2000));
+  }
+  function tapOpt(btn, right){
+    if (right){
+      btn.classList.add('got');
+      setTimeout(advance, 650);
+    } else {
+      // wrong option: soft gold hint on the correct one; tapping it advances
+      [...btn.parentElement.children].forEach(o => { if (o !== btn) o.classList.add('hinted'); });
+    }
   }
   function tapChunk(el, e){
     clearTimeout(timers.get(el));
@@ -220,9 +266,11 @@
     body.classList.add('swap');
     setTimeout(()=> { render(); body.classList.remove('swap'); }, 200);
   }
+  const order = ['chunked','short','piece'];
+  const labels = { chunked:'variant: chunked phrase', short:'variant: short item', piece:'variant: meet-the-piece' };
   function switchVariant(){
-    current = current === 'chunked' ? 'short' : 'chunked';
-    document.getElementById('switchBtn').textContent = current === 'chunked' ? 'show short-item variant' : 'show chunked variant';
+    current = order[(order.indexOf(current)+1) % order.length];
+    document.getElementById('switchBtn').textContent = labels[order[(order.indexOf(current)+1) % order.length]];
     advance();
   }
   function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }

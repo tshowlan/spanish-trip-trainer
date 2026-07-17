@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-17 — Presentation card v2.1 approved + built (design/presentation-card.html)
+- Active dismissal: 'Got it' removed; ONE pattern on every variant — a two-soft-option meaning check on the NEW material (chunked: the new chunk; short: the item). Options unmarked (gold NEW box doesn't trivialize); wrong → gold-ring the correct option, correct → green + 650ms advance. Card cannot be failed; nothing recorded beyond exposure 1.
+- Chunk taps stay PURE exploration (popover + audio) — tap-the-part machinery from v2 never built (chat caught the non-sequitur first). §4c.1 + decisions corrected to the v2.1 rule.
+- Meet-the-piece variant (§4b.5): render deferred with its composer trigger (future engine work); not built this round.
+- Built to the v2.1 artifact + verified; SW bumped.
+- Design queue: pattern-moment interstitial → readiness detail sheet → Learn tab (renders pass 0 as Survival kit chapter).
+
 ## 2026-07-17 — Learning-engine amendment batch (curriculum architecture)
 - Spec edits 1–8 per handoff: Stage 0 (§1b.0), meet-the-piece (§4b.5/§6.1), active dismissal (§4c.1), authoring rules 10–11 + audit checks 11–12, primer through-line (§9b.3), graded-reader pencil (§10).
 - Content-pass impact: Mexico map gains a pass-0 chunk (survival kit + ~8–12 pattern machines) BEFORE existing pass 1; existing pass 1 lessons should be re-audited for frame-prerequisite compliance once machines are named.

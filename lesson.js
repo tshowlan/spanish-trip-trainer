@@ -449,6 +449,26 @@ function renderIntro(q) {
 }
 
 /* ----- presentation card (single-phrase re-teach after a miss — teach, never grade) ----- */
+// §4c.1 v2.1 dismissal check targets the NEW material — the new chunk for chunked phrases, else the item.
+// Distractor is an auto-picked plausible near-meaning (content pass will author better ones).
+function _itemDistractor(item) {
+  const m = mcOptions(item, true, run.lesson && run.lesson.items);
+  return m.options.find(o => norm(o) !== norm(m.answer)) || null;
+}
+function _glossDistractor(correctEn) {
+  const wc = s => s.trim().split(/\s+/).length, tgt = wc(correctEn);
+  const pool = [];
+  (ALL_ITEMS || []).forEach(it => { if (Array.isArray(it.chunks)) it.chunks.forEach(c => { if (c[1]) pool.push(c[1]); }); });
+  const uniq = [...new Set(pool)].filter(g => norm(g) !== norm(correctEn));
+  const near = uniq.filter(g => Math.abs(wc(g) - tgt) <= 1);
+  const pick = near.length ? near : uniq;
+  return pick.length ? sample(pick, 1)[0] : null;
+}
+function _presentCheck(item, chunked) {
+  const nc = chunked ? (item.chunks.find(c => c[2] === "new") || null) : null;
+  if (nc) return { es: nc[0], correct: nc[1], distract: _glossDistractor(nc[1]) || _itemDistractor(item) };
+  return { es: null, correct: item.en, distract: _itemDistractor(item) };
+}
 function renderPresent(q) {
   const item = q.item;
   const body = $("#qbody");
@@ -513,18 +533,33 @@ function renderPresent(q) {
   // the chunked card's "Think:" anchor sits below the audio row (its meta block); plain card carries it inline
   if (chunked && item.anchor) body.appendChild(el(`<div class="present-anchor"><span class="lead">Think:</span> ${item.anchor}</div>`));
   setTimeout(() => replay._fire(), 250);
-  // §feedback #1: Back button while phrases are being introduced — step back to the previous new-phrase
-  // card (only within a run of present cards, so we never rewind into an already-graded question).
-  const canBack = run.idx > 0 && run.qs[run.idx - 1] && run.qs[run.idx - 1].type === "present";
-  const back = canBack ? `<button class="btn grey" id="pback">${icon('caret-left', 18)} Back</button>` : "";
-  const f = footer(`<div class="present-nav">${back}<button class="btn" id="got">Got it</button></div>`);
-  f.querySelector("#got").addEventListener("click", () => {
-    run.exposed = run.exposed || new Set();
+  // §4c.1 v2.1 active dismissal: a two-soft-option meaning check on the NEW material replaces "Got it".
+  // Ungraded — correct → green + auto-advance; wrong → gold-ring the correct option (card can't be failed).
+  run.exposed = run.exposed || new Set();
+  const advance = () => {
     const id = itemId(item);
     if (!run.exposed.has(id)) { run.exposed.add(id); recordExposure(id); }   // idempotent — Back can't inflate exposures
     next();
-  });
-  if (canBack) f.querySelector("#pback").addEventListener("click", () => { run.idx--; renderQuestion(); });
+  };
+  const check = _presentCheck(item, chunked);
+  let distract = check.distract;
+  if (!distract || norm(distract) === norm(check.correct)) distract = "not sure";
+  const prompt = check.es ? `<span class="q">${check.es}</span> means:` : "Tap the meaning";
+  body.appendChild(el(`<div class="microrep">${prompt}</div>`));
+  const two = shuffle([{ t: check.correct, ok: 1 }, { t: distract, ok: 0 }]);
+  const opts = el(`<div class="opts">${two.map(o => `<button class="opt" data-ok="${o.ok}">${o.t}</button>`).join("")}</div>`);
+  let odone = false;
+  opts.querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => {
+    if (b.dataset.ok === "1") { if (odone) return; odone = true; haptic("correct"); b.classList.add("got"); setTimeout(advance, 650); }
+    else { haptic("press"); opts.querySelectorAll(".opt").forEach(o => { if (o.dataset.ok === "1") o.classList.add("hinted"); }); }
+  }));
+  body.appendChild(opts);
+  // §feedback #1: Back — step back to the previous present card (never rewind into a graded question)
+  const canBack = run.idx > 0 && run.qs[run.idx - 1] && run.qs[run.idx - 1].type === "present";
+  if (canBack) {
+    const f = footer(`<button class="btn grey" id="pback">${icon('caret-left', 18)} Back</button>`);
+    f.querySelector("#pback").addEventListener("click", () => { run.idx--; renderQuestion(); });
+  } else clearFooter();
 }
 function footer(html) {
   const old = $("#footer"); if (old) old.remove();

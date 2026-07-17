@@ -318,6 +318,16 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* audio row: 44px speaker + inline hint, matching the artifact's AudioControl composition */
 .present-audio { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
 .present-audio .audio-hint { font-size: var(--text-xs); color: var(--text-dim); }
+/* §4c.1 v2.1 active dismissal: two-soft-option meaning check on the new material (replaces "Got it") */
+.microrep { font-size: var(--text-sm); color: var(--text-dim); line-height: 1.5; min-height: 44px; display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.microrep .q { color: var(--text); font-weight: 500; }
+.opts { display: flex; gap: 8px; margin-top: 4px; }
+.opt { flex: 1; border: 1px solid var(--border); background: var(--bg-card); border-radius: var(--radius-md); padding: 12px;
+  font-family: var(--font-display); font-size: 15px; font-weight: 500; color: var(--text); cursor: pointer; min-height: 48px; text-align: center;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition); }
+.opt:active { transform: translateY(1px); }
+.opt.got { border-color: var(--green); background: color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+.opt.hinted { border-color: var(--accent-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
 /* intro page — all the section's new phrases at once */
 /* full-bleed regional photo card (one phrase at a time, Oura-style) */
 .intro-photo {
