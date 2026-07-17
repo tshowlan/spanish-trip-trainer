@@ -187,7 +187,9 @@ body.home-lit { overflow: hidden; }
   background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); } }
 :root[data-theme="dark"] .home-atmo .atmo-ground {
   background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); }
-.home-atmo .atmo-photo { position: absolute; top: 0; left: 0; right: 0; height: 264px; }
+/* extend the crown by the status-bar inset: with black-translucent the photo reaches under the status
+   bar (top:0) but the content is pushed down by the safe area, so add it back or the blend lands above the dials */
+.home-atmo .atmo-photo { position: absolute; top: 0; left: 0; right: 0; height: calc(264px + env(safe-area-inset-top)); }
 .home-atmo .atmo-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.72) brightness(.82) contrast(.95);
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%);
           mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%); }
@@ -847,8 +849,10 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .stand-slot.pace-ok { color: var(--green); }
 .stand-slot.pace-behind { color: var(--accent-2); }
 
-.scores { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }   /* §3.2 flankers center against the big Readiness ring (design .dials align-items:center) */
-.ring-card { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; min-width: 0; padding: 0; }
+/* §3.2 dials (design .dials): align-items center + space-between pushes flankers to the edges, away from
+   the big Readiness ring; cards size to content (flex:none) so the hero doesn't crowd the flankers. */
+.scores { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; margin-bottom: 8px; }
+.ring-card { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none; min-width: 0; padding: 0; }
 .ring-card.readiness { --ring: var(--accent-2); }
 .ring-card.readiness.r-low  { --ring: var(--red); }     /* < 40  */
 .ring-card.readiness.r-mid  { --ring: var(--accent); }  /* 40–64 */
