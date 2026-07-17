@@ -124,6 +124,11 @@
           anchor: "cuenta is the bill, and also an account, you settle both." };
       const normItem = items.find(i => i.es.split(/\s+/).length >= 3 && !i.chunks) ||
         { es: "¿Dónde está la estación?", en: "Where is the station?" };
+      // a small item SET, for exercises that need siblings: match (pairs a set) + fill (distractor pool)
+      const matchSet = (items.filter(i => i.es.split(/\s+/).length <= 5).slice(0, 4).length >= 4
+        ? items.filter(i => i.es.split(/\s+/).length <= 5).slice(0, 4)
+        : items.slice(0, 4));
+      const lessonItems = items.length ? items.slice(0, 10) : [normItem];
 
       function clean() {
         document.querySelectorAll(".footer, .corr-wrap, .confirm-wrap, .primer-wrap, .sheet-wrap").forEach(n => n.remove());
@@ -133,7 +138,7 @@
       // build a one-question run and render the REAL lesson runner for any exercise type
       function ask(type, item, extra) {
         clean();
-        run = { lesson: { id: "__harness__", topic: "Ordering food", title: "At the restaurant" },
+        run = { lesson: { id: "__harness__", topic: "Ordering food", title: "At the restaurant", items: lessonItems },
           qs: [Object.assign({ type, item }, extra || {})], idx: 0, pct: 35, wrong: 0, restored: 0,
           answered: false, reasks: {}, review: false, missed: new Map() };
         renderQuestion();
@@ -146,7 +151,7 @@
         "Present card — short (new word)": () => ask("present", shortItem),
         "Present card — re-teach (Second chance)": () => ask("present", chunkItem, { requeued: true }),
         "Correction sheet (gold error chunk)": () => { ask("type_translation", chunkItem); showCorrection(chunkItem, null, "creo que un error en la cuenta"); },
-        "Exercise — match pairs": () => ask("match", normItem),
+        "Exercise — match pairs": () => ask("match", matchSet[0], { items: matchSet }),
         "Exercise — multiple choice (ES→EN)": () => ask("mc_es2en", normItem),
         "Exercise — multiple choice (EN→ES)": () => ask("mc_en2es", normItem),
         "Exercise — type the translation": () => ask("type_translation", normItem),
