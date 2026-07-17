@@ -42,6 +42,13 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 - Verified in the real app (seeded returning-user state, fresh port to beat the HTTP cache) in **dark + light**: photo crown + masking, trip header, band chip, fade tile, presence line all present and matching the design; atmosphere correctly torn down off-home. SW → v127.
 - **Home now matches design/home.html.** Genuinely remaining: the header treatment on **other pages** (Tom's design session) and the **weather tile + temperature** (cached weather edge function).
 
+## 2026-07-16 — Home polish: no-scroll, status bar, dial legibility (Claude Code)
+- **No scroll on home:** `body.home-lit { overflow: hidden }` — home is a fixed one-screen composition (design `.screen`), nothing to scroll to; kills the overscroll/clip against the transparent header. Other tabs still scroll. Verified: docScrollTopMax=0, content clears the tab bar, no clipping (signed-in). (Edge case: a signed-out user's backup banner can tuck behind the tab bar since it can't scroll — minor.)
+- **iPhone top reflects home:** status-bar-style `default`→**`black-translucent`** so the atmosphere reaches the top edge under the status bar (safe-area padding keeps content off the notch); added `theme-color` media queries (cream light / #05060d dark). iOS-only, not visible in the browser preview.
+- **Flanker labels ALL CAPS** (`text-transform: uppercase` + design's 10.5px/.06em) — MOMENTUM / RETENTION.
+- **Dials no longer wash out over the photo:** ring track was translucent `--bg-elevated`; added a near-opaque neutral `--ring-track` (both dark blocks) + thicker strokes (8 hero / 11 flank) so the rings read over the atmosphere.
+- **Readiness % raised** to a superscript (design treatment) via `.ring-num` inline-flex + `.pct` margin-top. SW → v135.
+
 ## 2026-07-16 — Reconcile app to the re-mocked 390px home artifact (Claude Code)
 - Tom re-mocked `design/home.html` at **390px** (the new baseline). It scales the design up ~12% for the wider frame: hero ring 150→168 / number 34→38, flank rings 72→80 / number 19→21, photo crown 230→264, screen padding 18/20→20/24. **`.trip .dest` stayed 28px** — so my earlier 33px "prominence" bump was wrong (font px don't scale with frame width; the re-mock put the size increase in the dials, not the hero).
 - Reconciled the app to match (ran the §5 diff): readiness ring `min(168px,45vw)` + num 38px; flank rings `min(80px,22vw)` + num 21px; dest back to **28px**; `.atmo-photo` 264px; header/home horizontal padding → 24px; wordmark 20→19px.

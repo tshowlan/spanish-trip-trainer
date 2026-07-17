@@ -60,6 +60,7 @@
     /* atmosphere (§2.1): dark sits on a gradient ground, not flat black; surfaces frost over it */
     --ground: radial-gradient(120% 52% at 50% -6%, rgba(201,106,43,0.22) 0%, rgba(216,183,19,0.08) 34%, transparent 62%), linear-gradient(180deg, #101226 0%, #0a0b18 40%, #05060d 100%);
     --card-blur: blur(12px);
+    --ring-track: rgba(92,90,86,0.82);   /* near-opaque so dials read over the photo, not translucent --bg-elevated */
   }
 }
 :root[data-theme="dark"] { color-scheme: dark;
@@ -70,6 +71,7 @@
   /* atmosphere (§2.1): dark sits on a gradient ground, not flat black; surfaces frost over it */
   --ground: radial-gradient(120% 52% at 50% -6%, rgba(201,106,43,0.22) 0%, rgba(216,183,19,0.08) 34%, transparent 62%), linear-gradient(180deg, #101226 0%, #0a0b18 40%, #05060d 100%);
   --card-blur: blur(12px);
+  --ring-track: rgba(92,90,86,0.82);
 }
 
 .app-version { text-align: center; color: var(--text-dim); font-size: 11px; font-weight: 700; opacity: .5; margin: 22px 0 6px; cursor: default; user-select: none; }
@@ -170,7 +172,10 @@ body.home-lit .topbar .lang-flag-top { background: rgba(255,255,255,.14); border
 .topbar-brand .wordmark { height: 19px; }
 
 /* ---------- home / map ---------- */
-.home { padding: 8px 24px 120px; position: relative; z-index: 1; }
+.home { padding: 8px 24px 104px; position: relative; z-index: 1; }
+/* home is a fixed one-screen composition (design .screen) — nothing to scroll to; prevent the
+   overscroll/clip against the transparent header. Other tabs (Learn/Progress) still scroll. */
+body.home-lit { overflow: hidden; }
 
 /* §3.2 home atmosphere: a destination photo crowns the top and MASKS into the ground (mask-don't-paint),
    with a warm destination ground-glow beneath it. Fixed layer behind the content (torn down off-home). */
@@ -856,14 +861,17 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* §3.2.2 delta whispers under the flanking dials */
 .dial-delta { font-size: 12px; font-weight: 800; margin-top: 2px; color: var(--text-dim); }
 .dial-delta.up { color: var(--green); } .dial-delta.down { color: var(--text-dim); }   /* §3.2 negative = dim, never red */
-.ring-bg { fill: none; stroke: var(--bg-elevated); stroke-width: 6.5; }
-.ring-fg { fill: none; stroke: var(--ring, var(--secondary)); stroke-width: 6.5; stroke-linecap: round;
+.ring-bg { fill: none; stroke: var(--ring-track, var(--bg-elevated)); stroke-width: 8; }
+.ring-fg { fill: none; stroke: var(--ring, var(--secondary)); stroke-width: 8; stroke-linecap: round;
   transition: stroke-dashoffset .85s cubic-bezier(.3,.7,.3,1); }
+/* flankers render small, so thicken their stroke so they read over the atmosphere instead of washing out */
+.ring.m-momentum .ring-bg, .ring.m-retention .ring-bg, .ring.m-momentum .ring-fg, .ring.m-retention .ring-fg { stroke-width: 11; }
 .ring-center { position: absolute; inset: 0; display: grid; place-items: center; }
-.ring-num { font-family: var(--font-display); font-weight: 800; font-size: 38px; color: var(--text); line-height: 1; }
+.ring-num { font-family: var(--font-display); font-weight: 800; font-size: 38px; color: var(--text); line-height: 1;
+  display: inline-flex; align-items: flex-start; }
 .ring-card.m-momentum .ring-num, .ring-card.m-retention .ring-num { font-size: 21px; }
-.ring-num .pct { font-size: 14px; color: var(--text-dim); font-weight: 800; }
-.ring-label { font-weight: 600; font-size: 12.5px; color: var(--text-dim); text-align: center; line-height: 1.25; }
+.ring-num .pct { font-size: 16px; color: var(--text-dim); font-weight: 800; margin-top: 5px; margin-left: 1px; }   /* raised % (design superscript) */
+.ring-label { font-weight: 600; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim); text-align: center; line-height: 1.25; margin-top: 6px; }
 .m-momentum { --ring: var(--secondary); }
 .m-retention { --ring: var(--green); }
 .ring-band { font-weight: 800; font-size: 16px; color: var(--ring, var(--secondary)); }
