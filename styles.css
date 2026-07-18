@@ -972,6 +972,34 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .sheet-wrap.show .sheet { transform: none; }
 .sheet-grab { width: 40px; height: 5px; border-radius: 99px; background: var(--border); margin: 2px auto 14px; }
 .sheet-title { font-family: var(--font-display); font-weight: 800; font-size: 20px; margin-bottom: 12px; }
+/* readiness detail sheet — built to design/readiness-detail.html */
+.rd-sheet { padding: 14px 24px calc(26px + env(safe-area-inset-bottom)); }
+.rd-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.rd-title { font-family: var(--font-display); font-size: 12px; font-weight: 600; letter-spacing: .06em; color: var(--text-dim); }
+.rd-asof { font-size: 11px; color: var(--text-dim); }
+.rd-scorerow { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.rd-num { font-family: var(--font-display); font-size: 44px; font-weight: 700; color: var(--text); line-height: 1; }
+.rd-num .rd-pct { font-size: 16px; font-weight: 600; color: var(--text-dim); vertical-align: super; }
+.rd-pace { display: flex; align-items: center; gap: 9px; padding: 11px 13px; border: 1px solid var(--border);
+  border-radius: var(--radius-md); margin-bottom: 16px; background: var(--bg-elevated); }
+.rd-tri { display: flex; }
+.rd-ptxt { font-size: var(--text-sm); color: var(--text); font-weight: 500; flex: 1; }
+.rd-psub { display: block; font-size: 12px; color: var(--text-dim); font-weight: 400; margin-top: 1px; }
+.rd-pace.ahead .rd-ptxt b { color: var(--green); }
+.rd-pace.behind .rd-ptxt b { color: var(--text); }
+.rd-dlabel { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--text-dim); margin-bottom: 10px; }
+.rd-driver { margin-bottom: 13px; }
+.rd-drow { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 5px; }
+.rd-dname { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--text); }
+.rd-dval { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--text); }
+.rd-d { font-size: 11px; font-weight: 600; }
+.rd-d.up { color: var(--green); } .rd-d.down { color: var(--text-dim); }
+.rd-bar { height: 5px; background: var(--bg-elevated); border-radius: 3px; overflow: hidden; }
+.rd-bar > div { height: 100%; border-radius: 3px; width: 0; transition: width 500ms cubic-bezier(.2,.7,.3,1); }
+.rd-desc { font-size: 11.5px; color: var(--text-dim); margin-top: 4px; line-height: 1.45; }
+.rd-moves { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--text-dim); margin-top: 14px; }
+.rd-spark { color: var(--accent-2); display: flex; }
+.rd-moves b { color: var(--text); font-weight: 500; }
 /* §3.5 correct-answer feedback — built to design/correct-feedback.html: green wash + auto-advance */
 #qbody.qcorrect .text-input { border-color: var(--green); background-color: color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
 #qbody.leaving { opacity: 0; transform: translateY(-6px); transition: opacity 200ms cubic-bezier(.2,.7,.3,1), transform 200ms cubic-bezier(.2,.7,.3,1); }

@@ -2,6 +2,14 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-17 — Readiness detail sheet approved + built (design/readiness-detail.html)
+- Opens on ring tap (scoreSheet("readiness")); scrim-tap dismisses. Three states: ahead / behind / Tripfluent-held.
+- Pace row: apex-right triangle glyph + copy (ahead leads with cushion; behind = statement + action; held = "Holding Tripfluent", never achieved). Pace pts = readiness - glide target (_glideToday); held when readiness >= 85.
+- Drivers: soft bars (Coverage/Retention --secondary, Recency --accent) + value + 7-day delta + plain descriptor; weights stay internal. Recency + coverage now added to the daily snapshot (_recordDaily) so their deltas accrue; delta hides until data exists.
+- "What moves it": Recency pre-trip; held → reviews-hold-it line. Momentum/Retention sheets keep the prior simpler layout (not in this artifact).
+- Design system §3.3 sheet-dismissal rule + 3 decisions (pace-glyph orientation, weights internal, crown/Landed-Tripfluent scope). scores-spec detail-view section rewritten. SW bumped.
+- Design queue: first-score-reveal education card → Learn tab.
+
 ## 2026-07-17 — Pattern moment approved (design/pattern-moment.html) + §4c.3 amendments
 - NEW artifact stamped (both views + themes): §4c.3 interstitial ("A pattern is forming", blue-slot machine, dotted fillers, one-time fill sequence, active-dismissal generalization rep on a never-drilled cognate) + §6.3 fast-path callout ("New word, same pattern").
 - Head/tail split settled: HEAD frames = Stage-0 machines (deliberate, §6.3 callout); TAIL frames = §4c.3 pattern moment (organic reveal); never both. Cross-refs added to §1b.0 + §4c.3.

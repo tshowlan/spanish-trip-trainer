@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Readiness Detail Sheet (design artifact, scores spec detail view)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-xs: 12px; --text-sm: 14px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: #23211a; --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:760px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  :root[data-theme="dark"] .phone {
+    background:
+      radial-gradient(120% 55% at 50% -8%, rgba(201,106,43,0.28) 0%, rgba(216,183,19,0.10) 34%, rgba(0,0,0,0) 62%),
+      linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%);
+  }
+  .scrim { position:absolute; inset:0; background:rgba(5,6,13,0.35); opacity:1; transition:opacity 300ms; }
+
+  /* ============ THE SHEET ============ */
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:var(--bg-card);
+    border:1px solid var(--border); border-bottom:none; border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+    padding:14px 24px 26px; transform:translateY(0); transition:transform 300ms cubic-bezier(.2,.7,.3,1); }
+  :root[data-theme="dark"] .sheet { background:rgba(35,33,24,0.92); backdrop-filter:blur(14px); }
+  .grabber { width:36px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 16px; }
+
+  .head { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .title { font-family:var(--font-display); font-size:12px; font-weight:600; letter-spacing:0.06em; color:var(--text-dim); }
+  .asof { font-size:11px; color:var(--text-dim); }
+
+  .scorerow { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .num { font-family:var(--font-display); font-size:44px; font-weight:700; color:var(--text); line-height:1; }
+  .num .pct { font-size:16px; font-weight:600; color:var(--text-dim); vertical-align:super; }
+  .band { display:inline-block; font-family:var(--font-display); font-size:11.5px; font-weight:600;
+    letter-spacing:0.04em; padding:4px 10px; border-radius:20px;
+    background:color-mix(in srgb, currentColor 13%, transparent); }
+  .band.top { position:relative; overflow:hidden; border:1.5px solid transparent; padding:3px 11px;
+    background:
+      linear-gradient(color-mix(in srgb, var(--green) 12%, var(--bg-card)), color-mix(in srgb, var(--green) 12%, var(--bg-card))) padding-box,
+      linear-gradient(118deg, #8a6a1c 0%, #e9c85c 18%, #fdf0a8 34%, #b8862e 52%, #f7e07e 72%, #fff3b0 84%, #a97c1f 100%) border-box;
+    box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent), 0 1px 2px rgba(169,124,31,0.35); }
+
+  /* Pace row: the bezel-triangle glyph carries the pace identity into the sheet */
+  .pace { display:flex; align-items:center; gap:9px; padding:11px 13px; border:1px solid var(--border);
+    border-radius:var(--radius-md); margin-bottom:16px; background:var(--bg); }
+  :root[data-theme="dark"] .pace { background:var(--bg-elevated); }
+  .pace .tri { display:flex; }
+  .pace .txt { font-size:var(--text-sm); color:var(--text); font-weight:500; flex:1; }
+  .pace .txt .sub { display:block; font-size:12px; color:var(--text-dim); font-weight:400; margin-top:1px; }
+  .pace.ahead .txt b { color:var(--green); }
+  .pace.behind .txt b { color:var(--text); }
+
+  /* Drivers */
+  .dlabel { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.06em; color:var(--text-dim); margin-bottom:10px; }
+  .driver { margin-bottom:13px; }
+  .driver .row { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:5px; }
+  .driver .name { font-family:var(--font-display); font-size:14px; font-weight:600; color:var(--text); }
+  .driver .val { font-family:var(--font-display); font-size:14px; font-weight:600; color:var(--text); }
+  .driver .val .d { font-size:11px; font-weight:600; margin-left:5px; }
+  .driver .val .d.up { color:var(--green); } .driver .val .d.down { color:var(--text-dim); }
+  .driver .bar { height:5px; background:var(--bg-elevated); border-radius:3px; overflow:hidden; }
+  :root[data-theme="dark"] .driver .bar { background:rgba(255,255,255,0.08); }
+  .driver .bar > div { height:100%; border-radius:3px; width:0; transition:width 500ms cubic-bezier(.2,.7,.3,1); }
+  .driver .desc { font-size:11.5px; color:var(--text-dim); margin-top:4px; line-height:1.45; }
+
+  .moves { display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--text-dim); margin-top:14px; }
+  .moves .spark { color:var(--accent-2); display:flex; }
+  .moves b { color:var(--text); font-weight:500; }
+
+  /* chrome */
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:430px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="scrim" onclick="dismissNote()"></div>
+    <div class="sheet" id="sheet"></div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="cycleState()" id="stateBtn">state: ahead (72)</button>
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    Readiness detail sheet, NEW ARTIFACT 2026-07-17, needs approval. Opens on ring tap; standard sheet
+    (grabber, 300ms slide); scrim-tap DOES dismiss (informational sheet, unlike the correction sheet).
+    Pace glyph rule (DECIDED): as an inline glyph the pace triangle renders APEX-RIGHT (apex-down collides with the finance ▼ = decline vocabulary next to 'behind' copy); on the RING it stays functional, apex rotated toward its arc position. Pace row uses the apex-right glyph as the pace identity mark; ahead copy leads with the cushion
+    ("<b>6 pts ahead of pace</b>"), behind copy is statement + action, never threat ("4 pts behind pace. A
+    session today closes most of it."). Held-title state: crown chip + "Holding it takes light upkeep. You're
+    there." (copy says holding, never achieved). Drivers render as soft bars in system colors (Coverage
+    secondary, Retention secondary, Recency accent), values + 7-day deltas, one-line plain-language
+    descriptors; NO formula weights exposed (assumption to ratify: the 0.4/0.4/0.2 mix stays internal; bars
+    are ordered by influence instead). Bar fills spring in on open (500ms, value-change class). "What moves
+    it" line: gold spark + "A session today moves <b>Recency</b> most." ASSUMPTION FLAG: designed against the
+    uploaded scores doc + our applied amendments; if the live detail-view section diverges, artifact wins for
+    geometry, live spec wins for copy rules. Frame 390.
+  </div>
+</div>
+
+<script>
+  const tri = () => `<svg width="14" height="16" viewBox="0 0 14 16"><polygon points="13,8 1,1 1,15" fill="var(--accent-2)" stroke="var(--bg-card)" stroke-width="1"/></svg>`;
+  const spark = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg>`;
+
+  const states = {
+    ahead: {
+      label: 'state: ahead (72)', num: 72, band: 'Strong', bandColor: 'var(--secondary)', top: false,
+      pace: `<b>6 pts ahead of pace</b><span class="sub">The gold mark is where the glide path says you'd be today.</span>`,
+      paceClass: 'ahead',
+      drivers: [
+        { name:'Coverage', val:'68', d:'+4', up:true,  w:68, c:'var(--secondary)', desc:'How much of your trip\u2019s moments you\u2019ve learned.' },
+        { name:'Retention', val:'85', d:'\u22122', up:false, w:85, c:'var(--secondary)', desc:'How well it\u2019s sticking when we check.' },
+        { name:'Recency', val:'61', d:'\u22125', up:false, w:61, c:'var(--accent)', desc:'How fresh it all is right now. Fades fastest, recovers fastest.' }
+      ],
+      moves: `A session today moves <b>Recency</b> most.`
+    },
+    behind: {
+      label: 'state: behind (58)', num: 58, band: 'Fair', bandColor: 'var(--accent-2)', top: false,
+      pace: `<b>4 pts behind pace</b><span class="sub">A session today closes most of it.</span>`,
+      paceClass: 'behind',
+      drivers: [
+        { name:'Coverage', val:'55', d:'+1', up:true,  w:55, c:'var(--secondary)', desc:'How much of your trip\u2019s moments you\u2019ve learned.' },
+        { name:'Retention', val:'72', d:'\u22124', up:false, w:72, c:'var(--secondary)', desc:'How well it\u2019s sticking when we check.' },
+        { name:'Recency', val:'34', d:'\u221211', up:false, w:34, c:'var(--accent)', desc:'How fresh it all is right now. Fades fastest, recovers fastest.' }
+      ],
+      moves: `A session today moves <b>Recency</b> most.`
+    },
+    held: {
+      label: 'state: Tripfluent (89)', num: 89, band: 'Tripfluent', bandColor: 'var(--green)', top: true,
+      pace: `<b>Holding Tripfluent</b><span class="sub">Light upkeep keeps you there through landing day.</span>`,
+      paceClass: 'ahead',
+      drivers: [
+        { name:'Coverage', val:'88', d:'+2', up:true, w:88, c:'var(--secondary)', desc:'How much of your trip\u2019s moments you\u2019ve learned.' },
+        { name:'Retention', val:'93', d:'+1', up:true, w:93, c:'var(--secondary)', desc:'How well it\u2019s sticking when we check.' },
+        { name:'Recency', val:'82', d:'\u22123', up:false, w:82, c:'var(--accent)', desc:'How fresh it all is right now. Fades fastest, recovers fastest.' }
+      ],
+      moves: `Reviews alone hold this. New material is a bonus now.`
+    }
+  };
+
+  const order = ['ahead','behind','held'];
+  let cur = 'ahead';
+  const sheet = document.getElementById('sheet');
+
+  function render(){
+    const s = states[cur];
+    sheet.innerHTML = `
+      <div class="grabber"></div>
+      <div class="head"><span class="title">TRIP READINESS</span><span class="asof">today</span></div>
+      <div class="scorerow">
+        <span class="num">${s.num}<span class="pct">%</span></span>
+        <span class="band${s.top ? ' top' : ''}" style="color:${s.bandColor}">${s.band}</span>
+      </div>
+      <div class="pace ${s.paceClass}">
+        <span class="tri">${tri()}</span>
+        <span class="txt">${s.pace}</span>
+      </div>
+      <div class="dlabel">WHAT'S DRIVING IT</div>
+      ${s.drivers.map(d => `
+        <div class="driver">
+          <div class="row"><span class="name">${d.name}</span><span class="val">${d.val}<span class="d ${d.up?'up':'down'}">${d.d}</span></span></div>
+          <div class="bar"><div style="background:${d.c}" data-w="${d.w}"></div></div>
+          <div class="desc">${d.desc}</div>
+        </div>`).join('')}
+      <div class="moves"><span class="spark">${spark}</span><span>${s.moves}</span></div>`;
+    requestAnimationFrame(()=> requestAnimationFrame(()=>{
+      sheet.querySelectorAll('.bar > div').forEach(b => b.style.width = b.dataset.w + '%');
+    }));
+  }
+  function cycleState(){
+    cur = order[(order.indexOf(cur)+1) % order.length];
+    document.getElementById('stateBtn').textContent = states[cur].label;
+    render();
+  }
+  function dismissNote(){ /* scrim-tap dismisses in app; inert in artifact */ }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  render();
+</script>
+</body>
+</html>

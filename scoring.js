@@ -204,7 +204,7 @@ function scoreDivergence(s) {
 function _recordDaily(s) {
   state.scoreHistory = state.scoreHistory || [];
   const today = new Date().toISOString().slice(0, 10);
-  const rec = { date: today, readiness: s.readiness, momentum: s.momentum, retention: s.retention, sessions: s.sessions7 };
+  const rec = { date: today, readiness: s.readiness, momentum: s.momentum, retention: s.retention, coverage: s.coverage, recency: s.recency, sessions: s.sessions7 };
   const h = state.scoreHistory, last = h[h.length - 1];
   if (last && last.date === today) { h[h.length - 1] = rec; }   // same-day update, no persist churn
   else { h.push(rec); if (h.length > 120) h.splice(0, h.length - 120); save(); }  // new day → persist

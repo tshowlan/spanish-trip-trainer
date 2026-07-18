@@ -244,7 +244,61 @@ function statusOverlay({ kicker, title, body, cta, titleClass }) {
 }
 
 /* ---- score detail sheet (every score explains itself in one tap) ---- */
+// §detail-view: the Readiness ring opens the rich instrument sheet (design/readiness-detail.html);
+// Momentum/Retention keep the simpler generic sheet below until they get their own artifacts.
+const _paceTriSVG = `<svg width="14" height="16" viewBox="0 0 14 16"><polygon points="13,8 1,1 1,15" fill="var(--accent-2)" stroke="var(--bg-card)" stroke-width="1"/></svg>`;
+const _sparkSVG = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg>`;
+function readinessSheet() {
+  const s = state.scoresCache || computeScores();
+  document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
+  const band = readinessBand(s.readiness);
+  const held = s.readiness >= 85;
+  const glide = _glideToday();
+  // pace row: held (>=85) > ahead/behind vs the glide target > nothing (no honest pace yet)
+  let pace = "";
+  if (held) {
+    pace = `<div class="rd-pace ahead"><span class="rd-tri">${_paceTriSVG}</span><span class="rd-ptxt"><b>Holding Tripfluent</b><span class="rd-psub">Light upkeep keeps you there through landing day.</span></span></div>`;
+  } else if (glide != null) {
+    const pts = Math.round(s.readiness - glide);
+    pace = pts >= 0
+      ? `<div class="rd-pace ahead"><span class="rd-tri">${_paceTriSVG}</span><span class="rd-ptxt"><b>${pts} pts ahead of pace</b><span class="rd-psub">The gold mark is where the glide path says you'd be today.</span></span></div>`
+      : `<div class="rd-pace behind"><span class="rd-tri">${_paceTriSVG}</span><span class="rd-ptxt"><b>${Math.abs(pts)} pts behind pace. A session today closes most of it.</b></span></div>`;
+  }
+  const drivers = [
+    { name: "Coverage", val: s.coverage, key: "coverage", color: "var(--secondary)", desc: "How much of your trip's moments you've learned." },
+    { name: "Retention", val: s.retention, key: "retention", color: "var(--secondary)", desc: "How well it's sticking when we check." },
+    { name: "Recency", val: s.recency, key: "recency", color: "var(--accent)", desc: "How fresh it all is right now. Fades fastest, recovers fastest." }
+  ];
+  const driverHtml = drivers.map(d => {
+    const tr = scoreTrend(d.key, 7), delta = tr ? Math.round(tr.delta) : null;
+    const dHtml = (delta != null && delta !== 0) ? ` <span class="rd-d ${delta > 0 ? "up" : "down"}">${delta > 0 ? "+" : ""}${delta}</span>` : "";
+    const w = Math.max(0, Math.min(100, Math.round(d.val)));
+    return `<div class="rd-driver">
+      <div class="rd-drow"><span class="rd-dname">${d.name}</span><span class="rd-dval">${Math.round(d.val)}${dHtml}</span></div>
+      <div class="rd-bar"><div style="background:${d.color}" data-w="${w}"></div></div>
+      <div class="rd-desc">${d.desc}</div>
+    </div>`;
+  }).join("");
+  const moves = held ? "Reviews alone hold this. New material is a bonus now." : `A session today moves <b>Recency</b> most.`;
+  const wrap = el(`<div class="sheet-wrap">
+    <div class="sheet-backdrop"></div>
+    <div class="sheet rd-sheet">
+      <div class="sheet-grab"></div>
+      <div class="rd-head"><span class="rd-title">TRIP READINESS</span><span class="rd-asof">today</span></div>
+      <div class="rd-scorerow"><span class="rd-num">${s.readiness}<span class="rd-pct">%</span></span><span class="band-chip ${band.cls}${held ? " crown" : ""}">${band.label}</span></div>
+      ${pace}
+      <div class="rd-dlabel">WHAT'S DRIVING IT</div>
+      ${driverHtml}
+      <div class="rd-moves"><span class="rd-spark">${_sparkSVG}</span><span>${moves}</span></div>
+    </div>
+  </div>`);
+  document.body.appendChild(wrap);
+  requestAnimationFrame(() => wrap.classList.add("show"));
+  requestAnimationFrame(() => requestAnimationFrame(() => wrap.querySelectorAll(".rd-bar > div").forEach(b => b.style.width = b.dataset.w + "%")));
+  wrap.querySelector(".sheet-backdrop").addEventListener("click", closeSheet);
+}
 function scoreSheet(which) {
+  if (which === "readiness") return readinessSheet();
   const s = state.scoresCache || computeScores();
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
   const destL = (typeof destInfo === "function" ? destInfo((state.profile || {}).destination).label : "your trip");

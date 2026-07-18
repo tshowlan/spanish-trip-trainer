@@ -185,6 +185,15 @@ Follow the existing design token system. Aesthetic reference: Whoop/Oura — typ
 
 **Legibility rule:** every score must explain itself in one tap. No opaque composites — the user should always see which 2–3 inputs are moving the number and what action raises it.
 
+**Readiness detail sheet** (design artifact `design/readiness-detail.html`, stamped 2026-07-17). Informational sheet, scrim-tap dismisses (design system §3.3). Score number + band chip (crown chip in the held state). Then:
+- **Pace row** with the bezel-triangle glyph (apex-right as an inline glyph, decisions 2026-07-17). Copy set (verbatim, three states):
+  - Ahead: "N pts ahead of pace" + subline "The gold mark is where the glide path says you'd be today."
+  - Behind: "N pts behind pace. A session today closes most of it." (statement + action, never threat.)
+  - Held (Readiness ≥ 85): "Holding Tripfluent. Light upkeep keeps you there through landing day." (says holding, never achieved.)
+- **Drivers** ("WHAT'S DRIVING IT"): three soft bars — Coverage and Retention in `--secondary`, Recency in `--accent` — each with value, 7-day delta (up green, down dim, never red), and a one-line plain-language descriptor. **Formula weights stay internal** (bars show magnitude and are ordered by influence; never expose the 0.4/0.4/0.2 mix). Descriptors verbatim: Coverage "How much of your trip's moments you've learned." / Retention "How well it's sticking when we check." / Recency "How fresh it all is right now. Fades fastest, recovers fastest." (Recency's is the decay model's one-line teaching — keep it exact.) Bar fills spring in on open (500ms, value-change class).
+- **What-moves-it line** (gold spark): names the driver a session moves most — Recency almost always pre-trip; the held state switches to "Reviews alone hold this. New material is a bonus now."
+- `[tune]`: whether the ahead-state education subline shows permanently or only for the first ~2 weeks after score reveal (permanent is the v1 default; retire-early if it reads repetitive in testing).
+
 **Animation:** on app open, count the hero number up from the cached value over ~600ms with an ease-out; arc fills in sync. That's the entire "celebration." Score band changes get a color crossfade, nothing more.
 
 ---
