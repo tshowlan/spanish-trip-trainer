@@ -1207,3 +1207,12 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .topic.t-strong .tpct { color: var(--secondary); } .topic.t-strong .tbar > i { background: var(--secondary); }
 .topic.t-fair   .tpct { color: var(--accent-2); }  .topic.t-fair   .tbar > i { background: var(--accent-2); }
 .topic.t-low    .tpct { color: var(--text-dim); }  .topic.t-low    .tbar > i { background: var(--text-dim); }
+/* dark: the translucent --bg-card fill sits at the track's own brightness, so the active segment
+   vanished. White-alpha steps make it read raised (Tom legibility fix 2026-07-19; artifact synced).
+   Dual-dark-block rule: both blocks, always. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .segs { background: rgba(255,255,255,0.07); }
+  :root:not([data-theme="light"]) .seg.active { background: rgba(255,255,255,0.16); box-shadow: none; }
+}
+:root[data-theme="dark"] .segs { background: rgba(255,255,255,0.07); }
+:root[data-theme="dark"] .seg.active { background: rgba(255,255,255,0.16); box-shadow: none; }

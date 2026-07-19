@@ -45,7 +45,8 @@
 
   /* Segmented control: Journey | Topics | Phrases */
   .segs { display:flex; background:var(--bg-elevated); border-radius:12px; padding:3px; }
-  :root[data-theme="dark"] .segs { background:rgba(255,255,255,0.06); }
+  :root[data-theme="dark"] .segs { background:rgba(255,255,255,0.07); }
+  :root[data-theme="dark"] .seg.active { background:rgba(255,255,255,0.16); box-shadow:none; }  /* DELTA 2026-07-19 (Tom): active segment was indistinguishable in dark; white-alpha step, do not revert on re-issue */
   .seg { flex:1; text-align:center; font-family:var(--font-display); font-size:13px; font-weight:600; color:var(--text-dim);
     padding:8px 0; border-radius:10px; cursor:pointer; transition: background var(--transition), color var(--transition), box-shadow var(--transition); }
   .seg.active { background:var(--bg-card); color:var(--text); box-shadow:0 1px 2px rgba(28,39,94,0.12); }

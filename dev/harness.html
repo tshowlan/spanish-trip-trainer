@@ -167,6 +167,35 @@
         "Exercise — fill the blank": () => ask("fill_blank", normItem),
         "Exercise — listen & choose": () => ask("listen_choice", normItem),
         "Learn tab": screen(renderLearn, "learn"),
+        "Learn — new user (later chapters dim)": () => {
+          clean();
+          state.lessons = {}; state.learn = {};
+          renderTopbar(); renderLearn(); showTabbar("learn");
+        },
+        "Learn — veteran (kit arrives already strong)": () => {
+          clean();
+          // a learner who completed the OLD Hola & gracias + Numbers lessons before the migration:
+          // their item history follows the items into Chapter 0, so K1/K2 arrive strong; machines stay new
+          state.lessons = {}; state.learn = {};
+          const p0 = DECK.stages.find(s => s.pass === 0);
+          p0.lessons.filter(l => !l.machine).slice(0, 2).forEach(l =>
+            l.items.forEach(it => { state.learn[it.id] = { exposures: 6, streak: 3, lapses: 0, interval: 9, ease: 2.5, lastSeen: todayStr(), lastCorrect: todayStr(), due: _dateAdd(todayStr(), 9) }; }));
+          const p1 = DECK.stages.find(s => s.pass === 1);
+          p1.lessons.slice(0, 2).forEach(l => { state.lessons[l.id] = { stars: 3, at: new Date().toISOString() }; });
+          renderTopbar(); renderLearn(); showTabbar("learn");
+        },
+        "Learn — mid-Essentials (started chapter stays bright)": () => {
+          clean();
+          // one Essentials lesson done + its phrases practiced; nothing in Chapter 0
+          const p1 = DECK.stages.find(s => s.pass === 1);
+          const les = p1 && p1.lessons.find(l => l.id === "s1-rescue") || (p1 && p1.lessons[0]);
+          state.lessons = {}; state.learn = {};
+          if (les) {
+            state.lessons[les.id] = { stars: 3, at: new Date().toISOString() };
+            les.items.forEach(it => { state.learn[it.id] = { exposures: 3, streak: 2, lapses: 0, interval: 5, ease: 2.4, lastSeen: todayStr(), lastCorrect: todayStr(), due: _dateAdd(todayStr(), 5) }; });
+          }
+          renderTopbar(); renderLearn(); showTabbar("learn");
+        },
         "Progress tab": screen(renderProgress, "progress"),
         "Profile / settings": screen(renderProfile, "profile")
       };
