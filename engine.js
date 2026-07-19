@@ -145,7 +145,7 @@ function registerActivity() {
   const t = todayStr();
   if (!state.history.includes(t)) state.history.push(t);
   if (state.lastActive === t) return;
-  const yest = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+  const yest = daysAgoStr(1);
   state.streak = state.lastActive === yest ? state.streak + 1 : 1;
   state.lastActive = t;
 }

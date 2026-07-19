@@ -13,7 +13,7 @@ function _sessions7() {
 /* ---- Momentum (0-100): 7-day rolling activity, smooth decay (no streak resets) ---- */
 function momentumScore() {
   const r = _sessions7();
-  const days = new Set(r.map(s => s.at.slice(0, 10))).size;   // distinct active days (target 5)
+  const days = new Set(r.map(sessionDay)).size;   // distinct active days (target 5)
   const sess = r.length;                                       // sessions (target 7)
   return Math.round(Math.min(100, 60 * Math.min(1, days / 5) + 40 * Math.min(1, sess / 7)));
 }
@@ -21,8 +21,8 @@ function momentumScore() {
 function momentumSpark() {
   const out = [];
   for (let i = 6; i >= 0; i--) {
-    const day = new Date(Date.now() - i * _DAY).toISOString().slice(0, 10);
-    out.push(_sessions().filter(s => s.at.slice(0, 10) === day).length);
+    const day = daysAgoStr(i);
+    out.push(_sessions().filter(s => sessionDay(s) === day).length);
   }
   return out;
 }
@@ -203,7 +203,7 @@ function scoreDivergence(s) {
 /* ---- §7.2 foundation: one score snapshot per day, for the trend charts (re-derivable from sessions) ---- */
 function _recordDaily(s) {
   state.scoreHistory = state.scoreHistory || [];
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayStr();
   const rec = { date: today, readiness: s.readiness, momentum: s.momentum, retention: s.retention, coverage: s.coverage, recency: s.recency, sessions: s.sessions7 };
   const h = state.scoreHistory, last = h[h.length - 1];
   if (last && last.date === today) { h[h.length - 1] = rec; }   // same-day update, no persist churn
@@ -235,7 +235,7 @@ function computeScores() {
   const s = {
     readiness: readinessScore(), momentum: momentumScore(), retention: retentionScore(),
     coverage: coverageScore(), recency: recencyScore(),
-    activeDays7: new Set(_sessions7().map(x => x.at.slice(0, 10))).size,
+    activeDays7: new Set(_sessions7().map(sessionDay)).size,
     sessions7: _sessions7().length,
     lifetimeSessions: _sessions().length,
     computedAt: Date.now()

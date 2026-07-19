@@ -3,7 +3,7 @@
 function streakStrip() {
   const days = [];
   for (let i = 13; i >= 0; i--) {
-    const d = new Date(Date.now() - i * 864e5).toISOString().slice(0, 10);
+    const d = daysAgoStr(i);
     days.push(`<i class="${(state.history || []).includes(d) ? "hit" : ""}" title="${d}"></i>`);
   }
   return `<div class="streak-strip"><span>Last 2 weeks</span><div class="dots">${days.join("")}</div></div>`;

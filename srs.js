@@ -28,7 +28,7 @@ function seedInterval(difficulty) { return ({ 1: 4, 2: 3, 3: 2, 4: 1, 5: 1 })[di
 function _dateAdd(dateStr, days) {
   const dt = new Date((dateStr || todayStr()) + "T00:00:00");
   dt.setDate(dt.getDate() + Math.min(3650, Math.round(days)));
-  return dt.toISOString().slice(0, 10);
+  return dayStr(dt);
 }
 // graded answer: advance exposure + streak/lapse + SM-2-lite interval/ease/due + mastery axes.
 // opts.mode is the exercise type, used to set the production/cold/native axes.

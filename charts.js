@@ -7,7 +7,7 @@ function _histSorted() { return (state.scoreHistory || []).slice().sort((a, b) =
 function _ms(dateStr) { return new Date(dateStr + "T00:00:00").getTime(); }
 function _dailySessionCounts() {
   const m = {};
-  (state.sessions || []).forEach(s => { const d = (s.at || "").slice(0, 10); if (d) m[d] = (m[d] || 0) + 1; });
+  (state.sessions || []).forEach(s => { const d = s && s.at ? sessionDay(s) : ""; if (d) m[d] = (m[d] || 0) + 1; });
   return m;
 }
 const _CW = 300, _CH = 120, _CP = 10;
@@ -42,7 +42,7 @@ function _momentumChart() {
   const ds = _dailySessionCounts(), maxS = Math.max(1, ...Object.values(ds));
   let bars = "";
   for (let d = 0; d <= 28; d++) {
-    const date = new Date(Date.now() - (28 - d) * 864e5).toISOString().slice(0, 10), n = ds[date] || 0;
+    const date = daysAgoStr(28 - d), n = ds[date] || 0;
     if (!n || _ms(date) < t0) continue;
     const x = X(_ms(date)), h = (n / maxS) * 24;
     bars += `<rect class="tc-bar" x="${(x - 2).toFixed(1)}" y="${(base - h).toFixed(1)}" width="4" height="${h.toFixed(1)}" rx="1"/>`;
