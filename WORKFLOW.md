@@ -58,3 +58,9 @@ Code is the only session that writes files into the repo. This exists because a 
 - Product direction: premium fitness-app aesthetic (Whoop/Oura-style dials: Trip Readiness, Momentum, Retention), deliberately differentiated from Duolingo.
 - Curriculum: tiered spiral. Spanish first (Mexico and Spain variants).
 - Solo developer, nights and weekends: prefer simple, maintainable solutions over clever infrastructure.
+
+## Holds live on branches (added 2026-07-19, after the accidental Learn-tab deploy)
+Work that Tom has asked to review before shipping goes on a **branch**, never held as
+uncommitted or unpushed state on `main`. `main` is always shippable; a stray `git add -A`
+cannot sweep what is not on the branch being pushed. When the review passes, merge + SW bump
++ push is the deploy.
