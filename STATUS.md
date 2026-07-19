@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-17 — Nav light system approved + built (design/nav-light.html)
+- RULE: the app has ONE light source, the active tab's under-glow; each tab's screen atmosphere is that light scaled up, blooming from the active tab's x-position at the bottom edge. Home's bottom-left glow is now law, not coincidence (leftmost tab).
+- BUILT (v157): nav light is ONE `.navlight` element that translates along the bar (260ms) with the notch + glow riding it; per-tab `.tab.active::before/::after` decoration removed. `.bloom` is ONE oversized radial moved by transform (300ms), anchored to the active tab's centre in viewport x. Content crossfades 180ms via `#app.tab-fade`. Reduced motion: both jump, no glide.
+- Home OPTS OUT for now: it keeps its designed photo + ground glow; `_setBloom()` removes the bloom on home. Reconcile at home's next revision (anchor -14% -> Home tab centre x ~12%), then home joins the shared bloom.
+- Interstitials keep the top-center tint (ceremony rule unchanged). Design-system §2.1 one-light rule + §4.8 glide motion rule; 2 decisions appended.
+- Learn tab (next design) inherits its atmosphere from this system: bloom at tab position 2.
+
 ## 2026-07-17 — First-score-reveal card approved; ahead-gap wash removed app-wide
 - NEW: design/score-reveal.html (stamped). Fires ONCE when Readiness first exists (session end, before home). Sequence: 600ms count-up + ring fill → band chip → JOURNEY PREVIEW (forward-only sweep 44→72 Strong→91 Tripfluent w/ 750ms crown beat→settle, ~2.5s; teaches band colors wordlessly; never sweeps down through Low) → education copy → active dismissal "Tap your pace mark" (wrong-area taps gold-halo the tick; correct = "That's your pace." then advance). Pace mark pulses only while awaiting the tap. Reduced motion: instant, static halo, no journey. **BUILT** (v156): `scoreRevealCard()` in screen-home.js, fired from `goHomeAfterSession()` on the finishLesson/finishReview home buttons; `state.scoreRevealSeen` makes it once-only. Journey values verified 44→72(Strong)→91(Tripfluent)→44; tap paths verified (wrong area halos the mark, tick tap advances and persists the flag); both themes. Note: the preview browser throttles rAF/timers, so the animated path was verified by value trace + the reduced-motion path, not by wall-clock timing.
 - design/home.html re-issued: ahead-gap green wash REMOVED. **Built**: wash stripped from ringSVG + .ring-gap CSS deleted; tick alone is the pace signal (fill-vs-tick position carries ahead/behind, words live in the detail sheet). Scores-spec pace-tick section updated in both places.
