@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Learn Tab (design artifact, scores spec §3.1 + learning spec §1b.0/§1b.2)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:800px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  :root[data-theme="dark"] .phone { background:linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%); }
+
+  /* Atmosphere: bloom at tab position 2 (the one-light-source rule) */
+  .bloom { position:absolute; bottom:-620px; left:0; width:1240px; height:1240px; border-radius:50%; pointer-events:none;
+    background: radial-gradient(closest-side, color-mix(in srgb, #c96a2b 20%, transparent) 0%, color-mix(in srgb, var(--accent) 11%, transparent) 34%, color-mix(in srgb, var(--accent) 4%, transparent) 58%, transparent 78%); }
+  :root[data-theme="dark"] .bloom {
+    background: radial-gradient(closest-side, rgba(201,106,43,0.28) 0%, rgba(230,198,42,0.10) 38%, rgba(230,198,42,0.04) 62%, rgba(0,0,0,0) 80%); }
+
+  .screen { position:absolute; inset:0; padding:20px 0 90px; display:flex; flex-direction:column; }
+  .header { padding:0 24px; margin-bottom:14px; }
+  .tabtitle { font-family:var(--font-display); font-size:24px; font-weight:700; color:var(--text); margin-bottom:12px; }
+
+  /* Segmented control: Journey | Topics | Phrases */
+  .segs { display:flex; background:var(--bg-elevated); border-radius:12px; padding:3px; }
+  :root[data-theme="dark"] .segs { background:rgba(255,255,255,0.06); }
+  .seg { flex:1; text-align:center; font-family:var(--font-display); font-size:13px; font-weight:600; color:var(--text-dim);
+    padding:8px 0; border-radius:10px; cursor:pointer; transition: background var(--transition), color var(--transition), box-shadow var(--transition); }
+  .seg.active { background:var(--bg-card); color:var(--text); box-shadow:0 1px 2px rgba(28,39,94,0.12); }
+
+  .scroll { flex:1; overflow-y:auto; padding:2px 24px 12px; }
+
+  /* ============ JOURNEY: chaptered spine ============ */
+  .chapter { margin-bottom:26px; }
+  .chapter.locked { opacity:0.55; }
+  .chap-head { margin-bottom:12px; }
+  .chap-kicker { font-family:var(--font-display); font-size:10.5px; font-weight:600; letter-spacing:0.07em; color:var(--accent-2); margin-bottom:3px; }
+  .chap-row { display:flex; align-items:baseline; justify-content:space-between; }
+  .chap-title { font-family:var(--font-display); font-size:18px; font-weight:700; color:var(--text); }
+  .chap-whisper { font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--text-dim); }
+  .chap-blurb { font-size:12.5px; color:var(--text-dim); margin-top:2px; line-height:1.45; }
+
+  .lesson { display:flex; align-items:center; gap:12px; background:var(--bg-card); border:1px solid var(--border);
+    border-radius:var(--radius-md); padding:12px 14px; margin-bottom:8px; cursor:pointer;
+    transition: transform var(--transition), box-shadow var(--transition); box-shadow:var(--shadow); }
+  :root[data-theme="dark"] .lesson { backdrop-filter:blur(10px); }
+  .lesson:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .lesson.next { border-color:var(--accent-2); }
+
+  .lring { width:34px; height:34px; min-width:34px; }
+  .caret-new { width:34px; height:34px; min-width:34px; border-radius:50%; background:var(--bg-elevated);
+    display:flex; align-items:center; justify-content:center; color:var(--text-dim); }
+  .lmain { flex:1; min-width:0; }
+  .lname-row { display:flex; align-items:center; gap:7px; }
+  .lname { font-family:var(--font-display); font-size:15px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .next-tag { font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:0.05em; color:var(--accent-2);
+    border:1px solid var(--accent-2); border-radius:9px; padding:1.5px 7px; }
+  .bonus-tag { font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:0.05em; color:var(--text-dim);
+    border:1px solid var(--border); border-radius:9px; padding:1.5px 7px; }
+  .lbeat { font-size:12px; color:var(--text-dim); margin-top:2px; line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .lmeta { font-size:11px; color:var(--text-dim); margin-top:3px; }
+  .lmeta .fading { color:var(--accent-2); font-weight:500; }
+  .chev { color:var(--text-dim); display:flex; }
+
+  .lock-hint { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text-dim); padding:2px 2px 0; }
+  .lock-hint svg { min-width:12px; }
+
+  /* ============ TOPICS: coverage as drill entries ============ */
+  .topics-intro { font-size:12.5px; color:var(--text-dim); line-height:1.5; margin-bottom:14px; }
+  .topic { display:flex; align-items:center; gap:12px; background:var(--bg-card); border:1px solid var(--border);
+    border-radius:var(--radius-md); padding:13px 14px; margin-bottom:8px; cursor:pointer;
+    transition: transform var(--transition), box-shadow var(--transition); box-shadow:var(--shadow); }
+  :root[data-theme="dark"] .topic { backdrop-filter:blur(10px); }
+  .topic:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .tmain { flex:1; }
+  .trow { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:6px; }
+  .tname { font-family:var(--font-display); font-size:15px; font-weight:600; color:var(--text); }
+  .tpct { font-family:var(--font-display); font-size:13px; font-weight:600; }
+  .tbar { height:5px; background:var(--bg-elevated); border-radius:3px; overflow:hidden; }
+  :root[data-theme="dark"] .tbar { background:rgba(255,255,255,0.08); }
+  .tbar > div { height:100%; border-radius:3px; }
+  .tsub { font-size:11.5px; color:var(--text-dim); margin-top:5px; }
+  .tsub .fading { color:var(--accent-2); font-weight:500; }
+
+  /* ============ PHRASES: stand-in ============ */
+  .search { display:flex; align-items:center; gap:9px; background:var(--bg-card); border:1px solid var(--border);
+    border-radius:var(--radius-md); padding:11px 14px; margin-bottom:12px; color:var(--text-dim); font-size:14px; }
+  .phrase { display:flex; align-items:center; justify-content:space-between; padding:12px 4px; border-bottom:1px solid var(--border); }
+  .phrase .es { font-family:var(--font-display); font-size:15px; font-weight:500; color:var(--text); }
+  .phrase .en { font-size:12px; color:var(--text-dim); margin-top:2px; }
+  .strength-dot { width:8px; height:8px; border-radius:50%; }
+
+  /* Tab bar stand-in, Learn active, notch at position 2 */
+  .tabbar { position:absolute; left:16px; right:16px; bottom:14px; height:60px;
+    background:var(--bg-card); border:1px solid var(--border); border-radius:20px;
+    display:flex; align-items:center; box-shadow:var(--shadow); overflow:hidden; }
+  :root[data-theme="dark"] .tabbar { background:rgba(28,26,18,0.82); backdrop-filter:blur(12px); }
+  .navlight { position:absolute; left:25%; bottom:0; width:25%; height:100%; pointer-events:none; }
+  .navlight .glow { position:absolute; left:-18px; right:-18px; top:-4px; bottom:-14px;
+    background:radial-gradient(72% 95% at 50% 102%, color-mix(in srgb, var(--accent) 30%, transparent) 0%, color-mix(in srgb, var(--accent) 12%, transparent) 42%, transparent 76%); }
+  :root[data-theme="dark"] .navlight .glow { background:radial-gradient(72% 95% at 50% 102%, rgba(230,198,42,0.26) 0%, rgba(230,198,42,0.10) 45%, transparent 78%); }
+  .navlight .notch { position:absolute; left:50%; transform:translateX(-50%); bottom:0; width:26px; height:2.5px;
+    border-radius:2px; background:var(--accent-2); box-shadow:0 0 7px 1px color-mix(in srgb, var(--accent) 55%, transparent); }
+  :root[data-theme="dark"] .navlight .notch { background:var(--accent); box-shadow:0 0 8px 1.5px rgba(230,198,42,0.5); }
+  .tab { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--text-dim);
+    font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:0.03em; position:relative; z-index:1; }
+  .tab.active { color:var(--accent-2); }
+
+  /* chrome */
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:440px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="bloom"></div>
+    <div class="screen">
+      <div class="header">
+        <div class="tabtitle">Learn</div>
+        <div class="segs">
+          <div class="seg active" data-v="journey" onclick="setView('journey')">Journey</div>
+          <div class="seg" data-v="topics" onclick="setView('topics')">Topics</div>
+          <div class="seg" data-v="phrases" onclick="setView('phrases')">Phrases</div>
+        </div>
+      </div>
+      <div class="scroll" id="content"></div>
+    </div>
+    <div class="tabbar">
+      <div class="navlight"><div class="glow"></div><div class="notch"></div></div>
+      <div class="tab"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Home</div>
+      <div class="tab active"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Learn</div>
+      <div class="tab"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Progress</div>
+      <div class="tab"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    Learn tab, APPROVED 2026-07-18. Structure: THREE segments (was two): Journey (default,
+    the chaptered spine) | Topics (the coverage strip PROMOTED to a full view; every row is a drill entry —
+    tap routes to Practice prefiltered to that scenario) | Phrases (built reference; STAND-IN rows here,
+    built view wins). Chapters: Survival kit (pass 0, machine glyph on pattern machines) → Essentials →
+    Getting comfortable → Like a local (resolves the Survival/Survival-kit collision; pass 1 "Survival"
+    renamed). Stage progress bars REPLACED by "N of M" whispers (deliberate removal). Pass chips REMOVED from
+    lesson rows (the chapter IS the pass; chip was redundant). Lesson rows gain the narrative beat hint (one
+    dim line from primer data). DELTA: machine glyph REMOVED after review (it read as a letter T at row size; the
+    frame-shaped title — “Quiero ___” — IS the slot mark, and the meta line says “Pattern · N fillers”: two
+    clear voices, the glyph was a redundant third). Machines are distinguished by naming convention alone;
+    also removes the flagged dependency on unauthored frame data for a glyph. Passed-state stays the strength ring
+    (decays honestly; no checkmarks). Locked chapters at 55% opacity with a soft-gate hint line (gates are
+    soft: "Best after Essentials" language, browsable not barred). Atmosphere: bloom at tab position 2.
+    STAND-INS: tab bar, phrase rows, strength-ring rendering (built component wins). Frame 390.
+  </div>
+</div>
+
+<script>
+  const ring = (pct, color) => {
+    const C = 2*Math.PI*14, off = C*(1-pct/100);
+    return `<svg class="lring" viewBox="0 0 34 34">
+      <circle cx="17" cy="17" r="14" fill="none" stroke="var(--bg-elevated)" stroke-width="3.5"/>
+      <circle cx="17" cy="17" r="14" fill="none" stroke="${color}" stroke-width="3.5" stroke-linecap="round"
+        stroke-dasharray="${C}" stroke-dashoffset="${off}" transform="rotate(-90 17 17)"/>
+    </svg>`;
+  };
+  const caret = `<span class="caret-new"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>`;
+  const chev = `<span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>`;
+  const lockIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+
+  const lessonRow = (o) => `
+    <div class="lesson${o.next ? ' next' : ''}">
+      ${o.pct != null ? ring(o.pct, o.c || 'var(--secondary)') : caret}
+      <div class="lmain">
+        <div class="lname-row">
+          <span class="lname">${o.name}</span>
+          ${o.next ? '<span class="next-tag">NEXT</span>' : ''}
+          ${o.bonus ? '<span class="bonus-tag">BONUS</span>' : ''}
+        </div>
+        ${o.beat ? `<div class="lbeat">${o.beat}</div>` : ''}
+        <div class="lmeta">${o.meta}${o.fading ? ` \u00b7 <span class="fading">${o.fading} to review</span>` : ''}</div>
+      </div>
+      ${chev}
+    </div>`;
+
+  const views = {
+    journey: `
+      <div class="chapter">
+        <div class="chap-head">
+          <div class="chap-kicker">CHAPTER 0</div>
+          <div class="chap-row"><span class="chap-title">Survival kit</span><span class="chap-whisper">5 of 6</span></div>
+          <div class="chap-blurb">The words and patterns that work everywhere. Your generators.</div>
+        </div>
+        ${lessonRow({ pct:88, c:'var(--green)', name:'First words', meta:'12 phrases', beat:'Please, thanks, help. The universal kit.' })}
+        ${lessonRow({ pct:74, name:'Quiero ___', machine:true, meta:'Pattern \u00b7 4 fillers', beat:'The wanting machine. Point it at anything.' })}
+        ${lessonRow({ pct:81, name:'\u00bfD\u00f3nde est\u00e1 ___?', machine:true, meta:'Pattern \u00b7 4 fillers', beat:'The finding machine.' })}
+        ${lessonRow({ pct:52, c:'var(--accent-2)', name:'Me trae ___', machine:true, meta:'Pattern \u00b7 3 fillers', fading:2, beat:'The bring-me machine. Your waiter workhorse.' })}
+        ${lessonRow({ name:'\u00bfCu\u00e1nto cuesta ___?', machine:true, meta:'Pattern \u00b7 4 fillers', beat:'The price machine.', next:true })}
+      </div>
+
+      <div class="chapter">
+        <div class="chap-head">
+          <div class="chap-kicker">CHAPTER 1</div>
+          <div class="chap-row"><span class="chap-title">Essentials</span><span class="chap-whisper">3 of 8</span></div>
+          <div class="chap-blurb">Day one in Mallorca. Andr\u00e9s drives you in from the airport.</div>
+        </div>
+        ${lessonRow({ pct:79, name:'Taxi in', meta:'9 phrases', beat:'Andr\u00e9s talks fast and drives faster.' })}
+        ${lessonRow({ pct:64, c:'var(--accent-2)', name:'Checking in', meta:'8 phrases', fading:3, beat:'The front desk at Casa Loreto.' })}
+        ${lessonRow({ pct:71, name:'First dinner', meta:'11 phrases', beat:'The harbor caf\u00e9. Marina has opinions.' })}
+        ${lessonRow({ name:'Ordering drinks', meta:'7 phrases', beat:'Back at the caf\u00e9. You\u2019re a regular now.' })}
+      </div>
+
+      <div class="chapter locked">
+        <div class="chap-head">
+          <div class="chap-kicker">CHAPTER 2</div>
+          <div class="chap-row"><span class="chap-title">Getting comfortable</span><span class="chap-whisper">0 of 7</span></div>
+          <div class="chap-blurb">Same places, deeper water. Full sentences, real replies.</div>
+        </div>
+        ${lessonRow({ name:'Taxi II', meta:'Conversation', beat:'Andr\u00e9s remembers you. Now he wants to chat.' })}
+        <div class="lock-hint">${lockIcon}<span>Best after Essentials. You can peek anytime.</span></div>
+      </div>`,
+
+    topics: `
+      <div class="topics-intro">Your coverage by topic. Tap any topic to practice it.</div>
+      <div class="topic" role="button">
+        <div class="tmain">
+          <div class="trow"><span class="tname">Restaurant</span><span class="tpct" style="color:var(--secondary)">82%</span></div>
+          <div class="tbar"><div style="width:82%; background:var(--secondary)"></div></div>
+          <div class="tsub">Strong \u00b7 <span class="fading">3 fading</span></div>
+        </div>
+        ${chev}
+      </div>
+      <div class="topic" role="button">
+        <div class="tmain">
+          <div class="trow"><span class="tname">Getting around</span><span class="tpct" style="color:var(--secondary)">74%</span></div>
+          <div class="tbar"><div style="width:74%; background:var(--secondary)"></div></div>
+          <div class="tsub">Strong</div>
+        </div>
+        ${chev}
+      </div>
+      <div class="topic" role="button">
+        <div class="tmain">
+          <div class="trow"><span class="tname">Food needs &amp; allergies</span><span class="tpct" style="color:var(--accent-2)">58%</span></div>
+          <div class="tbar"><div style="width:58%; background:var(--accent-2)"></div></div>
+          <div class="tsub">Fair \u00b7 <span class="fading">5 fading</span></div>
+        </div>
+        ${chev}
+      </div>
+      <div class="topic" role="button">
+        <div class="tmain">
+          <div class="trow"><span class="tname">Hotel</span><span class="tpct" style="color:var(--accent-2)">47%</span></div>
+          <div class="tbar"><div style="width:47%; background:var(--accent-2)"></div></div>
+          <div class="tsub">Fair \u00b7 <span class="fading">2 fading</span></div>
+        </div>
+        ${chev}
+      </div>
+      <div class="topic" role="button">
+        <div class="tmain">
+          <div class="trow"><span class="tname">Emergencies</span><span class="tpct" style="color:var(--text-dim)">31%</span></div>
+          <div class="tbar"><div style="width:31%; background:var(--text-dim)"></div></div>
+          <div class="tsub">Low</div>
+        </div>
+        ${chev}
+      </div>`,
+
+    phrases: `
+      <div class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Search your phrases</div>
+      <div class="phrase"><div><div class="es">\u00bfMe puede traer la cuenta?</div><div class="en">Could you bring me the check?</div></div><span class="strength-dot" style="background:var(--green)"></span></div>
+      <div class="phrase"><div><div class="es">Una mesa para dos, por favor</div><div class="en">A table for two, please</div></div><span class="strength-dot" style="background:var(--secondary)"></span></div>
+      <div class="phrase"><div><div class="es">Soy al\u00e9rgico a los cacahuetes</div><div class="en">I'm allergic to peanuts</div></div><span class="strength-dot" style="background:var(--accent-2)"></span></div>
+      <div class="phrase"><div><div class="es">\u00bfD\u00f3nde est\u00e1 la farmacia?</div><div class="en">Where is the pharmacy?</div></div><span class="strength-dot" style="background:var(--secondary)"></span></div>`
+  };
+
+  function setView(v){
+    document.querySelectorAll('.seg').forEach(s => s.classList.toggle('active', s.dataset.v === v));
+    document.getElementById('content').innerHTML = views[v];
+  }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  setView('journey');
+</script>
+</body>
+</html>

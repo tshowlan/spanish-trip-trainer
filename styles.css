@@ -698,11 +698,14 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
    (.bloom) is that same light scaled up, anchored to the active tab's x at the bottom edge. */
 .tab.active { color: var(--accent-2); position: relative; background: none; }
 .tab.active svg, .tab.active span { position: relative; }
-.navlight { position: absolute; left: 0; bottom: 0; width: 56px; height: 100%; pointer-events: none; z-index: 0;
+/* The light fills the bar's padding box (which already spans to just inside the border), so bottom:0 on the
+   notch lands ON the bar's bottom edge. The old per-tab pseudo-elements used negative offsets because they
+   were positioned against a TAB; against this full-height element they pushed the notch/glow below the bar. */
+.navlight { position: absolute; left: 0; top: 0; bottom: 0; width: 56px; pointer-events: none; z-index: 0;
   transform: translateX(0); transition: transform 260ms cubic-bezier(.2,.7,.3,1); }
-.navlight .nl-glow { content: ""; position: absolute; left: -10px; right: -10px; top: 0; bottom: -8px;
+.navlight .nl-glow { position: absolute; left: -10px; right: -10px; top: 0; bottom: 0;
   background: radial-gradient(72% 100% at 50% 106%, color-mix(in srgb, var(--accent) 32%, transparent) 0%, color-mix(in srgb, var(--accent) 12%, transparent) 44%, transparent 76%); }
-.navlight .nl-notch { position: absolute; left: 50%; transform: translateX(-50%); bottom: -6px;
+.navlight .nl-notch { position: absolute; left: 50%; transform: translateX(-50%); bottom: 0;
   width: 22px; height: 2.5px; border-radius: 2px; background: var(--accent-2);
   box-shadow: 0 0 7px 1px color-mix(in srgb, var(--accent) 55%, transparent); }
 /* the same light, scaled up: one oversized radial moved by transform (never background-position) */

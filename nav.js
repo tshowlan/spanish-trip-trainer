@@ -23,7 +23,9 @@ function _positionNavLight(active) {
   const light = bar.querySelector(".navlight"), btn = bar.querySelector(`.tab[data-tab="${active}"]`);
   if (!light || !btn) return null;
   const barR = bar.getBoundingClientRect(), btnR = btn.getBoundingClientRect(), cs = getComputedStyle(bar);
-  const originX = barR.left + (parseFloat(cs.borderLeftWidth) || 0) + (parseFloat(cs.paddingLeft) || 0);
+  // left:0 sits at the PADDING BOX edge, which is inset by the border only (the padding is inside it) —
+  // adding paddingLeft here shifted the whole light one padding-width to the left.
+  const originX = barR.left + (parseFloat(cs.borderLeftWidth) || 0);
   const centre = btnR.left + btnR.width / 2;
   light.style.transform = `translateX(${(centre - originX - light.offsetWidth / 2).toFixed(1)}px)`;
   return centre;
