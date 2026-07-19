@@ -1166,7 +1166,7 @@ function finishLesson() {
       <button class="btn${missed.length ? " grey" : ""}" id="home">Continue</button>
     </div>`));
   if (missed.length) $("#reviewmiss").addEventListener("click", () => startReview(missed));
-  $("#home").addEventListener("click", renderHome);
+  $("#home").addEventListener("click", goHomeAfterSession);
 }
 
 /* pure-review completion: log the session for Momentum/Recency, but mark no lesson */
@@ -1196,5 +1196,5 @@ function finishReview() {
       <div class="reward">Nice, keeping older phrases warm is how they stick for the trip.</div>
       <button class="btn" id="home">Continue</button>
     </div>`));
-  $("#home").addEventListener("click", renderHome);
+  $("#home").addEventListener("click", goHomeAfterSession);
 }

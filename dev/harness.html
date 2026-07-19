@@ -147,6 +147,14 @@
       const screen = (fn, tab) => () => { clean(); renderTopbar(); fn(); showTabbar(tab); };
       const STORIES = {
         "Home — returning user": screen(renderHome, "home"),
+        "First score reveal (one-time card)": () => {
+          clean();
+          state.lessons = { 'spain:hola': { done: true } };
+          state.sessions = [{ at: new Date().toISOString().slice(0, 10), n: 5 }];
+          state.scoresCache = { readiness: 44, momentum: 40, retention: 55, coverage: 38, recency: 60, lifetimeSessions: 1, sessions7: 1, activeDays7: 1 };
+          state.scoreRevealSeen = false;
+          scoreRevealCard();
+        },
         "Present card — chunked (one new piece)": () => ask("present", chunkItem),
         "Present card — short (new word)": () => ask("present", shortItem),
         "Present card — re-teach (Second chance)": () => ask("present", chunkItem, { requeued: true }),

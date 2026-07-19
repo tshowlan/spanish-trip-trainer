@@ -240,6 +240,134 @@ function statusOverlay({ kicker, title, body, cta, titleClass }) {
 }
 
 /* ---- score detail sheet (every score explains itself in one tap) ---- */
+/* §education moment 1 — first score reveal (built to design/score-reveal.html). Fires ONCE, at session
+   end before home, when Readiness first exists. Sequence: 600ms count-up + ring fill → band chip →
+   forward-only journey preview (teaches the band colors wordlessly, never sweeps down through Low) →
+   education copy → active dismissal: locating the pace mark IS the proof the model landed. */
+const _revealBand = v => v >= 85 ? { c: "var(--green)", label: "Tripfluent", top: true }
+  : v >= 65 ? { c: "var(--secondary)", label: "Strong", top: false }
+  : v >= 40 ? { c: "var(--accent-2)", label: "Fair", top: false }
+  : { c: "var(--text-dim)", label: "Low", top: false };
+function _revealRing(fillVal, tickVal, showTick) {
+  const C = 2 * Math.PI * 70, off = C * (1 - Math.max(0, Math.min(100, fillVal)) / 100);
+  const a = (tickVal / 100) * 2 * Math.PI - Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a);
+  const tx = 84 + 77.5 * ca, ty = 84 + 77.5 * sa;
+  const b1x = 84 + 89 * ca - 5.5 * sa, b1y = 84 + 89 * sa + 5.5 * ca;
+  const b2x = 84 + 89 * ca + 5.5 * sa, b2y = 84 + 89 * sa - 5.5 * ca;
+  const hx = (84 + 84 * ca).toFixed(1), hy = (84 + 84 * sa).toFixed(1), n = Math.round(fillVal);
+  return `<svg width="184" height="184" viewBox="-8 -8 184 184" id="rv-svg">
+    <circle cx="84" cy="84" r="70" fill="none" stroke="var(--ring-track)" stroke-width="11"/>
+    <circle cx="84" cy="84" r="70" fill="none" stroke="${_revealBand(fillVal).c}" stroke-width="11" stroke-linecap="round"
+      stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 84 84)"/>
+    ${showTick ? `<g id="rv-tick" style="cursor:pointer">
+      <circle class="hintpulse" cx="${hx}" cy="${hy}" r="15" fill="none" stroke-width="2.5" style="transform-origin:${hx}px ${hy}px"/>
+      <circle cx="${hx}" cy="${hy}" r="16" fill="transparent"/>
+      <polygon points="${tx.toFixed(1)},${ty.toFixed(1)} ${b1x.toFixed(1)},${b1y.toFixed(1)} ${b2x.toFixed(1)},${b2y.toFixed(1)}" fill="var(--accent-2)" stroke-linejoin="round"/>
+    </g>` : ""}
+    <text x="84" y="84" text-anchor="middle" dominant-baseline="central" class="rv-num">${n}</text>
+    <text x="${84 + String(n).length * 11.5}" y="72" text-anchor="start" class="rv-pct">%</text>
+  </svg>`;
+}
+function scoreRevealCard() {
+  const s = state.scoresCache || computeScores();
+  const VAL = Math.max(0, Math.min(100, Math.round(s.readiness || 0)));
+  const g = _glideToday();
+  // at first reveal the glide path has only just begun, so its target sits at/below a fresh score;
+  // fall back to a modest offset so the mark reads as a separate thing to find.
+  const TICK = g != null ? g : Math.max(0, VAL - 9);
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  clearHomeAtmo(); hideTabbar(); if (typeof clearFooter === "function") clearFooter();
+  const app = $("#app"); app.innerHTML = "";
+  const card = el(`<div class="reveal">
+    <div class="reveal-kicker">YOUR TRIP READINESS</div>
+    <div class="reveal-ring" id="rv-ring"></div>
+    <span class="band-chip" id="rv-band"></span>
+    <div class="reveal-edu" id="rv-edu">
+      <p>Readiness measures your preparation for this trip. It reflects where you are <b>today</b>: it climbs with practice and fades with time.</p>
+      <p>The <span class="rv-gold">gold mark</span> is your pace. Stay ahead of it and you'll land <b>Tripfluent</b>.</p>
+    </div>
+    <div class="reveal-rep" id="rv-rep">
+      <div class="reveal-prompt">Tap your pace mark to continue</div>
+      <div class="reveal-done" id="rv-done"></div>
+    </div>
+    <div class="hintring" id="rv-hint"></div>
+  </div>`);
+  app.appendChild(card);
+  const ring = card.querySelector("#rv-ring");
+  let answered = false;
+  const setChip = v => {
+    const b = _revealBand(v), chip = card.querySelector("#rv-band");
+    chip.textContent = b.label; chip.style.color = b.c; chip.classList.toggle("crown", b.top);
+  };
+  const finishReveal = () => {
+    ring.innerHTML = _revealRing(VAL, TICK, true); setChip(VAL); wireTick();
+    card.querySelector("#rv-edu").classList.add("show");
+    setTimeout(() => { card.querySelector("#rv-rep").classList.add("show"); card.classList.add("await"); }, 400);
+  };
+  const done = () => {
+    state.scoreRevealSeen = true; save();
+    renderHome();
+  };
+  function wireTick() {
+    const svg = card.querySelector("#rv-svg"), target = card.querySelector("#rv-tick");
+    if (!target) return;
+    target.addEventListener("click", e => {
+      e.stopPropagation(); if (answered) return; answered = true;
+      card.classList.remove("await");                       // the pulse stops once its action is answered
+      card.querySelector("#rv-hint").classList.remove("show");
+      card.querySelector("#rv-done").textContent = "That's your pace.";
+      haptic("correct");
+      setTimeout(done, 900);
+    });
+    svg.addEventListener("click", () => {                   // wrong-area tap: halo the mark, never fail
+      if (answered) return;
+      const a = (TICK / 100) * 2 * Math.PI - Math.PI / 2;
+      const rw = ring.getBoundingClientRect(), sc = card.getBoundingClientRect();
+      const h = card.querySelector("#rv-hint");
+      h.style.left = (rw.left - sc.left + (rw.width - 184) / 2 + 92 + 84 * Math.cos(a) - 17) + "px";
+      h.style.top = (rw.top - sc.top + 92 + 84 * Math.sin(a) - 17) + "px";
+      h.classList.add("show");
+    });
+  }
+  if (reduce) {                                             // instant render, static halo, no journey
+    ring.innerHTML = _revealRing(VAL, TICK, true); setChip(VAL); wireTick();
+    ["#rv-edu", "#rv-rep"].forEach(sel => card.querySelector(sel).classList.add("show"));
+    card.querySelector("#rv-band").classList.add("show");
+    card.classList.add("await");
+    return;
+  }
+  const tween = (from, to, dur, cb) => {
+    const t0 = performance.now();
+    const f = t => {
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3), v = from + (to - from) * e;
+      ring.innerHTML = _revealRing(v, TICK, true); setChip(v);
+      if (p < 1) requestAnimationFrame(f); else cb && cb();
+    };
+    requestAnimationFrame(f);
+  };
+  // journey preview: forward-only through the bands ahead, then settle home
+  const journey = () => tween(VAL, 72, 380, () => setTimeout(() =>
+    tween(72, 91, 380, () => setTimeout(() =>
+      tween(91, VAL, 420, finishReveal), 750)), 550));
+  const t0 = performance.now(), DUR = 600;                  // count-up + fill together
+  const frame = t => {
+    const p = Math.min(1, (t - t0) / DUR), e = 1 - Math.pow(1 - p, 3);
+    ring.innerHTML = _revealRing(VAL * e, TICK, p === 1);
+    if (p < 1) requestAnimationFrame(frame);
+    else {
+      setChip(VAL);
+      setTimeout(() => card.querySelector("#rv-band").classList.add("show"), 150);
+      setTimeout(journey, 850);
+    }
+  };
+  requestAnimationFrame(frame);
+}
+// session end → home, unless the first-reveal card is still owed (fires once)
+function goHomeAfterSession() {
+  const s = state.scoresCache || computeScores();
+  if (!state.scoreRevealSeen && s && (s.lifetimeSessions || 0) >= 1 && (s.readiness || 0) > 0) return scoreRevealCard();
+  renderHome();
+}
 // §detail-view: the Readiness ring opens the rich instrument sheet (design/readiness-detail.html);
 // Momentum/Retention keep the simpler generic sheet below until they get their own artifacts.
 const _paceTriSVG = `<svg width="14" height="16" viewBox="0 0 14 16"><polygon points="13,8 1,1 1,15" fill="var(--accent-2)" stroke="var(--bg-card)" stroke-width="1"/></svg>`;
