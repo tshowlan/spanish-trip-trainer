@@ -41,43 +41,155 @@ const MEXICO_PACK = {
   dialect: "Mexican Spanish",
   tts: "es-MX",
   stages: [
+    /* ============================ PASS 0 · SURVIVAL KIT ============================
+       Chapter 0 (docs/tripfluent-stage0-content-map.md): 3 kit lessons + 7 pattern machines.
+       Kit items MIGRATED from pass 1 (ids derive from es, so SRS history rides along). */
+    {
+      id: "mx-p0", pass: 0, title: "Survival kit", blurb: "The words and patterns that work everywhere. Your generators.",
+      lessons: [
+                  {
+                    id: "mx0-first-words", topic: "Core basics", title: "First words",
+                    beat: "Please, thanks, help. The universal kit.",
+                    items: [
+                      { es: "Hola", en: "Hi", tier: 1, tags: ["greetings"], contextEs: "Hola, buenos días", contextEn: "Hi, good morning" },
+                      { es: "Buenos días", en: "Good morning", tier: 1, tags: ["greetings"], contextEs: "Buenos días, ¿cómo está?", contextEn: "Good morning, how are you?", keywords: ["días"] },
+                      { es: "Buenas tardes", en: "Good afternoon", tier: 1, tags: ["greetings"], contextEs: "Buenas tardes, señor", contextEn: "Good afternoon, sir", keywords: ["tardes"] },
+                      { es: "Buenas noches", en: "Good evening / night", tier: 1, tags: ["greetings"], contextEs: "Buenas noches, hasta mañana", contextEn: "Good night, see you tomorrow", keywords: ["noches"] },
+                      { es: "Por favor", en: "Please", tier: 1, tags: ["politeness"], contextEs: "Un café, por favor", contextEn: "A coffee, please", keywords: ["por favor"] },
+                      { es: "Gracias", en: "Thank you", tier: 1, tags: ["politeness"], contextEs: "Muchas gracias por todo", contextEn: "Thank you very much for everything", anchor: "Think: 'gratitude.'", variants: ["Muchas gracias"], reply: { es: "De nada", en: "You're welcome" } },
+                      { es: "De nada", en: "You're welcome", tier: 1, tags: ["politeness"], contextEs: "Gracias. De nada.", contextEn: "Thanks. You're welcome." },
+                      { es: "Con permiso", en: "Excuse me (getting past)", tier: 1, tags: ["politeness"], note: "Very Mexican, say it squeezing by or leaving a table.", contextEs: "Con permiso, voy a pasar", contextEn: "Excuse me, I'm coming through", keywords: ["permiso"] },
+                      { es: "Disculpe", en: "Excuse me (to get attention)", tier: 1, tags: ["politeness"], contextEs: "Disculpe, ¿me ayuda?", contextEn: "Excuse me, can you help me?", keywords: ["disculpe"] },
+                      { es: "No entiendo", en: "I don't understand", tier: 1, tags: ["communication"], contextEs: "Perdón, no entiendo bien", contextEn: "Sorry, I don't understand well", keywords: ["entiendo"] },
+                      { es: "¿Habla inglés?", en: "Do you speak English?", note: "Formal (usted), polite default with strangers.", tier: 1, tags: ["communication"], contextEs: "Disculpe, ¿habla inglés?", contextEn: "Excuse me, do you speak English?", anchor: "'inglés' = English.", keywords: ["inglés"] },
+                    ]
+                  },
+                  {
+                    id: "mx0-quiero", topic: "Core patterns", title: "Quiero ___",
+                    beat: "The wanting machine. Point it at anything.",
+                    machine: true, frame: "quiero ___",
+                    frameGloss: "Quiero = I want. Works at every counter in the Spanish-speaking world.",
+                    items: [
+                      { es: "Quiero esto", en: "I want this one", tier: 1, tags: ["core"], keywords: ["esto"], frame: "quiero ___", contextEs: "Quiero esto, por favor", contextEn: "I want this one, please", note: "Point at it. Esto plus a finger orders almost anything." },
+                      { es: "Quiero un café", en: "I want a coffee", tier: 1, tags: ["core"], keywords: ["café"], frame: "quiero ___", anchor: "Shortcut: Un café, por favor is a complete order too. The machine is optional; the noun is not." },
+                      { es: "Quiero una mesa para dos", en: "I want a table for two", tier: 1, tags: ["core"], keywords: ["mesa"], frame: "quiero ___" },
+                      { es: "Quiero un taxi", en: "I want a taxi", tier: 1, tags: ["core"], keywords: ["taxi"], frame: "quiero ___" },
+                    ]
+                  },
+                  {
+                    id: "mx0-donde", topic: "Core patterns", title: "¿Dónde está ___?",
+                    beat: "The finding machine.",
+                    machine: true, frame: "¿dónde está ___?",
+                    frameGloss: "¿Dónde está...? = where is...? Point it at anything lost.",
+                    items: [
+                      { es: "¿Dónde está el baño?", en: "Where's the bathroom?", note: "Mexico: 'baño'.", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "baño"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" }, frame: "¿dónde está ___?" },
+                      { es: "¿Dónde está la estación?", en: "Where is the station?", tier: 1, tags: ["core"], keywords: ["estación"], frame: "¿dónde está ___?" },
+                      { es: "¿Dónde está mi hotel?", en: "Where is my hotel?", tier: 1, tags: ["core"], keywords: ["hotel"], frame: "¿dónde está ___?" },
+                      { es: "¿Dónde está la farmacia?", en: "Where's the pharmacy?", tier: 1, tags: ["emergency", "health", "directions"], keywords: ["dónde", "farmacia"], frame: "¿dónde está ___?" },
+                    ]
+                  },
+                  {
+                    id: "mx0-numbers", topic: "Core numbers", title: "Numbers that pay",
+                    beat: "Count it, pay it, check the change.",
+                    items: [
+                      { es: "uno", en: "one", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Uno, por favor", contextEn: "One, please" },
+                      { es: "dos", en: "two", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Una mesa para dos", contextEn: "A table for two" },
+                      { es: "tres", en: "three", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Tres tacos, por favor", contextEn: "Three tacos, please" },
+                      { es: "cuatro", en: "four", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Somos cuatro", contextEn: "There are four of us" },
+                      { es: "cinco", en: "five", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Cinco pesos", contextEn: "Five pesos" },
+                      { es: "seis", en: "six", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "A las seis", contextEn: "At six" },
+                      { es: "siete", en: "seven", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Siete de la tarde", contextEn: "Seven in the evening" },
+                      { es: "ocho", en: "eight", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "A las ocho", contextEn: "At eight" },
+                      { es: "nueve", en: "nine", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Abre a las nueve", contextEn: "It opens at nine" },
+                      { es: "diez", en: "ten", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Diez pesos", contextEn: "Ten pesos" },
+                      { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte pesos", contextEn: "Twenty pesos" },
+                      { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta pesos", contextEn: "Fifty pesos" },
+                      { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien pesos", contextEn: "One hundred pesos", anchor: "Think: 'century / percent', 100." },
+                      { es: "En efectivo", en: "In cash", tier: 1, tags: ["money"], contextEs: "Voy a pagar en efectivo", contextEn: "I'll pay in cash", keywords: ["efectivo"] },
+                    ]
+                  },
+                  {
+                    id: "mx0-cuanto", topic: "Core patterns", title: "¿Cuánto cuesta ___?",
+                    beat: "The price machine.",
+                    machine: true, frame: "¿cuánto cuesta ___?",
+                    frameGloss: "¿Cuánto cuesta...? = how much is...? Ask before you nod.",
+                    items: [
+                      { es: "¿Cuánto cuesta esto?", en: "How much is this?", tier: 1, tags: ["core"], keywords: ["cuesta"], frame: "¿cuánto cuesta ___?", note: "Esto again. Point, ask, decide." },
+                      { es: "¿Cuánto cuesta la entrada?", en: "How much is the entrance ticket?", tier: 1, tags: ["core"], keywords: ["entrada"], frame: "¿cuánto cuesta ___?" },
+                      { es: "¿Cuánto cuesta un boleto?", en: "How much is a ticket?", tier: 1, tags: ["core"], keywords: ["boleto"], frame: "¿cuánto cuesta ___?" },
+                      { es: "¿Cuánto cuesta la habitación?", en: "How much is the room?", tier: 1, tags: ["core"], keywords: ["habitación"], frame: "¿cuánto cuesta ___?" },
+                    ]
+                  },
+                  {
+                    id: "mx0-metraer", topic: "Core patterns", title: "¿Me puede traer ___?",
+                    beat: "The bring-me machine. Your table workhorse.",
+                    machine: true, frame: "¿me puede traer ___?",
+                    frameGloss: "¿Me puede traer...? = could you bring me...? The polite ask that works on anyone.",
+                    items: [
+                      { es: "¿Me puede traer la cuenta?", en: "Could you bring me the check?", tier: 1, tags: ["core"], keywords: ["cuenta"], frame: "¿me puede traer ___?", variants: ["¿Me trae la cuenta?"], note: "Me trae...? is the same machine with the jacket off. Both are right.", anchor: "Think: traer is to bring. You are asking them to bring it, not going to get it." },
+                      { es: "¿Me puede traer agua?", en: "Could you bring me water?", tier: 1, tags: ["core"], keywords: ["agua"], frame: "¿me puede traer ___?", variants: ["¿Me trae agua?"] },
+                      { es: "¿Me puede traer el menú?", en: "Could you bring me the menu?", tier: 1, tags: ["core"], keywords: ["menú"], frame: "¿me puede traer ___?", variants: ["¿Me trae el menú?"] },
+                      { es: "¿Me puede traer otra cerveza?", en: "Could you bring me another beer?", tier: 1, tags: ["core"], keywords: ["cerveza"], frame: "¿me puede traer ___?", variants: ["¿Me trae otra cerveza?"] },
+                    ]
+                  },
+                  {
+                    id: "mx0-hay", topic: "Core patterns", title: "¿Hay ___?",
+                    beat: "The is-there machine.",
+                    machine: true, frame: "¿hay ___?",
+                    frameGloss: "¿Hay...? = is there...? Availability in one word.",
+                    items: [
+                      { es: "¿Hay wifi?", en: "Is there wifi?", tier: 1, tags: ["hotel", "lodging"], contextEs: "¿Hay wifi en el cuarto?", contextEn: "Is there wifi in the room?", keywords: ["wifi"], frame: "¿hay ___?" },
+                      { es: "¿Hay una farmacia cerca?", en: "Is there a pharmacy nearby?", tier: 1, tags: ["core"], keywords: ["farmacia", "cerca"], frame: "¿hay ___?" },
+                      { es: "¿Hay mesa?", en: "Is there a table?", tier: 1, tags: ["core"], keywords: ["mesa"], frame: "¿hay ___?", contextEs: "¿Hay mesa para dos?", contextEn: "Is there a table for two?" },
+                      { es: "¿Hay algo sin gluten?", en: "Is there anything gluten-free?", tier: 1, tags: ["core"], keywords: ["gluten"], frame: "¿hay ___?" },
+                    ]
+                  },
+                  {
+                    id: "mx0-aquehora", topic: "Core patterns", title: "¿A qué hora ___?",
+                    beat: "The when machine.",
+                    machine: true, frame: "¿a qué hora ___?",
+                    frameGloss: "¿A qué hora...? = at what time...? Opens, closes, leaves: the schedule machine.",
+                    items: [
+                      { es: "¿A qué hora abre?", en: "What time does it open?", tier: 1, tags: ["time"], keywords: ["hora", "abre"], reply: { es: "A las nueve de la mañana", en: "At nine in the morning" }, frame: "¿a qué hora ___?" },
+                      { es: "¿A qué hora cierra?", en: "What time does it close?", tier: 1, tags: ["core"], keywords: ["cierra"], frame: "¿a qué hora ___?" },
+                      { es: "¿A qué hora sale el tren?", en: "What time does the train leave?", tier: 1, tags: ["core"], keywords: ["sale", "tren"], frame: "¿a qué hora ___?" },
+                      { es: "¿A qué hora empieza?", en: "What time does it start?", tier: 1, tags: ["core"], keywords: ["empieza"], frame: "¿a qué hora ___?" },
+                    ]
+                  },
+                  {
+                    id: "mx0-necesito", topic: "Core patterns", title: "Necesito ___",
+                    beat: "The need machine.",
+                    machine: true, frame: "necesito ___",
+                    frameGloss: "Necesito = I need. For when wanting is too polite.",
+                    items: [
+                      { es: "Necesito ayuda", en: "I need help", tier: 1, tags: ["core"], keywords: ["ayuda"], frame: "necesito ___", contextEs: "Necesito ayuda, por favor", contextEn: "I need help, please" },
+                      { es: "Necesito un médico", en: "I need a doctor", tier: 1, tags: ["emergency", "health"], keywords: ["médico"], variants: ["Necesito un doctor"], frame: "necesito ___" },
+                      { es: "Necesito un taxi", en: "I need a taxi", tier: 1, tags: ["core"], keywords: ["taxi"], frame: "necesito ___" },
+                      { es: "Necesito un cargador", en: "I need a charger", tier: 1, tags: ["core"], keywords: ["cargador"], frame: "necesito ___", note: "The dead-phone phrase. Learn it before you need it." },
+                    ]
+                  },
+                  {
+                    id: "mx0-wrong", topic: "Core phrases", title: "When it goes wrong",
+                    beat: "What they'll say to you, and what to say back.",
+                    items: [
+                      { es: "¿Algo más?", en: "Anything else?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Algo más? No, gracias.", contextEn: "Anything else? No, thanks.", keywords: ["más"] },
+                      { es: "Mande", en: "Pardon? / Yes?", note: "Very Mexican polite way to say 'what?' or 'go ahead'.", tier: 1, tags: ["social", "politeness"], contextEs: "Disculpe. ¿Mande?", contextEn: "Excuse me. Yes?", keywords: ["mande"] },
+                      { es: "Con gusto", en: "My pleasure", note: "Common Mexican reply to 'gracias'.", tier: 1, tags: ["social", "politeness"], contextEs: "Gracias. Con gusto.", contextEn: "Thanks. My pleasure." },
+                      { es: "Ahorita", en: "Right now / in a bit", note: "Famously flexible Mexican timing.", tier: 1, tags: ["social", "time"], contextEs: "Ahorita se lo traigo", contextEn: "I'll bring it right away", keywords: ["ahorita"] },
+                      { es: "¿Es todo?", en: "Is that all?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Es todo? Sí, gracias.", contextEn: "Is that all? Yes, thanks.", keywords: ["todo"] },
+                      { es: "Provecho", en: "Enjoy your meal", note: "Said when passing people who are eating.", tier: 1, tags: ["social", "food"], contextEs: "Buen provecho", contextEn: "Enjoy your meal", keywords: ["provecho"] },
+                      { es: "Aquí tiene", en: "Here you go", tier: 1, tags: ["social", "restaurant"], contextEs: "Aquí tiene su cambio", contextEn: "Here's your change", keywords: ["tiene"] },
+                      { es: "Ayuda", en: "Help", tier: 1, tags: ["emergency"], contextEs: "¡Ayuda, por favor!", contextEn: "Help, please!", keywords: ["ayuda"] },
+                      { es: "Llame a la policía", en: "Call the police", note: "Emergency number in Mexico is 911.", tier: 1, tags: ["emergency"], keywords: ["policía"] },
+                      { es: "Es una emergencia", en: "It's an emergency", tier: 1, tags: ["emergency"], contextEs: "Por favor, es una emergencia", contextEn: "Please, it's an emergency", anchor: "'emergencia' = emergency.", keywords: ["emergencia"] },
+                    ]
+                  },
+      ]
+    },
     /* ============================ PASS 1 · SURVIVAL ============================ */
     {
       id: "mx-p1", pass: 1, title: "Essentials", blurb: "The words that keep you alive on day one.",
       lessons: [
-        {
-          id: "mx-greet", topic: "Greetings & politeness", title: "Hola & gracias",
-          reward: "First words down, the taquero already likes you better.",
-          cultureNote: "In small shops and comedores, a 'buenos días' to the whole room when you walk in isn't optional, it's basic courtesy, and it warms everyone up before you say another word.",
-          primer: { scene: "Your first morning in Oaxaca. You duck into a café on a quiet street off the Zócalo, and the woman behind the counter looks up with a warm 'buenos días.'", mission: "Greet her back, and say please and thank you like you mean it.", guessItem: "Gracias" },
-          items: [
-            { es: "Hola", en: "Hi", tier: 1, tags: ["greetings"], contextEs: "Hola, buenos días", contextEn: "Hi, good morning" },
-            { es: "Buenos días", en: "Good morning", tier: 1, tags: ["greetings"], contextEs: "Buenos días, ¿cómo está?", contextEn: "Good morning, how are you?", keywords: ["días"] },
-            { es: "Buenas tardes", en: "Good afternoon", tier: 1, tags: ["greetings"], contextEs: "Buenas tardes, señor", contextEn: "Good afternoon, sir", keywords: ["tardes"] },
-            { es: "Buenas noches", en: "Good evening / night", tier: 1, tags: ["greetings"], contextEs: "Buenas noches, hasta mañana", contextEn: "Good night, see you tomorrow", keywords: ["noches"] },
-            { es: "Por favor", en: "Please", tier: 1, tags: ["politeness"], contextEs: "Un café, por favor", contextEn: "A coffee, please", keywords: ["por favor"] },
-            { es: "Gracias", en: "Thank you", tier: 1, tags: ["politeness"], contextEs: "Muchas gracias por todo", contextEn: "Thank you very much for everything", anchor: "Think: 'gratitude.'", variants: ["Muchas gracias"], reply: { es: "De nada", en: "You're welcome" } },
-            { es: "De nada", en: "You're welcome", tier: 1, tags: ["politeness"], contextEs: "Gracias. De nada.", contextEn: "Thanks. You're welcome." },
-            { es: "Con permiso", en: "Excuse me (getting past)", tier: 1, tags: ["politeness"], note: "Very Mexican, say it squeezing by or leaving a table.", contextEs: "Con permiso, voy a pasar", contextEn: "Excuse me, I'm coming through", keywords: ["permiso"] },
-            { es: "Disculpe", en: "Excuse me (to get attention)", tier: 1, tags: ["politeness"], contextEs: "Disculpe, ¿me ayuda?", contextEn: "Excuse me, can you help me?", keywords: ["disculpe"] }
-          ]
-        },
-        {
-          id: "mx-numbers1", topic: "Numbers", title: "Numbers 1-10",
-          reward: "You can count to ten, enough to order tacos for the whole table.",
-          items: [
-            { es: "uno", en: "one", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Uno, por favor", contextEn: "One, please" },
-            { es: "dos", en: "two", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Una mesa para dos", contextEn: "A table for two" },
-            { es: "tres", en: "three", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Tres tacos, por favor", contextEn: "Three tacos, please" },
-            { es: "cuatro", en: "four", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Somos cuatro", contextEn: "There are four of us" },
-            { es: "cinco", en: "five", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Cinco pesos", contextEn: "Five pesos" },
-            { es: "seis", en: "six", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "A las seis", contextEn: "At six" },
-            { es: "siete", en: "seven", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Siete de la tarde", contextEn: "Seven in the evening" },
-            { es: "ocho", en: "eight", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "A las ocho", contextEn: "At eight" },
-            { es: "nueve", en: "nine", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Abre a las nueve", contextEn: "It opens at nine" },
-            { es: "diez", en: "ten", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Diez pesos", contextEn: "Ten pesos" }
-          ]
-        },
         {
           id: "mx-rescue", topic: "How do you say", title: "I only speak a little",
           reward: "Now you can admit your Spanish is shaky, in Spanish. Locals will slow down for you.",
@@ -85,8 +197,6 @@ const MEXICO_PACK = {
           items: [
             { es: "Hablo poquito español", en: "I speak a little Spanish", note: "'Poquito' is friendly and very Mexican.", tier: 2, tags: ["communication"], keywords: ["español"] },
             { es: "Estoy aprendiendo español", en: "I'm learning Spanish", note: "Buys patience instantly.", tier: 2, tags: ["communication"], keywords: ["aprendiendo", "español"] },
-            { es: "No entiendo", en: "I don't understand", tier: 1, tags: ["communication"], contextEs: "Perdón, no entiendo bien", contextEn: "Sorry, I don't understand well", keywords: ["entiendo"] },
-            { es: "¿Habla inglés?", en: "Do you speak English?", note: "Formal (usted), polite default with strangers.", tier: 1, tags: ["communication"], contextEs: "Disculpe, ¿habla inglés?", contextEn: "Excuse me, do you speak English?", anchor: "'inglés' = English.", keywords: ["inglés"] },
             { es: "¿Cómo se dice...?", en: "How do you say...?", tier: 2, tags: ["communication"], keywords: ["dice"] },
             { es: "¿Puede repetir, por favor?", en: "Can you repeat that, please?", tier: 2, tags: ["communication"], keywords: ["repetir"], variants: ["¿Me lo repite, por favor?"] },
             { es: "Más despacio, por favor", en: "Slower, please", tier: 2, tags: ["communication"], keywords: ["despacio"] },
@@ -126,7 +236,6 @@ const MEXICO_PACK = {
           cultureNote: "Carry a few coins and your own tissue, many public restrooms charge a couple of pesos and don't stock paper.",
           primer: { scene: "Two unmarked doors at the back of Doña Lupe's comedor, and a server rushing past with a tray of caldo. You really need to pick the right one.", mission: "Ask where the bathroom is, and read the door before you push.", guessItem: "Entrada" },
           items: [
-            { es: "¿Dónde está el baño?", en: "Where's the bathroom?", note: "Mexico: 'baño'.", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "baño"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
             { es: "¿Tienen baño?", en: "Do you have a bathroom?", tier: 1, tags: ["bathroom"], contextEs: "Disculpe, ¿tienen baño?", contextEn: "Excuse me, do you have a bathroom?", keywords: ["baño"] },
             { es: "Hombres", en: "Men (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "El baño de hombres", contextEn: "The men's bathroom", keywords: ["hombres"] },
             { es: "Mujeres", en: "Women (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "El baño de mujeres", contextEn: "The women's bathroom", keywords: ["mujeres"] },
@@ -142,10 +251,6 @@ const MEXICO_PACK = {
           cultureNote: "Cash is king at markets and street stalls. Break big bills at a chain store first, vendors rarely have change for a 500-peso note.",
           primer: { scene: "At the Mercado 20 de Noviembre, Beto weighs out a bag of chapulines and rattles off the price. Taped to his puesto: a hand-lettered 'solo efectivo.'", mission: "Handle pesos and pay Beto in cash without fumbling.", guessItem: "cien" },
           items: [
-            { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte pesos", contextEn: "Twenty pesos" },
-            { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta pesos", contextEn: "Fifty pesos" },
-            { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien pesos", contextEn: "One hundred pesos", anchor: "Think: 'century / percent', 100." },
-            { es: "En efectivo", en: "In cash", tier: 1, tags: ["money"], contextEs: "Voy a pagar en efectivo", contextEn: "I'll pay in cash", keywords: ["efectivo"] },
             { es: "¿Cuánto es?", en: "How much is it (total)?", tier: 2, tags: ["money"], keywords: ["cuánto"] }
           ]
         },
@@ -186,13 +291,6 @@ const MEXICO_PACK = {
           reward: "You can understand what's said TO you. 'Ahorita' will still confuse you, that's normal.",
           primer: { scene: "It's not just you talking now. Doña Lupe says something as she sets your plate down, a stranger nods a word as they pass your table, and you catch the melody but not the meaning. Time to tune your ear the other way.", mission: "Catch what locals say to you, and know what they mean.", guessItem: "Provecho" },
           items: [
-            { es: "¿Algo más?", en: "Anything else?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Algo más? No, gracias.", contextEn: "Anything else? No, thanks.", keywords: ["más"] },
-            { es: "Mande", en: "Pardon? / Yes?", note: "Very Mexican polite way to say 'what?' or 'go ahead'.", tier: 1, tags: ["social", "politeness"], contextEs: "Disculpe. ¿Mande?", contextEn: "Excuse me. Yes?", keywords: ["mande"] },
-            { es: "Con gusto", en: "My pleasure", note: "Common Mexican reply to 'gracias'.", tier: 1, tags: ["social", "politeness"], contextEs: "Gracias. Con gusto.", contextEn: "Thanks. My pleasure." },
-            { es: "Ahorita", en: "Right now / in a bit", note: "Famously flexible Mexican timing.", tier: 1, tags: ["social", "time"], contextEs: "Ahorita se lo traigo", contextEn: "I'll bring it right away", keywords: ["ahorita"] },
-            { es: "¿Es todo?", en: "Is that all?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Es todo? Sí, gracias.", contextEn: "Is that all? Yes, thanks.", keywords: ["todo"] },
-            { es: "Provecho", en: "Enjoy your meal", note: "Said when passing people who are eating.", tier: 1, tags: ["social", "food"], contextEs: "Buen provecho", contextEn: "Enjoy your meal", keywords: ["provecho"] },
-            { es: "Aquí tiene", en: "Here you go", tier: 1, tags: ["social", "restaurant"], contextEs: "Aquí tiene su cambio", contextEn: "Here's your change", keywords: ["tiene"] },
             { es: "Que le vaya bien", en: "Take care / have a good one", tier: 2, tags: ["social", "politeness"], keywords: ["vaya"] }
           ]
         },
@@ -202,15 +300,10 @@ const MEXICO_PACK = {
           cultureNote: "Mexico's emergency number is 911. For minor stuff, the farmacia often has a doctor in a back consultorio, cheap, fast, no appointment.",
           primer: { scene: "You pat every pocket twice, your wallet's gone. Sra. Elena, the pharmacist across the street, catches your face and asks if you're okay.", mission: "Get help fast, a doctor, the police, or her farmacia.", guessItem: "Es una emergencia" },
           items: [
-            { es: "Ayuda", en: "Help", tier: 1, tags: ["emergency"], contextEs: "¡Ayuda, por favor!", contextEn: "Help, please!", keywords: ["ayuda"] },
-            { es: "Necesito un médico", en: "I need a doctor", tier: 1, tags: ["emergency", "health"], keywords: ["médico"], variants: ["Necesito un doctor"] },
-            { es: "Llame a la policía", en: "Call the police", note: "Emergency number in Mexico is 911.", tier: 1, tags: ["emergency"], keywords: ["policía"] },
             { es: "Me robaron", en: "I was robbed", tier: 2, tags: ["emergency"], keywords: ["robaron"] },
             { es: "No me siento bien", en: "I don't feel well", tier: 2, tags: ["emergency", "health"], keywords: ["siento"] },
             { es: "¿Habla inglés?", en: "Do you speak English?", tier: 1, tags: ["emergency", "communication"], keywords: ["inglés"] },
             { es: "Perdí mi pasaporte", en: "I lost my passport", tier: 2, tags: ["emergency"], keywords: ["pasaporte"] },
-            { es: "¿Dónde está la farmacia?", en: "Where's the pharmacy?", tier: 1, tags: ["emergency", "health", "directions"], keywords: ["dónde", "farmacia"] },
-            { es: "Es una emergencia", en: "It's an emergency", tier: 1, tags: ["emergency"], contextEs: "Por favor, es una emergencia", contextEn: "Please, it's an emergency", anchor: "'emergencia' = emergency.", keywords: ["emergencia"] },
             { es: "Me duele aquí", en: "It hurts here", tier: 2, tags: ["emergency", "health"], keywords: ["duele"] }
           ]
         }
@@ -280,7 +373,6 @@ const MEXICO_PACK = {
             { es: "¿Qué hora es?", en: "What time is it?", tier: 2, tags: ["time"], keywords: ["hora"], reply: { es: "Son las dos", en: "It's two o'clock" } },
             { es: "Son las dos", en: "It's two o'clock", tier: 1, tags: ["time"], contextEs: "Son las dos de la tarde", contextEn: "It's two in the afternoon", keywords: ["dos"] },
             { es: "a las ocho", en: "at eight", tier: 1, tags: ["time"], contextEs: "Nos vemos a las ocho", contextEn: "See you at eight", keywords: ["ocho"] },
-            { es: "¿A qué hora abre?", en: "What time does it open?", tier: 2, tags: ["time"], keywords: ["hora", "abre"], reply: { es: "A las nueve de la mañana", en: "At nine in the morning" } },
             { es: "¿A qué hora cierra?", en: "What time does it close?", tier: 2, tags: ["time"], keywords: ["hora", "cierra"] }
           ]
         },
@@ -350,7 +442,6 @@ const MEXICO_PACK = {
             { es: "un cuarto doble", en: "a double room", note: "Mexico: 'cuarto'. ('habitación' also fine.)", tier: 2, tags: ["hotel", "lodging"], keywords: ["cuarto"], variants: ["una habitación doble"] },
             { es: "¿A qué hora es la salida?", en: "What time is checkout?", tier: 2, tags: ["hotel", "time"], keywords: ["hora", "salida"], reply: { es: "A las doce del día", en: "At noon" } },
             { es: "¿El desayuno está incluido?", en: "Is breakfast included?", tier: 2, tags: ["hotel", "food"], keywords: ["desayuno"] },
-            { es: "¿Hay wifi?", en: "Is there wifi?", tier: 1, tags: ["hotel", "lodging"], contextEs: "¿Hay wifi en el cuarto?", contextEn: "Is there wifi in the room?", keywords: ["wifi"] },
             { es: "¿Cuál es la contraseña?", en: "What's the password?", tier: 2, tags: ["hotel", "lodging"], keywords: ["contraseña"] },
             { es: "¿Puedo dejar mis maletas?", en: "Can I leave my bags?", tier: 2, tags: ["hotel", "lodging"], keywords: ["maletas"] },
             { es: "¿Puede limpiar el cuarto?", en: "Can you clean the room?", tier: 2, tags: ["hotel", "lodging"], keywords: ["limpiar", "cuarto"] },

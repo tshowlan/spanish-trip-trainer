@@ -64,7 +64,10 @@ function _journeyView(scroll) {
   stages.forEach((st, i) => {
     const visible = st.lessons.filter(l => !l.bonus);
     const done = visible.filter(l => lessonDone(l.id)).length;
-    const locked = i > cur;
+    // started chapters never dim (migration plan, ratification pending): the map never points an
+    // active learner backward; machines reach existing users through the composer's weave instead.
+    const started = st.lessons.some(l => lessonDone(l.id) || (l.items || []).some(it => { const s = state.learn && state.learn[it.id]; return s && s.exposures >= 1; }));
+    const locked = i > cur && !started;
     const chap = el(`<div class="chapter${locked ? " locked" : ""}"></div>`);
     chap.appendChild(el(`<div class="chap-head">
       <div class="chap-kicker">CHAPTER ${st.pass != null ? st.pass : i}</div>

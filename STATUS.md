@@ -2,6 +2,15 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-19 — Stage 0 SHIPPED to both packs (Chapter 0 real) — HELD LOCALLY, not pushed
+- Executed the content map (docs/tripfluent-stage0-content-map.md): pass-0 stage in BOTH packs — 3 kit lessons (Spain 37 / Mexico 35 items migrated by es-derived ID, SRS history intact) + 7 machines (Spain 25 / Mexico 23 authored fillers; exact-match claims: Spain 3, Mexico 5 incl. ¿Hay wifi? + ¿Dónde está el baño?). Emptied s1-hello/s1-numbers1/mx-greet/mx-numbers1 removed.
+- Machines carry machine:true, frame, frameGloss, beat; fillers carry frame + tags:["core"]. Learn tab renders "Pattern · N fillers" from live data now.
+- Engine-adjacent: categoryOf gains "Core" (checked first); CONTENT_WEIGHTS "Core": 0.15 + NO_MODIFIER (weight value flagged for ratification); seedPlacement stageCount +1 (Stage 0 seeds with pass 1 — placement semantics preserved). K3 floor collision: MOOT (floors key on category "Advanced"; emergency items were "Basics" already).
+- Started-chapters-never-dim implemented in _journeyView (any done lesson or exposed item un-gates a chapter). DECISIONS LINE HELD pending Tom's explicit ratification.
+- Audit GREEN both packs: checks 11+12 = 0, all 7 machines at pass 0, audit-pack 0 hard errors. Tool aligned to the ratified head list + fixed an ASCII-\b regex bug that had under-counted dónde está (the census "0 instances" was partly artifact; the tail bucket caught them, so the reconciliation stands).
+- Primer gaps now 26/31 (10 new Stage-0 lessons have none) — Phase-3 wave. Near-form flags for the human ear: ¿Dónde está la estación? (vs ...de metro), ¿A qué hora cierra? (vs ...la cocina), ¿Cuánto cuesta esto? (vs bare), Necesito ayuda (vs bare Ayuda), ¿Hay una farmacia cerca? (vs ¿Hay un cajero cerca?), Spain ¿Hay wifi? (vs ¿Tiene wifi? if present).
+- NOT deployed: committed locally only; deploy waits on Tom's harness review of Chapter 0 + Learn tab together.
+
 ## 2026-07-18 — Learn tab approved + BUILT TO HARNESS (design/learn-tab.html) — NOT DEPLOYED
 - Structure: THREE segments (was two): Journey (default, chaptered spine) | Topics (coverage strip PROMOTED to full view; every row = drill entry routing to Practice prefiltered by scenario) | Phrases (built view unchanged).
 - Chapter naming set DECIDED + DATA EDIT APPLIED: live deck stage titles changed in BOTH packs ("Survival"->"Essentials", "Comfort"->"Getting comfortable", "Fluent"->"Like a local"); resolves the Survival/Survival-kit collision.

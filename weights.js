@@ -7,6 +7,7 @@
      shopping→Numbers & Time · hotel→Lodging · emergencies→Advanced · leisure→Sights ·
      (Directions is navigation, its own small bucket). Relative values; effectiveWeights() normalizes. */
 const CONTENT_WEIGHTS = {
+  "Core":           0.15,   // Stage-0 survival kit + pattern machines: universal generators, every trip
   "Food & Drink":   0.27,   // restaurant — high on all four demand dimensions
   "Transport":      0.20,   // transport + airport signage
   "Basics":         0.14,   // greetings / small talk — the "feels fluent" pillar
@@ -29,7 +30,7 @@ const TRIPTYPE_MODIFIERS = {
 };
 const LODGING_MODIFIERS = { airbnb: { "Lodging": 0.6 } };   // airbnb tilts away from hotel content (gently; clamp keeps a floor)
 const NEEDS_MODIFIERS   = { chat:   { "Basics": 1.3 } };    // "chat with locals" → small talk
-const NO_MODIFIER = new Set(["Advanced"]);                  // emergencies: stakes floor, personalization never touches it
+const NO_MODIFIER = new Set(["Advanced", "Core"]);                  // emergencies: stakes floor, personalization never touches it
 
 /* Normalized effective weight per category for a given profile (sums to 1 over the given categories).
    Pass the categories actually present in the deck so a pack missing a category doesn't leak weight. */

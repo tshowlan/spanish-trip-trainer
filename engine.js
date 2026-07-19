@@ -59,7 +59,7 @@ function buildDietaryLesson(needs) {
 // failed review resets an item's strength and reopens the tree below it — the SRS self-corrects.
 function seedPlacement(level) {
   if (!level || level === "new") return;
-  const stageCount = level === "confident" ? 2 : 1;   // some → stage 0; confident → stages 0-1
+  const stageCount = level === "confident" ? 3 : 2;   // Stage 0 (kit) always seeds with pass 1: some → kit+pass1; confident → +pass2
   const now = new Date().toISOString();
   state.learn = state.learn || {}; state.lessons = state.lessons || {};
   (DECK ? DECK.stages : []).slice(0, stageCount).forEach(st => st.lessons.forEach(l => {

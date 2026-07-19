@@ -56,17 +56,18 @@ stages.forEach((st, si) => (st.lessons || []).forEach((l, li) => {
   });
 }));
 
-// ================= HEAD FRAMES (§1b.0) — detected by surface pattern in `es` =================
+// ================= HEAD FRAMES — the RATIFIED seven (2026-07-19 reconciliation; §1b.0 amended).
+// Matched against norm(es): JS \b is ASCII-only, so accented finals (está) silently broke matching. =================
 const HEAD = [
-  { name: "quiero ___", re: /^quiero\b/i },
-  { name: "me trae ___", re: /\bme (trae|puede traer|traes)\b/i },
-  { name: "¿dónde está ___?", re: /d[oó]nde est[aá]\b/i },
-  { name: "¿cuánto cuesta ___?", re: /cu[aá]nto (cuesta|cuestan|es|vale)\b/i },
-  { name: "hay ___", re: /^\s*¿?\s*hay\b/i },
-  { name: "necesito ___", re: /^necesito\b/i },
-  { name: "¿puedo ___?", re: /\bpuedo\b/i },
+  { name: "quiero ___", re: /^quiero\b/ },
+  { name: "¿dónde está ___?", re: /\bdonde esta\b/ },
+  { name: "¿cuánto cuesta ___?", re: /\bcuanto (cuesta|cuestan|vale)\b/ },
+  { name: "¿me puede traer ___?", re: /\bme (trae|puede traer|traes)\b/ },
+  { name: "¿hay ___?", re: /^\s*hay\b/ },
+  { name: "¿a qué hora ___?", re: /^\s*a que hora\b/ },
+  { name: "necesito ___", re: /^necesito\b/ },
 ];
-const headOf = es => (HEAD.find(h => h.re.test(es || "")) || {}).name || null;
+const headOf = es => (HEAD.find(h => h.re.test(norm(es))) || {}).name || null;
 
 // broader frame fingerprint for the "≥3 outside the head list" tail-frame census: first 1-2 function
 // words that plausibly open a reusable frame (heuristic — flags candidates for human review, not truth)
@@ -114,16 +115,22 @@ HEAD.forEach(h => {
   const inst = frameCensus[h.name];
   firstFrameAppearance[h.name] = inst.length ? Math.min(...inst.map(x => x.pass ?? 99)) : null;
 });
-const framePrereqViolations = [];   // head frames whose earliest instance sits in pass >1 with no pass-0/1 machine
+// §11.2 check 11 (refined 2026-07-19): a frame's DEBUT instance is just a phrase; frames exist once they
+// have two members. Violation = a frame's 2nd+ instance with no member in a strictly earlier pass
+// (i.e. no machine or earlier family member preceding it in unlock order).
+const framePrereqViolations = [];
 HEAD.forEach(h => {
-  const inst = frameCensus[h.name];
-  if (inst.length >= 2 && (firstFrameAppearance[h.name] ?? 99) > 1)
-    framePrereqViolations.push({ frame: h.name, count: inst.length, earliestPass: firstFrameAppearance[h.name] });
+  const passes = frameCensus[h.name].map(x => x.pass ?? 99).sort((a, b) => a - b);
+  if (passes.length >= 2 && passes[0] === passes[1] && passes[0] > 0)
+    framePrereqViolations.push({ frame: h.name, count: passes.length, earliestPass: passes[0] });
 });
 
 // ================= AUDIT CHECK 12: Stage-0 coverage (frames w/ >=3 items, no machine) =================
+const machineFrames = new Set();
+stages.forEach(st => (st.lessons || []).forEach(l => { if (l.machine && l.frame) machineFrames.add(norm(l.frame).replace(/\s+/g, " ")); }));
+const hasMachine = name => machineFrames.has(norm(name).replace(/\s+/g, " "));
 const stage0Coverage = HEAD.map(h => ({ frame: h.name, instances: frameCensus[h.name].length }))
-  .filter(x => x.instances >= 3);
+  .filter(x => x.instances >= 3 && !hasMachine(x.frame));
 
 // ================= COVERAGE GAPS: chunks + primers =================
 const chunkGaps = items.filter(it => it.tier >= 2 && it.tokens > 6 && it.chunks === 0);

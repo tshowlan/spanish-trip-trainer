@@ -1,6 +1,7 @@
 /* ============================== CLOUD (group + sync) ============================== */
 function categoryOf(topic) {
   const t = topic.toLowerCase();
+  if (t.includes("core")) return "Core";                     // Stage-0 kit + machines (universal)
   if (t.includes("restaurant") || t.includes("coffee") || t.includes("allerg")) return "Food & Drink";
   if (t.includes("transport") || t.includes("airport") || t.includes("taxi") || t.includes("plane")) return "Transport";
   if (t.includes("walking") || t.includes("direction")) return "Directions";
