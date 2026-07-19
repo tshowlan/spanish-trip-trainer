@@ -150,7 +150,7 @@ Follow the existing design token system. Aesthetic reference: Whoop/Oura — typ
 
 1. **Header:** flame (per §8.6), wordmark, language switcher. No profile icon or settings gear — account and settings live in the Profile tab (§3.1); one entry point, Whoop/Oura-style.
 2. **Dial cluster:** Readiness hero ring, meaningfully larger than the Momentum/Retention flankers — push the size asymmetry beyond near-peer; the hierarchy must be legible at a glance.
-   - **Pace tick:** a gold **inverted-triangle index** (Submariner bezel language) at "where the glide path says you should be today," pointing inward from **outside the ring track** (a marker beside the dial, not on it — the gold-on-gold fix). Fill past the tick = ahead (soft-green gap wash); visible gap = behind (unpainted). Zero words. This is the **sole ambient pace signal** (decisions 2026-07-16) — same math as the Progress glide-path chart and the pace notification, one concept across surfaces. Full definition: §3.2.1.
+   - **Pace tick:** a gold **inverted-triangle index** (Submariner bezel language) at "where the glide path says you should be today," pointing inward from **outside the ring track** (a marker beside the dial, not on it — the gold-on-gold fix). Fill past the tick = ahead; fill short of it = behind. Position alone, no arc painting. Zero words. This is the **sole ambient pace signal** (decisions 2026-07-16) — same math as the Progress glide-path chart and the pace notification, one concept across surfaces. Full definition: §3.2.1.
    - **Countdown subline:** pure countdown ("121d out"), only when a trip exists. No pace words here — the gold pace tick above carries pace ambiently; pace *copy* appears only on divergence (detail view / whisper slot, §3.4).
    - **Band chip:** the Readiness band renders as a **chip** (band-colored 13% fill, sentence case), distinct from the dim-caps metric *names* — a contained live reading, not a title. Bands are Low / Fair / Strong / Tripfluent (§1.1). The **Tripfluent** chip wears the metallic crown: a specular gold gradient border + soft gold halo + a **one-time sheen sweep fired only on a band-crossing event** (disabled under prefers-reduced-motion, §4). Color = level, tick = pace, deltas = trend: three questions, three channels, no red anywhere.
    - **No ring label:** the Readiness ring carries no text label under the arc — the hero number plus the band chip already name it.
@@ -166,7 +166,7 @@ Follow the existing design token system. Aesthetic reference: Whoop/Oura — typ
 
 `tickTarget(today)` = the readiness required today to plausibly hold 85+ at T-0. v1: linear glide from baseline-at-trip-creation to 85 at the trip date `[tune — real glide likely front-loads less; cram window may steepen]`. The tick rises over the trip, converging on the crown threshold at landing. No trip date → no tick. Post-trip → tick retires.
 
-**Rendering:** solid gold inverted-triangle index (Submariner bezel language) pointing inward from OUTSIDE the ring track, thin `--bg` keyline; never overlaps the fill (legible at every band, including gold-on-gold Fair). Ahead (fill > tick): soft `--green` wash on the arc between them. Behind: unpainted — the empty track is the gap; no shame-coloring. Detail-sheet driver line: "N pts ahead of/behind pace."
+**Rendering:** solid gold inverted-triangle index (Submariner bezel language) pointing inward from OUTSIDE the ring track, no keyline; never overlaps the fill (legible at every band, including gold-on-gold Fair). **Ahead/behind is carried by fill position relative to the tick alone; no arc painting in either direction** (the ahead-gap green wash was removed 2026-07-17 — one signal, simpler ring). Words live in the detail sheet: "N pts ahead of/behind pace."
 
 ### 3.3 Kill list (remove from home)
 
@@ -210,7 +210,10 @@ Follow the existing design token system. Aesthetic reference: Whoop/Oura — typ
 | All content covered | Coverage sits near 100 only while retention is strong; it fades with phrase strength (by design — reviewing stays valuable and dormancy shows honestly). Detail copy doubles as re-engagement CTA: "Coverage fading — 14 restaurant phrases need review." |
 
 **Education moments (decay explained exactly twice, then geometry carries it):**
-- **First score reveal** appends: "Readiness works like fitness — it reflects today, moving with practice and fading with time. The gold mark is your pace: stay ahead of it and you'll land Tripfluent."
+- **First score reveal** (design artifact `design/score-reveal.html`, stamped 2026-07-17). Fires ONCE when Readiness first exists, at session end before home. Final shipped copy, two paragraphs:
+  - P1: "Readiness measures your preparation for this trip. It reflects where you are today: it climbs with practice and fades with time."
+  - P2: "The gold mark is your pace. Stay ahead of it and you'll land Tripfluent."
+  - **Sequence:** 600ms count-up + ring fill → band chip → **journey preview** (forward-only sweep 44 → 72 Strong → 91 Tripfluent with a 750ms crown beat, then settle back to the real score, ~2.5s; teaches the band colors wordlessly and **never sweeps down through Low**, since previewing regression previews shame) → education copy → **active dismissal**: "Tap your pace mark" (wrong-area taps gold-halo the tick, informing; correct tap shows "That's your pace." then advances). The pace mark pulses a slow halo only while awaiting the tap. One-time; reduced motion renders instantly with a static halo and no journey.
 - **First downward band crossing** fires the §7.3 whisper once: "Readiness eased with the week off — a session brings it back fast."
 
 (Both are one-time education cards; the reveal card is a queued artifact, not built with this batch.)

@@ -4,7 +4,7 @@ function ringSVG(val, cls, tick) {
   // viewBox stays ring-sized; the pace index protrudes past it and shows via overflow:visible on
   // .ring.readiness — so the tick never widens the dial's LAYOUT box (keeps the 3 dials centered).
   const vb = "0 0 120 120";
-  let tickEl = "", gap = "";
+  let tickEl = "";
   if (tick != null) {   // §3.2.1 pace tick — Submariner-style gold triangle index outside the track (readiness only)
     const t = Math.max(0, Math.min(100, tick));
     const a = (t / 100) * 2 * Math.PI - Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a);
@@ -12,17 +12,13 @@ function ringSVG(val, cls, tick) {
     const tx = 60 + tipR * ca, ty = 60 + tipR * sa;
     const b1x = 60 + baseR * ca - hw * sa, b1y = 60 + baseR * sa + hw * ca;
     const b2x = 60 + baseR * ca + hw * sa, b2y = 60 + baseR * sa - hw * ca;
+    // the tick alone is the pace signal (decisions 2026-07-17): fill position relative to the tick
+    // carries ahead/behind, words live in the detail sheet. No arc painting in either direction.
     tickEl = `<polygon class="ring-tick" points="${tx.toFixed(1)},${ty.toFixed(1)} ${b1x.toFixed(1)},${b1y.toFixed(1)} ${b2x.toFixed(1)},${b2y.toFixed(1)}"/>`;
-    // ahead-gap wash: soft green on the arc between tick and fill when ahead; behind = unpainted (no shame-coloring)
-    if (val > t) {
-      const seg = C * (val - t) / 100;
-      gap = `<circle class="ring-gap" cx="60" cy="60" r="${r}" stroke-dasharray="${seg.toFixed(1)} ${(C - seg).toFixed(1)}" transform="rotate(${(-90 + t * 3.6).toFixed(2)} 60 60)"/>`;
-    }
   }
   return `<svg class="ring ${cls}" viewBox="${vb}">
     <circle class="ring-bg" cx="60" cy="60" r="${r}"/>
     <circle class="ring-fg" cx="60" cy="60" r="${r}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${C.toFixed(1)}" data-fill="${off.toFixed(1)}" transform="rotate(-90 60 60)"/>
-    ${gap}
     ${tickEl}
   </svg>`;
 }

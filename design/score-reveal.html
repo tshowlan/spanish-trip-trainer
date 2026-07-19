@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — First Score Reveal (design artifact, scores spec education moment 1)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-sm: 14px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:760px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  /* One tint, both themes: warm crown originating top center. */
+  .phone::after { content:""; position:absolute; inset:0; pointer-events:none;
+    background: radial-gradient(120% 55% at 50% -8%, color-mix(in srgb, #c96a2b 22%, transparent) 0%, color-mix(in srgb, var(--accent) 11%, transparent) 36%, transparent 64%); }
+  :root[data-theme="dark"] .phone::after {
+    background: radial-gradient(120% 55% at 50% -8%, rgba(201,106,43,0.28) 0%, rgba(216,183,19,0.10) 34%, rgba(0,0,0,0) 62%); }
+  .screen { position:relative; z-index:1; }
+  :root[data-theme="dark"] .phone {
+    background: linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%);
+  }
+  .screen { padding:44px 28px 32px; height:100%; display:flex; flex-direction:column; align-items:center; text-align:center; }
+
+  .kicker { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.06em; color:var(--accent-2); margin-bottom:26px; }
+
+  .ringwrap { position:relative; margin-bottom:8px; }
+  .band { display:inline-block; font-family:var(--font-display); font-size:11.5px; font-weight:600;
+    letter-spacing:0.04em; margin-top:-4px; padding:4px 10px; border-radius:20px;
+    background:color-mix(in srgb, currentColor 13%, transparent);
+    opacity:0; transition:opacity 400ms; }
+  .band.show { opacity:1; }
+  .band.top { border:1.5px solid transparent; padding:3px 11px;
+    background:
+      linear-gradient(color-mix(in srgb, var(--green) 12%, var(--bg-card)), color-mix(in srgb, var(--green) 12%, var(--bg-card))) padding-box,
+      linear-gradient(118deg, #8a6a1c 0%, #e9c85c 18%, #fdf0a8 34%, #b8862e 52%, #f7e07e 72%, #fff3b0 84%, #a97c1f 100%) border-box; }
+
+  /* Pace-mark tap affordance: slow halo pulse WHILE awaiting the tap (functional
+     affordance, stops on answer; static halo under reduced motion). */
+  .await .hintpulse { opacity:1; animation:pulse 2000ms ease-in-out infinite; }
+  .hintpulse { opacity:0; transition:opacity 300ms; stroke:var(--accent); filter:drop-shadow(0 0 3px rgba(216,183,19,0.55)); }
+  :root[data-theme="dark"] .hintpulse { stroke:#ffe066; filter:drop-shadow(0 0 5px rgba(255,224,102,0.85)); }
+  @keyframes pulse { 0%,100%{ transform:scale(1); opacity:0.5; } 50%{ transform:scale(1.25); opacity:1; } }
+  @media (prefers-reduced-motion: reduce){ .await .hintpulse { animation:none; opacity:0.7; } }
+
+  .edu { max-width:300px; margin-top:26px; opacity:0; transform:translateY(6px); transition:opacity 400ms, transform 400ms; }
+  .edu.show { opacity:1; transform:none; }
+  .edu p { font-size:15px; color:var(--text); line-height:1.55; margin-bottom:14px; }
+  .edu p b { font-weight:600; }
+  .edu p .gold { color:var(--accent-2); font-weight:600; }
+
+  .rep { margin-top:auto; opacity:0; transition:opacity 400ms; width:100%; max-width:300px; }
+  .rep.show { opacity:1; }
+  .rep .prompt { font-size:var(--text-sm); color:var(--text-dim); margin-bottom:6px; }
+  .rep .done { font-family:var(--font-display); font-size:15px; font-weight:600; color:var(--green); min-height:22px; }
+
+  /* tick hint halo when they tap elsewhere */
+  .hintring { position:absolute; width:34px; height:34px; border-radius:50%;
+    border:2px solid var(--accent-2); box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent);
+    opacity:0; pointer-events:none; transition:opacity 300ms; }
+  .hintring.show { opacity:1; }
+
+  @media (prefers-reduced-motion: reduce){ .edu, .rep, .band { transition:none; } }
+
+  /* chrome */
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:430px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+      <div class="kicker">YOUR TRIP READINESS</div>
+      <div class="ringwrap" id="ringwrap"></div>
+      <span class="band" id="band" style="color:var(--accent-2)">Fair</span>
+      <div class="edu" id="edu">
+        <p>Readiness measures your preparation for this trip. It reflects where you are <b>today</b>: it climbs with practice and fades with time.</p>
+        <p>The <span class="gold">gold mark</span> is your pace. Stay ahead of it and you'll land <b>Tripfluent</b>.</p>
+      </div>
+      <div class="rep" id="rep">
+        <div class="prompt">Tap your pace mark to continue</div>
+        <div class="done" id="done"></div>
+      </div>
+      <div class="hintring" id="hintring"></div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="replay()">replay reveal</button>
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    First-score-reveal education card, APPROVED 2026-07-17. Fires ONCE, when Readiness
+    first exists (session end, before returning home). Sequence: ring fills + score counts up together
+    (600ms, the sanctioned hero count-up spent on its founding moment) at a realistic first score (44, Fair)
+    with the tick at 35 (ahead, shown by fill past tick alone: the ahead-gap wash is REMOVED, see delta); band chip fades in;
+    education copy lands (em-dash-free; SPEC FIX flagged: the spec's education line uses an em dash and should
+    be updated to this shipped wording); dismissal is ACTIVE per the payload rule: "Tap your pace mark":
+    locating the bezel triangle IS the proof the model landed. Taps elsewhere on the ring gold-halo the tick
+    (informing, never failing); correct tap: "That's your pace" in green, brief hold, advance to home.
+    Reduced motion: instant render, no count-up. DELTA r2: P2 reverted to 'The gold mark is your pace' (Tom); JOURNEY PREVIEW added after the chip lands: forward-only sweep 44→72 (Strong)→91 (Tripfluent, crown chip beat, 750ms dwell)→settle 44, ~2.5s one-time (never sweeps DOWN through Low: previewing regression would preview shame); ring stroke + chip follow band colors through the sweep, teaching the color system wordlessly; pace mark gains a slow 2s halo pulse WHILE awaiting the tap (functional affordance, stops on answer, static halo under reduced motion); atmosphere unified: ONE warm tint originating top center in BOTH themes (bottom-left glow removed here; dark's base stays the navy gradient); pulse halo: bright accent yellow + soft glow on light, luminous #ffe066 + glow on dark (both themes: the pulse must be visibly LIGHTER than the dial stroke, never the stroke's own color). RULE (record): interstitial/ceremony surfaces use the top-center tint; home uses photo + ground glow. Prior delta: ahead-gap green wash removed here and on home (the tick is the SOLE pace signal, now literally); education copy revised per Tom (trip-preparation framing, no fitness simile; 'where you should be' relocated to the gold-mark line; 'fades with time' kept over 'lapse' per no-shame vocabulary). Frame 390.
+  </div>
+</div>
+
+<script>
+  const VAL = 44, TICK = 35;
+  let answered = false;
+  const band = v => v >= 85 ? { c:'var(--green)', label:'Tripfluent', top:true }
+              : v >= 65 ? { c:'var(--secondary)', label:'Strong', top:false }
+              : v >= 40 ? { c:'var(--accent-2)', label:'Fair', top:false }
+              : { c:'var(--text-dim)', label:'Low', top:false };
+
+  function ringSvg(fillVal, tickVisible){
+    const C = 2*Math.PI*70, off = C*(1-fillVal/100);
+    const a = (TICK/100)*2*Math.PI - Math.PI/2;
+    const ca = Math.cos(a), sa = Math.sin(a);
+    const tx = 84+77.5*ca, ty = 84+77.5*sa;
+    const b1x = 84+89*ca - 5.5*sa, b1y = 84+89*sa + 5.5*ca;
+    const b2x = 84+89*ca + 5.5*sa, b2y = 84+89*sa - 5.5*ca;
+    return `<svg width="184" height="184" viewBox="-8 -8 184 184" id="ringsvg">
+      <circle cx="84" cy="84" r="70" fill="none" stroke="var(--bg-elevated)" stroke-width="11"/>
+      <circle cx="84" cy="84" r="70" fill="none" stroke="${band(fillVal).c}" stroke-width="11" stroke-linecap="round"
+        stroke-dasharray="${C}" stroke-dashoffset="${off}" transform="rotate(-90 84 84)"/>
+      ${tickVisible ? `<g id="tickTarget" style="cursor:pointer">
+        <circle class="hintpulse" cx="${84+84*ca}" cy="${84+84*sa}" r="15" fill="none" stroke-width="2.5" style="transform-origin:${84+84*ca}px ${84+84*sa}px"/>
+        <circle cx="${84+84*ca}" cy="${84+84*sa}" r="16" fill="transparent"/>
+        <polygon points="${tx},${ty} ${b1x},${b1y} ${b2x},${b2y}"
+          fill="var(--accent-2)" stroke="var(--bg)" stroke-width="1.5" stroke-linejoin="round"/>
+      </g>` : ''}
+      <text x="84" y="84" text-anchor="middle" dominant-baseline="central"
+        style="font-family:var(--font-display);font-weight:700;font-size:38px;fill:var(--text)">${Math.round(fillVal)}</text>
+      <text x="${84 + String(Math.round(fillVal)).length*11.5}" y="72" text-anchor="start"
+        style="font-family:var(--font-display);font-weight:600;font-size:13px;fill:var(--text-dim)">%</text>
+    </svg>`;
+  }
+
+  const ringwrap = document.getElementById('ringwrap');
+
+  function reveal(){
+    answered = false;
+    document.getElementById('done').textContent = '';
+    document.getElementById('band').classList.remove('show');
+    document.getElementById('edu').classList.remove('show');
+    document.getElementById('rep').classList.remove('show');
+    document.getElementById('hintring').classList.remove('show');
+
+    document.querySelector('.screen').classList.remove('await');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      ringwrap.innerHTML = ringSvg(VAL, true);
+      setChip(VAL);
+      wireTick();
+      ['band','edu','rep'].forEach(id => document.getElementById(id).classList.add('show'));
+      document.querySelector('.screen').classList.add('await');
+      return;
+    }
+    const t0 = performance.now(), DUR = 600;
+    const frame = (t) => {
+      const p = Math.min(1, (t - t0) / DUR);
+      const eased = 1 - Math.pow(1 - p, 3);
+      ringwrap.innerHTML = ringSvg(VAL * eased, p === 1);
+      if (p < 1) requestAnimationFrame(frame);
+      else {
+        setChip(VAL);
+        setTimeout(()=> document.getElementById('band').classList.add('show'), 150);
+        setTimeout(journey, 850);
+      }
+    };
+    requestAnimationFrame(frame);
+  }
+
+  function setChip(v){
+    const b = band(v), el = document.getElementById('band');
+    el.textContent = b.label;
+    el.style.color = b.c;
+    el.classList.toggle('top', b.top);
+  }
+
+  // Journey preview: forward-only sweep through what's ahead, then settle home.
+  // 44 -> 72 (Strong) -> 91 (Tripfluent, crown beat) -> back to 44. ~2.5s, one-time.
+  function tween(from, to, dur, done){
+    const t0 = performance.now();
+    const f = (t)=>{
+      const p = Math.min(1,(t-t0)/dur), e = 1-Math.pow(1-p,3);
+      const v = from + (to-from)*e;
+      ringwrap.innerHTML = ringSvg(v, true);
+      setChip(v);
+      if (p<1) requestAnimationFrame(f); else done && done();
+    };
+    requestAnimationFrame(f);
+  }
+  function journey(){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){ finishReveal(); return; }
+    tween(44, 72, 380, ()=> setTimeout(()=>
+      tween(72, 91, 380, ()=> setTimeout(()=>
+        tween(91, 44, 420, finishReveal), 750)), 550));
+  }
+  function finishReveal(){
+    ringwrap.innerHTML = ringSvg(VAL, true);
+    setChip(VAL);
+    wireTick();
+    document.getElementById('edu').classList.add('show');
+    setTimeout(()=> {
+      document.getElementById('rep').classList.add('show');
+      document.querySelector('.screen').classList.add('await');
+    }, 400);
+  }
+
+  function wireTick(){
+    const svg = document.getElementById('ringsvg');
+    const target = document.getElementById('tickTarget');
+    if (!target) return;
+    target.addEventListener('click', (e)=>{
+      if (answered) return; answered = true;
+      document.querySelector('.screen').classList.remove('await');
+      document.getElementById('done').textContent = "That's your pace.";
+      document.getElementById('hintring').classList.remove('show');
+      e.stopPropagation();
+      // in app: brief hold, then advance to home
+    });
+    svg.addEventListener('click', ()=>{
+      if (answered) return;
+      // wrong-area tap: halo the tick (informing, never failing)
+      const a = (TICK/100)*2*Math.PI - Math.PI/2;
+      const wrapRect = ringwrap.getBoundingClientRect();
+      const scrRect = ringwrap.closest('.screen').getBoundingClientRect();
+      const cx = wrapRect.left - scrRect.left + 92 + 84*Math.cos(a) - 17 + (wrapRect.width-184)/2;
+      const cy = wrapRect.top - scrRect.top + 92 + 84*Math.sin(a) - 17;
+      const h = document.getElementById('hintring');
+      h.style.left = cx + 'px'; h.style.top = cy + 'px';
+      h.classList.add('show');
+    });
+  }
+
+  function replay(){ reveal(); }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  reveal();
+</script>
+</body>
+</html>

@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-17 — First-score-reveal card approved; ahead-gap wash removed app-wide
+- NEW: design/score-reveal.html (stamped). Fires ONCE when Readiness first exists (session end, before home). Sequence: 600ms count-up + ring fill → band chip → JOURNEY PREVIEW (forward-only sweep 44→72 Strong→91 Tripfluent w/ 750ms crown beat→settle, ~2.5s; teaches band colors wordlessly; never sweeps down through Low) → education copy → active dismissal "Tap your pace mark" (wrong-area taps gold-halo the tick; correct = "That's your pace." then advance). Pace mark pulses only while awaiting the tap. Reduced motion: instant, static halo, no journey. **BUILD PENDING** (new surface + trigger; not built this round).
+- design/home.html re-issued: ahead-gap green wash REMOVED. **Built**: wash stripped from ringSVG + .ring-gap CSS deleted; tick alone is the pace signal (fill-vs-tick position carries ahead/behind, words live in the detail sheet). Scores-spec pace-tick section updated in both places.
+- REGRESSION CAUGHT on re-issue: the re-issued home.html restored the tick keyline that Tom removed 2026-07-17. App left correct (no keyline); artifact re-fixed and caption now says "do not re-add on re-issue." Chat's canvas needs the same fix or it will revert again.
+- Design-system: interstitial top-tint rule + pulse-lighter-than-element rule (§2.1). 3 decisions appended.
+- Design queue: Learn tab (renders pass 0 as Survival kit chapter) is next and last big undesigned surface.
+
 ## 2026-07-17 — Readiness detail sheet approved + built (design/readiness-detail.html)
 - Opens on ring tap (scoreSheet("readiness")); scrim-tap dismisses. Three states: ahead / behind / Tripfluent-held.
 - Pace row: apex-right triangle glyph + copy (ahead leads with cushion; behind = statement + action; held = "Holding Tripfluent", never achieved). Pace pts = readiness - glide target (_glideToday); held when readiness >= 85.
