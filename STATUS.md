@@ -2,6 +2,16 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-18 — Learn tab approved + BUILT TO HARNESS (design/learn-tab.html) — NOT DEPLOYED
+- Structure: THREE segments (was two): Journey (default, chaptered spine) | Topics (coverage strip PROMOTED to full view; every row = drill entry routing to Practice prefiltered by scenario) | Phrases (built view unchanged).
+- Chapter naming set DECIDED + DATA EDIT APPLIED: live deck stage titles changed in BOTH packs ("Survival"->"Essentials", "Comfort"->"Getting comfortable", "Fluent"->"Like a local"); resolves the Survival/Survival-kit collision.
+- Build deltas vs the shipped tab, all applied: segmented control 2->3; coverage strip moved OUT of Library-top INTO Topics; stage progress bars -> "N of M" whispers (deliberate removal, verified 0 remaining); pass chips REMOVED from lesson rows (verified 0 remaining); lesson rows gained a one-line narrative beat sourced from primer data (first sentence of primer.scene, `l.beat` overrides); locked chapters at 55% opacity w/ soft-gate copy ("Best after Essentials. You can peek anytime.") — browsable, never barred.
+- Pattern machines: naming only, no glyph; meta renders "Pattern · N fillers" when `l.machine` is set (no content uses it yet).
+- Passed-state = strength ring (existing), decaying honestly; no checkmarks.
+- Stage 0 renders as Chapter 0 automatically once a pass-0 stage exists in a pack; nothing to gate manually.
+- Docs: scores §3.1 three-view row; learning §1b.2 chapter set + §1b.0 Chapter 0 copy/no-glyph; 4 decisions.
+- HELD FOR REVIEW in the harness ("Learn tab" story) at Tom's request before deploy. SW not yet bumped.
+
 ## 2026-07-17 — Nav light system approved + built (design/nav-light.html)
 - RULE: the app has ONE light source, the active tab's under-glow; each tab's screen atmosphere is that light scaled up, blooming from the active tab's x-position at the bottom edge. Home's bottom-left glow is now law, not coincidence (leftmost tab).
 - BUILT (v157): nav light is ONE `.navlight` element that translates along the bar (260ms) with the notch + glow riding it; per-tab `.tab.active::before/::after` decoration removed. `.bloom` is ONE oversized radial moved by transform (300ms), anchored to the active tab's centre in viewport x. Content crossfades 180ms via `#app.tab-fade`. Reduced motion: both jump, no glide.

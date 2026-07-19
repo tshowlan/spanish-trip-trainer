@@ -23,7 +23,7 @@ const CURRICULUM = {
   stages: [
     /* ============================ PASS 1 · SURVIVAL ============================ */
     {
-      id: "sp-p1", pass: 1, title: "Survival", blurb: "The words that keep you alive on day one.",
+      id: "sp-p1", pass: 1, title: "Essentials", blurb: "The words that keep you alive on day one.",
       lessons: [
         {
           id: "s1-hello", topic: "Basics", title: "Hola & gracias",
@@ -180,7 +180,7 @@ const CURRICULUM = {
 
     /* ============================ PASS 2 · COMFORT ============================ */
     {
-      id: "sp-p2", pass: 2, title: "Comfort", blurb: "Handle the day, order, pay, get around, check in.",
+      id: "sp-p2", pass: 2, title: "Getting comfortable", blurb: "Handle the day, order, pay, get around, check in.",
       lessons: [
         {
           id: "sp-order", topic: "Restaurant · Ordering", title: "Order like a regular",
@@ -381,7 +381,7 @@ const CURRICULUM = {
 
     /* ============================ PASS 3 · FLUENT ============================ */
     {
-      id: "sp-p3", pass: 3, title: "Fluent", blurb: "The trip you'd have if you spoke Spanish.",
+      id: "sp-p3", pass: 3, title: "Like a local", blurb: "The trip you'd have if you spoke Spanish.",
       lessons: [
         {
           id: "s5-real", topic: "Advanced · Real situations", title: "Real conversations",

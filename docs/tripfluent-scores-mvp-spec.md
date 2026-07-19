@@ -138,7 +138,7 @@ Follow the existing design token system. Aesthetic reference: Whoop/Oura — typ
 | Tab | Contains |
 |---|---|
 | **Home** | State + action only (3.2) |
-| **Learn** | Two views: (1) the **lesson library**, relocated from home — scenario categories with per-category strength-aware coverage ("Restaurant · 82% strong · 3 fading"), Survival section; (2) **Phrases** — the existing Phrases tab folds in here as a searchable phrase reference organized by scenario, each phrase showing its strength indicator. Library is the default view pre-trip. |
+| **Learn** | Three views: (1) **Journey** — the chaptered lesson spine (passes as chapters per learning spec §1b.2, Stage 0 as Chapter 0); (2) **Topics** — per-category strength-aware coverage, each row a drill entry routing to Practice prefiltered to that scenario (coverage display and topic-drill action are ONE surface); (3) **Phrases** — the searchable reference, unchanged, preserved as a distinct view for future in-country promotion. Journey is the default pre-trip. |
 | **Progress** | Trend charts (§7.2), divergence narrations, trip archive, tier + nearest-unmet-condition line |
 | **Profile** | Settings, practice reminder, account |
 

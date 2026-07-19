@@ -18,75 +18,112 @@ function strengthRing(pct) {
   </svg>`;
 }
 
-let _learnView = "library";   // §3.1: Learn hosts two views — the lesson library and the phrase reference
+
+/* §3.1 Learn = three views (design/learn-tab.html, decisions 2026-07-18):
+   Journey (chaptered spine) | Topics (coverage AS the drill entry) | Phrases (reference). */
+let _learnView = "journey";
+
+// one-line narrative beat for a lesson row, sourced from primer data (first sentence of the scene)
+function _lessonBeat(l) {
+  if (l.beat) return l.beat;
+  const sc = l.primer && l.primer.scene;
+  if (!sc) return "";
+  const first = (sc.split(". ")[0] || sc).trim();
+  const s = /[.!?]$/.test(first) ? first : first + ".";
+  return s.length > 74 ? s.slice(0, 71).trim() + "…" : s;
+}
+// pattern machines read by their NAME (frame-shaped title) — no glyph (decisions 2026-07-18)
+function _isMachine(l) { return !!l.machine; }
+
+function _lessonRow(l, isNext) {
+  const str = lessonStrength(l);
+  const fading = lessonDone(l.id) ? lessonFadingCount(l) : 0;
+  const beat = _lessonBeat(l);
+  const meta = _isMachine(l) ? `Pattern · ${(l.items || []).length} fillers`
+    : l.chain ? "Conversation" : `${(l.items || []).length} phrases`;
+  const row = el(`<div class="lesson${isNext ? " next" : ""}">
+    ${str != null ? strengthRing(str) : `<span class="caret-new">${icon("caret-right", 13)}</span>`}
+    <div class="lmain">
+      <div class="lname-row"><span class="lname">${l.title}</span>${isNext ? `<span class="next-tag">NEXT</span>` : ""}${l.bonus ? `<span class="bonus-tag">BONUS</span>` : ""}</div>
+      ${beat ? `<div class="lbeat">${beat}</div>` : ""}
+      <div class="lmeta">${meta}${fading ? ` · <span class="fading">${fading} to review</span>` : ""}</div>
+    </div>
+    <span class="chev">${icon("caret-right", 15)}</span>
+  </div>`);
+  row.addEventListener("click", () => startLesson(l));
+  return row;
+}
+
+// passes render as chapters (learning spec §1b.2); Stage 0 is Chapter 0 once content exists.
+// Later chapters SOFT-gate: dimmed with invitation copy, browsable, never barred.
+function _journeyView(scroll) {
+  const recId = (typeof recommendedLessonId === "function") ? recommendedLessonId() : null;
+  const stages = (typeof DECK !== "undefined" && DECK) ? DECK.stages : [];
+  let cur = stages.findIndex(st => st.lessons.some(l => !l.bonus && !lessonDone(l.id)));
+  if (cur < 0) cur = stages.length - 1;
+  stages.forEach((st, i) => {
+    const visible = st.lessons.filter(l => !l.bonus);
+    const done = visible.filter(l => lessonDone(l.id)).length;
+    const locked = i > cur;
+    const chap = el(`<div class="chapter${locked ? " locked" : ""}"></div>`);
+    chap.appendChild(el(`<div class="chap-head">
+      <div class="chap-kicker">CHAPTER ${st.pass != null ? st.pass : i}</div>
+      <div class="chap-row"><span class="chap-title">${st.title}</span><span class="chap-whisper">${done} of ${visible.length}</span></div>
+      ${st.blurb ? `<div class="chap-blurb">${st.blurb}</div>` : ""}
+    </div>`));
+    st.lessons.forEach(l => chap.appendChild(_lessonRow(l, l.id === recId)));
+    if (locked && stages[cur]) {
+      chap.appendChild(el(`<div class="lock-hint">${icon("lock-simple", 12)}<span>Best after ${stages[cur].title}. You can peek anytime.</span></div>`));
+    }
+    scroll.appendChild(chap);
+  });
+}
+
+// coverage display and topic-drill action are ONE surface: a row names the topic, shows why,
+// and IS the entry into Practice prefiltered to that scenario (decisions 2026-07-18).
+function _topicsView(scroll) {
+  const cats = (typeof coverageCats === "function") ? coverageCats() : {};
+  const keys = Object.keys(cats).filter(c => cats[c].seen > 0)
+    .sort((a, b) => (cats[b].credit / cats[b].total) - (cats[a].credit / cats[a].total));
+  scroll.appendChild(el(`<div class="topics-intro">Your coverage by topic. Tap any topic to practice it.</div>`));
+  if (!keys.length) { scroll.appendChild(el(`<p class="onb-dim">Finish a lesson and your topics show up here.</p>`)); return; }
+  keys.forEach(c => {
+    const e = cats[c], pct = Math.round((e.credit / e.total) * 100), fading = _catFading(c);
+    const band = pct >= 65 ? "t-strong" : pct >= 40 ? "t-fair" : "t-low";
+    const label = pct >= 65 ? "Strong" : pct >= 40 ? "Fair" : "Low";
+    const row = el(`<div class="topic ${band}" role="button">
+      <div class="tmain">
+        <div class="trow"><span class="tname">${c}</span><span class="tpct">${pct}%</span></div>
+        <div class="tbar"><i style="width:${pct}%"></i></div>
+        <div class="tsub">${label}${fading ? ` · <span class="fading">${fading} fading</span>` : ""}</div>
+      </div>
+      <span class="chev">${icon("caret-right", 15)}</span>
+    </div>`);
+    row.addEventListener("click", () => { const its = itemsInCategory(c); if (its.length) startReview(its); });
+    scroll.appendChild(row);
+  });
+}
+
 function renderLearn() {
   showTabbar("learn");
   clearFooter();
   const app = $("#app"); app.innerHTML = "";
-  const wrap = el(`<div class="screen tab-screen"></div>`);
-  wrap.appendChild(el(`<div class="screen-head"><h2>Learn</h2></div>`));
-
-  const seg = el(`<div class="pb-seg" style="margin-top:0">
-    <button class="pill ${_learnView === "library" ? "on" : ""}" data-v="library">Library</button>
-    <button class="pill ${_learnView === "phrases" ? "on" : ""}" data-v="phrases">Phrases</button>
+  const wrap = el(`<div class="screen tab-screen learn"></div>`);
+  const head = el(`<div class="learn-head">
+    <div class="learn-title">Learn</div>
+    <div class="segs">
+      <button class="seg${_learnView === "journey" ? " active" : ""}" data-v="journey">Journey</button>
+      <button class="seg${_learnView === "topics" ? " active" : ""}" data-v="topics">Topics</button>
+      <button class="seg${_learnView === "phrases" ? " active" : ""}" data-v="phrases">Phrases</button>
+    </div>
   </div>`);
-  seg.querySelectorAll(".pill").forEach(b => b.addEventListener("click", () => { _learnView = b.dataset.v; renderLearn(); }));
-  wrap.appendChild(seg);
-
-  if (_learnView === "phrases") { phrasebookBody(wrap); app.appendChild(wrap); return; }
-
-  // §3.1 per-category strength-aware coverage ("Restaurant · 82% strong · 3 fading")
-  const cats = (typeof coverageCats === "function") ? coverageCats() : {};
-  const catKeys = Object.keys(cats).filter(c => cats[c].seen > 0).sort((a, b) => (cats[b].credit / cats[b].total) - (cats[a].credit / cats[a].total));
-  if (catKeys.length) {
-    const strip = el(`<div class="cat-cover"></div>`);
-    catKeys.forEach(c => {
-      const e = cats[c], strong = Math.round((e.credit / e.total) * 100);
-      const fading = _catFading(c);
-      const band = strong >= 80 ? "band-top" : strong >= 55 ? "band-good" : strong >= 30 ? "band-mid" : "band-low";
-      strip.appendChild(el(`<div class="cat-row">
-        <div class="cat-name">${c}</div>
-        <div class="cat-bar"><i class="${band}" style="width:${strong}%"></i></div>
-        <div class="cat-meta"><span class="${band}">${strong}%</span>${fading ? ` · ${fading} fading` : ""}</div>
-      </div>`));
-    });
-    wrap.appendChild(el(`<div class="q-head">Your coverage</div>`));
-    wrap.appendChild(strip);
-  }
-
-  // the lesson map (relocated from Home)
-  const recId = (typeof recommendedLessonId === "function") ? recommendedLessonId() : null;
-  const passName = { 1: "Survival", 2: "Comfort", 3: "Fluent" };
-  (DECK ? DECK.stages : []).forEach(st => {
-    const visible = st.lessons.filter(l => !l.bonus);
-    const total = visible.length || 1;
-    const done = visible.filter(l => lessonDone(l.id)).length;
-    const stage = el(`<div class="stage"></div>`);
-    stage.appendChild(el(`
-      <div class="stage-head"><h2>${st.title}</h2><span class="blurb">${st.blurb}</span></div>
-      <div class="stage-bar"><i style="width:${Math.round(done / total * 100)}%"></i></div>`));
-    const list = el(`<div class="lessons"></div>`);
-    st.lessons.forEach(l => {
-      const isDone = lessonDone(l.id);
-      const isRec = l.id === recId;
-      const fading = isDone ? lessonFadingCount(l) : 0;
-      const str = lessonStrength(l);
-      const chip = l.bonus ? `<span class="tier-chip bonus">Bonus</span>`
-        : (st.pass ? `<span class="tier-chip p${st.pass}">${passName[st.pass]}</span>` : "");
-      const card = el(`
-        <div class="lesson ${isDone ? "done" : ""} ${isRec ? "rec" : ""}">
-          <div class="badge">${str != null ? strengthRing(str) : `<span class="badge-new">${icon('caret-right', 18)}</span>`}</div>
-          <div class="meta">
-            <div class="t">${l.title}${isRec ? ` <span class="rec-tag">Next</span>` : ""}</div>
-            <div class="s">${chip ? chip + " · " : ""}${l.chain ? "Conversation" : `${l.items.length} phrases`}${fading ? ` · <span class="fade-badge">${fading} to review</span>` : ""}</div>
-          </div>
-          <div class="chev">${icon('caret-right', 18)}</div>`);
-      card.addEventListener("click", () => startLesson(l));
-      list.appendChild(card);
-    });
-    stage.appendChild(list);
-    wrap.appendChild(stage);
-  });
+  head.querySelectorAll(".seg").forEach(b => b.addEventListener("click", () => { _learnView = b.dataset.v; renderLearn(); }));
+  wrap.appendChild(head);
+  const scroll = el(`<div class="learn-scroll"></div>`);
+  if (_learnView === "phrases") phrasebookBody(scroll);
+  else if (_learnView === "topics") _topicsView(scroll);
+  else _journeyView(scroll);
+  wrap.appendChild(scroll);
   app.appendChild(wrap);
 }
 // phrases fading in a category (seen but below the review threshold)

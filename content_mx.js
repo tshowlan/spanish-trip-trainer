@@ -43,7 +43,7 @@ const MEXICO_PACK = {
   stages: [
     /* ============================ PASS 1 · SURVIVAL ============================ */
     {
-      id: "mx-p1", pass: 1, title: "Survival", blurb: "The words that keep you alive on day one.",
+      id: "mx-p1", pass: 1, title: "Essentials", blurb: "The words that keep you alive on day one.",
       lessons: [
         {
           id: "mx-greet", topic: "Greetings & politeness", title: "Hola & gracias",
@@ -219,7 +219,7 @@ const MEXICO_PACK = {
 
     /* ============================ PASS 2 · COMFORT ============================ */
     {
-      id: "mx-p2", pass: 2, title: "Comfort", blurb: "Handle the day, order, pay, get around, check in.",
+      id: "mx-p2", pass: 2, title: "Getting comfortable", blurb: "Handle the day, order, pay, get around, check in.",
       lessons: [
         {
           id: "mx-order", topic: "Ordering food & drink", title: "Order like a regular",
@@ -443,7 +443,7 @@ const MEXICO_PACK = {
 
     /* ============================ PASS 3 · FLUENT ============================ */
     {
-      id: "mx-p3", pass: 3, title: "Fluent", blurb: "The trip you'd have if you spoke Spanish.",
+      id: "mx-p3", pass: 3, title: "Like a local", blurb: "The trip you'd have if you spoke Spanish.",
       lessons: [
         {
           id: "mx-chef", topic: "Advanced · At the restaurant", title: "Talk to the chef",
