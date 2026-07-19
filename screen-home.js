@@ -370,7 +370,7 @@ function goHomeAfterSession() {
 }
 // §detail-view: the Readiness ring opens the rich instrument sheet (design/readiness-detail.html);
 // Momentum/Retention keep the simpler generic sheet below until they get their own artifacts.
-const _paceTriSVG = `<svg width="14" height="16" viewBox="0 0 14 16"><polygon points="13,8 1,1 1,15" fill="var(--accent-2)" stroke="var(--bg-card)" stroke-width="1"/></svg>`;
+const _paceTriSVG = `<svg width="14" height="16" viewBox="0 0 14 16"><polygon points="13,8 1,1 1,15" fill="var(--accent-2)"/></svg>`;
 const _sparkSVG = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg>`;
 function readinessSheet() {
   const s = state.scoresCache || computeScores();
