@@ -50,18 +50,18 @@
   /* Answer row: where the user has PLACED tiles. Resolution fuses these in place. */
   .answer-row { min-height:56px; border-bottom:1.5px solid var(--border); padding-bottom:10px; margin-bottom:22px;
     display:flex; flex-wrap:wrap; align-items:flex-end; gap:8px; position:relative;
-    transition:gap 300ms cubic-bezier(.2,.7,.3,1); }
+    transition:gap 450ms cubic-bezier(.2,.7,.3,1); }
   .answer-row .tile {
     background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm);
     padding:9px 13px; font-family:var(--font-display); font-size:18px; font-weight:500; color:var(--text);
     box-shadow:var(--shadow);
-    transition:background 300ms, border-color 300ms, box-shadow 300ms, padding 300ms cubic-bezier(.2,.7,.3,1); }
+    transition:background 450ms, border-color 450ms, box-shadow 450ms, padding 450ms cubic-bezier(.2,.7,.3,1); }
   /* FUSION: tiles dissolve their tile-ness where they stand; text remains, gaps close to word-spacing */
   .answer-row.fused { gap:5px; border-bottom-color:transparent; }
   .answer-row.fused .tile { background:transparent; border-color:transparent; box-shadow:none; padding:9px 0; font-weight:600; }
   .answer-row .sweep { position:absolute; left:0; bottom:8px; height:2.5px; width:100%; background:var(--green); border-radius:2px;
     transform:scaleX(0); transform-origin:left center; }
-  .answer-row.fused .sweep { animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 200ms forwards; }
+  .answer-row.fused .sweep { animation:sweep 400ms cubic-bezier(.2,.7,.3,1) 350ms forwards; }
   @keyframes sweep { to { transform:scaleX(1); } }
 
   /* Tray: unused tiles below; on resolve they quietly recede (dim, not vanish) */
@@ -71,7 +71,7 @@
   .tray.recede { opacity:0.28; }
 
   /* Materialization: en + audio grow in around the fused sentence */
-  .grown { opacity:0; transform:translateY(5px); transition:opacity 280ms cubic-bezier(.2,.7,.3,1) 250ms, transform 280ms cubic-bezier(.2,.7,.3,1) 250ms; }
+  .grown { opacity:0; transform:translateY(5px); transition:opacity 360ms cubic-bezier(.2,.7,.3,1) 600ms, transform 360ms cubic-bezier(.2,.7,.3,1) 600ms; }
   .grown.show { opacity:1; transform:none; }
   .en-line { font-size:13.5px; color:var(--text-dim); margin-bottom:16px; }
   .audio-row { display:flex; align-items:center; gap:10px; }
@@ -95,7 +95,7 @@
   .es-reveal { font-family:var(--font-display); font-size:22px; font-weight:600; color:var(--text); position:relative; display:inline-block; margin-bottom:4px; }
   .es-reveal .sweep2 { position:absolute; left:0; right:0; bottom:-6px; height:2.5px; background:var(--green); border-radius:2px;
     transform:scaleX(0); transform-origin:left center; }
-  .grown.show .sweep2 { animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 150ms forwards; }
+  .grown.show .sweep2 { animation:sweep 350ms cubic-bezier(.2,.7,.3,1) 250ms forwards; }
 
 
   @media (prefers-reduced-motion: reduce){
@@ -137,7 +137,7 @@
     strength tick MATERIALIZE around it; the unused tray recedes to 28% instead of vanishing. Nothing
     navigates, nothing disappears; the achievement object stays and matures. Listen state: input washes
     (base layer retained), es materializes BELOW the input with its own sweep. YOURS-NOW SHEET RETIRED (r3, Tom's call: its content duplicated the resolved page; a success never needs to interrupt). ONE resolution language everywhere: in-place materialization; sheets remain reserved for the miss (correction) where interruption is the pedagogy. The milestone tier is marked by WORDS joining the standard materialization: green YOURS NOW kicker + the note line ('Produced cold, no help. This one travels with you.'), typed/spoken production only, once per item ever, §9 milestone system. Scale of meaning, not scale of chrome. TIMING (explicit, needs §8.5 rhythm blessing): auto-advance at audio end + 250ms (the model must finish being heard; long phrases earn longer beats); tap-anywhere-to-advance becomes available the moment the es settles (skipping is the user's choice, never the default); SOUND OFF or audio unavailable: fixed 1200ms dwell, reveal never depends on audio; REDUCED MOTION: instant fusion, no sweeps, same dwell rules. Supersedes the 650ms flat hold. Reduced motion: instant fusion, no sweeps.
-    Frame 390.
+    DELTA r4 (2026-07-19, Tom timing call at harness review): choreography lengthened so the resolution reads as a SEQUENCE, not an arrival: fusion 450ms, sweep at 350ms, materialization at 600ms over 360ms, tap-to-advance arms at 900ms (es-settle). Runs under the value-change duration class. Do not shorten on re-issue. Frame 390.
   </div>
 </div>
 

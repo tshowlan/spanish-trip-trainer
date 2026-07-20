@@ -1098,7 +1098,7 @@ function resolveCorrect(item, q, info) {
   setTimeout(() => {
     const wrap = document.querySelector(".runner");
     if (wrap) wrap.addEventListener("click", e => { if (!e.target.closest(".ac-group")) goNext(); });
-  }, 450);
+  }, 900);   // arms at es-settle (choreography lengthened 2026-07-19, Tom's call)
 }
 
 // per-item strength ring in the runner's top row (scale ladder: the rep shows ITEM strength, §3.5)
