@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Resolution Frame r3 (one in-place resolution language)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-sm: 14px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:740px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  :root[data-theme="dark"] .phone { background:linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%); }
+  .screen { padding:24px; height:100%; display:flex; flex-direction:column; }
+
+  .toprow { display:flex; align-items:center; gap:12px; margin-bottom:26px; }
+  .progress { flex:1; height:4px; background:var(--bg-elevated); border-radius:2px; }
+  .progress > div { width:58%; height:100%; background:var(--accent); border-radius:2px; transition:width 400ms cubic-bezier(.2,.7,.3,1); }
+  .sring { width:26px; height:26px; }
+  .stick { position:absolute; top:20px; right:56px; font-family:var(--font-display); font-size:11px; font-weight:600;
+    color:var(--green); opacity:0; transform:translateY(3px); transition:opacity 300ms, transform 300ms; }
+  .stick.show { opacity:1; transform:none; }
+
+  .prompt { font-size:var(--text-sm); color:var(--text-dim); margin-bottom:18px; }
+
+  /* ============ BUILD EXERCISE (real anatomy) ============ */
+  /* Answer row: where the user has PLACED tiles. Resolution fuses these in place. */
+  .answer-row { min-height:56px; border-bottom:1.5px solid var(--border); padding-bottom:10px; margin-bottom:22px;
+    display:flex; flex-wrap:wrap; align-items:flex-end; gap:8px; position:relative;
+    transition:gap 300ms cubic-bezier(.2,.7,.3,1); }
+  .answer-row .tile {
+    background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:9px 13px; font-family:var(--font-display); font-size:18px; font-weight:500; color:var(--text);
+    box-shadow:var(--shadow);
+    transition:background 300ms, border-color 300ms, box-shadow 300ms, padding 300ms cubic-bezier(.2,.7,.3,1); }
+  /* FUSION: tiles dissolve their tile-ness where they stand; text remains, gaps close to word-spacing */
+  .answer-row.fused { gap:5px; border-bottom-color:transparent; }
+  .answer-row.fused .tile { background:transparent; border-color:transparent; box-shadow:none; padding:9px 0; font-weight:600; }
+  .answer-row .sweep { position:absolute; left:0; bottom:8px; height:2.5px; width:100%; background:var(--green); border-radius:2px;
+    transform:scaleX(0); transform-origin:left center; }
+  .answer-row.fused .sweep { animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 200ms forwards; }
+  @keyframes sweep { to { transform:scaleX(1); } }
+
+  /* Tray: unused tiles below; on resolve they quietly recede (dim, not vanish) */
+  .tray { display:flex; flex-wrap:wrap; gap:8px; transition:opacity 300ms; }
+  .tray .tile { background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:9px 13px; font-family:var(--font-display); font-size:18px; font-weight:500; color:var(--text-dim); }
+  .tray.recede { opacity:0.28; }
+
+  /* Materialization: en + audio grow in around the fused sentence */
+  .grown { opacity:0; transform:translateY(5px); transition:opacity 280ms cubic-bezier(.2,.7,.3,1) 250ms, transform 280ms cubic-bezier(.2,.7,.3,1) 250ms; }
+  .grown.show { opacity:1; transform:none; }
+  .en-line { font-size:13.5px; color:var(--text-dim); margin-bottom:16px; }
+  .audio-row { display:flex; align-items:center; gap:10px; }
+  .ac-speaker { width:44px; height:44px; border-radius:50%; border:none; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; color:#231e05; cursor:pointer;
+    box-shadow:0 2px 0 color-mix(in srgb, var(--accent-2) 60%, transparent);
+    transition:transform var(--transition), box-shadow var(--transition); }
+  .ac-speaker:active { transform:translateY(2px); box-shadow:none; }
+  .bars { display:flex; align-items:flex-end; gap:2.5px; height:14px; margin-left:2px; }
+  .bars span { width:2.5px; background:var(--accent-2); border-radius:2px; height:4px; }
+  .playing .bars span { animation:bar 900ms ease-in-out infinite; }
+  .playing .bars span:nth-child(2){ animation-delay:120ms; } .playing .bars span:nth-child(3){ animation-delay:240ms; } .playing .bars span:nth-child(4){ animation-delay:360ms; }
+  @keyframes bar { 0%,100%{height:4px} 50%{height:13px} }
+  .audio-hint { font-size:12px; color:var(--text-dim); }
+
+  /* ============ LISTEN EXERCISE ============ */
+  .inputbox { border:1.5px solid var(--border); border-radius:var(--radius-md); padding:14px; min-height:54px;
+    font-family:var(--font-display); font-size:17px; color:var(--text);
+    transition:border-color var(--transition), background var(--transition); margin-bottom:16px; }
+  .inputbox.wash { border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+  .es-reveal { font-family:var(--font-display); font-size:22px; font-weight:600; color:var(--text); position:relative; display:inline-block; margin-bottom:4px; }
+  .es-reveal .sweep2 { position:absolute; left:0; right:0; bottom:-6px; height:2.5px; background:var(--green); border-radius:2px;
+    transform:scaleX(0); transform-origin:left center; }
+  .grown.show .sweep2 { animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 150ms forwards; }
+
+
+  @media (prefers-reduced-motion: reduce){
+    .answer-row, .answer-row .tile, .grown, .stick, .tray { transition:none; }
+    .answer-row.fused .sweep, .grown.show .sweep2 { animation:none; transform:scaleX(1); }
+    .playing .bars span { animation:none; height:9px; }
+  }
+
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:440px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+      <div class="toprow">
+        <div class="progress"><div id="pbar"></div></div>
+        <svg class="sring" viewBox="0 0 26 26" id="sring"></svg>
+      </div>
+      <span class="stick" id="stick">Stronger</span>
+      <div class="prompt" id="prompt"></div>
+      <div id="stage" style="flex:1"></div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="cycleState()" id="stateBtn">state: build (fuses in place)</button>
+    <button onclick="replay()">replay resolution</button>
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    Resolution frame r3, APPROVED 2026-07-19. DELTA vs r1: page-replacement RETIRED (it read
+    as navigation and discarded the learner's own assembly, Tom's diagnosis). The resolution now acts ON
+    the built answer IN PLACE: the placed tiles FUSE where they stand (tile chrome dissolves, gaps close to
+    word spacing, 300ms), the green sweep draws under the learner's own sentence, and the en line + audio +
+    strength tick MATERIALIZE around it; the unused tray recedes to 28% instead of vanishing. Nothing
+    navigates, nothing disappears; the achievement object stays and matures. Listen state: input washes
+    (base layer retained), es materializes BELOW the input with its own sweep. YOURS-NOW SHEET RETIRED (r3, Tom's call: its content duplicated the resolved page; a success never needs to interrupt). ONE resolution language everywhere: in-place materialization; sheets remain reserved for the miss (correction) where interruption is the pedagogy. The milestone tier is marked by WORDS joining the standard materialization: green YOURS NOW kicker + the note line ('Produced cold, no help. This one travels with you.'), typed/spoken production only, once per item ever, §9 milestone system. Scale of meaning, not scale of chrome. TIMING (explicit, needs §8.5 rhythm blessing): auto-advance at audio end + 250ms (the model must finish being heard; long phrases earn longer beats); tap-anywhere-to-advance becomes available the moment the es settles (skipping is the user's choice, never the default); SOUND OFF or audio unavailable: fixed 1200ms dwell, reveal never depends on audio; REDUCED MOTION: instant fusion, no sweeps, same dwell rules. Supersedes the 650ms flat hold. Reduced motion: instant fusion, no sweeps.
+    Frame 390.
+  </div>
+</div>
+
+<script>
+  let strength = 46;
+  const C = 2*Math.PI*10;
+  function ringSvg(pct){
+    return `<circle cx="13" cy="13" r="10" fill="none" stroke="var(--bg-elevated)" stroke-width="3"/>
+      <circle cx="13" cy="13" r="10" fill="none" stroke="var(--secondary)" stroke-width="3" stroke-linecap="round"
+        stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct/100)}" transform="rotate(-90 13 13)"
+        style="transition:stroke-dashoffset 500ms cubic-bezier(.2,.7,.3,1)"/>`;
+  }
+  const speakerBtn = `<button class="ac-speaker" onclick="playAudio(this)" aria-label="Play audio">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+  </button><span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>`;
+
+  const states = {
+    build: {
+      label: 'state: build (fuses in place)',
+      prompt: 'Build it: "Could you bring me the check?"',
+      html: `
+        <div class="answer-row" id="arow">
+          <span class="tile">¿Me puede</span><span class="tile">traer</span><span class="tile">la cuenta?</span>
+          <span class="sweep"></span>
+        </div>
+        <div class="grown" id="grown">
+          <div class="en-line">Could you bring me the check?</div>
+          <div class="audio-row">${speakerBtn}<span class="audio-hint">Hear it whole</span></div>
+        </div>
+        <div style="flex:1"></div>
+        <div class="tray" id="tray" style="margin-top:auto">
+          <span class="tile">el cuento</span><span class="tile">me trae</span>
+        </div>`
+    },
+    listen: {
+      label: 'state: listen (es reveals below)',
+      prompt: 'You heard it and answered right. The spelling joins the sound:',
+      html: `
+        <div class="inputbox" id="inputbox">the check, when you have a moment</div>
+        <div class="grown" id="grown">
+          <span class="es-reveal">la cuenta, cuando tenga un momento<span class="sweep2"></span></span>
+          <div class="en-line" style="margin-top:12px">the check, when you have a moment</div>
+          <div class="audio-row">${speakerBtn}<span class="audio-hint">Sound, meet spelling</span></div>
+        </div>`
+    },
+    yours: {
+      label: 'state: first cold production (words mark it)',
+      prompt: 'Say it in Spanish: "Could you bring me the check?"',
+      html: `
+        <div class="inputbox" id="inputbox" style="font-weight:600; position:relative">¿Me puede traer la cuenta?<span class="sweep" style="left:14px; right:14px; bottom:8px; width:auto; position:absolute; height:2.5px; background:var(--green); border-radius:2px; transform:scaleX(0); transform-origin:left center"></span></div>
+        <div class="grown" id="grown">
+          <div style="font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.06em; color:var(--green); margin-bottom:8px">YOURS NOW</div>
+          <div class="en-line">Could you bring me the check?</div>
+          <div class="audio-row">${speakerBtn}<span class="audio-hint">Hear it whole</span></div>
+          <div style="font-size:12.5px; color:var(--text-dim); margin-top:14px">Produced cold, no help. This one travels with you.</div>
+        </div>`
+    }
+  };
+
+  const order = ['build','listen','yours'];
+  let cur = 'build';
+
+  function render(){
+    document.getElementById('sring').innerHTML = ringSvg(strength);
+    const s = states[cur];
+    document.getElementById('prompt').textContent = s.prompt;
+    const stage = document.getElementById('stage');
+    stage.style.display = 'flex'; stage.style.flexDirection = 'column';
+    stage.innerHTML = s.html;
+    document.getElementById('stick').classList.remove('show');
+    setTimeout(resolve, 800);
+  }
+
+  function resolve(){
+    if (cur === 'yours'){
+      const box = document.getElementById('inputbox');
+      box.classList.add('wash');
+      box.querySelector('.sweep').style.animation = 'sweep 300ms cubic-bezier(.2,.7,.3,1) 150ms forwards';
+      setTimeout(()=>{
+        document.getElementById('grown').classList.add('show');
+        const spk = document.querySelector('#grown .ac-speaker');
+        if (spk) playAudio(spk);
+        tick();
+      }, 340);
+      return;
+    }
+    const arow = document.getElementById('arow');
+    if (arow) arow.classList.add('fused');
+    const tray = document.getElementById('tray');
+    if (tray) tray.classList.add('recede');
+    const box = document.getElementById('inputbox');
+    if (box) box.classList.add('wash');
+    setTimeout(()=>{
+      document.getElementById('grown').classList.add('show');
+      const spk = document.querySelector('#grown .ac-speaker');
+      if (spk) playAudio(spk);
+      tick();
+    }, arow ? 280 : 320);
+  }
+
+  function tick(){
+    strength = Math.min(100, strength + 6);
+    document.getElementById('sring').innerHTML = ringSvg(strength);
+    document.getElementById('stick').classList.add('show');
+    document.getElementById('pbar').style.width = '66%';
+    setTimeout(()=> document.getElementById('stick').classList.remove('show'), 1600);
+  }
+
+
+  let audioTimer;
+  function playAudio(spk){
+    if (!spk) return;
+    const row = spk.parentElement;
+    row.classList.add('playing');
+    clearTimeout(audioTimer);
+    audioTimer = setTimeout(()=> row.classList.remove('playing'), 1600);
+  }
+
+  function cycleState(){
+    strength = 46;
+    document.getElementById('pbar').style.width = '58%';
+    cur = order[(order.indexOf(cur)+1) % order.length];
+    document.getElementById('stateBtn').textContent = states[cur].label;
+    render();
+  }
+  function replay(){ render(); }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  render();
+</script>
+</body>
+</html>

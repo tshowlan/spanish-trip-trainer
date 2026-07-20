@@ -326,6 +326,8 @@ Consistency is the premium signal: same event → same haptic, always. Do not ad
 - The scoring system already pays for this: production attempts carry 1.5× Retention weight (§1.3). Surface variety as rhythm, not as a settings choice.
 - Sequencing heuristic: open with 1–2 recognition warm-ups, put production in the middle, close with an audio item. Adapt to what exercise types exist in the codebase; add production/audio types incrementally if only recognition exists today.
 
+**Resolution dwell (2026-07-19, supersedes the 650ms flat hold):** advance at audio-end + 250ms; tap-to-advance available from the moment the es settles (skipping is the user's choice, never the default); sound off or audio unavailable = fixed 1200ms dwell (the reveal never depends on audio); reduced motion = instant fusion, same dwell rules. Long phrases earn longer beats — the model must finish being heard; this is deliberate pacing, not lag.
+
 ### 8.6 Daily flame counter (kept, with guardrails)
 
 The flame day-counter stays as a passive consistency marker (Whoop-style), distinct from a Duolingo streak *mechanic*. The difference is enforcement — the flame is a mirror, not a leash:

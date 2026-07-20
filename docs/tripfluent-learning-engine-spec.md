@@ -439,6 +439,21 @@ onAnswer(item, correct):
 
 ---
 
+### 8t. `[tune]` — the retention dials (named, anchored, instrumented)
+
+Nobody knows the optimal numbers, including the literature (population- and content-specific); these are DIALS with evidence, not guesses with tenure. Each is anchored to its constant so post-launch tuning is a one-line change. Per-item outcomes by exercise mode are already recorded (`recordAnswer` opts.mode); evidence needs an export only.
+
+| Dial | Current | Anchor |
+|---|---|---|
+| Same-session retrieval gap | 2–3 slots | composer weave (§6.1b) |
+| Re-queue position after a miss | 3–5 slots later | `requeueMiss` in lesson.js |
+| Re-ask cap per item per session | 2 | `requeueMiss` |
+| Ease seed | 2.3 | `recordAnswer` in srs.js |
+| Interval growth | × ease | `recordAnswer` |
+| First interval | by item difficulty | `seedInterval` |
+| Recognition-graduation threshold | 4 exposures | rung thresholds (§4.1) |
+| Resolution dwell | audio-end + 250ms / 1200ms silent | `resolveCorrect` in lesson.js |
+
 ## 8b. Home screen: action tile, review row, standing line
 
 *Sits directly below the three score dials (Readiness / Momentum / Retention — see `tripfluent-scores-mvp-spec.md`). The dials answer "what's my state"; this region answers "what do I do right now." Same aesthetic rules as the scores spec: data-forward, Whoop/Oura tone, no mascots, no confetti.*
@@ -570,6 +585,8 @@ Deferred (flag only, do not build): reframing the progress view as an itinerary 
 - Peru pack, CMS/spreadsheet import, runtime-fetched content, FSRS, per-axis intervals, native audio recording pipeline, multi-language schema changes beyond keeping fields language-neutral.
 - **A lexical database.** No lemmatization, conjugation tables, per-word SRS state, or word-level progress UI. `keywords` are plain surface-form tags on items — that ceiling is deliberate. Per-word scheduling ends in rebuilding Anki plus grammar-first Duolingo and breaks the pure-data content invariant.
 - **Graded reader passages** (penciled, do not build): short readings composed only from the learner's known items, unlockable per pass — the long-term narrative payoff. Own spec when its time comes.
+- **Mix it practice mode** (penciled, do not build): frames × cross-machine taught fillers compose novel gradeable sentences ("Necesito un café" from necesito + quiero's filler) — the machines paying rent between lessons, manufacturing the transfer moment the pattern-moment dismissal only samples. Slots into Practice's chooser. Exclusions per build review: ¿A qué hora ___? excluded (closed verb set, not swappable); fillers graded exactly as taught; article/gender variants are an explicit accept/reject decision at build time.
+- **Session-end summary** (penciled, do not build): the home for session-scale Readiness delta (before → after count-up, top-center interstitial tint, scale-ladder rule). Design after the primer wave.
 
 ---
 

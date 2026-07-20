@@ -2,6 +2,14 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-19 — Resolution frame approved + BUILT ON BRANCH `resolution-frame` (harness review pending)
+- ONE resolution language (design/resolution-frame.html): every correct answer matures the page IN PLACE — build tiles fuse where they stand (chrome dissolves, 300ms), green sweep under the learner's own sentence, es ALWAYS reveals (listening included), en + full-phrase audio materialize, item strength ring ticks w/ "Stronger" whisper, tray recedes to 28%. Wash survives as base layer. correct-feedback.html superseded-in-place (do-not-build-against).
+- Built: resolveCorrect() at the single grading funnel (all nine types); speak() gained an onend hook; per-item strength ring + whisper in the runner top row (answer-tick retired); Yours-now = cold-axis 0→1 on typed/spoken only, once ever (s.yoursShown).
+- Timing per artifact (§8.5 blessed this batch): advance at audio-end + 250ms, tap-to-advance from es-settle (replay re-arms via utterance token), sound-off 1200ms dwell, 8s failsafe, reduced-motion instant fusion. Supersedes the 650ms flat hold.
+- Spec edits: design-system §3.5 replaced (resolution language + only-a-miss-interrupts + scale ladder); scores §8.5 dwell; learning spec §8t [tune] dials table (anchored to constants) + §10 pencils (Mix it w/ exclusions, session-end summary). 3 decisions.
+- ON BRANCH per the held-work rule; Tom reviews in the harness (local server serves the branch working tree), then merge + SW bump + deploy.
+- Next chat blocks: primer wave (17 Spain + 22 Mexico), canonical ear pass.
+
 ## 2026-07-19 — Stage 0 SHIPPED to both packs (Chapter 0 real) — HELD LOCALLY, not pushed
 - Executed the content map (docs/tripfluent-stage0-content-map.md): pass-0 stage in BOTH packs — 3 kit lessons (Spain 37 / Mexico 35 items migrated by es-derived ID, SRS history intact) + 7 machines (Spain 25 / Mexico 23 authored fillers; exact-match claims: Spain 3, Mexico 5 incl. ¿Hay wifi? + ¿Dónde está el baño?). Emptied s1-hello/s1-numbers1/mx-greet/mx-numbers1 removed.
 - Machines carry machine:true, frame, frameGloss, beat; fillers carry frame + tags:["core"]. Learn tab renders "Pattern · N fillers" from live data now.

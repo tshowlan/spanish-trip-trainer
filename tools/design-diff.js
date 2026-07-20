@@ -107,13 +107,19 @@
 
   // Selector registry: artifact selector -> app selector, per artifact.
   const DESIGN_PAIRS = {
-    // App state: a correct answer rendered — #qbody has .qcorrect, .answer-tick.show present.
-    // artifactPrep adds .correct to the artifact input so the wash overrides compute.
-    correctFeedback: [
-      [".progress", ".pbar"],
-      [".progress > div", ".pbar > i"],
-      [".tick", ".answer-tick"],
-      [".ex-input.correct", "#qbody.qcorrect .text-input"],
+    // SUPERSEDED 2026-07-19: correct-feedback.html is do-not-build-against; the resolution frame
+    // (design/resolution-frame.html) is the match target for correct-answer feedback.
+    // App state: a correct answer resolved — .build-answer.fused or .res-grown.show in the DOM.
+    resolutionFrame: [
+      [".answer-row.fused .tile", ".build-answer.fused .word"],
+      [".answer-row .sweep", ".build-answer .sweep"],
+      [".tray.recede", ".bank.recede"],
+      [".grown", ".res-grown"],
+      [".en-line", ".res-en"],
+      [".es-reveal", ".es-reveal"],
+      [".sring", ".q-sring"],
+      [".stick", ".stick"],
+      [".inputbox.wash", "#qbody.qcorrect .text-input"],
     ],
     // App state: renderHome() with a seeded returning-user state (serve via tools/serve.py so JS is fresh).
     home: [

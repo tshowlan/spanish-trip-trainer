@@ -364,6 +364,8 @@ function renderQuestion() {
     <div class="progress-row">
       <button class="close-btn" id="quit">${icon('x',24)}</button>
       <div class="pbar"><i style="width:${run.pct}%"></i></div>
+      <span class="q-sring" id="q-sring"></span>
+      <div class="stick" id="q-stick">Stronger</div>
     </div>`));
   wrap.appendChild(el(`<div id="qbody" class="qenter"></div>`));   // §8.3 each question springs in
   app.appendChild(wrap);
@@ -371,6 +373,8 @@ function renderQuestion() {
   wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile")) haptic("press"); });
   $("#quit").addEventListener("click", () => confirmSheet({ title: "Quit lesson?", body: "Your progress in it is lost.", confirmLabel: "Quit lesson", cancelLabel: "Keep going", onConfirm: renderHome }));
   run.answered = false;
+  const qs = q.item && state.learn ? state.learn[itemId(q.item)] : null;
+  _setQStrength(qs ? Math.round(itemStrength(qs)) : 0, false);
   // make the mistake re-queue visible: label a phrase you missed coming back around
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">${icon('arrows-clockwise', 15)} Second chance, you missed this one</div>`));
   ({ intro: renderIntro, present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
@@ -1020,9 +1024,15 @@ function finishGrade(ok, item, extra, wrong) {
   // §8.4: was this phrase fading BEFORE we graded it? (seen ≥once + strength under the notify threshold)
   const pre = id && state.learn && state.learn[id];
   const wasFading = !!(pre && pre.exposures >= 1 && itemStrength(pre) < RETENTION_FADE);
+  const coldBefore = !!(pre && pre.axes && pre.axes.cold);           // for the Yours-now milestone (§3.5)
   if (!ok) { run.wrong++; if (run.missed) run.missed.set(id, item); }
   recordAnswer(id, ok, { mode: q && q.type, scaffolded: q && q.slow });   // q.slow = used the 0.75× replay
   const restored = ok && wasFading;                    // correctly recalled a fading phrase → the sawtooth jump (§8.4)
+  // Yours-now (§3.5): first cold production ever — typed/spoken only (tiles are scaffolding), once per item
+  const post = id && state.learn && state.learn[id];
+  const yoursNow = ok && !coldBefore && !!(post && post.axes && post.axes.cold)
+    && (q && (q.type === "type_translation" || q.type === "speak_it")) && !(post && post.yoursShown);
+  if (yoursNow) post.yoursShown = true;
   if (restored) run.restored = (run.restored || 0) + 1;
   // §4b.2: count correct one-blank fills so the item graduates to two-blank fills
   if (ok && q && q.type === "fill_blank" && (q.blanks || 1) === 1) { const st = state.learn && state.learn[id]; if (st) st.fill1 = (st.fill1 || 0) + 1; }
@@ -1033,19 +1043,75 @@ function finishGrade(ok, item, extra, wrong) {
   // §3.3/§4c.2: a wrong answer opens the correction sheet (no footer, no shake — the sheet is the feedback)
   if (!ok) { clearFooter(); showCorrection(item, extra, wrong); return; }   // drop the exercise's Check footer so its shadow doesn't sit behind Continue
 
-  // ---- correct: §3.5 wash + auto-advance (built to design/correct-feedback.html) — no tap ----
-  const qb = $("#qbody"); if (qb) qb.classList.add("qcorrect");       // green border + 8% wash on the input
-  const barEl = document.querySelector(".pbar > i");                 // progress advances
-  if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
-  const prow = document.querySelector(".progress-row");              // gold tick pops by the bar
-  if (prow && !prow.querySelector(".answer-tick")) {
-    const t = el(`<span class="answer-tick"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>`);
-    prow.appendChild(t); requestAnimationFrame(() => t.classList.add("show"));
-  }
+  // ---- correct: §3.5 resolution frame (built to design/resolution-frame.html) ----
   if (restored) toast("Restored, you beat the forgetting curve");    // §8.4 preserved as a non-blocking pill (§3.3)
   else if (extra) toast(extra);                                      // typo/accent nudge, non-blocking
-  // hold ~650ms, then swap: current item fades out (200ms), next renders + enters
-  setTimeout(() => { if (qb) qb.classList.add("leaving"); setTimeout(next, 200); }, 650);
+  resolveCorrect(item, q, { yoursNow, strengthAfter: post ? Math.round(itemStrength(post)) : 0 });
+}
+
+/* ---- §3.5 resolution frame: every correct answer matures the page IN PLACE. The learner's own
+   assembly is the achievement object and never disappears: build tiles FUSE where they stand (chrome
+   dissolves, gaps close), the green sweep draws under their sentence, es ALWAYS reveals (sound meets
+   spelling, listening included), en + full-phrase native audio materialize, the item's strength ring
+   ticks with a "Stronger" whisper, the unused tray recedes to 28%. Sheets stay reserved for the miss.
+   Timing (§8.5): auto-advance at audio end + 250ms; tap-anywhere from es-settle; no audio = 1200ms. ---- */
+function resolveCorrect(item, q, info) {
+  const qb = $("#qbody"); if (!qb) return next();
+  qb.classList.add("qcorrect");                                      // base layer: wash on input-style exercises
+  clearFooter();                                                     // the resolution owns the exit
+  const barEl = document.querySelector(".pbar > i");                 // progress advances
+  if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
+
+  // fusion: placed tiles dissolve their tile-ness in place; the unused bank recedes, nothing vanishes
+  const ans = qb.querySelector(".build-answer");
+  if (ans) {
+    ans.appendChild(el(`<span class="sweep"></span>`));
+    requestAnimationFrame(() => ans.classList.add("fused"));
+    const bank = qb.querySelector(".bank"); if (bank) bank.classList.add("recede");
+  }
+
+  // materialization: es always reveals (the fused build row IS the es), then en + audio grow in
+  const grown = el(`<div class="res-grown">
+    ${info.yoursNow ? `<div class="res-yours">YOURS NOW</div>` : ""}
+    ${!ans ? `<div class="es-reveal">${item.es}<span class="sweep2"></span></div>` : ""}
+    <div class="res-en">${item.en}</div>
+    <div class="res-audio"></div>
+    ${info.yoursNow ? `<div class="res-note">Produced cold, no help. This one travels with you.</div>` : ""}
+  </div>`);
+  let token = 0, advanced = false;
+  const goNext = () => { if (advanced) return; advanced = true; qb.classList.add("leaving"); setTimeout(next, 200); };
+  // replays re-arm the advance; the token ignores onend from utterances cancelled by a replay
+  const playWhole = () => { const my = ++token; speak(item.es, null, () => { if (my === token) setTimeout(goNext, 250); }); };
+  const arow = el(`<div class="res-audio-row"></div>`);
+  arow.appendChild(audioControl(playWhole));
+  arow.appendChild(el(`<span class="audio-hint">Hear it whole</span>`));
+  grown.querySelector(".res-audio").appendChild(arow);
+  qb.appendChild(grown);
+  requestAnimationFrame(() => requestAnimationFrame(() => grown.classList.add("show")));
+
+  // the item's strength ring ticks up, "Stronger" whispers
+  _setQStrength(info.strengthAfter, true);
+
+  // timing: the model must finish being heard; tap-to-advance is the user's choice, never the default
+  if ("speechSynthesis" in window) { playWhole(); setTimeout(goNext, resolveCorrect.FAILSAFE || 8000); }   // failsafe if onend never fires (test hook: resolveCorrect.FAILSAFE)
+  else setTimeout(goNext, 1200);                                               // sound off: fixed dwell
+  setTimeout(() => {
+    const wrap = document.querySelector(".runner");
+    if (wrap) wrap.addEventListener("click", e => { if (!e.target.closest(".ac-group")) goNext(); });
+  }, 450);
+}
+
+// per-item strength ring in the runner's top row (scale ladder: the rep shows ITEM strength, §3.5)
+const _SRING_C = 2 * Math.PI * 10;
+function _setQStrength(val, tick) {
+  const host = document.getElementById("q-sring"); if (!host) return;
+  const off = (_SRING_C * (1 - Math.max(0, Math.min(100, val || 0)) / 100)).toFixed(1);
+  const fg = host.querySelector(".sr-fg");
+  if (fg) fg.style.strokeDashoffset = off;
+  else host.innerHTML = `<svg viewBox="0 0 26 26" width="26" height="26" aria-hidden="true">
+    <circle class="sr-bg" cx="13" cy="13" r="10"/>
+    <circle class="sr-fg" cx="13" cy="13" r="10" stroke-dasharray="${_SRING_C.toFixed(1)}" stroke-dashoffset="${off}" transform="rotate(-90 13 13)"/></svg>`;
+  if (tick) { const st = document.getElementById("q-stick"); if (st) { st.classList.add("show"); setTimeout(() => st.classList.remove("show"), 1600); } }
 }
 // §3.3 correction sheet (built to design/correction-sheet.html): scrim over the dimmed exercise,
 // the phrase as chunk pills (known ones outlined green, tappable for meaning), gold replay audio,

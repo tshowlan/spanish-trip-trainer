@@ -6,12 +6,13 @@ function voiceFor(lang) {
       || vs.find(v => /^es/i.test(v.lang))                                             // any Spanish
       || null;
 }
-function speak(text, rate) {
-  if (!("speechSynthesis" in window)) return;
+function speak(text, rate, onend) {
+  if (!("speechSynthesis" in window)) { if (onend) onend(); return; }
   speechSynthesis.cancel();
   const lang = (typeof activePack === "function" ? activePack().tts : "es-ES");
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang; const v = voiceFor(lang); if (v) u.voice = v; u.rate = rate || 0.9;
+  if (onend) u.onend = () => onend();     // §8.5 resolution dwell: advance keys off the model finishing
   speechSynthesis.speak(u);
 }
 

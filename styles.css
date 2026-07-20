@@ -1060,8 +1060,6 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* §3.5 correct-answer feedback — built to design/correct-feedback.html: green wash + auto-advance */
 #qbody.qcorrect .text-input { border-color: var(--green); background-color: color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
 #qbody.leaving { opacity: 0; transform: translateY(-6px); transition: opacity 200ms cubic-bezier(.2,.7,.3,1), transform 200ms cubic-bezier(.2,.7,.3,1); }
-.answer-tick { color: var(--accent-2); display: inline-flex; flex: none; opacity: 0; transform: scale(.6); transition: opacity var(--transition), transform var(--transition); }
-.answer-tick.show { opacity: 1; transform: scale(1); }
 
 /* §3.3 correction sheet — built to design/correction-sheet.html */
 .corr-wrap { position: fixed; inset: 0; z-index: 70; }
@@ -1216,3 +1214,41 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 }
 :root[data-theme="dark"] .segs { background: rgba(255,255,255,0.07); }
 :root[data-theme="dark"] .seg.active { background: rgba(255,255,255,0.16); box-shadow: none; }
+
+/* ============ §3.5 RESOLUTION FRAME (design/resolution-frame.html) ============
+   One resolution language: correct answers mature the page in place. Fusion, sweep, materialization;
+   sheets stay reserved for the miss. The old correct-feedback wash survives as the base layer. */
+.build-answer { transition: gap 300ms cubic-bezier(.2,.7,.3,1); position: relative; }
+.build-answer .word { transition: background 300ms, border-color 300ms, box-shadow 300ms, padding 300ms cubic-bezier(.2,.7,.3,1); }
+.build-answer.fused { gap: 5px; border-bottom-color: transparent; }
+.build-answer.fused .word, .build-answer.fused .slot { background: transparent; border-color: transparent; box-shadow: none; padding-left: 0; padding-right: 0; font-weight: 600; color: var(--text); }
+.build-answer .sweep { position: absolute; left: 0; bottom: 6px; height: 2.5px; width: 100%; background: var(--green); border-radius: 2px;
+  transform: scaleX(0); transform-origin: left center; }
+.build-answer.fused .sweep { animation: res-sweep 300ms cubic-bezier(.2,.7,.3,1) 200ms forwards; }
+@keyframes res-sweep { to { transform: scaleX(1); } }
+.bank { transition: opacity 300ms; }
+.bank.recede { opacity: .28; pointer-events: none; }
+/* materialization block: es reveal + en + audio grow in around the achievement object */
+.res-grown { opacity: 0; transform: translateY(5px); transition: opacity 280ms cubic-bezier(.2,.7,.3,1) 250ms, transform 280ms cubic-bezier(.2,.7,.3,1) 250ms; margin-top: 16px; }
+.res-grown.show { opacity: 1; transform: none; }
+.es-reveal { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--text); position: relative; display: inline-block; margin-bottom: 4px; }
+.es-reveal .sweep2 { position: absolute; left: 0; right: 0; bottom: -6px; height: 2.5px; background: var(--green); border-radius: 2px;
+  transform: scaleX(0); transform-origin: left center; }
+.res-grown.show .sweep2 { animation: res-sweep 300ms cubic-bezier(.2,.7,.3,1) 150ms forwards; }
+.res-en { font-size: 13.5px; color: var(--text-dim); margin: 10px 0 14px; }
+.res-audio-row { display: flex; align-items: center; gap: 10px; }
+.res-audio-row .audio-hint { font-size: 12px; color: var(--text-dim); }
+.res-yours { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--green); margin-bottom: 8px; }
+.res-note { font-size: 12.5px; color: var(--text-dim); margin-top: 14px; }
+/* per-item strength ring in the top row + the "Stronger" whisper */
+.q-sring { width: 26px; height: 26px; flex: none; display: inline-flex; }
+.q-sring .sr-bg { fill: none; stroke: var(--ring-track, var(--bg-elevated)); stroke-width: 3; }
+.q-sring .sr-fg { fill: none; stroke: var(--secondary); stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 500ms cubic-bezier(.2,.7,.3,1); }
+.stick { position: absolute; top: 52px; right: 16px; font-family: var(--font-display); font-size: 11px; font-weight: 600;
+  color: var(--green); opacity: 0; transform: translateY(3px); transition: opacity 300ms, transform 300ms; pointer-events: none; }
+.stick.show { opacity: 1; transform: none; }
+.runner { position: relative; }
+@media (prefers-reduced-motion: reduce) {
+  .build-answer, .build-answer .word, .res-grown, .stick, .bank { transition: none; }
+  .build-answer.fused .sweep, .res-grown.show .sweep2 { animation: none; transform: scaleX(1); }
+}
