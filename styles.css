@@ -1241,6 +1241,14 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .res-yours { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--green); margin-bottom: 8px; }
 .res-note { font-size: 12.5px; color: var(--text-dim); margin-top: 14px; }
 .res-cont { margin-top: 18px; }
+/* RESTORED kicker (r7): the fading vocabulary tied to the word — the mini ring appears as the gold
+   low arc the learner knows from fading marks, then climbs and turns strong-blue on materialization */
+.res-kick { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
+.res-kick .res-restored { margin-bottom: 0; }
+.kfg { stroke: var(--accent-2); stroke-dasharray: 40.8; stroke-dashoffset: 26;
+  transition: stroke-dashoffset 600ms cubic-bezier(.2,.7,.3,1) 350ms, stroke 600ms cubic-bezier(.2,.7,.3,1) 350ms; }
+.res-grown.show .kfg { stroke-dashoffset: 9; stroke: var(--secondary); }
+@media (prefers-reduced-motion: reduce) { .kfg { transition: none; } }
 /* per-item strength ring in the top row + the "Stronger" whisper */
 .q-sring { width: 26px; height: 26px; flex: none; display: inline-flex; }
 .q-sring .sr-bg { fill: none; stroke: var(--ring-track, var(--bg-elevated)); stroke-width: 3; }

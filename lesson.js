@@ -1043,10 +1043,12 @@ function finishGrade(ok, item, extra, wrong) {
   // §3.3/§4c.2: a wrong answer opens the correction sheet (no footer, no shake — the sheet is the feedback)
   if (!ok) { clearFooter(); showCorrection(item, extra, wrong); return; }   // drop the exercise's Check footer so its shadow doesn't sit behind Continue
 
-  // ---- correct: §3.5 resolution frame (built to design/resolution-frame.html) ----
-  if (restored) toast("Restored, you beat the forgetting curve");    // §8.4 preserved as a non-blocking pill (§3.3)
-  else if (extra) toast(extra);                                      // typo/accent nudge, non-blocking
-  resolveCorrect(item, q, { yoursNow, strengthAfter: post ? Math.round(itemStrength(post)) : 0 });
+  // ---- correct: §3.5 resolution frame (built to design/resolution-frame.html r7) ----
+  // Both mid-exercise toasts retired (decisions 2026-07-19): Restored folds into the frame's kicker;
+  // accent/typo slips are forgiven SILENTLY (we grade for the trip, not the classroom; the es-reveal
+  // teaches passively). Slip telemetry logs quietly; it never surfaces.
+  if (extra && post) post.slips = (post.slips || 0) + 1;
+  resolveCorrect(item, q, { yoursNow, restored, strengthAfter: post ? Math.round(itemStrength(post)) : 0 });
 }
 
 /* ---- §3.5 resolution frame: every correct answer matures the page IN PLACE. The learner's own
@@ -1071,12 +1073,19 @@ function resolveCorrect(item, q, info) {
   }
 
   // materialization: es always reveals (the fused build row IS the es), then en + audio grow in
+  // one kicker per resolution; milestone beats event (YOURS NOW > RESTORED)
+  const kick = info.yoursNow ? "yours" : (info.restored ? "restored" : null);
+  const kicker = kick === "yours" ? `<div class="res-yours">YOURS NOW</div>`
+    : kick === "restored" ? `<div class="res-kick"><svg class="kring" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6.5" fill="none" stroke="var(--ring-track, var(--bg-elevated))" stroke-width="2.5"/><circle class="kfg" cx="8.5" cy="8.5" r="6.5" fill="none" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 8.5 8.5)"/></svg><span class="res-yours res-restored">RESTORED</span></div>`
+    : "";
+  const note = kick === "yours" ? `<div class="res-note">Produced cold, no help. This one travels with you.</div>`
+    : kick === "restored" ? `<div class="res-note">This one was fading. You brought it back.</div>` : "";
   const grown = el(`<div class="res-grown">
-    ${info.yoursNow ? `<div class="res-yours">YOURS NOW</div>` : ""}
+    ${kicker}
     ${!ans ? `<div class="es-reveal">${item.es}<span class="sweep2"></span></div>` : ""}
     <div class="res-en">${item.en}</div>
     <div class="res-audio"></div>
-    ${info.yoursNow ? `<div class="res-note">Produced cold, no help. This one travels with you.</div>` : ""}
+    ${note}
     <button class="btn res-cont">Continue</button>
   </div>`);
   let advanced = false;

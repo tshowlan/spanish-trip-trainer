@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-19 — Toast rework built (resolution frame r7) — ON BRANCH `toast-rework`
+- Both mid-exercise toasts RETIRED at the source. Restored -> the frame's kicker: green RESTORED + inline mini strength ring animating fading-gold low-arc to strong-blue (600ms off .res-grown.show, pure CSS) + "This one was fading. You brought it back." Precedence: one kicker per resolution, YOURS NOW > RESTORED; run.restored still counts for the session tally.
+- Accent/typo nudge KILLED, no replacement: accepted answers are never qualified; the always-on es-reveal is the passive mechanism. Silent slip telemetry added (learn[id].slips); never surfaces.
+- Note: scores 8.4 always specced "Restored label + a subtle strength arc filling" inline on the card — the toast was an implementation shortcut; r7 is the spec's original intent finally built.
+- Docs: scores 8.4 delivery finalized; learning-spec silent-grading note + session-end pencil gains restored count; design-system toast rule + forgiveness rule; 3 decisions.
+- r7 artifact re-committed by chat WITH Tom's timing intact (the canvas relay worked this round).
+
 ## 2026-07-19 — Pacing Rule adopted; resolution frame converts to a self-paced Continue exit (branch)
 - CORRECTING DELTA on the resolution frame: auto-advance struck (audio-end detection, 250ms buffer, sound-off dwell, tap-to-advance-early, 8s failsafe all deleted, not kept as fallback). The standard Continue (reconciled .btn spec) materializes WITH the en/audio block; audio autoplays; exit is the learner's tap, always.
 - Design system §1.2: THE PACING RULE — sequence is the app's, pace is the learner's; every moment's exit is a learner action; scaffolds fade by data (expertise reversal), never assumption. Plus the redundancy rule (audio and displayed text always match). 4 decisions (pacing, expertise reversal, imageless-exercises exception logged with rationale, redundancy).

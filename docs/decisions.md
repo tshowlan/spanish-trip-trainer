@@ -100,3 +100,6 @@ Tom explicitly reopens. Do not relitigate.
 - 2026-07-19 — Expertise reversal governs scaffold retirement: pauses, intro cards, and training wheels fade with demonstrated competence, earned by data [tune], never assumed. First application: the mature-rep auto-advance pencil.
 - 2026-07-19 — Imageless exercises are deliberate (multimedia-principle exception): photos are atmosphere, never vocabulary illustration (wrong-referent risk, clip-art gravity). Picture support for concrete nouns is penciled as a testable future question, not a settled no.
 - 2026-07-19 — Redundancy rule: audio and displayed text always match; never narrate one phrase over another's text.
+- 2026-07-19 — Both mid-exercise toasts retired: Restored folds into the resolution frame (kicker + fading-gold to strong-blue mini ring: the event shown in system vocabulary); the accent/typo nudge is killed with no replacement. One kicker per resolution; YOURS NOW > RESTORED.
+- 2026-07-19 — We grade for the trip, not the classroom: typed accents and minor spelling are keyboard skills, not travel skills. Forgiveness is silent; the es-reveal teaches passively. Never qualify a win.
+- 2026-07-19 — Toasts never carry learning content; anything worth reading never auto-dismisses.

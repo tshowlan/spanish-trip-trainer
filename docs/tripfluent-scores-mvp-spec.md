@@ -318,7 +318,7 @@ Consistency is the premium signal: same event → same haptic, always. Do not ad
 ### 8.4 The "Restored" moment (the one in-lesson score-adjacent effect)
 
 - **No per-answer score deltas in-lesson.** "+0.4 Readiness" per tap is XP through the side door and breaks score semantics (§7). Score deltas appear only on the session-complete screen ("+3 Readiness · 2 phrases restored"), where they read as a result, not a reward drip.
-- **Exception:** when a user correctly reviews a phrase that was *fading* (strength below the retention-notification threshold), show a small inline moment on that card — "Restored" label + a subtle strength arc filling. This is information about the phrase, not currency for the user; it's the in-lesson face of the Retention sawtooth and makes the forgetting curve tangible at the moment the user beats it. Pairs with its haptic (8.2).
+- **Exception:** when a user correctly reviews a phrase that was *fading* (strength below the retention-notification threshold), the resolution frame carries the moment (delivery finalized 2026-07-19; the interim toast is retired): a green **RESTORED** kicker with an inline mini strength ring that animates the restore in system vocabulary — it appears as the low-arc GOLD ring the learner knows from fading marks, then climbs and turns strong-blue (600ms, value-change class), with the note "This one was fading. You brought it back." One kicker per resolution; milestone beats event (YOURS NOW > RESTORED); the restore still counts toward the session tally either way. This is information about the phrase, not currency for the user; it's the in-lesson face of the Retention sawtooth. Pairs with its haptic (8.2).
 
 ### 8.5 Exercise variety (the non-cosmetic half of "dynamic")
 

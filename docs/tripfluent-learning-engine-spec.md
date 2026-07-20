@@ -219,6 +219,7 @@ Within rung 2, blank count grows with the item's progress: first passes = one bl
 
 ### 4b.3 Variant handling (Milestone 2, needs `variants`)
 - **Grading:** typed and spoken answers are checked against `es` AND all `variants` (same typo tolerance). A learner producing any natural form is correct.
+- **Forgiveness is silent (2026-07-19):** accent and minor-spelling slips are accepted silently — grading, display, and copy never distinguish them from clean answers (we grade for the trip, not the classroom; typed accents are keyboard skills). The always-on es-reveal is the passive teaching mechanism. Telemetry may record slips (`learn[id].slips`) for internal analysis; no user-facing surface references them.
 - **Presentation:** in recognition modes, ~1 in 4 reps after the item reaches rung 2 shows a variant instead of the canonical form, with the sub-line "Another common way to say it." Never in the item's first 3 exposures (canonical form must stabilize first).
 - Listening exercises may use variants freely once rung 2 is reached — locals won't use the canonical string.
 
@@ -586,7 +587,7 @@ Deferred (flag only, do not build): reframing the progress view as an itinerary 
 - **A lexical database.** No lemmatization, conjugation tables, per-word SRS state, or word-level progress UI. `keywords` are plain surface-form tags on items — that ceiling is deliberate. Per-word scheduling ends in rebuilding Anki plus grammar-first Duolingo and breaks the pure-data content invariant.
 - **Graded reader passages** (penciled, do not build): short readings composed only from the learner's known items, unlockable per pass — the long-term narrative payoff. Own spec when its time comes.
 - **Mix it practice mode** (penciled, do not build): frames × cross-machine taught fillers compose novel gradeable sentences ("Necesito un café" from necesito + quiero's filler) — the machines paying rent between lessons, manufacturing the transfer moment the pattern-moment dismissal only samples. Slots into Practice's chooser. Exclusions per build review: ¿A qué hora ___? excluded (closed verb set, not swappable); fillers graded exactly as taught; article/gender variants are an explicit accept/reject decision at build time.
-- **Session-end summary** (penciled, do not build): the home for session-scale Readiness delta (before → after count-up, top-center interstitial tint, scale-ladder rule). Design after the primer wave.
+- **Session-end summary** (penciled, do not build): the home for session-scale Readiness delta (before → after count-up, top-center interstitial tint, scale-ladder rule) plus the restored count ("N restored"). Design after the primer wave.
 
 ---
 
