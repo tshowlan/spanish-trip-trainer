@@ -86,6 +86,10 @@
   .playing .bars span:nth-child(2){ animation-delay:120ms; } .playing .bars span:nth-child(3){ animation-delay:240ms; } .playing .bars span:nth-child(4){ animation-delay:360ms; }
   @keyframes bar { 0%,100%{height:4px} 50%{height:13px} }
   .audio-hint { font-size:12px; color:var(--text-dim); }
+  .cont { width:100%; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
+    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px; margin-top:18px;
+    cursor:pointer; box-shadow:var(--shadow); transition:transform var(--transition), box-shadow var(--transition); }
+  .cont:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
 
   /* ============ LISTEN EXERCISE ============ */
   .inputbox { border:1.5px solid var(--border); border-radius:var(--radius-md); padding:14px; min-height:54px;
@@ -136,8 +140,8 @@
     word spacing, 300ms), the green sweep draws under the learner's own sentence, and the en line + audio +
     strength tick MATERIALIZE around it; the unused tray recedes to 28% instead of vanishing. Nothing
     navigates, nothing disappears; the achievement object stays and matures. Listen state: input washes
-    (base layer retained), es materializes BELOW the input with its own sweep. YOURS-NOW SHEET RETIRED (r3, Tom's call: its content duplicated the resolved page; a success never needs to interrupt). ONE resolution language everywhere: in-place materialization; sheets remain reserved for the miss (correction) where interruption is the pedagogy. The milestone tier is marked by WORDS joining the standard materialization: green YOURS NOW kicker + the note line ('Produced cold, no help. This one travels with you.'), typed/spoken production only, once per item ever, §9 milestone system. Scale of meaning, not scale of chrome. TIMING (explicit, needs §8.5 rhythm blessing): auto-advance at audio end + 250ms (the model must finish being heard; long phrases earn longer beats); tap-anywhere-to-advance becomes available the moment the es settles (skipping is the user's choice, never the default); SOUND OFF or audio unavailable: fixed 1200ms dwell, reveal never depends on audio; REDUCED MOTION: instant fusion, no sweeps, same dwell rules. Supersedes the 650ms flat hold. Reduced motion: instant fusion, no sweeps.
-    DELTA r4 (2026-07-19, Tom timing call at harness review): choreography lengthened so the resolution reads as a SEQUENCE, not an arrival: fusion 450ms, sweep at 350ms, materialization at 600ms over 360ms, tap-to-advance arms at 900ms (es-settle). Runs under the value-change duration class. Do not shorten on re-issue. Frame 390.
+    (base layer retained), es materializes BELOW the input with its own sweep. YOURS-NOW SHEET RETIRED (r3, Tom's call: its content duplicated the resolved page; a success never needs to interrupt). ONE resolution language everywhere: in-place materialization; sheets remain reserved for the miss (correction) where interruption is the pedagogy. The milestone tier is marked by WORDS joining the standard materialization: green YOURS NOW kicker + the note line ('Produced cold, no help. This one travels with you.'), typed/spoken production only, once per item ever, §9 milestone system. Scale of meaning, not scale of chrome. EXIT (r4, PACING RULE): self-paced, always: the standard Continue button (15/600 reconciled spec) materializes WITH the frame; audio autoplays; NO auto-advance, no timers, no dwell math (audio-end detection, sound-off dwells, and tap-to-advance-early are all struck as moot). Segmenting principle + the resolution delivers NEW information (the es reveal), and new information is never swept away. Mature-rep auto-advance is a post-launch [tune] under the expertise-reversal principle, earned only if session logs show consistent floor-latency taps (<~400ms) on mature reviews. Reduced motion: instant fusion, no sweeps. DELTA r5 (Code reconciliation 2026-07-19): this re-issue reverted the r4-timing stretch made at Tom's harness review; timing RESTORED here (fusion 450ms, sweep at 350ms, materialization at 600ms over 360ms, value-change duration class) and merged with the r4 Continue exit. Chat's canvas needs the same timing or the next re-issue reverts again. Do not shorten on re-issue.
+    Frame 390.
   </div>
 </div>
 
@@ -166,6 +170,7 @@
         <div class="grown" id="grown">
           <div class="en-line">Could you bring me the check?</div>
           <div class="audio-row">${speakerBtn}<span class="audio-hint">Hear it whole</span></div>
+          <button class="cont">Continue</button>
         </div>
         <div style="flex:1"></div>
         <div class="tray" id="tray" style="margin-top:auto">
@@ -181,6 +186,7 @@
           <span class="es-reveal">la cuenta, cuando tenga un momento<span class="sweep2"></span></span>
           <div class="en-line" style="margin-top:12px">the check, when you have a moment</div>
           <div class="audio-row">${speakerBtn}<span class="audio-hint">Sound, meet spelling</span></div>
+          <button class="cont">Continue</button>
         </div>`
     },
     yours: {
@@ -193,6 +199,7 @@
           <div class="en-line">Could you bring me the check?</div>
           <div class="audio-row">${speakerBtn}<span class="audio-hint">Hear it whole</span></div>
           <div style="font-size:12.5px; color:var(--text-dim); margin-top:14px">Produced cold, no help. This one travels with you.</div>
+          <button class="cont">Continue</button>
         </div>`
     }
   };

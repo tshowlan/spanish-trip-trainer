@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-19 — Pacing Rule adopted; resolution frame converts to a self-paced Continue exit (branch)
+- CORRECTING DELTA on the resolution frame: auto-advance struck (audio-end detection, 250ms buffer, sound-off dwell, tap-to-advance-early, 8s failsafe all deleted, not kept as fallback). The standard Continue (reconciled .btn spec) materializes WITH the en/audio block; audio autoplays; exit is the learner's tap, always.
+- Design system §1.2: THE PACING RULE — sequence is the app's, pace is the learner's; every moment's exit is a learner action; scaffolds fade by data (expertise reversal), never assumption. Plus the redundancy rule (audio and displayed text always match). 4 decisions (pacing, expertise reversal, imageless-exercises exception logged with rationale, redundancy).
+- ARTIFACT REGRESSION CAUGHT AGAIN: chat's r4 re-issue reverted Tom's timing stretch (canvas predates the harness call). Timing RESTORED (450/350/600, value-change class) and merged with the Continue exit as r5; caption warns; chat's canvas needs the same or the next re-issue reverts it.
+- Mature-rep auto-advance = post-launch [tune] under expertise reversal (floor-latency taps <~400ms on mature reviews); §8t table row updated.
+- Still on branch `resolution-frame` for Tom's harness review.
+
 ## 2026-07-19 — Resolution frame approved + BUILT ON BRANCH `resolution-frame` (harness review pending)
 - ONE resolution language (design/resolution-frame.html): every correct answer matures the page IN PLACE — build tiles fuse where they stand (chrome dissolves, 300ms), green sweep under the learner's own sentence, es ALWAYS reveals (listening included), en + full-phrase audio materialize, item strength ring ticks w/ "Stronger" whisper, tray recedes to 28%. Wash survives as base layer. correct-feedback.html superseded-in-place (do-not-build-against).
 - Built: resolveCorrect() at the single grading funnel (all nine types); speak() gained an onend hook; per-item strength ring + whisper in the runner top row (answer-tick retired); Yours-now = cold-axis 0→1 on typed/spoken only, once ever (s.yoursShown).

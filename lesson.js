@@ -1054,7 +1054,7 @@ function finishGrade(ok, item, extra, wrong) {
    dissolves, gaps close), the green sweep draws under their sentence, es ALWAYS reveals (sound meets
    spelling, listening included), en + full-phrase native audio materialize, the item's strength ring
    ticks with a "Stronger" whisper, the unused tray recedes to 28%. Sheets stay reserved for the miss.
-   Timing (§8.5): auto-advance at audio end + 250ms; tap-anywhere from es-settle; no audio = 1200ms. ---- */
+   Exit (§8.5, Pacing Rule): self-paced, always: Continue materializes with the frame. ---- */
 function resolveCorrect(item, q, info) {
   const qb = $("#qbody"); if (!qb) return next();
   qb.classList.add("qcorrect");                                      // base layer: wash on input-style exercises
@@ -1077,28 +1077,26 @@ function resolveCorrect(item, q, info) {
     <div class="res-en">${item.en}</div>
     <div class="res-audio"></div>
     ${info.yoursNow ? `<div class="res-note">Produced cold, no help. This one travels with you.</div>` : ""}
+    <button class="btn res-cont">Continue</button>
   </div>`);
-  let token = 0, advanced = false;
+  let advanced = false;
   const goNext = () => { if (advanced) return; advanced = true; qb.classList.add("leaving"); setTimeout(next, 200); };
-  // replays re-arm the advance; the token ignores onend from utterances cancelled by a replay
-  const playWhole = () => { const my = ++token; speak(item.es, null, () => { if (my === token) setTimeout(goNext, 250); }); };
+  const playWhole = () => speak(item.es);
   const arow = el(`<div class="res-audio-row"></div>`);
   arow.appendChild(audioControl(playWhole));
   arow.appendChild(el(`<span class="audio-hint">Hear it whole</span>`));
   grown.querySelector(".res-audio").appendChild(arow);
+  grown.querySelector(".res-cont").addEventListener("click", goNext);
   qb.appendChild(grown);
   requestAnimationFrame(() => requestAnimationFrame(() => grown.classList.add("show")));
 
   // the item's strength ring ticks up, "Stronger" whispers
   _setQStrength(info.strengthAfter, true);
 
-  // timing: the model must finish being heard; tap-to-advance is the user's choice, never the default
-  if ("speechSynthesis" in window) { playWhole(); setTimeout(goNext, resolveCorrect.FAILSAFE || 8000); }   // failsafe if onend never fires (test hook: resolveCorrect.FAILSAFE)
-  else setTimeout(goNext, 1200);                                               // sound off: fixed dwell
-  setTimeout(() => {
-    const wrap = document.querySelector(".runner");
-    if (wrap) wrap.addEventListener("click", e => { if (!e.target.closest(".ac-group")) goNext(); });
-  }, 900);   // arms at es-settle (choreography lengthened 2026-07-19, Tom's call)
+  // Pacing Rule (design system §1.2): the exit is the learner's tap, always. Audio autoplays;
+  // no auto-advance, no timers, no dwell math. The resolution delivers NEW information (the es
+  // reveal), and new information is never swept away.
+  playWhole();
 }
 
 // per-item strength ring in the runner's top row (scale ladder: the rep shows ITEM strength, §3.5)

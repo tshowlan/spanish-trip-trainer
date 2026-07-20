@@ -452,7 +452,7 @@ Nobody knows the optimal numbers, including the literature (population- and cont
 | Interval growth | × ease | `recordAnswer` |
 | First interval | by item difficulty | `seedInterval` |
 | Recognition-graduation threshold | 4 exposures | rung thresholds (§4.1) |
-| Resolution dwell | audio-end + 250ms / 1200ms silent | `resolveCorrect` in lesson.js |
+| Mature-rep auto-advance | OFF (self-paced Continue) | `resolveCorrect` in lesson.js; enable only per the expertise-reversal pencil (scores §8.5) |
 
 ## 8b. Home screen: action tile, review row, standing line
 
