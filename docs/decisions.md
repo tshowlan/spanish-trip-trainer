@@ -103,3 +103,6 @@ Tom explicitly reopens. Do not relitigate.
 - 2026-07-19 — Both mid-exercise toasts retired: Restored folds into the resolution frame (kicker + fading-gold to strong-blue mini ring: the event shown in system vocabulary); the accent/typo nudge is killed with no replacement. One kicker per resolution; YOURS NOW > RESTORED.
 - 2026-07-19 — We grade for the trip, not the classroom: typed accents and minor spelling are keyboard skills, not travel skills. Forgiveness is silent; the es-reveal teaches passively. Never qualify a win.
 - 2026-07-19 — Toasts never carry learning content; anything worth reading never auto-dismisses.
+- 2026-07-20 — Phrase-MC retired: options never complete target-language phrases; recognition is served by meaning-pick, chunk-tap, pairs, and slot-fill (single-word options, retained and distinct). The feels-productive archetype dies by our own thesis.
+- 2026-07-20 — Six exercise types added (pairs, the close, sound choice, audio cloze, ear build, the reply); the close is a named ritual where Mix-it mechanics debut and Yours-now lives; variety rule governs the composer; distractors are principled, never random.
+- 2026-07-20 — Exposure-0 furniture fires once per item ever; replays enter at current rung. Scaffolds fade by data, never assumption (expertise reversal, second application).

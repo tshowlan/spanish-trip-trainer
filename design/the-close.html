@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — The Close (design artifact, §7 end-of-lesson ritual)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-sm: 14px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:740px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  :root[data-theme="dark"] .phone { background:linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%); }
+  .screen { padding:24px; height:100%; display:flex; flex-direction:column; }
+
+  .toprow { display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+  .progress { flex:1; height:4px; background:var(--bg-elevated); border-radius:2px; }
+  .progress > div { width:88%; height:100%; background:var(--accent); border-radius:2px; transition:width 400ms cubic-bezier(.2,.7,.3,1); }
+  .sring { width:26px; height:26px; }
+
+  /* The ritual announces itself with one quiet line, in flow — no interstitial */
+  .close-kicker { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.07em;
+    color:var(--accent-2); margin-bottom:6px; }
+  .prompt { font-size:var(--text-sm); color:var(--text); font-weight:500; margin-bottom:6px; }
+  .swap-line { font-size:13px; color:var(--text-dim); margin-bottom:14px; }
+  .swap-line b { font-family:var(--font-display); color:var(--text); font-weight:600; }
+
+  .inputbox { border:1.5px solid var(--border); border-radius:var(--radius-md); padding:14px; min-height:54px;
+    font-family:var(--font-display); font-size:17px; color:var(--text); position:relative;
+    transition:border-color var(--transition), background var(--transition); }
+  .inputbox.wash { border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+  .inputbox .cursor { display:inline-block; width:1.5px; height:1.1em; background:var(--secondary); vertical-align:text-bottom;
+    animation:blink 1000ms steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+  .inputbox .sweep { position:absolute; left:14px; right:14px; bottom:8px; height:2.5px; background:var(--green);
+    border-radius:2px; transform:scaleX(0); transform-origin:left center; }
+  .inputbox.wash .sweep { animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 150ms forwards; }
+  @keyframes sweep { to { transform:scaleX(1); } }
+
+  .grown { opacity:0; transform:translateY(5px); transition:opacity 280ms cubic-bezier(.2,.7,.3,1) 250ms, transform 280ms cubic-bezier(.2,.7,.3,1) 250ms; margin-top:16px; }
+  .grown.show { opacity:1; transform:none; }
+  .kicker-row { display:flex; align-items:center; gap:7px; margin-bottom:8px; }
+  .kicker-row .txt { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.06em; color:var(--green); }
+  .en-line { font-size:13px; color:var(--text-dim); margin-bottom:16px; }
+  .audio-row { display:flex; align-items:center; gap:10px; }
+  .ac-speaker { width:44px; height:44px; border-radius:50%; border:none; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; color:#231e05; cursor:pointer;
+    box-shadow:0 2px 0 color-mix(in srgb, var(--accent-2) 60%, transparent);
+    transition:transform var(--transition), box-shadow var(--transition); }
+  .ac-speaker:active { transform:translateY(2px); box-shadow:none; }
+  .bars { display:flex; align-items:flex-end; gap:2.5px; height:14px; margin-left:2px; }
+  .bars span { width:2.5px; background:var(--accent-2); border-radius:2px; height:4px; }
+  .playing .bars span { animation:bar 900ms ease-in-out infinite; }
+  .playing .bars span:nth-child(2){ animation-delay:120ms; } .playing .bars span:nth-child(3){ animation-delay:240ms; } .playing .bars span:nth-child(4){ animation-delay:360ms; }
+  @keyframes bar { 0%,100%{height:4px} 50%{height:13px} }
+  .audio-hint { font-size:12px; color:var(--text-dim); }
+  .note { font-size:12.5px; color:var(--text-dim); margin-top:14px; }
+  .cont { width:100%; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
+    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px; margin-top:18px;
+    cursor:pointer; box-shadow:var(--shadow); transition:transform var(--transition), box-shadow var(--transition); }
+  .cont:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  .stick { position:absolute; top:20px; right:56px; font-family:var(--font-display); font-size:11px; font-weight:600;
+    color:var(--green); opacity:0; transform:translateY(3px); transition:opacity 300ms, transform 300ms; }
+  .stick.show { opacity:1; transform:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    .grown, .stick { transition:none; }
+    .inputbox.wash .sweep { animation:none; transform:scaleX(1); }
+    .inputbox .cursor { animation:none; }
+    .playing .bars span { animation:none; height:9px; }
+  }
+
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:440px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+      <div class="toprow">
+        <div class="progress"><div id="pbar"></div></div>
+        <svg class="sring" viewBox="0 0 26 26" id="sring"></svg>
+      </div>
+      <span class="stick" id="stick">Stronger</span>
+      <div class="close-kicker">THE CLOSE</div>
+      <div class="prompt" id="prompt"></div>
+      <div class="swap-line" id="swapline"></div>
+      <div class="inputbox" id="inputbox"><span id="typed"></span><span class="cursor" id="cursor"></span><span class="sweep"></span></div>
+      <div class="grown" id="grown"></div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="autoPlay()">play the whole close</button>
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    The close, APPROVED 2026-07-20. §7 end-of-lesson ritual: the last 2 reps of every
+    lesson are COLD typed (or spoken, penciled) production — (1) the lesson's core phrase, (2) ONE
+    variation produced by frame-swap ("Now ask for: the menu"), composed from taught frame × taught filler
+    (Mix-it mechanics debuting inside lessons; hand-authoring not required). Announced in flow by the gold
+    THE CLOSE kicker — no interstitial, no extra screen. Deliberately scaffold-free: no tiles, no hint
+    affordance (this is the summit; a miss routes to the correction sheet + requeue as normal). Single item
+    on stage → strength ring present (per the one-item rule). Step 1 is where YOURS-NOW naturally fires for
+    learners crossing cold production for the first time (kicker per resolution-frame precedence). Step 2
+    resolves with the standard frame; its swap prompt speaks the ESTABLISHED machine vocabulary ("Your bring-me machine again. Now ask for: the menu."), composable from the machine’s beat-hint name + the new filler; "cargo" was a stray one-off metaphor, retired. The machine is never described as being BUILT here: it was built in Chapter 0; the close RUNS it. Construction language would undercut the Stage-0 ownership promise. Spacing conforms to the variants batch rules (r2): grown at the standard 16px above-gap (was 22), en-line at the shared 13px footnote treatment; both inputs share the variants' box anatomy so matched margins here ARE matched visual gaps (the text-to-text rule satisfied by construction). Scripted playback included (artifact hygiene: full experience reviewable without typing).
+    Reduced motion: instant reveals. Frame 390.
+  </div>
+</div>
+
+<script>
+  let strength = 62;
+  const C = 2*Math.PI*10;
+  function ringSvg(pct){
+    return `<circle cx="13" cy="13" r="10" fill="none" stroke="var(--bg-elevated)" stroke-width="3"/>
+      <circle cx="13" cy="13" r="10" fill="none" stroke="var(--secondary)" stroke-width="3" stroke-linecap="round"
+        stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct/100)}" transform="rotate(-90 13 13)"
+        style="transition:stroke-dashoffset 500ms cubic-bezier(.2,.7,.3,1)"/>`;
+  }
+  const speakerBtn = `<button class="ac-speaker" onclick="playAudio(this)" aria-label="Play audio">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+  </button><span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>`;
+
+  const steps = [
+    {
+      prompt: 'Say it in Spanish: "Could you bring me the check?"',
+      swap: '',
+      answer: '\u00bfMe puede traer la cuenta?',
+      grown: `
+        <div class="kicker-row"><span class="txt">YOURS NOW</span></div>
+        <div class="en-line">Could you bring me the check?</div>
+        <div class="audio-row">${speakerBtn}<span class="audio-hint">Hear it whole</span></div>
+        <div class="note">Produced cold, no help. This one travels with you.</div>
+        <button class="cont" onclick="nextStep()">Continue</button>`
+    },
+    {
+      prompt: 'Your bring-me machine again.',
+      swap: 'Now ask for: <b>the menu</b>',
+      answer: '\u00bfMe puede traer el men\u00fa?',
+      grown: `
+        <div class="en-line">Could you bring me the menu?</div>
+        <div class="audio-row">${speakerBtn}<span class="audio-hint">Hear it whole</span></div>
+        <div class="note">You were never taught this sentence. You built it anyway.</div>
+        <button class="cont" onclick="nextStep()">Continue</button>`
+    }
+  ];
+
+  let step = 0, typeTimer, audioTimer;
+
+  function renderStep(){
+    const s = steps[step];
+    document.getElementById('sring').innerHTML = ringSvg(strength);
+    document.getElementById('prompt').textContent = s.prompt;
+    document.getElementById('swapline').innerHTML = s.swap;
+    document.getElementById('typed').textContent = '';
+    document.getElementById('cursor').style.display = 'inline-block';
+    const box = document.getElementById('inputbox');
+    box.classList.remove('wash');
+    box.querySelector('.sweep').style.animation = '';
+    const g = document.getElementById('grown');
+    g.classList.remove('show'); g.innerHTML = s.grown;
+    document.getElementById('stick').classList.remove('show');
+    document.getElementById('pbar').style.width = step === 0 ? '88%' : '94%';
+  }
+
+  function typeAnswer(done){
+    const s = steps[step];
+    const el = document.getElementById('typed');
+    let i = 0;
+    clearInterval(typeTimer);
+    typeTimer = setInterval(()=>{
+      el.textContent = s.answer.slice(0, ++i);
+      if (i >= s.answer.length){ clearInterval(typeTimer); done && done(); }
+    }, 55);
+  }
+
+  function resolveStep(){
+    document.getElementById('cursor').style.display = 'none';
+    document.getElementById('inputbox').classList.add('wash');
+    setTimeout(()=>{
+      const g = document.getElementById('grown');
+      g.classList.add('show');
+      const spk = g.querySelector('.ac-speaker');
+      if (spk) playAudio(spk);
+      strength = Math.min(100, strength + 7);
+      document.getElementById('sring').innerHTML = ringSvg(strength);
+      const st = document.getElementById('stick');
+      st.classList.add('show');
+      setTimeout(()=> st.classList.remove('show'), 1600);
+    }, 380);
+  }
+
+  function nextStep(){
+    step = (step + 1) % steps.length;
+    renderStep();
+    if (step === 0) return; // manual loop back to start; autoplay drives step 2
+    setTimeout(()=> typeAnswer(resolveStep), 600);
+  }
+
+  function autoPlay(){
+    step = 0; strength = 62;
+    renderStep();
+    setTimeout(()=> typeAnswer(()=> {
+      resolveStep();
+      setTimeout(()=>{ step = 1; renderStep(); setTimeout(()=> typeAnswer(resolveStep), 700); }, 3200);
+    }), 700);
+  }
+
+  function playAudio(spk){
+    const row = spk.parentElement;
+    row.classList.add('playing');
+    clearTimeout(audioTimer);
+    audioTimer = setTimeout(()=> row.classList.remove('playing'), 1600);
+  }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  renderStep();
+  setTimeout(autoPlay, 400);
+</script>
+</body>
+</html>

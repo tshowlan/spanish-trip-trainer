@@ -74,7 +74,7 @@ Every recurring element is one of these components. Building a one-off variant o
 - Min touch target 44×44px including padding — applies to EVERYTHING tappable (this is the fix-class for small icon buttons).
 
 ### 3.2 Audio controls (the slow-voice fix)
-One `AudioControl` component, three variants — never ad-hoc speaker buttons. **All audio glyphs in `--accent-2` gold (§2.1) — the gold sound wave is a brand element.**
+One `AudioControl` component, three variants — never ad-hoc speaker buttons. **Glyph color law (refined 2026-07-20, §3.7): gold BUTTONS carry DARK glyphs; flat CARDS carry GOLD glyphs (`--accent-2`) — never gold-on-gold. The gold sound wave stays the brand element on flat surfaces.**
 - **Inline speaker** (in cards/exercises): 44px target, icon-only, plays at 1.0×. Playing state: icon swaps to animated gold bars (the one sanctioned "active" animation, tied to actual playback).
 - **Speed toggle**: a paired pill on the speaker — tap cycles 1.0× → 0.75× (shows "0.75×" label while slowed). Slow state persists for the current item only, resets on next item. Never a separate turtle button floating elsewhere.
 - **Chunk audio** (§4b.5 cards): tapping the chunk IS the audio trigger — no separate icon. Playing state: text chunks go gold (text + underline); the boxed new/error chunk gets a soft gold ring.
@@ -107,6 +107,19 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 - Home chips and standing line: per the §8b mockups — `--r-md`, fixed positions, counts update in place with a number-roll transition (`--t-base`).
 - Dials: per scores spec — number + trend, band color as the arc, no evaluative labels.
 
+### 3.7 Exercise-batch rules (adopted 2026-07-20; born in the six-type reviews, bind everywhere)
+
+- **Settle dialects:** FUSION = becoming a sentence (assembled pieces dissolve chrome into one line); PRESSED-IN = discrete objects reaching done (border kept, shadow dropped, elevated fill). Never mixed on one surface — a matched card is done, not becoming.
+- **One audio component:** the standard control everywhere, no miniature variants (the reply's bubble speaker is the standard control at 44px). **Glyph color law:** gold buttons carry DARK glyphs, flat cards carry GOLD glyphs, never gold-on-gold. No state-based glyph color exists — playing = the bars animate, the glyph stays put.
+- **Adjacent reveal, bottom Continue:** the grown (es/en/audio) sits directly below the work — the page grows where the work happened; Continue anchors to the thumb zone.
+- **No-repeat:** each string appears ONCE on the resolved screen, in whichever language the screen doesn't already hold; the grown carries only what's missing. When the exercise's own sentence completes in place (filled blank, fused row), it IS the es reveal — never repeated below.
+- **The grown is a footnote zone:** identical line treatment across exercises regardless of language (same class, same 13px dim line, same visual gap). Large es is reserved for centerpiece surfaces (the resolution frame's fused line). No language-based styling in the footnote zone.
+- **Uniform spacing is measured visually, text to text** — never by matching margin values (internal paddings stack invisibly; the eye is the instrument).
+- **Strength ring only when exactly one item is on stage.** Multi-item boards (pairs) use a collective whisper ("4 stronger") — per-item honesty at multi-item scale is noise.
+- **If it renders, it's in the artifact:** handoffs carry behavior; every visible element lives in the artifact. No invisible-in-the-mock chrome arriving at build time.
+- **Metaphor vocabulary is closed:** machines, fillers, slots, patterns. No new metaphor words via one-off copy (no "cargo") — new vocabulary is a design decision, never a copywriting accident.
+- **Audio-dependent artifacts ship with scripted full playback** (review hygiene): a "play this exercise" chrome button that runs the whole interaction, so audio timing is reviewable without a backend.
+
 ---
 
 ## 4. Interaction rules (bind everywhere)
@@ -119,6 +132,7 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 6. Empty/zero states are designed states with copy, never blank regions (e.g. Mistakes chip at 0: disabled-quiet, §8b.3).
 7. **One-time celebratory motion is sanctioned when it EXPLAINS a state change** (decisions 2026-07-16): the Tripfluent crown's sheen sweep fires once, only on a band-crossing event, to say "this was just achieved." Looping or ambient versions of the same effect remain banned (§1 feel principle 2) — the test is whether the motion communicates a change that just happened. Always disabled under `prefers-reduced-motion`.
 8. **Navigation light glide** (decisions 2026-07-17): 260ms nav / 300ms bloom on the system curve; the two durations are deliberate (a mass cue — the big light reads heavier). Content crossfades 180ms out/in during the glide. Reduced motion: jump, no glide. **The traveling light is a state transition, not ambient animation.** Implementation: single traveling elements moved by `transform` (nav light + bloom); per-tab decoration swapping and animated `background-position` are both banned.
+9. **Sequential composes, simultaneous shuffles** (2026-07-20): when multiple elements move to express one idea (the pairs reunion), they take turns in a legible order — staggered, each travel readable. Everything moving at once reads as a shuffle, not a statement. Reduced motion: instant final state.
 
 ---
 

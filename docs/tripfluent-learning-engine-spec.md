@@ -191,15 +191,18 @@ Rung thresholds are `base + difficulty` (item `difficulty` 1–5, default 2), so
 | Rung | Enter at exposures ≥ | Modes |
 |---|---|---|
 | 0 Present | 0 (always first) | **Presentation card** (show es + en + note, autoplay TTS, tap-to-replay, "Got it" — not graded) |
-| 1 Recognize | 1 | match, multiple-choice es→en — **the workhorses; weight these heavily** |
-| 2 Scaffold | 2 + difficulty | **one-blank fill (primary)**, tap-to-build, multiple-choice en→es |
-| 3 Cold | 5 + difficulty | type-answer, listen-and-type, speak-it (when built) |
+| 1 Recognize | 1 | match, meaning-pick es→en (English options), pairs (reviews), sound choice — **the workhorses; weight these heavily** |
+| 2 Scaffold | 2 + difficulty | **one-blank fill (primary)**, tap-to-build, audio cloze, ear build (1–2 distractors), the reply (options) |
+| 3 Cold | 5 + difficulty | type-answer, listen-and-type, ear build (3–4 distractors), the reply (typed), speak-it (when built) |
+
+*(Mode list updated 2026-07-20: multiple-choice en→es retired per §7.0 — options were complete es phrases; the six new types slot in at their §7.1 positions.)*
 
 Example: a difficulty-2 phrase scaffolds at 4 exposures, goes cold at 7. A difficulty-4 elaborate sentence scaffolds at 6, cold at 9.
 
 **Hard rules:**
 - An item's first appearance in the app is ALWAYS the presentation card. No exercise may test an item with `exposures === 0`.
-- **First-pass cap:** during a lesson's *first* completion, the ladder is capped at rung 2 — cold-production modes never appear, regardless of counters. Cold modes live only in review sessions and lesson replays. (Principle: **lessons introduce, reviews interrogate.**)
+- **First-pass cap:** during a lesson's *first* completion, the ladder is capped at rung 2 — cold-production modes never appear, regardless of counters. Cold modes live only in review sessions and lesson replays. (Principle: **lessons introduce, reviews interrogate.** Sanctioned exception, 2026-07-20: **the close** (§7.1) — the end-of-lesson ritual IS 2 cold typed reps by design; the cap governs the ladder's mode selection mid-lesson, not the ritual.)
+- **Replay rule (2026-07-20):** presentation cards + meet-the-piece are **exposure-0 furniture** — they fire **once per item EVER**. Lesson replays enter items at their **current rung**, never back at rung 0 (expertise reversal, second application: scaffolds fade by data, and a card the learner has outgrown is a scaffold).
 
 **Rung-down on failure:** two consecutive misses on an item → silently serve its next appearance one rung lower (never announced). Reset on next success. **Multi-chunk miss weighting:** a diffuse miss on a chunked item (the correction sheet's 2+-chunk case, where no single error locus exists — see decisions 2026-07-16) signals the phrase isn't encoded and is a stronger rung-down input than a single-chunk miss of equal count; weight it accordingly (arguably harder than a localized miss). A single-chunk error is a surgical discrimination slip, not a failure to hold the phrase.
 
@@ -331,6 +334,9 @@ Step-2 exception note: the framed guess does not violate the introduce-first rul
 ### 5.2 Next session warm-up — Milestone 2
 - Items missed in the previous 48h open the next session (max ~4), before new content.
 
+### 5.2b Confusion → sound choice (2026-07-20)
+- Logged confusion pairs (a miss where the learner's chosen wrong option / near-form is recorded) **preferentially spawn sound-choice reps** for the missed item, with the confused form as the distractor audio — the mistake loop's targeted remediation. The pair is remediated at the axis where it lives: the ear.
+
 ### 5.3 Long-term (SRS lapse) — Milestone 3
 - On miss: `interval = 1`, `ease = max(1.3, ease - 0.2)`, `lapses++`.
 
@@ -357,6 +363,8 @@ New function in `srs.js` (or `session.js`): `composeSession(lessonId)` returns a
 3. **New items (cap 5–7):** from the tapped lesson, in authored order, introduced via the **micro-batch weave** (§6.1b) — never as a consecutive card stack.
 4. **Interleave:** don't block reviews then news; due reviews fill the gaps the weave creates. Hard constraint: a new item's presentation card precedes any test of it.
 5. **Chunk pre-seed ordering:** when a queued new item triggers meet-the-piece (§4b.5), its chunk micro-intro is scheduled in an earlier weave slot than the host phrase's presentation card. Hard constraint, same standing as "presentation precedes test."
+6. **Variety rule (2026-07-20):** an item's **consecutive sessions never repeat the same exercise type at the same rung**. Same rung + same type twice running is a rut, not reinforcement; the composer varies the mode (or the rung moved, which resets the clock). Requires remembering each item's last-served type per rung (persisted, light).
+7. **Replay rule (2026-07-20, echoes §4.1):** replaying a lesson never re-fires presentation cards or meet-the-piece — exposure-0 furniture fires once per item ever; replayed items enter at their current rung.
 
 ### 6.1b Micro-batch weave (anti-massed-presentation rule)
 
@@ -386,15 +394,29 @@ When trip date < 14 days away: raise due-review share to ~½, prioritize `dietar
 
 ---
 
-## 7. New exercise types
+## 7. Exercise types (rewritten 2026-07-20 — expansion batch)
 
-Priority order:
+### 7.0 Retirement: full-phrase multiple choice
 
-1. **Presentation card** (Milestone 1) — described in §4. Counts as an exposure, never graded.
-2. **Choose the appropriate response** (Milestone 2) — English situation prompt → pick the right *learned* phrase from 4 options drawn from the trip's seen items. Zero new content needed. Auto-generate the prompt from the item's `en` ("You want to ask: *Is it very spicy?*") and use tag-matched distractors.
-3. **Understand the reply** (Milestone 2, needs `reply` fields authored) — play TTS of `reply.es` → multiple-choice its meaning. This trains comprehension of what locals say back; treat as recognition-rung.
-4. **Speak it** (Milestone 4) — Web Speech API (`SpeechRecognition`, lang from pack TTS locale). Lenient normalized match (strip accents/punctuation, ≥70% token overlap = pass). Feature-detect; hide entirely where unsupported (Firefox/iOS quirks). Never block progression on it.
-5. **Chained exchange** (Milestone 4) — hand-authored dialogue skeletons at the **lesson level**, referencing item IDs:
+**Options are NEVER complete phrases in the target language.** Phrase-MC tests discrimination between options, not form-meaning mapping (near-zero generation), and is the archetypal feels-productive exercise — retired by our own thesis. Recognition is served by **meaning-pick** (target phrase shown/heard, ENGLISH meaning options — retained), **chunk-tap**, **pairs**, and **slot-fill** (single-WORD es options completing a shown frame — retained and distinct: a word option is a discrimination at the slot, not a phrase to game). Inventory rule for live exercises: any mode whose options are complete es phrases retires or converts (en→es MC certainly; audit each listening/reply mode by its option language).
+
+### 7.1 The six types (added 2026-07-20)
+
+All six are **content-agnostic templates** — demo content in the artifacts is illustrative, never authored. Artifact captions are the canonical detail spec (`design/pairs-exercise.html`, `design/the-close.html`, `design/exercise-variants.html`). All resolve in the standard resolution frame; all inherit the imageless-exercises decision (2026-07-19); misses route to the standard correction flow.
+
+1. **Pairs** — the review workhorse. 4 audio cards × 4 en cards, columns shuffled independently; tap to match. Axes: native (audio→meaning). Rung: any reviewable item (exposures ≥ 1). Content: **any 4 items from the session's SRS review queue** — no pairing data needed, items ARE the pairs (audio + en are item fields). Resolution: matched audio card settles **pressed-in** and reveals its es with a green sweep (sound welded to spelling, per the always-reveal decision); en card dims to settled text; on the 4th match, the **reunion** — staggered FLIP reorder into paired rows — then a collective **"4 stronger"** whisper (multi-item board: no per-item strength ring) and Continue.
+2. **The close** — the end-of-lesson ritual: **2 cold typed reps**, scaffold-free. Rep 1: the lesson's **anchor item**, from English prompt. Rep 2: a **frame-swap variation** — frame × cross-machine taught filler (Mix-it exclusions apply: no ¿A qué hora?, fillers graded exactly as taught), swap prompt composed from the machine's **beat-hint name + filler** ("Your bring-me machine again. Now ask for: **the menu**"). The machine is RUN here, never "built." Axes: production + cold; **Yours-now's natural home**. Zero per-lesson authoring. Where Mix-it mechanics debut.
+3. **Sound choice** — a sentence with a blank + **two audio options**; pick the sound that belongs. The blank sentence is the item's own es. Distractor audio from **§5 logged confusion pairs first** (the mistake loop's targeted remediation), phonetic near-forms otherwise. Axes: native (fine auditory discrimination). Resolution: correct card settles pressed-in and reveals its es; the blank fills with the word + sweep — the completed sentence IS the es reveal (no-repeat); the grown carries en only.
+4. **Audio cloze** — hear the whole phrase, **type the missing word**; the gap is chosen by the existing blank-rotation rules (§4b.1). Zero new authoring. Axes: native + production at word scale. Silent forgiveness applies; the "Accents and capitals don't matter" expectation-setter is ratified. Resolution: the word fills the blank + sweep; grown carries en.
+5. **Ear build** — **audio only, no English shown**; assemble the phrase from tiles. Resolution FUSES the assembly (becoming-a-sentence dialect) and the MEANING arrives in the materialization (symmetric with listen-and-type, where spelling arrives). Axes: native. Distractor tiles are a difficulty dial on the **scaffolded→cold axis: 1–2 early, 3–4 at strength** `[tune]`; selection is principled, never random: §5 confusion near-forms → same-frame fillers → structural twins — distractors must test the EAR, not process of elimination.
+6. **The reply** — a cast-voice bubble (standard audio control, 44px) speaks a local's line; the learner picks their RESPONSE from **English meaning options** (never es phrases — the retirement holds); the chosen reply's es arrives at resolution. Higher rungs swap options for typed input (same screen). Axes: chained (lite) + native. The ONE type needing authoring: a **`replyTo` field** linking a response item to a locals-say line (or chain data where it exists). Dormant until authored — Phase-3 list; Chapter 0 K3 "What locals say" is the natural seed corpus.
+
+### 7.2 Retained types
+
+1. **Presentation card** — described in §4. Counts as an exposure, never graded. Exposure-0 furniture: fires **once per item ever** (§4.1 replay rule).
+2. **Understand the reply** (needs `reply` fields authored) — play TTS of `reply.es` → meaning-pick (ENGLISH options; compliant with §7.0). Trains comprehension of what locals say back; recognition-rung.
+3. **Speak it** (Milestone 4) — Web Speech API (`SpeechRecognition`, lang from pack TTS locale). Lenient normalized match (strip accents/punctuation, ≥70% token overlap = pass). Feature-detect; hide entirely where unsupported (Firefox/iOS quirks). Never block progression on it. Speech pencils recorded in §10.
+4. **Chained exchange** (Milestone 4) — hand-authored dialogue skeletons at the **lesson level**, referencing item IDs:
 
 ```js
 // In a pack, on a lesson object — pure data:
@@ -410,7 +432,9 @@ chain: {
 }
 ```
    Rendered as a chat-style screen. Used as stage-end "boss" lessons. Correct user turns set `chained = 1` on those items. This is the single sanctioned exception to fully auto-generated exercises.
-6. **Speed round** (Milestone 4) — 60s timed match over graduated items.
+5. **Speed round** (Milestone 4) — 60s timed match over graduated items.
+
+*Retired from this list (2026-07-20): "Choose the appropriate response" — its options were complete learned es phrases (§7.0). Its job splits into the reply (situational response, English options) and the close (cold production of the situationally right phrase).*
 
 ---
 
@@ -454,6 +478,7 @@ Nobody knows the optimal numbers, including the literature (population- and cont
 | First interval | by item difficulty | `seedInterval` |
 | Recognition-graduation threshold | 4 exposures | rung thresholds (§4.1) |
 | Mature-rep auto-advance | OFF (self-paced Continue) | `resolveCorrect` in lesson.js; enable only per the expertise-reversal pencil (scores §8.5) |
+| Ear-build distractor scaling | 1–2 tiles early → 3–4 at strength | ear-build tray composer in lesson.js; count keys on the scaffolded→cold axis (§7.1) |
 
 ## 8b. Home screen: action tile, review row, standing line
 
@@ -588,6 +613,7 @@ Deferred (flag only, do not build): reframing the progress view as an itinerary 
 - **Graded reader passages** (penciled, do not build): short readings composed only from the learner's known items, unlockable per pass — the long-term narrative payoff. Own spec when its time comes.
 - **Mix it practice mode** (penciled, do not build): frames × cross-machine taught fillers compose novel gradeable sentences ("Necesito un café" from necesito + quiero's filler) — the machines paying rent between lessons, manufacturing the transfer moment the pattern-moment dismissal only samples. Slots into Practice's chooser. Exclusions per build review: ¿A qué hora ___? excluded (closed verb set, not swappable); fillers graded exactly as taught; article/gender variants are an explicit accept/reject decision at build time.
 - **Session-end summary** (penciled, do not build): the home for session-scale Readiness delta (before → after count-up, top-center interstitial tint, scale-ladder rule) plus the restored count ("N restored"). Design after the primer wave.
+- **Speech pencils** (penciled 2026-07-20, do not build; both wait on speak-it / audio input being live): **"Say this phrase"** — straight spoken production of a shown phrase, graded by the speak-it matcher. **Card-pile drill** — a stack of known items produced aloud one by one; a wrong answer sends the card to the back of the pile; the drill ends when the pile is empty.
 
 ---
 

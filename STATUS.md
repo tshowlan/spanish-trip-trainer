@@ -2,6 +2,15 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-20 — Exercise system expansion approved (3 artifacts, 6 new types, phrase-MC retired) — building ON BRANCH `exercise-batch`
+- RETIRED: full-phrase multiple choice — options are NEVER complete phrases in the target language (discrimination-gaming, near-zero generation; the feels-productive archetype). Inventory needed: which live exercises instantiate it and what each becomes (Code working session if any are load-bearing).
+- NEW TYPES: Pairs (4 audio × 4 en review workhorse; pressed-in settles; staggered reunion completion; "4 stronger" collective tick) · The close (end-of-lesson ritual: 2 cold typed reps — core phrase + frame-swap variation composed from beat-hint name + filler, zero per-lesson authoring; Yours-now's natural home; scaffold-free) · Sound choice (blank + two audio options; §5 confusion-pair wiring = the mistake loop's targeted remediation) · Audio cloze (hear phrase, type missing word; blank-rotation picks the gap) · Ear build (audio only, tile assembly, fusion resolve, meaning arrives at resolution; distractor scaling 1–2→3–4 on the scaffolded→cold axis [tune], selection from confusion near-forms / same-frame fillers / structural twins — never random) · The reply (cast-voice bubble + English response options; es arrives at resolution; higher rungs swap options for typed input).
+- Replay rule: presentation cards + meet-the-piece are exposure-0 furniture, fire once per item EVER; lesson replays enter items at current rung (expertise reversal).
+- Composer variety rule: an item's consecutive sessions never repeat the same exercise type at the same rung.
+- Speech pencils recorded: "say this phrase" production; card-pile drill (wrong → back of pile). Imageless-exercise decision INHERITED by all new types (2026-07-19 exception stands; concrete-noun pencil unchanged).
+- Code's "Accents and capitals don't matter" input helper: RATIFIED (expectation-setting before the answer is consistent with silent forgiveness, which governs after).
+- All six types are content-agnostic templates; only the reply needs authoring (`replyTo` link, dormant until the Phase-3 list; Chapter 0 K3 "What locals say" is the seed corpus). The close composes from the lesson's anchor item + frame × cross-machine filler (Mix-it exclusions apply), swap prompt from beat-hint name + filler.
+
 ## 2026-07-19 — Toast rework built (resolution frame r7) — ON BRANCH `toast-rework`
 - Both mid-exercise toasts RETIRED at the source. Restored -> the frame's kicker: green RESTORED + inline mini strength ring animating fading-gold low-arc to strong-blue (600ms off .res-grown.show, pure CSS) + "This one was fading. You brought it back." Precedence: one kicker per resolution, YOURS NOW > RESTORED; run.restored still counts for the session tally.
 - Accent/typo nudge KILLED, no replacement: accepted answers are never qualified; the always-on es-reveal is the passive mechanism. Silent slip telemetry added (learn[id].slips); never surfaces.

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Exercise Variants (design artifact, §7: sound choice / audio cloze / ear build / the reply)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-sm: 14px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:740px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  :root[data-theme="dark"] .phone { background:linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%); }
+  .screen { padding:24px; height:100%; display:flex; flex-direction:column; }
+
+  .toprow { display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+  .progress { flex:1; height:4px; background:var(--bg-elevated); border-radius:2px; }
+  .progress > div { width:52%; height:100%; background:var(--accent); border-radius:2px; }
+  .sring { width:26px; height:26px; }
+  .stick { position:absolute; top:20px; right:56px; font-family:var(--font-display); font-size:11px; font-weight:600;
+    color:var(--green); opacity:0; transform:translateY(3px); transition:opacity 300ms, transform 300ms; }
+  .stick.show { opacity:1; transform:none; }
+
+  .prompt { font-size:var(--text-sm); color:var(--text-dim); margin-bottom:16px; }
+
+  /* Shared: sentence with a blank */
+  .sentence { font-family:var(--font-display); font-size:21px; font-weight:500; color:var(--text); line-height:1.6; margin-bottom:18px; position:relative; }
+  .sentence .blank { display:inline-block; min-width:96px; border-bottom:2px solid var(--secondary); color:var(--secondary); text-align:center; font-weight:600;
+    transition:color var(--transition), border-color var(--transition); }
+  .sentence .blank.filled { color:var(--text); border-bottom-color:transparent; position:relative; }
+  .sentence .blank.filled::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--green); border-radius:2px;
+    transform:scaleX(0); transform-origin:left center; animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+  @keyframes sweep { to { transform:scaleX(1); } }
+
+  /* Audio option cards (sound choice) + audio chips */
+  .audio-opts { display:flex; gap:10px; margin-bottom:8px; }
+  .audio-card { flex:1; border:1.5px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    min-height:58px; padding:10px; cursor:pointer; box-shadow:var(--shadow);
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    font-family:var(--font-display); font-size:15px; font-weight:500; color:var(--text);
+    transition:transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition); }
+  .audio-card:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .audio-card.sel { border-color:var(--secondary); box-shadow:0 0 0 3px color-mix(in srgb, var(--secondary) 15%, transparent), var(--shadow); }
+  .audio-card.settled { border-color:var(--border); box-shadow:none; background:var(--bg-elevated); cursor:default; }
+  :root[data-theme="dark"] .audio-card.settled { background:rgba(255,255,255,0.05); }
+  /* Two audio elements, two glyph colors: gold BUTTONS (standard control) carry
+     the dark glyph; flat CARDS (pairs / sound-choice options) carry the gold
+     glyph. Never gold-on-gold. */
+  .audio-card .glyph { color:var(--accent-2); display:flex; }
+  .bigspk .glyph { color:#231e05; display:flex; line-height:0; }
+  .bars { display:flex; align-items:flex-end; gap:2px; height:12px; }
+  .bars span { width:2px; background:var(--accent-2); border-radius:2px; height:3px; }
+  .playing .bars span { animation:bar 900ms ease-in-out infinite; }
+  .playing .bars span:nth-child(2){ animation-delay:120ms; } .playing .bars span:nth-child(3){ animation-delay:240ms; }
+  @keyframes bar { 0%,100%{height:3px} 50%{height:11px} }
+
+  /* Big speaker (audio cloze / ear build / the reply prompt line) */
+  .bigspk { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+  .bigspk .btn { width:48px; height:48px; border-radius:50%; border:none; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; color:#231e05; cursor:pointer;
+    box-shadow:0 2px 0 color-mix(in srgb, var(--accent-2) 60%, transparent);
+    transition:transform var(--transition), box-shadow var(--transition); }
+  .bigspk .btn:active { transform:translateY(2px); box-shadow:none; }
+  .bigspk .hint { font-size:12.5px; color:var(--text-dim); }
+
+  /* Typed input (audio cloze) */
+  .inputbox { border:1.5px solid var(--border); border-radius:var(--radius-md); padding:13px; min-height:50px;
+    font-family:var(--font-display); font-size:17px; color:var(--text); position:relative;
+    transition:border-color var(--transition), background var(--transition); }
+  .inputbox.wash { border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+  .inputbox .cursor { display:inline-block; width:1.5px; height:1.1em; background:var(--secondary); vertical-align:text-bottom; animation:blink 1000ms steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+
+  /* Tiles (ear build) — answer row fuses per resolution law */
+  .answer-row { min-height:52px; border-bottom:1.5px solid var(--border); padding-bottom:9px; margin-bottom:18px;
+    display:flex; flex-wrap:wrap; align-items:flex-end; gap:8px; position:relative; transition:gap 300ms cubic-bezier(.2,.7,.3,1); }
+  .answer-row.fused { gap:5px; border-bottom-color:transparent; }
+  .answer-row .tile { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:8px 12px; font-family:var(--font-display); font-size:17px; font-weight:500; color:var(--text); box-shadow:var(--shadow);
+    transition:background 300ms, border-color 300ms, box-shadow 300ms, padding 300ms cubic-bezier(.2,.7,.3,1); }
+  .answer-row.fused .tile { background:transparent; border-color:transparent; box-shadow:none; padding:8px 0; font-weight:600; }
+  .answer-row .sweep { position:absolute; left:0; bottom:7px; height:2.5px; width:100%; background:var(--green); border-radius:2px;
+    transform:scaleX(0); transform-origin:left center; }
+  .answer-row.fused .sweep { animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 200ms forwards; }
+  .tray { display:flex; flex-wrap:wrap; gap:8px; transition:opacity 300ms; }
+  .tray .tile { background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:8px 12px; font-family:var(--font-display); font-size:17px; font-weight:500; color:var(--text-dim); cursor:pointer; }
+  .tray.recede { opacity:0.28; }
+
+  /* Local bubble (the reply) */
+  .bubble { background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px;
+    padding:13px 15px; margin-bottom:6px; }
+  :root[data-theme="dark"] .bubble { background:rgba(255,255,255,0.06); }
+  .bubble .who { font-family:var(--font-display); font-size:10.5px; font-weight:600; letter-spacing:0.05em; color:var(--accent-2); margin-bottom:5px; }
+  .bubble .line { display:flex; align-items:center; gap:9px; font-family:var(--font-display); font-size:16.5px; font-weight:500; color:var(--text); }
+  .bubble .line .spk { width:44px; height:44px; min-width:44px; border-radius:50%; border:none; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; color:#231e05; cursor:pointer;
+    box-shadow:0 2px 0 color-mix(in srgb, var(--accent-2) 60%, transparent);
+    transition:transform var(--transition), box-shadow var(--transition); }
+  .bubble .line .spk:active { transform:translateY(2px); box-shadow:none; }
+  .bubble .line .spk .glyph { display:flex; line-height:0; }
+  .bubble .line .spk .glyph svg { width:18px; height:18px; transform:translateX(1px); }
+  .bubble .en-gloss { font-size:12px; color:var(--text-dim); margin-top:5px; }
+
+  /* English meaning options (the reply, sound-choice-adjacent) */
+  .opts { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .opt { border:1px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    padding:12px 14px; font-family:var(--font-display); font-size:15px; font-weight:500; color:var(--text);
+    cursor:pointer; box-shadow:var(--shadow); min-height:48px; text-align:left;
+    transition:transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition); }
+  .opt:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .opt.got { border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+
+  /* Resolution materialization */
+  .grown { opacity:0; transform:translateY(5px); transition:opacity 280ms cubic-bezier(.2,.7,.3,1) 250ms, transform 280ms cubic-bezier(.2,.7,.3,1) 250ms; margin-top:16px; }
+  .grown.bottomcont { margin-top:auto; }
+  .grown.show { opacity:1; transform:none; }
+  .es-line { font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .en-line { font-size:13px; color:var(--text-dim); margin-bottom:14px; }
+  .cont { width:100%; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
+    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px;
+    cursor:pointer; box-shadow:var(--shadow); transition:transform var(--transition), box-shadow var(--transition); }
+  .cont:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  @media (prefers-reduced-motion: reduce){
+    .grown, .stick, .answer-row, .answer-row .tile, .tray { transition:none; }
+    .sentence .blank.filled::after, .answer-row.fused .sweep { animation:none; transform:scaleX(1); }
+    .inputbox .cursor { animation:none; }
+    .playing .bars span { animation:none; height:8px; }
+  }
+
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:440px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+      <div class="toprow">
+        <div class="progress"><div></div></div>
+        <svg class="sring" viewBox="0 0 26 26" id="sring"></svg>
+      </div>
+      <span class="stick" id="stick">Stronger</span>
+      <div class="prompt" id="prompt"></div>
+      <div id="stage" style="flex:1; display:flex; flex-direction:column;"></div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="cycleState()" id="stateBtn">exercise: sound choice</button>
+    <button onclick="playState()">play this exercise</button>
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    Exercise variants, APPROVED 2026-07-20. Four §7 types on shared chrome, all
+    single-item (strength ring present per the one-item rule), all resolving in the standard frame, all with
+    scripted playback (audio hygiene). SOUND CHOICE: sentence with a blank + two audio cards; wired to §5
+    confusion pairs (cuenta/cuento demo) — the mistake loop's targeted remediation; correct card settles
+    pressed-in and the blank fills with its es + sweep. AUDIO CLOZE: hear the phrase, type the missing word
+    (blank-rotation rules pick the gap; silent forgiveness applies); the word fills the blank at resolution.
+    EAR BUILD DISTRACTORS: tray extras are a difficulty dial on the scaffolded→cold axis (1–2 early, 3–4 at
+    strength [tune], demo shows 3); selection is principled, never random: §5 confusion near-forms (una
+    fiesta/una farmacia), same-frame fillers (wifi belongs to ¿Hay ___?), structural twins (lejos?/cerca?) —
+    distractors must test the EAR, not process of elimination. EAR BUILD: audio only, NO English shown — assemble from tiles; resolution FUSES the assembly (becoming a
+    sentence = fusion dialect) and the MEANING arrives in the materialization (symmetric with listen, where
+    spelling arrives). GLYPH COLOR RULE (r4, Tom's catch): gold buttons carry DARK glyphs, flat cards carry GOLD glyphs, never gold-on-gold — the big speakers in audio cloze / ear build had a selector bug rendering accent-2 on the accent button (the 'greyed' look); the reply was the only correct one. No state-based glyph color exists: playing = bars animate, glyph color is static. THE REPLY: bubble speaker is the STANDARD audio control at 44px (one audio component everywhere, no
+    miniature variants), glyph flex-mounted (kills inline-svg baseline sag) + optically centered; the
+    learner picks their RESPONSE from English meaning options — options are never complete es phrases
+    (phrase-MC retirement holds); the chosen reply's es arrives at resolution; higher rungs produce the reply
+    typed/spoken [same screen, input replaces options]. NO-REPEAT RULE (r5, Tom): the grown carries only what's MISSING from the screen — when the exercise's own sentence completes in place (filled blank, fused row), it IS the es reveal and is never repeated below; sound choice and audio cloze both cut their duplicate es-lines (the reply keeps its es-line, its Spanish appearing nowhere else, and CUTS its en-line: the chosen English option remains on screen in its settled state and is the meaning — each string once, in whichever language the screen doesn't already hold). GROWN SCALE (r7, Tom): the translation line below the exercise is IDENTICAL across all four — same class (.en-line), same 13px, same dim grey, same 16px spacing from the content above, zero inline overrides on the lines themselves (ear build compensates twice: the 18px tray-era row margin removed, then the grown's top margin trimmed to 6px to offset the row's ~10px internal paddings — the uniform gap is measured VISUALLY text-to-text, not by matching margin values) — regardless of which language it carries; no language-based styling in the footnote zone. Large es remains reserved for centerpiece surfaces (the resolution frame's fused line). LAYOUT RULE (r3, Tom + built screenshot): the reveal (es/en/audio) sits ADJACENT below the exercise
+    content — the page grows where the work happened — while Continue anchors to the BOTTOM (thumb zone,
+    consistent with the built resolution frame); ear build's meaning line sits directly under the fused
+    sentence, tray below. Em-dash sweep done on all shipped copy; designer annotations removed from en-lines
+    (notes live in this caption, never in copy). Reply speaker optically centered (18px glyph, +1px x).
+    Misses route to the standard correction flow (not demoed). Frame 390.
+  </div>
+</div>
+
+<script>
+  let strength = 54;
+  const C = 2*Math.PI*10;
+  function ringSvg(pct){
+    return `<circle cx="13" cy="13" r="10" fill="none" stroke="var(--bg-elevated)" stroke-width="3"/>
+      <circle cx="13" cy="13" r="10" fill="none" stroke="var(--secondary)" stroke-width="3" stroke-linecap="round"
+        stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct/100)}" transform="rotate(-90 13 13)"
+        style="transition:stroke-dashoffset 500ms cubic-bezier(.2,.7,.3,1)"/>`;
+  }
+  const spkGlyph = `<span class="glyph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></span>`;
+  const barsHtml = `<span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>`;
+  const contBtn = `<button class="cont">Continue</button>`;
+
+  const states = {
+    soundchoice: {
+      label: 'exercise: sound choice',
+      prompt: 'Which sound completes it?',
+      html: `
+        <div class="sentence">\u00bfMe puede traer la <span class="blank" id="blank">______</span>?</div>
+        <div class="audio-opts">
+          <div class="audio-card" id="optA">${spkGlyph}${barsHtml}</div>
+          <div class="audio-card" id="optB">${spkGlyph}${barsHtml}</div>
+        </div>
+        <div style="font-size:11.5px; color:var(--text-dim)">Tap to hear each. Pick the one that belongs.</div>
+        <div class="grown" id="grown">
+          <div class="en-line">Could you bring me the check? (Not el cuento: the story.)</div>
+        </div>
+        <div class="grown bottomcont">${contBtn}</div>`,
+      script(){
+        seq([
+          [500, ()=> play(el('optA'))],
+          [1400, ()=> play(el('optB'))],
+          [2400, ()=> { el('optA').classList.add('sel'); play(el('optA')); }],
+          [3100, ()=> {
+            el('optA').classList.remove('sel');
+            el('optA').classList.add('settled');
+            el('optA').innerHTML = spkGlyph + '<span>cuenta</span>' + barsHtml;
+            el('optB').style.opacity = '0.35';
+            const b = el('blank'); b.textContent = 'cuenta'; b.classList.add('filled');
+            finish();
+          }]
+        ]);
+      }
+    },
+    audiocloze: {
+      label: 'exercise: audio cloze',
+      prompt: 'Listen, then type the missing word',
+      html: `
+        <div class="bigspk"><button class="btn" onclick="play(this.parentElement)">${spkGlyph}</button><span class="hint">Hear the whole phrase</span>${barsHtml}</div>
+        <div class="sentence">\u00bfCu\u00e1nto <span class="blank" id="blank">______</span> esto?</div>
+        <div class="inputbox" id="inputbox"><span id="typed"></span><span class="cursor" id="cursor"></span></div>
+        <div class="grown" id="grown">
+          <div class="en-line">How much is this?</div>
+        </div>
+        <div class="grown bottomcont">${contBtn}</div>`,
+      script(){
+        seq([
+          [400, ()=> play(document.querySelector('.bigspk'))],
+          [1700, ()=> typeInto('cuesta')],
+          [2600, ()=> {
+            el('cursor').style.display = 'none';
+            el('inputbox').classList.add('wash');
+            const b = el('blank'); b.textContent = 'cuesta'; b.classList.add('filled');
+            finish();
+          }]
+        ]);
+      }
+    },
+    earbuild: {
+      label: 'exercise: ear build',
+      prompt: 'Build what you hear',
+      html: `
+        <div class="bigspk"><button class="btn" onclick="play(this.parentElement)">${spkGlyph}</button><span class="hint">No text. Just your ear.</span>${barsHtml}</div>
+        <div class="answer-row" id="arow" style="margin-bottom:0"><span class="sweep"></span></div>
+        <div class="grown" id="grown" style="margin-top:6px">
+          <div class="en-line">Is there a pharmacy nearby?</div>
+        </div>
+        <div style="flex:1"></div>
+        <div class="tray" id="tray">
+          <span class="tile" data-w="\u00bfHay">\u00bfHay</span><span class="tile" data-w="cerca?">cerca?</span><span class="tile" data-w="una farmacia">una farmacia</span><span class="tile" data-w="wifi">wifi</span><span class="tile" data-w="una fiesta">una fiesta</span><span class="tile" data-w="lejos?">lejos?</span>
+        </div>
+        <div class="grown bottomcont">${contBtn}</div>`,
+      script(){
+        const words = ['\u00bfHay','una farmacia','cerca?'];
+        const steps = [[400, ()=> play(document.querySelector('.bigspk'))]];
+        words.forEach((w, i) => steps.push([1600 + i*700, ()=> {
+          const t = [...el('tray').children].find(x => x.dataset.w === w);
+          const row = el('arow');
+          row.insertBefore(t, row.querySelector('.sweep'));
+        }]));
+        steps.push([1600 + words.length*700 + 300, ()=> {
+          el('arow').classList.add('fused');
+          el('tray').classList.add('recede');
+          finish();
+        }]);
+        seq(steps);
+      }
+    },
+    reply: {
+      label: 'exercise: the reply',
+      prompt: 'The waiter comes over.',
+      html: `
+        <div class="bubble">
+          <div class="who">MARINA \u00b7 THE HARBOR CAF\u00c9</div>
+          <div class="line"><button class="spk" onclick="play(this.closest('.line'))">${spkGlyph}</button><span>\u00bfAlgo m\u00e1s?</span>${barsHtml}</div>
+          <div class="en-gloss">Anything else?</div>
+        </div>
+        <div class="opts" id="opts">
+          <button class="opt" data-right="1">No thanks, just the check</button>
+          <button class="opt">A table for two, please</button>
+          <button class="opt">Where is the station?</button>
+        </div>
+        <div class="grown" id="grown">
+          <div class="en-line">No gracias, la cuenta por favor</div>
+        </div>
+        <div class="grown bottomcont">${contBtn}</div>`,
+      script(){
+        seq([
+          [500, ()=> play(document.querySelector('.bubble .line'))],
+          [1900, ()=> {
+            const right = document.querySelector('.opt[data-right]');
+            right.classList.add('got');
+            [...el('opts').children].forEach(o => { if (!o.dataset.right) o.style.opacity = '0.35'; });
+            finish();
+          }]
+        ]);
+      }
+    }
+  };
+
+  const order = ['soundchoice','audiocloze','earbuild','reply'];
+  let cur = 'soundchoice';
+  let timers = [];
+
+  function el(id){ return document.getElementById(id); }
+  function seq(steps){ steps.forEach(([t, fn]) => timers.push(setTimeout(fn, t))); }
+  function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
+
+  function render(){
+    clearTimers();
+    strength = 54;
+    el('sring').innerHTML = ringSvg(strength);
+    el('stick').classList.remove('show');
+    const s = states[cur];
+    el('prompt').textContent = s.prompt;
+    el('stage').innerHTML = s.html;
+  }
+
+  function finish(){
+    setTimeout(()=>{
+      document.querySelectorAll('.grown').forEach(g => g.classList.add('show'));
+      strength = Math.min(100, strength + 6);
+      el('sring').innerHTML = ringSvg(strength);
+      el('stick').classList.add('show');
+      timers.push(setTimeout(()=> el('stick').classList.remove('show'), 1600));
+    }, 400);
+  }
+
+  let audioTimers = new WeakMap();
+  function play(elx){
+    if (!elx) return;
+    elx.classList.add('playing');
+    clearTimeout(audioTimers.get(elx));
+    audioTimers.set(elx, setTimeout(()=> elx.classList.remove('playing'), 1100));
+  }
+
+  function playState(){ render(); states[cur].script(); }
+  function cycleState(){
+    cur = order[(order.indexOf(cur)+1) % order.length];
+    el('stateBtn').textContent = states[cur].label;
+    playState();
+  }
+  function typeInto(word){
+    const t = el('typed');
+    let i = 0;
+    const iv = setInterval(()=>{
+      t.textContent = word.slice(0, ++i);
+      if (i >= word.length) clearInterval(iv);
+    }, 70);
+    timers.push(iv);
+  }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  playState();
+</script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Pairs Exercise (design artifact, §7 new exercise type)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-sm: 14px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:740px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  :root[data-theme="dark"] .phone { background:linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%); }
+  .screen { padding:24px; height:100%; display:flex; flex-direction:column; }
+
+  .progress { height:4px; background:var(--bg-elevated); border-radius:2px; margin-bottom:26px; }
+  .progress > div { width:44%; height:100%; background:var(--accent); border-radius:2px; transition:width 400ms cubic-bezier(.2,.7,.3,1); }
+  .prompt { font-size:var(--text-sm); color:var(--text-dim); margin-bottom:18px; }
+
+  /* ============ PAIRS GRID ============ */
+  .pairs { display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; align-content:start; }
+
+  .card { border:1.5px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    min-height:58px; padding:10px 12px; cursor:pointer; box-shadow:var(--shadow); position:relative;
+    display:flex; align-items:center; justify-content:center; gap:8px; text-align:center;
+    font-family:var(--font-display); font-size:15.5px; font-weight:500; color:var(--text);
+    transition:transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition), opacity var(--transition); }
+  .card:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  /* Selected-awaiting: interactive blue */
+  .card.sel { border-color:var(--secondary); box-shadow:0 0 0 3px color-mix(in srgb, var(--secondary) 15%, transparent), var(--shadow); }
+
+  /* Audio cards: speaker glyph only pre-match */
+  .card.audio .glyph { color:var(--accent-2); display:flex; }
+  .card .bars { display:flex; align-items:flex-end; gap:2px; height:12px; }
+  .card .bars span { width:2px; background:var(--accent-2); border-radius:2px; height:3px; }
+  .card.playing .bars span { animation:bar 900ms ease-in-out infinite; }
+  .card.playing .bars span:nth-child(2){ animation-delay:120ms; } .card.playing .bars span:nth-child(3){ animation-delay:240ms; }
+  @keyframes bar { 0%,100%{height:3px} 50%{height:11px} }
+
+  /* Matched: the pair SETTLES. Audio card reveals its es (sound, meet spelling);
+     both sides drop chrome weight and carry the green sweep underline. */
+  /* Matched = the button PUSHED IN: border kept, elevation gone, surface sunken —
+     the app's press physics as a persistent state (pressed = done). Cards stay
+     solid objects so the reunion moves glyphs, not floating text. */
+  .card.matched { border-color:var(--border); box-shadow:none; background:var(--bg-elevated); cursor:default; }
+  :root[data-theme="dark"] .card.matched { background:rgba(255,255,255,0.05); }
+  .card.matched.en { color:var(--text-dim); font-weight:400; font-size:14px; }
+  .card.matched .es-word { position:relative; padding-bottom:3px; }
+  .card.matched .es-word::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+    background:var(--green); border-radius:2px; transform:scaleX(0); transform-origin:left center;
+    animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+  @keyframes sweep { to { transform:scaleX(1); } }
+  .card.matched.audio { cursor:pointer; } /* replay stays available */
+  .card.matched .glyph { color:var(--text-dim); }
+  .card.matched.playing .es-word { color:var(--accent-2); }
+
+  /* Mismatch: both cards return to neutral with a brief dim. No red, no shake. */
+  .card.miss { opacity:0.45; }
+
+  /* Resolution: Continue materializes when all pairs settle */
+  .grown { opacity:0; transform:translateY(5px); transition:opacity 280ms cubic-bezier(.2,.7,.3,1) 200ms, transform 280ms cubic-bezier(.2,.7,.3,1) 200ms; margin-top:auto; }
+  .grown.show { opacity:1; transform:none; }
+  .allset { font-size:13px; color:var(--text-dim); margin-bottom:4px; }
+  .cont { width:100%; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
+    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px; margin-top:12px;
+    cursor:pointer; box-shadow:var(--shadow); transition:transform var(--transition), box-shadow var(--transition); }
+  .cont:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  @media (prefers-reduced-motion: reduce){
+    .card, .grown { transition:none; }
+    .card.matched .es-word::after { animation:none; transform:scaleX(1); }
+    .card.playing .bars span { animation:none; height:8px; }
+  }
+
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:440px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+      <div class="progress"><div id="pbar"></div></div>
+      <div class="prompt">Match the sound to its meaning</div>
+      <div class="pairs" id="pairs"></div>
+      <div class="grown" id="grown">
+        <div style="font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--green); margin-bottom:5px">4 stronger</div>
+        <div class="allset">Four sounds, four meanings, four spellings. All yours.</div>
+        <button class="cont" onclick="reset()">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="autoPlay()" id="autoBtn">play the whole exercise</button>
+    <button onclick="reset()">reset</button>
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    Pairs exercise, APPROVED 2026-07-20. §7 new type: 4 audio × 4 English, the
+    review-block workhorse (draws from the session's SRS queue, not one lesson; best for kit items and
+    machine fillers). Tap an audio card (plays, blue selected state) then an English card: MATCH → the pair settles as PUSHED-IN buttons (r4, Tom): border kept, elevation removed, surface
+    sunken — the app's press physics as a persistent state, pressed = done; chrome-dissolve deliberately NOT
+    used here (fusion is for becoming a sentence; these stay discrete objects so the reunion moves solid
+    glyphs, not floating text). The audio card reveals its es with the green sweep (sound, meet spelling),
+    the en dims to caption weight; matched audio cards
+    stay tappable for replay (es gold while playing, chunk rules). MISMATCH → both cards dim briefly and
+    return to neutral: no red, no shake, informing not punishing; recorded per §5 at low weight [tune].
+    Selection order is free (audio-first or en-first both work). COMPLETION BEAT (r2, Tom): when the fourth pair settles, THE REUNION fires — pairs glide into their rows ONE AT A TIME, top row first (FLIP, 420ms travel, 200ms stagger, ~1.05s total): the sheet writes itself top-down, each pair reuniting as a unit the eye can follow, glyphs arranging rather than cards shuffling so each es sits beside its meaning: the scattered game physically composes into the tidy study sheet, then Continue materializes. Motion that explains (these belong together; now the board says so). This also fixes end-state legibility: shuffled columns meant matched pairs were non-adjacent. STRENGTH (r5): no per-item ring (four racing rings = noise), but the resolution promise holds via a COLLECTIVE tick: '4 stronger' whisper (green, same vocabulary as 'Stronger') materializes with Continue — one honest acknowledgment for four honest ticks; the per-item movements still ride to the session ledger. RULE (record): if it renders, it's in the artifact — handoffs carry behavior, never visible elements. Reduced motion: instant reorder. Reduced motion: instant
+    settles. DEMO NOTE: audio can't actually play in the artifact, so "play the whole exercise" runs the
+    full experience scripted — two correct matches, one deliberate mismatch (the dim-and-return), the rest,
+    then the reunion — review without guessing. Frame 390.
+  </div>
+</div>
+
+<script>
+  const items = [
+    { es: "la cuenta", en: "the check" },
+    { es: "ayuda", en: "help" },
+    { es: "la entrada", en: "the ticket" },
+    { es: "un cargador", en: "a charger" }
+  ];
+
+  const speakerGlyph = `<span class="glyph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></span>`;
+  const barsHtml = `<span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>`;
+
+  let sel = null; // { side, idx, el }
+  let matchedCount = 0;
+  let audioTimers = {};
+
+  function shuffle(a){ return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]); }
+
+  function render(){
+    sel = null; matchedCount = 0;
+    document.getElementById('grown').classList.remove('show');
+    document.getElementById('pbar').style.width = '44%';
+    const audioOrder = shuffle(items.map((_,i)=>i));
+    const enOrder = shuffle(items.map((_,i)=>i));
+    const grid = document.getElementById('pairs');
+    grid.innerHTML = '';
+    // interleave rows: audio column left, en column right
+    for (let r = 0; r < 4; r++){
+      const ai = audioOrder[r];
+      const a = document.createElement('div');
+      a.className = 'card audio';
+      a.dataset.idx = ai; a.dataset.side = 'audio';
+      a.innerHTML = speakerGlyph + barsHtml;
+      a.onclick = () => tap(a);
+      grid.appendChild(a);
+      const ei = enOrder[r];
+      const e = document.createElement('div');
+      e.className = 'card en';
+      e.dataset.idx = ei; e.dataset.side = 'en';
+      e.textContent = items[ei].en;
+      e.onclick = () => tap(e);
+      grid.appendChild(e);
+    }
+  }
+
+  function play(el){
+    el.classList.add('playing');
+    clearTimeout(audioTimers[el.dataset.idx + el.dataset.side]);
+    audioTimers[el.dataset.idx + el.dataset.side] = setTimeout(()=> el.classList.remove('playing'), 1100);
+  }
+
+  function tap(el){
+    if (el.classList.contains('matched')){
+      if (el.dataset.side === 'audio') play(el); // replay
+      return;
+    }
+    if (el.dataset.side === 'audio') play(el);
+    if (!sel){ sel = el; el.classList.add('sel'); return; }
+    if (sel === el){ return; } // re-tap same card: replay handled above, stay selected
+    if (sel.dataset.side === el.dataset.side){
+      // switched selection within a column
+      sel.classList.remove('sel'); sel = el; el.classList.add('sel'); return;
+    }
+    // cross-column: judge
+    const a = sel.dataset.side === 'audio' ? sel : el;
+    const e = sel.dataset.side === 'en' ? sel : el;
+    if (a.dataset.idx === e.dataset.idx){
+      // MATCH: settle both; audio reveals es
+      [a,e].forEach(c => { c.classList.remove('sel'); c.classList.add('matched'); });
+      a.innerHTML = speakerGlyph + `<span class="es-word">${items[a.dataset.idx].es}</span>` + barsHtml;
+      a.onclick = () => tap(a);
+      play(a);
+      matchedCount++;
+      if (matchedCount === 4){
+        document.getElementById('pbar').style.width = '56%';
+        setTimeout(reunite, 420);
+      }
+    } else {
+      // MISMATCH: brief dim, both return to neutral
+      [sel, el].forEach(c => { c.classList.remove('sel'); c.classList.add('miss'); });
+      const s1 = sel, s2 = el;
+      setTimeout(()=>{ s1.classList.remove('miss'); s2.classList.remove('miss'); }, 450);
+    }
+    sel = null;
+  }
+
+  // THE REUNION: on completion the board composes itself — each es glides beside
+  // its meaning; the scattered game becomes the tidy study sheet. FLIP animation.
+  function reunite(){
+    const grid = document.getElementById('pairs');
+    const cards = [...grid.children];
+    const rects = new Map(cards.map(c => [c, c.getBoundingClientRect()]));
+    // reorder DOM into paired rows, original item order
+    items.forEach((_, i) => {
+      const a = cards.find(c => c.dataset.side === 'audio' && +c.dataset.idx === i);
+      const e = cards.find(c => c.dataset.side === 'en' && +c.dataset.idx === i);
+      grid.appendChild(a); grid.appendChild(e);
+    });
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      [...grid.children].forEach(c => {
+        const first = rects.get(c), last = c.getBoundingClientRect();
+        const dx = first.left - last.left, dy = first.top - last.top;
+        if (dx || dy){
+          c.style.transform = `translate(${dx}px, ${dy}px)`;
+          c.style.transition = 'none';
+        }
+      });
+      void grid.offsetHeight; // reflow
+      // Pairs travel ONE AT A TIME, final-row order: the sheet writes itself
+      // top-down, each pair reuniting as a unit the eye can follow.
+      [...grid.children].forEach((c, i) => {
+        const pairIndex = Math.floor(i / 2);
+        c.style.transition = `transform 420ms cubic-bezier(.2,.7,.3,1) ${pairIndex * 200}ms`;
+        c.style.transform = '';
+      });
+      setTimeout(()=> [...grid.children].forEach(c => { c.style.transition = ''; }), 1100);
+      setTimeout(()=> document.getElementById('grown').classList.add('show'), 1050);
+    } else {
+      document.getElementById('grown').classList.add('show');
+    }
+  }
+
+  let autoTimers = [];
+  function autoPlay(){
+    reset();
+    autoTimers.forEach(clearTimeout); autoTimers = [];
+    const grid = document.getElementById('pairs');
+    const findCard = (side, idx) => [...grid.children].find(c => c.dataset.side === side && +c.dataset.idx === idx && !c.classList.contains('matched'));
+    const script = [];
+    // pair 0 correct
+    script.push(()=> tap(findCard('audio', 0)));
+    script.push(()=> tap(findCard('en', 0)));
+    // deliberate mismatch: audio 1 vs en 2 (shows the miss state)
+    script.push(()=> tap(findCard('audio', 1)));
+    script.push(()=> tap(findCard('en', 2)));
+    // pair 1 correct
+    script.push(()=> tap(findCard('audio', 1)));
+    script.push(()=> tap(findCard('en', 1)));
+    // pair 2, pair 3 correct
+    script.push(()=> tap(findCard('audio', 2)));
+    script.push(()=> tap(findCard('en', 2)));
+    script.push(()=> tap(findCard('audio', 3)));
+    script.push(()=> tap(findCard('en', 3)));
+    script.forEach((fn, i) => autoTimers.push(setTimeout(fn, 500 + i * 620)));
+  }
+
+  function reset(){ autoTimers.forEach(clearTimeout); autoTimers = []; render(); }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  render();
+</script>
+</body>
+</html>
