@@ -1058,6 +1058,11 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .rd-spark { color: var(--accent-2); display: flex; }
 .rd-moves b { color: var(--text); font-weight: 500; }
 /* §3.5 correct-answer feedback — built to design/correct-feedback.html: green wash + auto-advance */
+/* exercise inputs hold Spanish: same display font as every other es surface (the filled
+   blank, the fused line, the reveal). Without this, inputs fall to the UA form font —
+   the typed word ended the exercise in a foreign font (Tom, 2026-07-20). Settings /
+   onboarding inputs keep the global .text-input as-is. */
+#qbody .text-input { font-family: var(--font-display); }
 #qbody.qcorrect .text-input { border-color: var(--green); background-color: color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
 #qbody.leaving { opacity: 0; transform: translateY(-6px); transition: opacity 200ms cubic-bezier(.2,.7,.3,1), transform 200ms cubic-bezier(.2,.7,.3,1); }
 
