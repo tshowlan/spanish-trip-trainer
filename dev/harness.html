@@ -217,6 +217,7 @@
         },
         "Session end — empty-ish (nothing moved)": () => {
           clean();
+          state.scoreHistory = [];                    // no leftover seeds: a clean nothing-moved day
           const after = computeScores();
           renderHome({ ceremony: {
             before: { readiness: after.readiness, momentum: after.momentum, retention: after.retention },

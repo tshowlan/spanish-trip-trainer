@@ -915,7 +915,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* §3.2.1 pace index: solid gold inverted triangle outside the track (no keyline — it no longer overlaps the arc) */
 .ring-tick { fill: var(--accent-2); stroke-linejoin: round; }
 /* §3.2.2 delta whispers under the flanking dials */
-.dial-delta { font-size: 12px; font-weight: 800; margin-top: 2px; color: var(--text-dim); }
+.dial-delta { font-family: var(--font-display); font-size: 12px; font-weight: 800; margin-top: 2px; color: var(--text-dim); }
 .dial-delta.up { color: var(--green); } .dial-delta.down { color: var(--text-dim); }   /* §3.2 negative = dim, never red */
 .ring-bg { fill: none; stroke: var(--ring-track, var(--bg-elevated)); stroke-width: 8; }
 .ring-fg { fill: none; stroke: var(--ring, var(--secondary)); stroke-width: 8; stroke-linecap: round;
@@ -929,7 +929,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* the % hangs OUTSIDE the flow so the DIGITS stay optically centred in the ring (it otherwise pushes
    the number left by half the %'s width — the reveal ring already centres the digits this way) */
 .ring-num .pct { position: absolute; left: 100%; top: 0; font-size: 16px; color: var(--text-dim); font-weight: 800; margin-top: 5px; margin-left: 1px; }
-.ring-label { font-weight: 600; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim); text-align: center; line-height: 1.25; margin-top: 6px; }
+.ring-label { font-family: var(--font-display);   /* buttons don't inherit font (same fix as .btn/.choice/.word) */
+  font-weight: 600; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim); text-align: center; line-height: 1.25; margin-top: 6px; }
 .m-momentum { --ring: var(--secondary); }
 .m-retention { --ring: var(--green); }
 .ring-band { font-weight: 800; font-size: 16px; color: var(--ring, var(--secondary)); }

@@ -298,9 +298,11 @@ function sessionEndCeremony(home, data, reduced) {
   place();
   requestAnimationFrame(place);                         // re-measure once layout has settled
   timers.push(setTimeout(place, 350));                  // and again after fonts/atmo finish
-  if (emptyish) {                                       // dials settled, sides visible, deltas shown
+  if (emptyish) {
+    // dials settled, sides visible; deltas stay quiet — a delta appearing while its dial
+    // holds still reads as a contradiction (Tom). Today's deltas arrive WITH home at the
+    // dissolve, where they're home furniture rather than ceremony claims.
     [cardM, cardT].forEach(c => { if (c) c.classList.remove("dial-pop"); });
-    home.querySelectorAll(".dial-delta").forEach(dd => dd.classList.add("show"));
   } else {
     // the performance: Readiness isolated ticking its delta, then the sides pop into
     // home's exact geometry and tick in turn (sequential composes); deltas after each settles
@@ -318,10 +320,11 @@ function sessionEndCeremony(home, data, reduced) {
     timers.push(setTimeout(() => cardT && cardT.classList.add("in"), 1900));
     const sideTick = (card, metric, at, dur) => {
       if (!card) return;
+      // a delta only appears under a dial that just performed; an unmoved dial keeps its
+      // today-delta until home returns (a delta on a still dial reads as a contradiction)
       if (moved(metric)) timers.push(setTimeout(() => _tickHomeDial(card, before[metric], after[metric], dur, () => {
         const dd = card.querySelector(".dial-delta"); if (dd) dd.classList.add("show");
       }), at));
-      else timers.push(setTimeout(() => { const dd = card.querySelector(".dial-delta"); if (dd) dd.classList.add("show"); }, at + 200));
     };
     sideTick(cardM, "momentum", 2100, 700);
     sideTick(cardT, "retention", 2350, 500);
