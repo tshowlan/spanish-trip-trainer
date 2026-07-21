@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-21 — Primer wave commit #1 SHIPPED (v171): 11 primers, cast canon, content spec
+- Ten Stage-0 primers (7 machine-shaped, 3 kit) + s3-directions scenario scene landed in curriculum.js; machine/kit primers are scene-only (no mission/guessItem, so no pre-lesson interstitial — beat-hint + future-surface data per the handoff). Montse renamed Marina everywhere (9 sites; world kept, name changed); Núria/Sra. Rosa unchanged. docs/tripfluent-content-spec.md created (primer format rules + cast canon); decision recorded. Pack audit: 0 hard errors. frameGloss left in packs as dormant data (no renderer consumes it).
+- FLAGS for chat: (1) s3-directions has scene only — needs mission + guessItem to fire the §4c.4 pre-lesson flow like its siblings; send the mission line. (2) The reply artifact's "Marina · The Harbor Café" is now canon-colliding (Marina runs a tasca) — relabel at next re-issue, noted in content spec.
+
 ## 2026-07-21 — Dial specs built (chat): momentum second-week ceiling + retention shrinkage — v170
 - MOMENTUM third-term design: 45·(days7/5) + 25·(sess7/7) + 30·(daysPrior/5). DEVIATION FLAGGED: chat's pasted third term (days-in-14/10) computes 91 for one maxed week, contradicting its own stated properties; built the property-true variant (third term = the PRIOR week, days 8-14, target 5) — one perfect week = exactly 70, 100 = sustained both weeks. One-line revert if 91 was intended. Verified: 70 / 100 / 38 across seeded cases.
 - RETENTION shrinkage per spec: n_eff = drilled + 0.3·baseline, display = (n_eff·raw + 20·50)/(n_eff+20), K [tune]. Note back to chat: the imagined day-one fake-100 never occurred — itemStrength reads fresh items ~37 (fragile), so shrinkage pulls small accounts UP toward 50 (verified: 10 fresh items = 46, was 38). Honesty about uncertainty cuts both ways; still correct.

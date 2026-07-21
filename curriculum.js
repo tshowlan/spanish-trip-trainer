@@ -12,7 +12,7 @@
 /* ---- BARCELONA CAST (§9b.2) — fictional recurring characters; food/places are real.
    Cast names live ONLY in English scene/primer text, never in a graded `es` answer.
    - Jordi   — the taxi driver who picks you up at El Prat; dry, knows every shortcut.
-   - Montse  — runs a tiny tasca (comedor) off the Barri Gòtic; feeds you like family.
+   - Marina  — runs a tiny tasca (comedor) off the Barri Gòtic; feeds you like family.
    - Toni    — the bartender at a vermutería; pours vermut and opinions in equal measure.
    - Núria   — a vendor at La Boqueria market; will let you taste before you buy.
    - Sra. Rosa — the farmacéutica on the corner; unflappable in an emergency.
@@ -29,6 +29,7 @@ const CURRICULUM = {
       lessons: [
                   {
                     id: "sp0-first-words", topic: "Core basics", title: "First words",
+                    primer: { scene: "The words you'll use before you're out of the airport. Hello, please, thank you, and the one that rescues most conversations: more slowly, please." },
                     beat: "Please, thanks, help. The universal kit.",
                     items: [
                       { es: "Hola", en: "Hello", tier: 1, tags: ["greetings"], contextEs: "Hola, buenos días", contextEn: "Hi, good morning" },
@@ -48,6 +49,7 @@ const CURRICULUM = {
                   },
                   {
                     id: "sp0-quiero", topic: "Core patterns", title: "Quiero ___",
+                    primer: { scene: "The wanting machine. Point it at a coffee, a table, a train ticket, anything you can name or point to." },
                     beat: "The wanting machine. Point it at anything.",
                     machine: true, frame: "quiero ___",
                     frameGloss: "Quiero = I want. Works at every counter in the Spanish-speaking world.",
@@ -60,6 +62,7 @@ const CURRICULUM = {
                   },
                   {
                     id: "sp0-donde", topic: "Core patterns", title: "¿Dónde está ___?",
+                    primer: { scene: "The finding machine. Ask where anything is, and know enough of the answer to start walking." },
                     beat: "The finding machine.",
                     machine: true, frame: "¿dónde está ___?",
                     frameGloss: "¿Dónde está...? = where is...? Point it at anything lost.",
@@ -72,6 +75,7 @@ const CURRICULUM = {
                   },
                   {
                     id: "sp0-numbers", topic: "Core numbers", title: "Numbers that pay",
+                    primer: { scene: "Numbers are money here. Prices, room numbers, platforms, tips. These pay for themselves on day one." },
                     beat: "Count it, pay it, check the change.",
                     items: [
                       { es: "uno", en: "one", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Uno, por favor", contextEn: "One, please" },
@@ -92,6 +96,7 @@ const CURRICULUM = {
                   },
                   {
                     id: "sp0-cuanto", topic: "Core patterns", title: "¿Cuánto cuesta ___?",
+                    primer: { scene: "The price machine. Nothing in Spain will have a price you can't ask about." },
                     beat: "The price machine.",
                     machine: true, frame: "¿cuánto cuesta ___?",
                     frameGloss: "¿Cuánto cuesta...? = how much is...? Ask before you nod.",
@@ -104,6 +109,7 @@ const CURRICULUM = {
                   },
                   {
                     id: "sp0-metraer", topic: "Core patterns", title: "¿Me puede traer ___?",
+                    primer: { scene: "The bring-me machine. Polite enough for anywhere, strong enough to get the check." },
                     beat: "The bring-me machine. Your table workhorse.",
                     machine: true, frame: "¿me puede traer ___?",
                     frameGloss: "¿Me puede traer...? = could you bring me...? The polite ask that works on anyone.",
@@ -116,6 +122,7 @@ const CURRICULUM = {
                   },
                   {
                     id: "sp0-hay", topic: "Core patterns", title: "¿Hay ___?",
+                    primer: { scene: "The is-there machine. One little word opens every \"does this place have...\" question you'll ever need." },
                     beat: "The is-there machine.",
                     machine: true, frame: "¿hay ___?",
                     frameGloss: "¿Hay...? = is there...? Availability in one word.",
@@ -128,6 +135,7 @@ const CURRICULUM = {
                   },
                   {
                     id: "sp0-aquehora", topic: "Core patterns", title: "¿A qué hora ___?",
+                    primer: { scene: "The when machine. Opening times, closing times, the last train back." },
                     beat: "The when machine.",
                     machine: true, frame: "¿a qué hora ___?",
                     frameGloss: "¿A qué hora...? = at what time...? Opens, closes, leaves: the schedule machine.",
@@ -140,6 +148,7 @@ const CURRICULUM = {
                   },
                   {
                     id: "sp0-necesito", topic: "Core patterns", title: "Necesito ___",
+                    primer: { scene: "The need machine, for when wanting is too polite." },
                     beat: "The need machine.",
                     machine: true, frame: "necesito ___",
                     frameGloss: "Necesito = I need. For when wanting is too polite.",
@@ -152,6 +161,7 @@ const CURRICULUM = {
                   },
                   {
                     id: "sp0-wrong", topic: "Core phrases", title: "When it goes wrong",
+                    primer: { scene: "Lost bag, wrong turn, missed train. A small kit for bad moments, so a bad moment stays small." },
                     beat: "What they'll say to you, and what to say back.",
                     items: [
                       { es: "¿Algo más?", en: "Anything else?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Algo más? No, gracias.", contextEn: "Anything else? No, thanks.", keywords: ["más"] },
@@ -175,7 +185,7 @@ const CURRICULUM = {
         {
           id: "s1-rescue", topic: "How do you say", title: "I only speak a little",
           reward: "Now you can confess your Spanish is bad, in Spanish. Meta. Keep going so you don't have to.",
-          primer: { scene: "Montse, who runs the little tasca on the corner, just reeled off today's specials, and you caught maybe one word. She waits, order pad in hand, patient.", mission: "Admit your Spanish is shaky, and ask her to slow down.", guessItem: "¿Habla inglés?" },
+          primer: { scene: "Marina, who runs the little tasca on the corner, just reeled off today's specials, and you caught maybe one word. She waits, order pad in hand, patient.", mission: "Admit your Spanish is shaky, and ask her to slow down.", guessItem: "¿Habla inglés?" },
           items: [
             { es: "Hablo solo un poco de español", en: "I only speak a little Spanish", tier: 2, tags: ["communication"], keywords: ["español"] },
             { es: "¿Cómo se dice...?", en: "How do you say...?", tier: 2, tags: ["communication"], keywords: ["dice"] },
@@ -188,7 +198,7 @@ const CURRICULUM = {
           id: "sp-table", topic: "Restaurant · Ordering", title: "First words at the table",
           reward: "You can get a table, order, ask for the check, and flag your shellfish allergy. Night one at the tapas bar: handled.",
           cultureNote: "Pa amb tomàquet, bread rubbed with ripe tomato, olive oil, and salt, comes with almost everything in Barcelona. You rub it on yourself; don't go asking for butter.",
-          primer: { scene: "It's packed at Montse's tasca. She wipes down a table, waves you into a chair, and asks '¿para cuántos?'", mission: "Get a table, order, and warn her about the shellfish before the tapas land.", guessItem: "Soy alérgico al marisco" },
+          primer: { scene: "It's packed at Marina's tasca. She wipes down a table, waves you into a chair, and asks '¿para cuántos?'", mission: "Get a table, order, and warn her about the shellfish before the tapas land.", guessItem: "Soy alérgico al marisco" },
           items: [
             { es: "Una mesa para dos, por favor", en: "A table for two, please", tier: 2, tags: ["restaurant", "food"], keywords: ["mesa"], variants: ["Mesa para dos, por favor"] },
             { es: "La carta, por favor", en: "The menu, please", note: "In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día.", tier: 2, tags: ["restaurant", "food"], keywords: ["carta"], variants: ["¿Me trae la carta?"] },
@@ -202,7 +212,7 @@ const CURRICULUM = {
           id: "s2-bathroom", topic: "Restaurant · Bathrooms", title: "Where's the loo",
           reward: "You can find a bathroom and read a door. Push vs. pull humiliation: avoided.",
           cultureNote: "Ask for 'los servicios' or 'los aseos', 'baño' is understood but marks you as not-from-here. In Catalonia the door signs may be in Catalan too: 'Lavabos'.",
-          primer: { scene: "Two unmarked doors at the back of Montse's place, and a waiter squeezing past with a tray of vermut. You need to pick the right one.", mission: "Ask where the loo is, and read the door before you push.", guessItem: "Entrada" },
+          primer: { scene: "Two unmarked doors at the back of Marina's place, and a waiter squeezing past with a tray of vermut. You need to pick the right one.", mission: "Ask where the loo is, and read the door before you push.", guessItem: "Entrada" },
           items: [
             { es: "¿Dónde está el servicio?", en: "Where is the bathroom?", note: "Spain says 'el servicio / los servicios'. Signs read 'Aseos'.", latam: "Latin America: '¿Dónde está el baño?'", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "servicio"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
             { es: "los aseos", en: "the restrooms (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "Los aseos están al fondo", contextEn: "The restrooms are at the back", keywords: ["aseos"] },
@@ -224,6 +234,7 @@ const CURRICULUM = {
         },
         {
           id: "s3-directions", topic: "Walking directions", title: "Which way?",
+          primer: { scene: "You ask Marina how to find the Sagrada Família and she answers with her hands as much as her words: right at the corner, left at the plaza, straight on until the towers find you. Somewhere in the middle you'll get lost. That's the good part." },
           reward: "Left, right, straight ahead, you can now get lost on purpose. Gaudí's buildings await.",
           items: [
             { es: "¿Cómo llego a...?", en: "How do I get to...?", tier: 2, tags: ["directions"], keywords: ["llego"] },
@@ -254,7 +265,7 @@ const CURRICULUM = {
         {
           id: "s4-hear", topic: "Common phrases you'll hear", title: "What locals say to you",
           reward: "You can now understand what's being said TO you. Eavesdropping unlocked. Use responsibly.",
-          primer: { scene: "It's not just you talking now. Montse rattles something off as she sets your plate down, the shopkeeper next door calls out as you pass, and you catch the tune but not the words. Time to tune your ear the other way.", mission: "Catch what locals say to you, and know what they mean.", guessItem: "Que aproveche" },
+          primer: { scene: "It's not just you talking now. Marina rattles something off as she sets your plate down, the shopkeeper next door calls out as you pass, and you catch the tune but not the words. Time to tune your ear the other way.", mission: "Catch what locals say to you, and know what they mean.", guessItem: "Que aproveche" },
           items: [
             { es: "Que tenga un buen día", en: "Have a good day", tier: 2, tags: ["social", "politeness"], keywords: ["día"] }
           ]
@@ -501,12 +512,12 @@ const CURRICULUM = {
           ]
         },
         {
-          id: "sp-chain-dinner", topic: "Advanced · Boss", title: "Dinner at Montse's",
+          id: "sp-chain-dinner", topic: "Advanced · Boss", title: "Dinner at Marina's",
           reward: "Greeting to bill, you ran a whole dinner at the tasca without switching to English. That's the trip, rehearsed.",
-          cultureNote: "In a tasca you don't wait to be seated formally, you catch Montse's eye and she waves you to a table. And when your plate lands, 'que aproveche' is the local 'enjoy', say it back to the next table over.",
+          cultureNote: "In a tasca you don't wait to be seated formally, you catch Marina's eye and she waves you to a table. And when your plate lands, 'que aproveche' is the local 'enjoy', say it back to the next table over.",
           items: [],
           chain: {
-            title: "Dinner at Montse's",
+            title: "Dinner at Marina's",
             turns: [
               { npc: { es: "¡Buenas noches! ¿Mesa para cuántos?", en: "Good evening! Table for how many?" } },
               { user: "Una mesa para dos, por favor" },
@@ -534,7 +545,7 @@ const CURRICULUM = {
           chain: {
             title: "Your last night",
             turns: [
-              { narr: "Your last night in Barcelona. Jordi dropped you near Plaça Reial, and your feet carried you back to Montse's tasca, one more time." },
+              { narr: "Your last night in Barcelona. Jordi dropped you near Plaça Reial, and your feet carried you back to Marina's tasca, one more time." },
               { npc: { es: "¡Buenas noches! Tu última noche, ¿verdad? Pasa, pasa.", en: "Good evening! Your last night, right? Come in, come in." } },
               { user: "Buenas noches" },
               { npc: { es: "Siéntate. ¿Qué te pongo esta vez?", en: "Sit down. What can I get you this time?" } },

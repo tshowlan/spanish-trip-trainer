@@ -115,3 +115,4 @@ Tom explicitly reopens. Do not relitigate.
 - 2026-07-21 — reward/cultureNote rehomed: rewards invert to primer promises, culture notes become cast voice; told-reward surfaces retired.
 - 2026-07-21 — Momentum gets asymptotic top-compression (designed index); Retention gets small-n shrinkage, never curve-shaping (measured proportion). Curving a measurement makes the instrument lie; designed indices may be curved.
 - 2026-07-21 — Momentum's ceiling moves to the second week (third-term design); no streaks, rolling windows only.
+- 2026-07-21 — Spain cast canon: keep the world, take the name — Montse becomes Marina everywhere; Núria and Sra. Rosa stay; Andrés debuts in pass-2 transport. Primer format rules adopted (machine/kit/scenario shapes, cliffhanger-vs-promise, decay test on all primer copy); see docs/tripfluent-content-spec.md.
