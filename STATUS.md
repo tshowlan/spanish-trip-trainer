@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-21 — Dial specs built (chat): momentum second-week ceiling + retention shrinkage — v170
+- MOMENTUM third-term design: 45·(days7/5) + 25·(sess7/7) + 30·(daysPrior/5). DEVIATION FLAGGED: chat's pasted third term (days-in-14/10) computes 91 for one maxed week, contradicting its own stated properties; built the property-true variant (third term = the PRIOR week, days 8-14, target 5) — one perfect week = exactly 70, 100 = sustained both weeks. One-line revert if 91 was intended. Verified: 70 / 100 / 38 across seeded cases.
+- RETENTION shrinkage per spec: n_eff = drilled + 0.3·baseline, display = (n_eff·raw + 20·50)/(n_eff+20), K [tune]. Note back to chat: the imagined day-one fake-100 never occurred — itemStrength reads fresh items ~37 (fragile), so shrinkage pulls small accounts UP toward 50 (verified: 10 fresh items = 46, was 38). Honesty about uncertainty cuts both ways; still correct.
+- Canvas re-issue committed: variants blanks now dash-over-underline per Tom's direction (surgical: dashes + caption).
+
 ## 2026-07-21 — Native feel: horizontal axis locked; prompt font unified — v169
 - The app pans vertically only (Tom): html+body overflow-x clip, overscroll-behavior-x none, touch-action pan-y pinch-zoom — sideways drags used to park the page off-center with no rubber-band (real scroll, not overscroll). Vertical bounce untouched.
 - The big exercise prompt (.prompt 24px) wears the display font for ALL prompts now, en included, weight 800→700 — build-the-sentence was the last Inter holdout among display-scale text. Small dim en lines stay Inter (text face) deliberately.

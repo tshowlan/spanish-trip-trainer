@@ -114,3 +114,4 @@ Tom explicitly reopens. Do not relitigate.
 - 2026-07-21 — T₁ retrieval is ear-first (listen_choice). The phrase-MC retirement killed Spanish options; T₁ placement made even English options nearly free (answer in short-term memory). Tested channel ≠ taught channel at T₁. Credit: Tom's instinct, Code's inventory.
 - 2026-07-21 — reward/cultureNote rehomed: rewards invert to primer promises, culture notes become cast voice; told-reward surfaces retired.
 - 2026-07-21 — Momentum gets asymptotic top-compression (designed index); Retention gets small-n shrinkage, never curve-shaping (measured proportion). Curving a measurement makes the instrument lie; designed indices may be curved.
+- 2026-07-21 — Momentum's ceiling moves to the second week (third-term design); no streaks, rolling windows only.

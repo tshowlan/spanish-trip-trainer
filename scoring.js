@@ -10,12 +10,25 @@ function _sessions7() {
   return _sessions().filter(s => now - new Date(s.at).getTime() <= 7 * _DAY);
 }
 
-/* ---- Momentum (0-100): 7-day rolling activity, smooth decay (no streak resets) ---- */
+/* ---- Momentum (0-100): rolling activity, smooth decay (no streak resets).
+   Third-term design (2026-07-21): the TOP OF THE DIAL IS THE SECOND WEEK — one excellent
+   week lands ~70; the last 30 points require 10 active days in the trailing 14. Window-based,
+   never streak-based: a missed day erodes, never zeroes. Constants [tune]: 45/25/30 split,
+   the /10 second-week bar. ---- */
 function momentumScore() {
-  const r = _sessions7();
-  const days = new Set(r.map(sessionDay)).size;   // distinct active days (target 5)
-  const sess = r.length;                                       // sessions (target 7)
-  return Math.round(Math.min(100, 60 * Math.min(1, days / 5) + 40 * Math.min(1, sess / 7)));
+  const r7 = _sessions7();
+  const days7 = new Set(r7.map(sessionDay)).size;              // distinct active days (target 5)
+  const sess7 = r7.length;                                     // sessions (target 7)
+  // DEVIATION FLAGGED to chat: the pasted spec's third term (days-in-14 / 10) computes 91
+  // for one maxed week, contradicting its own stated properties ("one excellent week lands
+  // ~70; the top 30 points require the second week"). This term measures the PRIOR week
+  // (days 8-14, target 5), which makes both properties true exactly: one perfect week = 70,
+  // 100 = 5+ active days in BOTH weeks. One-line revert if the 91 behavior was intended.
+  const now = Date.now();
+  const prior = _sessions().filter(s => { const age = now - new Date(s.at).getTime(); return age > 7 * _DAY && age <= 14 * _DAY; });
+  const daysPrior = new Set(prior.map(sessionDay)).size;       // the second-week term (target 5)
+  return Math.round(Math.min(100,
+    45 * Math.min(1, days7 / 5) + 25 * Math.min(1, sess7 / 7) + 30 * Math.min(1, daysPrior / 5)));
 }
 // last-7-days session counts, oldest→newest, for the sparkline
 function momentumSpark() {
@@ -70,18 +83,26 @@ function recencyScore() {
 }
 
 /* ---- Retention (0-100): mean per-phrase strength across EVERYTHING you've been taught ---- */
+/* Retention is a MEASURED proportion and is never curve-shaped (decisions 2026-07-21);
+   its small-n problem gets SHRINKAGE instead: the display pulls toward a neutral prior
+   until enough evidence exists (a 10-item day-one account reads ~high-50s, not a fake 100,
+   converging to the true mean as items accumulate). Baseline items are prior-flavored
+   guesses, not measurements, so they count partially (0.3). K = 20 [tune]. */
 function retentionScore() {
-  const strengths = [];
+  let sumD = 0, nD = 0, sumB = 0, nB = 0;
   (typeof DECK !== "undefined" && DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
     const doneLesson = lessonDone(l.id);
     l.items.forEach(it => {
       const s = (state.learn || {})[it.id];
-      if (s && s.exposures >= 1) strengths.push(itemStrength(s));         // per-phrase SRS strength
-      else if (doneLesson) strengths.push(lessonBaselineStrength(l.id));  // taught via a completed lesson
+      if (s && s.exposures >= 1) { sumD += itemStrength(s); nD++; }            // drilled: real reps
+      else if (doneLesson) { sumB += lessonBaselineStrength(l.id); nB++; }     // taught, undrilled
     });
   }));
-  if (!strengths.length) return retentionScoreLegacy();
-  return Math.round(strengths.reduce((a, b) => a + b, 0) / strengths.length);
+  if (!nD && !nB) return retentionScoreLegacy();
+  const nEff = nD + 0.3 * nB;
+  const rawMean = (sumD + 0.3 * sumB) / nEff;
+  const K = 20;                                                // [tune] shrinkage prior strength
+  return Math.round((nEff * rawMean + K * 50) / (nEff + K));
 }
 // a phrase from a completed lesson you haven't drilled individually: moderate maturity,
 // decaying from when the lesson was finished (so old un-reviewed material fades toward 0)

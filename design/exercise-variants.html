@@ -50,6 +50,8 @@
   .sentence { font-family:var(--font-display); font-size:21px; font-weight:500; color:var(--text); line-height:1.6; margin-bottom:18px; position:relative; }
   .sentence .blank { display:inline-block; min-width:96px; border-bottom:2px solid var(--secondary); color:var(--secondary); text-align:center; font-weight:600;
     transition:color var(--transition), border-color var(--transition); }
+  .sentence .blank .dashes { color:var(--text-dim); letter-spacing:2px; font-weight:500; }
+  .sentence .blank.filled .dashes { display:none; }
   .sentence .blank.filled { color:var(--text); border-bottom-color:transparent; position:relative; }
   .sentence .blank.filled::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--green); border-radius:2px;
     transform:scaleX(0); transform-origin:left center; animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
@@ -207,7 +209,7 @@
     consistent with the built resolution frame); ear build's meaning line sits directly under the fused
     sentence, tray below. Em-dash sweep done on all shipped copy; designer annotations removed from en-lines
     (notes live in this caption, never in copy). Reply speaker optically centered (18px glyph, +1px x).
-    Misses route to the standard correction flow (not demoed). BUILD-EDIT ABSORPTION (r8, from Tom's harness pass, shipped v165): reply gloss GATED until the answer (visible-from-start handed over the comprehension answer; at resolution the gloss materializes while the green sweep draws under the local's es — prove you understood, then confirmation); fused sentences MATURE to reveal scale (22px/600, 450ms ride); blanks render as ONE underline with no underscore glyphs (underscores doubled the line — the build's exact dash treatment is canonical per precedence, this canvas draws the bordered blank alone). Frame 390.
+    Misses route to the standard correction flow (not demoed). BUILD-EDIT ABSORPTION (r8, from Tom's harness pass, shipped v165): reply gloss GATED until the answer (visible-from-start handed over the comprehension answer; at resolution the gloss materializes while the green sweep draws under the local's es — prove you understood, then confirmation); fused sentences MATURE to reveal scale (22px/600, 450ms ride); blanks render as letter-spaced '- - -' dashes over ONE underline, collapsing when filled (matches build per Tom's direction; the canvas's earlier empty slot was an unauthorized simplification, reconciled r-current; underscores doubled the line — the build's exact dash treatment is canonical per precedence, this canvas draws the bordered blank alone). Frame 390.
   </div>
 </div>
 
@@ -229,7 +231,7 @@
       label: 'exercise: sound choice',
       prompt: 'Which sound completes it?',
       html: `
-        <div class="sentence">\u00bfMe puede traer la <span class="blank" id="blank">&nbsp;</span>?</div>
+        <div class="sentence">\u00bfMe puede traer la <span class="blank" id="blank"><span class="dashes">- - -</span></span>?</div>
         <div class="audio-opts">
           <div class="audio-card" id="optA">${spkGlyph}${barsHtml}</div>
           <div class="audio-card" id="optB">${spkGlyph}${barsHtml}</div>
@@ -260,7 +262,7 @@
       prompt: 'Listen, then type the missing word',
       html: `
         <div class="bigspk"><button class="btn" onclick="play(this.parentElement)">${spkGlyph}</button><span class="hint">Hear the whole phrase</span>${barsHtml}</div>
-        <div class="sentence">\u00bfCu\u00e1nto <span class="blank" id="blank">&nbsp;</span> esto?</div>
+        <div class="sentence">\u00bfCu\u00e1nto <span class="blank" id="blank"><span class="dashes">- - -</span></span> esto?</div>
         <div class="inputbox" id="inputbox"><span id="typed"></span><span class="cursor" id="cursor"></span></div>
         <div class="grown" id="grown">
           <div class="en-line">How much is this?</div>
