@@ -34,12 +34,20 @@ function _glideToday() {
   const frac = Math.max(0, Math.min(1, gap(h[0].date, todayStr()) / total));
   return Math.max(0, Math.min(100, Math.round((h[0].readiness || 0) + (90 - (h[0].readiness || 0)) * frac)));
 }
-// tiny 7-day delta for a flanking dial ("+6" / "−2"), or "" when history is too short
+// TODAY's movement for a dial (dial law 2026-07-21): nonzero-only, daily reset — the
+// baseline is the last recorded day BEFORE today (7-day cumulative deltas retired as
+// mis-scoped). Home = now + latest movement; longer windows live in Progress.
+function _todayDelta(metric) {
+  const s = state.scoresCache || {};
+  if (s[metric] == null) return 0;
+  const h = state.scoreHistory || [], today = todayStr();
+  for (let i = h.length - 1; i >= 0; i--) if (h[i].date < today) return Math.round(s[metric] - (h[i][metric] || 0));
+  return 0;                                            // no earlier day on record: nothing honest to show
+}
 function _dialDelta(metric) {
-  const tr = (typeof scoreTrend === "function") ? scoreTrend(metric, 8) : null;
-  if (!tr || tr.delta === 0) return tr ? `<div class="dial-delta flat">±0</div>` : "";
-  const up = tr.delta > 0;
-  return `<div class="dial-delta ${up ? "up" : "down"}">${up ? "+" : "−"}${Math.abs(tr.delta)}</div>`;
+  const d = _todayDelta(metric);
+  if (!d) return "";
+  return `<div class="dial-delta ${d > 0 ? "up" : "down"}">${d > 0 ? "+" : "−"}${Math.abs(d)}</div>`;
 }
 function sparkBars(arr) {
   const max = Math.max(1, ...arr);
@@ -103,7 +111,10 @@ function clearHomeAtmo() {
   document.body.classList.remove("home-lit");
 }
 
-function renderHome() {
+function renderHome(opts) {
+  const cer = opts && opts.ceremony;                    // §6b: ceremony overlays this render
+  const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (cer) document.body.classList.add("in-ceremony");  // before anything paints: no first-frame flash
   renderTopbar();
   clearFooter();
   showTabbar("home");
@@ -113,9 +124,17 @@ function renderHome() {
   const p = state.profile || {};
   const d = destInfo(p.destination);
   const s = computeScores();
+  // during the ceremony the dials render at their BEFORE values and the ceremony ticks
+  // them (reduced motion: render complete at the after values)
+  const disp = (cer && !reduced) ? {
+    ...s,
+    readiness: cer.before.readiness != null ? cer.before.readiness : s.readiness,
+    momentum: cer.before.momentum != null ? cer.before.momentum : s.momentum,
+    retention: cer.before.retention != null ? cer.before.retention : s.retention
+  } : s;
   const started = s.lifetimeSessions > 0 || Object.keys(state.lessons).length > 0;
   const days = p.tripDate ? Math.max(0, daysUntil(p.tripDate)) : null;
-  const band = readinessBand(s.readiness);
+  const band = readinessBand(disp.readiness);
   setHomeAtmo();
   // §3.2 trip header: the destination name is the anchor over the photo; subline is pure countdown
   const tripEl = el(`<div class="trip"><div class="dest">${d.label}</div><div class="sub${days === null ? " set-date" : ""}">${days !== null ? days + " days out" : "Set your trip date"}</div></div>`);
@@ -130,26 +149,29 @@ function renderHome() {
     const glide = _glideToday();
     // §3.2 crown: the Tripfluent chip's one-time sheen fires only when the user just CROSSED into
     // the top band (not on every render). Track the last top-band state; a genuine re-crossing re-fires.
-    const isTop = s.readiness >= 85;
-    const crossed = isTop && !state.lastBandTop;
-    if ((state.lastBandTop || false) !== isTop) { state.lastBandTop = isTop; save(); }
+    // Ceremony renders skip this bookkeeping — the mid-ceremony band morph owns the crossing (§6b).
+    const isTop = disp.readiness >= 85;
+    const crossed = !cer && isTop && !state.lastBandTop;
+    if (!cer && (state.lastBandTop || false) !== isTop) { state.lastBandTop = isTop; save(); }
+    const dwToday = _todayDelta("readiness");
     const scores = el(`<div class="scores">
-      <button class="ring-card m-momentum" id="sc-momentum">
-        <div class="ring-wrap">${ringSVG(s.momentum, "m-momentum")}
-          <div class="ring-center"><div class="ring-num" data-to="${s.momentum}">0</div></div>
+      <button class="ring-card m-momentum${cer && !reduced ? " dial-pop" : ""}" id="sc-momentum">
+        <div class="ring-wrap">${ringSVG(disp.momentum, "m-momentum")}
+          <div class="ring-center"><div class="ring-num" data-to="${disp.momentum}">0</div></div>
         </div>
         <div class="ring-label">Momentum</div>
         ${_dialDelta("momentum")}
       </button>
       <button class="ring-card readiness ${band.cls}" id="sc-readiness">
-        <div class="ring-wrap">${ringSVG(s.readiness, "readiness", glide)}
-          <div class="ring-center"><div class="ring-num" data-to="${s.readiness}">0<span class="pct">%</span></div></div>
+        <div class="ring-wrap">${ringSVG(disp.readiness, "readiness", glide)}
+          <div class="ring-center"><div class="ring-num" data-to="${disp.readiness}">0<span class="pct">%</span></div></div>
         </div>
         <div class="band-chip ${band.cls}${isTop ? " crown" : ""}${crossed ? " just-crossed" : ""}">${band.label}</div>
+        ${dwToday > 0 ? `<div class="delta-whisper" id="dw-today">+${dwToday} today</div>` : ""}
       </button>
-      <button class="ring-card m-retention" id="sc-retention">
-        <div class="ring-wrap">${ringSVG(s.retention, "m-retention")}
-          <div class="ring-center"><div class="ring-num" data-to="${s.retention}">0</div></div>
+      <button class="ring-card m-retention${cer && !reduced ? " dial-pop" : ""}" id="sc-retention">
+        <div class="ring-wrap">${ringSVG(disp.retention, "m-retention")}
+          <div class="ring-center"><div class="ring-num" data-to="${disp.retention}">0</div></div>
         </div>
         <div class="ring-label">Retention</div>
         ${_dialDelta("retention")}
@@ -159,8 +181,15 @@ function renderHome() {
   }
   home.appendChild(hero);
 
-  if (started) {
-    // fill the arcs + count the numbers up on open
+  if (started && cer) {
+    // dial law (§6b): post-session arrival renders the dials settled and motionless — the
+    // ceremony consumes the animation budget. Arcs + numbers land instantly, then tick.
+    setTimeout(() => {
+      home.querySelectorAll(".ring-fg").forEach(c => { if (c.dataset.fill != null) { c.style.transition = "none"; c.style.strokeDashoffset = c.dataset.fill; } });
+      home.querySelectorAll(".ring-num").forEach(n => { n.firstChild.textContent = n.dataset.to; });
+    }, 0);
+  } else if (started) {
+    // cold open keeps the load-in fill: arcs sweep + numbers count up
     setTimeout(() => {
       home.querySelectorAll(".ring-fg").forEach(c => { if (c.dataset.fill != null) c.style.strokeDashoffset = c.dataset.fill; });
       home.querySelectorAll(".ring-num").forEach(n => {
@@ -173,6 +202,8 @@ function renderHome() {
         requestAnimationFrame(step);
       });
     }, 40);
+  }
+  if (started) {
     hero.querySelector("#sc-readiness").addEventListener("click", () => scoreSheet("readiness"));
     hero.querySelector("#sc-momentum").addEventListener("click", () => scoreSheet("momentum"));
     hero.querySelector("#sc-retention").addEventListener("click", () => scoreSheet("retention"));
@@ -195,7 +226,128 @@ function renderHome() {
   }
 
   app.appendChild(home);
-  maybeStatusMoment();
+  if (cer) sessionEndCeremony(home, cer, reduced);      // §6b: ceremony layer on top; status moments wait
+  else maybeStatusMoment();
+}
+
+/* ===== §6b session-end ceremony (design/session-end.html, Option D) =====
+   Home is the base; this layer overlays its regions (kicker over the photo zone, facts
+   over the tile zone, Continue above the nav zone) and animates HOME'S OWN dials — no
+   duplicate rendering. Continue triggers the slow dissolve: the world empties, the dials
+   hold alone, home refills around them piece by piece. The dials never re-render. */
+function _sfactRows(facts) {
+  const glyphs = {
+    plus: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+    check: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    restore: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M21 13a9 9 0 1 1-3-7.7L21 8"/></svg>`,
+    star: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>`
+  };
+  // four past-tense events, nonzero-only; gold = what arrived, green = what you did
+  const rows = [];
+  if (facts.newN > 0) rows.push(`<div class="sfact"><span class="sf-glyph gold">${glyphs.plus}</span><span><span class="sf-n">${facts.newN}</span> new</span></div>`);
+  if (facts.stronger > 0) rows.push(`<div class="sfact"><span class="sf-glyph">${glyphs.check}</span><span><span class="sf-n">${facts.stronger}</span> stronger</span></div>`);
+  if (facts.restored > 0) rows.push(`<div class="sfact"><span class="sf-glyph">${glyphs.restore}</span><span><span class="sf-n">${facts.restored}</span> restored</span></div>`);
+  if (facts.soloed > 0) rows.push(`<div class="sfact"><span class="sf-glyph">${glyphs.star}</span><span><span class="sf-n">${facts.soloed}</span> soloed</span></div>`);
+  return rows.join("");
+}
+const _RING_C = 2 * Math.PI * 52;
+// tick one of home's own dials in place: drives the existing ring-fg + ring-num, nothing re-renders
+function _tickHomeDial(card, from, to, dur, done) {
+  const fg = card.querySelector(".ring-fg"), num = card.querySelector(".ring-num");
+  if (fg) fg.style.transition = "none";
+  const t0 = performance.now();
+  const step = now => {
+    const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    const v = from + (to - from) * e;
+    if (fg) fg.style.strokeDashoffset = (_RING_C * (1 - Math.max(0, Math.min(100, v)) / 100)).toFixed(1);
+    if (num) num.firstChild.textContent = Math.round(v);
+    if (k < 1) requestAnimationFrame(step);
+    else done && done();
+  };
+  requestAnimationFrame(step);
+}
+function sessionEndCeremony(home, data, reduced) {
+  document.querySelectorAll(".cer-layer").forEach(n => n.remove());   // never stack ceremonies
+  document.body.classList.add("in-ceremony");
+  // hide the bar WITHOUT hideTabbar(): that helper also tears down the home atmo, which
+  // must stay mounted (opacity-hidden) so the dissolve can refill it in place
+  const bar = document.getElementById("tabbar"); if (bar) bar.classList.remove("show");
+  const before = data.before, after = data.after, facts = data.facts || {};
+  const moved = m => before[m] != null && after[m] != null && Math.round(before[m]) !== Math.round(after[m]);
+  const anyMoved = ["readiness", "momentum", "retention"].some(moved);
+  const emptyish = reduced || !anyMoved;               // no isolated-performance beat (§6b cases)
+  const hero = home.querySelector(".hero");
+  const cardR = home.querySelector("#sc-readiness"), cardM = home.querySelector("#sc-momentum"), cardT = home.querySelector("#sc-retention");
+  const timers = [];
+  const layer = el(`<div class="cer-layer">
+    <div class="cer-tint"></div>
+    <div class="cer-kicker">THAT'S THE SESSION</div>
+    <div class="cer-panel">
+      <div class="sfacts">${_sfactRows(facts)}</div>
+      <button class="btn cer-cont">Continue</button>
+    </div>
+  </div>`);
+  // the ceremony reads its regions from home, never defines them: kicker fills the space
+  // above the dials, the panel takes the space below them (the hidden tile/nav zone)
+  const place = () => {
+    const hr = hero ? hero.getBoundingClientRect() : { top: 180, bottom: 420 };
+    layer.querySelector(".cer-kicker").style.height = Math.max(64, hr.top) + "px";
+    layer.querySelector(".cer-panel").style.top = (hr.bottom + 6) + "px";
+  };
+  document.body.appendChild(layer);
+  place();
+  requestAnimationFrame(place);                         // re-measure once layout has settled
+  timers.push(setTimeout(place, 350));                  // and again after fonts/atmo finish
+  if (emptyish) {                                       // dials settled, sides visible, deltas shown
+    [cardM, cardT].forEach(c => { if (c) c.classList.remove("dial-pop"); });
+    home.querySelectorAll(".dial-delta").forEach(dd => dd.classList.add("show"));
+  } else {
+    // the performance: Readiness isolated ticking its delta, then the sides pop into
+    // home's exact geometry and tick in turn (sequential composes); deltas after each settles
+    if (moved("readiness")) timers.push(setTimeout(() => _tickHomeDial(cardR, before.readiness, after.readiness, 900, () => {
+      const b2 = readinessBand(after.readiness);        // band-crossing: the chip morphs mid-ceremony
+      const chip = cardR.querySelector(".band-chip");
+      if (chip && chip.textContent !== b2.label) {
+        const top = after.readiness >= 85;
+        chip.className = `band-chip ${b2.cls}${top ? " crown just-crossed" : ""}`;
+        chip.textContent = b2.label;
+      }
+      state.lastBandTop = after.readiness >= 85; save();
+    }), 600));
+    timers.push(setTimeout(() => cardM && cardM.classList.add("in"), 1700));
+    timers.push(setTimeout(() => cardT && cardT.classList.add("in"), 1900));
+    const sideTick = (card, metric, at, dur) => {
+      if (!card) return;
+      if (moved(metric)) timers.push(setTimeout(() => _tickHomeDial(card, before[metric], after[metric], dur, () => {
+        const dd = card.querySelector(".dial-delta"); if (dd) dd.classList.add("show");
+      }), at));
+      else timers.push(setTimeout(() => { const dd = card.querySelector(".dial-delta"); if (dd) dd.classList.add("show"); }, at + 200));
+    };
+    sideTick(cardM, "momentum", 2100, 700);
+    sideTick(cardT, "retention", 2350, 500);
+  }
+  // Continue → Option D: the world empties, the dials hold alone, home refills piece by piece
+  layer.querySelector(".cer-cont").addEventListener("click", () => {
+    if (layer.classList.contains("dissolving")) return;
+    layer.classList.add("dissolving");                  // ceremony copy 600ms; tint drains 1200ms
+    const speed = emptyish ? 0.5 : 1;                   // empty-ish sessions get the brisker dissolve
+    const at = ms => Math.round(ms * speed);
+    const back = sel => document.querySelectorAll(sel).forEach(n => n.classList.add("cer-back"));
+    if (reduced) {                                      // single quick crossfade, no staged refill
+      back(".home-atmo, .topbar, .home > :not(.hero)");
+      showTabbar("home");
+      const dw = document.getElementById("dw-today"); if (dw) dw.classList.add("show");
+      setTimeout(() => { layer.remove(); document.body.classList.remove("in-ceremony"); maybeStatusMoment(); }, 250);
+      return;
+    }
+    timers.push(setTimeout(() => back(".home-atmo, .topbar, .home .trip"), at(1000)));
+    timers.push(setTimeout(() => back(".home .hero-tile"), at(1300)));
+    timers.push(setTimeout(() => back(".home .practice"), at(1450)));
+    timers.push(setTimeout(() => back(".home > *"), at(1600)));   // whisper lines, divergence, presence, banner
+    timers.push(setTimeout(() => { back("#tabbar"); showTabbar("home"); }, at(1750)));
+    timers.push(setTimeout(() => { const dw = document.getElementById("dw-today"); if (dw) dw.classList.add("show"); }, at(2150)));
+    timers.push(setTimeout(() => { layer.remove(); document.body.classList.remove("in-ceremony"); maybeStatusMoment(); }, at(2750)));
+  });
 }
 
 /* XP→Status §4.4 migration card (one-time) + §2.3 tier-up moment. Both are quiet, typographic
@@ -362,10 +514,13 @@ function scoreRevealCard() {
   };
   requestAnimationFrame(frame);
 }
-// session end → home, unless the first-reveal card is still owed (fires once)
+// session end → home, unless the first-reveal card is still owed (fires once).
+// A completed session carries its ceremony data (§6b); the reveal card outranks it once.
 function goHomeAfterSession() {
   const s = state.scoresCache || computeScores();
   if (!state.scoreRevealSeen && s && (s.lifetimeSessions || 0) >= 1 && (s.readiness || 0) > 0) return scoreRevealCard();
+  const se = (typeof run !== "undefined" && run && run.sessionEnd) ? run.sessionEnd : null;
+  if (se) { run.sessionEnd = null; return renderHome({ ceremony: se }); }
   renderHome();
 }
 // §detail-view: the Readiness ring opens the rich instrument sheet (design/readiness-detail.html);

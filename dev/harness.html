@@ -194,6 +194,36 @@
           ask("reply", { id: "__h_reply", es: "No gracias, la cuenta por favor", en: "No thanks, just the check", replyTo: "__h_local" },
             { scene: "The waiter comes over." });
         },
+        // §6b session-end ceremony (Option D): dials tick on home's own components, then dissolve
+        "Session end — full ceremony": () => {
+          clean();
+          const after = computeScores();
+          state.scoreHistory = [{ date: daysAgoStr(1), readiness: Math.max(0, after.readiness - 3), momentum: Math.max(0, after.momentum - 8), retention: Math.max(0, after.retention - 1) }];
+          renderHome({ ceremony: {
+            before: { readiness: Math.max(0, after.readiness - 3), momentum: Math.max(0, after.momentum - 8), retention: Math.max(0, after.retention - 1) },
+            after: { readiness: after.readiness, momentum: after.momentum, retention: after.retention },
+            facts: { newN: 5, stronger: 12, restored: 3, soloed: 1 }
+          } });
+        },
+        "Session end — pure review (no new line)": () => {
+          clean();
+          const after = computeScores();
+          state.scoreHistory = [{ date: daysAgoStr(1), readiness: Math.max(0, after.readiness - 2), momentum: Math.max(0, after.momentum - 5), retention: Math.max(0, after.retention - 2) }];
+          renderHome({ ceremony: {
+            before: { readiness: Math.max(0, after.readiness - 2), momentum: Math.max(0, after.momentum - 5), retention: Math.max(0, after.retention - 2) },
+            after: { readiness: after.readiness, momentum: after.momentum, retention: after.retention },
+            facts: { newN: 0, stronger: 9, restored: 4, soloed: 0 }
+          } });
+        },
+        "Session end — empty-ish (nothing moved)": () => {
+          clean();
+          const after = computeScores();
+          renderHome({ ceremony: {
+            before: { readiness: after.readiness, momentum: after.momentum, retention: after.retention },
+            after: { readiness: after.readiness, momentum: after.momentum, retention: after.retention },
+            facts: { newN: 0, stronger: 2, restored: 0, soloed: 0 }
+          } });
+        },
         "Learn tab": screen(renderLearn, "learn"),
         "Learn — new user (later chapters dim)": () => {
           clean();

@@ -281,18 +281,10 @@ function finishChain(lesson) {
   const now = new Date().toISOString();
   state.lessons[lesson.id] = { stars: 3, at: now };
   const userTurns = (lesson.chain.turns || []).filter(t => t.user).length;
-  state.sessions = state.sessions || [];
-  state.sessions.push({ at: now, lessonId: lesson.id, category: "Conversation", phrases: userTurns, correct: userTurns });
-  registerActivity();
-  computeScores(); applyTierUpdate(); save(); renderTopbar(); playSound("win");
-  cloudSync().catch(() => {});
-  const app = $("#app"); app.innerHTML = "";
-  app.appendChild(el(`<div class="complete">
-    <h2>¡Conversación completa!</h2>
-    <div class="reward">${lesson.reward || "You held a whole conversation in Spanish, start to finish."}</div>
-    ${lesson.cultureNote ? `<div class="culture-note"><b>Local tip</b> ${lesson.cultureNote}</div>` : ""}
-    <button class="btn" id="home">Continue</button></div>`));
-  $("#home").addEventListener("click", renderHome);
+  // a chain is a session too (§6b): its correct turns are honest "stronger" movement
+  run = { restored: 0, soloed: 0, exposed: null, strongerIds: null };
+  _sessionEndBookkeeping({ at: now, lessonId: lesson.id, category: "Conversation", phrases: userTurns, correct: userTurns },
+    { stronger: userTurns });
 }
 /* §4c.4 scenario primer — a ~20s first-pass-only pre-lesson flow. Its job is as much emotional as
    cognitive: it connects the next 6 minutes of effort to the trip the user is excited about, by
@@ -1527,6 +1519,7 @@ function finishGrade(ok, item, extra, wrong) {
   // §8.4: was this phrase fading BEFORE we graded it? (seen ≥once + strength under the notify threshold)
   const pre = id && state.learn && state.learn[id];
   const wasFading = !!(pre && pre.exposures >= 1 && itemStrength(pre) < RETENTION_FADE);
+  const strengthBefore = pre ? itemStrength(pre) : 0;                // for the session-end "stronger" fact (§6b)
   const coldBefore = !!(pre && pre.axes && pre.axes.cold);           // for the Yours-now milestone (§3.5)
   if (!ok) { run.wrong++; if (run.missed) run.missed.set(id, item); }
   recordAnswer(id, ok, { mode: q && q.type, scaffolded: q && q.slow });   // q.slow = used the 0.75× replay
@@ -1535,8 +1528,12 @@ function finishGrade(ok, item, extra, wrong) {
   const post = id && state.learn && state.learn[id];
   const yoursNow = ok && !coldBefore && !!(post && post.axes && post.axes.cold)
     && (q && ["type_translation", "speak_it", "close", "close_swap"].includes(q.type)) && !(post && post.yoursShown);
-  if (yoursNow) post.yoursShown = true;
+  if (yoursNow) { post.yoursShown = true; run.soloed = (run.soloed || 0) + 1; }   // §6b ledger: soloed
   if (restored) run.restored = (run.restored || 0) + 1;
+  // §6b ledger: "stronger" = items whose strength rose this session, excluding items
+  // introduced this session (their first ticks are intake, not achievement [tune])
+  if (ok && post && itemStrength(post) > strengthBefore && !(run.exposed && run.exposed.has(id)))
+    (run.strongerIds = run.strongerIds || new Set()).add(id);
   // §4b.2: count correct one-blank fills so the item graduates to two-blank fills
   if (ok && q && q.type === "fill_blank" && (q.blanks || 1) === 1) { const st = state.learn && state.learn[id]; if (st) st.fill1 = (st.fill1 || 0) + 1; }
   playSound(ok ? "correct" : "wrong");
@@ -1723,63 +1720,39 @@ function finishLesson() {
   const cs = state.topicStats[cat] = state.topicStats[cat] || { correct: 0, total: 0 };
   cs.correct += correct; cs.total += total;
   // session log → powers Momentum / Recency / Retention
-  const prevReadiness = (state.scoresCache || {}).readiness;
+  _sessionEndBookkeeping({ at: now, lessonId: lesson.id, category: cat, phrases: total, correct });
+}
+
+/* §6b session end (2026-07-21): shared bookkeeping for every completed flow, then straight
+   home — the ceremony IS the completion surface (the old "lesson complete" screen retired;
+   missed items keep flowing through next-session warm-up + home's review row). */
+function _sessionEndBookkeeping(sessionRec, factsOverride) {
+  const prev = state.scoresCache || {};
+  const before = { readiness: prev.readiness, momentum: prev.momentum, retention: prev.retention };
   state.sessions = state.sessions || [];
-  state.sessions.push({ at: now, lessonId: lesson.id, category: cat, phrases: total, correct });
+  state.sessions.push(sessionRec);
   registerActivity();
   const scores = computeScores();
   applyTierUpdate();                                   // §2.2: session completion is a tier trigger
   save(); renderTopbar();
   cloudSync().catch(() => {});
   playSound("win"); haptic("complete");
-
-  const delta = (prevReadiness != null) ? scores.readiness - prevReadiness : null;
-  const missed = run.missed ? [...run.missed.values()] : [];
-  const app = $("#app");
-  app.innerHTML = "";
-  app.appendChild(el(`
-    <div class="complete">
-      <h2>¡Lección completa!</h2>
-      <div class="scorebar">
-        <div class="score"><div class="n stars-n">${"★".repeat(stars)}${"☆".repeat(3 - stars)}</div><div class="l">accuracy</div></div>
-        <div class="score"><div class="n">${scores.readiness}<span class="pct">%</span></div><div class="l">trip readiness${delta > 0 ? ` <span class="up">▲${delta}</span>` : ""}</div></div>
-      </div>
-      ${(delta > 0 || run.restored) ? `<div class="session-delta">${delta > 0 ? `+${delta} Readiness` : ""}${delta > 0 && run.restored ? " · " : ""}${run.restored ? `${run.restored} phrase${run.restored === 1 ? "" : "s"} restored` : ""}</div>` : ""}
-      <div class="reward">${lesson.reward || "Locked in. That whole set travels with you."}</div>
-      ${lesson.cultureNote ? `<div class="culture-note"><span class="cn-label">Local tip</span> ${lesson.cultureNote}</div>` : ""}
-      ${missed.length ? `<button class="btn accent" id="reviewmiss">Review your ${missed.length} mistake${missed.length === 1 ? "" : "s"}</button><div style="height:10px"></div>` : ""}
-      <button class="btn${missed.length ? " grey" : ""}" id="home">Continue</button>
-    </div>`));
-  if (missed.length) $("#reviewmiss").addEventListener("click", () => startReview(missed));
-  $("#home").addEventListener("click", goHomeAfterSession);
+  run.sessionEnd = {
+    before,
+    after: { readiness: scores.readiness, momentum: scores.momentum, retention: scores.retention },
+    facts: Object.assign({
+      newN: run.exposed ? run.exposed.size : 0,
+      stronger: run.strongerIds ? run.strongerIds.size : 0,
+      restored: run.restored || 0,
+      soloed: run.soloed || 0
+    }, factsOverride || {})
+  };
+  goHomeAfterSession();
 }
 
 /* pure-review completion: log the session for Momentum/Recency, but mark no lesson */
 function finishReview() {
   const now = new Date().toISOString();
   const total = run.qs.length, correct = Math.max(0, total - run.wrong);
-  const prevReadiness = (state.scoresCache || {}).readiness;
-  state.sessions = state.sessions || [];
-  state.sessions.push({ at: now, lessonId: "__review__", category: "Review", phrases: total, correct });
-  registerActivity();
-  const scores = computeScores();
-  applyTierUpdate();                                   // §2.2: session completion is a tier trigger
-  save(); renderTopbar();
-  cloudSync().catch(() => {});
-  playSound("win"); haptic("complete");
-  const delta = (prevReadiness != null) ? scores.readiness - prevReadiness : null;
-  const app = $("#app");
-  app.innerHTML = "";
-  app.appendChild(el(`
-    <div class="complete">
-      <h2>Review complete</h2>
-      <div class="scorebar">
-        <div class="score"><div class="n">${correct}/${total}</div><div class="l">recalled</div></div>
-        <div class="score"><div class="n">${scores.readiness}<span class="pct">%</span></div><div class="l">trip readiness${delta > 0 ? ` <span class="up">▲${delta}</span>` : ""}</div></div>
-      </div>
-      ${(delta > 0 || run.restored) ? `<div class="session-delta">${delta > 0 ? `+${delta} Readiness` : ""}${delta > 0 && run.restored ? " · " : ""}${run.restored ? `${run.restored} phrase${run.restored === 1 ? "" : "s"} restored` : ""}</div>` : ""}
-      <div class="reward">Nice, keeping older phrases warm is how they stick for the trip.</div>
-      <button class="btn" id="home">Continue</button>
-    </div>`));
-  $("#home").addEventListener("click", goHomeAfterSession);
+  _sessionEndBookkeeping({ at: now, lessonId: "__review__", category: "Review", phrases: total, correct });
 }

@@ -220,6 +220,19 @@
       [".opts .opt", ".choices .choice"],
       [".grown .en-line", ".res-en"],
     ],
+    // App state: harness story "Session end — full ceremony", ~3s in (dials performed).
+    // Artifact state: Option C/D overlay (renderOverlay) — its .kicker/.facts are the designed elements.
+    sessionEnd: [
+      [".cer-kicker .kicker", ".cer-layer .cer-kicker"],
+      [".facts", ".sfacts"],
+      [".fact", ".sfact"],
+      [".fact .n", ".sfact .sf-n"],
+      [".fact .glyph", ".sfact .sf-glyph"],
+      [".side .lbl", ".ring-card .ring-label"],
+      [".side .sdelta", ".ring-card .dial-delta"],
+      [".delta-whisper", ".delta-whisper"],
+      [".cont", ".cer-cont"],
+    ],
     // App state: showCorrection() open — .corr-wrap.show in the DOM.
     correctionSheet: [
       [".scrim", ".corr-scrim"],

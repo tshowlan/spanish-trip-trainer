@@ -1377,3 +1377,50 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   .bubble.resolved .es-txt .sweep4 { animation: none; transform: scaleX(1); }
   .playing .pbars span { animation: none; height: 8px; }
 }
+
+/* ===== §6b session-end ceremony (design/session-end.html, Option D, 2026-07-21) =====
+   Home is the base; the ceremony is a layer over its regions. The dials are the fixed
+   point: home's own ring-cards perform, the world empties and refills around them. */
+body.in-ceremony .home-atmo, body.in-ceremony .topbar,
+body.in-ceremony .home > :not(.hero), body.in-ceremony #tabbar {
+  opacity: 0; transition: opacity 550ms cubic-bezier(.2,.7,.3,1); pointer-events: none;
+}
+body.in-ceremony .cer-back { opacity: 1 !important; pointer-events: auto !important; }
+body.in-ceremony .ring-card { pointer-events: none; }          /* sheets wait for home */
+body.in-ceremony .dial-delta { opacity: 0; transition: opacity 300ms; }
+body.in-ceremony .dial-delta.show { opacity: 1; }
+.delta-whisper { font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--green);
+  margin-top: 7px; transition: opacity 300ms, transform 300ms; }
+body.in-ceremony .delta-whisper { opacity: 0; transform: translateY(3px); }
+body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
+.ring-card.dial-pop { opacity: 0; transform: scale(0.9);
+  transition: opacity 320ms cubic-bezier(.2,.7,.3,1), transform 320ms cubic-bezier(.2,.7,.3,1); }
+.ring-card.dial-pop.in { opacity: 1; transform: none; }
+
+.cer-layer { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+.cer-layer .cer-tint { position: absolute; inset: 0; transition: opacity 1200ms;
+  background: radial-gradient(120% 55% at 50% -8%, color-mix(in srgb, #c96a2b 22%, transparent) 0%, color-mix(in srgb, var(--accent) 11%, transparent) 36%, transparent 64%); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cer-layer .cer-tint {
+  background: radial-gradient(120% 55% at 50% -8%, rgba(201,106,43,0.28) 0%, rgba(216,183,19,0.10) 34%, rgba(0,0,0,0) 62%); } }
+:root[data-theme="dark"] .cer-layer .cer-tint {
+  background: radial-gradient(120% 55% at 50% -8%, rgba(201,106,43,0.28) 0%, rgba(216,183,19,0.10) 34%, rgba(0,0,0,0) 62%); }
+.cer-kicker { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: .07em; color: var(--accent-2);
+  transition: opacity 600ms; }
+.cer-panel { position: absolute; left: 24px; right: 24px; bottom: 0; display: flex; flex-direction: column;
+  align-items: center; pointer-events: auto; transition: opacity 600ms; }
+.sfacts { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; width: max-content;
+  margin-left: auto; margin-right: auto; }
+.sfact { display: flex; align-items: center; gap: 9px; text-align: left; font-size: 14.5px; color: var(--text); }
+.sfact .sf-n { font-family: var(--font-display); font-weight: 600; display: inline-block; min-width: 1.3em; text-align: right; }
+.sfact .sf-glyph { color: var(--green); display: flex; }       /* green = what you did */
+.sfact .sf-glyph.gold { color: var(--accent-2); }              /* gold = what arrived */
+.cer-cont { max-width: 300px; margin-top: auto; margin-bottom: 86px; }
+.cer-layer.dissolving .cer-kicker, .cer-layer.dissolving .cer-panel { opacity: 0; pointer-events: none; }
+.cer-layer.dissolving .cer-tint { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ring-card.dial-pop, .cer-kicker, .cer-panel, .cer-layer .cer-tint,
+  body.in-ceremony .home-atmo, body.in-ceremony .topbar, body.in-ceremony .home > :not(.hero),
+  body.in-ceremony #tabbar, body.in-ceremony .delta-whisper { transition: none; }
+}
