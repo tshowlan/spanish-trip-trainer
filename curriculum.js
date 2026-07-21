@@ -165,7 +165,7 @@ const CURRICULUM = {
                     beat: "What they'll say to you, and what to say back.",
                     items: [
                       { es: "¿Algo más?", en: "Anything else?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Algo más? No, gracias.", contextEn: "Anything else? No, thanks.", keywords: ["más"] },
-                      { es: "Aquí tiene", en: "Here you go", tier: 1, tags: ["social", "restaurant"], contextEs: "Aquí tiene su cambio", contextEn: "Here's your change", keywords: ["tiene"] },
+                      { es: "Aquí tiene", en: "Here you go", tier: 1, tags: ["social", "restaurant"], contextEs: "Aquí tiene su cambio", contextEn: "Here's your change", keywords: ["tiene"], note: "You'll say it handing over money; you'll hear it getting your change back. Both directions, same phrase." },
                       { es: "Un momento", en: "One moment", tier: 1, tags: ["social"], contextEs: "Un momento, por favor", contextEn: "One moment, please", keywords: ["momento"] },
                       { es: "¿Está todo bien?", en: "Is everything okay?", tier: 1, tags: ["social", "restaurant"], contextEs: "¿Está todo bien? Sí, gracias.", contextEn: "Is everything okay? Yes, thanks.", keywords: ["todo"] },
                       { es: "Que aproveche", en: "Enjoy your meal", note: "Spain's 'bon appétit'.", tier: 1, tags: ["social", "food"], keywords: ["aproveche"] },
@@ -185,7 +185,7 @@ const CURRICULUM = {
         {
           id: "s1-rescue", topic: "How do you say", title: "I only speak a little",
           reward: "Now you can confess your Spanish is bad, in Spanish. Meta. Keep going so you don't have to.",
-          primer: { scene: "Marina, who runs the little tasca on the corner, just reeled off today's specials, and you caught maybe one word. She waits, order pad in hand, patient.", mission: "Admit your Spanish is shaky, and ask her to slow down.", guessItem: "¿Habla inglés?" },
+          primer: { scene: "Marina, who runs the little tasca on the corner, just reeled off today's specials, and you caught maybe one word. She waits, order pad in hand, patient.", mission: "Admit your Spanish is shaky, and ask her to slow down.", guessItem: "¿Puede repetir, por favor?" },
           items: [
             { es: "Hablo solo un poco de español", en: "I only speak a little Spanish", tier: 2, tags: ["communication"], keywords: ["español"] },
             { es: "¿Cómo se dice...?", en: "How do you say...?", tier: 2, tags: ["communication"], keywords: ["dice"] },
@@ -225,9 +225,12 @@ const CURRICULUM = {
         {
           id: "sp-cash", topic: "Numbers, money & paying", title: "Euros & paying cash",
           reward: "Euros, cash, and the total, you can pay without pointing at the till.",
-          primer: { scene: "At La Boquería, Núria weighs out a paper cone of jamón and holds out her hand. Taped to her stall: a hand-lettered 'solo efectivo.'", mission: "Handle euros and pay Núria in cash without fumbling.", guessItem: "cien" },
+          primer: { scene: "At La Boquería, Núria weighs out a paper cone of jamón and holds out her hand. Taped to her stall: a hand-lettered 'solo efectivo.'", mission: "Handle euros and pay Núria in cash without fumbling.", guessItem: "el cambio" },
           items: [
-            { es: "¿Cuánto cuesta?", en: "How much is it?", tier: 2, tags: ["money", "shopping"], keywords: ["cuánto", "cuesta"], variants: ["¿Qué precio tiene?"], reply: { es: "Son cinco euros", en: "It's five euros" } }
+            { es: "¿Cuánto cuesta?", en: "How much is it?", tier: 2, tags: ["money", "shopping"], keywords: ["cuánto", "cuesta"], variants: ["¿Qué precio tiene?"], reply: { es: "Son cinco euros", en: "It's five euros" } },
+            { es: "en efectivo", en: "in cash", tier: 2, tags: ["money"], keywords: ["efectivo"] },
+            { es: "el cambio", en: "the change", tier: 2, tags: ["money"], keywords: ["cambio"] },
+            { es: "¿Me cobra, por favor?", en: "Can I pay, please?", tier: 2, tags: ["money", "shopping"], keywords: ["cobra"], note: "The everyday Spain way to ask to pay at a counter or bar. Literally 'will you charge me'." }
           ]
         },
         {
@@ -263,15 +266,18 @@ const CURRICULUM = {
         {
           id: "s4-hear", topic: "Common phrases you'll hear", title: "What locals say to you",
           reward: "You can now understand what's being said TO you. Eavesdropping unlocked. Use responsibly.",
-          primer: { scene: "It's not just you talking now. Marina rattles something off as she sets your plate down, the shopkeeper next door calls out as you pass, and you catch the tune but not the words. Time to tune your ear the other way.", mission: "Catch what locals say to you, and know what they mean.", guessItem: "Que aproveche" },
+          primer: { scene: "It's not just you talking now. Marina rattles something off as she sets your plate down, the shopkeeper next door calls out as you pass, and you catch the tune but not the words. Time to tune your ear the other way.", mission: "Catch what locals say to you, and know what they mean.", guessItem: "¿Todo bien?" },
           items: [
-            { es: "Que tenga un buen día", en: "Have a good day", tier: 2, tags: ["social", "politeness"], keywords: ["día"] }
+            { es: "Que tenga un buen día", en: "Have a good day", tier: 2, tags: ["social", "politeness"], keywords: ["día"] },
+            { es: "¿Le pongo algo más?", en: "Shall I get you anything else?", tier: 2, tags: ["social", "restaurant"], keywords: ["pongo"], note: "Marina's version of 'anything else': pongo, literally 'shall I put'." },
+            { es: "¿Todo bien?", en: "Everything okay?", tier: 2, tags: ["social"], keywords: ["todo"] },
+            { es: "Ahora mismo", en: "Right away", tier: 2, tags: ["social"], keywords: ["mismo"] }
           ]
         },
         {
           id: "sp-help", topic: "Problems & emergencies", title: "If something's wrong",
           reward: "The safety net's in place. Now go enjoy Barcelona, you're covered.",
-          primer: { scene: "You pat every pocket twice, your wallet's gone. Sra. Rosa, the farmacéutica on the corner, catches your face and asks if you're okay. Anything truly serious, she says, is 112, and they'll find you someone who speaks English. Everything else starts right here.", mission: "Get help fast, a doctor, the police, or her farmacia.", guessItem: "Es una emergencia" },
+          primer: { scene: "You pat every pocket twice, your wallet's gone. Sra. Rosa, the farmacéutica on the corner, catches your face and asks if you're okay. Anything truly serious, she says, is 112, and they'll find you someone who speaks English. Everything else starts right here.", mission: "Get help fast, a doctor, the police, or her farmacia.", guessItem: "Me han robado" },
           items: [
             { es: "Me han robado", en: "I've been robbed", tier: 2, tags: ["emergency"], keywords: ["robado"] },
             { es: "No me siento bien", en: "I don't feel well", tier: 2, tags: ["emergency", "health"], keywords: ["siento"] },

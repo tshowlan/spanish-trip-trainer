@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-21 — Primer wave commit #3 SHIPPED (v173): guessItems fixed, thin lessons padded
+- Four silent-fallback guessItems reassigned to in-list hooks (all verified resolving: ¿Puede repetir por favor? / el cambio / ¿Todo bien? / Me han robado). sp-cash 1→4 phrases (cash set), s4-hear 1→4 (locals set = replyTo seed corpus). DEDUP DEVIATION: "Aquí tiene" already lives in K3 with the change context, and item identity IS the phrase, so neither new set could carry it without duplicating the id; K3's copy absorbed the both-directions note instead (chat's pedagogy preserved, sets land at 3 each). Pack audit 0 hard errors; no duplicate ids.
+- Pass-2 manifest exported to Tom's folder for the from-scratch writing block.
+
 ## 2026-07-21 — Primer wave commit #2 SHIPPED (v172): coherence pass + the Jordi discovery
 - Four scenes revised verbatim (pa amb tomàquet in Marina's hands; Catalonia signs beat + antecedent fix; the Andrés plant; Sra. Rosa carries 112). Three woven cultureNotes retired (sp-table, s2-bathroom, sp-help); farmacia-de-guardia overflowed to the content-spec's Landed bin. s3-directions completed (mission + guessItem "la plaza", resolves in-lesson). Pack audit 0 hard errors.
 - DISCOVERY during the rename: the pack already HAD the taxi through-line under the name Jordi — cast-list comment ("picks you up at El Prat") AND the pass-3 finale payoff ("Jordi dropped you near Plaça Reial"). Chat's planned arc existed; keep-the-world-take-the-name applied at all three sites; decision recorded. Andrés's finale drop-off is already written.
