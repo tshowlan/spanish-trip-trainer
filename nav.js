@@ -57,7 +57,9 @@ function showTabbar(active) {
   if (!bar) return;
   bar.classList.add("show");
   bar.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === active));
-  _setBloom(active, _positionNavLight(active));
+  // measure a frame later: rects taken in the same tick the bar becomes visible are stale,
+  // which anchored the bloom to garbage x on first paint (light landing off-column)
+  requestAnimationFrame(() => _setBloom(active, _positionNavLight(active)));
 }
 function hideTabbar() {
   if (typeof clearHomeAtmo === "function") clearHomeAtmo();

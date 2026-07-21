@@ -132,7 +132,8 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
 /* atmosphere ground: gradient in dark (via --ground), cream fallback in light; fixed = stable ground while scrolling */
 /* keep the native rubber-band (feedback, not ambient animation) but contain it so a drag-down can't
    fire the browser's pull-to-refresh (decisions 2026-07-16). `none` killed the bounce → felt frozen. */
-body { max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; background: var(--ground, var(--bg)); background-attachment: fixed; }
+body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats the i's dot ("wifi") — learners need to SEE letters */
+  max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; background: var(--ground, var(--bg)); background-attachment: fixed; }
 /* frosted translucent surfaces over the ground (dark only — --card-blur is unset in light) */
 .tile, .sheet, .quest, .prog-row, .prog-tier, .prog-trend, .home-diverge, .sheet-diverge, .archive-row, .pb-thread, .culture-note, .backup-banner, #tabbar { backdrop-filter: var(--card-blur, none); -webkit-backdrop-filter: var(--card-blur, none); }
 
@@ -405,9 +406,10 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .choices { display: flex; flex-direction: column; gap: 12px; }
 .choice {
   text-align: left; background: var(--bg-card); border: 2px solid var(--border);
-  color: var(--text); border-radius: var(--radius); padding: 16px; font-size: 17px;
+  color: var(--text); border-radius: var(--radius); padding: 14px 16px; font-size: 15px;
   font-family: var(--font-display);       /* buttons don't inherit font (same fix as .btn) */
-  font-weight: 600; cursor: pointer; box-shadow: var(--shadow); transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s;
+  font-weight: 500; min-height: 48px;     /* variants artifact .opt: 15/500, 48px target */
+  cursor: pointer; box-shadow: var(--shadow); transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s;
 }
 .choice:active { transform: translateY(2px); box-shadow: var(--shadow-press); }   /* §2.1 push-down */
 .choice.correct { border-color: var(--green); background: color-mix(in srgb, var(--green) 15%, transparent); }
@@ -473,11 +475,13 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 }
 .bank { display: flex; flex-wrap: wrap; gap: 10px; }
 .word {
-  background: var(--bg-card); border: 2px solid var(--border); color: var(--text);
-  border-radius: 12px; padding: 10px 14px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow);
+  background: var(--bg-card); border: 1px solid var(--border); color: var(--text);
+  border-radius: var(--radius-sm); padding: 8px 12px; font-size: 17px; font-weight: 500;
+  cursor: pointer; box-shadow: var(--shadow);
   font-family: var(--font-display);       /* buttons don't inherit font (same fix as .btn) */
   transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s;
 }
+.bank .word { background: var(--bg-elevated); color: var(--text-dim); }   /* tray sits quieter than placed tiles */
 .word:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
 .word.used { visibility: hidden; }
 /* §1b.4 scaffolded build: pre-placed (locked) chunks + empty slots for the novel words */
@@ -686,6 +690,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   z-index: 40; display: none; align-items: stretch; justify-content: space-around;
   background: var(--bg-nav); border: 1px solid var(--border); border-radius: 99px;
   padding: 7px 8px; box-shadow: 0 8px 28px rgba(28,39,94,.18);
+  overflow: hidden;   /* the artifact clips the traveling light to the pill — without this it spills past the corners at outer tabs */
 }
 #tabbar.show { display: flex; }
 .tab {
@@ -1351,6 +1356,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .sc-hint { font-size: 11.5px; color: var(--text-dim); margin-bottom: 6px; }
 
 /* ---- the reply: cast-voice bubble; options are the shared .choices component ---- */
+.scene-line { font-size: 14px; color: var(--text-dim); margin-bottom: 16px; }   /* narrative scene, sentence case (artifact .prompt) */
 .bubble { background: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px; padding: 13px 15px; margin-bottom: 14px; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bubble { background: rgba(255,255,255,0.06); } }

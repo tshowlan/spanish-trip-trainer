@@ -1395,7 +1395,7 @@ function renderReplyChat(q) {
   const local = (ALL_ITEMS || []).find(x => x.id === item.replyTo || x.es === item.replyTo);
   if (!local) { q.type = "mc_es2en"; return renderMC(q); }           // safety: dangling replyTo
   const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">${q.scene || "They ask you"}</div>`));
+  body.appendChild(el(`<div class="scene-line">${q.scene || "They ask you."}</div>`));   // narrative, not a type label
   // the gloss is the answer to the comprehension work — hidden until the learner has
   // answered, then it materializes with the sweep drawing under the understood es line
   const bub = el(`<div class="bubble">
@@ -1529,6 +1529,14 @@ function resolveCorrect(item, q, info) {
   grown.querySelector(".res-cont").addEventListener("click", goNext);
   qb.appendChild(grown);
   requestAnimationFrame(() => requestAnimationFrame(() => grown.classList.add("show")));
+  // the exit is the learner's tap (Pacing Rule) — so the tap must be ON SCREEN: tall
+  // exercises (requeued chip + choices) can push Continue past the fold on short phones
+  setTimeout(() => {
+    try {
+      const rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      grown.scrollIntoView({ block: "nearest", behavior: rm ? "auto" : "smooth" });
+    } catch (_) {}
+  }, 700);
 
   // the item's strength ring ticks up, "Stronger" whispers
   _setQStrength(info.strengthAfter, true);

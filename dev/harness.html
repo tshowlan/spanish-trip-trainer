@@ -133,7 +133,7 @@
       function clean() {
         document.querySelectorAll(".footer, .corr-wrap, .confirm-wrap, .primer-wrap, .sheet-wrap").forEach(n => n.remove());
         const app = $("#app"); if (app) app.innerHTML = "";
-        const tb = $("#tabbar"); if (tb) tb.innerHTML = "";
+        const tb = $("#tabbar"); if (tb) { tb.innerHTML = ""; safe(initTabbar); }   // rebuild: navlight + tabs are boot-time chrome
       }
       // build a one-question run and render the REAL lesson runner for any exercise type
       function ask(type, item, extra) {
