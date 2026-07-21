@@ -1219,9 +1219,12 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
    One resolution language: correct answers mature the page in place. Fusion, sweep, materialization;
    sheets stay reserved for the miss. The old correct-feedback wash survives as the base layer. */
 .build-answer { transition: gap 450ms cubic-bezier(.2,.7,.3,1); position: relative; }
-.build-answer .word { transition: background 450ms, border-color 450ms, box-shadow 450ms, padding 450ms cubic-bezier(.2,.7,.3,1); }
+.build-answer .word { transition: background 450ms, border-color 450ms, box-shadow 450ms, padding 450ms cubic-bezier(.2,.7,.3,1), font-size 450ms cubic-bezier(.2,.7,.3,1); }
 .build-answer.fused { gap: 5px; border-bottom-color: transparent; }
-.build-answer.fused .word, .build-answer.fused .slot { background: transparent; border-color: transparent; box-shadow: none; padding-left: 0; padding-right: 0; font-weight: 600; color: var(--text); }
+/* the fused sentence is a centerpiece surface: words mature to the es-reveal scale
+   (22px display 600), not tile scale — same size as every other exercise's resolved es
+   (Tom, 2026-07-20; canvas artifacts still show tile-size fused lines, next re-issue adopts) */
+.build-answer.fused .word, .build-answer.fused .slot { background: transparent; border-color: transparent; box-shadow: none; padding-left: 0; padding-right: 0; font-weight: 600; color: var(--text); font-size: 22px; font-family: var(--font-display); }
 .build-answer .sweep { position: absolute; left: 0; bottom: 6px; height: 2.5px; width: 100%; background: var(--green); border-radius: 2px;
   transform: scaleX(0); transform-origin: left center; }
 .build-answer.fused .sweep { animation: res-sweep 400ms cubic-bezier(.2,.7,.3,1) 350ms forwards; }
