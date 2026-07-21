@@ -74,7 +74,7 @@ Every recurring element is one of these components. Building a one-off variant o
 - Min touch target 44×44px including padding — applies to EVERYTHING tappable (this is the fix-class for small icon buttons).
 
 ### 3.2 Audio controls (the slow-voice fix)
-One `AudioControl` component, three variants — never ad-hoc speaker buttons. **Glyph color law (refined 2026-07-20, §3.7): gold BUTTONS carry DARK glyphs; flat CARDS carry GOLD glyphs (`--accent-2`) — never gold-on-gold. The gold sound wave stays the brand element on flat surfaces.**
+One `AudioControl` component, three variants — never ad-hoc speaker buttons. **Glyph color law (corrected rider 2026-07-20, §3.7): the audio control pairs high-contrast, never tone-on-tone — dark-on-gold and gold-on-dark are both legal; gold-on-gold (and dark-on-dark) never are. The BUILT AudioControl (dark circle, gold glyph) is the canonical instance; artifact stand-ins may draw the inverse and defer to the build. Flat cards (pairs / sound-choice options) carry gold glyphs on the card surface.**
 - **Inline speaker** (in cards/exercises): 44px target, icon-only, plays at 1.0×. Playing state: icon swaps to animated gold bars (the one sanctioned "active" animation, tied to actual playback).
 - **Speed toggle**: a paired pill on the speaker — tap cycles 1.0× → 0.75× (shows "0.75×" label while slowed). Slow state persists for the current item only, resets on next item. Never a separate turtle button floating elsewhere.
 - **Chunk audio** (§4b.5 cards): tapping the chunk IS the audio trigger — no separate icon. Playing state: text chunks go gold (text + underline); the boxed new/error chunk gets a soft gold ring.
@@ -110,7 +110,7 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 ### 3.7 Exercise-batch rules (adopted 2026-07-20; born in the six-type reviews, bind everywhere)
 
 - **Settle dialects:** FUSION = becoming a sentence (assembled pieces dissolve chrome into one line); PRESSED-IN = discrete objects reaching done (border kept, shadow dropped, elevated fill). Never mixed on one surface — a matched card is done, not becoming.
-- **One audio component:** the standard control everywhere, no miniature variants (the reply's bubble speaker is the standard control at 44px). **Glyph color law:** gold buttons carry DARK glyphs, flat cards carry GOLD glyphs, never gold-on-gold. No state-based glyph color exists — playing = the bars animate, the glyph stays put.
+- **One audio component:** the standard control everywhere, no miniature variants (the reply's bubble speaker is the standard control at 44px). **Glyph color law (corrected by rider, 2026-07-20 — the appendix's original "gold buttons carry dark glyphs" described artifact STAND-INS, not the built truth):** the audio control pairs high-contrast, never tone-on-tone — dark-on-gold and gold-on-dark both legal; gold-on-gold (and dark-on-dark) never. The built AudioControl (dark circle, gold glyph) is canonical per built-component precedence; do not restyle it. Flat cards (pairs / sound-choice options) carry gold glyphs on the card surface — unchanged. No state-based glyph color exists — playing = the bars animate, the glyph stays put.
 - **Adjacent reveal, bottom Continue:** the grown (es/en/audio) sits directly below the work — the page grows where the work happened; Continue anchors to the thumb zone.
 - **No-repeat:** each string appears ONCE on the resolved screen, in whichever language the screen doesn't already hold; the grown carries only what's missing. When the exercise's own sentence completes in place (filled blank, fused row), it IS the es reveal — never repeated below.
 - **The grown is a footnote zone:** identical line treatment across exercises regardless of language (same class, same 13px dim line, same visual gap). Large es is reserved for centerpiece surfaces (the resolution frame's fused line). No language-based styling in the footnote zone.
@@ -155,6 +155,7 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
       - **Intentional divergence** → the app deviates on purpose (the §8.3 bar spring vs the artifact's plainer transition). Flag it back to chat to resolve; never silently overwrite either side.
    4. **Then** the side-by-side screenshot, for what computed-style can't judge (rhythm, balance). Screenshot-only is never acceptance on its own.
 6. Any new recurring pattern discovered during design gets ADDED to §3 in the same PR — the constitution grows; one-offs don't.
+7. **Precedence applies to rule-making, not just rendering (2026-07-20):** a rule derived during artifact review must be checked against the built canonical component BEFORE it enters the constitution. Artifact stand-ins are scaffolding; codifying scaffolding as law nearly restyled the real AudioControl backwards (the glyph-law rider is the case study). If the rule and the build disagree, the build is the reference for shared components — fix the rule or flag a genuine divergence; never let a stand-in legislate.
 
 ## 6. Remediation audit (one-time, do first)
 
