@@ -1482,15 +1482,18 @@ function renderReplyChat(q) {
   if (!local) { q.type = "mc_es2en"; return renderMC(q); }           // safety: dangling replyTo
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">${q.scene || "They ask you"}</div>`));
+  // the gloss is the answer to the comprehension work — hidden until the learner has
+  // answered, then it materializes with the sweep drawing under the understood es line
   const bub = el(`<div class="bubble">
     <div class="who">${(local.cast || "A local").toUpperCase()}</div>
-    <div class="line"><span class="ac-mount"></span><span>${local.es}</span></div>
+    <div class="line"><span class="ac-mount"></span><span class="es-txt">${local.es}<span class="sweep4"></span></span></div>
     <div class="en-gloss">${local.en}</div>
   </div>`);
   const play = audioControl(() => speak(local.es));
   bub.querySelector(".ac-mount").replaceWith(play);
   body.appendChild(bub);
   setTimeout(() => play._fire(), 400);
+  q.onResolve = () => bub.classList.add("resolved");
   const { options } = mcOptions(item, true, q.pool && q.pool.length ? q.pool : run.lesson.items);
   const opts = el(`<div class="choices"></div>`);
   options.forEach(opt => {

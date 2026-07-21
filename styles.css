@@ -1341,13 +1341,22 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   color: var(--accent-2); margin-bottom: 5px; }
 .bubble .line { display: flex; align-items: center; gap: 9px; font-family: var(--font-display);
   font-size: 16.5px; font-weight: 500; color: var(--text); }
-.bubble .en-gloss { font-size: 12px; color: var(--text-dim); margin-top: 5px; }
+/* the gloss is the comprehension answer: hidden until resolution, then it materializes
+   while the green sweep draws under the understood es line (Tom, 2026-07-20; canvas
+   artifact still shows the gloss always visible — next re-issue adopts) */
+.bubble .line .es-txt { position: relative; padding-bottom: 3px; }
+.bubble .line .es-txt .sweep4 { position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--green); border-radius: 2px; transform: scaleX(0); transform-origin: left center; }
+.bubble.resolved .es-txt .sweep4 { animation: res-sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+.bubble .en-gloss { font-size: 12px; color: var(--text-dim); margin-top: 5px;
+  opacity: 0; transform: translateY(3px); transition: opacity 280ms cubic-bezier(.2,.7,.3,1) 250ms, transform 280ms cubic-bezier(.2,.7,.3,1) 250ms; }
+.bubble.resolved .en-gloss { opacity: 1; transform: none; }
 .choice.got { border-color: var(--green); background: color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
 .choice.fade { opacity: 0.35; }
 
 @media (prefers-reduced-motion: reduce) {
-  .pcard, .res-grown.pairs-grown { transition: none; }
-  .pcard.matched .es-word::after, .pcard.settled .es-word::after, .sc-blank.filled::after, .tiwrap.swept .sweep3 {
-    animation: none; transform: scaleX(1); }
+  .pcard, .res-grown.pairs-grown, .bubble .en-gloss { transition: none; }
+  .pcard.matched .es-word::after, .pcard.settled .es-word::after, .sc-blank.filled::after, .tiwrap.swept .sweep3,
+  .bubble.resolved .es-txt .sweep4 { animation: none; transform: scaleX(1); }
   .playing .pbars span { animation: none; height: 8px; }
 }
