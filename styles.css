@@ -1405,7 +1405,9 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
   transition: opacity 320ms cubic-bezier(.2,.7,.3,1), transform 320ms cubic-bezier(.2,.7,.3,1); }
 .ring-card.dial-pop.in { opacity: 1; transform: none; }
 
-.cer-layer { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+/* the layer lives in the app's column (same centering as .home-atmo), not the viewport */
+.cer-layer { position: fixed; top: 0; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px; z-index: 60; pointer-events: none; }
 .cer-layer .cer-tint { position: absolute; inset: 0; transition: opacity 1200ms;
   background: radial-gradient(120% 55% at 50% -8%, color-mix(in srgb, #c96a2b 22%, transparent) 0%, color-mix(in srgb, var(--accent) 11%, transparent) 36%, transparent 64%); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cer-layer .cer-tint {
@@ -1423,7 +1425,9 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .sfact .sf-n { font-family: var(--font-display); font-weight: 600; display: inline-block; min-width: 1.3em; text-align: right; }
 .sfact .sf-glyph { color: var(--green); display: flex; }       /* green = what you did */
 .sfact .sf-glyph.gold { color: var(--accent-2); }              /* gold = what arrived */
-.cer-cont { max-width: 300px; margin-top: auto; margin-bottom: 86px; }
+/* full container width, same as the lesson tile and every exercise Continue (Tom:
+   the artifact's 300px cap was a phone-frame value, not a design intent) */
+.cer-cont { margin-top: auto; margin-bottom: 86px; }
 .cer-layer.dissolving .cer-kicker, .cer-layer.dissolving .cer-panel { opacity: 0; pointer-events: none; }
 .cer-layer.dissolving .cer-tint { opacity: 0; }
 
