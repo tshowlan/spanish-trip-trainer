@@ -161,11 +161,39 @@
         "Correction sheet (gold error chunk)": () => { ask("type_translation", chunkItem); showCorrection(chunkItem, null, "creo que un error en la cuenta"); },
         "Exercise — match pairs": () => ask("match", matchSet[0], { items: matchSet }),
         "Exercise — multiple choice (ES→EN)": () => ask("mc_es2en", normItem),
-        "Exercise — multiple choice (EN→ES)": () => ask("mc_en2es", normItem),
         "Exercise — type the translation": () => ask("type_translation", normItem),
         "Exercise — build the sentence": () => ask("build", normItem),
         "Exercise — fill the blank": () => ask("fill_blank", normItem),
         "Exercise — listen & choose": () => ask("listen_choice", normItem),
+        // §7.1 exercise batch (mc_en2es retired: options were complete es phrases)
+        "Exercise — pairs (4 audio × 4 en)": () => ask("pairs", undefined, { items: matchSet }),
+        "Exercise — the close (core phrase)": () => {
+          const p0 = DECK.stages.find(s => s.pass === 0);
+          const m = (p0 && (p0.lessons.find(l => l.machine && /traer/.test(l.frame || "")) || p0.lessons.find(l => l.machine)));
+          ask("close", (m && m.items[0]) || normItem);
+        },
+        "Exercise — the close (frame swap)": () => {
+          const p0 = DECK.stages.find(s => s.pass === 0);
+          const machines = p0 ? p0.lessons.filter(l => l.machine) : [];
+          machines.forEach(l => l.items.forEach(it => { state.learn[it.id] = state.learn[it.id] || { exposures: 2, streak: 1, lapses: 0 }; }));
+          const m = machines.find(l => /traer/.test(l.frame || "")) || machines[0];
+          const swap = m && composeSwap(m, m.items[0]);
+          if (!swap) return ask("close", (m && m.items[0]) || normItem);
+          ask(swap.type, swap.item, swap);
+        },
+        "Exercise — sound choice": () => {
+          // a keyword with a real deck near-form (cuesta/cuenta) so the demo shows the ear test
+          const it = (ALL_ITEMS || []).find(i => /cuesta/.test(i.es) && (i.keywords || []).length) || normItem;
+          ask("sound_choice", it);
+        },
+        "Exercise — audio cloze": () => ask("audio_cloze", normItem),
+        "Exercise — ear build": () => ask("ear_build", normItem),
+        "Exercise — the reply (dormant preview)": () => {
+          if (!(ALL_ITEMS || []).find(x => x.id === "__h_local"))
+            ALL_ITEMS.push({ id: "__h_local", es: "¿Algo más?", en: "Anything else?", cast: "Marina · The Harbor Café" });
+          ask("reply", { id: "__h_reply", es: "No gracias, la cuenta por favor", en: "No thanks, just the check", replyTo: "__h_local" },
+            { scene: "The waiter comes over." });
+        },
         "Learn tab": screen(renderLearn, "learn"),
         "Learn — new user (later chapters dim)": () => {
           clean();

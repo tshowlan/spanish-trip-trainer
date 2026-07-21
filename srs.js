@@ -47,6 +47,9 @@ function recordAnswer(id, ok, opts) {
     else if (m === "speak_it") { s.axes.production = 1; s.axes.cold = 1; }   // speaking = cold production
     else if (m === "listen_type") { s.axes.production = 1; if (!(opts && opts.scaffolded)) s.axes.native = 1; }  // native only at full speed (§5.4)
     else if (m === "chained") { s.axes.chained = 1; }                        // produced a turn inside a dialogue (§5.4)
+    else if (m === "audio_cloze" || m === "ear_build") { if (!(opts && opts.scaffolded)) s.axes.native = 1; }  // parsed full-speed native audio (§7.1)
+    else if (m === "close" || m === "close_swap") { s.axes.production = 1; s.axes.cold = 1; }  // the close: cold typed reps (§7.1)
+    else if (m === "reply") { s.axes.chained = 1; }                          // responded to a local's line (§7.1, lite)
     if (s.axes.production && s.axes.cold && s.axes.native && s.axes.chained) s.interval *= 2;  // graduated
     s.interval = Math.min(s.interval, daysLeft);                  // never schedule past the trip
     s.ease = Math.min(2.8, s.ease + 0.05);
@@ -115,10 +118,10 @@ function cramActive() {
    Rungs, easiest → hardest. 'match' is a warm-up composed separately, so it is
    not a single-item mode here. An item's rung is chosen from its exposure count. */
 const LADDER = [
-  ["present"],                                    // 0    first sight — teach, never test
-  ["mc_es2en", "listen_choice"],                  // 1-2  recognition (incl. hear-and-pick)
-  ["mc_en2es", "build", "fill_blank"],            // 3-4  scaffolded production
-  ["type_translation", "listen_type", "speak_it"] // 5+   cold production
+  ["present"],                                                  // 0    first sight — teach, never test
+  ["mc_es2en", "listen_choice", "sound_choice"],                // 1-2  recognition (incl. hear-and-pick)
+  ["build", "fill_blank", "audio_cloze", "ear_build", "reply"], // 3-4  scaffolded production (mc_en2es retired §7.0)
+  ["type_translation", "listen_type", "speak_it", "ear_build"]  // 5+   cold production (ear_build: more distractors)
 ];
 
 function _speechSupported() { return typeof window !== "undefined" && !!(window.SpeechRecognition || window.webkitSpeechRecognition); }
@@ -128,15 +131,31 @@ function _modeFeasible(mode, item) {
   if (mode === "build") return n >= 4 && n <= 8;   // §1b.3: no tap-to-build under 4 tokens
   if (mode === "fill_blank") return n >= 3;        // §1b.3: no fill-in-the-blank under 3 tokens
   if (mode === "speak_it") return _speechSupported();  // M4: only where Web Speech exists (else the rung uses type/listen)
+  if (mode === "audio_cloze") return n >= 3;       // hear the phrase, type one missing word — needs a sentence
+  if (mode === "sound_choice") return n >= 2;      // needs a frame around the blanked word (renderer verifies a distractor exists)
+  if (mode === "ear_build") return n >= 4 && n <= 8;   // same tile constraints as build
+  if (mode === "reply") return !!item.replyTo;     // §7.1: dormant until replyTo is authored (Phase-3)
   return true;
 }
 function _tierOfType(type) {
   for (let i = 0; i < LADDER.length; i++) if (LADDER[i].includes(type)) return i;
   return 1;
 }
-function _pickModeForTier(tier, item) {
+/* §6 variety rule (2026-07-20): an item's consecutive sessions never repeat the same
+   exercise type at the same rung. The learn record remembers the last graded mode
+   served (lm), its tier (lmt) and the session counter it was served in (lms); a LATER
+   session excludes that mode at that tier whenever an alternative exists. Within one
+   session the requeue rules govern instead. state.sessionSeq ticks once per composed
+   session (lesson.js). */
+function _varietyDrop(list, s, tier) {
+  if (!s || s.lm == null || s.lmt !== tier) return list;
+  if (s.lms != null && s.lms === (state.sessionSeq || 0)) return list;
+  const trimmed = list.filter(m => m !== s.lm);
+  return trimmed.length ? trimmed : list;
+}
+function _pickModeForTier(tier, item, s) {
   for (let t = Math.max(0, Math.min(tier, LADDER.length - 1)); t >= 1; t--) {
-    const feasible = LADDER[t].filter(m => _modeFeasible(m, item));
+    const feasible = _varietyDrop(LADDER[t].filter(m => _modeFeasible(m, item)), s, t);
     if (feasible.length) return pick(feasible);
   }
   return "mc_es2en";                                // recognition always works
@@ -153,15 +172,17 @@ function _baseTier(exposures, difficulty) {
 // §8.5 exercise-type families, for shaping session rhythm (recognition → production → audio).
 // A preference only ever picks among modes the item's own tier already allows — never over-tests.
 const MODE_FAMILY = {
-  recognition: ["mc_es2en", "mc_en2es", "listen_choice"],
-  production:  ["build", "fill_blank", "type_translation", "speak_it"],
-  audio:       ["listen_choice", "listen_type"]
+  recognition: ["mc_es2en", "listen_choice", "sound_choice", "reply"],
+  production:  ["build", "fill_blank", "audio_cloze", "type_translation", "speak_it"],
+  audio:       ["listen_choice", "listen_type", "sound_choice", "audio_cloze", "ear_build"]
 };
-function _pickPreferred(tier, item, prefer) {
+function _pickPreferred(tier, item, prefer, s) {
   const want = MODE_FAMILY[prefer]; if (!want) return null;
-  const cand = [];
+  let cand = [];
   for (let t = 1; t <= Math.max(1, Math.min(tier, LADDER.length - 1)); t++)
     LADDER[t].forEach(m => { if (want.includes(m) && _modeFeasible(m, item)) cand.push(m); });
+  if (s && s.lm != null && s.lms !== (state.sessionSeq || 0) && cand.filter(m => m !== s.lm).length)
+    cand = cand.filter(m => m !== s.lm);    // variety rule, soft form for family steers
   return cand.length ? pick(cand) : null;   // null → caller falls back to the normal tier pick
 }
 
@@ -175,8 +196,11 @@ function chooseType(item, opts) {
   if (s && s.streak === 0 && s.lapses > 0) tier = Math.max(1, tier - 1);  // rung-down after a recent miss
   const cap = opts && opts.cap;
   if (cap) tier = Math.min(tier, cap);
-  if (opts && opts.prefer) { const p = _pickPreferred(tier, item, opts.prefer); if (p) return p; }
-  return _pickModeForTier(tier, item);
+  let mode = null;
+  if (opts && opts.prefer) mode = _pickPreferred(tier, item, opts.prefer, s);
+  if (!mode) mode = _pickModeForTier(tier, item, s);
+  if (s) { s.lm = mode; s.lmt = _tierOfType(mode); s.lms = state.sessionSeq || 0; }  // variety-rule memory
+  return mode;
 }
 // re-serve a missed item one rung easier than the mode it failed (0 → presentation card)
 function rungDownType(failedType, item) {

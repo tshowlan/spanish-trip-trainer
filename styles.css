@@ -1235,7 +1235,10 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .es-reveal .sweep2 { position: absolute; left: 0; right: 0; bottom: -6px; height: 2.5px; background: var(--green); border-radius: 2px;
   transform: scaleX(0); transform-origin: left center; }
 .res-grown.show .sweep2 { animation: res-sweep 350ms cubic-bezier(.2,.7,.3,1) 250ms forwards; }
-.res-en { font-size: 13.5px; color: var(--text-dim); margin: 10px 0 14px; }
+/* the grown is a footnote zone (§3.7, 2026-07-20): the shared 13px line, every exercise.
+   13.5 was the r7 frame's value; the batch ratified 13 — resolution-frame.html canvas
+   should pick this up on its next re-issue (do not revert). */
+.res-en { font-size: 13px; color: var(--text-dim); margin: 10px 0 14px; }
 .res-audio-row { display: flex; align-items: center; gap: 10px; }
 .res-audio-row .audio-hint { font-size: 12px; color: var(--text-dim); }
 .res-yours { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--green); margin-bottom: 8px; }
@@ -1260,4 +1263,88 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 @media (prefers-reduced-motion: reduce) {
   .build-answer, .build-answer .word, .res-grown, .stick, .bank { transition: none; }
   .build-answer.fused .sweep, .res-grown.show .sweep2 { animation: none; transform: scaleX(1); }
+}
+
+/* ===== §7.1 exercise batch (2026-07-20): pairs, the close, sound choice, audio cloze,
+   ear build, the reply. Match targets: design/pairs-exercise.html, design/the-close.html,
+   design/exercise-variants.html (captions canonical). ===== */
+
+/* ---- pairs: flat cards; matched = PRESSED-IN (§3.7 settle dialects: border kept,
+   elevation gone, surface sunken — discrete objects reaching done, never fusion) ---- */
+.pairs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; align-content: start; margin-top: 14px; }
+.pcard { border: 1.5px solid var(--border); background: var(--bg-card); border-radius: var(--radius-md);
+  min-height: 58px; padding: 10px 12px; cursor: pointer; box-shadow: var(--shadow); position: relative;
+  display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center;
+  font-family: var(--font-display); font-size: 15.5px; font-weight: 500; color: var(--text);
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition), opacity var(--transition); }
+.pcard:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
+.pcard.sel { border-color: var(--secondary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--secondary) 15%, transparent), var(--shadow); }
+.pc-glyph { color: var(--accent-2); display: flex; }   /* flat card carries the GOLD glyph (§3.7) */
+.pbars { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
+.pbars span { width: 2px; background: var(--accent-2); border-radius: 2px; height: 3px; }
+.playing .pbars span { animation: pbar 900ms ease-in-out infinite; }
+.playing .pbars span:nth-child(2) { animation-delay: 120ms; }
+.playing .pbars span:nth-child(3) { animation-delay: 240ms; }
+@keyframes pbar { 0%, 100% { height: 3px; } 50% { height: 11px; } }
+.pcard.matched, .pcard.settled { border-color: var(--border); box-shadow: none; background: var(--bg-elevated); cursor: default; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pcard.matched, :root:not([data-theme="light"]) .pcard.settled { background: rgba(255,255,255,0.05); } }
+:root[data-theme="dark"] .pcard.matched, :root[data-theme="dark"] .pcard.settled { background: rgba(255,255,255,0.05); }
+.pcard.matched.en { color: var(--text-dim); font-weight: 400; font-size: 14px; }
+.pcard.matched.audio { cursor: pointer; }                    /* replay stays available */
+.pcard.matched .pc-glyph { color: var(--text-dim); }
+.pcard .es-word { position: relative; padding-bottom: 3px; }
+.pcard.matched .es-word::after, .pcard.settled .es-word::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+  height: 2px; background: var(--green); border-radius: 2px; transform: scaleX(0); transform-origin: left center;
+  animation: res-sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+.pcard.playing .es-word { color: var(--accent-2); }          /* es gold while playing (chunk rules) */
+.pcard.miss { opacity: 0.45; }                               /* mismatch: brief dim — no red, no shake */
+.pcard.fade { opacity: 0.35; }
+.pairs-tick { font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 5px; }
+.pairs-allset { font-size: 13px; color: var(--text-dim); }
+/* the reunion already provided the beat; the grown follows at the artifact's own 200ms,
+   not the standard frame's 600ms materialization delay (which would stack on the FLIP) */
+.res-grown.pairs-grown { transition: opacity 280ms cubic-bezier(.2,.7,.3,1) 200ms, transform 280ms cubic-bezier(.2,.7,.3,1) 200ms; }
+
+/* ---- the close: end-of-lesson ritual chrome (in flow, no interstitial) ---- */
+.close-kicker { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: .07em;
+  color: var(--accent-2); margin-bottom: 6px; }
+.close-prompt { font-size: var(--text-sm); color: var(--text); font-weight: 500; margin-bottom: 6px; }
+.swap-line { font-size: 13px; color: var(--text-dim); margin-bottom: 14px; }
+.swap-line b { font-family: var(--font-display); color: var(--text); font-weight: 600; }
+.tiwrap { position: relative; margin-top: 8px; }
+.tiwrap .sweep3 { position: absolute; left: 14px; right: 14px; bottom: 8px; height: 2.5px; background: var(--green);
+  border-radius: 2px; transform: scaleX(0); transform-origin: left center; }
+.tiwrap.swept .sweep3 { animation: res-sweep 300ms cubic-bezier(.2,.7,.3,1) 150ms forwards; }
+
+/* ---- variants shared: big speaker row, blank that fills in place ---- */
+.bigspk { display: flex; align-items: center; gap: 10px; margin: 4px 0 18px; }
+.bigspk .audio-hint { font-size: 12.5px; color: var(--text-dim); }
+.sc-blank { min-width: 96px; border-bottom: 2px solid var(--secondary); color: var(--secondary); font-weight: 600;
+  transition: color var(--transition), border-color var(--transition); }
+.sc-blank.filled { color: var(--text); border-bottom-color: transparent; position: relative; }
+.sc-blank.filled::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--green); border-radius: 2px; transform: scaleX(0); transform-origin: left center;
+  animation: res-sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+.audio-opts { display: flex; gap: 10px; margin: 14px 0 8px; }
+.audio-opts .pcard { flex: 1; font-size: 15px; padding: 10px; }   /* variants artifact: option cards sit slightly tighter than pairs cards */
+.sc-hint { font-size: 11.5px; color: var(--text-dim); margin-bottom: 6px; }
+
+/* ---- the reply: cast-voice bubble; options are the shared .choices component ---- */
+.bubble { background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px; padding: 13px 15px; margin-bottom: 14px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bubble { background: rgba(255,255,255,0.06); } }
+:root[data-theme="dark"] .bubble { background: rgba(255,255,255,0.06); }
+.bubble .who { font-family: var(--font-display); font-size: 10.5px; font-weight: 600; letter-spacing: .05em;
+  color: var(--accent-2); margin-bottom: 5px; }
+.bubble .line { display: flex; align-items: center; gap: 9px; font-family: var(--font-display);
+  font-size: 16.5px; font-weight: 500; color: var(--text); }
+.bubble .en-gloss { font-size: 12px; color: var(--text-dim); margin-top: 5px; }
+.choice.got { border-color: var(--green); background: color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+.choice.fade { opacity: 0.35; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pcard, .res-grown.pairs-grown { transition: none; }
+  .pcard.matched .es-word::after, .pcard.settled .es-word::after, .sc-blank.filled::after, .tiwrap.swept .sweep3 {
+    animation: none; transform: scaleX(1); }
+  .playing .pbars span { animation: none; height: 8px; }
 }

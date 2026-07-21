@@ -8,13 +8,88 @@ const RETENTION_FADE = 40;
 const CHECK_SVG = `<svg class="draw-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>`;
 const ARC_SVG = `<svg class="restored-ring" viewBox="0 0 36 36" aria-hidden="true"><circle class="rr-bg" cx="18" cy="18" r="15"/><circle class="rr-fg" cx="18" cy="18" r="15"/></svg>`;
 
-// a graded review rep for a seen item — mostly its ladder rung, sometimes a
-// situational "which do you say?" for texture. cram pushes production.
+// a graded review rep for a seen item — mostly its ladder rung, sometimes reply
+// comprehension for texture. cram pushes production. ("respond" retired 2026-07-20:
+// its es-phrase options were phrase-MC, §7.0.)
 function reviewQuestion(item, pool, cap) {
   if (cramActive() && item.es.trim().split(/\s+/).length >= 2) return { type: "build", item, pool };  // build = rung 2, ok under cap
+  // §5.2b: logged confusion pairs preferentially spawn sound-choice reps — the mistake
+  // loop's targeted remediation, at the axis where the confusion lives (the ear)
+  const st = learnPeek(item);
+  if (st && st.conf && st.conf.length && item.es.trim().split(/\s+/).length >= 2 && Math.random() < 0.5)
+    return { type: "sound_choice", item, pool };
   if (item.reply && Math.random() < 0.3) return { type: "reply_listen", item, pool };  // comprehend the answer back
-  if (Math.random() < 0.25) return { type: "respond", item, pool };
   return { type: chooseType(item, { cap }), item, pool };
+}
+/* §7.1 pairs: fold four short seen items out of a review pool into one board — the
+   review workhorse. Items ARE the pairs (audio + en are item fields); best for kit
+   items, machine fillers, short forms. Mutates the pool (the four leave their solo slots). */
+function extractPairsBoard(pool) {
+  const shorts = pool.filter(it => it.es.trim().split(/\s+/).length <= 4 && exposuresOf(it) >= 1);
+  if (shorts.length < 4) return null;
+  const four = sample(shorts, 4);
+  four.forEach(it => { const i = pool.indexOf(it); if (i >= 0) pool.splice(i, 1); });
+  return { type: "pairs", items: four };
+}
+/* §7.1 the close: every lesson ends on 2 cold typed reps — (1) the lesson's anchor item,
+   (2) a frame-swap variation composed from this frame × a cross-machine taught filler
+   (Mix-it mechanics debuting; exclusions: no a-qué-hora in either direction — closed verb
+   set; fillers graded exactly as taught). Swap prompt composes from the machine's beat-hint
+   name + the filler. Zero per-lesson authoring; sanctioned exception to the first-pass cap. */
+function closeReps(lesson) {
+  const items = lesson.items || [];
+  if (!items.length) return [];
+  const anchor = items[0];
+  const out = [{ type: "close", item: anchor }];
+  const swap = composeSwap(lesson, anchor);
+  if (swap) out.push(swap);
+  return out;
+}
+function _machineLessonOf(frame) {
+  const pk = (typeof activePack === "function") ? activePack() : null;
+  for (const st of (pk && pk.stages) || []) for (const l of st.lessons || []) if (l.machine && l.frame === frame) return l;
+  return null;
+}
+function composeSwap(lesson, anchor) {
+  const frame = lesson.machine ? lesson.frame : anchor.frame;
+  if (!frame || /a qué hora/i.test(frame)) return null;
+  const mates = (ALL_ITEMS || []).filter(x => x.frame === frame);
+  const parts = _frameParts(frame, anchor.es) || (mates[0] && _frameParts(frame, mates[0].es));
+  if (!parts) return null;
+  const homeShell = _enShell(mates);
+  if (!homeShell) return null;
+  const taughtEs = new Set((ALL_ITEMS || []).map(x => norm(x.es)));
+  // cross-machine taught fillers, novel compositions first (the transfer moment)
+  const cands = shuffle((ALL_ITEMS || []).filter(x =>
+    x.frame && x.frame !== frame && !/a qué hora/i.test(x.frame) && exposuresOf(x) >= 1));
+  let fallback = null;
+  for (const c of cands) {
+    const p = _frameParts(c.frame, c.es); if (!p) continue;
+    const fen = _fillerEn(_enShell((ALL_ITEMS || []).filter(x => x.frame === c.frame)), c.en);
+    if (!fen) continue;
+    const composedEs = parts.pre + p.filler + parts.post;
+    const fenCased = homeShell.pre ? fen.charAt(0).toLowerCase() + fen.slice(1) : fen;   // mid-sentence position
+    const composedEn = homeShell.pre + fenCased + homeShell.post;
+    const rep = {
+      type: "close_swap",
+      item: { id: itemId(c), es: composedEs, en: composedEn, tags: c.tags },
+      prompt: _machineName(lesson.machine ? lesson : _machineLessonOf(frame), frame),
+      swapHtml: `Now ask for: <b>${fen}</b>`
+    };
+    if (!taughtEs.has(norm(composedEs))) {
+      rep.resNote = "You were never taught this sentence. You built it anyway.";
+      return rep;
+    }
+    fallback = fallback || rep;                    // taught composition: still a valid cold rep, no novelty note
+  }
+  return fallback;
+}
+// "The bring-me machine. Your table workhorse." → "Your bring-me machine again."
+function _machineName(mlesson, frame) {
+  const beat = (mlesson && mlesson.beat) || "";
+  const m = beat.match(/^The (.+?) machine\b/i);
+  if (m) return `Your ${m[1]} machine again.`;
+  return `Your ${(mlesson && mlesson.title) || frame} machine again.`;
 }
 // safety-critical phrases cram mode front-loads when the trip is near
 function isCritical(item) { return (item.tags || []).some(t => t === "dietary" || t === "emergency"); }
@@ -27,6 +102,7 @@ function introRep(item) {
 
 /* ---- session composer (M2): warm-up misses + new items + trip-wide review ---- */
 function composeSession(lesson) {
+  state.sessionSeq = (state.sessionSeq || 0) + 1; save();             // §6 variety rule clock (srs.js reads it)
   const lessonItems = lesson.items || [];
   const newItems = lessonItems.filter(it => exposuresOf(it) === 0);   // teach ALL new (coverage before unlock)
   const newIds = new Set(newItems.map(itemId));
@@ -54,10 +130,16 @@ function composeSession(lesson) {
   const qs = [];
   warm.forEach(it => qs.push(reviewQuestion(it, null, rungCap)));       // 1) warm-up: recent misses
 
-  // redo of a completed lesson → no new items to weave, just drill
+  // redo of a completed lesson → no new items to weave, just drill.
+  // §4.1 replay rule holds by construction: presentation cards key on exposures === 0,
+  // so replayed items enter at their current rung, never back at the card.
   if (!newItems.length) {
+    const board = extractPairsBoard(reviewPool);                      // §7.1 pairs: the review workhorse
     shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap))).forEach(q => qs.push(q));
-    return applyRhythm(qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it })));
+    if (board) qs.splice(Math.min(1, qs.length), 0, board);
+    const out = applyRhythm(qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it })));
+    out.push(...closeReps(lesson));                                   // §7.1 the close: the last reps, always
+    return out;
   }
 
   // §6.1b micro-batch weave: never >2 presentation cards in a row; each new item gets a rung-1
@@ -79,14 +161,16 @@ function composeSession(lesson) {
     if (later.length) qs.push(later.shift());
     const r = nextReview(); if (r) qs.push(r);
   }
-  return applyRhythm(qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it })));  // safety net
+  const out = applyRhythm(qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it })));  // safety net
+  out.push(...closeReps(lesson));                                     // §7.1 the close: the last reps, always
+  return out;
 }
 // §8.5 exercise-variety rhythm: shape the *type* of graded slots by position — open on
 // recognition warm-ups, lean production through the middle, close on an audio item — without
 // reordering (the §6.1b weave stays intact) and without ever exceeding an item's earned tier.
 // Only retypes; a slot whose item/pool can't honor the preference keeps its natural type.
 function applyRhythm(qs) {
-  const needsPool = t => t === "mc_es2en" || t === "mc_en2es" || t === "listen_choice";
+  const needsPool = t => t === "mc_es2en" || t === "listen_choice";
   const idx = [];
   qs.forEach((q, i) => { if (q && q.item && q.type !== "present" && q.type !== "intro") idx.push(i); });
   if (idx.length < 3) return qs;                          // too short to have a rhythm
@@ -105,11 +189,15 @@ function applyRhythm(qs) {
 }
 // pure-review session (Home "Review" entry / all lessons complete): mistakes first, then due
 function composeReview() {
+  state.sessionSeq = (state.sessionSeq || 0) + 1; save();             // §6 variety rule clock
   const mistakes = mistakesPool();
   const due = dueForReview();
   const seen = [...new Set([...mistakes, ...due])];
   const pool = (seen.length ? seen : dueForReview(0)).slice(0, 14);
-  return applyRhythm(pool.map(it => reviewQuestion(it, pool)));
+  const board = extractPairsBoard(pool);                              // §7.1 pairs: the review workhorse
+  const qs = applyRhythm(pool.map(it => reviewQuestion(it, pool)));
+  if (board) qs.splice(Math.min(1, qs.length), 0, board);
+  return qs;
 }
 
 let run = null;
@@ -373,13 +461,20 @@ function renderQuestion() {
   wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile")) haptic("press"); });
   $("#quit").addEventListener("click", () => confirmSheet({ title: "Quit lesson?", body: "Your progress in it is lost.", confirmLabel: "Quit lesson", cancelLabel: "Keep going", onConfirm: renderHome }));
   run.answered = false;
+  // strength ring only when exactly one item is on stage (§3.7); multi-item boards
+  // (pairs, match) use a collective whisper instead
+  const sring = document.getElementById("q-sring");
+  if (sring) sring.style.display = q.item ? "" : "none";
   const qs = q.item && state.learn ? state.learn[itemId(q.item)] : null;
   _setQStrength(qs ? Math.round(itemStrength(qs)) : 0, false);
   // make the mistake re-queue visible: label a phrase you missed coming back around
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">${icon('arrows-clockwise', 15)} Second chance, you missed this one</div>`));
-  ({ intro: renderIntro, present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC, mc_en2es: renderMC,
+  ({ intro: renderIntro, present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
-     respond: renderRespond, listen_choice: renderListenChoice, reply_listen: renderReply }[q.type])(q);
+     listen_choice: renderListenChoice, reply_listen: renderReply,
+     pairs: renderPairs, close: renderClose, close_swap: renderClose,
+     sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
+     reply: renderReplyChat }[q.type])(q);
 }
 
 /* ----- intro flow: new phrases one at a time over a regional photo, then a recap page ----- */
@@ -616,20 +711,17 @@ function coldEffortNote(body) {
   state.effortColdShown = true; save();
   body.appendChild(el(`<div class="effort-line">${icon('pencil', 16)} Typing it cold is what makes it stick. This is the rep that counts.</div>`));
 }
+// meaning-pick only (§7.0, 2026-07-20): the shown/heard phrase is es, the options are ENGLISH.
+// The en→es direction (es-phrase options) was phrase-MC and is retired.
 function renderMC(q) {
-  const es2en = q.type === "mc_es2en";
   const item = q.item;
-  const { answer, options } = mcOptions(item, es2en, q.pool && q.pool.length ? q.pool : run.lesson.items);
+  const { answer, options } = mcOptions(item, true, q.pool && q.pool.length ? q.pool : run.lesson.items);
   const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">${es2en ? "What does this mean?" : "Say it in Spanish"}</div>`));
-  if (es2en) {
-    const pe = presentEs(item);
-    body.appendChild(el(`<div class="prompt">${pe.text}</div>`));
-    if (pe.variant) body.appendChild(el(`<div class="prompt-sub">Another common way to say it</div>`));
-    body.appendChild(audioControl(() => speak(pe.text)));
-  } else {
-    body.appendChild(el(`<div class="prompt">${item.en}</div>`));
-  }
+  body.appendChild(el(`<div class="qtype">What does this mean?</div>`));
+  const pe = presentEs(item);
+  body.appendChild(el(`<div class="prompt">${pe.text}</div>`));
+  if (pe.variant) body.appendChild(el(`<div class="prompt-sub">Another common way to say it</div>`));
+  body.appendChild(audioControl(() => speak(pe.text)));
   body.appendChild(mcChoices(options, answer, item));
 }
 // shared choice grid → grades opt===answer.
@@ -647,22 +739,22 @@ function mcChoices(options, answer, item) {
     c.addEventListener("click", () => {
       if (run.answered) return;
       [...choices.children].forEach(ch => ch.classList.add(ch.textContent === ans ? "correct" : (ch === c ? "wrong" : "dim")));
-      grade(choiceLabel(opt) === ans, item);
+      const ok = choiceLabel(opt) === ans;
+      // §5.2b: log the chosen wrong option (single words only) so confusion pairs can
+      // spawn targeted sound-choice reps later; capped at the last 3
+      if (!ok && /^\S+$/.test(choiceLabel(opt))) {
+        const st = learnState(itemId(item));
+        if (st) { st.conf = (st.conf || []).slice(-2); st.conf.push(choiceLabel(opt)); }
+      }
+      grade(ok, item);
     });
     choices.appendChild(c);
   });
   return choices;
 }
 
-/* ----- choose the appropriate response (M2): a situation → pick the learned phrase ----- */
-function renderRespond(q) {
-  const item = q.item;
-  const { answer, options } = mcOptions(item, false, q.pool && q.pool.length ? q.pool : run.lesson.items);  // Spanish options
-  const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">Which do you say?</div>`));
-  body.appendChild(el(`<div class="prompt">You want to say: “${item.en}”</div>`));
-  body.appendChild(mcChoices(options, answer, item));
-}
+/* ("respond" renderer retired 2026-07-20 — es-phrase options were phrase-MC, spec §7.0.
+   Its job splits into the reply (English options) and the close (cold production). */
 
 /* ----- understand the reply (M2): hear what a local says back → pick its meaning ----- */
 function renderReply(q) {
@@ -822,7 +914,12 @@ function renderFill(q) {
     c.addEventListener("click", () => {
       if (run.answered) return;
       [...choices.children].forEach(ch => ch.classList.add(ch.textContent === answer ? "correct" : (ch === c ? "wrong" : "dim")));
-      grade(opt === answer, item);
+      const ok = opt === answer;
+      if (!ok) {                                   // §5.2b: word-level confusion log → sound-choice remediation
+        const st = learnState(itemId(item));
+        if (st) { st.conf = (st.conf || []).slice(-2); st.conf.push(opt); }
+      }
+      grade(ok, item);
     });
     choices.appendChild(c);
   });
@@ -1007,6 +1104,409 @@ function onMatchTap(tile, grid, q) {
   }
 }
 
+/* ===== §7.1 exercise batch (2026-07-20): pairs, the close, sound choice, audio cloze,
+   ear build, the reply. All content-agnostic templates; artifact captions are the canonical
+   spec (design/pairs-exercise.html, design/the-close.html, design/exercise-variants.html). ===== */
+
+// split a machine frame around its ___ slot; pull the filler out of a full phrase.
+// Case-insensitive match, original casing preserved (frames are authored lowercase).
+function _frameParts(frame, es) {
+  const cut = frame.indexOf("___"); if (cut < 0) return null;
+  const pre = frame.slice(0, cut), post = frame.slice(cut + 3);
+  const le = es.toLowerCase();
+  if (!le.startsWith(pre.toLowerCase()) || !le.endsWith(post.toLowerCase())) return null;
+  if (es.length <= pre.length + post.length) return null;
+  return {
+    pre: es.slice(0, pre.length),
+    post: post.length ? es.slice(es.length - post.length) : "",
+    filler: es.slice(pre.length, es.length - post.length)
+  };
+}
+// the shared en shell of a frame family ("Where is " ___ "?") — computed from the
+// members' en strings (longest common prefix + suffix), never authored.
+function _enShell(items) {
+  const ens = items.map(it => it.en).filter(Boolean);
+  if (ens.length < 2) return null;
+  let p = ens[0], s = ens[0];
+  for (const e of ens) {
+    let i = 0; while (i < p.length && i < e.length && p[i] === e[i]) i++; p = p.slice(0, i);
+    let j = 0; while (j < s.length && j < e.length && s[s.length - 1 - j] === e[e.length - 1 - j]) j++; s = s.slice(s.length - j);
+  }
+  return (p.length + s.length) ? { pre: p, post: s } : null;
+}
+function _fillerEn(shell, en) {
+  if (!shell || !en) return null;
+  if (!en.startsWith(shell.pre) || !en.endsWith(shell.post) || en.length <= shell.pre.length + shell.post.length) return null;
+  return en.slice(shell.pre.length, en.length - shell.post.length);
+}
+// small gold speaker glyph + animated bars for FLAT cards (glyph color law §3.7:
+// flat cards carry the gold glyph; raised gold buttons carry the dark one).
+function _cardAudioHtml() {
+  return `<span class="pc-glyph">${icon('speaker', 16)}</span><span class="pbars" aria-hidden="true"><span></span><span></span><span></span></span>`;
+}
+function _cardPlay(card, es) {
+  speak(es);
+  card.classList.add("playing");
+  clearTimeout(card._pt); card._pt = setTimeout(() => card.classList.remove("playing"), 1100);
+}
+
+/* ----- pairs (§7.1): 4 audio × 4 en, the review-block workhorse. Matched pairs settle
+   PRESSED-IN (discrete objects reaching done — never fusion); on the 4th match THE REUNION
+   composes the board into paired rows (FLIP, one pair at a time); collective "4 stronger"
+   whisper (multi-item board: no per-item ring). Mismatch dims briefly: no red, no shake. ----- */
+function renderPairs(q) {
+  const items = q.items;
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Match the sound to its meaning</div>`));
+  const grid = el(`<div class="pairs"></div>`);
+  const audioOrder = shuffle(items.map((_, i) => i));
+  const enOrder = shuffle(items.map((_, i) => i));
+  for (let r = 0; r < items.length; r++) {
+    const a = el(`<button class="pcard audio" data-idx="${audioOrder[r]}" data-side="audio">${_cardAudioHtml()}</button>`);
+    const e = el(`<button class="pcard en" data-idx="${enOrder[r]}" data-side="en">${items[enOrder[r]].en}</button>`);
+    [a, e].forEach(c => c.addEventListener("click", () => tapCard(c)));
+    grid.appendChild(a); grid.appendChild(e);
+  }
+  body.appendChild(grid);
+  let sel = null, matched = 0;
+  const missed = new Set();                       // audio items involved in a mismatch → low-weight outcome
+  function tapCard(c) {
+    const it = items[+c.dataset.idx];
+    if (c.classList.contains("matched")) { if (c.dataset.side === "audio") _cardPlay(c, it.es); return; }
+    if (run.answered) return;
+    if (c.dataset.side === "audio") _cardPlay(c, it.es);
+    if (!sel) { sel = c; c.classList.add("sel"); return; }
+    if (sel === c) return;                        // re-tap: replay handled above, stay selected
+    if (sel.dataset.side === c.dataset.side) { sel.classList.remove("sel"); sel = c; c.classList.add("sel"); return; }
+    const a = sel.dataset.side === "audio" ? sel : c;
+    const e = sel.dataset.side === "en" ? sel : c;
+    if (a.dataset.idx === e.dataset.idx) {
+      [a, e].forEach(x => { x.classList.remove("sel"); x.classList.add("matched"); });
+      const mi = items[+a.dataset.idx];
+      a.innerHTML = `<span class="pc-glyph">${icon('speaker', 16)}</span><span class="es-word">${mi.es}</span><span class="pbars" aria-hidden="true"><span></span><span></span><span></span></span>`;
+      _cardPlay(a, mi.es);                        // sound, meet spelling
+      haptic("correct");
+      // a clean pair is a real review rep; a missed one records at low weight [tune]:
+      // exposure only, so the slip neither advances nor resets the item (§5, artifact caption)
+      const id = itemId(mi);
+      if (missed.has(id)) recordExposure(id); else recordAnswer(id, true, { mode: "pairs" });
+      matched++;
+      if (matched === items.length) { run.answered = true; setTimeout(() => reunite(), 420); }
+    } else {
+      missed.add(itemId(items[+a.dataset.idx]));
+      run.wrong++;
+      const s1 = sel, s2 = c;
+      [s1, s2].forEach(x => { x.classList.remove("sel"); x.classList.add("miss"); });
+      setTimeout(() => { s1.classList.remove("miss"); s2.classList.remove("miss"); }, 450);
+    }
+    sel = null;
+  }
+  // THE REUNION: the board composes itself into paired rows, one pair at a time,
+  // top row first (FLIP, 420ms travel, 200ms stagger) — the scattered game becomes
+  // the tidy study sheet. Sequential composes, simultaneous shuffles (§4.9).
+  function reunite() {
+    const cards = [...grid.children];
+    const rects = new Map(cards.map(c => [c, c.getBoundingClientRect()]));
+    items.forEach((_, i) => {
+      const a = cards.find(x => x.dataset.side === "audio" && +x.dataset.idx === i);
+      const e = cards.find(x => x.dataset.side === "en" && +x.dataset.idx === i);
+      grid.appendChild(a); grid.appendChild(e);
+    });
+    const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduced) {
+      [...grid.children].forEach(c => {
+        const first = rects.get(c), last = c.getBoundingClientRect();
+        const dx = first.left - last.left, dy = first.top - last.top;
+        if (dx || dy) { c.style.transform = `translate(${dx}px, ${dy}px)`; c.style.transition = "none"; }
+      });
+      void grid.offsetHeight;
+      [...grid.children].forEach((c, i) => {
+        c.style.transition = `transform 420ms cubic-bezier(.2,.7,.3,1) ${Math.floor(i / 2) * 200}ms`;
+        c.style.transform = "";
+      });
+      setTimeout(() => [...grid.children].forEach(c => { c.style.transition = ""; }), 1100);
+    }
+    playSound("correct");
+    const clean = items.filter(it => !missed.has(itemId(it))).length;
+    const barEl = document.querySelector(".pbar > i");
+    if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
+    const grown = el(`<div class="res-grown pairs-grown">
+      ${clean ? `<div class="pairs-tick">${clean} stronger</div>` : ""}
+      <div class="pairs-allset">Four sounds, four meanings, four spellings. All yours.</div>
+      <button class="btn res-cont">Continue</button>
+    </div>`);
+    grown.querySelector(".res-cont").addEventListener("click", () => { $("#qbody").classList.add("leaving"); setTimeout(next, 200); });
+    body.appendChild(grown);
+    setTimeout(() => grown.classList.add("show"), reduced ? 0 : 1050);
+  }
+}
+
+/* ----- the close (§7.1): end-of-lesson ritual, cold typed, scaffold-free. Announced in
+   flow by the gold THE CLOSE kicker; no interstitial. The machine is RUN here, never built.
+   type "close" = the lesson's anchor item; type "close_swap" = a frame-swap variation the
+   composer built (q.item is synthetic: the filler's id carrying the composed es/en). ----- */
+function renderClose(q) {
+  const item = q.item;
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="close-kicker">THE CLOSE</div>`));
+  body.appendChild(el(`<div class="close-prompt">${q.type === "close" ? `Say it in Spanish: “${item.en}”` : q.prompt}</div>`));
+  if (q.swapHtml) body.appendChild(el(`<div class="swap-line">${q.swapHtml}</div>`));
+  const wrap = el(`<div class="tiwrap es-stage"><span class="sweep3"></span></div>`);
+  const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe aquí…">`);
+  wrap.insertBefore(input, wrap.firstChild);
+  body.appendChild(wrap);
+  setTimeout(() => input.focus(), 50);
+  q.esOnStage = true;                              // the typed sentence is the es on stage (no-repeat §3.7)
+  // the answer matures in place to the canonical form: accepted slips are corrected
+  // silently by the reveal itself (es-always-reveals + silent forgiveness, both hold)
+  q.onResolve = () => { input.value = item.es; input.readOnly = true; input.blur(); wrap.classList.add("swept"); };
+  const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
+  input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
+  const submit = () => {
+    if (run.answered || !input.value.trim()) return;
+    if (q.type === "close") return gradeTyped(input.value, item);
+    const j = judgeTyped(input.value, item.es);        // composed sentence: graded as taught, no variants
+    const extra = j.accent ? "Almost: watch the accent." : (j.typo ? "Close: mind the spelling." : null);
+    finishGrade(j.ok, item, extra, input.value);
+  };
+  input.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
+  f.querySelector("#check").addEventListener("click", submit);
+}
+
+/* ----- sound choice (§7.1): a sentence with a blank + two audio options — which sound
+   belongs? Wired to logged confusion pairs first (§5.2b, the mistake loop's targeted
+   remediation), phonetic near-forms otherwise. The completed sentence IS the es reveal. ----- */
+// candidate confusable words for a blanked word: logged confusions → close edit-distance
+// keywords from the deck. Principled, never random (§7.1); null = infeasible this rep.
+function _soundDistractor(item, answer) {
+  const st = learnPeek(item);
+  const na = norm(answer);
+  const logged = ((st && st.conf) || []).filter(w => /^\S+$/.test(w) && norm(w) !== na);
+  if (logged.length) return pick(logged);
+  // phonetic near-forms need substance to be near anything: short function words are
+  // infeasible (edit distance is meaningless at 2 letters), and a near-form must be
+  // close in BOTH distance and length (cuenta/cuento, not no/baño)
+  if (na.length < 4) return null;
+  const clean = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "");
+  const pool = [...new Set((ALL_ITEMS || []).flatMap(x => (x.keywords || []).map(clean)))]
+    .filter(w => /^\S+$/.test(w) && norm(w) !== na && w.length >= 4 && Math.abs(w.length - answer.length) <= 2);
+  const scored = pool.map(w => ({ w, d: levenshtein(norm(w), na) })).filter(x => x.d >= 1 && x.d <= 2);
+  if (!scored.length) return null;
+  scored.sort((a, b) => a.d - b.d);
+  return scored[0].w;
+}
+function renderSoundChoice(q) {
+  const item = q.item;
+  const clean = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "");
+  const words = item.es.split(" ");
+  const kws = (item.keywords || []).map(k => norm(k));
+  let idxs = words.map((w, i) => i).filter(i => kws.includes(norm(clean(words[i]))));
+  if (!idxs.length) idxs = words.map((w, i) => i).filter(i => clean(words[i]).length >= 4);
+  if (!idxs.length) { q.type = "mc_es2en"; return renderMC(q); }    // only function words → nothing worth blanking
+  const idx = idxs[(exposuresOf(item) || 0) % idxs.length];        // §4b.1 blank rotation
+  const raw = words[idx];
+  const lead = (raw.match(/^[¿¡("«]+/) || [""])[0];
+  const trail = (raw.match(/[?!).,;:"»]+$/) || [""])[0];
+  const answer = raw.slice(lead.length, raw.length - trail.length);
+  const distractor = _soundDistractor(item, answer);
+  if (!distractor) { q.type = "mc_es2en"; return renderMC(q); }     // safety: no principled distractor
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Which sound completes it?</div>`));
+  const shown = words.map((w, i) => i === idx ? `${lead}<span class="blank sc-blank" id="sc-blank">_____</span>${trail}` : w).join(" ");
+  body.appendChild(el(`<div class="prompt es-stage-line">${shown}</div>`));
+  const opts = el(`<div class="audio-opts"></div>`);
+  const pairAB = shuffle([{ w: answer, right: true }, { w: distractor, right: false }]);
+  let sel = null;
+  pairAB.forEach(o => {
+    const c = el(`<button class="pcard sc-card">${_cardAudioHtml()}</button>`);
+    c.addEventListener("click", () => {
+      if (run.answered) return;
+      _cardPlay(c, o.w);
+      if (sel) sel.classList.remove("sel");
+      sel = c; c.classList.add("sel");
+      $("#check").disabled = false;
+    });
+    c._opt = o;
+    opts.appendChild(c);
+  });
+  body.appendChild(opts);
+  body.appendChild(el(`<div class="sc-hint">Tap to hear each. Pick the one that belongs.</div>`));
+  q.esOnStage = true;                              // the filled sentence is the es reveal (no-repeat §3.7)
+  q.onResolve = () => {
+    [...opts.children].forEach(c => {
+      if (c._opt.right) {
+        c.classList.remove("sel"); c.classList.add("settled");
+        c.insertBefore(el(`<span class="es-word">${c._opt.w}</span>`), c.querySelector(".pbars"));
+      } else c.classList.add("fade");
+    });
+    const b = document.getElementById("sc-blank");
+    if (b) { b.textContent = answer; b.classList.add("filled"); }
+  };
+  const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
+  f.querySelector("#check").addEventListener("click", () => {
+    if (run.answered || !sel) return;
+    const ok = sel._opt.right;
+    if (!ok) { const st = learnState(itemId(item)); if (st) { st.conf = (st.conf || []).slice(-2); st.conf.push(sel._opt.w); } }
+    grade(ok, item);
+  });
+}
+
+/* ----- audio cloze (§7.1): hear the whole phrase, type the missing word. Blank rotation
+   picks the gap; silent forgiveness applies; the word fills the blank at resolution. ----- */
+function renderAudioCloze(q) {
+  const item = q.item;
+  const clean = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "");
+  const words = item.es.split(" ");
+  const kws = (item.keywords || []).map(k => norm(k));
+  let idxs = words.map((w, i) => i).filter(i => kws.includes(norm(clean(words[i]))));
+  if (!idxs.length) idxs = words.map((w, i) => i).filter(i => clean(words[i]).length >= 4);
+  if (!idxs.length) idxs = words.map((w, i) => i);
+  const idx = idxs[(exposuresOf(item) || 0) % idxs.length];        // §4b.1 blank rotation
+  const raw = words[idx];
+  const lead = (raw.match(/^[¿¡("«]+/) || [""])[0];
+  const trail = (raw.match(/[?!).,;:"»]+$/) || [""])[0];
+  const answer = raw.slice(lead.length, raw.length - trail.length);
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Listen, then type the missing word</div>`));
+  const row = el(`<div class="bigspk"><span class="ac-mount"></span><span class="audio-hint">Hear the whole phrase</span></div>`);
+  const play = audioControl(() => speak(item.es));
+  row.querySelector(".ac-mount").replaceWith(play);
+  body.appendChild(row);
+  setTimeout(() => play._fire(), 350);
+  const shown = words.map((w, i) => i === idx ? `${lead}<span class="blank sc-blank" id="sc-blank">_____</span>${trail}` : w).join(" ");
+  body.appendChild(el(`<div class="prompt es-stage-line">${shown}</div>`));
+  const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="La palabra que falta…">`);
+  body.appendChild(input);
+  setTimeout(() => input.focus(), 50);
+  q.esOnStage = true;                              // the completed sentence is the es reveal (no-repeat §3.7)
+  q.onResolve = () => {
+    input.readOnly = true; input.blur();
+    const b = document.getElementById("sc-blank");
+    if (b) { b.textContent = answer; b.classList.add("filled"); }
+  };
+  const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
+  input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
+  const submit = () => {
+    if (run.answered || !input.value.trim()) return;
+    const j = judgeTyped(input.value, answer);
+    const extra = j.accent ? "Almost: watch the accent." : (j.typo ? "Close: mind the spelling." : null);
+    finishGrade(j.ok, item, extra, input.value);
+  };
+  input.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
+  f.querySelector("#check").addEventListener("click", submit);
+}
+
+/* ----- ear build (§7.1): audio only, NO English shown — assemble from tiles. Resolution
+   fuses the assembly (becoming a sentence) and the MEANING arrives in the materialization.
+   Distractor tiles are a difficulty dial on the scaffolded→cold axis: 1–2 early, 3–4 at
+   strength [tune]; selected from confusion near-forms → same-frame fillers → structural
+   twins — never random. Distractors must test the EAR, not process of elimination. ----- */
+function _earDistractors(item, count) {
+  const strip = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "");
+  const own = new Set(item.es.toLowerCase().split(/\s+/).map(strip).map(norm));
+  const out = [];
+  const push = w => { if (w && /^\S+$/.test(w) && !own.has(norm(w)) && !out.some(x => norm(x) === norm(w))) out.push(w); };
+  const st = learnPeek(item);
+  ((st && st.conf) || []).forEach(push);                                 // 1) logged confusion near-forms
+  if (out.length < count && item.frame) {
+    (ALL_ITEMS || []).filter(x => x !== item && x.frame === item.frame)  // 2) same-frame fillers
+      .forEach(x => { const p = _frameParts(item.frame, x.es); if (p) p.filler.split(/\s+/).forEach(w => push(strip(w))); });
+  }
+  if (out.length < count) {
+    const tags = item.tags || [];                                        // 3) structural twins: same-category
+    const pool = [...new Set((ALL_ITEMS || [])                           //    keywords nearest in shape
+      .filter(x => x !== item && tags.length && (x.tags || []).some(t => tags.includes(t)))
+      .flatMap(x => (x.keywords || []).map(strip)))]
+      .filter(w => /^\S+$/.test(w) && !own.has(norm(w)));
+    sample(pool, count).forEach(push);
+  }
+  return out.slice(0, count);
+}
+function renderEarBuild(q) {
+  const item = q.item;
+  const strip = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "") || w;
+  const original = item.es.split(" ");
+  const bankWords = original.map(strip);
+  const display = i => (i === 0 ? bankWords[i].charAt(0).toLowerCase() + bankWords[i].slice(1) : bankWords[i]);
+  // distractor count keys on the item's rung: scaffolded gets 1–2, cold gets 3–4 [tune §8t]
+  const s = learnPeek(item);
+  const cold = s && s.exposures >= 5 + (item.difficulty || 2);
+  const dCount = cold ? 3 + Math.round(Math.random()) : 1 + Math.round(Math.random());
+  const distractors = _earDistractors(item, dCount);
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Build what you hear</div>`));
+  const row = el(`<div class="bigspk"><span class="ac-mount"></span><span class="audio-hint">No text. Just your ear.</span></div>`);
+  const play = audioControl(() => speak(item.es));
+  row.querySelector(".ac-mount").replaceWith(play);
+  body.appendChild(row);
+  setTimeout(() => play._fire(), 350);
+  const ans = el(`<div class="build-answer"></div>`);
+  const bank = el(`<div class="bank"></div>`);
+  body.appendChild(ans); body.appendChild(bank);
+  const chosen = [];                               // indices into tiles[]
+  const tiles = shuffle([
+    ...original.map((_, i) => ({ w: bankWords[i], label: display(i), real: i })),
+    ...distractors.map(w => ({ w, label: w.toLowerCase(), real: -1 }))
+  ]);
+  tiles.forEach((t, ti) => {
+    const tile = el(`<button class="word">${t.label}</button>`);
+    tile.addEventListener("click", () => {
+      if (run.answered || tile.classList.contains("used")) return;
+      tile.classList.add("used"); chosen.push(ti);
+      const slot = el(`<button class="word">${t.real >= 0 ? original[t.real] : t.label}</button>`);
+      slot.addEventListener("click", () => {
+        if (run.answered) return;
+        tile.classList.remove("used"); slot.remove();
+        chosen.splice(chosen.indexOf(ti), 1); refresh();
+      });
+      ans.appendChild(slot); refresh();
+    });
+    bank.appendChild(tile);
+  });
+  const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
+  function refresh() { $("#check").disabled = !chosen.length; }
+  f.querySelector("#check").addEventListener("click", () => {
+    if (run.answered) return;
+    const built = chosen.map(ti => tiles[ti].w).join(" ").toLowerCase();
+    grade(built === bankWords.join(" ").toLowerCase(), item);
+  });
+}
+
+/* ----- the reply (§7.1): a cast voice speaks a local's line (standard audio control, 44px);
+   the learner picks their RESPONSE from English meaning options — never es phrases (§7.0).
+   The chosen reply's es arrives at resolution; its en stays on screen in the settled option.
+   DORMANT until replyTo is authored (Phase-3); K3 "What locals say" is the seed corpus. ----- */
+function renderReplyChat(q) {
+  const item = q.item;
+  const local = (ALL_ITEMS || []).find(x => x.id === item.replyTo || x.es === item.replyTo);
+  if (!local) { q.type = "mc_es2en"; return renderMC(q); }           // safety: dangling replyTo
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">${q.scene || "They ask you"}</div>`));
+  const bub = el(`<div class="bubble">
+    <div class="who">${(local.cast || "A local").toUpperCase()}</div>
+    <div class="line"><span class="ac-mount"></span><span>${local.es}</span></div>
+    <div class="en-gloss">${local.en}</div>
+  </div>`);
+  const play = audioControl(() => speak(local.es));
+  bub.querySelector(".ac-mount").replaceWith(play);
+  body.appendChild(bub);
+  setTimeout(() => play._fire(), 400);
+  const { options } = mcOptions(item, true, q.pool && q.pool.length ? q.pool : run.lesson.items);
+  const opts = el(`<div class="choices"></div>`);
+  options.forEach(opt => {
+    const c = el(`<button class="choice">${choiceLabel(opt)}</button>`);
+    c.addEventListener("click", () => {
+      if (run.answered) return;
+      const ok = choiceLabel(opt) === choiceLabel(item.en);
+      if (ok) { c.classList.add("got"); [...opts.children].forEach(o => { if (o !== c) o.classList.add("fade"); }); }
+      grade(ok, item);
+    });
+    opts.appendChild(c);
+  });
+  body.appendChild(opts);
+  q.noEn = true;    // the settled English option IS the meaning; the grown carries es only (no-repeat §3.7)
+}
+
 /* ----- grading + feedback ----- */
 function grade(ok, item) { finishGrade(ok, item, null); }
 // typed answers get typo/accent tolerance (edit distance ≤ 1, accent slips accepted)
@@ -1031,7 +1531,7 @@ function finishGrade(ok, item, extra, wrong) {
   // Yours-now (§3.5): first cold production ever — typed/spoken only (tiles are scaffolding), once per item
   const post = id && state.learn && state.learn[id];
   const yoursNow = ok && !coldBefore && !!(post && post.axes && post.axes.cold)
-    && (q && (q.type === "type_translation" || q.type === "speak_it")) && !(post && post.yoursShown);
+    && (q && ["type_translation", "speak_it", "close", "close_swap"].includes(q.type)) && !(post && post.yoursShown);
   if (yoursNow) post.yoursShown = true;
   if (restored) run.restored = (run.restored || 0) + 1;
   // §4b.2: count correct one-blank fills so the item graduates to two-blank fills
@@ -1061,6 +1561,7 @@ function resolveCorrect(item, q, info) {
   const qb = $("#qbody"); if (!qb) return next();
   qb.classList.add("qcorrect");                                      // base layer: wash on input-style exercises
   clearFooter();                                                     // the resolution owns the exit
+  if (q && q.onResolve) try { q.onResolve(); } catch (_) {}          // §7.1 exercise-specific settle (fill the blank, settle the card)
   const barEl = document.querySelector(".pbar > i");                 // progress advances
   if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
 
@@ -1078,12 +1579,17 @@ function resolveCorrect(item, q, info) {
   const kicker = kick === "yours" ? `<div class="res-yours">YOURS NOW</div>`
     : kick === "restored" ? `<div class="res-kick"><svg class="kring" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6.5" fill="none" stroke="var(--ring-track, var(--bg-elevated))" stroke-width="2.5"/><circle class="kfg" cx="8.5" cy="8.5" r="6.5" fill="none" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 8.5 8.5)"/></svg><span class="res-yours res-restored">RESTORED</span></div>`
     : "";
-  const note = kick === "yours" ? `<div class="res-note">Produced cold, no help. This one travels with you.</div>`
+  const note = (q && q.resNote) ? `<div class="res-note">${q.resNote}</div>`
+    : kick === "yours" ? `<div class="res-note">Produced cold, no help. This one travels with you.</div>`
     : kick === "restored" ? `<div class="res-note">This one was fading. You brought it back.</div>` : "";
+  // no-repeat (§3.7): the grown carries only what's MISSING from the screen. When the
+  // exercise's own sentence completed in place (fused row, filled blank, typed close),
+  // it IS the es reveal; the reply keeps es (appears nowhere else) and drops en.
+  const esHeld = ans || (q && q.esOnStage);
   const grown = el(`<div class="res-grown">
     ${kicker}
-    ${!ans ? `<div class="es-reveal">${item.es}<span class="sweep2"></span></div>` : ""}
-    <div class="res-en">${item.en}</div>
+    ${!esHeld ? `<div class="es-reveal">${item.es}<span class="sweep2"></span></div>` : ""}
+    ${(q && q.noEn) ? "" : `<div class="res-en">${item.en}</div>`}
     <div class="res-audio"></div>
     ${note}
     <button class="btn res-cont">Continue</button>

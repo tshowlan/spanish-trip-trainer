@@ -85,6 +85,12 @@
     if (opts.artifactPrep) opts.artifactPrep(idoc);
     try { await idoc.fonts.ready; } catch (e) {}
     await new Promise((r) => setTimeout(r, opts.settle || 500));
+    // Prep-mutated states start CSS transitions that a throttled/offscreen iframe may
+    // never advance, freezing computed values at their FROM state (a false diff on every
+    // transitioned property). Jump all running animations/transitions to their end state.
+    // (Infinite animations — audio bars — throw on finish(); skipping them is correct.)
+    try { idoc.getAnimations({ subtree: true }).forEach((a) => { try { a.finish(); } catch (_) {} }); } catch (_) {}
+    await new Promise((r) => setTimeout(r, 60));
 
     const rows = [];
     for (const [aSel, bSel] of pairs) {
@@ -167,6 +173,53 @@
       [".context", ".present-ctx"],
       [".context .es", ".present-ctx .es"],
     ],
+    // App state: harness story "Exercise — pairs" with one pair matched (tap audio 0 + en 0).
+    // Prep drives the artifact's first pair to matched so settle states compare fairly.
+    pairsExercise: [
+      [".card", ".pcard"],
+      [".card.audio .glyph", ".pcard .pc-glyph"],
+      [".card .bars", ".pcard .pbars"],
+      [".card .bars span", ".pcard .pbars span"],
+      [".card.matched", ".pcard.matched"],
+      [".card.matched .es-word", ".pcard.matched .es-word"],
+      [".grown", ".res-grown.pairs-grown"],
+      [".allset", ".pairs-allset"],
+      [".cont", ".res-cont"],
+    ],
+    // App state: harness story "Exercise — the close (core phrase)", answer typed + resolved.
+    theClose: [
+      [".close-kicker", ".close-kicker"],
+      [".prompt", ".close-prompt"],
+      [".swap-line", ".swap-line"],
+      [".inputbox", ".tiwrap .text-input"],
+      [".inputbox .sweep", ".tiwrap .sweep3"],
+      [".grown", ".res-grown"],
+      [".kicker-row .txt", ".res-yours"],
+      [".en-line", ".res-en"],
+      [".audio-row", ".res-audio-row"],
+      [".audio-hint", ".res-audio-row .audio-hint"],
+      [".note", ".res-note"],
+      [".cont", ".res-cont"],
+      [".sring", ".q-sring"],
+    ],
+    // App state: per variant — sound choice (default), audio cloze, ear build, the reply
+    // (cycle the artifact with cycleState(); map the shared pieces).
+    exerciseVariants: [
+      [".sentence .blank", ".sc-blank"],
+      [".audio-card", ".audio-opts .pcard"],
+      [".audio-card .glyph", ".audio-opts .pcard .pc-glyph"],
+      [".audio-card.settled", ".pcard.settled"],
+      [".bigspk .hint", ".bigspk .audio-hint"],
+      [".inputbox", ".text-input"],
+      [".answer-row .tile", ".build-answer .word"],
+      [".tray", ".bank"],
+      [".bubble", ".bubble"],
+      [".bubble .who", ".bubble .who"],
+      [".bubble .line", ".bubble .line"],
+      [".bubble .en-gloss", ".bubble .en-gloss"],
+      [".opts .opt", ".choices .choice"],
+      [".grown .en-line", ".res-en"],
+    ],
     // App state: showCorrection() open — .corr-wrap.show in the DOM.
     correctionSheet: [
       [".scrim", ".corr-scrim"],
@@ -191,6 +244,33 @@
       const t = idoc.querySelector(".tick"); if (t) t.classList.add("show"); // shown state, for a fair opacity check
     },
     correctionSheet: (idoc) => { const p = idoc.querySelector(".phone"); if (p) p.classList.add("dimmed"); },
+    // settle the whole board + show the grown, matching an app board completed with no misses
+    pairsExercise: (idoc) => {
+      const w = idoc.defaultView;
+      idoc.querySelectorAll(".card").forEach(c => {
+        c.classList.add("matched");
+        if (c.classList.contains("audio") && !c.querySelector(".es-word")) {
+          const idx = +c.dataset.idx;
+          const es = (w && w.items && w.items[idx]) ? w.items[idx].es : "la cuenta";
+          const span = idoc.createElement("span"); span.className = "es-word"; span.textContent = es;
+          c.insertBefore(span, c.querySelector(".bars"));
+        }
+      });
+      const g = idoc.querySelector(".grown"); if (g) g.classList.add("show");
+    },
+    // resolved step-1 state: typed answer, wash, grown shown
+    theClose: (idoc) => {
+      const b = idoc.querySelector(".inputbox"); if (b) b.classList.add("wash");
+      const t = idoc.getElementById("typed"); if (t) t.textContent = "¿Me puede traer la cuenta?";
+      const c = idoc.getElementById("cursor"); if (c) c.style.display = "none";
+      const g = idoc.querySelector(".grown"); if (g) g.classList.add("show");
+    },
+    // default state = sound choice, resolved (settled card, filled blank, grown shown)
+    exerciseVariants: (idoc) => {
+      const a = idoc.getElementById("optA"); if (a) a.classList.add("settled");
+      const b = idoc.getElementById("blank"); if (b) { b.textContent = "cuenta"; b.classList.add("filled"); }
+      idoc.querySelectorAll(".grown").forEach(g => g.classList.add("show"));
+    },
   };
 
   root.designDiff = designDiff;
