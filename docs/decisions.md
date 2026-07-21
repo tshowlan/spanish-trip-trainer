@@ -110,3 +110,4 @@ Tom explicitly reopens. Do not relitigate.
 - 2026-07-21 — Session/lesson terminology: session = completed flow (lesson+reviews or practice), lesson = content unit. Session-end fires for both.
 - 2026-07-21 — Milestone ledger fact is "soloed" (self-explaining event verb); exercise kicker stays YOURS NOW; two copy laws adopted (decay test; no-footnote rule).
 - 2026-07-21 — Home dial deltas are today-scoped, nonzero-only, daily reset; cumulative deltas retired. Depth lives in the Progress tab.
+- 2026-07-21 — Session-end riders: ledger staggers in after the dials (two-act ceremony); Continue live from t=0 as secondary→primary promotion with snap-to-final on early tap. Veteran-timing [tune] retired — the thumb is the expertise-reversal mechanism. Rules minted: opacity is not a state; no overshoot; skips snap to truth.

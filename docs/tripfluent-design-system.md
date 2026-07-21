@@ -142,6 +142,9 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 7. **One-time celebratory motion is sanctioned when it EXPLAINS a state change** (decisions 2026-07-16): the Tripfluent crown's sheen sweep fires once, only on a band-crossing event, to say "this was just achieved." Looping or ambient versions of the same effect remain banned (§1 feel principle 2) — the test is whether the motion communicates a change that just happened. Always disabled under `prefers-reduced-motion`.
 8. **Navigation light glide** (decisions 2026-07-17): 260ms nav / 300ms bloom on the system curve; the two durations are deliberate (a mass cue — the big light reads heavier). Content crossfades 180ms out/in during the glide. Reduced motion: jump, no glide. **The traveling light is a state transition, not ambient animation.** Implementation: single traveling elements moved by `transform` (nav light + bloom); per-tab decoration swapping and animated `background-position` are both banned.
 9. **Sequential composes, simultaneous shuffles** (2026-07-20): when multiple elements move to express one idea (the pairs reunion), they take turns in a legible order — staggered, each travel readable. Everything moving at once reads as a shuffle, not a statement. Reduced motion: instant final state.
+10. **Opacity is not a state** (2026-07-21): functional controls never dim — reduced opacity reads as disabled everywhere, and a live button dressed as disabled is a dishonest affordance. Availability vs emphasis is spoken in button hierarchy (outline → filled), never opacity.
+11. **Entrance motion is the quiet pop** (2026-07-21): fade + small rise. Overshoot/bounce is spring physics from the playful dialect and is banned from the calm vocabulary — liveliness comes from sequencing (taking turns), never from jiggle.
+12. **Skip affordances snap to the final truthful state before exiting** (2026-07-21): skipping loses waiting, never information.
 
 ---
 

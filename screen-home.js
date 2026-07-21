@@ -284,9 +284,14 @@ function sessionEndCeremony(home, data, reduced) {
     <div class="cer-kicker">THAT'S THE SESSION</div>
     <div class="cer-panel">
       <div class="sfacts">${_sfactRows(facts)}</div>
-      <button class="btn cer-cont">Continue</button>
+      <button class="btn cer-cont quiet">Continue</button>
     </div>
   </div>`);
+  // r17: Act 2 — the ledger writes itself after the dials finish; Continue promotes last.
+  // r18/r19: Continue is LIVE from t=0 (secondary, outlined); early tap snaps to final.
+  const factEls = [...layer.querySelectorAll(".sfact")];
+  const contBtn = layer.querySelector(".cer-cont");
+  if (!reduced) factEls.forEach(f => f.classList.add("pending"));
   // the ceremony reads its regions from home, never defines them: kicker fills the space
   // above the dials, the panel takes the space below them (the hidden tile/nav zone)
   const place = () => {
@@ -298,40 +303,76 @@ function sessionEndCeremony(home, data, reduced) {
   place();
   requestAnimationFrame(place);                         // re-measure once layout has settled
   timers.push(setTimeout(place, 350));                  // and again after fonts/atmo finish
-  if (emptyish) {
-    // dials settled, sides visible; deltas stay quiet — a delta appearing while its dial
-    // holds still reads as a contradiction (Tom). Today's deltas arrive WITH home at the
-    // dissolve, where they're home furniture rather than ceremony claims.
+  // band-crossing: the chip morphs mid-ceremony (also applied by snap-to-final)
+  const applyBandFinal = () => {
+    if (after.readiness == null) return;
+    const b2 = readinessBand(after.readiness);
+    const chip = cardR && cardR.querySelector(".band-chip");
+    if (chip && chip.textContent !== b2.label) {
+      const top = after.readiness >= 85;
+      chip.className = `band-chip ${b2.cls}${top ? " crown just-crossed" : ""}`;
+      chip.textContent = b2.label;
+    }
+    state.lastBandTop = after.readiness >= 85; save();
+  };
+  // Act 2: the ledger writes itself (quiet pop, 100ms steps), Continue's promotion last
+  const act2 = start => {
+    factEls.forEach((f, i) => timers.push(setTimeout(() => f.classList.add("in"), start + i * 100)));
+    timers.push(setTimeout(() => contBtn.classList.add("in"), start + factEls.length * 100 + 150));
+  };
+  if (reduced) {                                        // ledger complete, Continue promoted, no stagger
+    contBtn.classList.add("in");
+  } else if (emptyish) {
+    // no isolated-performance beat: dials settled, sides visible; deltas stay quiet (a
+    // delta on a still dial reads as a contradiction — they arrive with home instead).
+    // The ledger still writes itself, just without Act 1 to wait for.
     [cardM, cardT].forEach(c => { if (c) c.classList.remove("dial-pop"); });
+    act2(350);
   } else {
-    // the performance: Readiness isolated ticking its delta, then the sides pop into
-    // home's exact geometry and tick in turn (sequential composes); deltas after each settles
-    if (moved("readiness")) timers.push(setTimeout(() => _tickHomeDial(cardR, before.readiness, after.readiness, 900, () => {
-      const b2 = readinessBand(after.readiness);        // band-crossing: the chip morphs mid-ceremony
-      const chip = cardR.querySelector(".band-chip");
-      if (chip && chip.textContent !== b2.label) {
-        const top = after.readiness >= 85;
-        chip.className = `band-chip ${b2.cls}${top ? " crown just-crossed" : ""}`;
-        chip.textContent = b2.label;
-      }
-      state.lastBandTop = after.readiness >= 85; save();
-    }), 600));
+    // Act 1, the performance: Readiness isolated ticking its delta, then the sides pop
+    // into home's exact geometry and tick in turn (sequential composes)
+    if (moved("readiness")) timers.push(setTimeout(() => _tickHomeDial(cardR, before.readiness, after.readiness, 900, applyBandFinal), 600));
     timers.push(setTimeout(() => cardM && cardM.classList.add("in"), 1700));
     timers.push(setTimeout(() => cardT && cardT.classList.add("in"), 1900));
     const sideTick = (card, metric, at, dur) => {
       if (!card) return;
       // a delta only appears under a dial that just performed; an unmoved dial keeps its
-      // today-delta until home returns (a delta on a still dial reads as a contradiction)
+      // today-delta until home returns
       if (moved(metric)) timers.push(setTimeout(() => _tickHomeDial(card, before[metric], after[metric], dur, () => {
         const dd = card.querySelector(".dial-delta"); if (dd) dd.classList.add("show");
       }), at));
     };
     sideTick(cardM, "momentum", 2100, 700);
     sideTick(cardT, "retention", 2350, 500);
+    act2(2950);
   }
-  // Continue → Option D: the world empties, the dials hold alone, home refills piece by piece
+  // r18: snap-to-final, idempotent — an early Continue skips the waiting, never the
+  // information: dials render true final values, pop-ins/deltas complete, ledger shown
+  let snapped = false;
+  const setFinalDial = (card, metric) => {
+    if (!card || after[metric] == null) return;
+    const fg = card.querySelector(".ring-fg"), num = card.querySelector(".ring-num");
+    if (fg) { fg.style.transition = "none"; fg.style.strokeDashoffset = (_RING_C * (1 - Math.max(0, Math.min(100, after[metric])) / 100)).toFixed(1); }
+    if (num) num.firstChild.textContent = Math.round(after[metric]);
+  };
+  const snapFinal = () => {
+    if (snapped) return; snapped = true;
+    timers.forEach(clearTimeout);
+    setFinalDial(cardR, "readiness"); setFinalDial(cardM, "momentum"); setFinalDial(cardT, "retention");
+    [cardM, cardT].forEach(c => { if (c) c.classList.add("in"); });
+    if (!emptyish) ["momentum", "retention"].forEach((m, i) => {
+      const card = i === 0 ? cardM : cardT;
+      if (moved(m) && card) { const dd = card.querySelector(".dial-delta"); if (dd) dd.classList.add("show"); }
+    });
+    applyBandFinal();
+    factEls.forEach(f => f.classList.add("in"));
+    contBtn.classList.add("in");
+  };
+  // Continue → Option D: snap to truth, then the world empties, the dials hold alone,
+  // and home refills piece by piece
   layer.querySelector(".cer-cont").addEventListener("click", () => {
     if (layer.classList.contains("dissolving")) return;
+    snapFinal();
     layer.classList.add("dissolving");                  // ceremony copy 600ms; tint drains 1200ms
     const speed = emptyish ? 0.5 : 1;                   // empty-ish sessions get the brisker dissolve
     const at = ms => Math.round(ms * speed);

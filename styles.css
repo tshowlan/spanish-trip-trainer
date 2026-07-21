@@ -1432,3 +1432,19 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
   body.in-ceremony .home-atmo, body.in-ceremony .topbar, body.in-ceremony .home > :not(.hero),
   body.in-ceremony #tabbar, body.in-ceremony .delta-whisper { transition: none; }
 }
+
+/* r17-r19 riders (2026-07-21): two-act ceremony + always-live Continue */
+.sfact.pending { opacity: 0; transform: translateY(4px); }
+.sfact.pending.in { opacity: 1; transform: none;
+  transition: opacity 260ms cubic-bezier(.2,.7,.3,1), transform 260ms cubic-bezier(.2,.7,.3,1); }
+/* availability vs emphasis is spoken in hierarchy, never opacity: Continue is a live
+   SECONDARY from t=0 and PROMOTES to the filled primary when the ledger completes */
+.cer-cont.quiet { background: transparent; color: var(--primary); border: 1.5px solid var(--border);
+  box-shadow: none; transition: background 300ms, color 300ms, border-color 300ms, box-shadow 300ms; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cer-cont.quiet { color: var(--secondary); } }
+:root[data-theme="dark"] .cer-cont.quiet { color: var(--secondary); }
+.cer-layer .cer-cont.quiet.in { background: var(--primary); color: #fff; border-color: transparent; box-shadow: var(--shadow); }
+@media (prefers-reduced-motion: reduce) {
+  .sfact.pending { opacity: 1; transform: none; transition: none; }
+  .cer-cont.quiet { transition: none; }
+}
