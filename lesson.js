@@ -719,7 +719,7 @@ function renderMC(q) {
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">What does this mean?</div>`));
   const pe = presentEs(item);
-  body.appendChild(el(`<div class="prompt">${pe.text}</div>`));
+  body.appendChild(el(`<div class="prompt es-phrase">${pe.text}</div>`));
   if (pe.variant) body.appendChild(el(`<div class="prompt-sub">Another common way to say it</div>`));
   body.appendChild(audioControl(() => speak(pe.text)));
   body.appendChild(mcChoices(options, answer, item));
@@ -906,7 +906,7 @@ function renderFill(q) {
 
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Fill in the blank</div>`));
-  body.appendChild(el(`<div class="prompt">${shown}</div>`));
+  body.appendChild(el(`<div class="prompt es-stage-line">${shown}</div>`));
   body.appendChild(el(`<div class="prompt-sub">${item.en}</div>`));
   const choices = el(`<div class="choices"></div>`);
   options.forEach(opt => {
@@ -935,7 +935,7 @@ function renderFillTwo(q, item, words, clean, blankIdxs) {
     const p = part(w); return `${p.lead}<span class="fillslot" data-slot="${bi}"></span>${p.trail}`;
   }).join(" ");
   body.appendChild(el(`<div class="qtype">Fill in the blanks</div>`));
-  const prompt = el(`<div class="prompt">${shown}</div>`); body.appendChild(prompt);
+  const prompt = el(`<div class="prompt es-stage-line">${shown}</div>`); body.appendChild(prompt);
   body.appendChild(el(`<div class="prompt-sub">${item.en}</div>`));
   const tags = item.tags || [], na = answers.map(a => norm(a));
   const kwsFrom = arr => [...new Set(arr.flatMap(x => (x.keywords || []).map(clean)))].filter(w => /^\S+$/.test(w) && !na.includes(norm(w)) && w.length >= 3);
