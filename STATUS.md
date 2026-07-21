@@ -2,7 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
-## 2026-07-21 — Session-end ceremony approved (design/session-end.html, Option D) — building ON BRANCH `session-end`
+## 2026-07-21 — Session-end ceremony SHIPPED (v166) — harness review passed, branch merged
+- Tom's review pass beyond the r17-r19 riders: dial labels/deltas display font (ring-card button inheritance, latent on home since the dials shipped); no deltas on still dials (empty-ish + unmoved sides); dissolve made authored (900ms atmosphere breath + 6px materialize rise — was a uniform 550ms fade reading as slow loading); Continue full container width + cer-layer aligned to the 480px app column (artifact's 300px cap was frame-relative). Canvas note: artifact .cont max-width:300px should be annotated frame-relative on next re-issue.
+
+## 2026-07-21 — Session-end ceremony approved (design/session-end.html, Option D) — built on branch `session-end`, now merged
 - THE SURFACE: fires on return home after any completed learning flow. Sequence: ceremony (top-center tint), Readiness ISOLATED ticking its delta (58→61, 900ms, 600ms lead-in) → Momentum and Retention POP IN flanking it in HOME'S EXACT GEOMETRY (320ms scale-fades, staggered 1.7s/1.9s) and tick (sequential-composes), green side-deltas (+8/+1) after each settles → facts ledger + Continue.
 - CONTINUE = the slow dissolve (Option D): the world EMPTIES (ceremony copy fades 600ms, tint drains 1200ms), the dials hold the stage ALONE for a beat, then home REFILLS around them piece by piece (photo 1.0s → lesson tile → practice → whisper lines → nav at ~150ms steps; bloom rises with it), "+3 today" whisper last (~2.15s). The dials never move, never re-render: same objects, both worlds.
 - FACTS LEDGER: "5 new · 12 stronger · 3 restored · 1 soloed" — four past-tense events, grammatically uniform, left-aligned rows centered as a block, numbers column-aligned. "new" (gold plus glyph) and "soloed" (star) render only when >0. "restored" consumes the §8.4 session aggregate; glyph = rotate-CW (clockwise: restore = the ring REFILLING; ccw reads as undo). No duration anywhere (grind-optimization bait).
