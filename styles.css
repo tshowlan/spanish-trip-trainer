@@ -1327,8 +1327,11 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* ---- variants shared: big speaker row, blank that fills in place ---- */
 .bigspk { display: flex; align-items: center; gap: 10px; margin: 4px 0 18px; }
 .bigspk .audio-hint { font-size: 12.5px; color: var(--text-dim); }
+/* the empty slot reads as dashes over ONE underline — underscore placeholders drew
+   their own solid line on top of the border, a doubled line (Tom, 2026-07-20) */
 .sc-blank { min-width: 96px; border-bottom: 2px solid var(--secondary); color: var(--secondary); font-weight: 600;
-  transition: color var(--transition), border-color var(--transition); }
+  letter-spacing: 3px; transition: color var(--transition), border-color var(--transition); }
+.sc-blank.filled { letter-spacing: normal; }
 .sc-blank.filled { color: var(--text); border-bottom-color: transparent; position: relative; }
 .sc-blank.filled::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
   background: var(--green); border-radius: 2px; transform: scaleX(0); transform-origin: left center;

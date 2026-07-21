@@ -1312,7 +1312,7 @@ function renderSoundChoice(q) {
   if (!distractor) { q.type = "mc_es2en"; return renderMC(q); }     // safety: no principled distractor
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Which sound completes it?</div>`));
-  const shown = words.map((w, i) => i === idx ? `${lead}<span class="blank sc-blank" id="sc-blank">_____</span>${trail}` : w).join(" ");
+  const shown = words.map((w, i) => i === idx ? `${lead}<span class="blank sc-blank" id="sc-blank">---</span>${trail}` : w).join(" ");
   body.appendChild(el(`<div class="prompt es-stage-line">${shown}</div>`));
   const opts = el(`<div class="audio-opts"></div>`);
   const pairAB = shuffle([{ w: answer, right: true }, { w: distractor, right: false }]);
@@ -1373,7 +1373,7 @@ function renderAudioCloze(q) {
   row.querySelector(".ac-mount").replaceWith(play);
   body.appendChild(row);
   setTimeout(() => play._fire(), 350);
-  const shown = words.map((w, i) => i === idx ? `${lead}<span class="blank sc-blank" id="sc-blank">_____</span>${trail}` : w).join(" ");
+  const shown = words.map((w, i) => i === idx ? `${lead}<span class="blank sc-blank" id="sc-blank">---</span>${trail}` : w).join(" ");
   body.appendChild(el(`<div class="prompt es-stage-line">${shown}</div>`));
   const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="La palabra que falta…">`);
   body.appendChild(input);
