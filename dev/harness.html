@@ -198,9 +198,9 @@
         "Session end — full ceremony": () => {
           clean();
           const after = computeScores();
-          state.scoreHistory = [{ date: daysAgoStr(1), readiness: Math.max(0, after.readiness - 3), momentum: Math.max(0, after.momentum - 8), retention: Math.max(0, after.retention - 1) }];
+          state.scoreHistory = [{ date: daysAgoStr(1), readiness: Math.max(0, after.readiness - 3), momentum: Math.max(0, after.momentum - 8), retention: Math.max(0, after.retention - 6) }];
           renderHome({ ceremony: {
-            before: { readiness: Math.max(0, after.readiness - 3), momentum: Math.max(0, after.momentum - 8), retention: Math.max(0, after.retention - 1) },
+            before: { readiness: Math.max(0, after.readiness - 3), momentum: Math.max(0, after.momentum - 8), retention: Math.max(0, after.retention - 6) },
             after: { readiness: after.readiness, momentum: after.momentum, retention: after.retention },
             facts: { newN: 5, stronger: 12, restored: 3, soloed: 1 }
           } });

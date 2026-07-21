@@ -1386,6 +1386,13 @@ body.in-ceremony .home-atmo, body.in-ceremony .topbar,
 body.in-ceremony .home > :not(.hero), body.in-ceremony #tabbar {
   opacity: 0; transition: opacity 550ms cubic-bezier(.2,.7,.3,1); pointer-events: none;
 }
+/* the atmosphere breathes back in slowest (artifact: 900ms bloom rise) — the world
+   arrives with weight, not as a page load */
+body.in-ceremony .home-atmo { transition: opacity 900ms cubic-bezier(.2,.7,.3,1); }
+/* home pieces MATERIALIZE (the system's standard 6px rise), each one placed, not loaded */
+body.in-ceremony .home > :not(.hero) { transform: translateY(6px);
+  transition: opacity 550ms cubic-bezier(.2,.7,.3,1), transform 550ms cubic-bezier(.2,.7,.3,1); }
+body.in-ceremony .home > .cer-back { transform: none; }
 body.in-ceremony .cer-back { opacity: 1 !important; pointer-events: auto !important; }
 body.in-ceremony .ring-card { pointer-events: none; }          /* sheets wait for home */
 body.in-ceremony .dial-delta { opacity: 0; transition: opacity 300ms; }
