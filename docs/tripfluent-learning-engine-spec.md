@@ -392,6 +392,18 @@ If all lessons in reach are complete or the user taps a "Review" entry point on 
 ### 6.5 Cram mode
 When trip date < 14 days away: raise due-review share to ~½, prioritize `dietary` and `emergency` tags, and prefer production modes for anything with `production === 0`.
 
+### 6b. Session end (the ceremony) — approved 2026-07-21, design/session-end.html Option D
+
+**Terminology (ratified):** a SESSION is any completed learning flow — a lesson plus its woven reviews, or a pure practice/review run. A LESSON is the content unit only. This surface and its engine event are session-scoped and fire on return home after any completed flow; the old "lesson complete" naming is retired.
+
+**The surface** (artifact caption canonical): home renders as the base in normal flow; the ceremony is an overlay layer onto home's regions (kicker in the photo's space, facts panel over the tile zone, Continue above the nav zone). Sequence: top-center ceremony tint → Readiness ISOLATED, ticking its session delta (900ms, 600ms lead-in) → Momentum and Retention POP IN flanking it in home's exact geometry (320ms scale-fades, staggered ~1.7s/1.9s) and tick in turn (sequential composes) → green side-deltas after each settles → facts ledger + Continue. Continue triggers the Option D dissolve: the world EMPTIES (ceremony copy 600ms, tint drains 1200ms), the dials hold alone for a beat, then home REFILLS around them piece by piece (photo ~1.0s → lesson tile → practice → whisper lines → nav at ~150ms steps; bloom rises; "+N today" whisper last ~2.15s). **The dials never move and never re-render: same objects, both worlds.**
+
+**Facts ledger:** four past-tense events, grammatically uniform, left-aligned rows centered as a block, numbers column-aligned: `N new` (items introduced; gold plus glyph; only when >0) · `N stronger` (items whose strength rose; excluding new-item first ticks `[tune]`) · `N restored` (consumes the scores §8.4 session aggregate; rotate-CW glyph — restore REFILLS clockwise like the rings) · `N soloed` (Yours-now crossings this session; star; only when >0). No duration anywhere (grind-optimization bait). Gold = what arrived (intake), green = what you did (achievement).
+
+**Cases:** BAND-CROSSING — the chip morphs mid-ceremony per existing chip rules (crown crossing gets the sheen). EMPTY-ISH SESSION — dials tick only what moved; if no dial moved, skip the isolated-performance beat entirely: facts + Continue + a brisker dissolve (no zero-count ticks, no "+0"). PURE-REVIEW sessions show no "new" line; no-milestone sessions show no "soloed" line. Reduced motion: ceremony renders complete, dissolve is a single quick crossfade, dials render at post-session values.
+
+**Dial law (ratified):** the ceremony consumes the animation budget — post-session home arrival renders dials settled and motionless (cold opens keep the load-in fill). Home side-dial deltas are TODAY-scoped, nonzero-only, daily reset; cumulative deltas are retired. Home = now + latest movement; the two-week whisper line is home's only longer window; day/week/month depth belongs to the Progress tab [penciled].
+
 ---
 
 ## 7. Exercise types (rewritten 2026-07-20 — expansion batch)

@@ -101,7 +101,8 @@
   .answer-row .tile { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm);
     padding:8px 12px; font-family:var(--font-display); font-size:17px; font-weight:500; color:var(--text); box-shadow:var(--shadow);
     transition:background 300ms, border-color 300ms, box-shadow 300ms, padding 300ms cubic-bezier(.2,.7,.3,1); }
-  .answer-row.fused .tile { background:transparent; border-color:transparent; box-shadow:none; padding:8px 0; font-weight:600; }
+  .answer-row.fused .tile { background:transparent; border-color:transparent; box-shadow:none; padding:8px 0;
+    font-weight:600; font-size:22px; transition:background 300ms, border-color 300ms, box-shadow 300ms, padding 300ms cubic-bezier(.2,.7,.3,1), font-size 450ms cubic-bezier(.2,.7,.3,1); }
   .answer-row .sweep { position:absolute; left:0; bottom:7px; height:2.5px; width:100%; background:var(--green); border-radius:2px;
     transform:scaleX(0); transform-origin:left center; }
   .answer-row.fused .sweep { animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 200ms forwards; }
@@ -123,7 +124,13 @@
   .bubble .line .spk:active { transform:translateY(2px); box-shadow:none; }
   .bubble .line .spk .glyph { display:flex; line-height:0; }
   .bubble .line .spk .glyph svg { width:18px; height:18px; transform:translateX(1px); }
-  .bubble .en-gloss { font-size:12px; color:var(--text-dim); margin-top:5px; }
+  .bubble .en-gloss { font-size:12px; color:var(--text-dim); margin-top:5px; transition:opacity 280ms; }
+  .bubble .en-gloss.gated { opacity:0; }
+  .bubble .en-gloss.gated.revealed { opacity:1; }
+  .bubble .local-es { position:relative; padding-bottom:2px; }
+  .bubble .local-es.resolved::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+    background:var(--green); border-radius:2px; transform:scaleX(0); transform-origin:left center;
+    animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
 
   /* English meaning options (the reply, sound-choice-adjacent) */
   .opts { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
@@ -200,7 +207,7 @@
     consistent with the built resolution frame); ear build's meaning line sits directly under the fused
     sentence, tray below. Em-dash sweep done on all shipped copy; designer annotations removed from en-lines
     (notes live in this caption, never in copy). Reply speaker optically centered (18px glyph, +1px x).
-    Misses route to the standard correction flow (not demoed). Frame 390.
+    Misses route to the standard correction flow (not demoed). BUILD-EDIT ABSORPTION (r8, from Tom's harness pass, shipped v165): reply gloss GATED until the answer (visible-from-start handed over the comprehension answer; at resolution the gloss materializes while the green sweep draws under the local's es — prove you understood, then confirmation); fused sentences MATURE to reveal scale (22px/600, 450ms ride); blanks render as ONE underline with no underscore glyphs (underscores doubled the line — the build's exact dash treatment is canonical per precedence, this canvas draws the bordered blank alone). Frame 390.
   </div>
 </div>
 
@@ -222,7 +229,7 @@
       label: 'exercise: sound choice',
       prompt: 'Which sound completes it?',
       html: `
-        <div class="sentence">\u00bfMe puede traer la <span class="blank" id="blank">______</span>?</div>
+        <div class="sentence">\u00bfMe puede traer la <span class="blank" id="blank">&nbsp;</span>?</div>
         <div class="audio-opts">
           <div class="audio-card" id="optA">${spkGlyph}${barsHtml}</div>
           <div class="audio-card" id="optB">${spkGlyph}${barsHtml}</div>
@@ -253,7 +260,7 @@
       prompt: 'Listen, then type the missing word',
       html: `
         <div class="bigspk"><button class="btn" onclick="play(this.parentElement)">${spkGlyph}</button><span class="hint">Hear the whole phrase</span>${barsHtml}</div>
-        <div class="sentence">\u00bfCu\u00e1nto <span class="blank" id="blank">______</span> esto?</div>
+        <div class="sentence">\u00bfCu\u00e1nto <span class="blank" id="blank">&nbsp;</span> esto?</div>
         <div class="inputbox" id="inputbox"><span id="typed"></span><span class="cursor" id="cursor"></span></div>
         <div class="grown" id="grown">
           <div class="en-line">How much is this?</div>
@@ -308,8 +315,8 @@
       html: `
         <div class="bubble">
           <div class="who">MARINA \u00b7 THE HARBOR CAF\u00c9</div>
-          <div class="line"><button class="spk" onclick="play(this.closest('.line'))">${spkGlyph}</button><span>\u00bfAlgo m\u00e1s?</span>${barsHtml}</div>
-          <div class="en-gloss">Anything else?</div>
+          <div class="line"><button class="spk" onclick="play(this.closest('.line'))">${spkGlyph}</button><span class="local-es" id="localEs">\u00bfAlgo m\u00e1s?</span>${barsHtml}</div>
+          <div class="en-gloss gated" id="localGloss">Anything else?</div>
         </div>
         <div class="opts" id="opts">
           <button class="opt" data-right="1">No thanks, just the check</button>
@@ -327,6 +334,8 @@
             const right = document.querySelector('.opt[data-right]');
             right.classList.add('got');
             [...el('opts').children].forEach(o => { if (!o.dataset.right) o.style.opacity = '0.35'; });
+            el('localEs').classList.add('resolved');
+            el('localGloss').classList.add('revealed');
             finish();
           }]
         ]);

@@ -317,7 +317,7 @@ Consistency is the premium signal: same event → same haptic, always. Do not ad
 
 ### 8.4 The "Restored" moment (the one in-lesson score-adjacent effect)
 
-- **No per-answer score deltas in-lesson.** "+0.4 Readiness" per tap is XP through the side door and breaks score semantics (§7). Score deltas appear only on the session-complete screen ("+3 Readiness · 2 phrases restored"), where they read as a result, not a reward drip.
+- **No per-answer score deltas in-lesson.** "+0.4 Readiness" per tap is XP through the side door and breaks score semantics (§7). Score deltas appear only at session end (the ceremony, learning spec §6b), where they read as a result, not a reward drip. **The restored session aggregate's consumer is the session-end ledger** ("N restored"; 2026-07-21) — the rep-scale kicker below is unchanged.
 - **Exception:** when a user correctly reviews a phrase that was *fading* (strength below the retention-notification threshold), the resolution frame carries the moment (delivery finalized 2026-07-19; the interim toast is retired): a green **RESTORED** kicker with an inline mini strength ring that animates the restore in system vocabulary — it appears as the low-arc GOLD ring the learner knows from fading marks, then climbs and turns strong-blue (600ms, value-change class), with the note "This one was fading. You brought it back." One kicker per resolution; milestone beats event (YOURS NOW > RESTORED); the restore still counts toward the session tally either way. This is information about the phrase, not currency for the user; it's the in-lesson face of the Retention sawtooth. Pairs with its haptic (8.2).
 
 ### 8.5 Exercise variety (the non-cosmetic half of "dynamic")
@@ -327,6 +327,8 @@ Consistency is the premium signal: same event → same haptic, always. Do not ad
 - Sequencing heuristic: open with 1–2 recognition warm-ups, put production in the middle, close with an audio item. Adapt to what exercise types exist in the codebase; add production/audio types incrementally if only recognition exists today.
 
 **Resolution exit (2026-07-19, supersedes both the 650ms flat hold and the same-day auto-advance draft):** self-paced, always: the standard Continue button materializes with the frame; audio autoplays; **no auto-advance anywhere in the exercise flow** (Pacing Rule, design system §1.2 — the resolution delivers NEW information, the es reveal, and new information is never swept away). Mature-rep auto-advance is a post-launch `[tune]` under the expertise-reversal principle, earned only by consistent floor-latency taps (<~400ms) on mature reviews in session logs.
+
+**Session-end ceremony vs the Pacing Rule (2026-07-21):** the ceremony is authored motion WITHIN a moment; its exit (Continue) and the dissolve it triggers comply with the Pacing Rule (the exit is still the learner's tap; the dissolve is the exit's consequence, not a wait). Option D's ~2.2s dissolve is blessed deliberately; a floor-latency `[tune]` may later shorten holds for veteran users (expertise reversal, same test as mature-rep auto-advance).
 
 ### 8.6 Daily flame counter (kept, with guardrails)
 

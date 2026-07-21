@@ -106,3 +106,7 @@ Tom explicitly reopens. Do not relitigate.
 - 2026-07-20 — Phrase-MC retired: options never complete target-language phrases; recognition is served by meaning-pick, chunk-tap, pairs, and slot-fill (single-word options, retained and distinct). The feels-productive archetype dies by our own thesis.
 - 2026-07-20 — Six exercise types added (pairs, the close, sound choice, audio cloze, ear build, the reply); the close is a named ritual where Mix-it mechanics debut and Yours-now lives; variety rule governs the composer; distractors are principled, never random.
 - 2026-07-20 — Exposure-0 furniture fires once per item ever; replays enter at current rung. Scaffolds fade by data, never assumption (expertise reversal, second application).
+- 2026-07-21 — Session-end ceremony (Option D): the dials perform on the ceremony in home's geometry, then the world empties and home refills around the motionless dials. The dials are the fixed point. Implementation shape = home renders, ceremony layer on top, dismiss removes the layer.
+- 2026-07-21 — Session/lesson terminology: session = completed flow (lesson+reviews or practice), lesson = content unit. Session-end fires for both.
+- 2026-07-21 — Milestone ledger fact is "soloed" (self-explaining event verb); exercise kicker stays YOURS NOW; two copy laws adopted (decay test; no-footnote rule).
+- 2026-07-21 — Home dial deltas are today-scoped, nonzero-only, daily reset; cumulative deltas retired. Depth lives in the Progress tab.

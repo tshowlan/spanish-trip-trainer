@@ -120,6 +120,15 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 - **Metaphor vocabulary is closed:** machines, fillers, slots, patterns. No new metaphor words via one-off copy (no "cargo") — new vocabulary is a design decision, never a copywriting accident.
 - **Audio-dependent artifacts ship with scripted full playback** (review hygiene): a "play this exercise" chrome button that runs the whole interaction, so audio timing is reviewable without a backend.
 
+### 3.8 Session-end ceremony rules (adopted 2026-07-21; born in the Option D reviews)
+
+- **The dials are the fixed point; worlds change around them.** The dials' position is home's; any ceremony conforms to it, never the reverse.
+- **The ceremony consumes the animation budget:** a performed dial is not re-animated on arrival. Post-session home renders dials settled and motionless; cold opens keep the load-in fill.
+- **Copy law, the decay test:** milestone copy names events or possession, never capability. Fading can't falsify "soloed" or "yours"; it falsifies "mastered"/"tripfluent" (the brand word stays reserved).
+- **Copy law, no footnotes:** if a name needs a footnote, the name failed — fix the name, never add the footnote; explainer sub-lines are banned as name-crutches.
+- **Ledger glyphs use proven icon geometry,** not hand-plotted paths; arcs that mean progress run clockwise, matching the dials.
+- **Ledger color:** gold = what arrived (intake), green = what you did (achievement). Intake is never graded as victory.
+
 ---
 
 ## 4. Interaction rules (bind everywhere)
@@ -127,7 +136,7 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 1. Every tap: visible state change ≤100ms.
 2. Every async action >300ms: skeleton or spinner *in the element's reserved space* — no layout shift, no full-screen blockers under 2s.
 3. Keyboard: never covers the input being typed into; exercise input areas scroll into view above it.
-4. Haptics (Capacitor later): light tick on correct, none on incorrect (the sheet is the feedback), medium on lesson complete. Never on ordinary taps.
+4. Haptics (Capacitor later): light tick on correct, none on incorrect (the sheet is the feedback), medium on session end. Never on ordinary taps.
 5. Audio autoplay only where specced (presentation cards, correction sheet, listening exercises) — never on screen entry elsewhere.
 6. Empty/zero states are designed states with copy, never blank regions (e.g. Mistakes chip at 0: disabled-quiet, §8b.3).
 7. **One-time celebratory motion is sanctioned when it EXPLAINS a state change** (decisions 2026-07-16): the Tripfluent crown's sheen sweep fires once, only on a band-crossing event, to say "this was just achieved." Looping or ambient versions of the same effect remain banned (§1 feel principle 2) — the test is whether the motion communicates a change that just happened. Always disabled under `prefers-reduced-motion`.

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Session End (design artifact, the penciled summary, two impact-placement options)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-sm: 14px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:760px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  :root[data-theme="dark"] .phone { background:linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%); }
+
+  /* Ceremony atmosphere: top-center tint (interstitial rule) */
+  .phone.ceremony::after { content:""; position:absolute; inset:0; pointer-events:none;
+    background: radial-gradient(120% 55% at 50% -8%, color-mix(in srgb, #c96a2b 22%, transparent) 0%, color-mix(in srgb, var(--accent) 11%, transparent) 36%, transparent 64%); }
+  :root[data-theme="dark"] .phone.ceremony::after {
+    background: radial-gradient(120% 55% at 50% -8%, rgba(201,106,43,0.28) 0%, rgba(216,183,19,0.10) 34%, rgba(0,0,0,0) 62%); }
+  /* Home atmosphere stand-in: bloom at tab 1 */
+  .phone.home::after { content:""; position:absolute; left:-572px; bottom:-620px; width:1240px; height:1240px; border-radius:50%; pointer-events:none;
+    background: radial-gradient(closest-side, color-mix(in srgb, #c96a2b 20%, transparent) 0%, color-mix(in srgb, var(--accent) 11%, transparent) 34%, transparent 78%); }
+  :root[data-theme="dark"] .phone.home::after {
+    background: radial-gradient(closest-side, rgba(201,106,43,0.28) 0%, rgba(230,198,42,0.10) 38%, rgba(0,0,0,0) 80%); }
+
+  .atmo { position:absolute; inset:0; pointer-events:none; transition:opacity 500ms; }
+  .atmo.cer { background: radial-gradient(120% 55% at 50% -8%, color-mix(in srgb, #c96a2b 22%, transparent) 0%, color-mix(in srgb, var(--accent) 11%, transparent) 36%, transparent 64%); }
+  :root[data-theme="dark"] .atmo.cer { background: radial-gradient(120% 55% at 50% -8%, rgba(201,106,43,0.28) 0%, rgba(216,183,19,0.10) 34%, rgba(0,0,0,0) 62%); }
+  .atmo.hom { left:-572px; bottom:-620px; top:auto; right:auto; width:1240px; height:1240px; border-radius:50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, #c96a2b 20%, transparent) 0%, color-mix(in srgb, var(--accent) 11%, transparent) 34%, transparent 78%); }
+  :root[data-theme="dark"] .atmo.hom { background: radial-gradient(closest-side, rgba(201,106,43,0.28) 0%, rgba(230,198,42,0.10) 38%, rgba(0,0,0,0) 80%); }
+
+  /* World-swap: ceremony elements fade out, home elements fade in; DIALS PERSIST untouched */
+  .cer-el, .hom-el { transition:opacity 400ms, transform 400ms cubic-bezier(.2,.7,.3,1); }
+  .hom-el.show-d { opacity:1 !important; }
+  .slow .cer-el { transition-duration:600ms; }
+  .slow .hom-el { transition-duration:550ms; }
+  .hom-el { opacity:0; }
+  .to-home .cer-el { opacity:0; pointer-events:none; }
+  .to-home .hom-el { opacity:1; }
+  .dial-pop { opacity:0; transform:scale(0.9); transition:opacity 320ms cubic-bezier(.2,.7,.3,1), transform 320ms cubic-bezier(.2,.7,.3,1); }
+  .dial-pop.in { opacity:1; transform:none; }
+
+  .screen { position:absolute; inset:0; padding:48px 28px 32px; display:flex; flex-direction:column; align-items:center; text-align:center; z-index:1; }
+
+  .kicker { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.07em; color:var(--accent-2); margin-bottom:22px; }
+  .ringwrap { margin-bottom:6px; }
+  .band { display:inline-block; font-family:var(--font-display); font-size:11.5px; font-weight:600;
+    letter-spacing:0.04em; padding:4px 10px; border-radius:20px; color:var(--accent-2);
+    background:color-mix(in srgb, currentColor 13%, transparent); margin-bottom:26px; }
+
+  .facts { display:flex; flex-direction:column; gap:12px; margin-top:6px; width:max-content; margin-left:auto; margin-right:auto; }
+  .fact { display:flex; align-items:center; gap:9px; justify-content:flex-start; text-align:left; font-size:14.5px; color:var(--text); }
+  .fact .sub { font-size:11.5px; color:var(--text-dim); margin-left:2px; }
+  .fact .n { font-family:var(--font-display); font-weight:600; }
+  .fact .glyph { color:var(--green); display:flex; }
+  .fact.dim { color:var(--text-dim); font-size:13px; }
+
+  .cont { width:100%; max-width:300px; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
+    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px; margin-top:auto;
+    cursor:pointer; box-shadow:var(--shadow); transition:transform var(--transition), box-shadow var(--transition); }
+  .cont:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  /* Home stand-in phase */
+  .home-title { font-family:var(--font-display); font-size:13px; font-weight:600; letter-spacing:0.05em; color:var(--text-dim); margin-bottom:26px; }
+  .delta-whisper { font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--green);
+    opacity:0; transform:translateY(3px); transition:opacity 300ms, transform 300ms; margin-top:8px; }
+  .delta-whisper.show { opacity:1; transform:none; }
+  .home-note { font-size:12px; color:var(--text-dim); margin-top:auto; }
+
+  @media (prefers-reduced-motion: reduce){ .delta-whisper { transition:none; } }
+
+  /* ===== OPTION C: the summary is an OVERLAY on home; the session resolves in place ===== */
+  .overlay-scrim { position:absolute; inset:0; background:rgba(5,6,13,0.38); z-index:2;
+    opacity:1; transition:opacity 300ms; }
+  .overlay-card { position:absolute; left:24px; right:24px; top:50%; transform:translateY(-52%); z-index:3;
+    background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg);
+    padding:26px 24px 22px; text-align:center; box-shadow:0 12px 40px rgba(5,6,13,0.25);
+    transition:opacity 300ms, transform 300ms cubic-bezier(.2,.7,.3,1); }
+  :root[data-theme="dark"] .overlay-card { background:rgba(35,33,24,0.94); backdrop-filter:blur(14px); }
+  .overlay-card::before { content:""; position:absolute; inset:0; border-radius:var(--radius-lg); pointer-events:none;
+    background:radial-gradient(120% 70% at 50% -12%, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 60%); }
+  .overlay-gone .overlay-scrim { opacity:0; pointer-events:none; }
+  .overlay-gone .overlay-card { opacity:0; transform:translateY(-52%) scale(0.98); pointer-events:none; }
+  /* Home's true dial geometry: Momentum left, hero center, Retention right,
+     side dials vertically centered on the hero. The ceremony builds the trio IN
+     THESE POSITIONS so the dissolve reveals they were home's dials all along. */
+  .trio { display:flex; align-items:center; justify-content:center; gap:16px; margin-top:20px; }
+  .side { width:84px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .side .lbl { font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:0.06em; color:var(--text-dim); }
+  .side .sdelta { font-family:var(--font-display); font-size:11px; font-weight:600; color:var(--green);
+    opacity:0; transition:opacity 300ms; }
+  .side .sdelta.show { opacity:1; }
+
+  /* r6: HOME'S LAYOUT IS THE BASE, in normal flow — nothing can clip; the
+     ceremony overlays onto home's regions. Dials are home's in-flow trio. */
+  .topzone { position:relative; height:172px; width:100%; flex-shrink:0; }
+  .cer-kicker { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .photo { position:absolute; inset:0; overflow:hidden;
+    background:linear-gradient(180deg, #2a3b3f 0%, #1d2c33 62%, transparent 100%); }
+  :root:not([data-theme="dark"]) .photo { background:linear-gradient(180deg, #b7c6c2 0%, #cfd8cf 62%, transparent 100%); }
+  .photo .wordmark { position:absolute; top:16px; left:24px; font-family:var(--font-display); font-size:14px; font-weight:700; color:var(--text); }
+  .photo .wordmark i { font-weight:400; font-style:italic; color:var(--secondary); }
+  .photo .dest { position:absolute; left:24px; bottom:22px; text-align:left; }
+  .photo .dest .name { font-family:var(--font-display); font-size:26px; font-weight:700; color:var(--text); line-height:1.1; }
+  .photo .dest .days { font-size:12.5px; color:var(--text-dim); margin-top:1px; }
+
+  .homeflow { position:relative; flex:1; width:100%; display:flex; flex-direction:column; align-items:center; padding:0 24px; }
+  .lesson-tile { width:100%; background:var(--primary); border-radius:var(--radius-md); padding:13px 16px; text-align:left; margin-top:16px; box-shadow:var(--shadow); }
+  .lesson-tile .k { font-family:var(--font-display); font-size:10px; font-weight:600; letter-spacing:0.07em; color:var(--accent); margin-bottom:3px; }
+  .lesson-tile .t { font-family:var(--font-display); font-size:17px; font-weight:600; color:#fff; }
+  .lesson-tile .s { font-size:12px; color:rgba(255,255,255,0.65); margin-top:1px; }
+  .practice-row { width:100%; border:1px solid var(--border); border-radius:var(--radius-md); padding:11px 14px; margin-top:10px;
+    display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:14.5px; font-weight:600; color:var(--text); background:var(--bg-card); }
+  :root[data-theme="dark"] .practice-row { background:rgba(255,255,255,0.04); }
+  .home-lines { margin-top:12px; font-size:12px; color:var(--text-dim); display:flex; flex-direction:column; gap:4px; align-items:center; }
+  .home-lines .g { color:var(--green); font-weight:600; }
+  .tabbar-si { position:absolute; left:16px; right:16px; bottom:12px; height:54px; background:var(--bg-card);
+    border:1px solid var(--border); border-radius:18px; display:flex; align-items:center; overflow:hidden; }
+  :root[data-theme="dark"] .tabbar-si { background:rgba(28,26,18,0.85); }
+  .tabbar-si .navlight { position:absolute; left:0; bottom:0; width:25%; height:100%;
+    background:radial-gradient(72% 95% at 50% 102%, color-mix(in srgb, var(--accent) 26%, transparent) 0%, transparent 76%); }
+  .tabbar-si .tab { flex:1; text-align:center; font-family:var(--font-display); font-size:9.5px; font-weight:600; color:var(--text-dim); position:relative; z-index:1; }
+  .tabbar-si .tab.active { color:var(--accent-2); }
+
+  /* Ceremony overlay panel: sits over home's lower region (whose elements are
+     opacity-0 during the ceremony, so nothing bleeds) */
+  .cer-panel { position:absolute; top:0; left:24px; right:24px; bottom:0; display:flex; flex-direction:column; align-items:center; }
+
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:445px; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone ceremony" id="phone">
+    <div class="screen" id="screen"></div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="toggleOption()" id="optBtn">option: C (dials perform, world dissolves to home)</button>
+    <button onclick="replay()">replay flow</button>
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    Session-end summary, APPROVED 2026-07-21 — OPTION D IS THE PICK (slow staged dissolve); A/B/C retained on the toggle as design history only, do not build. OPTION C (r3, Tom's refinement, default and RECOMMENDED): THE DIALS ARE THE FIXED POINT AND THE WORLD CHANGES AROUND THEM. r6 (layout corrected after Tom's clipping/position catch): HOME'S LAYOUT IS THE BASE, in normal flow — photo zone (172px), trio, chip, tile, practice, whisper lines, nav all flow-driven so nothing clips and the dials sit at home's true height (~35%); the CEREMONY overlays onto home's regions (kicker centered in the photo's space, facts panel over the tile zone whose elements are opacity-0, Continue above the nav's zone). This is also the build's shape: home renders, ceremony layer on top, dismiss removes the layer. OPTION D (r7, Tom: C's crossfade read as 'the same background stays'): the SLOW dissolve — Continue empties the world (ceremony fades 600ms, tint drains over 1200ms) leaving the DIALS ALONE on a bare stage for a held beat, then home refills around them piece by piece (photo 1.0s → tile → practice → lines → nav at ~150ms steps, sequential-composes; bloom rises with it; whisper last at 2.15s). The emptying is the point: the background visibly LEAVES before home visibly ARRIVES, making the persistence of the dials unmistakable. Cost: ~1.6s longer than C, every session — the pace question is the decision. FACTS (r8, Tom): '5 new' added (items introduced this session, gold plus glyph — the fact Tom expected 'made yours' to be; shows only when >0); MILESTONE FACT: '1 SOLOED' (r12, Tom): a single self-explaining verb, no sub-line — the facts column is now grammatically uniform (new / stronger / restored / soloed, four past-tense events in a ledger). COPY RULE minted (Tom): IF A NAME NEEDS A FOOTNOTE, THE NAME FAILED — fix the name, never add the footnote; explainer sub-lines are banned as name-crutches. DECAY TEST stands: milestone copy names events or possession, never capability (tripfluent/mastered banned; fading can't falsify 'soloed' — you did it). Exercise kicker stays YOURS NOW (state at the crossing, 'This one travels with you.' as the payoff); the session ledger reports the event — two surfaces, two jobs, both self-explaining. TERMINOLOGY RULE (Tom ratified, for the handoff): SESSION = any completed learning flow (a lesson plus its woven reviews, or a pure practice run); LESSON = the content unit only; this surface and its engine event are session-scoped and fire on return home; Code's 'lesson complete' renames to session end. TERMINOLOGY: this surface is SESSION-scoped by proposal — session = any completed learning flow (lesson or practice), lessons remain content units; fires on return home; Code's 'lesson complete' renames accordingly. Restored glyph (r13, Tom's check): DIAL LAW (r16, Tom ratified): the ceremony CONSUMES THE ANIMATION BUDGET — post-session home arrival renders dials settled and motionless (this OVERWRITES the prior scale-up-on-arrival direction for the post-session case; cold opens keep the load-in fill). DELTA SCOPING: side-dial deltas = TODAY'S movement only (+8/+1), nonzero-only, daily reset — the built +88/+35 cumulative deltas are mis-scoped and inflationary; home = now + latest movement, the single two-week whisper line is home's only longer window; day/week/month depth belongs to the Progress tab [penciled]. the standard rotate-CW geometry (r15: clockwise, because restore = the ring REFILLING and rings fill clockwise; ccw read as undo — Tom's catch; proven path) — reads as 'coming back' AND echoes the strength ring, the system's canonical restore image (the animated kring stays the rep-scale rendering; ledger glyphs are static echoes). Facts are LEFT-ALIGNED rows centered as a block (per-row centering read as scattered — Tom's catch); numbers column-align. r5: the dissolve reveals a FULL home stand-in (photo header w/ wordmark + Spain/115 days, NEXT LESSON tile, Practice row, the two whisper lines, tab bar w/ nav light at Home) so the transition is reviewable end to end; the dials' fixed y drives BOTH layouts (ceremony composes its kicker into the space the photo will occupy; facts+Continue occupy the space the tile/practice/nav will take). r4 (Tom + built-home screenshot): the pop-ins land in HOME'S TRUE GEOMETRY — Momentum flanking left (blue, per built), Retention right (green, per built), labels + green side-deltas matching the built dial row — so the dissolve reveals they were home's dials all along; r3's stacked-below layout would have made them JUMP at the transition, defeating the point. Side deltas (+8/+1) appear after each dial's own climb; hero whisper stays '+3 today'. Sequence: ceremony screen (top-center tint), Readiness ISOLATED and ticking 58→61 (900ms); Momentum and Retention POP IN beside it (320ms scale-fade, staggered) and tick (sequential-composes); facts + Continue below. Continue does not navigate: the ceremony DISSOLVES around the dials — kicker/facts/button fade out, home's title/chrome fade in, the tint crossfades from top-crest to the home bloom (500ms), and the three dials never move, never re-render: they are the same objects on both screens. Then the '+3 today' whisper. All three dials move because a session honestly moves all three; the whisper stays Readiness-only (one number, one voice). Resolution-frame law at session scale: the world matures around persistent work. Options A and B retained on the toggle for comparison — the scale-ladder says the session-scale Readiness delta shows
+    ONCE, so the options differ on WHERE. OPTION A (summary carries it): the summary opens with the mini
+    Readiness ring counting 58→61 (600ms, tick visible, band chip; band-crossings get the chip morph, crown
+    crossings the sheen per existing rules), session facts beneath, Continue → home arrives already settled
+    (static). OPTION B (home ticks on arrival): the summary is FACTS ONLY — no Readiness number anywhere on
+    it — Continue → home, where the hero ring the learner watches every day climbs 58→61 before their eyes
+    with a "+3 today" delta whisper: the impact shown ON THE INSTRUMENT. Shared: ceremony top-center tint on
+    the summary; facts in whisper vocabulary (N stronger / N restored / N made yours — restored consumes the
+    §8.4 aggregate; "made yours" only when Yours-now fired); Continue exit (Pacing Rule); DURATION
+    DELIBERATELY OMITTED (session minutes invite grind-optimization; the instrument measures readiness, not
+    attendance). Momentum's session movement is an OPEN QUESTION [pencil: if momentum joins, it belongs on
+    home's dial, not this screen]. Home phase is a STAND-IN (real home composes photo + dials). Frame 390.
+  </div>
+</div>
+
+<script>
+  const C = 2*Math.PI*54;
+  function bigRing(val, tickAt){
+    const a = (tickAt/100)*2*Math.PI - Math.PI/2;
+    const ca = Math.cos(a), sa = Math.sin(a);
+    const tx = 64+59*ca, ty = 64+59*sa;
+    const b1x = 64+68*ca - 4.2*sa, b1y = 64+68*sa + 4.2*ca;
+    const b2x = 64+68*ca + 4.2*sa, b2y = 64+68*sa - 4.2*ca;
+    return `<svg width="144" height="144" viewBox="-8 -8 144 144">
+      <circle cx="64" cy="64" r="54" fill="none" stroke="var(--bg-elevated)" stroke-width="10"/>
+      <circle cx="64" cy="64" r="54" fill="none" stroke="var(--accent-2)" stroke-width="10" stroke-linecap="round"
+        stroke-dasharray="${C}" stroke-dashoffset="${C*(1-val/100)}" transform="rotate(-90 64 64)"/>
+      <polygon points="${tx},${ty} ${b1x},${b1y} ${b2x},${b2y}" fill="var(--accent-2)" stroke-linejoin="round"/>
+      <text x="64" y="64" text-anchor="middle" dominant-baseline="central"
+        style="font-family:var(--font-display);font-weight:700;font-size:30px;fill:var(--text)">${Math.round(val)}</text>
+    </svg>`;
+  }
+
+  function miniDial(val, color){
+    const c = 2*Math.PI*26;
+    return `<svg width="64" height="64" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="26" fill="none" stroke="var(--bg-elevated)" stroke-width="5.5"/>
+      <circle cx="32" cy="32" r="26" fill="none" stroke="${color}" stroke-width="5.5" stroke-linecap="round"
+        stroke-dasharray="${c}" stroke-dashoffset="${c*(1-val/100)}" transform="rotate(-90 32 32)"/>
+      <text x="32" y="32" text-anchor="middle" dominant-baseline="central"
+        style="font-family:var(--font-display);font-weight:600;font-size:16px;fill:var(--text)">${Math.round(val)}</text>
+    </svg>`;
+  }
+
+  const factsHtml = `
+    <div class="facts">
+      <div class="fact"><span class="glyph" style="color:var(--accent-2)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span><span><span class="n">5</span> new</span></div>
+      <div class="fact"><span class="glyph"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><span class="n">12</span> stronger</span></div>
+      <div class="fact"><span class="glyph"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M21 13a9 9 0 1 1-3-7.7L21 8"/></svg></span><span><span class="n">3</span> restored</span></div>
+      <div class="fact"><span class="glyph"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg></span><span><span class="n">1</span> soloed</span></div>
+    </div>`;
+
+  function homeDials(r, m, ret){
+    return `
+      <div class="home-title">OAXACA · 46 DAYS</div>
+      <div class="ringwrap" id="ringwrap">${bigRing(r, 66)}</div>
+      <span class="band">Fair</span>
+      <div class="delta-whisper" id="dw">+3 today</div>
+      <div class="dials-row">
+        <div id="dialM">${miniDial('MOMENTUM', m, 'var(--accent-2)')}</div>
+        <div id="dialR">${miniDial('RETENTION', ret, 'var(--secondary)')}</div>
+      </div>
+      <div class="home-note">home stand-in · real home composes photo + action tile</div>`;
+  }
+
+  function renderOverlay(){
+    phase = 'ceremony';
+    phone.className = 'phone';
+    screen.style.padding = '0';
+    screen.style.textAlign = 'center';
+    screen.innerHTML = `
+      <div class="atmo cer" id="atmoCer"></div>
+      <div class="atmo hom" id="atmoHom" style="opacity:0"></div>
+      <div class="topzone">
+        <div class="hom-el photo">
+          <span class="wordmark">Trip<i>fluent</i></span>
+          <div class="dest"><div class="name">Spain</div><div class="days">115 days out</div></div>
+        </div>
+        <div class="cer-el cer-kicker"><span class="kicker" style="margin:0">THAT'S THE SESSION</span></div>
+      </div>
+      <div class="trio" style="margin-top:8px">
+        <div class="side dial-pop" id="popM">
+          <div id="dialM">${miniDial(54, 'var(--secondary)')}</div>
+          <span class="lbl">MOMENTUM</span>
+          <span class="sdelta" id="sdM">+8</span>
+        </div>
+        <div class="ringwrap" id="ringwrap">${bigRing(58, 66)}</div>
+        <div class="side dial-pop" id="popR">
+          <div id="dialR">${miniDial(71, 'var(--green)')}</div>
+          <span class="lbl">RETENTION</span>
+          <span class="sdelta" id="sdR">+1</span>
+        </div>
+      </div>
+      <span class="band" style="margin-bottom:0; margin-top:6px">Fair</span>
+      <div class="delta-whisper" id="dw">+3 today</div>
+      <div class="homeflow">
+        <div class="hom-el lesson-tile">
+          <div class="k">NEXT LESSON</div>
+          <div class="t">Start: ¿Hay ___?</div>
+          <div class="s">Core patterns</div>
+        </div>
+        <div class="hom-el practice-row">⚡ Practice</div>
+        <div class="hom-el home-lines">
+          <span>✦ Your last 2 weeks moved Readiness <span class="g">+43</span></span>
+          <span>● 3:29am in Spain</span>
+        </div>
+        <div class="cer-el cer-panel">
+          <div style="margin-top:18px">${factsHtml}</div>
+          <button class="cont" style="margin-top:auto; margin-bottom:78px" onclick="dismissOverlay()">Continue</button>
+        </div>
+      </div>
+      <div class="hom-el tabbar-si">
+        <div class="navlight"></div>
+        <div class="tab active">Home</div><div class="tab">Learn</div><div class="tab">Progress</div><div class="tab">Profile</div>
+      </div>`;
+    screen.style.display = 'flex';
+    screen.style.flexDirection = 'column';
+    screen.style.alignItems = 'center';
+    tick('ringwrap', v => bigRing(v, 66), 58, 61, 900, 600);
+    timers.push(setTimeout(()=> document.getElementById('popM').classList.add('in'), 1700));
+    timers.push(setTimeout(()=> document.getElementById('popR').classList.add('in'), 1900));
+    tick('dialM', v => miniDial(v, 'var(--secondary)'), 54, 62, 700, 2100, ()=> document.getElementById('sdM').classList.add('show'));
+    tick('dialR', v => miniDial(v, 'var(--green)'), 71, 72, 500, 2350, ()=> document.getElementById('sdR').classList.add('show'));
+  }
+
+  function dismissOverlay(){
+    if (option === 'D'){
+      // D: the world EMPTIES (slow), the dials hold the stage alone, then home
+      // refills around them piece by piece (sequential composes)
+      screen.classList.add('slow','to-home-cer-only');
+      [...screen.querySelectorAll('.cer-el')].forEach(e => { e.style.opacity = '0'; e.style.pointerEvents = 'none'; });
+      document.getElementById('atmoCer').style.transition = 'opacity 1200ms';
+      document.getElementById('atmoCer').style.opacity = '0';
+      const hom = [...screen.querySelectorAll('.hom-el')];
+      const orderD = ['photo','lesson-tile','practice-row','home-lines','tabbar-si'];
+      const delays = [1000, 1300, 1450, 1600, 1750];
+      orderD.forEach((cls, i) => {
+        const elx = hom.find(h => h.classList.contains(cls));
+        if (elx) timers.push(setTimeout(()=> elx.classList.add('show-d'), delays[i]));
+      });
+      const ah = document.getElementById('atmoHom');
+      ah.style.transition = 'opacity 900ms';
+      timers.push(setTimeout(()=> ah.style.opacity = '1', 1000));
+      timers.push(setTimeout(()=> document.getElementById('dw').classList.add('show'), 2150));
+      return;
+    }
+    // C: single crossfade — ceremony out, home in, dials untouched
+    screen.classList.add('to-home');
+    document.getElementById('atmoCer').style.opacity = '0';
+    document.getElementById('atmoHom').style.opacity = '1';
+    timers.push(setTimeout(()=> document.getElementById('dw').classList.add('show'), 550));
+  }
+
+  function tick(id, renderFn, from, to, dur, delay, done){
+    timers.push(setTimeout(()=>{
+      const t0 = performance.now();
+      const frame = (t)=>{
+        const p = Math.min(1,(t-t0)/dur), e = 1-Math.pow(1-p,3);
+        const elx = document.getElementById(id);
+        if (!elx) return;
+        elx.innerHTML = renderFn(from + (to-from)*e);
+        if (p < 1) requestAnimationFrame(frame);
+        else done && done();
+      };
+      requestAnimationFrame(frame);
+    }, delay));
+  }
+
+  let option = 'C';
+  let phase = 'summary';
+  let timers = [];
+  const screen = document.getElementById('screen');
+  const phone = document.getElementById('phone');
+
+  function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
+
+  function renderSummary(){
+    phase = 'summary';
+    phone.className = 'phone ceremony';
+    if (option === 'A'){
+      screen.innerHTML = `
+        <div class="kicker">THAT'S THE SESSION</div>
+        <div class="ringwrap" id="ringwrap">${bigRing(58, 66)}</div>
+        <span class="band">Fair</span>
+        ${factsHtml}
+        <button class="cont" onclick="goHome()">Continue</button>`;
+      // count-up 58 -> 61
+      timers.push(setTimeout(()=>{
+        const t0 = performance.now(), DUR = 600;
+        const frame = (t)=>{
+          const p = Math.min(1,(t-t0)/DUR), e = 1-Math.pow(1-p,3);
+          document.getElementById('ringwrap').innerHTML = bigRing(58 + 3*e, 66);
+          if (p < 1) requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+      }, 700));
+    } else {
+      screen.innerHTML = `
+        <div class="kicker">THAT'S THE SESSION</div>
+        ${factsHtml}
+        <button class="cont" onclick="goHome()">Continue</button>`;
+    }
+  }
+
+  function goHome(){
+    phase = 'home';
+    phone.className = 'phone home';
+    const start = option === 'A' ? 61 : 58;
+    screen.innerHTML = `
+      <div class="home-title">OAXACA \u00b7 46 DAYS</div>
+      <div class="ringwrap" id="ringwrap">${bigRing(start, 66)}</div>
+      <span class="band">Fair</span>
+      <div class="delta-whisper" id="dw">+3 today</div>
+      <div class="home-note">home stand-in \u00b7 real home composes photo + dials + action tile</div>`;
+    if (option === 'B'){
+      timers.push(setTimeout(()=>{
+        const t0 = performance.now(), DUR = 900;
+        const frame = (t)=>{
+          const p = Math.min(1,(t-t0)/DUR), e = 1-Math.pow(1-p,3);
+          document.getElementById('ringwrap').innerHTML = bigRing(58 + 3*e, 66);
+          if (p < 1) requestAnimationFrame(frame);
+          else document.getElementById('dw').classList.add('show');
+        };
+        requestAnimationFrame(frame);
+      }, 600));
+    } else {
+      timers.push(setTimeout(()=> document.getElementById('dw').classList.add('show'), 500));
+    }
+  }
+
+  const optOrder = ['C','D','A','B'];
+  const optLabels = { C:'option: C (dials perform, world dissolves to home)', D:'option: D (slow dissolve: world empties, dials alone, home refills)', A:'option: A (summary carries the delta)', B:'option: B (home ticks on arrival)' };
+  function toggleOption(){
+    option = optOrder[(optOrder.indexOf(option)+1) % optOrder.length];
+    document.getElementById('optBtn').textContent = optLabels[option];
+    replay();
+  }
+  function replay(){
+    clearTimers();
+    screen.classList.remove('to-home','slow','to-home-cer-only');
+    screen.style.padding = '';
+    if (option === 'C' || option === 'D') renderOverlay(); else renderSummary();
+  }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  replay();
+</script>
+</body>
+</html>
