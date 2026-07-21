@@ -406,6 +406,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .choice {
   text-align: left; background: var(--bg-card); border: 2px solid var(--border);
   color: var(--text); border-radius: var(--radius); padding: 16px; font-size: 17px;
+  font-family: var(--font-display);       /* buttons don't inherit font (same fix as .btn) */
   font-weight: 600; cursor: pointer; box-shadow: var(--shadow); transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s;
 }
 .choice:active { transform: translateY(2px); box-shadow: var(--shadow-press); }   /* §2.1 push-down */
@@ -474,6 +475,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .word {
   background: var(--bg-card); border: 2px solid var(--border); color: var(--text);
   border-radius: 12px; padding: 10px 14px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow);
+  font-family: var(--font-display);       /* buttons don't inherit font (same fix as .btn) */
   transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s;
 }
 .word:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
