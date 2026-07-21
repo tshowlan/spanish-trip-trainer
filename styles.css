@@ -132,7 +132,10 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
 /* atmosphere ground: gradient in dark (via --ground), cream fallback in light; fixed = stable ground while scrolling */
 /* keep the native rubber-band (feedback, not ambient animation) but contain it so a drag-down can't
    fire the browser's pull-to-refresh (decisions 2026-07-16). `none` killed the bounce → felt frozen. */
+html { overflow-x: clip; }   /* the app pans vertically only: sideways drag parks off-center (no rubber-band on real scroll) */
 body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats the i's dot ("wifi") — learners need to SEE letters */
+  overscroll-behavior-x: none; overflow-x: clip;
+  touch-action: pan-y pinch-zoom;   /* fingers pan vertically only — the native feel */
   max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; background: var(--ground, var(--bg)); background-attachment: fixed; }
 /* frosted translucent surfaces over the ground (dark only — --card-blur is unset in light) */
 .tile, .sheet, .quest, .prog-row, .prog-tier, .prog-trend, .home-diverge, .sheet-diverge, .archive-row, .pb-thread, .culture-note, .backup-banner, #tabbar { backdrop-filter: var(--card-blur, none); -webkit-backdrop-filter: var(--card-blur, none); }
@@ -278,7 +281,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   font-size: 13px; font-weight: 800;
 }
 .qtype { color: var(--text-dim); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
-.prompt { font-size: 24px; font-weight: 800; margin: 8px 0 6px; line-height: 1.25; }
+.prompt { font-family: var(--font-display); font-size: 24px; font-weight: 700; margin: 8px 0 6px; line-height: 1.25; }   /* display text wears the display font, en prompts included (Tom, 2026-07-21) */
 .prompt-sub { color: var(--text-dim); font-size: 14px; margin-bottom: 18px; }
 .effort-line { background: color-mix(in srgb, var(--secondary) 12%, transparent); border: 1px solid var(--secondary); color: var(--secondary); border-radius: 12px; padding: 10px 14px; font-size: 13px; font-weight: 600; line-height: 1.4; margin: 10px 0 16px; }
 /* presentation card — first sight of a new phrase (teach, not test) */

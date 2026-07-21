@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-21 — Native feel: horizontal axis locked; prompt font unified — v169
+- The app pans vertically only (Tom): html+body overflow-x clip, overscroll-behavior-x none, touch-action pan-y pinch-zoom — sideways drags used to park the page off-center with no rubber-band (real scroll, not overscroll). Vertical bounce untouched.
+- The big exercise prompt (.prompt 24px) wears the display font for ALL prompts now, en included, weight 800→700 — build-the-sentence was the last Inter holdout among display-scale text. Small dim en lines stay Inter (text face) deliberately.
+
 ## 2026-07-21 — Tom's cleanup seven — v168
 - (1) Option cards conform to the variants artifact: .choice 15/500 app-wide (was 17/600). (2) The reply's scene line is narrative sentence case (14px dim, 16px gap), not the uppercase type label. (3) Ligatures off body-wide: the fi ligature was eating the i's dot ("wifi") — learners need to see letters. (4) Build tiles conform to the artifact tile spec (17/500, 1px border, radius 10, 8x12 padding; tray tiles sit quieter: bg-elevated + dim). (5) Fold fix: the resolution frame scrolls its Continue into view (requeued chip + choices could push it past short viewports; correction sheet itself verified viewport-anchored and fine). (6) Nav-light spill: #tabbar was missing the artifact's overflow:hidden clip; also bloom anchor now measured a frame after the bar shows (stale rects anchored it off-column on first paint). Harness clean() now rebuilds tabbar chrome (it was wiping navlight+tabs, lying to review).
 - (7) The home lighting outlier Tom remembered = the standing 2026-07-17 flag in nav.js: home keeps its own ground glow + photo; adopting the shared bloom anchor is penciled for home's next revision — CHAT'S BOARD, design decision, not a bug.
