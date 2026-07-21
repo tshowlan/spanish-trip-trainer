@@ -2,6 +2,12 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-21 — Primer wave commit #2 SHIPPED (v172): coherence pass + the Jordi discovery
+- Four scenes revised verbatim (pa amb tomàquet in Marina's hands; Catalonia signs beat + antecedent fix; the Andrés plant; Sra. Rosa carries 112). Three woven cultureNotes retired (sp-table, s2-bathroom, sp-help); farmacia-de-guardia overflowed to the content-spec's Landed bin. s3-directions completed (mission + guessItem "la plaza", resolves in-lesson). Pack audit 0 hard errors.
+- DISCOVERY during the rename: the pack already HAD the taxi through-line under the name Jordi — cast-list comment ("picks you up at El Prat") AND the pass-3 finale payoff ("Jordi dropped you near Plaça Reial"). Chat's planned arc existed; keep-the-world-take-the-name applied at all three sites; decision recorded. Andrés's finale drop-off is already written.
+- MECHANICS ANSWER (blocking four guessItems): guessItems MUST resolve in-lesson (matched by es, id, or keyword) — unresolved ones fall back SILENTLY to the anchor item, so s1-rescue (¿Habla inglés?), sp-cash (cien), s4-hear (Que aproveche), sp-help (Es una emergencia) have been guessing on the wrong phrase since the Stage-0 migration. Chat supplies in-list replacements.
+- Still waiting on Tom: thin-lesson padding bless (sp-cash cash set; s4-hear locals-lines / replyTo seed corpus).
+
 ## 2026-07-21 — Primer wave commit #1 SHIPPED (v171): 11 primers, cast canon, content spec
 - Ten Stage-0 primers (7 machine-shaped, 3 kit) + s3-directions scenario scene landed in curriculum.js; machine/kit primers are scene-only (no mission/guessItem, so no pre-lesson interstitial — beat-hint + future-surface data per the handoff). Montse renamed Marina everywhere (9 sites; world kept, name changed); Núria/Sra. Rosa unchanged. docs/tripfluent-content-spec.md created (primer format rules + cast canon); decision recorded. Pack audit: 0 hard errors. frameGloss left in packs as dormant data (no renderer consumes it).
 - FLAGS for chat: (1) s3-directions has scene only — needs mission + guessItem to fire the §4c.4 pre-lesson flow like its siblings; send the mission line. (2) The reply artifact's "Marina · The Harbor Café" is now canon-colliding (Marina runs a tasca) — relabel at next re-issue, noted in content spec.

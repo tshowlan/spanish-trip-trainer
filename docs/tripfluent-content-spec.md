@@ -33,3 +33,9 @@ Three shapes, chosen by lesson type:
   convenience (closed-vocabulary principle applied to people).
 - Stale demo copy note: the reply artifact's "Marina · The Harbor Café" label predates the canon
   (Marina runs a tasca, not a harbor café); penciled for relabel at that artifact's next re-issue.
+
+## Landed/in-trip overflow bin (content awaiting the Landed spec)
+
+- Farmacia de guardia: "For minor things, look for the 'farmacia de guardia', the 24-hour pharmacy,
+  marked with a flashing green cross." (overflowed from sp-help's retired cultureNote, 2026-07-21 —
+  a tip at the destination has ten times the utility.)

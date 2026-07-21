@@ -11,7 +11,7 @@
 
 /* ---- BARCELONA CAST (§9b.2) — fictional recurring characters; food/places are real.
    Cast names live ONLY in English scene/primer text, never in a graded `es` answer.
-   - Jordi   — the taxi driver who picks you up at El Prat; dry, knows every shortcut.
+   - Andrés  — the taxi driver who picks you up at El Prat; dry, knows every shortcut. (ex-Jordi, canon 2026-07-21)
    - Marina  — runs a tiny tasca (comedor) off the Barri Gòtic; feeds you like family.
    - Toni    — the bartender at a vermutería; pours vermut and opinions in equal measure.
    - Núria   — a vendor at La Boqueria market; will let you taste before you buy.
@@ -197,8 +197,7 @@ const CURRICULUM = {
         {
           id: "sp-table", topic: "Restaurant · Ordering", title: "First words at the table",
           reward: "You can get a table, order, ask for the check, and flag your shellfish allergy. Night one at the tapas bar: handled.",
-          cultureNote: "Pa amb tomàquet, bread rubbed with ripe tomato, olive oil, and salt, comes with almost everything in Barcelona. You rub it on yourself; don't go asking for butter.",
-          primer: { scene: "It's packed at Marina's tasca. She wipes down a table, waves you into a chair, and asks '¿para cuántos?'", mission: "Get a table, order, and warn her about the shellfish before the tapas land.", guessItem: "Soy alérgico al marisco" },
+          primer: { scene: "It's packed at Marina's tasca. She wipes down a table, waves you into a chair, and sets down pa amb tomàquet, the tomato bread that arrives with everything here. Don't ask for butter. '¿Para cuántos?' she asks.", mission: "Get a table, order, and warn her about the shellfish before the tapas land.", guessItem: "Soy alérgico al marisco" },
           items: [
             { es: "Una mesa para dos, por favor", en: "A table for two, please", tier: 2, tags: ["restaurant", "food"], keywords: ["mesa"], variants: ["Mesa para dos, por favor"] },
             { es: "La carta, por favor", en: "The menu, please", note: "In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día.", tier: 2, tags: ["restaurant", "food"], keywords: ["carta"], variants: ["¿Me trae la carta?"] },
@@ -211,8 +210,7 @@ const CURRICULUM = {
         {
           id: "s2-bathroom", topic: "Restaurant · Bathrooms", title: "Where's the loo",
           reward: "You can find a bathroom and read a door. Push vs. pull humiliation: avoided.",
-          cultureNote: "Ask for 'los servicios' or 'los aseos', 'baño' is understood but marks you as not-from-here. In Catalonia the door signs may be in Catalan too: 'Lavabos'.",
-          primer: { scene: "Two unmarked doors at the back of Marina's place, and a waiter squeezing past with a tray of vermut. You need to pick the right one.", mission: "Ask where the loo is, and read the door before you push.", guessItem: "Entrada" },
+          primer: { scene: "Two unmarked doors at the back of Marina's place, and a waiter squeezing past with a tray of vermut. The signs, when you find them, might not even be in Spanish. This is Catalonia. Pick the right door before you push.", mission: "Ask where the loo is, and read the door before you push.", guessItem: "Entrada" },
           items: [
             { es: "¿Dónde está el servicio?", en: "Where is the bathroom?", note: "Spain says 'el servicio / los servicios'. Signs read 'Aseos'.", latam: "Latin America: '¿Dónde está el baño?'", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "servicio"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
             { es: "los aseos", en: "the restrooms (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "Los aseos están al fondo", contextEn: "The restrooms are at the back", keywords: ["aseos"] },
@@ -234,7 +232,7 @@ const CURRICULUM = {
         },
         {
           id: "s3-directions", topic: "Walking directions", title: "Which way?",
-          primer: { scene: "You ask Marina how to find the Sagrada Família and she answers with her hands as much as her words: right at the corner, left at the plaza, straight on until the towers find you. Somewhere in the middle you'll get lost. That's the good part." },
+          primer: { scene: "You ask Marina how to find the Sagrada Família and she answers with her hands as much as her words: right at the corner, left at the plaza, straight on until the towers find you. Somewhere in the middle you'll get lost. That's the good part.", mission: "Ask Marina the way, then survive the answer: right, left, straight ahead.", guessItem: "la plaza" },
           reward: "Left, right, straight ahead, you can now get lost on purpose. Gaudí's buildings await.",
           items: [
             { es: "¿Cómo llego a...?", en: "How do I get to...?", tier: 2, tags: ["directions"], keywords: ["llego"] },
@@ -250,7 +248,7 @@ const CURRICULUM = {
         {
           id: "s3-airport", topic: "Transport · Airport signs", title: "Reading the airport",
           reward: "Arrivals, departures, your gate, all decoded. You will not miss the flight because of a sign.",
-          primer: { scene: "You step off the plane at El Prat into a wall of signage, half Spanish, half Catalan. Somewhere past security, Jordi is waiting with a cab.", mission: "Read the signs, departures, arrivals, security, customs.", guessItem: "Control de seguridad" },
+          primer: { scene: "You step off the plane at El Prat into a wall of signage, half Spanish, half Catalan. Somewhere past security, Andrés is waiting with a cab.", mission: "Read the signs, departures, arrivals, security, customs.", guessItem: "Control de seguridad" },
           items: [
             { es: "Salidas", en: "Departures", cat: "Catalan: 'Sortides'.", tier: 1, tags: ["airport", "signs"], contextEs: "La sala de salidas", contextEn: "The departures hall", keywords: ["salidas"] },
             { es: "Llegadas", en: "Arrivals", cat: "Catalan: 'Arribades'.", tier: 1, tags: ["airport", "signs"], contextEs: "La zona de llegadas", contextEn: "The arrivals area", keywords: ["llegadas"] },
@@ -273,8 +271,7 @@ const CURRICULUM = {
         {
           id: "sp-help", topic: "Problems & emergencies", title: "If something's wrong",
           reward: "The safety net's in place. Now go enjoy Barcelona, you're covered.",
-          cultureNote: "The EU emergency number is 112, and they'll find you an English speaker. For minor things, look for the 'farmacia de guardia', the 24-hour pharmacy, marked with a flashing green cross.",
-          primer: { scene: "You pat every pocket twice, your wallet's gone. Sra. Rosa, the farmacéutica on the corner, catches your face and asks if you're okay.", mission: "Get help fast, a doctor, the police, or her farmacia.", guessItem: "Es una emergencia" },
+          primer: { scene: "You pat every pocket twice, your wallet's gone. Sra. Rosa, the farmacéutica on the corner, catches your face and asks if you're okay. Anything truly serious, she says, is 112, and they'll find you someone who speaks English. Everything else starts right here.", mission: "Get help fast, a doctor, the police, or her farmacia.", guessItem: "Es una emergencia" },
           items: [
             { es: "Me han robado", en: "I've been robbed", tier: 2, tags: ["emergency"], keywords: ["robado"] },
             { es: "No me siento bien", en: "I don't feel well", tier: 2, tags: ["emergency", "health"], keywords: ["siento"] },
@@ -545,7 +542,7 @@ const CURRICULUM = {
           chain: {
             title: "Your last night",
             turns: [
-              { narr: "Your last night in Barcelona. Jordi dropped you near Plaça Reial, and your feet carried you back to Marina's tasca, one more time." },
+              { narr: "Your last night in Barcelona. Andrés dropped you near Plaça Reial, and your feet carried you back to Marina's tasca, one more time." },
               { npc: { es: "¡Buenas noches! Tu última noche, ¿verdad? Pasa, pasa.", en: "Good evening! Your last night, right? Come in, come in." } },
               { user: "Buenas noches" },
               { npc: { es: "Siéntate. ¿Qué te pongo esta vez?", en: "Sit down. What can I get you this time?" } },
