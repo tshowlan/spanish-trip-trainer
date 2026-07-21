@@ -1504,7 +1504,7 @@ function renderReplyChat(q) {
     opts.appendChild(c);
   });
   body.appendChild(opts);
-  q.noEn = true;    // the settled English option IS the meaning; the grown carries es only (no-repeat §3.7)
+  q.esFootnote = true;   // the settled English option IS the meaning; es arrives as the 13px footnote line (no-repeat + footnote zone, §3.7)
 }
 
 /* ----- grading + feedback ----- */
@@ -1584,12 +1584,15 @@ function resolveCorrect(item, q, info) {
     : kick === "restored" ? `<div class="res-note">This one was fading. You brought it back.</div>` : "";
   // no-repeat (§3.7): the grown carries only what's MISSING from the screen. When the
   // exercise's own sentence completed in place (fused row, filled blank, typed close),
-  // it IS the es reveal; the reply keeps es (appears nowhere else) and drops en.
+  // it IS the es reveal; the reply keeps es (appears nowhere else) but carries it as
+  // the standard 13px footnote line — no language-based styling in the footnote zone.
   const esHeld = ans || (q && q.esOnStage);
   const grown = el(`<div class="res-grown">
     ${kicker}
-    ${!esHeld ? `<div class="es-reveal">${item.es}<span class="sweep2"></span></div>` : ""}
-    ${(q && q.noEn) ? "" : `<div class="res-en">${item.en}</div>`}
+    ${!esHeld ? (q && q.esFootnote
+      ? `<div class="res-en">${item.es}</div>`
+      : `<div class="es-reveal">${item.es}<span class="sweep2"></span></div>`) : ""}
+    ${(q && (q.noEn || q.esFootnote)) ? "" : `<div class="res-en">${item.en}</div>`}
     <div class="res-audio"></div>
     ${note}
     <button class="btn res-cont">Continue</button>
