@@ -91,6 +91,8 @@
   .fact .glyph { color:var(--green); display:flex; }
   .fact.dim { color:var(--text-dim); font-size:13px; }
 
+  /* max-width 300px is a DEMO-FRAME value (390px frame minus margins) — build
+     derives from content width; do not copy the literal (frame-relative rule) */
   .cont { width:100%; max-width:300px; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
     padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px; margin-top:auto;
     cursor:pointer; box-shadow:var(--shadow); transition:transform var(--transition), box-shadow var(--transition); }

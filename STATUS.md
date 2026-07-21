@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-21 — Loose ends closed (chat): reward/cultureNote rehomed; canvas annotated
+- Reward lines RETIRED as a surface (told-rewards redundant now reward is mechanical; "you can now X" fails the decay test). Content INVERTS into primer promises during the primer wave; cultureNote tips become CAST DIALOGUE in primers, overflow pencils to the Landed/in-trip spec. Pack fields stay as writing-session inputs; zero runtime consumers remain (verified). Decision recorded.
+- session-end.html re-issue committed: max-width:300px annotated demo-frame-relative (one comment, verified surgical).
+
 ## 2026-07-21 — T₁ ear-first (chat-blessed) + dead code removed — v167
 - The immediate post-presentation retrieval is now listen_choice (audio, no es text, English options): tested channel ≠ taught channel at T₁; distractors = co-introduced items by design. Sound-off/no-speech fallback → read-and-pick. T₁ slots carry a t1 flag so the §8.5 rhythm steer cannot retype them. Spec §6.1b + decision recorded.
 - DELETED: renderIntro (old photo intro flow, ~51 lines) and renderMatch/onMatchTap (old text-match board, ~39 lines) — both unreachable; pairs is the review board, the weave is the intro. introPhoto() lives on for the primer.
