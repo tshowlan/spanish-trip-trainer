@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-21 — T₁ ear-first (chat-blessed) + dead code removed — v167
+- The immediate post-presentation retrieval is now listen_choice (audio, no es text, English options): tested channel ≠ taught channel at T₁; distractors = co-introduced items by design. Sound-off/no-speech fallback → read-and-pick. T₁ slots carry a t1 flag so the §8.5 rhythm steer cannot retype them. Spec §6.1b + decision recorded.
+- DELETED: renderIntro (old photo intro flow, ~51 lines) and renderMatch/onMatchTap (old text-match board, ~39 lines) — both unreachable; pairs is the review board, the weave is the intro. introPhoto() lives on for the primer.
+
 ## 2026-07-21 — Session-end ceremony SHIPPED (v166) — harness review passed, branch merged
 - Tom's review pass beyond the r17-r19 riders: dial labels/deltas display font (ring-card button inheritance, latent on home since the dials shipped); no deltas on still dials (empty-ish + unmoved sides); dissolve made authored (900ms atmosphere breath + 6px materialize rise — was a uniform 550ms fade reading as slow loading); Continue full container width + cer-layer aligned to the 480px app column (artifact's 300px cap was frame-relative). Canvas note: artifact .cont max-width:300px should be annotated frame-relative on next re-issue.
 

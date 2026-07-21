@@ -152,7 +152,12 @@ function composeSession(lesson) {
   for (let b = 0; b < newItems.length; b += 2) {
     const batch = newItems.slice(b, b + 2);                            // ≤2 new items → ≤2 cards in a row
     batch.forEach(it => qs.push({ type: "present", item: it }));       // present (card precedes any test)
-    batch.forEach(it => qs.push({ type: "mc_es2en", item: it, pool: newItems }));  // immediate rung-1 retrieval
+    // §6.1b T₁ is EAR-FIRST (2026-07-21): the card handed over text+sound+meaning, so the
+    // first retrieval tests sound WITHOUT spelling — the first true decode, and the trip
+    // skill itself. Distractors = co-introduced items (deliberate: early ear-discrimination
+    // among fresh phonology). Sound-off fallback: no speech, or sound off → read-and-pick.
+    const t1 = (typeof window !== "undefined" && "speechSynthesis" in window && state.sound !== false) ? "listen_choice" : "mc_es2en";
+    batch.forEach(it => qs.push({ type: t1, item: it, pool: newItems, t1: true }));  // immediate rung-1 retrieval, rhythm-proof
     const r = nextReview(); if (r) qs.push(r);                         // gap filler
     batch.forEach(it => later.push({ type: introRep(it), item: it, pool: newItems }));  // schedule expanding re-test
     if (later.length >= 4) { qs.push(later.shift()); const r2 = nextReview(); if (r2) qs.push(r2); }
@@ -172,10 +177,11 @@ function composeSession(lesson) {
 function applyRhythm(qs) {
   const needsPool = t => t === "mc_es2en" || t === "listen_choice";
   const idx = [];
-  qs.forEach((q, i) => { if (q && q.item && q.type !== "present" && q.type !== "intro") idx.push(i); });
+  qs.forEach((q, i) => { if (q && q.item && q.type !== "present") idx.push(i); });
   if (idx.length < 3) return qs;                          // too short to have a rhythm
   const steer = (i, prefer) => {
     const q = qs[i], t = chooseType(q.item, { prefer });
+    if (q.t1) return;                                   // §6.1b: the ear-first T₁ outranks the rhythm steer
     if (t === q.type) return;
     if (needsPool(t) && !(Array.isArray(q.pool) && q.pool.length >= 3)) return;   // no distractors → leave as-is
     q.type = t;
@@ -461,7 +467,7 @@ function renderQuestion() {
   _setQStrength(qs ? Math.round(itemStrength(qs)) : 0, false);
   // make the mistake re-queue visible: label a phrase you missed coming back around
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">${icon('arrows-clockwise', 15)} Second chance, you missed this one</div>`));
-  ({ intro: renderIntro, present: renderPresent, match: renderMatch, build: renderBuild, mc_es2en: renderMC,
+  ({ present: renderPresent, build: renderBuild, mc_es2en: renderMC,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
      listen_choice: renderListenChoice, reply_listen: renderReply,
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
@@ -488,56 +494,8 @@ function introPhoto(lesson) {
   return `./img/${region}/${pick}.jpg`;
 }
 const ES_PHOTOS = new Set(["cafe", "market", "default"]);
-function renderIntro(q) {
-  const items = q.items || [];
-  const photo = introPhoto(run.lesson);
-  const seen = new Set();
-  let i = 0;                                  // current card; items.length == recap page
-  new Image().src = photo;                    // warm the cache so it's ready
-  function draw() {
-    const body = $("#qbody");
-    body.innerHTML = "";
-    if (i < items.length) {
-      const it = items[i];
-      body.appendChild(el(`<div class="intro-photo" style="background-image:url('${photo}')">
-        <div class="intro-scrim"></div>
-        <div class="intro-fg">
-          <div class="intro-count">New phrase · ${i + 1} of ${items.length}</div>
-          <div class="intro-es-big">${it.es}</div>
-          <div class="intro-en-big">${it.en}</div>
-          ${it.note ? `<div class="intro-note-big">${it.note}</div>` : ""}
-          <span class="intro-hear ac-mount"></span>
-        </div>
-      </div>`));
-      const introAc = audioControl(() => speak(it.es));
-      body.querySelector(".intro-hear").replaceWith(introAc);
-      if (!seen.has(it.id)) { seen.add(it.id); setTimeout(() => introAc._fire(), 250); }
-      const f = footer(`<div class="intro-nav">${i > 0 ? `<button class="btn grey" id="iback">← Back</button>` : `<span class="nav-gap"></span>`}<button class="btn" id="inext">${i === items.length - 1 ? "See all →" : "Next →"}</button></div>`);
-      if (i > 0) f.querySelector("#iback").addEventListener("click", () => { i--; draw(); });
-      f.querySelector("#inext").addEventListener("click", () => { i++; draw(); });
-    } else {
-      body.appendChild(el(`<div class="qtype">All ${items.length} new phrases · tap to hear</div>`));
-      const list = el(`<div class="intro-list"></div>`);
-      items.forEach(it => {
-        // whole row is the trigger (variant C): a gold speaker visual that animates while it plays
-        const row = el(`<div class="intro-row" role="button" tabindex="0">
-          <div class="intro-txt"><div class="intro-es">${it.es}</div><div class="intro-en">${it.en}</div>${it.note ? `<div class="intro-note">${it.note}</div>` : ""}</div>
-          <span class="ac-speaker" aria-hidden="true">${acSpeakerGlyph()}<span class="ac-bars"><span></span><span></span><span></span><span></span></span></span></div>`);
-        const spk = row.querySelector(".ac-speaker");
-        row.addEventListener("click", () => {
-          haptic("press"); speak(it.es);
-          spk.classList.add("playing"); clearTimeout(spk._t); spk._t = setTimeout(() => spk.classList.remove("playing"), 1600);
-        });
-        list.appendChild(row);
-      });
-      body.appendChild(list);
-      const f = footer(`<div class="intro-nav"><button class="btn grey" id="iback">← Back</button><button class="btn" id="istart">Got it. Let's practice</button></div>`);
-      f.querySelector("#iback").addEventListener("click", () => { i--; draw(); });
-      f.querySelector("#istart").addEventListener("click", () => { items.forEach(it => recordExposure(itemId(it))); next(); });
-    }
-  }
-  draw();
-}
+/* renderIntro (the old photo intro flow) DELETED 2026-07-21 — unreachable since the
+   micro-batch weave replaced it (~51 lines). introPhoto() lives on for the primer. */
 
 /* ----- presentation card (single-phrase re-teach after a miss — teach, never grade) ----- */
 // §4c.1 v2.1 dismissal check targets the NEW material — the new chunk for chunked phrases, else the item.
@@ -1057,44 +1015,8 @@ function renderBuild(q) {
   });
 }
 
-/* ----- match pairs ----- */
-function renderMatch(q) {
-  const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">Tap the matching pairs</div>`));
-  const grid = el(`<div class="match"></div>`);
-  const left = shuffle(q.items.map(it => ({ key: it.es, label: it.es, side: "L" })));
-  const right = shuffle(q.items.map(it => ({ key: it.es, label: it.en, side: "R" })));
-  const rows = Math.max(left.length, right.length);
-  for (let r = 0; r < rows; r++) {
-    [left[r], right[r]].forEach(d => {
-      if (!d) return;
-      const tile = el(`<button class="tile" data-key="${encodeURIComponent(d.key)}" data-side="${d.side}">${d.label}</button>`);
-      tile.addEventListener("click", () => onMatchTap(tile, grid, q));
-      grid.appendChild(tile);
-    });
-  }
-  body.appendChild(grid);
-  grid._sel = null; grid._left = q.items.length;
-}
-function onMatchTap(tile, grid, q) {
-  if (tile.classList.contains("gone")) return;
-  const sel = grid._sel;
-  if (!sel) { [...grid.children].forEach(c => c.classList.remove("sel")); tile.classList.add("sel"); grid._sel = tile; return; }
-  if (sel === tile) { tile.classList.remove("sel"); grid._sel = null; return; }
-  const same = sel.dataset.key === tile.dataset.key, diffSide = sel.dataset.side !== tile.dataset.side;
-  if (same && diffSide) {
-    [sel, tile].forEach(c => { c.classList.remove("sel"); c.classList.add("gone"); });
-    grid._sel = null; grid._left--;
-    const it = q.items.find(i => i.es === decodeURIComponent(tile.dataset.key));
-    if (it) { speak(it.es); recordExposure(itemId(it)); }   // warm-up match counts as an exposure
-    if (grid._left === 0) { playSound("correct"); haptic("correct"); setTimeout(() => next(), 350); }
-  } else {
-    tile.classList.add("bad"); sel.classList.add("bad");
-    run.wrong++;
-    playSound("wrong"); haptic("wrong");
-    setTimeout(() => { tile.classList.remove("bad", "sel"); sel.classList.remove("bad", "sel"); grid._sel = null; }, 350);
-  }
-}
+/* renderMatch/onMatchTap (the old text-match warm-up board) DELETED 2026-07-21 —
+   unreachable in live sessions; pairs (audio × en) is the review board now (~39 lines). */
 
 /* ===== §7.1 exercise batch (2026-07-20): pairs, the close, sound choice, audio cloze,
    ear build, the reply. All content-agnostic templates; artifact captions are the canonical
