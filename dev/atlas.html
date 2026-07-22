@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <base href="../" />
+  <title>Tripfluent · content atlas</title>
+  <style>
+    /* Atlas is a DEV TOOL (like dev/harness.html): never shipped to users, exempt from the
+       design-artifact pipeline. It computes from the LIVE ENGINE (composeSession, LADDER,
+       feasibility) so it cannot drift from the build. */
+    :root { --bg:#14120d; --card:#1e1b14; --card2:#262218; --line:#3a352a; --ink:#f0ecdf; --dim:#a29c8a;
+      --gold:#e6c62a; --gold2:#c9a919; --green:#4fc07a; --red:#e8586a; --blue:#7aa6db; --orange:#e08a3c; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--ink); font:14px/1.5 "Inter", system-ui, sans-serif; padding:0 0 80px; }
+    a { color:var(--blue); }
+    .top { position:sticky; top:0; z-index:50; background:rgba(20,18,13,.96); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--line); padding:12px 20px; display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
+    .top h1 { font:700 16px/1 "Plus Jakarta Sans", system-ui, sans-serif; letter-spacing:.02em; }
+    .top h1 span { color:var(--gold); }
+    .tabs { display:flex; gap:4px; margin-left:8px; }
+    .tabs button { border:1px solid var(--line); background:var(--card); color:var(--dim); padding:7px 13px;
+      border-radius:9px; cursor:pointer; font:600 12.5px "Plus Jakarta Sans", sans-serif; }
+    .tabs button.on { background:var(--gold); color:#231e05; border-color:var(--gold); }
+    .top select { background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:6px 9px; font:inherit; }
+    .top .note { color:var(--dim); font-size:11.5px; margin-left:auto; }
+    main { max-width:1200px; margin:0 auto; padding:20px; }
+    h2 { font:700 15px "Plus Jakarta Sans", sans-serif; margin:26px 0 10px; color:var(--gold); letter-spacing:.03em; }
+    h2 .sub { color:var(--dim); font-weight:500; font-size:12px; margin-left:8px; letter-spacing:0; }
+
+    /* map */
+    .stage { margin-bottom:10px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(255px, 1fr)); gap:10px; }
+    .lcard { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 13px; cursor:pointer;
+      display:flex; flex-direction:column; gap:7px; transition:border-color .12s; }
+    .lcard:hover { border-color:var(--gold2); }
+    .lcard .t { font:600 13.5px "Plus Jakarta Sans", sans-serif; display:flex; justify-content:space-between; gap:8px; }
+    .lcard .t .id { color:var(--dim); font:500 10px/1.7 monospace; }
+    .meterrow { display:flex; gap:6px; align-items:center; font-size:11px; color:var(--dim); flex-wrap:wrap; }
+    .pill { border-radius:20px; padding:2px 8px; font:600 10.5px "Plus Jakarta Sans", sans-serif; background:var(--card2); border:1px solid var(--line); color:var(--dim); }
+    .pill.ok { color:var(--green); border-color:rgba(79,192,122,.4); }
+    .pill.warn { color:var(--orange); border-color:rgba(224,138,60,.5); }
+    .pill.bad { color:var(--red); border-color:rgba(232,88,106,.5); }
+    .pill.gold { color:var(--gold); border-color:rgba(230,198,42,.45); }
+    .bar { height:5px; border-radius:3px; background:var(--card2); overflow:hidden; position:relative; flex:1; min-width:60px; }
+    .bar i { position:absolute; inset:0; right:auto; border-radius:3px; }
+    .flags { display:flex; gap:5px; flex-wrap:wrap; }
+
+    /* detail */
+    .back { background:none; border:none; color:var(--blue); cursor:pointer; font:600 13px "Plus Jakarta Sans"; padding:0; margin-bottom:8px; }
+    .flow { display:flex; flex-wrap:wrap; gap:5px; margin:8px 0 4px; }
+    .slot { border-radius:8px; padding:5px 9px; font:600 11px "Plus Jakarta Sans", sans-serif; border:1px solid var(--line); position:relative; }
+    .slot .n { opacity:.55; font-weight:500; margin-right:4px; }
+    .slot.present { background:#2b2718; color:var(--gold); }
+    .slot.t1 { outline:2px solid rgba(122,166,219,.55); }
+    .slot.close, .slot.close_swap { background:#332a10; color:var(--gold); border-color:var(--gold2); }
+    .slot.pairs { background:#182b20; color:var(--green); }
+    .legendrow { display:flex; gap:12px; flex-wrap:wrap; font-size:11.5px; color:var(--dim); margin:6px 0 14px; }
+    .legendrow b { color:var(--ink); font-weight:600; }
+    table { border-collapse:collapse; width:100%; font-size:12.5px; }
+    th { text-align:left; color:var(--dim); font:600 11px "Plus Jakarta Sans", sans-serif; letter-spacing:.04em;
+      text-transform:uppercase; padding:7px 9px; border-bottom:1px solid var(--line); cursor:pointer; white-space:nowrap; }
+    td { padding:7px 9px; border-bottom:1px solid rgba(58,53,42,.5); vertical-align:top; }
+    tr.click { cursor:pointer; } tr.click:hover td { background:rgba(230,198,42,.05); }
+    .num { font-variant-numeric:tabular-nums; text-align:right; }
+    .panel { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:10px 0; }
+    .cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width:900px){ .cols { grid-template-columns:1fr; } }
+    svg text { font:600 10px "Plus Jakarta Sans", sans-serif; fill:var(--dim); }
+
+    /* forks */
+    .rung { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-bottom:10px; }
+    .rung .rh { display:flex; gap:10px; align-items:baseline; margin-bottom:6px; }
+    .rung .rh b { font:700 13px "Plus Jakarta Sans"; color:var(--gold); }
+    .rung .rh span { color:var(--dim); font-size:11.5px; }
+    .modes { display:flex; gap:6px; flex-wrap:wrap; }
+    .mode { border:1px solid var(--line); background:var(--card2); border-radius:8px; padding:4px 9px; font:600 11.5px "Plus Jakarta Sans"; }
+    .fork { border-left:3px solid var(--gold2); padding:8px 12px; margin:8px 0; background:var(--card); border-radius:0 10px 10px 0; }
+    .fork b { font:600 12.5px "Plus Jakarta Sans"; }
+    .fork .where { color:var(--dim); font:500 10.5px monospace; margin-left:6px; }
+    .fork p { color:var(--dim); font-size:12px; margin-top:2px; }
+    code { background:var(--card2); border-radius:5px; padding:1px 5px; font-size:11.5px; }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <h1>Tripfluent <span>content atlas</span></h1>
+    <div class="tabs" id="tabs"></div>
+    <select id="packsel"><option value="spain">Spain</option><option value="mexico">Mexico</option></select>
+    <select id="scensel">
+      <option value="first">scenario: first pass</option>
+      <option value="replay">scenario: replay (mid-strength)</option>
+      <option value="strong">scenario: replay (strong / cold-ready)</option>
+    </select>
+    <span class="note">computed live from composeSession + the ladder · clean-run estimates (misses add time) · read-only, never touches your saved state</span>
+  </div>
+  <main id="main"></main>
+
+<script>
+  window.__HARNESS_LOCAL__ = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname) || location.protocol === "file:";
+  if (!window.__HARNESS_LOCAL__) document.body.innerHTML = "<div style='padding:40px'>Atlas runs on localhost only (tools/serve.py).</div>";
+</script>
+<script src="config.js"></script>
+<script src="curriculum.js"></script>
+<script src="content_mx.js"></script>
+<script src="messages.js"></script>
+<script src="state.js"></script>
+<script src="engine.js"></script>
+<script src="audio.js"></script>
+<script src="ui.js"></script>
+<script src="srs.js"></script>
+<script src="weights.js"></script>
+<script src="scoring.js"></script>
+<script src="tiers.js"></script>
+<script src="screen-onboarding.js"></script>
+<script src="charts.js"></script>
+<script src="screen-home.js"></script>
+<script src="screen-learn.js"></script>
+<script src="screen-quests.js"></script>
+<script src="screen-phrasebook.js"></script>
+<script src="screen-progress.js"></script>
+<script src="screen-settings.js"></script>
+<script src="lesson.js"></script>
+<script src="cloud.js"></script>
+<script src="accounts.js"></script>
+<script src="push.js"></script>
+<script src="trips.js"></script>
+<script src="nav.js"></script>
+<script>
+(function(){
+  if (!window.__HARNESS_LOCAL__) return;
+  /* ---------- SANDBOX: the atlas never persists. save() is neutered before any sim runs,
+     and every simulation starts from a fresh in-memory state. ---------- */
+  save = function(){};
+  cloudSync = async function(){};
+  speak = function(){}; playSound = function(){}; haptic = function(){};
+
+  /* ---------- MODELS (the audit's dials — all [tune], edit here) ---------- */
+  // seconds per slot, clean run (no misses). Anchored to type mechanics, not vibes:
+  // read-only < one-tap < assemble < type.
+  const SECONDS = { present:10, mc_es2en:8, listen_choice:10, sound_choice:12, fill_blank:10,
+    build:18, audio_cloze:14, ear_build:20, type_translation:22, listen_type:22, speak_it:15,
+    pairs:30, match:25, reply:12, reply_listen:10, close:25, close_swap:28, intro:8 };
+  const PRIMER_SECONDS = 20;              // scene -> mission -> guess (first pass only)
+  const TARGET_MIN = 6, BAND_LO = 4, BAND_HI = 8;   // §6.1 target ≈6 min; flag outside 4–8
+  // difficulty 0–10 per type (scaffolded → cold), + (item.difficulty−2)×0.5 modifier
+  const DIFF = { present:0, match:1.5, pairs:2, mc_es2en:2, listen_choice:2.5, sound_choice:3,
+    reply:3, reply_listen:2.5, fill_blank:3.5, build:4, audio_cloze:4.5, ear_build:5.5,
+    speak_it:6.5, type_translation:7, listen_type:7.5, close:8, close_swap:8.5, intro:0 };
+  const RUNS = 12;                        // sims per lesson (composer is stochastic)
+
+  /* ---------- sim state ---------- */
+  function baseState(pack){
+    const s = structuredClone(DEFAULT_STATE);
+    s.active = pack;
+    s.profile = { destination: pack, tripDate: new Date(Date.now() + 45*864e5).toISOString().slice(0,10),
+      level: "none", transport: ["taxi","metro","train","bus","ferry","plane"], lodging: ["hotel","airbnb"],
+      allergies: [], dietary: [] };
+    s.sound = true; s.scoreRevealSeen = true;
+    return s;
+  }
+  function setScenario(lesson, kind){
+    state = baseState(PACK);
+    rebuildDeck();
+    if (kind !== "first") {
+      state.lessons[lesson.id] = { stars: 3, at: new Date(Date.now() - 3*864e5).toISOString() };
+      const exp = kind === "strong" ? 9 : 5;
+      lesson.items.forEach(it => {
+        state.learn[it.id] = { exposures: exp, streak: 2, lapses: 0, interval: 2, ease: 2.3,
+          lastSeen: daysAgoStr(2), lastCorrect: daysAgoStr(2), due: daysAgoStr(1),
+          axes: { production: kind === "strong" ? 1 : 0, cold: 0, native: 0, chained: 0 } };
+      });
+      // a taught neighbor pool so close_swap has cross-machine fillers to compose from
+      DECK.stages.flatMap(st => st.lessons).filter(l => l.machine).flatMap(l => l.items).forEach(it => {
+        state.learn[it.id] = state.learn[it.id] || { exposures: 2, streak: 1, lapses: 0 };
+      });
+    }
+  }
+  function simulate(lesson, kind){
+    if (lesson.chain) {
+      const turns = (lesson.chain.turns || []).filter(t => t.user).length;
+      const total = (lesson.chain.turns || []).length;
+      return { chain: true, turns, sample: [], secs: total * 12, diff: 6, types: { chained: turns }, slots: total };
+    }
+    const agg = { types: {}, secs: 0, diff: 0, slots: 0 };
+    let sample = null;
+    for (let r = 0; r < RUNS; r++) {
+      setScenario(lesson, kind);
+      const qs = composeSession(lesson);
+      if (!sample) sample = qs.map(q => ({ type: q.type, t1: !!q.t1,
+        d: slotDiff(q), s: SECONDS[q.type] || 10 }));
+      let secs = kind === "first" && lesson.primer && lesson.primer.guessItem ? PRIMER_SECONDS : 0;
+      let diff = 0;
+      qs.forEach(q => { agg.types[q.type] = (agg.types[q.type] || 0) + 1; secs += SECONDS[q.type] || 10; diff += slotDiff(q); });
+      agg.secs += secs; agg.diff += qs.length ? diff / qs.length : 0; agg.slots += qs.length;
+    }
+    return { sample, secs: Math.round(agg.secs / RUNS), diff: +(agg.diff / RUNS).toFixed(1),
+      slots: Math.round(agg.slots / RUNS), types: Object.fromEntries(Object.entries(agg.types).map(([k,v]) => [k, +(v/RUNS).toFixed(1)])) };
+  }
+  function slotDiff(q){
+    const base = DIFF[q.type] != null ? DIFF[q.type] : 3;
+    const idiff = q.item && q.item.difficulty ? q.item.difficulty : 2;
+    return Math.max(0, base + (idiff - 2) * 0.5);
+  }
+
+  /* ---------- gap analysis ---------- */
+  function gaps(lesson, sims){
+    const out = [];
+    const items = lesson.items || [];
+    if (lesson.chain) return out;
+    if (items.length < 4) out.push(["bad", items.length + " phrases (thin — target 5+)"]);
+    if (!lesson.primer) out.push(["bad", "no primer"]);
+    else if (!lesson.primer.guessItem && !lesson.machine && !/^sp0|^mx0/.test(lesson.id)) out.push(["warn", "primer lacks mission/guessItem (pre-lesson flow won't fire)"]);
+    if (lesson.primer && lesson.primer.guessItem) {
+      const g = lesson.primer.guessItem;
+      const hit = items.find(it => it.es === g || it.id === g || (it.keywords || []).includes(g));
+      if (!hit) out.push(["bad", "guessItem does not resolve in-lesson (silent anchor fallback)"]);
+    }
+    const first = sims.first;
+    const min = first.secs / 60;
+    if (min < BAND_LO) out.push(["warn", "short: ~" + min.toFixed(1) + " min first pass (target " + TARGET_MIN + ")"]);
+    if (min > BAND_HI) out.push(["warn", "long: ~" + min.toFixed(1) + " min first pass (target " + TARGET_MIN + ")"]);
+    const chunkless = items.filter(it => (it.tier || 1) >= 2 && it.es.split(/\s+/).length > 6 && !(it.chunks && it.chunks.length));
+    if (chunkless.length) out.push(["warn", chunkless.length + " long phrase(s) without chunks (no segmented card)"]);
+    const kw = items.filter(it => !(it.keywords && it.keywords.length) && it.es.split(/\s+/).length >= 3);
+    if (kw.length) out.push(["warn", kw.length + " multi-word item(s) without keywords (blank rotation limited)"]);
+    const earless = items.every(it => { const n = it.es.trim().split(/\s+/).length; return n < 4 || n > 8; });
+    if (earless && items.length) out.push(["note", "no ear-build/build-eligible phrases (all <4 or >8 tokens)"]);
+    return out;
+  }
+
+  /* ---------- shared render helpers ---------- */
+  const M = document.getElementById("main");
+  const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  const mins = s => (s/60).toFixed(1) + " min";
+  const diffColor = d => d < 2.5 ? "var(--green)" : d < 4.5 ? "var(--gold)" : d < 6.5 ? "var(--orange)" : "var(--red)";
+  const timeColor = s => { const m = s/60; return m < BAND_LO ? "var(--orange)" : m > BAND_HI ? "var(--red)" : "var(--green)"; };
+  let PACK = "spain", SCEN = "first", TAB = "map", SEL = null;
+  let CACHE = {};   // pack -> [{lesson, stage, sims:{first,replay,strong}, gaps}]
+
+  function computePack(pack){
+    if (CACHE[pack]) return CACHE[pack];
+    PACK = pack;
+    state = baseState(pack); rebuildDeck();
+    const rows = [];
+    DECK.stages.forEach(st => st.lessons.forEach(l => {
+      const sims = { first: simulate(l, "first"), replay: simulate(l, "replay"), strong: simulate(l, "strong") };
+      rows.push({ lesson: l, stage: st, sims, gaps: gaps(l, sims) });
+    }));
+    // practice session (cross-lesson maintenance, lesson purity's other half)
+    state = baseState(pack); rebuildDeck();
+    DECK.stages.flatMap(s2 => s2.lessons).flatMap(l => l.items).slice(0, 24).forEach((it, i) => {
+      state.learn[it.id] = { exposures: 4, streak: i % 5 ? 2 : 0, lapses: i % 5 ? 0 : 1, interval: 2, ease: 2.3,
+        lastSeen: daysAgoStr(3), lastCorrect: daysAgoStr(3), due: daysAgoStr(1), lastMiss: i % 5 ? undefined : daysAgoStr(0) };
+    });
+    const pq = composeReview();
+    let psecs = 0; pq.forEach(q => psecs += SECONDS[q.type] || 10);
+    CACHE[pack] = { rows, practice: { slots: pq.length, secs: psecs,
+      types: pq.reduce((a,q) => (a[q.type]=(a[q.type]||0)+1, a), {}) } };
+    return CACHE[pack];
+  }
+
+  /* ---------- VIEW: map ---------- */
+  function viewMap(){
+    const { rows, practice } = computePack(PACK);
+    let html = "";
+    let stage = null;
+    html += `<div class="panel"><b>Practice session</b> <span style="color:var(--dim)">(cross-lesson maintenance — owns all review since lesson purity)</span>
+      <div class="meterrow" style="margin-top:6px">~${practice.slots} slots · ${mins(practice.secs)} · ${esc(Object.entries(practice.types).map(([k,v])=>k+"×"+v).join(" · "))}</div></div>`;
+    rows.forEach(r => {
+      if (r.stage !== stage) { stage = r.stage;
+        if (html.includes("grid\">")) html += "</div>";
+        html += `<h2>${esc(stage.title || stage.id)} <span class="sub">pass ${stage.pass}</span></h2><div class="grid">`;
+      }
+      const s = r.sims[SCEN];
+      const l = r.lesson;
+      html += `<div class="lcard" data-id="${esc(l.id)}">
+        <div class="t"><span>${esc(l.title)}</span><span class="id">${esc(l.id)}</span></div>
+        <div class="meterrow">
+          <span class="pill ${l.chain ? "gold" : (l.items||[]).length < 4 ? "bad" : "ok"}">${l.chain ? (s.turns + " turns") : (l.items||[]).length + " phrases"}</span>
+          <span class="pill ${l.primer ? (l.primer.guessItem || l.machine || /^sp0|^mx0/.test(l.id) ? "ok" : "warn") : "bad"}">${l.primer ? "primer" : "no primer"}</span>
+          ${l.requires ? `<span class="pill">gated: ${esc(Object.values(l.requires)[0])}</span>` : ""}
+          ${l.machine ? `<span class="pill gold">machine</span>` : ""}
+        </div>
+        <div class="meterrow"><span style="width:52px">time</span><div class="bar"><i style="width:${Math.min(100, s.secs/ (BAND_HI*60) * 100)}%; background:${timeColor(s.secs)}"></i></div><span class="num" style="color:${timeColor(s.secs)}">${mins(s.secs)}</span></div>
+        <div class="meterrow"><span style="width:52px">difficulty</span><div class="bar"><i style="width:${Math.min(100, s.diff*10)}%; background:${diffColor(s.diff)}"></i></div><span class="num" style="color:${diffColor(s.diff)}">${s.diff}</span></div>
+        ${r.gaps.filter(g => g[1] !== "no primer").length ? `<div class="flags">${r.gaps.filter(g => g[1] !== "no primer").map(([k,t]) => `<span class="pill ${k === "note" ? "" : k}">${esc(t)}</span>`).join("")}</div>` : ""}
+      </div>`;
+    });
+    html += "</div>";
+    M.innerHTML = html;
+    M.querySelectorAll(".lcard").forEach(c => c.addEventListener("click", () => { SEL = c.dataset.id; TAB = "lesson"; render(); }));
+  }
+
+  /* ---------- VIEW: lesson detail ---------- */
+  function viewLesson(){
+    const { rows } = computePack(PACK);
+    const r = rows.find(x => x.lesson.id === SEL);
+    if (!r) { TAB = "map"; return render(); }
+    const l = r.lesson, s = r.sims[SCEN];
+    let html = `<button class="back">&larr; back to map</button>
+      <h2>${esc(l.title)} <span class="sub">${esc(l.id)} · pass ${r.stage.pass} · ${esc(l.topic || "")}</span></h2>`;
+    if (l.primer) html += `<div class="panel"><b>Primer</b><div style="color:var(--dim); margin-top:4px">${esc(l.primer.scene || "")}</div>
+      ${l.primer.mission ? `<div style="margin-top:4px"><b>mission:</b> ${esc(l.primer.mission)}</div>` : ""}
+      ${l.primer.guessItem ? `<div><b>guess:</b> ${esc(l.primer.guessItem)}</div>` : ""}</div>`;
+    if (l.chain) {
+      html += `<div class="panel"><b>Chain lesson</b> — ${s.turns} user turns of ${s.slots} total; est. ${mins(s.secs)}. Composed as a dialogue, not a weave.</div>`;
+    } else {
+      html += `<div class="panel"><b>Composed flow</b> <span style="color:var(--dim)">(one real ${SCEN}-scenario run of ${RUNS} simulated; blue outline = ear-first T₁; gold = the close)</span>
+        <div class="flow">${s.sample.map((q, i) => `<span class="slot ${q.type} ${q.t1 ? "t1" : ""}" title="difficulty ${q.d.toFixed(1)} · ~${q.s}s"><span class="n">${i+1}</span>${q.type}</span>`).join("")}</div>
+        <div class="legendrow"><span>avg <b>${s.slots} slots</b></span><span>est. <b style="color:${timeColor(s.secs)}">${mins(s.secs)}</b> (target ${TARGET_MIN})</span>
+          <span>difficulty <b style="color:${diffColor(s.diff)}">${s.diff}</b>/10</span>
+          <span>type mix: ${esc(Object.entries(s.types).sort((a,b)=>b[1]-a[1]).map(([k,v])=>k+"×"+v).join(" · "))}</span></div>
+        ${diffCurve(s.sample)}</div>`;
+    }
+    if (r.gaps.length) html += `<div class="panel"><b>Gaps</b><div class="flags" style="margin-top:6px">${r.gaps.map(([k,t]) => `<span class="pill ${k === "note" ? "" : k}">${esc(t)}</span>`).join("")}</div></div>`;
+    html += `<div class="panel"><b>Items</b> (${(l.items||[]).length})<table style="margin-top:8px"><tr><th>es</th><th>en</th><th>diff</th><th>tokens</th><th>keywords</th><th>eligible modes (rung 1 / 2 / 3)</th></tr>`;
+    (l.items || []).forEach(it => {
+      const modes = [1,2,3].map(t => LADDER[t].filter(m => _modeFeasible(m, it)).join(", "));
+      html += `<tr><td>${esc(it.es)}</td><td style="color:var(--dim)">${esc(it.en)}</td><td class="num">${it.difficulty || 2}</td>
+        <td class="num">${it.es.trim().split(/\s+/).length}</td><td style="color:var(--dim)">${esc((it.keywords||[]).join(", ") || "—")}</td>
+        <td style="color:var(--dim); font-size:11px">${esc(modes.join("  /  "))}</td></tr>`;
+    });
+    html += "</table></div>";
+    M.innerHTML = html;
+    M.querySelector(".back").addEventListener("click", () => { TAB = "map"; render(); });
+  }
+  function diffCurve(sample){
+    if (!sample.length) return "";
+    const W = 720, H = 90, pad = 18;
+    const x = i => pad + (W - 2*pad) * (sample.length === 1 ? 0.5 : i / (sample.length - 1));
+    const y = d => H - pad - (H - 2*pad) * Math.min(1, d / 9);
+    const pts = sample.map((q, i) => `${x(i).toFixed(1)},${y(q.d).toFixed(1)}`).join(" ");
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%; max-width:760px; display:block">
+      <text x="${pad}" y="12">difficulty across the session (ramp check)</text>
+      <line x1="${pad}" y1="${H-pad}" x2="${W-pad}" y2="${H-pad}" stroke="var(--line)"/>
+      <polyline points="${pts}" fill="none" stroke="var(--gold)" stroke-width="2"/>
+      ${sample.map((q, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(q.d).toFixed(1)}" r="2.6" fill="${q.type.startsWith("close") ? "var(--gold)" : q.t1 ? "var(--blue)" : "var(--dim)"}"/>`).join("")}
+    </svg>`;
+  }
+
+  /* ---------- VIEW: engine forks (computed from live constants where possible) ---------- */
+  function viewForks(){
+    let html = `<h2>The exposure ladder <span class="sub">live from srs.js LADDER — thresholds are base + item.difficulty (§4.1)</span></h2>`;
+    const names = ["0 · Present (teach, never test)", "1 · Recognize (enter at 1 exposure)", "2 · Scaffold (enter at 2 + difficulty)", "3 · Cold (enter at 5 + difficulty)"];
+    LADDER.forEach((modes, i) => {
+      html += `<div class="rung"><div class="rh"><b>${names[i] || i}</b><span>difficulty ${DIFF[modes[0]] != null ? "≈" + Math.min(...modes.map(m => DIFF[m] ?? 3)) + "–" + Math.max(...modes.map(m => DIFF[m] ?? 3)) : ""}/10 in the atlas model</span></div>
+        <div class="modes">${modes.map(m => `<span class="mode" title="model: diff ${DIFF[m] ?? "?"} · ~${SECONDS[m] ?? "?"}s">${m}</span>`).join("")}</div></div>`;
+    });
+    html += `<h2>Mode families <span class="sub">§8.5 rhythm steering — live from MODE_FAMILY</span></h2>`;
+    Object.entries(MODE_FAMILY).forEach(([fam, modes]) => {
+      html += `<div class="rung"><div class="rh"><b>${fam}</b></div><div class="modes">${modes.map(m => `<span class="mode">${m}</span>`).join("")}</div></div>`;
+    });
+    const forks = [
+      ["Lesson purity", "composeSession", "A lesson carries ONLY its own items (presents, ear-first T₁, expanding re-tests, own-item pairs on replays, the close). ALL cross-lesson review lives in Practice. The close's frame-swap filler is the one sanctioned cross-lesson touch (ritual, not review)."],
+      ["Ear-first T₁ + sound-off fork", "composeSession · t1 flag", "The immediate post-presentation retrieval is listen_choice (audio, no es). FORK: no speechSynthesis or sound off → read-and-pick meaning-pick. T₁ slots are rhythm-proof (the §8.5 steer skips them)."],
+      ["First-pass cap + the close exemption", "composeSession rungCap · closeReps", "A lesson's first completion caps the ladder at rung 2 (introduce, don't interrogate). EXEMPTION: the close IS 2 cold typed reps by design — the sanctioned cold moment inside a first pass."],
+      ["Second chance (requeue)", "requeueMiss · renderQuestion", "A miss re-serves the item 3–5 slots later, ONE RUNG DOWN from the failed mode, labeled with the 'Second chance' chip. Cap: 2 re-asks per item per session; overflow waits for Practice's warm-up."],
+      ["Rung-down on struggle", "chooseType · streak check", "streak 0 + lapses > 0 → the item's next serve drops one rung silently. Never announced."],
+      ["Variety rule", "srs.js _varietyDrop", "An item's consecutive SESSIONS never repeat the same exercise type at the same rung (persisted lm/lmt/lms memory). Within-session repeats are governed by requeue instead."],
+      ["Replay rule", "exposures === 0 gate", "Presentation cards + meet-the-piece fire ONCE per item EVER. Replays enter items at their current rung (expertise reversal)."],
+      ["Feasibility fallbacks", "_modeFeasible · renderers", "build/ear_build need 4–8 tokens; fill/audio_cloze/sound_choice need a real sentence; speak_it needs Web Speech; the reply needs replyTo (dormant). Renderer-level safety: sound choice with no principled distractor → meaning-pick; dangling replyTo → meaning-pick."],
+      ["Principled distractors", "_soundDistractor · _earDistractors · mcOptions", "Never random: logged confusions → same-frame fillers → structural twins (ear build); confusion pairs first (sound choice); same-tag + shape (MC), near-forms at rung 3. Misses log the chosen wrong option (st.conf) to feed sound choice."],
+      ["Silent forgiveness", "judgeTyped · finishGrade", "Accent + single-char slips accepted silently (slips telemetry only). The always-on es-reveal is the passive correction; the close's input matures to canonical form."],
+      ["Cram mode", "cramActive() · Practice", "Trip < 14 days: Practice front-loads dietary/emergency criticals; review share rises; production preferred for production=0 items. Lessons stay pure."],
+      ["Practice escalation", "practiceButton · [tune]", "Home's Practice row: quiet → 'N due' badge (due ≥ 3) → urgent ember 'N fading' (due ≥ 12, or retention sag + due ≥ 6) with the one-time arrival breath."],
+      ["Session end", "goHomeAfterSession", "Every completed flow (lesson, practice, chain) ends in the ceremony: dials perform → ledger (new/stronger/restored/soloed) → Option D dissolve. Restores can only happen in Practice now."]
+    ];
+    html += `<h2>Decision forks & deviations <span class="sub">every place the flow branches — with code anchors</span></h2>`;
+    forks.forEach(([t, w, p]) => { html += `<div class="fork"><b>${t}</b><span class="where">${w}</span><p>${p}</p></div>`; });
+    html += `<h2>The atlas model <span class="sub">the audit's own dials — [tune] by editing dev/atlas.html</span></h2>
+      <div class="panel"><b>Seconds per slot</b><p style="color:var(--dim)">${esc(Object.entries(SECONDS).map(([k,v])=>k+" "+v+"s").join(" · "))}</p>
+      <b style="display:block; margin-top:8px">Difficulty 0–10 per type</b><p style="color:var(--dim)">${esc(Object.entries(DIFF).map(([k,v])=>k+" "+v).join(" · "))}</p>
+      <p style="color:var(--dim); margin-top:6px">+ (item.difficulty − 2) × 0.5 per slot · primer +${PRIMER_SECONDS}s on first pass · target ${TARGET_MIN} min (flag outside ${BAND_LO}–${BAND_HI})</p></div>`;
+    M.innerHTML = html;
+  }
+
+  /* ---------- VIEW: audit table ---------- */
+  let SORT = { key: "pass", dir: 1 };
+  function viewAudit(){
+    const { rows } = computePack(PACK);
+    const passMedian = {};
+    rows.forEach(r => { (passMedian[r.stage.pass] = passMedian[r.stage.pass] || []).push(r.sims[SCEN].diff); });
+    Object.keys(passMedian).forEach(k => { const a = passMedian[k].sort((x,y)=>x-y); passMedian[k] = a[Math.floor(a.length/2)]; });
+    const data = rows.map(r => ({ r, pass: r.stage.pass, title: r.lesson.title, items: (r.lesson.items||[]).length,
+      time: r.sims[SCEN].secs, diff: r.sims[SCEN].diff, dev: +(r.sims[SCEN].diff - passMedian[r.stage.pass]).toFixed(1),
+      gapsN: r.gaps.filter(g => g[0] !== "note").length }));
+    data.sort((a,b) => (a[SORT.key] > b[SORT.key] ? 1 : a[SORT.key] < b[SORT.key] ? -1 : 0) * SORT.dir);
+    const gapTotal = data.reduce((a,d) => a + d.gapsN, 0);
+    const timeBad = data.filter(d => d.time/60 < BAND_LO || d.time/60 > BAND_HI).length;
+    let html = `<h2>Audit <span class="sub">${data.length} lessons · ${gapTotal} open gaps · ${timeBad} outside the ${BAND_LO}–${BAND_HI} min band · scenario: ${SCEN}</span></h2>
+      <div class="panel"><table><tr>
+      ${[["pass","pass"],["title","lesson"],["items","phrases"],["time","est. time"],["diff","difficulty"],["dev","vs pass median"],["gapsN","gaps"]]
+        .map(([k, lbl]) => `<th data-k="${k}">${lbl}${SORT.key === k ? (SORT.dir > 0 ? " ↑" : " ↓") : ""}</th>`).join("")}</tr>`;
+    data.forEach(d => {
+      html += `<tr class="click" data-id="${esc(d.r.lesson.id)}"><td class="num">${d.pass}</td><td>${esc(d.title)}</td>
+        <td class="num">${d.items}</td><td class="num" style="color:${timeColor(d.time)}">${mins(d.time)}</td>
+        <td class="num" style="color:${diffColor(d.diff)}">${d.diff}</td>
+        <td class="num" style="color:${Math.abs(d.dev) >= 1.5 ? "var(--orange)" : "var(--dim)"}">${d.dev > 0 ? "+" : ""}${d.dev}</td>
+        <td class="num" style="color:${d.gapsN ? "var(--red)" : "var(--green)"}">${d.gapsN}</td></tr>`;
+    });
+    html += "</table></div>";
+    M.innerHTML = html;
+    M.querySelectorAll("th").forEach(th => th.addEventListener("click", () => {
+      const k = th.dataset.k; SORT = { key: k, dir: SORT.key === k ? -SORT.dir : 1 }; render();
+    }));
+    M.querySelectorAll("tr.click").forEach(tr => tr.addEventListener("click", () => { SEL = tr.dataset.id; TAB = "lesson"; render(); }));
+  }
+
+  /* ---------- chrome ---------- */
+  const TABS_DEF = [["map","Map"],["forks","Engine forks"],["audit","Audit"]];
+  function render(){
+    document.getElementById("tabs").innerHTML = TABS_DEF.map(([k,l]) =>
+      `<button class="${TAB === k || (TAB === "lesson" && k === "map") ? "on" : ""}" data-k="${k}">${l}</button>`).join("");
+    document.querySelectorAll("#tabs button").forEach(b => b.addEventListener("click", () => { TAB = b.dataset.k; render(); }));
+    if (TAB === "map") viewMap();
+    else if (TAB === "lesson") viewLesson();
+    else if (TAB === "forks") viewForks();
+    else viewAudit();
+  }
+  document.getElementById("packsel").addEventListener("change", e => { PACK = e.target.value; SEL = null; TAB = "map"; render(); });
+  document.getElementById("scensel").addEventListener("change", e => { SCEN = e.target.value; render(); });
+  render();
+})();
+</script>
+</body>
+</html>

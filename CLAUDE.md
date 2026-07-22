@@ -54,6 +54,9 @@ Momentum, Retention), deliberately anti-Duolingo.
   anchor, variants, reply, requires, primer, chain`. Authoring content = writing phrase pairs; exercises
   are generated. Content/engine separation is a protected invariant — adding a country never touches the engine.
 - Validate packs with `node tools/audit-pack.mjs <pack>.js` (keyword coverage, n+1, cast-name-in-`es`, dupes).
+- **Big-picture content audit: `dev/atlas.html`** (localhost, via tools/serve.py) — computes lesson maps,
+  real composed exercise flows, difficulty/time scores, engine forks, and gap flags from the LIVE engine.
+  `dev/harness.html` is the per-component review surface; the atlas is the system-level one.
 
 ## Conventions (do these every time)
 - **Deploy = commit → push to `main` → GitHub Pages.** No build.
