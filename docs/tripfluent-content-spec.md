@@ -28,6 +28,9 @@ Three shapes, chosen by lesson type:
 - **Marina** runs the tasca on the corner (renamed from Montse 2026-07-21; the world stayed, the
   name changed). **Núria** weighs jamón at La Boquería. **Sra. Rosa** is the farmacéutica.
   **Andrés** (taxi driver) debuts in pass-2 transport.
+- Pass-2 adds (2026-07-22): **Pau** (barista, café by the plaza), **Carmen** (hotel front desk),
+  **Eva** (Airbnb host, text-only — she never appears in person). Andrés owns the TAXI ONLY;
+  other transport is deliberately anonymous (roles, not names — the metro is a machine-world).
 - Mexico: **Doña Lupe**, **Xóchitl** (unaffected by the Spain rename).
 - The cast is small and employed: new named locals are a design decision, never a copywriting
   convenience (closed-vocabulary principle applied to people).
@@ -47,3 +50,9 @@ at it. Cross-lesson echo is a feature; cross-lesson ownership is a collision.
 - Farmacia de guardia: "For minor things, look for the 'farmacia de guardia', the 24-hour pharmacy,
   marked with a flashing green cross." (overflowed from sp-help's retired cultureNote, 2026-07-21 —
   a tip at the destination has ten times the utility.)
+- Taxi extras (from s3-taxi's retired cultureNote, 2026-07-22): small surcharge from the airport
+  and El Prat; apps like Free Now work too. (Green-light-means-free was woven into the primer.)
+- T-usual (from s3-metro's retired cultureNote, 2026-07-22): unlimited rides for a set period,
+  vs the T-casual's ten. (Card/validate/inspectors woven into the primer.)
+- Park Güell + timing (from s4-landmarks' retired cultureNote, 2026-07-22): book Park Güell ahead
+  like the Sagrada; go early or near closing to dodge crowds. (Book-online beat woven.)

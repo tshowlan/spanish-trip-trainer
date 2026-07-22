@@ -292,8 +292,8 @@ const CURRICULUM = {
       lessons: [
         {
           id: "sp-order", topic: "Restaurant · Ordering", title: "Order like a regular",
+          primer: { scene: "Day two, back at Marina's, and this time you're early. It's not even lunch and the counter crowd is drinking vermut from the tap, olives speared on toothpicks, patatas bravas making it official. Marina slides you a menu and waits to see what you've learned.", mission: "Order like you've been coming for years: a drink, the steak, how you want it cooked.", guessItem: "¿Qué recomienda?" },
           reward: "Steak temperature, a caña, 'what do you recommend', you order like a regular now.",
-          cultureNote: "A 'caña' is a small draft; a 'doble' is bigger. Before lunch, do as locals do and order a 'vermut', house vermouth on tap, with an olive. Patatas bravas make it official.",
           items: [
             { es: "¿Qué recomienda?", en: "What do you recommend?", tier: 2, tags: ["restaurant", "food"], keywords: ["recomienda"], reply: { es: "La paella está muy buena", en: "The paella is very good" } },
             { es: "Para mí, el filete", en: "For me, the steak", latam: "Latin America: 'el bife' or 'la carne'.", tier: 2, tags: ["restaurant", "food"], keywords: ["filete"] },
@@ -309,8 +309,8 @@ const CURRICULUM = {
         },
         {
           id: "s2-coffee", topic: "Coffee shop", title: "Coffee shop",
+          primer: { scene: "The café by the plaza, morning one. Pau works the machine like a drummer, and everyone ahead of you orders the same thing: cortado, cortado, solo. Café con leche after lunch is how they spot the tourists. When your turn comes, you'll know.", mission: "Order your coffee like a local, and survive the cash-only counter.", guessItem: "Un croissant, por favor" },
           reward: "You can order a cortado and survive a 'cash only' barista. Caffeine: secured.",
-          cultureNote: "A 'cortado', espresso cut with a little warm milk, is the local default. Ordering a 'café con leche' after lunch is a tourist tell; locals switch to cortado or solo.",
           items: [
             { es: "Un café con leche, por favor", en: "A coffee with milk, please", tier: 2, tags: ["coffee", "drink"], keywords: ["café", "leche"] },
             { es: "Un cortado, por favor", en: "An espresso with a dash of milk, please", note: "A 'cortado' is espresso 'cut' with a little warm milk, a Spain classic.", tier: 2, tags: ["coffee", "drink"], keywords: ["cortado"] },
@@ -324,8 +324,8 @@ const CURRICULUM = {
         },
         {
           id: "sp-pay", topic: "Restaurant · Paying", title: "Paying & prices",
+          primer: { scene: "The plates are empty and Marina is in no hurry. The bill won't come until you ask, that's the rule here, and when it does, nobody expects twenty percent. Round up, leave the coins, say it right.", mission: "Ask for the bill, pay it, and tip like a local, not like a tourist.", guessItem: "¿Está incluido el servicio?" },
           reward: "Card, cash, tip, a broken datáfono, the nearest cajero, the bill holds no fear.",
-          cultureNote: "Tipping is modest in Spain, round up or leave the coins, never the 15-20% from back home. And you almost always ask for the bill; it won't come until you do.",
           items: [
             { es: "¿Puedo pagar con tarjeta?", en: "Can I pay by card?", tier: 2, tags: ["money"], keywords: ["tarjeta"], variants: ["¿Aceptan tarjeta?"] },
             { es: "¿Aceptan tarjeta?", en: "Do you accept card?", tier: 2, tags: ["money"], keywords: ["tarjeta"], reply: { es: "Sí, sin problema", en: "Yes, no problem" } },
@@ -338,6 +338,7 @@ const CURRICULUM = {
         },
         {
           id: "sp-time", topic: "Time & Numbers", title: "Telling time",
+          primer: { scene: "Barcelona runs on its own clock. Lunch at three, dinner at ten, the shop closed until later. You already own the when machine; this is where you learn to catch the answers it brings back.", mission: "Ask the time, say the time, and understand 'at eight' when it matters.", guessItem: "¿Qué hora es?" },
           reward: "You can ask what time it opens AND understand the answer. Punctuality: optional in Spain.",
           items: [
             { es: "treinta", en: "thirty", tier: 1, tags: ["numbers", "time"], contextEs: "Treinta minutos", contextEn: "Thirty minutes" },
@@ -348,8 +349,8 @@ const CURRICULUM = {
         },
         {
           id: "s3-taxi", topic: "Transport · Taxi", title: "Taxi!",
+          primer: { scene: "Past customs, and there he is again: Andrés, leaning against a black and yellow cab with its green rooftop light on. Green means free, he says, tapping the roof. He swings your bag into the maletero and asks the only question a taxi ever asks: '¿A dónde va?'", mission: "Tell Andrés where you're going, and manage the ride: stop here, wait a moment.", guessItem: "¿Puede esperar un momento?" },
           reward: "You can tell a driver where to go and when to stop. Backseat fluency achieved.",
-          cultureNote: "Barcelona taxis are black-and-yellow and metered, a green rooftop light means free. Apps like Free Now work too. There's a small surcharge from the airport and El Prat.",
           items: [
             { es: "Al aeropuerto, por favor", en: "To the airport, please", tier: 1, tags: ["taxi", "airport"], keywords: ["aeropuerto"] },
             { es: "A esta dirección, por favor", en: "To this address, please", tier: 2, tags: ["taxi", "transport"], keywords: ["dirección"], variants: ["Lléveme a esta dirección"] },
@@ -363,9 +364,9 @@ const CURRICULUM = {
         },
         {
           id: "s3-metro", requires: { transport: "metro" },
+          primer: { scene: "Down the escalator into the tiled hum of the metro. The machine sells a dozen tickets; the one you want is the T-casual, ten rides. Validate on the way in and keep the ticket. The inspectors are real.", mission: "Buy the right card, find the right line, count the stops.", guessItem: "¿Dónde está la estación de metro?" },
           topic: "Transport · Metro", title: "Metro",
           reward: "You can buy a T-casual and not ride the wrong line. Barcelona underground: conquered.",
-          cultureNote: "The T-casual is 10 rides for one person; the T-usual is unlimited for a set period. Validate on the way in and hold onto the ticket, inspectors do check.",
           items: [
             { es: "¿Dónde está la estación de metro?", en: "Where's the metro station?", tier: 1, tags: ["metro", "transport", "directions"], keywords: ["dónde", "metro"] },
             { es: "una T-casual", en: "a 10-trip travel card", note: "Barcelona's pay-per-ride metro/bus card.", tier: 1, tags: ["metro", "transport"], contextEs: "Una T-casual, por favor", contextEn: "A T-casual, please", keywords: ["casual"] },
@@ -378,6 +379,7 @@ const CURRICULUM = {
         },
         {
           id: "s3-train", requires: { transport: "train" },
+          primer: { scene: "Sants station, morning light through the glass, the departure board flipping like a card trick. The AVE to Madrid does six hundred kilometers before lunch. First you have to find your platform.", mission: "Read the board, find your platform, claim your seat.", guessItem: "un billete a Madrid" },
           topic: "Transport · Train", title: "Trains",
           reward: "Platforms, seats, delays, you can ride the AVE like a commuter.",
           items: [
@@ -392,6 +394,7 @@ const CURRICULUM = {
         },
         {
           id: "s3-bus", requires: { transport: "bus" },
+          primer: { scene: "The bus shudders to the curb with a hiss, and the destination scroll means nothing to you yet. The driver waits. Everyone behind you waits too.", mission: "Flag the right bus, pay, and get off where you meant to.", guessItem: "el conductor" },
           topic: "Transport · Bus", title: "Buses",
           reward: "You can flag the right bus and get off at the right stop. No more mystery tours.",
           items: [
@@ -405,6 +408,7 @@ const CURRICULUM = {
         },
         {
           id: "s3-ferry", requires: { transport: "ferry" },
+          primer: { scene: "Salt air at the port, gulls working the crowd, a ferry horn somewhere behind the terminal. The board lists three boats leaving within the hour. One of them is yours.", mission: "Buy the crossing, find your dock, board the right boat.", guessItem: "¿Está incluido el equipaje?" },
           topic: "Transport · Ferry", title: "Ferries & boats",
           reward: "Docks, crossings, round-trips, you can board a boat without getting on the wrong one.",
           items: [
@@ -419,6 +423,7 @@ const CURRICULUM = {
         },
         {
           id: "s4-checkin", topic: "Hotel", title: "Checking in",
+          primer: { scene: "The lobby is cool and marble quiet after the street. Carmen at the front desk looks up with the practiced smile of someone who has seen every kind of tired. You have a reservation. Somewhere.", mission: "Check in, get the wifi, and run your room: towels, pillows, the stubborn AC.", guessItem: "¿Tienen wifi?" },
           reward: "Check-in, wifi, towels, a broken AC, you run the whole front desk and your room.",
           items: [
             { es: "Tengo una reserva", en: "I have a reservation", note: "Spain: 'reserva'. (Latin America: 'reservación'.)", tier: 2, tags: ["hotel", "lodging"], keywords: ["reserva"] },
@@ -441,6 +446,7 @@ const CURRICULUM = {
         },
         {
           id: "s4-airbnb", requires: { lodging: "airbnb" },
+          primer: { scene: "The building has no lobby, just a blue door and a lockbox. Your host Eva texts in bursts: the code, a smiley, 'any problem, message me'. The code doesn't work.", mission: "Get the keys, the wifi, the hot water, and Eva on your side.", guessItem: "¿Cuál es la contraseña del wifi?" },
           topic: "Airbnb / apartment", title: "Your Airbnb",
           reward: "Keys, wifi, trash day, the lockbox that won't open, you can handle a host like a pro.",
           items: [
@@ -456,8 +462,8 @@ const CURRICULUM = {
         },
         {
           id: "s4-landmarks", topic: "Landmarks", title: "Sightseeing",
+          primer: { scene: "There it is, the way the directions promised: the towers find you first. So does the queue, wrapped halfway around the block. The locals booked online days ago and walk right past it.", mission: "Get your tickets, skip what can be skipped, and ask before you photograph.", guessItem: "¿Se pueden hacer fotos?" },
           reward: "Two tickets to the Sagrada Família, please, and you said it in Spanish. Gaudí is proud.",
-          cultureNote: "Book the Sagrada Família online days ahead, the on-site queue can eat your afternoon. Same for Park Güell. Go early or near closing to dodge the crowds.",
           items: [
             { es: "¿A qué hora abre la Sagrada Família?", en: "What time does the Sagrada Família open?", tier: 2, tags: ["sights", "time"], keywords: ["hora", "abre"] },
             { es: "dos entradas, por favor", en: "two tickets, please", tier: 2, tags: ["sights"], keywords: ["entradas"] },
@@ -471,6 +477,7 @@ const CURRICULUM = {
         },
         {
           id: "s3-plane", bonus: true, topic: "Transport · On the plane", title: "On the plane",
+          primer: { scene: "Wheels up out of El Prat, or maybe this is how the trip begins. Either way the cart is rattling down the aisle toward you, and the attendant is asking the same two questions she has asked forty rows in a row.", mission: "Run the drinks cart: the meal, the drink, the blanket.", guessItem: "¿Pollo o pasta?" },
           reward: "Chicken or pasta, juice or wine, you can now run the whole drinks cart in Spanish.",
           items: [
             { es: "¿Pollo o pasta?", en: "Chicken or pasta?", note: "What the flight attendant asks you.", tier: 2, tags: ["plane", "food"], keywords: ["pollo", "pasta"] },

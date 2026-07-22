@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-22 — Primer wave commit #4 SHIPPED (v175): all thirteen pass-2 scenes live
+- Thirteen primers landed (scene + mission + guessItem each); ALL guessItems verified resolving in-lesson (including the four requires-gated lessons, checked against the raw pack). Six cultureNotes retired as woven (vermut, cortado, tipping, taxi, T-casual, Sagrada); three partial details overflowed to the Landed bin (taxi surcharge/Free Now, T-usual, Park Güell/timing). Cast canon: Pau, Carmen, Eva added; Andrés taxi-only, transport otherwise anonymous. Pack audit 0 hard errors.
+- Every pass-0/1/2 lesson now carries a primer. Remaining unprimed: pass-3 chains (2, the bookend pre-written) + Mexico.
+
 ## 2026-07-21 — LESSON PURITY SHIPPED (v174): lessons own their content; Practice owns review
 - Chat's feasibility questions answered with data: cross-lesson share was 20% of fresh-lesson slots, 40% of replays, and a cross-lesson warm-up rep OPENED every fresh lesson before the first card (Tom's sighting, traced to the weave's warm-up lead). No SRS coupling (recordAnswer is location-agnostic) — the split was cheap.
 - Built: composeSession carries only the lesson's own items (presentations, T₁, re-tests, own-item pairs on replays, the close — its frame-swap filler stays the one sanctioned cross-lesson touch, ritual not review). composeReview (Practice) absorbs warm-up misses (leads), due backlog, cram criticals, boards, confusions. Verified: 0 cross slots in lessons; fresh lessons open primer → present; Practice leads with the recent miss. Spec §6.1 rewritten; decision logged with the data.
