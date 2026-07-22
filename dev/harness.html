@@ -145,8 +145,21 @@
       }
 
       const screen = (fn, tab) => () => { clean(); renderTopbar(); fn(); showTabbar(tab); };
+      // seed N overdue items so the Practice row shows a specific escalation state
+      function seedDue(n, fading) {
+        state.learn = {}; state.practiceProm = "quiet";
+        DECK.stages.flatMap(s => s.lessons).flatMap(l => l.items).slice(0, n).forEach(it => {
+          state.learn[it.id] = { exposures: 3, streak: 1, lapses: 0, interval: 2, ease: 2.3,
+            lastSeen: daysAgoStr(fading ? 9 : 3), lastCorrect: daysAgoStr(fading ? 9 : 3), due: daysAgoStr(1) };
+        });
+        state.lessons = { "s1-rescue": { stars: 3, at: new Date().toISOString() } };
+      }
       const STORIES = {
         "Home — returning user": screen(renderHome, "home"),
+        // §3.9 action stack: quiet → due badge → urgent field + one-time arrival breath
+        "Home — practice quiet (1 due)": () => { clean(); seedDue(1); renderTopbar(); renderHome(); showTabbar("home"); },
+        "Home — practice due building (5 due)": () => { clean(); seedDue(5); renderTopbar(); renderHome(); showTabbar("home"); },
+        "Home — practice threshold (14 fading, breath)": () => { clean(); seedDue(14, true); renderTopbar(); renderHome(); showTabbar("home"); },
         "First score reveal (one-time card)": () => {
           clean();
           state.lessons = { 'spain:hola': { done: true } };
