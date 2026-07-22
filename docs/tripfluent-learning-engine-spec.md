@@ -357,11 +357,20 @@ Step-2 exception note: the framed guess does not violate the introduce-first rul
 
 New function in `srs.js` (or `session.js`): `composeSession(lessonId)` returns an ordered exercise queue. `lesson.js` consumes it instead of iterating the lesson's items directly.
 
-### 6.1 Composition (target ≈ 6 min ≈ 14–18 exercise slots)
-1. **Warm-up (0–4 slots):** recent misses (§5.2).
-2. **Due reviews (~⅓ of session):** items across the *whole trip* with `due <= today` (Milestone 3; before SRS exists, substitute "items with exposures ≥1 not seen in ≥3 days," oldest first).
+### 6.1 Composition — LESSON PURITY (2026-07-21 supersedes the weave's cross-lesson terms)
+**A lesson session carries only the lesson's own items** (their presentations, same-session
+retrievals incl. the ear-first T₁, expanding re-tests, and the close — whose frame-swap filler
+is the one sanctioned cross-lesson touch, a ritual composition, not review). The tile's promise
+IS the session's contents; the primer's scene is never broken by a woven stranger; lessons
+reliably open primer → first presentation card. **Cross-lesson SRS review (warm-up misses, due
+backlog, cram criticals, restores) lives entirely in the PRACTICE session** (§6.4), which home
+promotes dynamically by due-queue (prominence scales: badge/ordering, possibly hero-tile swap
+past a threshold [tune] — the dials carry the incentive: skipped practice shows as Retention
+sag, never as smuggled review). Original weave terms, now Practice-scoped where cross-lesson:
+1. **Warm-up (0–4 slots):** recent misses (§5.2) — opens PRACTICE sessions.
+2. **Due reviews:** the Practice pool — items across the whole trip with `due <= today`.
 3. **New items (cap 5–7):** from the tapped lesson, in authored order, introduced via the **micro-batch weave** (§6.1b) — never as a consecutive card stack.
-4. **Interleave:** don't block reviews then news; due reviews fill the gaps the weave creates. Hard constraint: a new item's presentation card precedes any test of it.
+4. **Interleave:** within a lesson the weave's gaps are filled by the lesson's own re-tests. Hard constraint: a new item's presentation card precedes any test of it.
 5. **Chunk pre-seed ordering:** when a queued new item triggers meet-the-piece (§4b.5), its chunk micro-intro is scheduled in an earlier weave slot than the host phrase's presentation card. Hard constraint, same standing as "presentation precedes test."
 6. **Variety rule (2026-07-20):** an item's **consecutive sessions never repeat the same exercise type at the same rung**. Same rung + same type twice running is a rut, not reinforcement; the composer varies the mode (or the rung moved, which resets the clock). Requires remembering each item's last-served type per rung (persisted, light).
 7. **Replay rule (2026-07-20, echoes §4.1):** replaying a lesson never re-fires presentation cards or meet-the-piece — exposure-0 furniture fires once per item ever; replayed items enter at their current rung.

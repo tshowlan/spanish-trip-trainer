@@ -105,30 +105,18 @@ function composeSession(lesson) {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();             // §6 variety rule clock (srs.js reads it)
   const lessonItems = lesson.items || [];
   const newItems = lessonItems.filter(it => exposuresOf(it) === 0);   // teach ALL new (coverage before unlock)
-  const newIds = new Set(newItems.map(itemId));
-  const warm = recentMisses().filter(it => !newIds.has(itemId(it))).slice(0, 3);
-  const warmIds = new Set(warm.map(itemId));
   const rungCap = lessonDone(lesson.id) ? null : 2;   // §4.1 first-pass cap: introducing → never cold
 
-  // review pool: ~⅓ (up to ½ in cram) of the whole trip, so a new lesson revisits older ones
-  let reviewPool;
-  if (newItems.length) {
-    const cap = cramActive() ? Math.min(8, Math.max(3, newItems.length)) : Math.min(6, Math.max(3, Math.round(newItems.length * 0.6)));
-    const free = it => !newIds.has(itemId(it)) && !warmIds.has(itemId(it));
-    let due = dueForReview().filter(free);
-    if (cramActive()) {
-      const crit = (ALL_ITEMS || []).filter(it => { const s = learnPeek(it); return s && s.exposures >= 1 && isCritical(it) && free(it) && !due.includes(it); });
-      due = [...crit, ...due];
-    }
-    reviewPool = due.slice(0, cap);
-  } else {
-    const own = lessonItems.filter(it => !warmIds.has(itemId(it)));
-    const extra = dueForReview().filter(it => !lessonItems.includes(it) && !warmIds.has(itemId(it))).slice(0, 4);
-    reviewPool = [...own, ...extra];
-  }
+  // §6 LESSON PURITY (2026-07-21): a lesson session carries ONLY the lesson's own items —
+  // the tile's promise IS the session's contents, and the primer's scene is never broken
+  // by a woven stranger. Cross-lesson SRS review (warm-up misses, due backlog, cram
+  // criticals, restores) lives entirely in the Practice session (composeReview); home
+  // promotes Practice dynamically by due-queue. The close's frame-swap filler is the one
+  // sanctioned cross-lesson touch (a ritual composition, not review). Lessons now reliably
+  // open primer → first presentation card.
+  const reviewPool = newItems.length ? [] : lessonItems.slice();      // replays drill own items only
 
   const qs = [];
-  warm.forEach(it => qs.push(reviewQuestion(it, null, rungCap)));       // 1) warm-up: recent misses
 
   // redo of a completed lesson → no new items to weave, just drill.
   // §4.1 replay rule holds by construction: presentation cards key on exposures === 0,
@@ -196,9 +184,16 @@ function applyRhythm(qs) {
 // pure-review session (Home "Review" entry / all lessons complete): mistakes first, then due
 function composeReview() {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();             // §6 variety rule clock
+  // §6 lesson purity (2026-07-21): Practice owns ALL cross-lesson maintenance — recent
+  // misses lead (§5.2 warm-up), then the due backlog; cram front-loads safety-critical
+  // items here (moved out of lesson sessions with the rest of the review weave).
   const mistakes = mistakesPool();
   const due = dueForReview();
-  const seen = [...new Set([...mistakes, ...due])];
+  let seen = [...new Set([...mistakes, ...due])];
+  if (cramActive()) {
+    const crit = (ALL_ITEMS || []).filter(it => { const s = learnPeek(it); return s && s.exposures >= 1 && isCritical(it) && !seen.includes(it); });
+    seen = [...mistakes, ...crit, ...seen.filter(it => !mistakes.includes(it))];
+  }
   const pool = (seen.length ? seen : dueForReview(0)).slice(0, 14);
   const board = extractPairsBoard(pool);                              // §7.1 pairs: the review workhorse
   const qs = applyRhythm(pool.map(it => reviewQuestion(it, pool)));

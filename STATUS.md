@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-21 — LESSON PURITY SHIPPED (v174): lessons own their content; Practice owns review
+- Chat's feasibility questions answered with data: cross-lesson share was 20% of fresh-lesson slots, 40% of replays, and a cross-lesson warm-up rep OPENED every fresh lesson before the first card (Tom's sighting, traced to the weave's warm-up lead). No SRS coupling (recordAnswer is location-agnostic) — the split was cheap.
+- Built: composeSession carries only the lesson's own items (presentations, T₁, re-tests, own-item pairs on replays, the close — its frame-swap filler stays the one sanctioned cross-lesson touch, ritual not review). composeReview (Practice) absorbs warm-up misses (leads), due backlog, cram criticals, boards, confusions. Verified: 0 cross slots in lessons; fresh lessons open primer → present; Practice leads with the recent miss. Spec §6.1 rewritten; decision logged with the data.
+- OWED BY CHAT (design): home's dynamic Practice prominence (badge/ordering/hero-swap threshold [tune]) — the dials carry the incentive meanwhile. Commit #4 (13 pass-2 scenes) HELD as draft awaiting Tom's line-by-line.
+
 ## 2026-07-21 — Primer wave commit #3 SHIPPED (v173): guessItems fixed, thin lessons padded
 - Four silent-fallback guessItems reassigned to in-list hooks (all verified resolving: ¿Puede repetir por favor? / el cambio / ¿Todo bien? / Me han robado). sp-cash 1→4 phrases (cash set), s4-hear 1→4 (locals set = replyTo seed corpus). DEDUP DEVIATION: "Aquí tiene" already lives in K3 with the change context, and item identity IS the phrase, so neither new set could carry it without duplicating the id; K3's copy absorbed the both-directions note instead (chat's pedagogy preserved, sets land at 3 each). Pack audit 0 hard errors; no duplicate ids.
 - Pass-2 manifest exported to Tom's folder for the from-scratch writing block.
