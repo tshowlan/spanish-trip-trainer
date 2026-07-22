@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-22 — Home action stack BUILT on branch `home-action-stack` (harness review pending)
+- Tile +20% (125px min-height, 18/16 padding, 11px row gap, type unchanged); Practice escalates in place: quiet → "N due" gold badge (≥3 [tune]) → urgent field ("N fading" badge; due ≥12 or retention-sag+≥6 [tune]) with the one-time arrival breath (verified: fires on first crossing only, re-renders still; state.practiceProm persists the crossing). Kicker conformed to artifact copy: "Next session". design/home.html DELETED per the handoff (git history archives it); DESIGN_PAIRS.homeActionStack added, diff clean (remaining rows: UA-button zeroing fixed; artifact-side #f0d060 kicker literal = token drift, flagged to chat).
+- Process rules recorded (stamp cut §5.7, derive-don't-approximate §5.8); 4 action-surface rules in §3.9; decisions ×3. Practice-chooser DOM exported to Tom's folder for chat's design queue (built-but-never-artifacted).
+- OPEN RULINGS FOR TOM (from the handoff): (1) tile duration "· 6 min" keep-or-drop; (2) .presence visible (build) vs hidden (old base) — artifact now shows it, confirm; (3) the 800-weight three-tier type law (600 control / 700 heading / 800 micro-labels <12px) bless-or-amend; (4) artifacts adopting the --space/--text scales [pencil].
+
 ## 2026-07-22 — Primer wave commit #4 SHIPPED (v175): all thirteen pass-2 scenes live
 - Thirteen primers landed (scene + mission + guessItem each); ALL guessItems verified resolving in-lesson (including the four requires-gated lessons, checked against the raw pack). Six cultureNotes retired as woven (vermut, cortado, tipping, taxi, T-casual, Sagrada); three partial details overflowed to the Landed bin (taxi surcharge/Free Now, T-usual, Park Güell/timing). Cast canon: Pau, Carmen, Eva added; Andrés taxi-only, transport otherwise anonymous. Pack audit 0 hard errors.
 - Every pass-0/1/2 lesson now carries a primer. Remaining unprimed: pass-3 chains (2, the bookend pre-written) + Mexico.

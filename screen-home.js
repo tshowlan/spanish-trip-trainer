@@ -732,7 +732,7 @@ function heroTile() {
   const h = heroState();
   // §3.2 fade tile: a navy block with the session photo bleeding in from the right (the lesson's primer
   // photo double-duty; other actions get a warm destination default). Kicker replaces the old color-coding.
-  const kicker = { cram: "Countdown", review: "Review", momentum: "Keep it going", lesson: "Next lesson", caught: "You're ahead" }[h.kind] || "Next up";
+  const kicker = { cram: "Countdown", review: "Review", momentum: "Keep it going", lesson: "Next session", caught: "You're ahead" }[h.kind] || "Next up";
   const photo = (typeof introPhoto === "function") ? introPhoto(h.lesson || {}) : "";
   const t = el(`<button class="hero-tile hero-${h.kind}">
     ${photo ? `<div class="hero-img" style="background-image:url('${photo}')" aria-hidden="true"></div>` : ""}
@@ -747,13 +747,33 @@ function heroTile() {
 
 /* §3.2.4 — quiet Practice chooser (replaces the Due/Mistakes tiles §3.3 kills). One secondary
    button → a sheet with Recommended / By scenario / Weakest phrases. */
+// action-stack escalation thresholds (design/home-action-stack.html; all [tune])
+const PRACTICE_BADGE_DUE = 3;    // [tune] due count where the quiet row gains its gold badge
+const PRACTICE_URGENT_DUE = 12;  // [tune] due count where the row wears urgency outright
+const PRACTICE_URGENT_SAG = 6;   // [tune] lower urgency bar when Retention sagged today
 function practiceButton() {
-  // §3.2 bordered-row pattern (design/home.html .practice): gold icon-circle + label + chevron
-  const b = el(`<button class="practice" role="button">
+  // §3.2 bordered-row pattern (design/home-action-stack.html): the row is a MENU and never
+  // swaps contents with the tile (grammar rule); prominence escalates IN PLACE with the
+  // due queue — quiet → count badge → urgent field (+ one-time arrival breath).
+  const due = dueForReview().length;
+  const fading = (typeof fadingItems === "function") ? fadingItems().filter(f => f.strength < RETENTION_FADE).length : 0;
+  const sag = _todayDelta("retention") < 0;
+  const urgent = due >= PRACTICE_URGENT_DUE || (sag && due >= PRACTICE_URGENT_SAG);
+  const badge = urgent || due >= PRACTICE_BADGE_DUE;
+  // artifact copy: the due badge counts the queue ("8 due"); the urgent badge names the
+  // urgency ("12 fading") — falls back to the due count if nothing is technically fading
+  const badgeText = urgent && fading > 0 ? fading + " fading" : due + " due";
+  const b = el(`<button class="practice${urgent ? " urgent" : ""}" role="button">
     <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
     <span class="lbl">Practice</span>
+    ${badge ? `<span class="pbadge">${badgeText}</span>` : ""}
     <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
   </button>`);
+  // arrival breath: fires only when the threshold is NEWLY crossed (urgency announces
+  // itself once, never loops); the crossing is persisted so re-renders stay still
+  const prom = urgent ? "urgent" : badge ? "badge" : "quiet";
+  if (urgent && state.practiceProm !== "urgent") b.classList.add("arrive");
+  if (state.practiceProm !== prom) { state.practiceProm = prom; save(); }
   b.addEventListener("click", practiceChooser);
   return b;
 }

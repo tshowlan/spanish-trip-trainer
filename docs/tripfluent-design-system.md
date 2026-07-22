@@ -129,6 +129,13 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 - **Ledger glyphs use proven icon geometry,** not hand-plotted paths; arcs that mean progress run clockwise, matching the dials.
 - **Ledger color:** gold = what arrived (intake), green = what you did (achievement). Intake is never graded as victory.
 
+### 3.9 Action-surface rules (adopted 2026-07-21; born in the home action stack)
+
+- **The tile is a verb, the row is a menu:** contents never swap across interaction grammars (a tap that starts and a tap that asks are different promises; swapping them orphans one).
+- **The tile grows through space, not volume:** presence is generosity of room, never size of voice, on control surfaces. Display-scale type on a control reads as shouting.
+- **Urgency may announce itself once; it never loops.** Motion marks the event (a threshold crossed), never the state — perpetual pulses are nagging, and the app informs while the learner decides.
+- **Objects carry the app's light:** urgency brightens the object itself (the ember); spill is consequence, not the message.
+
 ---
 
 ## 4. Interaction rules (bind everywhere)
@@ -167,7 +174,9 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
       - **Intentional divergence** → the app deviates on purpose (the §8.3 bar spring vs the artifact's plainer transition). Flag it back to chat to resolve; never silently overwrite either side.
    4. **Then** the side-by-side screenshot, for what computed-style can't judge (rhythm, balance). Screenshot-only is never acceptance on its own.
 6. Any new recurring pattern discovered during design gets ADDED to §3 in the same PR — the constitution grows; one-offs don't.
-7. **Precedence applies to rule-making, not just rendering (2026-07-20):** a rule derived during artifact review must be checked against the built canonical component BEFORE it enters the constitution. Artifact stand-ins are scaffolding; codifying scaffolding as law nearly restyled the real AudioControl backwards (the glyph-law rider is the case study). If the rule and the build disagree, the build is the reference for shared components — fix the rule or flag a genuine divergence; never let a stand-in legislate.
+7. **THE STAMP CUT (2026-07-21):** working canvases are decision records; stamped artifacts are match-targets. At stamp, chat cuts the file to the decided state — rejected options, comparison toggles, and dead code OUT; chrome = real product states + theme only; caption rewritten from history to spec. History lives in handoffs + decisions.md, never in the artifact.
+8. **DERIVE, DON'T APPROXIMATE (2026-07-21):** a session touching an existing surface starts from the real artifact (or saved DOM) + live styles.css, canon-refreshed, with derivation finds flagged back. Screenshot-built stand-ins invent and omit silently — the first derivation surfaced token drift, stale canon strings, a hidden element, and live 800-weights. Standing habit: Code re-exports design bases after shipped rulings so derivations start from truth.
+9. **Precedence applies to rule-making, not just rendering (2026-07-20):** a rule derived during artifact review must be checked against the built canonical component BEFORE it enters the constitution. Artifact stand-ins are scaffolding; codifying scaffolding as law nearly restyled the real AudioControl backwards (the glyph-law rider is the case study). If the rule and the build disagree, the build is the reference for shared components — fix the rule or flag a genuine divergence; never let a stand-in legislate.
 
 ## 6. Remediation audit (one-time, do first)
 

@@ -220,6 +220,19 @@
       [".opts .opt", ".choices .choice"],
       [".grown .en-line", ".res-en"],
     ],
+    // App state: "Home — returning user" with a seeded 12+ due queue (urgent) — prep drives
+    // the artifact to the urgent stack state. Supersedes the home.html-era pairs for the stack.
+    homeActionStack: [
+      [".tile.fade", ".hero-tile"],
+      [".tile.fade .inner", ".hero-tile .hero-inner"],
+      [".tile.fade .k", ".hero-k"],
+      [".tile.fade .t", ".hero-title"],
+      [".tile.fade .s", ".hero-sub"],
+      [".practice", ".practice"],
+      [".practice .ic", ".practice .ic"],
+      [".practice .lbl", ".practice .lbl"],
+      [".pbadge", ".pbadge"],
+    ],
     // App state: harness story "Session end — full ceremony", ~3s in (dials performed).
     // Artifact state: Option C/D overlay (renderOverlay) — its .kicker/.facts are the designed elements.
     sessionEnd: [
@@ -257,6 +270,18 @@
       const t = idoc.querySelector(".tick"); if (t) t.classList.add("show"); // shown state, for a fair opacity check
     },
     correctionSheet: (idoc) => { const p = idoc.querySelector(".phone"); if (p) p.classList.add("dimmed"); },
+    // drive the stack to its urgent state (the richest comparison surface). Class-based:
+    // the artifact's stackState is a top-level `let` (not reachable via defaultView).
+    homeActionStack: (idoc) => {
+      const pr = idoc.querySelector(".practice");
+      if (pr && !pr.classList.contains("urgent")) {
+        pr.classList.add("urgent");
+        const chev = pr.querySelector(".chev");
+        const badge = idoc.createElement("span");
+        badge.className = "pbadge"; badge.textContent = "12 fading";
+        pr.insertBefore(badge, chev);
+      }
+    },
     // settle the whole board + show the grown, matching an app board completed with no misses
     pairsExercise: (idoc) => {
       const w = idoc.defaultView;

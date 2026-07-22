@@ -7,27 +7,30 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
 <style>
   :root {
-    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1; --bg-nav: #ffffff;
     --text: #050505; --text-dim: #5e6672;
     --primary: #1c275e; --secondary: #4a7fc1;
     --accent: #d8b713; --accent-2: #a98a0c;
-    --green: #2f9e57; --red: #d3384c;
+    --green: #2f9e57; --green-dark: #25814a; --red: #d3384c;
     --border: #e6e2d2;
+    --ring-track: rgba(28,25,18,0.17);
     --wordmark-1: #1c275e; --wordmark-2: #4a7fc1;
-    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
-    --font-text: "Inter", system-ui, sans-serif;
+    --font-display: "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --font-text: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     --text-sm: 14px;
-    --radius-md: 14px; --radius-lg: 18px;
-    --transition: 160ms cubic-bezier(.2,.7,.3,1);
-    --shadow: 0 3px 0 rgba(28,39,94,.16);
+    --radius-sm: 10px; --radius-md: 14px; --radius: 16px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1); --t-slow: 300ms;
+    --shadow: 0 3px 0 rgba(28,39,94,.16); --shadow-press: 0 1px 0 rgba(28,39,94,.16);
   }
   :root[data-theme="dark"] { color-scheme: dark;
-    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.55); --bg-nav: rgba(28,26,18,0.82);
+    --card-blur: blur(12px);
     --text: #f6f4ea; --text-dim: #a7a494;
     --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
-    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --ring-track: rgba(92,90,86,0.82);
     --wordmark-1: #c8d2f5; --wordmark-2: #7aa6db;
-    --shadow: 0 3px 0 rgba(0,0,0,.45);
+    --shadow: 0 3px 0 rgba(0,0,0,.45); --shadow-press: 0 1px 0 rgba(0,0,0,.45);
   }
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   body { font-family:var(--font-text); background:#e8e4d6; display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
@@ -122,7 +125,7 @@
   .tile:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
 
   /* Style 2: fade (Delta promo pattern) — color block left, session image bleeding in right */
-  .tile.fade { position:relative; overflow:hidden; background:var(--primary); border:none; min-height:104px; }
+  .tile.fade { position:relative; overflow:hidden; background:var(--primary); border:none; min-height:125px; display:flex; align-items:center; }
   .tile.fade .img { position:absolute; top:0; right:0; bottom:0; width:58%; }
   .tile.fade .img img { width:100%; height:100%; object-fit:cover; filter:saturate(0.85) brightness(0.9); }
   .tile.fade .img::after { content:""; position:absolute; inset:0;
@@ -141,6 +144,47 @@
   .practice:active { transform:translateY(1px); }
   .practice .ic { width:30px; height:30px; min-width:30px; border-radius:50%; background:var(--bg-elevated);
     display:flex; align-items:center; justify-content:center; color:var(--accent-2); }
+
+  /* ===== ACTION-STACK STATES (r4, derived onto the real home) ===== */
+  /* Sizing B (Tom, settled): the tile title is a HEADING on a tappable card,
+     not a button label — 700 legal; grows because it's home's one imperative. */
+
+  .tile.fade .inner { padding:18px 16px; display:flex; flex-direction:column; gap:11px; }
+  .tile.fade .inner .k, .tile.fade .inner .t, .tile.fade .inner .s { margin:0; }
+  .tile.fade .img img { width:100%; height:100%; object-fit:cover; }
+  /* Escalation-in-place: contents never swap (the tile is a VERB, the row is a
+     MENU — different grammars). At threshold the row wears urgency. */
+  .practice.urgent { background:color-mix(in srgb, var(--accent) 20%, var(--bg-card));
+    border:1.5px solid color-mix(in srgb, var(--accent-2) 60%, var(--border));
+    box-shadow:var(--shadow); }
+  /* The icon chip keeps its own ground inside the urgent field: card-white with
+     a strengthened outline, so the bolt reads as a distinct object, not a stain */
+  .practice.urgent .ic { background:var(--bg-card); border:1px solid color-mix(in srgb, var(--accent-2) 50%, var(--border)); }
+  :root[data-theme="dark"] .practice.urgent .ic { background:rgba(255,255,255,0.08); }
+  /* Urgency announces itself ONCE: two slow breaths on arrival, then stillness.
+     Motion marks the event (threshold crossed), never the state — a perpetual
+     pulse would be nagging, and the app informs while the learner decides. */
+  /* The ember brightens: the FIELD itself breathes (gold swell inside the row,
+     visible in both themes), with only a whisper of spilled halo. */
+  .practice.urgent { position:relative; }
+  .practice.urgent::after { content:""; position:absolute; inset:0; border-radius:inherit;
+    background:var(--accent); opacity:0; pointer-events:none;
+    animation:breathFill 1300ms ease-in-out 2; }
+  @keyframes breathFill { 0%, 100% { opacity:0; } 50% { opacity:0.16; } }
+  .practice.urgent { animation:breathHalo 1300ms ease-in-out 2; }
+  @keyframes breathHalo {
+    0%, 100% { box-shadow:var(--shadow); }
+    50% { box-shadow:0 3px 0 rgba(28,39,94,.16), 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent); }
+  }
+  @media (prefers-reduced-motion: reduce){ .practice.urgent, .practice.urgent::after { animation:none; } }
+  :root[data-theme="dark"] .practice.urgent { background:color-mix(in srgb, var(--accent) 14%, rgba(255,255,255,0.04)); }
+  .pbadge { margin-left:auto; background:var(--accent); color:#231e05; font-family:var(--font-display);
+    font-size:11px; font-weight:600; padding:3px 9px; border-radius:20px; }
+  .pbadge + .chev { margin-left:8px; }
+  .practice .chev { margin-left:auto; }
+  .practice .lbl + .pbadge ~ .chev, .practice:has(.pbadge) .chev { margin-left:8px; }
+  .stackctx { font-family:var(--font-display); font-size:10px; font-weight:600; letter-spacing:0.06em;
+    color:var(--text-dim); text-align:center; margin-bottom:8px; }
   .practice .lbl { font-family:var(--font-display); font-size:14.5px; font-weight:600; color:var(--text); flex:1; }
   .practice .chev { color:var(--text-dim); }
 
@@ -154,7 +198,7 @@
 
   /* Destination presence — two forms: quiet line, or the dynamic weather tile.
      The tile's sky is keyed to the DESTINATION's local time + conditions. */
-  .presence { display:none; align-items:center; justify-content:center; gap:6px;
+  .presence { display:flex; align-items:center; justify-content:center; gap:6px;
     font-size:12px; color:var(--text-dim); margin-top:10px; }
   .presence.on { display:flex; }
   .presence .dot { width:5px; height:5px; border-radius:50%; background:var(--green); }
@@ -228,15 +272,23 @@
   </div>
 
   <div class="chrome">
-    <label for="photoIn">swap photo…</label>
-    <input type="file" id="photoIn" accept="image/*" style="display:none" onchange="loadPhoto(this)">
-    <button onclick="cycleReadiness()" id="cycleBtn">cycle bands (72)</button>
-    <button onclick="cycleBottom()" id="presBtn">presence: line</button>
+    <button onclick="cycleStack()" id="stackBtn">stack: default</button>
     <button onclick="toggleTheme()">dark theme</button>
   </div>
 
   <div class="caption">
-    Home — FINAL COMPOSITION (options stripped; APPROVED pending stamp). Atmosphere: photo + tint — photo crowns the top, masks itself to transparent (mask-don't-paint rule: dissolves into the true ground — cream in light, navy gradient in dark); STRONG destination ground-glow sweeps diagonally from bottom-left (26% peak, full height, stacked beneath the photo). Dark theme = Oura-style gradient ground, translucent blurred cards. Wordmark SVG with theme-token fills; white letterform halo in photo modes forces standard navy/blue (halo = light ground = standard colors). Dials: Readiness hero w/ gold pace tick (sole pace signal; subline = pure countdown), band chips Low / Fair / Strong / Tripfluent (stative, sentence case, band-colored soft fill); Tripfluent wears the metallic gradient-border crown + ONE-TIME sheen on band-crossing only (reduced-motion: none). No ring label. Flankers: bare indices + delta whispers. Action tile: fade style (navy block → session image, primer photo double-duty). Practice: bordered row. Insight line w/ gold spark. Presence: LINE by default, upgrades to the weather TILE inside ~3 weeks (cycle to preview tile states; temp needs cached weather fetch). Nav: gold active tab w/ Whoop-style under-glow + notch — gold is the app's light. STAND-INS: tab bar structure (use built nav), Port de Sóller photo (stock preview — license or replace before shipping). DELTA vs last round: pace tick redesigned as a Submariner-style bezel index — inverted gold triangle pointing inward from outside the ring (pearl removed after review — solid gold index), NO keyline (removed 2026-07-17 by Tom's call: the index sits outside the arc, so none is needed; do not re-add on re-issue) (replaces the line tick; position/derivation unchanged); prior round's changes retained: tick outside the track with a bg casing stroke (fixes gold-on-gold at the Fair band; tick is a marker beside the dial, not on it); ring canvas widened for the protruding tick. DELTA 2026-07-17: ahead-gap green wash REMOVED after review (the tick alone is the pace signal; relative position of fill vs tick carries ahead/behind; words live in the detail sheet). Frame = 390px logical width (artifact baseline; px values transfer 1:1 to the app). Demo controls only: swap photo, cycle bands, presence cycle, dark theme.
+    Home action stack — APPROVED 2026-07-21 (stamp cut applied; decision history lives in the handoff +
+    decisions.md). SPEC: this file supersedes design/home.html (canon-refreshed base + the stack). LESSON
+    TILE: top slot always, min-height 125px, padding 18px 16px, row gap 11px, type at base scale (18/600
+    title); the tile grows through space, not volume. PRACTICE ROW: its own surface always; tap opens the
+    three-mode practice chooser. GRAMMAR RULE: the tile is a verb (start now), the row is a menu (choose);
+    contents never swap. PROMINENCE STATES: default = quiet numberless row · due-building [tune lower
+    threshold] = gold count badge, dark-on-gold · threshold [tune: due-count and/or Retention sag] = the row
+    wears urgency: gold field (20% mix), 1.5px strengthened border, elevation (shadow token), icon chip on
+    its own card-white ground + outline; ARRIVAL BREATH: the field swells twice (interior gold to 16%,
+    1.3s each, whisper halo 3px/15%) then settles still — urgency announces once, never loops; reduced
+    motion: no breath. The dials carry the ongoing consequence. Positions and roles never change; only
+    treatment does. Frame 390, live styles.css tokens.
   </div>
 </div>
 
@@ -267,7 +319,7 @@
     const labelEl = withLabel ? `<text x="84" y="104" text-anchor="middle"
         style="font-family:var(--font-display);font-weight:600;font-size:9.5px;letter-spacing:0.09em;fill:var(--text-dim)">READINESS</text>` : '';
     return `<svg width="184" height="184" viewBox="-8 -8 184 184">
-      <circle cx="84" cy="84" r="70" fill="none" stroke="var(--bg-elevated)" stroke-width="11"/>
+      <circle cx="84" cy="84" r="70" fill="none" stroke="var(--ring-track, var(--bg-elevated))" stroke-width="11"/>
       <circle cx="84" cy="84" r="70" fill="none" stroke="${band(val).c}" stroke-width="11" stroke-linecap="round"
         stroke-dasharray="${C}" stroke-dashoffset="${off}" transform="rotate(-90 84 84)"/>
       <polygon points="${tx},${ty} ${b1x},${b1y} ${b2x},${b2y}"
@@ -282,7 +334,7 @@
   const ringFlank = (val, color) => {
     const C = 2*Math.PI*34, off = C*(1-val/100);
     return `<svg width="80" height="80" viewBox="0 0 80 80">
-      <circle cx="40" cy="40" r="34" fill="none" stroke="var(--bg-elevated)" stroke-width="7.5"/>
+      <circle cx="40" cy="40" r="34" fill="none" stroke="var(--ring-track, var(--bg-elevated))" stroke-width="7.5"/>
       <circle cx="40" cy="40" r="34" fill="none" stroke="${color}" stroke-width="7.5" stroke-linecap="round"
         stroke-dasharray="${C}" stroke-dashoffset="${off}" transform="rotate(-90 40 40)"/>
       <text x="40" y="40" text-anchor="middle" dominant-baseline="central"
@@ -311,27 +363,23 @@
         </span>
       </div>
       <div class="trip">
-        <div class="dest">Mallorca</div>
-        <div class="sub">121 days out</div>
+        <div class="dest">Spain</div>
+        <div class="sub">115 days out</div>
       </div>
       <div class="dials">
-        <div class="flank">${ringFlank(64,'var(--accent)')}<div class="ringlabel">MOMENTUM</div><div class="delta up">+6</div></div>
+        <div class="flank">${ringFlank(64,'var(--accent)')}<div class="ringlabel">MOMENTUM</div><div class="delta up">+8</div></div>
         <div class="hero">${ringHero(readiness,66,false)}<div class="band${readiness >= 85 ? ' top' : ''}" style="color:${band(readiness).c}">${band(readiness).label}</div></div>
         <div class="flank">${ringFlank(85,'var(--secondary)')}<div class="ringlabel">RETENTION</div><div class="delta down">\u22122</div></div>
       </div>
-      ${tiles.fade}
-      <div class="practice" role="button">
-        <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
-        <span class="lbl">Practice</span>
-        <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
-      </div>
+      <div class="stackctx" id="stackctx"></div>
+      <div id="stack"></div>
       <div class="whisper">
         <span class="spark"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg></span>
-        <span>Your last 2 weeks moved Readiness <span class="num">+11</span></span>
+        <span>This week moved Readiness <span class="num">+9</span></span>
       </div>
       <div class="presence" id="presence">
         <span class="dot"></span>
-        <span>6:12pm in Mallorca · 74°</span>
+        <span>3:29am in Spain</span>
       </div>
       <div class="wx" id="wx">
         <div class="sky"></div><div class="fx"></div>
@@ -351,21 +399,52 @@
   const phone = document.querySelector('.phone');
   let currentPhoto = null;
   let readiness = 72;
+    // ===== ACTION STACK (r4): three states on the real home =====
+  let stackState = 'default';
+  const stackStates = ['default','due','urgent'];
+  const stackLabels = { default:'stack: default', due:'stack: due building', urgent:'stack: threshold (row escalates)' };
+  const chevSvg = `<span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>`;
+  const icSvg = `<span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>`;
+  function renderStack(){
+    const el = document.getElementById('stack');
+    const ctx = document.getElementById('stackctx');
+    if (!el) return;
+    const lessonTile = `
+      <div class="tile fade" role="button">
+        <div class="img"><img src="${currentPhoto}" alt=""></div>
+        <div class="inner">
+          <div class="k">NEXT SESSION</div>
+          <div class="t">Start: \u00bfHay ___?</div>
+          <div class="s">Core patterns \u00b7 6 min</div>
+        </div>
+      </div>`;
+    const practiceRow = (mode) => `
+      <div class="practice${mode === 'urgent' ? ' urgent' : ''}" role="button">
+        ${icSvg}
+        <span class="lbl">Practice</span>
+        ${mode === 'due' ? '<span class="pbadge">8 due</span>' : ''}
+        ${mode === 'urgent' ? '<span class="pbadge">12 fading</span>' : ''}
+        ${chevSvg}
+      </div>`;
+    el.innerHTML = lessonTile + practiceRow(stackState === 'default' ? null : stackState);
+    if (ctx) ctx.textContent = '';
+  }
+  function cycleStack(){
+    stackState = stackStates[(stackStates.indexOf(stackState)+1) % stackStates.length];
+    document.getElementById('stackBtn').textContent = stackLabels[stackState];
+    renderStack();
+  }
+
   const demoVals = [72, 91, 55, 34];
 
   function render(){
     screen.innerHTML = homeHTML().replaceAll('__PHOTO__', currentPhoto);
+    renderStack();
   }
   function applyAtmo(){
     atmo.className = 'atmo combo';
     atmo.innerHTML = '<img src="'+currentPhoto+'" alt="">';
     phone.classList.add('photo-on'); phone.classList.add('combo-on');
-  }
-  function loadPhoto(input){
-    const f = input.files[0]; if (!f) return;
-    currentPhoto = URL.createObjectURL(f);
-    applyAtmo();
-    render();
   }
   const wxStates = {
     sunset: { time:'6:12pm', cond:'Sunset \u00b7 Clear', temp:'74\u00b0',
@@ -377,25 +456,6 @@
   };
   const bottomModes = ['off','line','sunset','day','night'];
   let bottomMode = 'line';
-  function cycleBottom(){
-    bottomMode = bottomModes[(bottomModes.indexOf(bottomMode)+1) % bottomModes.length];
-    const p = document.getElementById('presence'), w = document.getElementById('wx');
-    p.classList.toggle('on', bottomMode === 'line');
-    const isWx = wxStates[bottomMode];
-    w.className = 'wx' + (isWx ? ' on ' + bottomMode : '');
-    if (isWx){
-      document.getElementById('wxTime').textContent = isWx.time;
-      document.getElementById('wxCond').textContent = isWx.cond;
-      document.getElementById('wxTemp').textContent = isWx.temp;
-      document.getElementById('wxIcon').innerHTML = isWx.icon;
-    }
-    document.getElementById('presBtn').textContent = 'presence: ' + (bottomMode === 'off' ? 'off' : bottomMode === 'line' ? 'line' : 'tile \u00b7 ' + bottomMode);
-  }
-  function cycleReadiness(){
-    readiness = demoVals[(demoVals.indexOf(readiness)+1) % demoVals.length];
-    document.getElementById('cycleBtn').textContent = 'cycle bands (' + readiness + ')';
-    render();
-  }
   const tabGlowModes = ['glow + notch','glow only','off'];
   let tabGlowMode = 0;
   function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
@@ -405,6 +465,7 @@
   render();
   applyAtmo();
   document.getElementById('presence').classList.add('on');
+
 </script>
 </body>
 </html>
