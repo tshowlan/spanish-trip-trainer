@@ -34,6 +34,14 @@ Three shapes, chosen by lesson type:
 - Stale demo copy note: the reply artifact's "Marina · The Harbor Café" label predates the canon
   (Marina runs a tasca, not a harbor café); penciled for relabel at that artifact's next re-issue.
 
+## Single-source content rule (2026-07-21, minted in the Aquí tiene dedup)
+
+A phrase is taught once, in one home; other lessons reference the ear, never re-own the item.
+Item identity IS the phrase (id = pack:slug(es)), so a second copy is structurally illegal, not
+merely redundant. When two lessons want the same phrase, the original home keeps it (richer
+context/notes absorb the newcomer's pedagogy) and the other lesson's scene or exercises point
+at it. Cross-lesson echo is a feature; cross-lesson ownership is a collision.
+
 ## Landed/in-trip overflow bin (content awaiting the Landed spec)
 
 - Farmacia de guardia: "For minor things, look for the 'farmacia de guardia', the 24-hour pharmacy,
