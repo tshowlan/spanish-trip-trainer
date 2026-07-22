@@ -30,6 +30,7 @@ Apply to ALL user-facing text: labels, buttons, exercise prompts, anchors, prime
 - Copy tone rules from the other specs bind here too: the §8b.1 guardrail (recommends, never threatens), narrative specifics over generic placeholders (learning spec §9b.1), wit lives in reward lines and culture notes, not in labels.
 - Buttons are verbs, one or two words ("Continue," "Start the lesson"). Labels are nouns. No exclamation points outside reward lines.
 - **If the data can only mean one thing, don't caption the meaning** (decisions 2026-07-16): no "right now" next to a live clock, no "on pace" restating a tick the eye already reads. The reading is the label.
+- **Duration is a promise, never a report** (2026-07-22): cost-before is information a chooser deserves (the tile's "· 6 min" stays); time-after is scorekeeping and grind-bait (session-end omits it; time-spent stats never). One rule, both sides.
 - Every design artifact's copy is reviewed against these rules before approval — copy in an approved artifact ships verbatim.
 
 ### 1.2 The Pacing Rule (adopted 2026-07-19; governs all future pacing questions)
@@ -47,6 +48,8 @@ Apply to ALL user-facing text: labels, buttons, exercise prompts, anchors, prime
 - **Gold pairing:** `--accent` (bright gold) is fills/highlights; `--accent-2` (deep gold) is text/numbers legible on cream. A pair, not interchangeable.
 - **Score bands reuse core tokens** (`--green` / `--secondary` / `--accent-2` / `--text-dim` per the scores spec) — palette changes ripple system-wide by design.
 - **Type split:** `--font-display` (Plus Jakarta Sans — headings, phrases, buttons, labels) vs `--font-text` (Inter — body, captions). Jakarta won the font flag; the flag machinery should be removed per `tripfluent-dev-font-flag.md` §6.
+- **Weight tiers (2026-07-22, blessed):** 600 control labels · 700 headings · 800 reserved for micro-labels under 12px (.dial-delta, .tierup-kicker legalized). Closes the weight topic.
+- **Scales pencil (2026-07-22):** future artifacts adopt the `--space`/`--text` tokens from styles.css; existing artifacts conform opportunistically at next touch, no retrofit sweep.
 - **The press interaction is a push-down, not a scale:** `--shadow: 0 3px 0` reads as elements sitting proud of the surface, so pressed states translate down 2px while the shadow collapses to `--shadow-press` (`0 1px 0`, added §2.2). This is the app's signature button physics — use it on every raised interactive element; never scale-transforms.
 - **Gold sound wave:** audio controls render their speaker/wave glyph in `--accent-2` (gold). This is a brand element, integral to the identity (candidate motif for a future lighthouse-logo evolution) — audio glyphs are never navy, never gray.
 - **Gold is the app's light** (decisions 2026-07-16): gold marks what is lit / current / alive — the flame, audio glyphs, the pace tick, NEW material, kickers, the active nav tab, the Tripfluent crown. **Blue** marks interactive/secondary plus the Strong band. The active nav tab is gold with a Whoop-style under-glow + notch rising from the bar's bottom edge (light comes from beneath, matching the ground glow) — this replaced the old blue active state.
