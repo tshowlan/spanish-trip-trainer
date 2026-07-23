@@ -142,7 +142,10 @@
     build:18, audio_cloze:14, ear_build:20, type_translation:22, listen_type:22, speak_it:15,
     pairs:30, match:25, reply:12, reply_listen:10, close:25, close_swap:28, intro:8 };
   const PRIMER_SECONDS = 20;              // scene -> mission -> guess (first pass only)
-  const TARGET_MIN = 6, BAND_LO = 4, BAND_HI = 8;   // §6.1 target ≈6 min; flag outside 4–8
+  // per-shape time bands (ratified 2026-07-22): a machine lesson is a pattern-drill whose
+  // course is the whole trip (spacing beats massing); scenario lessons carry scenes.
+  const BANDS = { machine: [3,5], kit: [4,6], scenario: [5,8], chain: [3,9] };
+  function shapeOf(lesson, stage){ return lesson.chain ? "chain" : lesson.machine ? "machine" : stage.pass === 0 ? "kit" : "scenario"; }
   // difficulty 0–10 per type (scaffolded → cold), + (item.difficulty−2)×0.5 modifier
   const DIFF = { present:0, match:1.5, pairs:2, mc_es2en:2, listen_choice:2.5, sound_choice:3,
     reply:3, reply_listen:2.5, fill_blank:3.5, build:4, audio_cloze:4.5, ear_build:5.5,
@@ -194,13 +197,28 @@
       qs.forEach(q => { agg.types[q.type] = (agg.types[q.type] || 0) + 1; secs += SECONDS[q.type] || 10; diff += slotDiff(q); });
       agg.secs += secs; agg.diff += qs.length ? diff / qs.length : 0; agg.slots += qs.length;
     }
-    return { sample, secs: Math.round(agg.secs / RUNS), diff: +(agg.diff / RUNS).toFixed(1),
+    // ramp = least-squares slope of slot difficulty over the sample run × slots (total rise);
+    // peak = hardest slot. Mean alone hides thin-flat lessons (chat's vet concern b).
+    let ramp = 0, peak = 0;
+    // ramp excludes the close: its guaranteed 8+ spike would hand every lesson a positive
+    // slope and hide a flat body — the ramp measures the session the composer shaped
+    const body = (sample || []).filter(q => !q.type.startsWith("close"));
+    if (body.length > 1) {
+      const n = body.length, xs = body.map((_, i) => i), ys = body.map(q => q.d);
+      const mx = xs.reduce((a,b)=>a+b,0)/n, my = ys.reduce((a,b)=>a+b,0)/n;
+      const slope = xs.reduce((a,x,i)=>a+(x-mx)*(ys[i]-my),0) / Math.max(1e-6, xs.reduce((a,x)=>a+(x-mx)*(x-mx),0));
+      ramp = +(slope * (n - 1)).toFixed(1);
+      peak = +Math.max(...(sample.map(q => q.d))).toFixed(1);   // peak still includes the close
+    }
+    return { sample, secs: Math.round(agg.secs / RUNS), diff: +(agg.diff / RUNS).toFixed(1), ramp, peak,
       slots: Math.round(agg.slots / RUNS), types: Object.fromEntries(Object.entries(agg.types).map(([k,v]) => [k, +(v/RUNS).toFixed(1)])) };
   }
   function slotDiff(q){
     const base = DIFF[q.type] != null ? DIFF[q.type] : 3;
     const idiff = q.item && q.item.difficulty ? q.item.difficulty : 2;
-    return Math.max(0, base + (idiff - 2) * 0.5);
+    const tokens = q.item && q.item.es ? q.item.es.trim().split(/\s+/).length : 3;
+    const lenTerm = Math.min(1.5, Math.max(0, (tokens - 3) * 0.2));   // structure the author field doesn't carry
+    return Math.max(0, base + (idiff - 2) * 0.5 + (base > 0 ? lenTerm : 0));
   }
 
   /* ---------- gap analysis ---------- */
@@ -218,8 +236,10 @@
     }
     const first = sims.first;
     const min = first.secs / 60;
-    if (min < BAND_LO) out.push(["warn", "short: ~" + min.toFixed(1) + " min first pass (target " + TARGET_MIN + ")"]);
-    if (min > BAND_HI) out.push(["warn", "long: ~" + min.toFixed(1) + " min first pass (target " + TARGET_MIN + ")"]);
+    const band = BANDS[lesson._shape] || BANDS.scenario;
+    if (min < band[0]) out.push(["warn", "short for a " + lesson._shape + ": ~" + min.toFixed(1) + " min (band " + band[0] + "-" + band[1] + ")"]);
+    if (min > band[1]) out.push(["warn", "long for a " + lesson._shape + ": ~" + min.toFixed(1) + " min (band " + band[0] + "-" + band[1] + ")"]);
+    if (!lesson.chain && first.ramp < 0.8 && first.slots >= 8) out.push(["warn", "flat: ramp " + first.ramp + " (session never climbs)"]);
     const chunkless = items.filter(it => (it.tier || 1) >= 2 && it.es.split(/\s+/).length > 6 && !(it.chunks && it.chunks.length));
     if (chunkless.length) out.push(["warn", chunkless.length + " long phrase(s) without chunks (no segmented card)"]);
     const kw = items.filter(it => !(it.keywords && it.keywords.length) && it.es.split(/\s+/).length >= 3);
@@ -234,7 +254,8 @@
   const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
   const mins = s => (s/60).toFixed(1) + " min";
   const diffColor = d => d < 2.5 ? "var(--green)" : d < 4.5 ? "var(--gold)" : d < 6.5 ? "var(--orange)" : "var(--red)";
-  const timeColor = s => { const m = s/60; return m < BAND_LO ? "var(--orange)" : m > BAND_HI ? "var(--red)" : "var(--green)"; };
+  const timeColor = (s, shape) => { const b = BANDS[shape] || BANDS.scenario; const m = s/60;
+    return m < b[0] ? "var(--orange)" : m > b[1] ? "var(--red)" : "var(--green)"; };
   let PACK = "spain", SCEN = "first", TAB = "map", SEL = null;
   let CACHE = {};   // pack -> [{lesson, stage, sims:{first,replay,strong}, gaps}]
 
@@ -244,6 +265,7 @@
     state = baseState(pack); rebuildDeck();
     const rows = [];
     DECK.stages.forEach(st => st.lessons.forEach(l => {
+      l._shape = shapeOf(l, st);
       const sims = { first: simulate(l, "first"), replay: simulate(l, "replay"), strong: simulate(l, "strong") };
       rows.push({ lesson: l, stage: st, sims, gaps: gaps(l, sims) });
     }));
@@ -282,7 +304,7 @@
           ${l.requires ? `<span class="pill">gated: ${esc(Object.values(l.requires)[0])}</span>` : ""}
           ${l.machine ? `<span class="pill gold">machine</span>` : ""}
         </div>
-        <div class="meterrow"><span style="width:52px">time</span><div class="bar"><i style="width:${Math.min(100, s.secs/ (BAND_HI*60) * 100)}%; background:${timeColor(s.secs)}"></i></div><span class="num" style="color:${timeColor(s.secs)}">${mins(s.secs)}</span></div>
+        <div class="meterrow"><span style="width:52px">time</span><div class="bar"><i style="width:${Math.min(100, s.secs/ 480 * 100)}%; background:${timeColor(s.secs, l._shape)}"></i></div><span class="num" style="color:${timeColor(s.secs, l._shape)}">${mins(s.secs)}</span></div>
         <div class="meterrow"><span style="width:52px">difficulty</span><div class="bar"><i style="width:${Math.min(100, s.diff*10)}%; background:${diffColor(s.diff)}"></i></div><span class="num" style="color:${diffColor(s.diff)}">${s.diff}</span></div>
         ${r.gaps.filter(g => g[1] !== "no primer").length ? `<div class="flags">${r.gaps.filter(g => g[1] !== "no primer").map(([k,t]) => `<span class="pill ${k === "note" ? "" : k}">${esc(t)}</span>`).join("")}</div>` : ""}
       </div>`;
@@ -308,7 +330,8 @@
     } else {
       html += `<div class="panel"><b>Composed flow</b> <span style="color:var(--dim)">(one real ${SCEN}-scenario run of ${RUNS} simulated; blue outline = ear-first T₁; gold = the close)</span>
         <div class="flow">${s.sample.map((q, i) => `<span class="slot ${q.type} ${q.t1 ? "t1" : ""}" title="difficulty ${q.d.toFixed(1)} · ~${q.s}s"><span class="n">${i+1}</span>${q.type}</span>`).join("")}</div>
-        <div class="legendrow"><span>avg <b>${s.slots} slots</b></span><span>est. <b style="color:${timeColor(s.secs)}">${mins(s.secs)}</b> (target ${TARGET_MIN})</span>
+        <div class="legendrow"><span>avg <b>${s.slots} slots</b></span><span>est. <b style="color:${timeColor(s.secs, l._shape)}">${mins(s.secs)}</b> (band ${(BANDS[l._shape]||BANDS.scenario).join("-")} for a ${l._shape})</span>
+          <span>ramp <b>${s.ramp}</b> · peak <b>${s.peak}</b></span>
           <span>difficulty <b style="color:${diffColor(s.diff)}">${s.diff}</b>/10</span>
           <span>type mix: ${esc(Object.entries(s.types).sort((a,b)=>b[1]-a[1]).map(([k,v])=>k+"×"+v).join(" · "))}</span></div>
         ${diffCurve(s.sample)}</div>`;
@@ -371,7 +394,7 @@
     html += `<h2>The atlas model <span class="sub">the audit's own dials — [tune] by editing dev/atlas.html</span></h2>
       <div class="panel"><b>Seconds per slot</b><p style="color:var(--dim)">${esc(Object.entries(SECONDS).map(([k,v])=>k+" "+v+"s").join(" · "))}</p>
       <b style="display:block; margin-top:8px">Difficulty 0–10 per type</b><p style="color:var(--dim)">${esc(Object.entries(DIFF).map(([k,v])=>k+" "+v).join(" · "))}</p>
-      <p style="color:var(--dim); margin-top:6px">+ (item.difficulty − 2) × 0.5 per slot · primer +${PRIMER_SECONDS}s on first pass · target ${TARGET_MIN} min (flag outside ${BAND_LO}–${BAND_HI})</p></div>`;
+      <p style="color:var(--dim); margin-top:6px">+ (item.difficulty − 2) × 0.5 per slot · primer +${PRIMER_SECONDS}s on first pass · + length term min(1.5, (tokens−3)×0.2) · shape bands: machine ${BANDS.machine.join("–")} · kit ${BANDS.kit.join("–")} · scenario ${BANDS.scenario.join("–")} min</p></div>`;
     M.innerHTML = html;
   }
 
@@ -382,20 +405,24 @@
     const passMedian = {};
     rows.forEach(r => { (passMedian[r.stage.pass] = passMedian[r.stage.pass] || []).push(r.sims[SCEN].diff); });
     Object.keys(passMedian).forEach(k => { const a = passMedian[k].sort((x,y)=>x-y); passMedian[k] = a[Math.floor(a.length/2)]; });
-    const data = rows.map(r => ({ r, pass: r.stage.pass, title: r.lesson.title, items: (r.lesson.items||[]).length,
-      time: r.sims[SCEN].secs, diff: r.sims[SCEN].diff, dev: +(r.sims[SCEN].diff - passMedian[r.stage.pass]).toFixed(1),
+    const data = rows.map(r => ({ r, pass: r.stage.pass, title: r.lesson.title, shape: r.lesson._shape, items: (r.lesson.items||[]).length,
+      time: r.sims[SCEN].secs, diff: r.sims[SCEN].diff, ramp: r.sims[SCEN].ramp || 0, peak: r.sims[SCEN].peak || 0,
+      dev: +(r.sims[SCEN].diff - passMedian[r.stage.pass]).toFixed(1),
       gapsN: r.gaps.filter(g => g[0] !== "note").length }));
     data.sort((a,b) => (a[SORT.key] > b[SORT.key] ? 1 : a[SORT.key] < b[SORT.key] ? -1 : 0) * SORT.dir);
     const gapTotal = data.reduce((a,d) => a + d.gapsN, 0);
-    const timeBad = data.filter(d => d.time/60 < BAND_LO || d.time/60 > BAND_HI).length;
-    let html = `<h2>Audit <span class="sub">${data.length} lessons · ${gapTotal} open gaps · ${timeBad} outside the ${BAND_LO}–${BAND_HI} min band · scenario: ${SCEN}</span></h2>
+    const timeBad = data.filter(d => { const b = BANDS[d.shape] || BANDS.scenario; const m = d.time/60; return m < b[0] || m > b[1]; }).length;
+    let html = `<h2>Audit <span class="sub">${data.length} lessons · ${gapTotal} open gaps · ${timeBad} outside their shape band (machine ${BANDS.machine.join("–")} · kit ${BANDS.kit.join("–")} · scenario ${BANDS.scenario.join("–")}) · ramp excludes the close · scenario: ${SCEN}</span></h2>
       <div class="panel"><table><tr>
-      ${[["pass","pass"],["title","lesson"],["items","phrases"],["time","est. time"],["diff","difficulty"],["dev","vs pass median"],["gapsN","gaps"]]
+      ${[["pass","pass"],["title","lesson"],["shape","shape"],["items","phrases"],["time","est. time"],["diff","difficulty"],["ramp","ramp"],["peak","peak"],["dev","vs pass median"],["gapsN","gaps"]]
         .map(([k, lbl]) => `<th data-k="${k}">${lbl}${SORT.key === k ? (SORT.dir > 0 ? " ↑" : " ↓") : ""}</th>`).join("")}</tr>`;
     data.forEach(d => {
       html += `<tr class="click" data-id="${esc(d.r.lesson.id)}"><td class="num">${d.pass}</td><td>${esc(d.title)}</td>
-        <td class="num">${d.items}</td><td class="num" style="color:${timeColor(d.time)}">${mins(d.time)}</td>
+        <td>${esc(d.shape)}</td>
+        <td class="num">${d.items}</td><td class="num" style="color:${timeColor(d.time, d.shape)}">${mins(d.time)}</td>
         <td class="num" style="color:${diffColor(d.diff)}">${d.diff}</td>
+        <td class="num" style="color:${d.ramp < 0.8 ? "var(--orange)" : "var(--green)"}">${d.ramp}</td>
+        <td class="num">${d.peak}</td>
         <td class="num" style="color:${Math.abs(d.dev) >= 1.5 ? "var(--orange)" : "var(--dim)"}">${d.dev > 0 ? "+" : ""}${d.dev}</td>
         <td class="num" style="color:${d.gapsN ? "var(--red)" : "var(--green)"}">${d.gapsN}</td></tr>`;
     });
@@ -407,8 +434,75 @@
     M.querySelectorAll("tr.click").forEach(tr => tr.addEventListener("click", () => { SEL = tr.dataset.id; TAB = "lesson"; render(); }));
   }
 
+  /* ---------- VIEW: machine exposure ledger ---------- */
+  function computeLedger(){
+    const key = PACK + ":ledger";
+    if (CACHE[key]) return CACHE[key];
+    state = baseState(PACK); rebuildDeck();
+    const machines = DECK.stages.flatMap(st => st.lessons).filter(l => l.machine);
+    const frames = machines.map(m => m.frame);
+    const counts = {};
+    frames.forEach(f => counts[f] = { own: 0, swapRuns: 0, fillerCredits: 0, practice: 0 });
+    const frameOfItem = it => { if (!it) return null;
+      if (it.frame) return it.frame;
+      const real = (ALL_ITEMS || []).find(x => x.id === it.id);
+      return real && real.frame || null; };
+    // 1) every lesson's journey contribution: first pass + one replay, per lesson
+    DECK.stages.forEach(st => st.lessons.forEach(l => {
+      if (l.chain) return;
+      ["first","replay"].forEach(kind => {
+        setScenario(l, kind);
+        const qs = composeSession(l);
+        const runFrame = l.machine ? l.frame : (l.items[0] && l.items[0].frame) || null;
+        qs.forEach(q => {
+          if (q.type === "close_swap") {
+            if (runFrame && counts[runFrame]) counts[runFrame].swapRuns++;          // the frame RUN
+            const ff = frameOfItem(q.item);
+            if (ff && counts[ff]) counts[ff].fillerCredits++;                       // the filler's home
+            return;
+          }
+          if (q.type === "close" && runFrame && counts[runFrame]) { counts[runFrame].swapRuns++; return; }
+          const its = q.type === "pairs" ? (q.items || []) : (q.item ? [q.item] : []);
+          its.forEach(it => { const f = frameOfItem(it); if (f && counts[f]) counts[f][l.machine && l.frame === f ? "own" : "fillerCredits"]++; });
+        });
+      });
+    }));
+    // 2) practice projection: 6 sessions on an all-taught, all-due state
+    for (let i = 0; i < 6; i++) {
+      state = baseState(PACK); rebuildDeck();
+      DECK.stages.flatMap(st => st.lessons).flatMap(l => l.items).forEach((it, j) => {
+        state.learn[it.id] = { exposures: 4, streak: j % 6 ? 2 : 0, lapses: j % 6 ? 0 : 1, interval: 2, ease: 2.3,
+          lastSeen: daysAgoStr(3), lastCorrect: daysAgoStr(3), due: daysAgoStr(1), lastMiss: j % 6 ? undefined : daysAgoStr(0) };
+      });
+      composeReview().forEach(q => {
+        const its = q.type === "pairs" ? (q.items || []) : (q.item ? [q.item] : []);
+        its.forEach(it => { const f = frameOfItem(it); if (f && counts[f]) counts[f].practice++; });
+      });
+    }
+    const rows = machines.map(m => { const c = counts[m.frame];
+      return { title: m.title, frame: m.frame, beat: m.beat || "", ...c, total: c.own + c.swapRuns + c.fillerCredits + c.practice }; });
+    const med = rows.map(r => r.total).sort((a,b)=>a-b)[Math.floor(rows.length/2)] || 1;
+    rows.forEach(r => r.low = r.total < med * 0.6);
+    CACHE[key] = { rows, med };
+    return CACHE[key];
+  }
+  function viewMachines(){
+    const { rows, med } = computeLedger();
+    let html = `<h2>Machine exposure ledger <span class="sub">foundation = total curriculum exposure, never lesson minutes. Projected reps: full journey (each lesson first pass + one replay) + 6 practice sessions. Median ${med}; outlier-low = under 60% of median.</span></h2>
+      <div class="panel"><table><tr><th>machine</th><th>own lesson</th><th>close runs</th><th>filler credits</th><th>practice</th><th>total</th><th></th></tr>`;
+    rows.sort((a,b) => b.total - a.total).forEach(r => {
+      html += `<tr><td><b>${esc(r.title)}</b><div style="color:var(--dim); font-size:11px">${esc(r.beat)}</div></td>
+        <td class="num">${r.own}</td><td class="num">${r.swapRuns}</td><td class="num">${r.fillerCredits}</td><td class="num">${r.practice}</td>
+        <td class="num" style="font-weight:700; color:${r.low ? "var(--red)" : "var(--green)"}">${r.total}</td>
+        <td>${r.low ? '<span class="pill bad">under-taught (ledger outlier)</span>' : '<span class="pill ok">foundation held by the spiral</span>'}</td></tr>`;
+    });
+    html += `</table></div>
+      <div class="panel" style="color:var(--dim); font-size:12.5px">Reading the columns: <b style="color:var(--ink)">own lesson</b> = reps inside the machine's own lesson (first pass + replay) · <b style="color:var(--ink)">close runs</b> = every time ANY lesson's close runs this frame · <b style="color:var(--ink)">filler credits</b> = this machine's taught fillers appearing elsewhere (close swaps, practice boards) · <b style="color:var(--ink)">practice</b> = cross-lesson maintenance slots. A low TOTAL is a real foundation gap; fix it where distributed practice lives (filler rotation, Mix-it, close variants), never by inflating the intro lesson.</div>`;
+    M.innerHTML = html;
+  }
+
   /* ---------- chrome ---------- */
-  const TABS_DEF = [["map","Map"],["forks","Engine forks"],["audit","Audit"]];
+  const TABS_DEF = [["map","Map"],["forks","Engine forks"],["audit","Audit"],["machines","Machines"]];
   function render(){
     document.getElementById("tabs").innerHTML = TABS_DEF.map(([k,l]) =>
       `<button class="${TAB === k || (TAB === "lesson" && k === "map") ? "on" : ""}" data-k="${k}">${l}</button>`).join("");
@@ -416,6 +510,7 @@
     if (TAB === "map") viewMap();
     else if (TAB === "lesson") viewLesson();
     else if (TAB === "forks") viewForks();
+    else if (TAB === "machines") viewMachines();
     else viewAudit();
   }
   document.getElementById("packsel").addEventListener("change", e => { PACK = e.target.value; SEL = null; TAB = "map"; render(); });
