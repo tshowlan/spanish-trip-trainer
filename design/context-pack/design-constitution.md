@@ -49,6 +49,10 @@ doc narrates, this file states only the laws.
   lights where it lives (the settled letter/word + sweep). Sister differentiation between supply
   kinds is SCALE + MECHANICS (word-tiles relocate; letter-keys deposit and stay behind), never
   polarity. *(letter rungs)*
+- **Tray ruling — base letters only (2026-07-23):** a letter tray never offers á and a side by
+  side, at any scale. Tiles are base forms; the accent materializes when the right letter settles
+  the slot (green sweep, the forgiveness path). Accent knowledge lives in the settle (recognition)
+  and the typed rungs (production), not in tile discrimination. *(word/phrase fill, Tom's ruling)*
 - **Buttons don't inherit fonts:** every tappable control sets `font-family` explicitly. Found six
   times (.btn, .choice, .word, exercise inputs, .ring-label, .dial-delta). *(cleanup passes)*
 
