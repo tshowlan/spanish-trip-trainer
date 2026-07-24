@@ -207,7 +207,8 @@ function startLesson(lesson) {
   // Compose FIRST (so the primer's guess item is still "new" here and stays in the session),
   // then run the primer on a first pass before the lesson proper. Replays/reviews skip straight in.
   run = { lesson, qs: composeSession(lesson), idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map() };
-  if (!lessonDone(lesson.id) && lesson.primer && lesson.primer.guessItem) renderPrimer(lesson, renderQuestion);
+  // chains may skip the guess moment (nothing new to guess, ruling 2026-07-24) but keep the scene
+  if (!lessonDone(lesson.id) && lesson.primer && (lesson.primer.guessItem || lesson.primer.scene)) renderPrimer(lesson, renderQuestion);
   else renderQuestion();
 }
 
@@ -296,7 +297,8 @@ function finishChain(lesson) {
 function renderPrimer(lesson, onDone) {
   const p = lesson.primer || {};
   const items = lesson.items || [];
-  const guess = items.find(it => it.es === p.guessItem || it.id === p.guessItem || (it.keywords || []).includes(p.guessItem)) || items[0];
+  // no guessItem = the guess moment is skipped by design (chains: nothing new to guess)
+  const guess = p.guessItem ? (items.find(it => it.es === p.guessItem || it.id === p.guessItem || (it.keywords || []).includes(p.guessItem)) || items[0]) : null;
   const app = $("#app"); clearFooter(); hideTabbar();
   const photo = introPhoto(lesson);
 
@@ -315,7 +317,10 @@ function renderPrimer(lesson, onDone) {
   const guessStep = () => {
     if (!guess) return onDone();
     app.innerHTML = "";
-    const others = items.filter(it => it !== guess).map(it => it.en);
+    let others = items.filter(it => it !== guess).map(it => it.en);
+    // a chain owns almost nothing (its user lines reference items homed elsewhere), so the
+    // guess borrows decoys from the wider deck rather than rendering a one-button choice
+    if (others.length < 2) others = others.concat((ALL_ITEMS || []).filter(it => it !== guess && it.en !== guess.en).map(it => it.en));
     const opts = shuffle([guess.en, ...[...new Set(others)].filter(Boolean).sort(() => Math.random() - .5).slice(0, 2)]);
     app.appendChild(el(`<div class="runner primer">
       <div class="primer-body">

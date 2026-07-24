@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-24 — SPAIN COMPLETION AUTHORED (chat) → SHIPPED by Code (v181)
+- 39 phrase adds / 19 lessons (sweep law: 4-8 tok bias; chat's TLDR said 38, actual count 39), 5 chunk specs, 2 kw fixes, 5 primers (s5-real, s5-fix, both chains, s4-room) w/ missions + guessItems.
+- Chain-lastnight repaired: the missing buen-viaje reply becomes "Gracias, hasta la próxima" (new item, home: chain-lastnight; the cultureNote payload is now learnable). Narr opener deleted (the new primer scene absorbs it); Toni's vermuteria epilogue retained. NOTE: the "undefined turns" in the export were narrator turns the exporter didn't print (exporter fixed) — the missing reply was real.
+- Ruling landed: chains skip the guess moment. The pre-lesson flow DID object (primer was gated on guessItem) — gate now accepts scene-only primers, guess step skips without a guessItem, and chain guesses borrow decoys from the deck (verified live: dinner scene->skip, lastnight 3-option guess).
+- Next: atlas re-score -> read residue together. Then Mexico (pack-state file already exported; inherits all rulings).
+- File: tripfluent-spain-completion.md
+
 ## 2026-07-23 — ATLAS RULINGS EXECUTED (v179): re-band, redistribution, split, seven duplicates
 - Chat's four rulings landed (tripfluent-atlas-rulings.md): (1) LEDGER PRIMACY — machines audited by journey reps (>=15 [tune]); time band secondary, re-ratified 2-4; (2) redistribution before splitting — Numbers→sp-cash (veinte/cincuenta/cien + en efectivo home), First words trimmed (No entiendo + No lo sé → s1-rescue); (3) Checking in split at the key handoff — s4-room born (8 room phrases, primer awaits the writing session); (4) all seven duplicates deleted at their non-home sites per the adjudication table (context merged to home where richer).
 - RE-SCORE: 36 lessons · 27 open gaps (was 35) · 17 outside band (was 26). All 7 machines green in the new band; First words 5.7 min and Numbers 5.2 min back in kit band; Checking in 5.1 min in band. CONFORMANCE LINT: 0 failing laws — fully green for the first time.

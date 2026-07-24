@@ -43,6 +43,8 @@ const CURRICULUM = {
                       { es: "Sí", en: "Yes", tier: 1, tags: ["basics"], contextEs: "Sí, por favor", contextEn: "Yes, please" },
                       { es: "No", en: "No", tier: 1, tags: ["basics"], contextEs: "No, gracias", contextEn: "No, thanks" },
                       { es: "¿Habla inglés?", en: "Do you speak English?", note: "Formal (usted). Polite default with strangers.", tier: 1, tags: ["communication"], contextEs: "Perdone, ¿habla inglés?", contextEn: "Excuse me, do you speak English?", anchor: "'inglés' = English.", keywords: ["inglés"] },
+                      { es: "Buenos días, ¿cómo está?", en: "Good morning, how are you?", note: "The polite formal check-in. Safe with anyone.", tier: 1, tags: ["greetings"], keywords: ["cómo"] },
+                      { es: "Muchas gracias, muy amable", en: "Thank you, that's very kind", note: "The thank-you that makes people smile. Worth the two extra words.", tier: 1, tags: ["politeness"], keywords: ["amable"] },
                     ]
                   },
                   {
@@ -86,6 +88,8 @@ const CURRICULUM = {
                       { es: "ocho", en: "eight", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "A las ocho", contextEn: "At eight" },
                       { es: "nueve", en: "nine", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Abre a las nueve", contextEn: "It opens at nine" },
                       { es: "diez", en: "ten", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Diez euros", contextEn: "Ten euros" },
+                      { es: "¿Me lo puede escribir?", en: "Can you write it down?", note: "The numbers rescue. Prices survive any accent when they're on paper.", tier: 1, tags: ["numbers"], keywords: ["escribir"] },
+                      { es: "¿Cuánto es en total?", en: "How much is it all together?", tier: 1, tags: ["numbers","money"], keywords: ["total"] },
                     ]
                   },
                   {
@@ -151,6 +155,7 @@ const CURRICULUM = {
                       { es: "Necesito un médico", en: "I need a doctor", tier: 1, tags: ["emergency", "health"], keywords: ["médico"], variants: ["Necesito un doctor"], frame: "necesito ___" },
                       { es: "Necesito un taxi", en: "I need a taxi", tier: 1, tags: ["core"], keywords: ["taxi"], frame: "necesito ___" },
                       { es: "Necesito un cargador", en: "I need a charger", tier: 1, tags: ["core"], keywords: ["cargador"], frame: "necesito ___", note: "The dead-phone phrase. Learn it before you need it." },
+                      { es: "Necesito ir al aeropuerto", en: "I need to go to the airport", note: "The machine takes verbs too: necesito ir, necesito cambiar, necesito volver.", tier: 1, tags: ["core"], keywords: ["ir"], frame: "necesito ___" },
                     ]
                   },
                   {
@@ -187,7 +192,8 @@ const CURRICULUM = {
             { es: "Más despacio, por favor", en: "Slower, please", tier: 2, tags: ["communication"], keywords: ["despacio"] },
             { es: "¿Qué significa?", en: "What does it mean?", tier: 2, tags: ["communication"], contextEs: "¿Qué significa esta palabra?", contextEn: "What does this word mean?", keywords: ["significa"] },
             { es: "No entiendo", en: "I don't understand", tier: 1, tags: ["communication"], contextEs: "Perdón, no entiendo bien", contextEn: "Sorry, I don't understand well", keywords: ["entiendo"] },
-            { es: "No lo sé", en: "I don't know", tier: 1, tags: ["communication"], contextEs: "No lo sé, lo siento", contextEn: "I don't know, sorry" },
+            { es: "No lo sé", en: "I don't know", tier: 1, tags: ["communication"], contextEs: "No lo sé, lo siento", contextEn: "I don't know, sorry", keywords: ["sé"] },
+            { es: "¿Cómo se escribe?", en: "How do you spell it?", tier: 1, tags: ["communication"], keywords: ["escribe"] },
           ]
         },
         {
@@ -200,7 +206,9 @@ const CURRICULUM = {
             { es: "Agua sin gas", en: "Still water (no bubbles)", tier: 1, tags: ["drink", "restaurant"], contextEs: "Una botella de agua sin gas", contextEn: "A bottle of still water", keywords: ["agua"] },
             { es: "La cuenta, por favor", en: "The check, please", tier: 2, tags: ["restaurant", "money"], keywords: ["cuenta"], variants: ["¿Me trae la cuenta?"] },
             { es: "Soy alérgico al marisco", en: "I'm allergic to shellfish", note: "Women: 'alérgica'.", tier: 2, tags: ["dietary", "health"], anchor: "'alérgico' = allergic.", keywords: ["alérgico", "marisco"] },
-            { es: "Sin gluten", en: "Gluten-free", tier: 1, tags: ["dietary", "food"], contextEs: "¿Tienen algo sin gluten?", contextEn: "Do you have anything gluten-free?", keywords: ["gluten"] }
+            { es: "Sin gluten", en: "Gluten-free", tier: 1, tags: ["dietary", "food"], contextEs: "¿Tienen algo sin gluten?", contextEn: "Do you have anything gluten-free?", keywords: ["gluten"] },
+            { es: "Para compartir", en: "To share", note: "Tapas grammar. One plate, two forks, no explanation needed.", tier: 1, tags: ["restaurant","food"], keywords: ["compartir"] },
+            { es: "Un poco más de pan, por favor", en: "A little more bread, please", tier: 1, tags: ["restaurant","food"], keywords: ["pan"] },
           ]
         },
         {
@@ -215,7 +223,8 @@ const CURRICULUM = {
             { es: "Salida", en: "Exit", cat: "Catalan sign: 'Sortida'.", tier: 1, tags: ["signs"], contextEs: "La salida está por allí", contextEn: "The exit is over there", keywords: ["salida"] },
             { es: "Entrada", en: "Entrance", cat: "Catalan sign: 'Entrada'.", tier: 1, tags: ["signs"], contextEs: "La entrada principal", contextEn: "The main entrance", anchor: "'entrada' = entrance (to enter).", keywords: ["entrada"] },
             { es: "Empujar", en: "Push (sign)", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'empujar'", contextEn: "The door says 'push'", keywords: ["empujar"] },
-            { es: "Tirar", en: "Pull (sign)", note: "On doors 'Tirar' = pull. Confusingly it also means 'to throw'.", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'tirar'", contextEn: "The door says 'pull'", keywords: ["tirar"] }
+            { es: "Tirar", en: "Pull (sign)", note: "On doors 'Tirar' = pull. Confusingly it also means 'to throw'.", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'tirar'", contextEn: "The door says 'pull'", keywords: ["tirar"] },
+            { es: "¿Me da la llave del servicio?", en: "Can I have the bathroom key?", note: "Cafés often keep the loo locked. The key lives behind the counter.", tier: 1, tags: ["restaurant"], keywords: ["llave","servicio"] },
           ]
         },
         {
@@ -229,7 +238,9 @@ const CURRICULUM = {
             { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta euros", contextEn: "Fifty euros" },
             { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien euros", contextEn: "One hundred euros", anchor: "Think: 'century / percent', 100." },
             { es: "el cambio", en: "the change", tier: 2, tags: ["money"], keywords: ["cambio"] },
-            { es: "¿Me cobra, por favor?", en: "Can I pay, please?", tier: 2, tags: ["money", "shopping"], keywords: ["cobra"], note: "The everyday Spain way to ask to pay at a counter or bar. Literally 'will you charge me'." }
+            { es: "¿Me cobra, por favor?", en: "Can I pay, please?", tier: 2, tags: ["money", "shopping"], keywords: ["cobra"], note: "The everyday Spain way to ask to pay at a counter or bar. Literally 'will you charge me'." },
+            { es: "¿Tiene cambio de cincuenta?", en: "Do you have change for a fifty?", tier: 2, tags: ["money"], keywords: ["cambio","cincuenta"] },
+            { es: "un billete de veinte", en: "a twenty-euro note", note: "Yes, the same word as a train ticket. Money and tickets are both 'billetes'.", tier: 2, tags: ["money"], keywords: ["billete","veinte"] },
           ]
         },
         {
@@ -244,7 +255,9 @@ const CURRICULUM = {
             { es: "¿Está lejos?", en: "Is it far?", tier: 1, tags: ["directions"], keywords: ["lejos"], reply: { es: "No, está aquí cerca", en: "No, it's close by" } },
             { es: "cerca", en: "near", tier: 1, tags: ["directions"], contextEs: "Está aquí cerca", contextEn: "It's close by", keywords: ["cerca"] },
             { es: "la esquina", en: "the corner", tier: 2, tags: ["directions"], contextEs: "En la esquina, a la derecha", contextEn: "At the corner, on the right", keywords: ["esquina"] },
-            { es: "la plaza", en: "the square", tier: 1, tags: ["directions", "sights"], contextEs: "La plaza está cerca", contextEn: "The square is nearby", keywords: ["plaza"] }
+            { es: "la plaza", en: "the square", tier: 1, tags: ["directions", "sights"], contextEs: "La plaza está cerca", contextEn: "The square is nearby", keywords: ["plaza"] },
+            { es: "La segunda calle a la derecha", en: "The second street on the right", tier: 1, tags: ["directions"], keywords: ["calle","segunda"] },
+            { es: "Está al final de la calle", en: "It's at the end of the street", tier: 1, tags: ["directions"], keywords: ["final"] },
           ]
         },
         {
@@ -259,7 +272,9 @@ const CURRICULUM = {
             { es: "Recogida de equipajes", en: "Baggage claim", tier: 2, tags: ["airport", "signs"], keywords: ["equipajes"] },
             { es: "Control de seguridad", en: "Security control", tier: 1, tags: ["airport", "signs"], contextEs: "Pasar el control de seguridad", contextEn: "To go through security", anchor: "'seguridad' = security.", keywords: ["seguridad"] },
             { es: "Aduana", en: "Customs", tier: 1, tags: ["airport", "signs"], contextEs: "Pasar por aduana", contextEn: "To go through customs", keywords: ["aduana"] },
-            { es: "el vuelo", en: "the flight", tier: 1, tags: ["airport"], contextEs: "¿A qué hora sale el vuelo?", contextEn: "What time does the flight leave?", keywords: ["vuelo"] }
+            { es: "el vuelo", en: "the flight", tier: 1, tags: ["airport"], contextEs: "¿A qué hora sale el vuelo?", contextEn: "What time does the flight leave?", keywords: ["vuelo"] },
+            { es: "¿Dónde está la puerta B12?", en: "Where is gate B12?", note: "The finding machine meets the departures board.", tier: 1, tags: ["airport","transport"], keywords: ["puerta"] },
+            { es: "Mi vuelo sale a las diez", en: "My flight leaves at ten", tier: 1, tags: ["airport","transport"], keywords: ["vuelo","sale"] },
           ]
         },
         {
@@ -270,7 +285,11 @@ const CURRICULUM = {
             { es: "Que tenga un buen día", en: "Have a good day", tier: 2, tags: ["social", "politeness"], keywords: ["día"] },
             { es: "¿Le pongo algo más?", en: "Shall I get you anything else?", tier: 2, tags: ["social", "restaurant"], keywords: ["pongo"], note: "Marina's version of 'anything else': pongo, literally 'shall I put'." },
             { es: "¿Todo bien?", en: "Everything okay?", tier: 2, tags: ["social"], keywords: ["todo"] },
-            { es: "Ahora mismo", en: "Right away", tier: 2, tags: ["social"], keywords: ["mismo"] }
+            { es: "Ahora mismo", en: "Right away", tier: 2, tags: ["social"], keywords: ["mismo"] },
+            { es: "¿Qué le pongo?", en: "What can I get you?", note: "Counter Spanish. Pongo again: literally 'what shall I put you'.", tier: 2, tags: ["social"], keywords: ["pongo"] },
+            { es: "¿Efectivo o tarjeta?", en: "Cash or card?", tier: 2, tags: ["social"], keywords: ["efectivo","tarjeta"] },
+            { es: "Son cinco con veinte", en: "That's five twenty", note: "How prices sound out loud: euros 'con' cents.", tier: 2, tags: ["social"], keywords: ["con"] },
+            { es: "Que vaya bien", en: "Take care / all the best", note: "The everyday goodbye you'll hear leaving any shop.", tier: 2, tags: ["social"], keywords: ["vaya"] },
           ]
         },
         {
@@ -280,6 +299,11 @@ const CURRICULUM = {
           items: [
             { es: "Me han robado", en: "I've been robbed", tier: 2, tags: ["emergency"], keywords: ["robado"] },
             { es: "No me siento bien", en: "I don't feel well", tier: 2, tags: ["emergency", "health"], keywords: ["siento"] },
+            { es: "Llame a una ambulancia", en: "Call an ambulance", note: "Same shape as 'llame a la policía'. 112 reaches both.", tier: 2, tags: ["emergency","health"], keywords: ["ambulancia"] },
+            { es: "He perdido mi pasaporte", en: "I've lost my passport", tier: 2, tags: ["emergency"], keywords: ["pasaporte"] },
+            { es: "¿Dónde está la farmacia de guardia?", en: "Where's the 24-hour pharmacy?", note: "The flashing green cross. Sra. Rosa's night-shift colleagues.", tier: 2, tags: ["emergency","health"], keywords: ["guardia"] },
+            { es: "¿Hay un hospital cerca?", en: "Is there a hospital nearby?", tier: 2, tags: ["emergency","health"], keywords: ["hospital"] },
+            { es: "Es urgente", en: "It's urgent", tier: 2, tags: ["emergency"], keywords: ["urgente"] },
           ]
         }
       ]
@@ -332,7 +356,8 @@ const CURRICULUM = {
             { es: "¿Está incluido el servicio?", en: "Is service included?", note: "Tipping in Spain is small/optional, rounding up is normal.", tier: 2, tags: ["money", "restaurant"], keywords: ["servicio"] },
             { es: "Quédese con el cambio", en: "Keep the change", tier: 2, tags: ["money", "restaurant"], keywords: ["cambio"] },
             { es: "¿Hay un cajero cerca?", en: "Is there an ATM nearby?", note: "Spain: 'cajero' = ATM.", tier: 2, tags: ["money", "directions"], keywords: ["cajero", "cerca"] },
-            { es: "una propina", en: "a tip", tier: 1, tags: ["money", "restaurant"], contextEs: "Dejar una propina", contextEn: "To leave a tip", keywords: ["propina"] }
+            { es: "una propina", en: "a tip", tier: 1, tags: ["money", "restaurant"], contextEs: "Dejar una propina", contextEn: "To leave a tip", keywords: ["propina"] },
+            { es: "¿Puede dividir la cuenta?", en: "Can you split the bill?", tier: 1, tags: ["money","restaurant"], keywords: ["dividir"] },
           ]
         },
         {
@@ -344,6 +369,10 @@ const CURRICULUM = {
             { es: "¿Qué hora es?", en: "What time is it?", tier: 2, tags: ["time"], keywords: ["hora"], reply: { es: "Son las dos", en: "It's two o'clock" } },
             { es: "Son las dos", en: "It's two o'clock", tier: 1, tags: ["time"], contextEs: "Son las dos de la tarde", contextEn: "It's two in the afternoon", keywords: ["dos"] },
             { es: "a las ocho", en: "at eight", tier: 1, tags: ["time"], contextEs: "Quedamos a las ocho", contextEn: "Let's meet at eight", keywords: ["ocho"] },
+            { es: "Son las dos y media", en: "It's half past two", tier: 1, tags: ["time"], keywords: ["media"] },
+            { es: "a las ocho de la noche", en: "at eight in the evening", note: "Dinner time. Really.", tier: 1, tags: ["time"], keywords: ["noche"] },
+            { es: "Está cerrado hasta las cinco", en: "It's closed until five", note: "The shop closed until 'later' from the primer, now with a number.", tier: 1, tags: ["time"], keywords: ["cerrado"] },
+            { es: "El desayuno es de ocho a diez", en: "Breakfast is from eight to ten", tier: 1, tags: ["time","food"], keywords: ["desayuno"] },
           ]
         },
         {
@@ -373,7 +402,9 @@ const CURRICULUM = {
             { es: "¿Tengo que hacer transbordo?", en: "Do I have to change lines?", note: "'Transbordo' = changing lines.", tier: 2, tags: ["metro", "transport"], keywords: ["transbordo"] },
             { es: "¿Cuántas paradas faltan?", en: "How many stops are left?", tier: 2, tags: ["metro", "transport"], keywords: ["paradas"] },
             { es: "el andén", en: "the platform", tier: 1, tags: ["metro", "transport"], contextEs: "El tren llega al andén", contextEn: "The train arrives at the platform", keywords: ["andén"] },
-            { es: "la salida", en: "the exit", cat: "Catalan sign: 'Sortida'.", tier: 1, tags: ["metro", "signs"], contextEs: "¿Dónde está la salida?", contextEn: "Where's the exit?", keywords: ["salida"] }
+            { es: "la salida", en: "the exit", cat: "Catalan sign: 'Sortida'.", tier: 1, tags: ["metro", "signs"], contextEs: "¿Dónde está la salida?", contextEn: "Where's the exit?", keywords: ["salida"] },
+            { es: "¿Es esta la línea dos?", en: "Is this line two?", tier: 1, tags: ["metro","transport"], keywords: ["línea"] },
+            { es: "El metro cierra a las doce", en: "The metro closes at twelve", tier: 1, tags: ["metro","transport"], keywords: ["cierra","metro"] },
           ]
         },
         {
@@ -388,7 +419,8 @@ const CURRICULUM = {
             { es: "el AVE", en: "the high-speed train", note: "Spain's high-speed rail.", tier: 1, tags: ["train", "transport"], contextEs: "El AVE a Madrid", contextEn: "The high-speed train to Madrid", keywords: ["ave"] },
             { es: "¿El tren va con retraso?", en: "Is the train delayed?", tier: 2, tags: ["train"], keywords: ["retraso", "tren"] },
             { es: "ida y vuelta", en: "round trip", tier: 2, tags: ["train", "transport"], contextEs: "Un billete de ida y vuelta", contextEn: "A round-trip ticket", keywords: ["vuelta"] },
-            { es: "¿Dónde valido el billete?", en: "Where do I validate the ticket?", tier: 2, tags: ["train"], keywords: ["valido", "billete"] }
+            { es: "¿Dónde valido el billete?", en: "Where do I validate the ticket?", tier: 2, tags: ["train"], keywords: ["valido", "billete"] },
+            { es: "El tren con destino a Madrid", en: "The train bound for Madrid", note: "Announcement Spanish. 'Con destino a' = bound for.", tier: 2, tags: ["train","transport"], keywords: ["destino"] },
           ]
         },
         {
@@ -402,7 +434,9 @@ const CURRICULUM = {
             { es: "¿Cuánto cuesta el billete?", en: "How much is the ticket?", tier: 2, tags: ["bus", "money"], keywords: ["billete"], reply: { es: "Son dos euros con veinte", en: "It's two euros twenty" } },
             { es: "¿Me avisa cuando lleguemos?", en: "Will you let me know when we arrive?", tier: 2, tags: ["bus"], keywords: ["avisa"] },
             { es: "¿Para en...?", en: "Does it stop at...?", tier: 2, tags: ["bus"], contextEs: "¿Para en la playa?", contextEn: "Does it stop at the beach?" },
-            { es: "el conductor", en: "the driver", tier: 1, tags: ["bus", "transport"], contextEs: "Pregúntele al conductor", contextEn: "Ask the driver", keywords: ["conductor"] }
+            { es: "el conductor", en: "the driver", tier: 1, tags: ["bus", "transport"], contextEs: "Pregúntele al conductor", contextEn: "Ask the driver", keywords: ["conductor"] },
+            { es: "La próxima parada, por favor", en: "The next stop, please", tier: 1, tags: ["bus","transport"], keywords: ["próxima","parada"] },
+            { es: "¿Cada cuánto pasa el bus?", en: "How often does the bus come?", tier: 1, tags: ["bus","transport"], keywords: ["cada","pasa"] },
           ]
         },
         {
@@ -411,8 +445,8 @@ const CURRICULUM = {
           topic: "Transport · Ferry", title: "Ferries & boats",
           reward: "Docks, crossings, round-trips, you can board a boat without getting on the wrong one.",
           items: [
-            { es: "¿Dónde se compran los billetes del ferry?", en: "Where do you buy ferry tickets?", tier: 2, tags: ["ferry", "transport"], keywords: ["billetes", "ferry"] },
-            { es: "¿A qué hora sale el próximo ferry?", en: "What time does the next ferry leave?", tier: 2, tags: ["ferry", "time"], keywords: ["ferry", "hora"] },
+            { es: "¿Dónde se compran los billetes del ferry?", en: "Where do you buy ferry tickets?", tier: 2, tags: ["ferry", "transport"], keywords: ["billetes", "ferry"], chunks: [["¿Dónde se compran", "where do you buy", "new"], ["los billetes del ferry?", "the ferry tickets"]] },
+            { es: "¿A qué hora sale el próximo ferry?", en: "What time does the next ferry leave?", tier: 2, tags: ["ferry", "time"], keywords: ["ferry", "hora"], chunks: [["¿A qué hora sale", "what time does it leave"], ["el próximo ferry?", "the next ferry", "new"]] },
             { es: "¿Cuánto dura la travesía?", en: "How long is the crossing?", tier: 2, tags: ["ferry", "transport"], keywords: ["travesía"] },
             { es: "¿Desde qué muelle sale?", en: "Which dock does it leave from?", tier: 2, tags: ["ferry"], keywords: ["muelle"] },
             { es: "un billete de ida y vuelta", en: "a return (round-trip) ticket", tier: 2, tags: ["ferry", "transport"], keywords: ["billete"] },
@@ -437,6 +471,7 @@ const CURRICULUM = {
         },
         {
           id: "s4-room", topic: "Hotel", title: "Your room",
+          primer: { scene: "Carmen slides the key across the desk, and the room upstairs becomes yours: the AC that hums too loud, the towel that never arrived, the pillow situation. Whatever the room does next, you have the words for it.", mission: "Run your room: ask for what's missing, report what's broken, thank the person who fixes it.", guessItem: "El aire acondicionado no funciona" },
           reward: "Towels, pillows, the stubborn AC: you run your room.",
           items: [
             { es: "¿Puede limpiar la habitación?", en: "Can you clean the room?", tier: 2, tags: ["hotel", "lodging"], keywords: ["limpiar", "habitación"] },
@@ -446,7 +481,8 @@ const CURRICULUM = {
             { es: "El aire acondicionado no funciona", en: "The AC isn't working", tier: 2, tags: ["hotel", "lodging"], keywords: ["aire"] },
             { es: "el papel higiénico", en: "toilet paper", note: "Spain: 'papel higiénico'.", tier: 1, tags: ["hotel", "bathroom"], contextEs: "No hay papel higiénico", contextEn: "There's no toilet paper", keywords: ["papel"] },
             { es: "jabón", en: "soap", tier: 1, tags: ["hotel", "bathroom"], contextEs: "No hay jabón", contextEn: "There's no soap", keywords: ["jabón"] },
-            { es: "Muchas gracias por todo", en: "Thank you very much for everything", note: "Cleaning staff appreciate it, and a small tip.", tier: 2, tags: ["politeness"] }
+            { es: "Muchas gracias por todo", en: "Thank you very much for everything", note: "Cleaning staff appreciate it, and a small tip.", tier: 2, tags: ["politeness"], keywords: ["por todo"] },
+            { es: "La ducha no funciona", en: "The shower isn't working", tier: 2, tags: ["hotel","lodging"], keywords: ["ducha"] },
           ]
         },
         {
@@ -504,30 +540,37 @@ const CURRICULUM = {
       lessons: [
         {
           id: "s5-real", topic: "Advanced · Real situations", title: "Real conversations",
+          primer: { scene: "No more single lines. From here the conversations run whole: Marina asks, you answer, she answers back, and nobody slows down for you. You've been ready longer than you think.", mission: "Hold your end of a real exchange, question to answer to reply.", guessItem: "¿Podría recomendarme un plato típico de aquí?" },
           reward: "Look at you, full sentences now. People might mistake you for someone who lives here.",
           items: [
-            { es: "¿Podría recomendarme un plato típico de aquí?", en: "Could you recommend a typical local dish?", tier: 3, tags: ["restaurant", "food"], difficulty: 4, keywords: ["plato", "típico"] },
+            { es: "¿Podría recomendarme un plato típico de aquí?", en: "Could you recommend a typical local dish?", tier: 3, tags: ["restaurant", "food"], difficulty: 4, keywords: ["plato", "típico"], chunks: [["¿Podría recomendarme", "could you recommend me", "new"], ["un plato típico de aquí?", "a typical local dish"]] },
             { es: "Disculpe, creo que hay un error en la cuenta", en: "Excuse me, I think there's a mistake on the bill", tier: 3, tags: ["restaurant", "money"], difficulty: 4, keywords: ["error", "cuenta"], chunks: [["Disculpe", "excuse me"], ["creo que hay", "I think there's", "new"], ["un error", "a mistake"], ["en la cuenta", "on the bill"]] },
             { es: "¿A qué hora cierra la cocina?", en: "What time does the kitchen close?", tier: 3, tags: ["restaurant", "time"], difficulty: 3, keywords: ["hora", "cocina"] },
             { es: "Estamos buscando un sitio para cenar cerca de aquí", en: "We're looking for somewhere to have dinner near here", tier: 3, tags: ["restaurant", "directions"], difficulty: 4, keywords: ["buscando", "cenar", "cerca"], chunks: [["Estamos buscando", "we're looking for"], ["un sitio para cenar", "a place to have dinner", "new"], ["cerca de aquí", "near here"]] },
             { es: "Perdone, ¿este tren va al centro?", en: "Excuse me, does this train go to the center?", tier: 3, tags: ["train", "transport"], difficulty: 3, keywords: ["tren", "centro"] },
-            { es: "¿Sería posible cambiar de habitación?", en: "Would it be possible to change rooms?", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["cambiar", "habitación"] }
+            { es: "¿Sería posible cambiar de habitación?", en: "Would it be possible to change rooms?", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["cambiar", "habitación"] },
+            { es: "¿Nos puede sacar una foto?", en: "Can you take a photo of us?", tier: 3, tags: ["social"], difficulty: 3, keywords: ["sacar","foto"] },
+            { es: "¿Me pone otra, cuando pueda?", en: "Another one, when you get a chance?", note: "Bar-regular register. 'Cuando pueda' is the polish.", tier: 3, tags: ["restaurant","social"], difficulty: 3, keywords: ["otra","pueda"] },
           ]
         },
         {
           id: "s5-fix", topic: "Advanced · When things go wrong", title: "Complaints & mix-ups",
+          primer: { scene: "The order comes out wrong at a place that isn't Marina's. The bill has a mystery line. The room key opens nothing. Tonight you talk your way out of all three, in Spanish.", mission: "Fix what went wrong: flag it, explain it, settle it.", guessItem: "¿Puede llamar a un médico, por favor?" },
           reward: "Lost, overcharged, double-booked, you can talk your way out of it. Travel boss mode.",
           items: [
             { es: "Reservé una habitación pero no aparece", en: "I booked a room but it's not showing up", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["reservé", "aparece"] },
             { es: "Creo que me he perdido, ¿me puede ayudar?", en: "I think I'm lost, can you help me?", tier: 3, tags: ["directions", "emergency"], difficulty: 3, keywords: ["perdido", "ayudar"], chunks: [["Creo que me he perdido", "I think I'm lost", "new"], ["¿me puede ayudar?", "can you help me?"]] },
             { es: "Se me ha olvidado la cartera en el taxi", en: "I left my wallet in the taxi", tier: 3, tags: ["taxi", "emergency"], difficulty: 4, keywords: ["cartera", "taxi"], chunks: [["Se me ha olvidado", "I've left", "new"], ["la cartera", "my wallet"], ["en el taxi", "in the taxi"]] },
-            { es: "¿Puede llamar a un médico, por favor?", en: "Can you call a doctor, please?", tier: 3, tags: ["emergency", "health"], difficulty: 3, keywords: ["llamar", "médico"] },
-            { es: "Esto no es lo que he pedido", en: "This isn't what I ordered", tier: 2, tags: ["restaurant"], keywords: ["pedido"] },
-            { es: "¿Dónde está la comisaría más cercana?", en: "Where's the nearest police station?", note: "Spain: 'comisaría' = police station.", tier: 3, tags: ["emergency", "directions"], difficulty: 4, keywords: ["comisaría", "cercana"] }
+            { es: "¿Puede llamar a un médico, por favor?", en: "Can you call a doctor, please?", tier: 3, tags: ["emergency", "health"], difficulty: 3, keywords: ["llamar", "médico"], chunks: [["¿Puede llamar a un médico,", "can you call a doctor", "new"], ["por favor?", "please"]] },
+            { es: "Esto no es lo que he pedido", en: "This isn't what I ordered", tier: 2, tags: ["restaurant"], keywords: ["pedido"], chunks: [["Esto no es", "this isn't"], ["lo que he pedido", "what I ordered", "new"]] },
+            { es: "¿Dónde está la comisaría más cercana?", en: "Where's the nearest police station?", note: "Spain: 'comisaría' = police station.", tier: 3, tags: ["emergency", "directions"], difficulty: 4, keywords: ["comisaría", "cercana"] },
+            { es: "Me han cobrado de más", en: "They've overcharged me", tier: 3, tags: ["money","restaurant"], difficulty: 3, keywords: ["cobrado"] },
+            { es: "¿Puede revisar la reserva?", en: "Can you check the reservation?", tier: 3, tags: ["hotel","lodging"], difficulty: 3, keywords: ["revisar"] },
           ]
         },
         {
           id: "sp-chain-dinner", topic: "Advanced · Boss", title: "Dinner at Marina's",
+          primer: { scene: "Friday night at the tasca and you don't wait to be seated. You catch Marina's eye across the room; she waves you to the corner table like she's been holding it all week. A plate lands at the next table and someone says que aproveche. Tonight you run the whole dinner, greeting to bill, without a word of English.", mission: "Run the full dinner: greet, order, handle the hiccup, pay, say goodnight." },
           reward: "Greeting to bill, you ran a whole dinner at the tasca without switching to English. That's the trip, rehearsed.",
           cultureNote: "In a tasca you don't wait to be seated formally, you catch Marina's eye and she waves you to a table. And when your plate lands, 'que aproveche' is the local 'enjoy', say it back to the next table over.",
           items: [],
@@ -554,13 +597,15 @@ const CURRICULUM = {
         },
         {
           id: "sp-chain-lastnight", topic: "Advanced · Capstone", title: "Your last night",
+          primer: { scene: "Last night in Barcelona. Andrés drops you near Plaça Reial and your feet carry you back to Marina's tasca, one more time. Somewhere between the vermut and the bill, someone will wish you buen viaje, and you'll know what to say back.", mission: "One last evening, the whole trip in one sitting: arrive, order, the mix-up, pay, and the goodbye that means until next time.", guessItem: "Gracias, hasta la próxima" },
           reward: "That was the whole trip in one evening, greeting, ordering, an allergy, a mix-up, paying, goodbyes. You didn't switch to English once. You're ready for Barcelona.",
           cultureNote: "When someone says 'buen viaje,' the warm reply is 'gracias, hasta la próxima', 'until next time', even if you both know it may be a while. In Catalonia you'll also hear 'adéu' for goodbye; 'adéu-siau' is the fond, old-fashioned version.",
-          items: [],
+          items: [
+            { es: "Gracias, hasta la próxima", en: "Thanks, until next time", note: "The warm reply to 'buen viaje'. It means you're coming back.", tier: 3, tags: ["politeness", "social"], keywords: ["próxima"] }
+          ],
           chain: {
             title: "Your last night",
             turns: [
-              { narr: "Your last night in Barcelona. Andrés dropped you near Plaça Reial, and your feet carried you back to Marina's tasca, one more time." },
               { npc: { es: "¡Buenas noches! Tu última noche, ¿verdad? Pasa, pasa.", en: "Good evening! Your last night, right? Come in, come in." } },
               { user: "Buenas noches" },
               { npc: { es: "Siéntate. ¿Qué te pongo esta vez?", en: "Sit down. What can I get you this time?" } },
@@ -579,6 +624,7 @@ const CURRICULUM = {
               { npc: { es: "Por supuesto. Gracias por venir todos estos días.", en: "Of course. Thank you for coming all these days." } },
               { user: "Muchas gracias por todo" },
               { npc: { es: "Que te vaya muy bien. ¡Buen viaje!", en: "Take good care. Have a good trip!" } },
+              { user: "Gracias, hasta la próxima" },
               { narr: "On your way home, Toni waves you over to the vermutería, one last vermut, on the house." },
               { npc: { es: "¡Campeón! La última, invita la casa.", en: "Champ! The last one's on the house." } },
               { user: "Está muy rico" },

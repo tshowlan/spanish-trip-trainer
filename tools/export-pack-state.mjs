@@ -48,6 +48,7 @@ function lessonBlock(lesson, passIdx, snapPack) {
     out.push(`- chain (${turns.length} turns; user lines are the graded items):`);
     turns.forEach((t, i) => {
       if (t.npc) out.push(`  ${i + 1}. NPC: ${t.npc.es} — ${t.npc.en}`);
+      else if (t.narr) out.push(`  ${i + 1}. NARR: ${t.narr}`);
       else out.push(`  ${i + 1}. USER: ${t.user}`);
     });
   } else {
