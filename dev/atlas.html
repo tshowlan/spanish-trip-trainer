@@ -145,7 +145,7 @@
   const PRIMER_SECONDS = 20;              // scene -> mission -> guess (first pass only)
   // per-shape time bands (ratified 2026-07-22): a machine lesson is a pattern-drill whose
   // course is the whole trip (spacing beats massing); scenario lessons carry scenes.
-  const BANDS = { machine: [3,5], kit: [4,6], scenario: [5,8], chain: [3,9] };
+  const BANDS = { machine: [2,4], kit: [4,6], scenario: [5,8], chain: [3,9] };   // machine re-ratified 2-4 (2026-07-23): the ledger is primary, the band secondary
   function shapeOf(lesson, stage){ return lesson.chain ? "chain" : lesson.machine ? "machine" : stage.pass === 0 ? "kit" : "scenario"; }
   // difficulty 0–10 per type (scaffolded → cold), + (item.difficulty−2)×0.5 modifier
   const DIFF = { present:0, match:1.5, pairs:2, mc_es2en:2, listen_choice:2.5, sound_choice:3,
@@ -487,13 +487,14 @@
     const rows = machines.map(m => { const c = counts[m.frame];
       return { title: m.title, frame: m.frame, beat: m.beat || "", ...c, total: c.own + c.swapRuns + c.fillerCredits + c.practice }; });
     const med = rows.map(r => r.total).sort((a,b)=>a-b)[Math.floor(rows.length/2)] || 1;
-    rows.forEach(r => r.low = r.total < med * 0.6);
+    const LEDGER_MIN = 15;   // [tune] ruling 2026-07-23: a machine's foundation = >=15 journey reps; the PRIMARY machine audit
+    rows.forEach(r => r.low = r.total < LEDGER_MIN);
     CACHE[key] = { rows, med };
     return CACHE[key];
   }
   function viewMachines(){
     const { rows, med } = computeLedger();
-    let html = `<h2>Machine exposure ledger <span class="sub">foundation = total curriculum exposure, never lesson minutes. Projected reps: full journey (each lesson first pass + one replay) + 6 practice sessions. Median ${med}; outlier-low = under 60% of median.</span></h2>
+    let html = `<h2>Machine exposure ledger <span class="sub">foundation = total curriculum exposure, never lesson minutes. Projected reps: full journey (each lesson first pass + one replay) + 6 practice sessions. Median ${med}; under-taught = below 15 journey reps [tune]. THE PRIMARY MACHINE AUDIT (ruling 2026-07-23): the ledger outranks the time band; fix a low total with distributed practice, never by inflating the intro lesson.</span></h2>
       <div class="panel"><table><tr><th>machine</th><th>own lesson</th><th>close runs</th><th>filler credits</th><th>practice</th><th>total</th><th></th></tr>`;
     rows.sort((a,b) => b.total - a.total).forEach(r => {
       html += `<tr><td><b>${esc(r.title)}</b><div style="color:var(--dim); font-size:11px">${esc(r.beat)}</div></td>

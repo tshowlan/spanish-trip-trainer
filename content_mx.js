@@ -302,7 +302,6 @@ const MEXICO_PACK = {
           items: [
             { es: "Me robaron", en: "I was robbed", tier: 2, tags: ["emergency"], keywords: ["robaron"] },
             { es: "No me siento bien", en: "I don't feel well", tier: 2, tags: ["emergency", "health"], keywords: ["siento"] },
-            { es: "¿Habla inglés?", en: "Do you speak English?", tier: 1, tags: ["emergency", "communication"], keywords: ["inglés"] },
             { es: "Perdí mi pasaporte", en: "I lost my passport", tier: 2, tags: ["emergency"], keywords: ["pasaporte"] },
             { es: "Me duele aquí", en: "It hurts here", tier: 2, tags: ["emergency", "health"], keywords: ["duele"] }
           ]
@@ -338,8 +337,7 @@ const MEXICO_PACK = {
             { es: "¿Qué pan tienen?", en: "What pastries do you have?", tier: 2, tags: ["coffee", "food"], keywords: ["pan"] },
             { es: "¿Para aquí o para llevar?", en: "For here or to go?", note: "What the barista asks you.", tier: 2, tags: ["coffee"], keywords: ["llevar"], reply: { es: "Para llevar, por favor", en: "To go, please" } },
             { es: "¿Me da un vaso de agua?", en: "Can I get a glass of water?", tier: 2, tags: ["drink"], keywords: ["agua", "vaso"] },
-            { es: "Solo efectivo", en: "Cash only", note: "You might hear this at small spots.", tier: 1, tags: ["money"], contextEs: "Aquí es solo efectivo", contextEn: "Here it's cash only", keywords: ["efectivo"] },
-            { es: "¿Cuál es la contraseña del wifi?", en: "What's the wifi password?", tier: 2, tags: ["coffee", "lodging"], keywords: ["contraseña", "wifi"] }
+            { es: "Solo efectivo", en: "Cash only", note: "You might hear this at small spots.", tier: 1, tags: ["money"], contextEs: "Aquí es solo efectivo", contextEn: "Here it's cash only", keywords: ["efectivo"] }
           ]
         },
         {
@@ -372,8 +370,7 @@ const MEXICO_PACK = {
             { es: "doscientos", en: "two hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Doscientos pesos", contextEn: "Two hundred pesos" },
             { es: "¿Qué hora es?", en: "What time is it?", tier: 2, tags: ["time"], keywords: ["hora"], reply: { es: "Son las dos", en: "It's two o'clock" } },
             { es: "Son las dos", en: "It's two o'clock", tier: 1, tags: ["time"], contextEs: "Son las dos de la tarde", contextEn: "It's two in the afternoon", keywords: ["dos"] },
-            { es: "a las ocho", en: "at eight", tier: 1, tags: ["time"], contextEs: "Nos vemos a las ocho", contextEn: "See you at eight", keywords: ["ocho"] },
-            { es: "¿A qué hora cierra?", en: "What time does it close?", tier: 2, tags: ["time"], keywords: ["hora", "cierra"] }
+            { es: "a las ocho", en: "at eight", tier: 1, tags: ["time"], contextEs: "Nos vemos a las ocho", contextEn: "See you at eight", keywords: ["ocho"] }
           ]
         },
         {
@@ -448,7 +445,6 @@ const MEXICO_PACK = {
             { es: "Necesito más toallas", en: "I need more towels", tier: 2, tags: ["hotel", "lodging"], keywords: ["toallas"] },
             { es: "¿Me trae otra almohada?", en: "Can you bring another pillow?", tier: 2, tags: ["hotel", "lodging"], keywords: ["almohada"] },
             { es: "La regadera no sirve", en: "The shower isn't working", note: "Mexico: 'regadera' = shower; 'no sirve' = doesn't work.", tier: 2, tags: ["hotel", "lodging"], keywords: ["regadera", "sirve"] },
-            { es: "No hay agua caliente", en: "There's no hot water", tier: 2, tags: ["hotel", "lodging"], keywords: ["agua", "caliente"] },
             { es: "papel de baño", en: "toilet paper", note: "Mexico: 'papel de baño'.", tier: 2, tags: ["hotel", "bathroom"], keywords: ["papel", "baño"] },
             { es: "No molestar", en: "Do not disturb (sign)", tier: 1, tags: ["hotel", "signs"], contextEs: "El letrero de 'no molestar'", contextEn: "The 'do not disturb' sign", keywords: ["molestar"] },
             { es: "Muchas gracias por todo", en: "Thank you very much for everything", note: "Housekeeping appreciates it, and a small tip.", tier: 2, tags: ["politeness"] }
@@ -507,7 +503,6 @@ const MEXICO_PACK = {
             { es: "¿De dónde eres?", en: "Where are you from?", tier: 2, tags: ["social"], keywords: ["dónde", "eres"], reply: { es: "Soy de aquí, de la ciudad", en: "I'm from here, from the city" } },
             { es: "Soy de...", en: "I'm from...", tier: 1, tags: ["social"], contextEs: "Soy de Estados Unidos", contextEn: "I'm from the United States", keywords: ["soy"] },
             { es: "Mucho gusto", en: "Nice to meet you", tier: 1, tags: ["social", "greetings"], contextEs: "Mucho gusto, me llamo Ana", contextEn: "Nice to meet you, I'm Ana", reply: { es: "Igualmente", en: "Likewise" } },
-            { es: "¿Qué me recomienda?", en: "What do you recommend?", note: "Callback from ordering, locals love being asked.", tier: 2, tags: ["social", "food"], keywords: ["recomienda"] },
             { es: "¿Cuál es tu mezcal favorito?", en: "What's your favorite mezcal?", tier: 2, tags: ["social", "drink"], keywords: ["mezcal"] },
             { es: "Está buenísimo", en: "It's really good", tier: 2, tags: ["social", "food"], keywords: ["buenísimo"], variants: ["Está riquísimo"] },
             { es: "Una más, por favor", en: "One more, please", tier: 1, tags: ["social", "drink"], contextEs: "Otra cerveza, una más por favor", contextEn: "Another beer, one more please", keywords: ["más"] },
@@ -593,8 +588,7 @@ const MEXICO_PACK = {
             { es: "¿A qué hora empieza el recorrido?", en: "What time does the tour start?", tier: 3, tags: ["sights", "tour", "time"], difficulty: 3, keywords: ["hora", "recorrido"] },
             { es: "¿El recorrido incluye las ruinas?", en: "Does the tour include the ruins?", tier: 3, tags: ["sights", "tour"], difficulty: 4, keywords: ["recorrido"] },
             { es: "¿Podemos tomar fotos aquí?", en: "Can we take photos here?", tier: 3, tags: ["sights", "tour"], difficulty: 3 },
-            { es: "¿Nos recomienda un buen lugar?", en: "Can you recommend a good spot?", tier: 3, tags: ["sights", "tour"], difficulty: 3, keywords: ["recomienda"] },
-            { es: "¿Cuánto cuesta la entrada?", en: "How much is admission?", tier: 3, tags: ["sights", "tour", "money"], difficulty: 3, keywords: ["cuánto"] }
+            { es: "¿Nos recomienda un buen lugar?", en: "Can you recommend a good spot?", tier: 3, tags: ["sights", "tour"], difficulty: 3, keywords: ["recomienda"] }
           ]
         },
         {

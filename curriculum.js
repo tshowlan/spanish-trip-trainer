@@ -42,9 +42,7 @@ const CURRICULUM = {
                       { es: "Perdón", en: "Excuse me / Sorry", tier: 1, tags: ["politeness"], contextEs: "Perdón, ¿me ayuda?", contextEn: "Excuse me, can you help me?", keywords: ["perdón"] },
                       { es: "Sí", en: "Yes", tier: 1, tags: ["basics"], contextEs: "Sí, por favor", contextEn: "Yes, please" },
                       { es: "No", en: "No", tier: 1, tags: ["basics"], contextEs: "No, gracias", contextEn: "No, thanks" },
-                      { es: "No entiendo", en: "I don't understand", tier: 1, tags: ["communication"], contextEs: "Perdón, no entiendo bien", contextEn: "Sorry, I don't understand well", keywords: ["entiendo"] },
                       { es: "¿Habla inglés?", en: "Do you speak English?", note: "Formal (usted). Polite default with strangers.", tier: 1, tags: ["communication"], contextEs: "Perdone, ¿habla inglés?", contextEn: "Excuse me, do you speak English?", anchor: "'inglés' = English.", keywords: ["inglés"] },
-                      { es: "No lo sé", en: "I don't know", tier: 1, tags: ["communication"], contextEs: "No lo sé, lo siento", contextEn: "I don't know, sorry" },
                     ]
                   },
                   {
@@ -76,7 +74,7 @@ const CURRICULUM = {
                   {
                     id: "sp0-numbers", topic: "Core numbers", title: "Numbers that pay",
                     primer: { scene: "Numbers are money here. Prices, room numbers, platforms, tips. These pay for themselves on day one." },
-                    beat: "Count it, pay it, check the change.",
+                    beat: "Count it: platforms, times, tables, tips.",
                     items: [
                       { es: "uno", en: "one", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Uno, por favor", contextEn: "One, please" },
                       { es: "dos", en: "two", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Una mesa para dos", contextEn: "A table for two" },
@@ -88,10 +86,6 @@ const CURRICULUM = {
                       { es: "ocho", en: "eight", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "A las ocho", contextEn: "At eight" },
                       { es: "nueve", en: "nine", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Abre a las nueve", contextEn: "It opens at nine" },
                       { es: "diez", en: "ten", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Diez euros", contextEn: "Ten euros" },
-                      { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte euros", contextEn: "Twenty euros" },
-                      { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta euros", contextEn: "Fifty euros" },
-                      { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien euros", contextEn: "One hundred euros", anchor: "Think: 'century / percent', 100." },
-                      { es: "En efectivo", en: "In cash", tier: 1, tags: ["money"], contextEs: "Voy a pagar en efectivo", contextEn: "I'll pay in cash", keywords: ["efectivo"] },
                     ]
                   },
                   {
@@ -192,6 +186,8 @@ const CURRICULUM = {
             { es: "¿Puede repetir, por favor?", en: "Can you repeat that, please?", tier: 2, tags: ["communication"], keywords: ["repetir"], variants: ["¿Me lo repite, por favor?"] },
             { es: "Más despacio, por favor", en: "Slower, please", tier: 2, tags: ["communication"], keywords: ["despacio"] },
             { es: "¿Qué significa?", en: "What does it mean?", tier: 2, tags: ["communication"], contextEs: "¿Qué significa esta palabra?", contextEn: "What does this word mean?", keywords: ["significa"] },
+            { es: "No entiendo", en: "I don't understand", tier: 1, tags: ["communication"], contextEs: "Perdón, no entiendo bien", contextEn: "Sorry, I don't understand well", keywords: ["entiendo"] },
+            { es: "No lo sé", en: "I don't know", tier: 1, tags: ["communication"], contextEs: "No lo sé, lo siento", contextEn: "I don't know, sorry" },
           ]
         },
         {
@@ -228,7 +224,10 @@ const CURRICULUM = {
           primer: { scene: "At La Boquería, Núria weighs out a paper cone of jamón and holds out her hand. Taped to her stall: a hand-lettered 'solo efectivo.'", mission: "Handle euros and pay Núria in cash without fumbling.", guessItem: "el cambio" },
           items: [
             { es: "¿Cuánto cuesta?", en: "How much is it?", tier: 2, tags: ["money", "shopping"], keywords: ["cuánto", "cuesta"], variants: ["¿Qué precio tiene?"], reply: { es: "Son cinco euros", en: "It's five euros" } },
-            { es: "en efectivo", en: "in cash", tier: 2, tags: ["money"], keywords: ["efectivo"] },
+            { es: "en efectivo", en: "in cash", tier: 2, tags: ["money"], keywords: ["efectivo"], contextEs: "Voy a pagar en efectivo", contextEn: "I'll pay in cash" },
+            { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte euros", contextEn: "Twenty euros" },
+            { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta euros", contextEn: "Fifty euros" },
+            { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien euros", contextEn: "One hundred euros", anchor: "Think: 'century / percent', 100." },
             { es: "el cambio", en: "the change", tier: 2, tags: ["money"], keywords: ["cambio"] },
             { es: "¿Me cobra, por favor?", en: "Can I pay, please?", tier: 2, tags: ["money", "shopping"], keywords: ["cobra"], note: "The everyday Spain way to ask to pay at a counter or bar. Literally 'will you charge me'." }
           ]
@@ -423,8 +422,8 @@ const CURRICULUM = {
         },
         {
           id: "s4-checkin", topic: "Hotel", title: "Checking in",
-          primer: { scene: "The lobby is cool and marble quiet after the street. Carmen at the front desk looks up with the practiced smile of someone who has seen every kind of tired. You have a reservation. Somewhere.", mission: "Check in, get the wifi, and run your room: towels, pillows, the stubborn AC.", guessItem: "¿Tienen wifi?" },
-          reward: "Check-in, wifi, towels, a broken AC, you run the whole front desk and your room.",
+          primer: { scene: "The lobby is cool and marble quiet after the street. Carmen at the front desk looks up with the practiced smile of someone who has seen every kind of tired. You have a reservation. Somewhere.", mission: "Check in, get the wifi and the key, and leave your bags.", guessItem: "¿Tienen wifi?" },
+          reward: "Check-in, breakfast, wifi, the key: you run the whole front desk.",
           items: [
             { es: "Tengo una reserva", en: "I have a reservation", note: "Spain: 'reserva'. (Latin America: 'reservación'.)", tier: 2, tags: ["hotel", "lodging"], keywords: ["reserva"] },
             { es: "a nombre de...", en: "under the name of...", tier: 2, tags: ["hotel", "lodging"], contextEs: "A nombre de García", contextEn: "Under the name of García", keywords: ["nombre"] },
@@ -433,7 +432,13 @@ const CURRICULUM = {
             { es: "¿El desayuno está incluido?", en: "Is breakfast included?", tier: 2, tags: ["hotel", "food"], keywords: ["desayuno"] },
             { es: "¿Tienen wifi?", en: "Do you have wifi?", tier: 1, tags: ["hotel", "lodging"], contextEs: "¿Tienen wifi en la habitación?", contextEn: "Is there wifi in the room?", keywords: ["wifi"] },
             { es: "¿Puedo dejar las maletas?", en: "Can I leave my bags?", tier: 2, tags: ["hotel", "lodging"], keywords: ["maletas"] },
-            { es: "la llave", en: "the key", tier: 1, tags: ["hotel", "lodging"], contextEs: "¿Me da la llave?", contextEn: "Can I have the key?", keywords: ["llave"] },
+            { es: "la llave", en: "the key", tier: 1, tags: ["hotel", "lodging"], contextEs: "¿Me da la llave?", contextEn: "Can I have the key?", keywords: ["llave"] }
+          ]
+        },
+        {
+          id: "s4-room", topic: "Hotel", title: "Your room",
+          reward: "Towels, pillows, the stubborn AC: you run your room.",
+          items: [
             { es: "¿Puede limpiar la habitación?", en: "Can you clean the room?", tier: 2, tags: ["hotel", "lodging"], keywords: ["limpiar", "habitación"] },
             { es: "Necesito más toallas", en: "I need more towels", tier: 2, tags: ["hotel", "lodging"], keywords: ["toallas"] },
             { es: "¿Puede traer otra almohada?", en: "Can you bring another pillow?", tier: 2, tags: ["hotel", "lodging"], keywords: ["almohada"] },
