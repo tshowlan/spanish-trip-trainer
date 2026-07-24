@@ -565,7 +565,7 @@ tools/atlas-snapshot.json (no snapshot for this pack yet).
 - reward (invert to promise): "That was the whole trip in one evening, greeting, ordering, a mix-up, small talk, paying, goodbyes. You didn't switch to English once. You're ready."
 - cultureNote (cast dialogue stream): "When someone says 'buen viaje,' the warm reply is 'gracias, nos vemos', 'see you', even if you both know you won't. It's the leaving-well that matters."
 - chain (25 turns; user lines are the graded items):
-  1. USER: undefined
+  1. NARR: Your last night in Oaxaca. Andrés dropped you near the Zócalo, and your feet carried you back to Doña Lupe's comedor, one more time.
   2. NPC: ¡Buenas noches! Tu última noche, ¿verdad? Pásale, pásale. — Good evening! Your last night, right? Come in, come in.
   3. USER: Buenas noches
   4. NPC: Siéntate, siéntate. ¿Qué te traigo esta vez? — Sit, sit. What can I get you this time?
@@ -584,7 +584,7 @@ tools/atlas-snapshot.json (no snapshot for this pack yet).
   17. NPC: Claro. Gracias por venir todos estos días. — Of course. Thank you for coming all these days.
   18. USER: Muchas gracias por todo
   19. NPC: Que te vaya muy bien. ¡Buen viaje! — Take care. Have a good trip!
-  20. USER: undefined
+  20. NARR: On your way out, Beto waves you over to his mezcal stand, one for the road.
   21. NPC: ¡Amigo! La última, va por la casa. — My friend! The last one, on the house.
   22. USER: ¿Cuál es tu mezcal favorito?
   23. NPC: El de pechuga. Pruébalo, es una despedida. — The pechuga. Try it, it's a farewell.
