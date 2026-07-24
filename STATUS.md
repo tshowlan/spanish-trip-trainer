@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-23 — Font law sweep SHIPPED (v178) + letter-rungs r8 committed
+- Chat's ruling executed: all 16 lint-caught tappables set the display font via one grouped rule (headline: .tab labels had rendered Arial since the tab bar was built). Lint font law now PASSES; base-citation check cleared by r8. Remaining lint FAIL: the seven duplicate items, sent to chat for home-assignment adjudication.
+- design/letter-rungs.html r8 committed (Tom-saved, verified surgical: tray ruling, 0.3em gap, base citation) — first artifact through the full loop: designed → shipped → build-refined → re-issued to parity.
+
 ## 2026-07-23 — LETTER RUNGS + STANDING DESIGN GOVERNANCE SHIPPED (v177)
 - word_fill + phrase_fill live (per design/letter-rungs.html): principled blanks (slip/conf telemetry first, trap heuristics fallback, ≤40%), slot color law (one bright NEXT slot), supply rule (live keys raised, spent recede 0.28), forgiveness at the blank, graceful grading (0-1 wrong taps pass with slips logged; 2+ = SRS miss + requeue, NO correction sheet, never dead-ends), tray→keys expertise reversal (exposures ≥ 5+difficulty, +1.0 atlas difficulty).
 - Placement = Tom's scoping ruling: LADDER rung 2 (production band entry), rung-down re-ask law (typed misses step down phrase_fill→word_fill, climb back on success), second-chance re-asks. Sound-off sibling swaps (EAR_SIBLINGS) + per-slot timing telemetry (state.telem) shipped alongside.
