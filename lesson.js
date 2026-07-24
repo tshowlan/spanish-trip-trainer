@@ -1516,11 +1516,16 @@ function renderLetterFill(q, scale) {
     }
   };
   if (!keysMode) {
-    // tray: needed letters (in slot order, duplicates kept) + slip-informed distractors
-    const wants = slots.map(s => s.dataset.want);
+    // tray: needed letters (in slot order, duplicates kept) + slip-informed distractors.
+    // Phrase ruling (Tom, 2026-07-23): at phrase scale the tray offers BASE letters only —
+    // never á and a side by side. The accent materializes when the right letter settles
+    // the slot (green sweep). Word scale keeps the accent pairs (its job is spotlighting
+    // one word's tricky letters). The sibling loop below self-cancels on normed wants.
+    const isPhrase = scale === "phrase";
+    const wants = slots.map(s => isPhrase ? norm(s.dataset.want) : s.dataset.want);
     const distract = [];
     wants.forEach(wl => { const n = norm(wl); if (n !== wl.toLowerCase() && !wants.includes(n) && !distract.includes(n)) distract.push(n); });
-    const traps = "áébvhoue".split("").filter(c => !wants.some(x => x.toLowerCase() === c) && !distract.includes(c));
+    const traps = (isPhrase ? "bvhoue" : "áébvhoue").split("").filter(c => !wants.some(x => x.toLowerCase() === c) && !distract.includes(c));
     while (distract.length < Math.min(3, 2 + Math.floor(wants.length / 2)) && traps.length) distract.push(traps.shift());
     const tray = el(`<div class="keytray"></div>`);
     shuffle([...wants, ...distract]).forEach(letter => {
