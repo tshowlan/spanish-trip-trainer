@@ -15,6 +15,12 @@ for f in design/*-base.html; do
   [ -e "$f" ] && cp "$f" "$PACK/"
 done
 
+# pack-state export (standing writing-session artifact — chat authors against THIS,
+# never memory; the taught-once law makes stale-state authoring illegal).
+# Atlas numbers merge from tools/atlas-snapshot.json; refresh that from dev/atlas.html
+# after content ships.
+node tools/export-pack-state.mjs
+
 cat > "$PACK/README.md" <<EOF
 # Tripfluent design context pack
 
@@ -26,6 +32,8 @@ current truth instead of memory:
   from a base and cite its version)
 - styles.css — LIVE tokens and component styles (always wins over artifact
   token blocks)
+- *-pack-state.md — repo-truth phrase lists per lesson + atlas numbers, for
+  WRITING sessions (author against these, never memory: taught-once law)
 
 Plus, if the session touches an existing surface: that surface's current
 artifact from design/.
