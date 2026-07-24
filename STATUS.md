@@ -2,6 +2,14 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-23 — LETTER RUNGS + STANDING DESIGN GOVERNANCE SHIPPED (v177)
+- word_fill + phrase_fill live (per design/letter-rungs.html): principled blanks (slip/conf telemetry first, trap heuristics fallback, ≤40%), slot color law (one bright NEXT slot), supply rule (live keys raised, spent recede 0.28), forgiveness at the blank, graceful grading (0-1 wrong taps pass with slips logged; 2+ = SRS miss + requeue, NO correction sheet, never dead-ends), tray→keys expertise reversal (exposures ≥ 5+difficulty, +1.0 atlas difficulty).
+- Placement = Tom's scoping ruling: LADDER rung 2 (production band entry), rung-down re-ask law (typed misses step down phrase_fill→word_fill, climb back on success), second-chance re-asks. Sound-off sibling swaps (EAR_SIBLINGS) + per-slot timing telemetry (state.telem) shipped alongside.
+- TRAY RULING (Tom, post-review): base letters only in every tray, no á/a pairs at any scale; the accent materializes at the green settle. Canvas delta open: letter-rungs.html specs the old tray + lacks a base citation.
+- STANDING GOVERNANCE (chat's five-point system, all built): docs/design-constitution.md (all laws by family + graveyard) · design/exercise-base.html template family · dev/conform.html conformance lint (failures listed, never auto-fixed) · five-step handoff ritual (design-system §5.10 + CLAUDE.md) · design/context-pack/ (refresh script) · design/specimen.html living specimen (imports LIVE styles.css).
+- LINT FIRST RUN (open, needs rulings): font law violated 16 more times incl. runtime-confirmed .tab → Arial (candidate systemic fix: global button font inherit — chat to rule); 7 duplicate items across packs (single-source violations — content rulings); letter-rungs.html base citation.
+- Atlas rescored with the rungs in the flow; machine shortfalls expected to dissolve — re-audit next session.
+
 ## 2026-07-22 — Atlas v1.1: vet concessions, shape bands, Machine Exposure Ledger
 - Chat's vet concerns answered IN CODE: (a) conceded partially — only 21 items pack-wide set author difficulty (rest default 2), so a token-length term joined the slot formula (+min(1.5,(tokens-3)x0.2)); (b) conceded — ramp (LSQ slope x body length, CLOSE EXCLUDED so its guaranteed 8+ spike can't mask a flat body) + peak now computed per lesson and sortable in the audit; flat flag = ramp <0.8 at 8+ slots.
 - Shape bands ratified + live: machine 3-5 / kit 4-6 / scenario 5-8; global 6-min target retired. Re-scored: 35 open gaps, 26 outside shape bands (the bar ROSE for scenarios), 2 flat bodies, machines all still short - the letter-rung batch is expected to dissolve most of these.
