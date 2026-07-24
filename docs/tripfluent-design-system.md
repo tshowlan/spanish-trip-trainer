@@ -180,6 +180,13 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 7. **THE STAMP CUT (2026-07-21):** working canvases are decision records; stamped artifacts are match-targets. At stamp, chat cuts the file to the decided state — rejected options, comparison toggles, and dead code OUT; chrome = real product states + theme only; caption rewritten from history to spec. History lives in handoffs + decisions.md, never in the artifact.
 8. **DERIVE, DON'T APPROXIMATE (2026-07-21):** a session touching an existing surface starts from the real artifact (or saved DOM) + live styles.css, canon-refreshed, with derivation finds flagged back. Screenshot-built stand-ins invent and omit silently — the first derivation surfaced token drift, stale canon strings, a hidden element, and live 800-weights. Standing habit: Code re-exports design bases after shipped rulings so derivations start from truth.
 9. **Precedence applies to rule-making, not just rendering (2026-07-20):** a rule derived during artifact review must be checked against the built canonical component BEFORE it enters the constitution. Artifact stand-ins are scaffolding; codifying scaffolding as law nearly restyled the real AudioControl backwards (the glyph-law rider is the case study). If the rule and the build disagree, the build is the reference for shared components — fix the rule or flag a genuine divergence; never let a stand-in legislate.
+10. **THE HANDOFF RITUAL (2026-07-23) — every stamped design handoff, five steps, in order:**
+    1. **Merge laws → `docs/design-constitution.md`** verbatim (the handoff is transport, the constitution is home; superseded laws move to the dated graveyard, never silently deleted).
+    2. **Update `DESIGN_PAIRS`** in `tools/design-diff.js` for any new component.
+    3. **Re-export touched bases** — if a shipped ruling changed shared chrome, the affected `design/*-base.html` template gets re-exported with a bumped version line (template-family governance: new artifacts derive from a base and cite its version).
+    4. **Run the conformance lint** (`dev/conform.html` via `tools/serve.py`) — machine-checkable laws get checked by machine; failures are listed for decision, never auto-fixed.
+    5. **Reply with deltas** — derivation finds, divergences, and lint results go back to chat in the ship report.
+    The ritual also refreshes `design/context-pack/` (`bash tools/refresh-context-pack.sh`) so Tom can hand chat current truth — constitution + bases + live styles.css — by dragging one folder's contents into a design session.
 
 ## 6. Remediation audit (one-time, do first)
 

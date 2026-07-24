@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <base href="../" />
+  <title>Tripfluent · conformance lint</title>
+  <style>
+    /* DEV TOOL: machine-checks the lintable constitution laws over source truth.
+       Failures are LISTED, never auto-fixed (docs/design-constitution.md governs). */
+    :root { --bg:#14120d; --card:#1e1b14; --line:#3a352a; --ink:#f0ecdf; --dim:#a29c8a;
+      --gold:#e6c62a; --green:#4fc07a; --red:#e8586a; --orange:#e08a3c; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--ink); font:14px/1.5 "Inter", system-ui, sans-serif; padding:24px; max-width:1100px; margin:0 auto; }
+    h1 { font:700 17px "Plus Jakarta Sans", sans-serif; margin-bottom:4px; } h1 span { color:var(--gold); }
+    .sub { color:var(--dim); font-size:12.5px; margin-bottom:20px; }
+    .law { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:12px; }
+    .law h2 { font:700 13.5px "Plus Jakarta Sans", sans-serif; display:flex; gap:10px; align-items:center; }
+    .law h2 .st { font-size:11px; border-radius:20px; padding:2px 9px; font-weight:600; }
+    .st.pass { color:var(--green); border:1px solid rgba(79,192,122,.4); }
+    .st.fail { color:var(--red); border:1px solid rgba(232,88,106,.5); }
+    .st.info { color:var(--orange); border:1px solid rgba(224,138,60,.5); }
+    .law .why { color:var(--dim); font-size:12px; margin:3px 0 0; }
+    .law ul { margin:8px 0 0 18px; font-size:12.5px; color:var(--dim); }
+    .law li b { color:var(--ink); font-weight:600; } .law code { background:#262218; border-radius:5px; padding:1px 5px; font-size:11.5px; }
+  </style>
+</head>
+<body>
+  <h1>Tripfluent <span>conformance lint</span></h1>
+  <div class="sub">machine-checkable constitution laws over live source · failures listed, never auto-fixed · run as step 4 of the handoff ritual</div>
+  <div id="out">running…</div>
+<script>
+(async function(){
+  const JS_FILES = ["lesson.js","screen-home.js","screen-learn.js","screen-progress.js","screen-settings.js",
+    "screen-phrasebook.js","screen-onboarding.js","ui.js","nav.js","trips.js","tiers.js","accounts.js","push.js"];
+  const PACKS = ["curriculum.js","content_mx.js"];
+  const ARTIFACTS = ["exercise-base.html","letter-rungs.html","home-action-stack.html","session-end.html",
+    "resolution-frame.html","exercise-variants.html","pairs-exercise.html","the-close.html",
+    "correction-sheet.html","presentation-card.html","audio-control.html","nav-light.html","learn-tab.html"];
+  const get = async p => { try { const r = await fetch(p); return r.ok ? await r.text() : null; } catch { return null; } };
+  const css = await get("styles.css");
+  const js = {}; for (const f of JS_FILES) js[f] = await get(f);
+  const packs = {}; for (const f of PACKS) packs[f] = await get(f);
+  const arts = {}; for (const f of ARTIFACTS) arts[f] = await get("design/" + f);
+
+  const laws = [];
+  function law(name, why, status, items){ laws.push({ name, why, status, items: items || [] }); }
+  const lineOf = (src, idx) => src.slice(0, idx).split("\n").length;
+
+  /* 1. every tappable sets font-family — collect each <button class="..."> from JS templates;
+     a button is covered if ANY class in its list has a styles.css rule declaring font.
+     (class="btn grey" rides .btn's font rule — modifier classes don't need their own) */
+  {
+    const fontRuled = c => {
+      const re = new RegExp("[^}]*\\." + c.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&") + "[^{]*\\{[^}]*font(-family)?\\s*:", "m");
+      return re.test(css);
+    };
+    const misses = new Set();
+    Object.entries(js).forEach(([f, src]) => { if (!src) return;
+      for (const m of src.matchAll(/<button[^>]*class="([^"]+)"/g)) {
+        // template-literal class attrs leak ${...} fragments — drop the interpolation but
+        // keep the static prefix (class="seg${...}" still means the .seg class)
+        const cls = m[1].replace(/\$\{[\s\S]*$/, " ").replace(/\$\{[^}]*\}/g, " ")
+          .split(/\s+/).filter(c => /^[A-Za-z_-][A-Za-z0-9_-]*$/.test(c));
+        if (cls.length && !cls.some(fontRuled)) misses.add(f + ": <b>." + cls.join(".") + "</b>");
+      }
+    });
+    law("Every tappable sets font-family", "buttons don't inherit fonts; found six times before the law (constitution: elevation & physics)",
+      misses.size ? "fail" : "pass", [...misses].map(s => s + " has no font rule in styles.css"));
+  }
+
+  /* 2. no em dashes in UI strings — comments stripped first (comments may keep em dashes),
+     then single-line double-quoted strings in packs + template literals in screen JS */
+  {
+    const strip = s => s.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, " "))
+                       .replace(/(^|[^:"'])\/\/[^\n]*/gm, (m, p) => p + m.slice(p.length).replace(/./g, " "));
+    const hits = [];
+    Object.entries(packs).forEach(([f, src]) => { if (!src) return;
+      const s = strip(src);
+      for (const m of s.matchAll(/"(?:[^"\\\n]|\\.)*—(?:[^"\\\n]|\\.)*"/g)) hits.push(f + ":" + lineOf(s, m.index));
+    });
+    Object.entries(js).forEach(([f, src]) => { if (!src) return;
+      const s = strip(src);
+      for (const m of s.matchAll(/`(?:[^`\\]|\\.)*—(?:[^`\\]|\\.)*`/g)) hits.push(f + ":" + lineOf(s, m.index) + " (template literal)");
+    });
+    law("No em dashes in UI strings", "punctuation in the UI is as quiet as the motion (constitution: copy laws)",
+      hits.length ? "fail" : "pass", [...new Set(hits)].slice(0, 20));
+  }
+
+  /* 3. ligature rule present */
+  law("Ligature rule present", "the fi ligature ate wifi's dot — learners must see letters",
+    /font-variant-ligatures:\s*no-common-ligatures/.test(css) ? "pass" : "fail", []);
+
+  /* 4. shadows use tokens */
+  {
+    const hits = [];
+    for (const m of css.matchAll(/box-shadow:\s*([^;]+);/g)) {
+      const v = m[1].trim();
+      if (v === "none" || v.includes("var(--shadow")) continue;
+      hits.push("styles.css:" + lineOf(css, m.index) + " <code>" + v.slice(0, 60).replace(/</g,"&lt;") + "</code>");
+    }
+    law("Shadows use tokens", "hand-written shadows drift from the press physics (listed for review; some are sanctioned composites)",
+      hits.length ? "info" : "pass", hits.slice(0, 20));
+  }
+
+  /* 5. single audio component markup — the speaker polygon outside audioControl/ui.js */
+  {
+    const hits = [];
+    Object.entries(js).forEach(([f, src]) => { if (!src || f === "ui.js") return;
+      const n = (src.match(/polygon points="11 5 6 9 2 9/g) || []).length;
+      if (n) hits.push(f + ": " + n + " inline speaker glyph(s) outside AudioControl");
+    });
+    law("Single audio component", "one AudioControl, no ad-hoc speakers (constitution: color & light / glyph law)",
+      hits.length ? "info" : "pass", hits);
+  }
+
+  /* 6. duplicate es strings per pack (single-source content rule) — packs are pure data,
+     so evaluate them and walk REAL items (a reply/chain/npc es: is not an item) */
+  {
+    const hits = [];
+    Object.entries(packs).forEach(([f, src]) => { if (!src) return;
+      let pack;
+      try {
+        pack = new Function(src + `;return typeof CURRICULUM!=="undefined"?CURRICULUM:MEXICO_PACK;`)();
+      } catch (e) { hits.push(f + ": could not evaluate pack (" + e.message + ")"); return; }
+      const seen = {};
+      (pack.stages || []).forEach(st => (st.lessons || []).forEach(ls => (ls.items || []).forEach(it => {
+        if (!it || !it.es) return;
+        const k = it.es.toLowerCase();
+        if (seen[k]) hits.push(f + ": item <b>" + it.es + "</b> appears in both " + seen[k] + " and " + (ls.title || ls.id));
+        else seen[k] = ls.title || ls.id;
+      })));
+    });
+    law("A phrase is taught once (no duplicate items)", "item identity IS the phrase (auto-id pack:slug(es)), so a second copy silently shares SRS history (content spec / single-source rule)",
+      hits.length ? "fail" : "pass", hits.slice(0, 15));
+  }
+
+  /* 7. base-version line in design artifacts */
+  {
+    const missing = [], preBase = [];
+    Object.entries(arts).forEach(([f, src]) => { if (!src) return;
+      if (/base\s*(version|v\d)|exercise-base/i.test(src)) return;
+      (["exercise-base.html","letter-rungs.html"].includes(f) ? missing : preBase).push(f);
+    });
+    law("Artifacts cite their base version", "template-family governance (new artifacts derive from a base; pre-base artifacts adopt at next re-issue)",
+      missing.length ? "fail" : "info", [
+        ...missing.map(f => "<b>" + f + "</b> should cite its base"),
+        ...(preBase.length ? ["pre-base artifacts (adopt opportunistically): " + preBase.join(", ")] : [])
+      ]);
+  }
+
+  const out = document.getElementById("out");
+  const fails = laws.filter(l => l.status === "fail").length;
+  out.innerHTML = `<div class="sub"><b style="color:${fails ? "var(--red)" : "var(--green)"}">${fails} failing law(s)</b> · ${laws.length} checked · ${new Date().toISOString().slice(0,10)}</div>` +
+    laws.map(l => `<div class="law"><h2>${l.name} <span class="st ${l.status}">${l.status.toUpperCase()}</span></h2>
+      <p class="why">${l.why}</p>${l.items.length ? "<ul>" + l.items.map(i => "<li>" + i + "</li>").join("") + "</ul>" : ""}</div>`).join("");
+})();
+</script>
+</body>
+</html>

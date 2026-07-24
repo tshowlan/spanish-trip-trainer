@@ -75,6 +75,12 @@ Momentum, Retention), deliberately anti-Duolingo.
   function, `new Function`, stub globals) still applies.
 - Commits end with: `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`.
 - `design/` contains approved UI artifacts (HTML). Any UI element with an artifact there must match it exactly (see docs/tripfluent-design-system.md §5); artifacts override text descriptions of visuals.
+- **`docs/design-constitution.md` is the single canonical design rulebook** — every stamped handoff's
+  laws merge there verbatim (superseded laws go to its dated graveyard). On every stamped design handoff
+  run the five-step ritual (design-system §5.10): merge laws → constitution · update `DESIGN_PAIRS` ·
+  re-export touched `design/*-base.html` templates · run `dev/conform.html` (the conformance lint;
+  failures listed, never auto-fixed) · reply with deltas. Then `bash tools/refresh-context-pack.sh`
+  so `design/context-pack/` stays current for chat sessions.
 
 ## Current priorities (see STATUS.md for detail)
 - **Done:** scores + lesson experience (spec §8), personalization/intake (demand-weighted Coverage,
