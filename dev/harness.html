@@ -194,10 +194,10 @@
           ask(swap.type, swap.item, swap);
         },
         // §7.1b letter rungs (a keyword-rich item so the trap heuristics have substance)
-        "Exercise — word fill (tray)": () => ask("word_fill", (ALL_ITEMS || []).find(i => /cuánto cuesta/i.test(i.es)) || normItem, { input: "tray" }),
-        "Exercise — word fill (keyboard rung)": () => ask("word_fill", (ALL_ITEMS || []).find(i => /cuánto cuesta/i.test(i.es)) || normItem, { input: "keys" }),
-        "Exercise — phrase fill (tray)": () => ask("phrase_fill", (ALL_ITEMS || []).find(i => /me puede traer/i.test(i.es)) || normItem, { input: "tray" }),
-        "Exercise — phrase fill second chance": () => ask("phrase_fill", (ALL_ITEMS || []).find(i => /me puede traer/i.test(i.es)) || normItem, { input: "tray", requeued: true }),
+        "Exercise — letter rungs: word fill (tray)": () => ask("word_fill", (ALL_ITEMS || []).find(i => /cuánto cuesta/i.test(i.es)) || normItem, { input: "tray" }),
+        "Exercise — letter rungs: word fill (keyboard)": () => ask("word_fill", (ALL_ITEMS || []).find(i => /cuánto cuesta/i.test(i.es)) || normItem, { input: "keys" }),
+        "Exercise — letter rungs: phrase fill (tray)": () => ask("phrase_fill", (ALL_ITEMS || []).find(i => /me puede traer/i.test(i.es)) || normItem, { input: "tray" }),
+        "Exercise — letter rungs: phrase fill second chance": () => ask("phrase_fill", (ALL_ITEMS || []).find(i => /me puede traer/i.test(i.es)) || normItem, { input: "tray", requeued: true }),
         "Exercise — sound choice": () => {
           // a keyword with a real deck near-form (cuesta/cuenta) so the demo shows the ear test
           const it = (ALL_ITEMS || []).find(i => /cuesta/.test(i.es) && (i.keywords || []).length) || normItem;
