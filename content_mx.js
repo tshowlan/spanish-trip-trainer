@@ -193,7 +193,7 @@ const MEXICO_PACK = {
         {
           id: "mx-rescue", topic: "How do you say", title: "I only speak a little",
           reward: "Now you can admit your Spanish is shaky, in Spanish. Locals will slow down for you.",
-          primer: { scene: "Doña Lupe just rattled off the day's specials at her comedor, and you caught maybe one word. She waits, dish towel over her shoulder, patient.", mission: "Admit your Spanish is shaky, and ask her to slow down.", guessItem: "¿Habla inglés?" },
+          primer: { scene: "Doña Lupe just rattled off the day's specials at her comedor, and you caught maybe one word. She waits, dish towel over her shoulder, patient.", mission: "Admit your Spanish is shaky, and ask her to slow down.", guessItem: "Hablo poquito español" },
           items: [
             { es: "Hablo poquito español", en: "I speak a little Spanish", note: "'Poquito' is friendly and very Mexican.", tier: 2, tags: ["communication"], keywords: ["español"] },
             { es: "Estoy aprendiendo español", en: "I'm learning Spanish", note: "Buys patience instantly.", tier: 2, tags: ["communication"], keywords: ["aprendiendo", "español"] },
