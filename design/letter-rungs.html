@@ -171,6 +171,7 @@
   .fillline.word { font-size:30px; letter-spacing:0.02em; }
   .fillline.phrase { font-size:22px; }
   .fillline .lt { display:inline-block; white-space:nowrap; }
+  .fillline .lt:not(:last-child) { margin-right:0.3em; }
   /* Slots are STRUCTURE, not targets: input flows only into the NEXT slot, so
      pending slots stay neutral (blue would promise interactivity they lack) and
      the next slot alone carries the app's light. */
@@ -233,7 +234,7 @@
   </div>
 
   <div class="caption">
-    Letter rungs r2, DERIVED from the exercise-variants base (r1 was hand-approximated and read off-family;
+    Letter rungs r8 · base: exercise-base v1. TRAY RULING applied (constitutional, supersedes the r5 tray spec): every letter tray offers BASE LETTERS ONLY, no accent/plain pairs at any scale; the accent materializes when the right base letter settles the slot (green sweep), so accent knowledge lives in the settle and the typed rungs, not in decoy tiles. Word gap 0.3em via CSS (build parity). Originally DERIVED from the exercise-variants base (r1 was hand-approximated and read off-family;
     every token, the toprow, prompt scale, tray tiles, fuse/sweep/grown/Continue vocabulary now come from the
     canonical exercise artifact). Two new types filling the production cliff. WORD FILL (word_fill, ~3): the
     keyword at 30/600 with letter slots on the trap letters; first orthography-yours moment. GLOSS = TRANSLATION ONLY (r3, Tom: the es answer was leaking below the gapped word; the screen holds the es, so the supporting line holds only the en). PHRASE FILL
@@ -302,7 +303,7 @@
         [ {f:'u'},{f:'n'} ],
         [ {f:'b'},{f:'i'},{f:'l'},{f:'l'},{s:'e'},{f:'t'},{f:'e'},{f:'?'} ]
       ],
-      tray:['a','u','e','á','o'],
+      tray:['a','u','e','o'],
       es:'¿Cuánto cuesta un billete?', en:'How much is a ticket?'
     }
   };
@@ -336,7 +337,6 @@
         w.appendChild(el);
       });
       line.appendChild(w);
-      if (wi < s.words.length - 1) line.appendChild(document.createTextNode(' '));
     });
     stage.appendChild(line);
     const g = document.createElement('div'); g.className = 'fill-gloss'; g.textContent = s.gloss; stage.appendChild(g);
