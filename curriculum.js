@@ -506,7 +506,7 @@ const CURRICULUM = {
           primer: { scene: "There it is, the way the directions promised: the towers find you first. So does the queue, wrapped halfway around the block. The locals booked online days ago and walk right past it.", mission: "Get your tickets, skip what can be skipped, and ask before you photograph.", guessItem: "¿Se pueden hacer fotos?" },
           reward: "Two tickets to the Sagrada Família, please, and you said it in Spanish. Gaudí is proud.",
           items: [
-            { es: "¿A qué hora abre la Sagrada Família?", en: "What time does the Sagrada Família open?", tier: 2, tags: ["sights", "time"], keywords: ["hora", "abre"] },
+            { es: "¿A qué hora abre la Sagrada Família?", en: "What time does the Sagrada Família open?", tier: 2, tags: ["sights", "time"], keywords: ["hora", "abre"], chunks: [["¿A qué hora abre", "what time does it open", "new"], ["la Sagrada Família?", "the Sagrada Família"]] },
             { es: "dos entradas, por favor", en: "two tickets, please", tier: 2, tags: ["sights"], keywords: ["entradas"] },
             { es: "¿Hay que reservar?", en: "Do you have to book in advance?", tier: 2, tags: ["sights"], keywords: ["reservar"] },
             { es: "¿Dónde está la taquilla?", en: "Where is the ticket office?", note: "'Taquilla' = ticket window.", tier: 2, tags: ["sights", "directions"], keywords: ["taquilla"] },

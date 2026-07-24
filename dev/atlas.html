@@ -146,6 +146,10 @@
   // per-shape time bands (ratified 2026-07-22): a machine lesson is a pattern-drill whose
   // course is the whole trip (spacing beats massing); scenario lessons carry scenes.
   const BANDS = { machine: [2,4], kit: [4,6], scenario: [5,8], chain: [3,9] };   // machine re-ratified 2-4 (2026-07-23): the ledger is primary, the band secondary
+  const TOL = 0.2;   // band tolerance (2026-07-24): bands are judged at instrument precision; sub-tolerance deviation is model noise, never a work item
+  // kit-overage sanction (2026-07-24): overage purchased by build-eligibility is sanctioned;
+  // shown as info, never counted as a gap. Re-measure with real telemetry before any trim.
+  const SANCTIONED_OVER = { "sp0-first-words": true, "sp0-numbers": true };
   function shapeOf(lesson, stage){ return lesson.chain ? "chain" : lesson.machine ? "machine" : stage.pass === 0 ? "kit" : "scenario"; }
   // difficulty 0–10 per type (scaffolded → cold), + (item.difficulty−2)×0.5 modifier
   const DIFF = { present:0, match:1.5, pairs:2, mc_es2en:2, listen_choice:2.5, sound_choice:3,
@@ -240,8 +244,11 @@
     const first = sims.first;
     const min = first.secs / 60;
     const band = BANDS[lesson._shape] || BANDS.scenario;
-    if (min < band[0]) out.push(["warn", "short for a " + lesson._shape + ": ~" + min.toFixed(1) + " min (band " + band[0] + "-" + band[1] + ")"]);
-    if (min > band[1]) out.push(["warn", "long for a " + lesson._shape + ": ~" + min.toFixed(1) + " min (band " + band[0] + "-" + band[1] + ")"]);
+    if (min < band[0] - TOL) out.push(["warn", "short for a " + lesson._shape + ": ~" + min.toFixed(1) + " min (band " + band[0] + "-" + band[1] + ")"]);
+    if (min > band[1] + TOL) {
+      if (SANCTIONED_OVER[lesson.id]) out.push(["note", "overage sanctioned: buys build-eligibility (ruling 2026-07-24) · ~" + min.toFixed(1) + " min"]);
+      else out.push(["warn", "long for a " + lesson._shape + ": ~" + min.toFixed(1) + " min (band " + band[0] + "-" + band[1] + ")"]);
+    }
     if (!lesson.chain && first.ramp < 0.8 && first.slots >= 8) out.push(["warn", "flat: ramp " + first.ramp + " (session never climbs)"]);
     const chunkless = items.filter(it => (it.tier || 1) >= 2 && it.es.split(/\s+/).length > 6 && !(it.chunks && it.chunks.length));
     if (chunkless.length) out.push(["warn", chunkless.length + " long phrase(s) without chunks (no segmented card)"]);
@@ -258,7 +265,7 @@
   const mins = s => (s/60).toFixed(1) + " min";
   const diffColor = d => d < 2.5 ? "var(--green)" : d < 4.5 ? "var(--gold)" : d < 6.5 ? "var(--orange)" : "var(--red)";
   const timeColor = (s, shape) => { const b = BANDS[shape] || BANDS.scenario; const m = s/60;
-    return m < b[0] ? "var(--orange)" : m > b[1] ? "var(--red)" : "var(--green)"; };
+    return m < b[0] - TOL ? "var(--orange)" : m > b[1] + TOL ? "var(--red)" : "var(--green)"; };
   let PACK = "spain", SCEN = "first", TAB = "map", SEL = null;
   let CACHE = {};   // pack -> [{lesson, stage, sims:{first,replay,strong}, gaps}]
 
@@ -410,13 +417,13 @@
     const passMedian = {};
     rows.forEach(r => { (passMedian[r.stage.pass] = passMedian[r.stage.pass] || []).push(r.sims[SCEN].diff); });
     Object.keys(passMedian).forEach(k => { const a = passMedian[k].sort((x,y)=>x-y); passMedian[k] = a[Math.floor(a.length/2)]; });
-    const data = rows.map(r => ({ r, pass: r.stage.pass, title: r.lesson.title, shape: r.lesson._shape, items: (r.lesson.items||[]).length,
+    const data = rows.map(r => ({ r, id: r.lesson.id, pass: r.stage.pass, title: r.lesson.title, shape: r.lesson._shape, items: (r.lesson.items||[]).length,
       time: r.sims[SCEN].secs, diff: r.sims[SCEN].diff, ramp: r.sims[SCEN].ramp || 0, peak: r.sims[SCEN].peak || 0,
       dev: +(r.sims[SCEN].diff - passMedian[r.stage.pass]).toFixed(1),
       gapsN: r.gaps.filter(g => g[0] !== "note").length }));
     data.sort((a,b) => (a[SORT.key] > b[SORT.key] ? 1 : a[SORT.key] < b[SORT.key] ? -1 : 0) * SORT.dir);
     const gapTotal = data.reduce((a,d) => a + d.gapsN, 0);
-    const timeBad = data.filter(d => { const b = BANDS[d.shape] || BANDS.scenario; const m = d.time/60; return m < b[0] || m > b[1]; }).length;
+    const timeBad = data.filter(d => { const b = BANDS[d.shape] || BANDS.scenario; const m = d.time/60; return m < b[0] - TOL || (m > b[1] + TOL && !SANCTIONED_OVER[d.id]); }).length;
     let html = `<h2>Audit <span class="sub">${data.length} lessons · ${gapTotal} open gaps · ${timeBad} outside their shape band (machine ${BANDS.machine.join("–")} · kit ${BANDS.kit.join("–")} · scenario ${BANDS.scenario.join("–")}) · ramp excludes the close · scenario: ${SCEN}</span></h2>
       <div class="panel"><table><tr>
       ${[["pass","pass"],["title","lesson"],["shape","shape"],["items","phrases"],["time","est. time"],["diff","difficulty"],["ramp","ramp"],["peak","peak"],["dev","vs pass median"],["gapsN","gaps"]]

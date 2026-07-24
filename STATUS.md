@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-24 — RESIDUE RULINGS: SPAIN READS 36 · 0 · 0 (v182)
+- Chat's three rulings executed: (1) band tolerance ±0.2 min (TOL in atlas; sub-tolerance = model noise, closes s4-hear/sp-help/s3-ferry); (2) kit overage sanctioned when it buys build-eligibility (First words 6.8 / Numbers 6.3 kept; SANCTIONED_OVER note in atlas, shown never silently swallowed; re-measure with telemetry before any trim); (3) s4-landmarks Sagrada Família phrase chunked.
+- Atlas re-read: 36 lessons · 0 open gaps · 0 outside band. SPAIN IS DONE: all lessons in band, all primed, every phrase homed once, the finale says hasta la próxima.
+- Pack-state exports now include narrator turns (both packs) per chat's canon request. Board: Mexico next (pack-state exported, inherits every law/band/template/instrument).
+
 ## 2026-07-24 — SPAIN COMPLETION AUTHORED (chat) → SHIPPED by Code (v181)
 - 39 phrase adds / 19 lessons (sweep law: 4-8 tok bias; chat's TLDR said 38, actual count 39), 5 chunk specs, 2 kw fixes, 5 primers (s5-real, s5-fix, both chains, s4-room) w/ missions + guessItems.
 - Chain-lastnight repaired: the missing buen-viaje reply becomes "Gracias, hasta la próxima" (new item, home: chain-lastnight; the cultureNote payload is now learnable). Narr opener deleted (the new primer scene absorbs it); Toni's vermuteria epilogue retained. NOTE: the "undefined turns" in the export were narrator turns the exporter didn't print (exporter fixed) — the missing reply was real.

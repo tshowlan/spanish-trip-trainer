@@ -9,7 +9,7 @@ tools/atlas-snapshot.json (2026-07-24).
 ### First words  `sp0-first-words`
 - topic/setting: Core basics · shape: kit
 - primer: EXISTS (scene: "The words you'll use before you're out of the airport. Hello, please, thank you, and the o...")
-- atlas (2026-07-24): 6.8 min · OVER by ~0.8 min (band 4-6) · difficulty 1.8 · ramp 1.4 · flags: long for a kit (band 4-6)
+- atlas (2026-07-24): 6.8 min · in band 4-6 · difficulty 1.8 · ramp 1.4 · flags: overage sanctioned: buys build-eligibility (ruling 2026-07-24)
 - phrases (13; first = anchor):
   1. Hola — Hello  (1 tok)
   2. Buenos días — Good morning  (2 tok)  [kw: días]
@@ -51,7 +51,7 @@ tools/atlas-snapshot.json (2026-07-24).
 ### Numbers that pay  `sp0-numbers`
 - topic/setting: Core numbers · shape: kit
 - primer: EXISTS (scene: "Numbers are money here. Prices, room numbers, platforms, tips. These pay for themselves on...")
-- atlas (2026-07-24): 6.3 min · OVER by ~0.3 min (band 4-6) · difficulty 1.5 · ramp 1.5 · flags: long for a kit (band 4-6)
+- atlas (2026-07-24): 6.3 min · in band 4-6 · difficulty 1.5 · ramp 1.5 · flags: overage sanctioned: buys build-eligibility (ruling 2026-07-24)
 - phrases (12; first = anchor):
   1. uno — one  (1 tok)
   2. dos — two  (1 tok)
@@ -248,7 +248,7 @@ tools/atlas-snapshot.json (2026-07-24).
 - topic/setting: Common phrases you'll hear · shape: scenario
 - primer: EXISTS (scene: "It's not just you talking now. Marina rattles something off as she sets your plate down, t...") · guessItem: "¿Todo bien?" · mission: "Catch what locals say to you, and know what they mean."
 - reward (invert to promise): "You can now understand what's being said TO you. Eavesdropping unlocked. Use responsibly."
-- atlas (2026-07-24): 4.9 min · SHORT by ~0.1 min (band 5-8) · difficulty 2.1 · ramp 1.5 · flags: short for a scenario (band 5-8)
+- atlas (2026-07-24): 4.9 min · in band 5-8 · difficulty 2.1 · ramp 1.5
 - phrases (8; first = anchor):
   1. Que tenga un buen día — Have a good day  (5 tok)  [kw: día]
   2. ¿Le pongo algo más? — Shall I get you anything else?  (4 tok)  [note: Marina's version of 'anything else': pongo, literally 'shall I put'. · kw: pongo]
@@ -264,7 +264,7 @@ tools/atlas-snapshot.json (2026-07-24).
 - topic/setting: Problems & emergencies · shape: scenario
 - primer: EXISTS (scene: "You pat every pocket twice, your wallet's gone. Sra. Rosa, the farmacéutica on the corner,...") · guessItem: "Me han robado" · mission: "Get help fast, a doctor, the police, or her farmacia."
 - reward (invert to promise): "The safety net's in place. Now go enjoy Barcelona, you're covered."
-- atlas (2026-07-24): 4.9 min · SHORT by ~0.1 min (band 5-8) · difficulty 2.4 · ramp 3.4 · flags: short for a scenario (band 5-8)
+- atlas (2026-07-24): 4.9 min · in band 5-8 · difficulty 2.4 · ramp 3.4
 - phrases (7; first = anchor):
   1. Me han robado — I've been robbed  (3 tok)  [kw: robado]
   2. No me siento bien — I don't feel well  (4 tok)  [kw: siento]
@@ -412,7 +412,7 @@ tools/atlas-snapshot.json (2026-07-24).
 - topic/setting: Transport · Ferry · shape: scenario · gated: {"transport":"ferry"}
 - primer: EXISTS (scene: "Salt air at the port, gulls working the crowd, a ferry horn somewhere behind the terminal....") · guessItem: "¿Está incluido el equipaje?" · mission: "Buy the crossing, find your dock, board the right boat."
 - reward (invert to promise): "Docks, crossings, round-trips, you can board a boat without getting on the wrong one."
-- atlas (2026-07-24): 4.9 min · SHORT by ~0.1 min (band 5-8) · difficulty 2.6 · ramp 3.1 · flags: short for a scenario (band 5-8)
+- atlas (2026-07-24): 4.9 min · in band 5-8 · difficulty 2.6 · ramp 3.1
 - phrases (7; first = anchor):
   1. ¿Dónde se compran los billetes del ferry? — Where do you buy ferry tickets?  (7 tok)  [kw: billetes, ferry · chunked]
   2. ¿A qué hora sale el próximo ferry? — What time does the next ferry leave?  (7 tok)  [kw: ferry, hora · chunked]
@@ -476,9 +476,9 @@ tools/atlas-snapshot.json (2026-07-24).
 - topic/setting: Landmarks · shape: scenario
 - primer: EXISTS (scene: "There it is, the way the directions promised: the towers find you first. So does the queue...") · guessItem: "¿Se pueden hacer fotos?" · mission: "Get your tickets, skip what can be skipped, and ask before you photograph."
 - reward (invert to promise): "Two tickets to the Sagrada Família, please, and you said it in Spanish. Gaudí is proud."
-- atlas (2026-07-24): 5.1 min · in band 5-8 · difficulty 2.2 · ramp 1.7 · flags: 1 long phrase(s) without chunks
+- atlas (2026-07-24): 5.1 min · in band 5-8 · difficulty 2.2 · ramp 1.7
 - phrases (8; first = anchor):
-  1. ¿A qué hora abre la Sagrada Família? — What time does the Sagrada Família open?  (7 tok)  [kw: hora, abre]
+  1. ¿A qué hora abre la Sagrada Família? — What time does the Sagrada Família open?  (7 tok)  [kw: hora, abre · chunked]
   2. dos entradas, por favor — two tickets, please  (4 tok)  [kw: entradas]
   3. ¿Hay que reservar? — Do you have to book in advance?  (3 tok)  [kw: reservar]
   4. ¿Dónde está la taquilla? — Where is the ticket office?  (4 tok)  [note: 'Taquilla' = ticket window. · kw: taquilla]

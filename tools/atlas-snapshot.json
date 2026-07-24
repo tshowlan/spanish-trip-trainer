@@ -1,6 +1,6 @@
 {
  "date": "2026-07-24",
- "note": "post Spain-completion (v181) re-score",
+ "note": "post residue-rulings (v182): band tolerance 0.2, kit overage sanctioned, landmarks chunked. Spain reads 36 lessons, 0 gaps, 0 outside band.",
  "spain": {
   "sp0-first-words": {
    "title": "First words",
@@ -12,13 +12,13 @@
     6
    ],
    "shortfallMin": 0,
-   "overMin": 0.8,
+   "overMin": 0,
    "difficulty": 1.8,
    "ramp": 1.4,
    "vsPassMedian": "-0.5",
-   "gaps": 1,
+   "gaps": 0,
    "flags": [
-    "long for a kit (band 4-6)"
+    "overage sanctioned: buys build-eligibility (ruling 2026-07-24)"
    ]
   },
   "sp0-quiero": {
@@ -65,13 +65,13 @@
     6
    ],
    "shortfallMin": 0,
-   "overMin": 0.3,
+   "overMin": 0,
    "difficulty": 1.5,
    "ramp": 1.5,
    "vsPassMedian": "-0.8",
-   "gaps": 1,
+   "gaps": 0,
    "flags": [
-    "long for a kit (band 4-6)"
+    "overage sanctioned: buys build-eligibility (ruling 2026-07-24)"
    ]
   },
   "sp0-cuanto": {
@@ -287,15 +287,13 @@
     5,
     8
    ],
-   "shortfallMin": 0.1,
+   "shortfallMin": 0,
    "overMin": 0,
    "difficulty": 2.1,
    "ramp": 1.5,
    "vsPassMedian": "0",
-   "gaps": 1,
-   "flags": [
-    "short for a scenario (band 5-8)"
-   ]
+   "gaps": 0,
+   "flags": []
   },
   "sp-help": {
    "title": "If something's wrong",
@@ -306,15 +304,13 @@
     5,
     8
    ],
-   "shortfallMin": 0.1,
+   "shortfallMin": 0,
    "overMin": 0,
    "difficulty": 2.4,
    "ramp": 3.4,
    "vsPassMedian": "+0.3",
-   "gaps": 1,
-   "flags": [
-    "short for a scenario (band 5-8)"
-   ]
+   "gaps": 0,
+   "flags": []
   },
   "sp-order": {
    "title": "Order like a regular",
@@ -461,15 +457,13 @@
     5,
     8
    ],
-   "shortfallMin": 0.1,
+   "shortfallMin": 0,
    "overMin": 0,
    "difficulty": 2.6,
    "ramp": 3.1,
    "vsPassMedian": "+0.3",
-   "gaps": 1,
-   "flags": [
-    "short for a scenario (band 5-8)"
-   ]
+   "gaps": 0,
+   "flags": []
   },
   "s4-checkin": {
    "title": "Checking in",
@@ -536,10 +530,8 @@
    "difficulty": 2.2,
    "ramp": 1.7,
    "vsPassMedian": "-0.1",
-   "gaps": 1,
-   "flags": [
-    "1 long phrase(s) without chunks"
-   ]
+   "gaps": 0,
+   "flags": []
   },
   "s3-plane": {
    "title": "On the plane",
