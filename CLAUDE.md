@@ -59,6 +59,10 @@ Momentum, Retention), deliberately anti-Duolingo.
   `dev/harness.html` is the per-component review surface; the atlas is the system-level one.
 
 ## Conventions (do these every time)
+- **Ship-report format (Tom's standing rule):** every work-completing reply ends with four labeled
+  sections, in order: **TL;DR** (a few sentences, everything Tom needs) → **What I did** (full
+  bullets) → **For chat** (context + next steps to relay; paste-ready block when it's a handoff) →
+  **What you need to do** (Tom's concrete pass/review/save actions — never omit this one).
 - **Deploy = commit → push to `main` → GitHub Pages.** No build.
 - **Bump `sw.js` `CACHE` (`sts-vNN`) on every deploy** or clients serve stale scripts. Currently `sts-v107`.
 - **A new module needs BOTH** an `index.html` `<script>` (correct load order) **and** an `sw.js` `ASSETS` entry.
