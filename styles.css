@@ -1490,3 +1490,48 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
   .sfact.pending { opacity: 1; transform: none; transition: none; }
   .cer-cont.quiet { transition: none; }
 }
+
+/* ===== §7.1b letter rungs (design/letter-rungs.html, 2026-07-22): word_fill + phrase_fill —
+   the production cliff's missing middle. Slot color law: pending slots are neutral dim
+   structure (letters aren't individually tappable); only the NEXT slot wears bright
+   --accent at 3px. Supply rule: live keys are card+shadow (raised = pressable), spent
+   keys recede 0.28 flat; the language lights where it lives (the settled letter + sweep). */
+/* flex wraps phrases at word boundaries; DERIVATION FIND flagged to chat: the artifact's
+   flex container drops whitespace nodes and its 2px gap fused words together — the build
+   uses a true word-space gap (0.3em); canvas adopts at next re-issue */
+.fill-line { font-family: var(--font-display); font-weight: 600; color: var(--text); margin: 6px 0 8px;
+  display: flex; flex-wrap: wrap; gap: 0 0.3em; align-items: baseline; }
+.fill-line.word { font-size: 30px; line-height: 1.6; letter-spacing: 0.02em; }
+.fill-line.phrase { font-size: 22px; line-height: 1.6; }
+.fill-line .lt { display: inline-block; white-space: nowrap; }
+.lslot { display: inline-block; text-align: center; border-bottom: 2px solid color-mix(in srgb, var(--text-dim) 45%, transparent);
+  color: var(--text-dim); min-width: 0.7em; margin: 0 1px; transition: border-color var(--transition), color var(--transition); }
+.lslot .dashes { color: var(--text-dim); letter-spacing: 0; font-weight: 500; opacity: 0.6; }
+.lslot.next { border-bottom-color: var(--accent); border-bottom-width: 3px; }
+.lslot.filled { border-bottom-color: transparent; color: var(--text); position: relative; }
+.lslot.filled::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--green);
+  border-radius: 2px; transform: scaleX(0); transform-origin: left center; animation: res-sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+.lslot.wrongflash { border-bottom-color: var(--red); }
+.fill-gloss { font-size: 13px; color: var(--text-dim); margin-bottom: 18px; }
+.keytray { display: flex; flex-wrap: wrap; gap: 9px; justify-content: center; margin-top: 14px; padding-bottom: 4px; transition: opacity 300ms; }
+.keytray.recede { opacity: 0.28; pointer-events: none; }
+.keytray .keytile { min-width: 46px; min-height: 48px; padding: 8px 14px; border-radius: var(--radius-sm);
+  background: var(--bg-card); border: 1px solid var(--border);
+  font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--text); cursor: pointer;
+  box-shadow: var(--shadow); transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .keytray .keytile {
+  background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); } }
+:root[data-theme="dark"] .keytray .keytile { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); }
+.keytray .keytile:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
+.keytray .keytile.spent { opacity: 0.28; pointer-events: none; box-shadow: none; }
+.keytray .keytile.shake { animation: kshake 300ms ease; border-color: var(--red); }
+@keyframes kshake { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-4px); } 60% { transform: translateX(4px); } }
+.kbd-affordance { display: flex; align-items: center; gap: 8px; margin-top: 14px; padding: 12px 0 4px;
+  font-size: 12.5px; color: var(--text-dim); justify-content: center; transition: opacity 300ms; }
+.kbd-affordance.recede { opacity: 0.28; }
+.kbd-affordance svg { color: var(--accent-2); }
+.fill-hidden-input { position: absolute; opacity: 0; pointer-events: none; left: -9999px; }
+@media (prefers-reduced-motion: reduce) {
+  .lslot.filled::after { animation: none; transform: scaleX(1); }
+  .keytray .keytile.shake { animation: none; }
+}

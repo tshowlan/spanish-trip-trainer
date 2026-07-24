@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Exercise Variants (design artifact, §7: sound choice / audio cloze / ear build / the reply)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-sm: 14px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; font-variant-ligatures:no-common-ligatures; /* build rule: learners see letters, not glyph fusions */ }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:740px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  :root[data-theme="dark"] .phone { background:linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%); }
+  .screen { padding:24px; height:100%; display:flex; flex-direction:column; }
+
+  .toprow { display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+  .progress { flex:1; height:4px; background:var(--bg-elevated); border-radius:2px; }
+  .progress > div { width:52%; height:100%; background:var(--accent); border-radius:2px; }
+  .sring { width:26px; height:26px; }
+  .stick { position:absolute; top:20px; right:56px; font-family:var(--font-display); font-size:11px; font-weight:600;
+    color:var(--green); opacity:0; transform:translateY(3px); transition:opacity 300ms, transform 300ms; }
+  .stick.show { opacity:1; transform:none; }
+
+  .prompt { font-size:var(--text-sm); color:var(--text-dim); margin-bottom:16px; }
+
+  /* Shared: sentence with a blank */
+  .sentence { font-family:var(--font-display); font-size:21px; font-weight:500; color:var(--text); line-height:1.6; margin-bottom:18px; position:relative; }
+  .sentence .blank { display:inline-block; min-width:96px; border-bottom:2px solid var(--secondary); color:var(--secondary); text-align:center; font-weight:600;
+    transition:color var(--transition), border-color var(--transition); }
+  .sentence .blank .dashes { color:var(--text-dim); letter-spacing:2px; font-weight:500; }
+  .sentence .blank.filled .dashes { display:none; }
+  .sentence .blank.filled { color:var(--text); border-bottom-color:transparent; position:relative; }
+  .sentence .blank.filled::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--green); border-radius:2px;
+    transform:scaleX(0); transform-origin:left center; animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+  @keyframes sweep { to { transform:scaleX(1); } }
+
+  /* Audio option cards (sound choice) + audio chips */
+  .audio-opts { display:flex; gap:10px; margin-bottom:8px; }
+  .audio-card { flex:1; border:1.5px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    min-height:58px; padding:10px; cursor:pointer; box-shadow:var(--shadow);
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    font-family:var(--font-display); font-size:15px; font-weight:500; color:var(--text);
+    transition:transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition); }
+  .audio-card:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .audio-card.sel { border-color:var(--secondary); box-shadow:0 0 0 3px color-mix(in srgb, var(--secondary) 15%, transparent), var(--shadow); }
+  .audio-card.settled { border-color:var(--border); box-shadow:none; background:var(--bg-elevated); cursor:default; }
+  :root[data-theme="dark"] .audio-card.settled { background:rgba(255,255,255,0.05); }
+  /* Two audio elements, two glyph colors: gold BUTTONS (standard control) carry
+     the dark glyph; flat CARDS (pairs / sound-choice options) carry the gold
+     glyph. Never gold-on-gold. */
+  .audio-card .glyph { color:var(--accent-2); display:flex; }
+  .bigspk .glyph { color:#231e05; display:flex; line-height:0; }
+  .bars { display:flex; align-items:flex-end; gap:2px; height:12px; }
+  .bars span { width:2px; background:var(--accent-2); border-radius:2px; height:3px; }
+  .playing .bars span { animation:bar 900ms ease-in-out infinite; }
+  .playing .bars span:nth-child(2){ animation-delay:120ms; } .playing .bars span:nth-child(3){ animation-delay:240ms; }
+  @keyframes bar { 0%,100%{height:3px} 50%{height:11px} }
+
+  /* Big speaker (audio cloze / ear build / the reply prompt line) */
+  .bigspk { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+  .bigspk .btn { width:48px; height:48px; border-radius:50%; border:none; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; color:#231e05; cursor:pointer;
+    box-shadow:0 2px 0 color-mix(in srgb, var(--accent-2) 60%, transparent);
+    transition:transform var(--transition), box-shadow var(--transition); }
+  .bigspk .btn:active { transform:translateY(2px); box-shadow:none; }
+  .bigspk .hint { font-size:12.5px; color:var(--text-dim); }
+
+  /* Typed input (audio cloze) */
+  .inputbox { border:1.5px solid var(--border); border-radius:var(--radius-md); padding:13px; min-height:50px;
+    font-family:var(--font-display); font-size:17px; color:var(--text); position:relative;
+    transition:border-color var(--transition), background var(--transition); }
+  .inputbox.wash { border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+  .inputbox .cursor { display:inline-block; width:1.5px; height:1.1em; background:var(--secondary); vertical-align:text-bottom; animation:blink 1000ms steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+
+  /* Tiles (ear build) — answer row fuses per resolution law */
+  .answer-row { min-height:52px; border-bottom:1.5px solid var(--border); padding-bottom:9px; margin-bottom:18px;
+    display:flex; flex-wrap:wrap; align-items:flex-end; gap:8px; position:relative; transition:gap 300ms cubic-bezier(.2,.7,.3,1); }
+  .answer-row.fused { gap:5px; border-bottom-color:transparent; }
+  .answer-row .tile { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:8px 12px; font-family:var(--font-display); font-size:17px; font-weight:500; color:var(--text); box-shadow:var(--shadow);
+    transition:background 300ms, border-color 300ms, box-shadow 300ms, padding 300ms cubic-bezier(.2,.7,.3,1); }
+  .answer-row.fused .tile { background:transparent; border-color:transparent; box-shadow:none; padding:8px 0;
+    font-weight:600; font-size:22px; transition:background 300ms, border-color 300ms, box-shadow 300ms, padding 300ms cubic-bezier(.2,.7,.3,1), font-size 450ms cubic-bezier(.2,.7,.3,1); }
+  .answer-row .sweep { position:absolute; left:0; bottom:7px; height:2.5px; width:100%; background:var(--green); border-radius:2px;
+    transform:scaleX(0); transform-origin:left center; }
+  .answer-row.fused .sweep { animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 200ms forwards; }
+  .tray { display:flex; flex-wrap:wrap; gap:8px; transition:opacity 300ms; }
+  .tray .tile { background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:8px 12px; font-family:var(--font-display); font-size:17px; font-weight:500; color:var(--text-dim); cursor:pointer; }
+  .tray.recede { opacity:0.28; }
+
+  /* Local bubble (the reply) */
+  .bubble { background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px;
+    padding:13px 15px; margin-bottom:6px; }
+  :root[data-theme="dark"] .bubble { background:rgba(255,255,255,0.06); }
+  .bubble .who { font-family:var(--font-display); font-size:10.5px; font-weight:600; letter-spacing:0.05em; color:var(--accent-2); margin-bottom:5px; }
+  .bubble .line { display:flex; align-items:center; gap:9px; font-family:var(--font-display); font-size:16.5px; font-weight:500; color:var(--text); }
+  .bubble .line .spk { width:44px; height:44px; min-width:44px; border-radius:50%; border:none; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; color:#231e05; cursor:pointer;
+    box-shadow:0 2px 0 color-mix(in srgb, var(--accent-2) 60%, transparent);
+    transition:transform var(--transition), box-shadow var(--transition); }
+  .bubble .line .spk:active { transform:translateY(2px); box-shadow:none; }
+  .bubble .line .spk .glyph { display:flex; line-height:0; }
+  .bubble .line .spk .glyph svg { width:18px; height:18px; transform:translateX(1px); }
+  .bubble .en-gloss { font-size:12px; color:var(--text-dim); margin-top:5px; transition:opacity 280ms; }
+  .bubble .en-gloss.gated { opacity:0; }
+  .bubble .en-gloss.gated.revealed { opacity:1; }
+  .bubble .local-es { position:relative; padding-bottom:2px; }
+  .bubble .local-es.resolved::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+    background:var(--green); border-radius:2px; transform:scaleX(0); transform-origin:left center;
+    animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+
+  /* English meaning options (the reply, sound-choice-adjacent) */
+  .opts { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .opt { border:1px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    padding:12px 14px; font-family:var(--font-display); font-size:15px; font-weight:500; color:var(--text);
+    cursor:pointer; box-shadow:var(--shadow); min-height:48px; text-align:left;
+    transition:transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition); }
+  .opt:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .opt.got { border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+
+  /* Resolution materialization */
+  .grown { opacity:0; transform:translateY(5px); transition:opacity 280ms cubic-bezier(.2,.7,.3,1) 250ms, transform 280ms cubic-bezier(.2,.7,.3,1) 250ms; margin-top:16px; }
+  .grown.bottomcont { margin-top:auto; }
+  .grown.show { opacity:1; transform:none; }
+  .es-line { font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .en-line { font-size:13px; color:var(--text-dim); margin-bottom:14px; }
+  .cont { width:100%; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
+    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px;
+    cursor:pointer; box-shadow:var(--shadow); transition:transform var(--transition), box-shadow var(--transition); }
+  .cont:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  @media (prefers-reduced-motion: reduce){
+    .grown, .stick, .answer-row, .answer-row .tile, .tray { transition:none; }
+    .sentence .blank.filled::after, .answer-row.fused .sweep { animation:none; transform:scaleX(1); }
+    .inputbox .cursor { animation:none; }
+    .playing .bars span { animation:none; height:8px; }
+  }
+
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:440px; line-height:1.55; }
+
+  /* ============ LETTER RUNGS (word fill / phrase fill) ============ */
+  .fillline { font-family:var(--font-display); font-weight:600; color:var(--text); line-height:1.6;
+    display:flex; flex-wrap:wrap; gap:0 2px; align-items:baseline; margin-bottom:6px; }
+  .fillline.word { font-size:30px; letter-spacing:0.02em; }
+  .fillline.phrase { font-size:22px; }
+  .fillline .lt { display:inline-block; white-space:nowrap; }
+  /* Slots are STRUCTURE, not targets: input flows only into the NEXT slot, so
+     pending slots stay neutral (blue would promise interactivity they lack) and
+     the next slot alone carries the app's light. */
+  .lslot { display:inline-block; text-align:center; border-bottom:2px solid color-mix(in srgb, var(--text-dim) 45%, transparent); color:var(--text-dim);
+    min-width:0.7em; margin:0 1px; transition:border-color var(--transition), color var(--transition); }
+  .lslot .dashes { color:var(--text-dim); letter-spacing:0; font-weight:500; opacity:0.6; }
+  .lslot.next { border-bottom-color:var(--accent); border-bottom-width:3px; }
+  .lslot.filled { border-bottom-color:transparent; color:var(--text); position:relative; }
+  .lslot.filled .dashes { display:none; }
+  .lslot.filled::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--green); border-radius:2px;
+    transform:scaleX(0); transform-origin:left center; animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+  .lslot.wrongflash { border-bottom-color:var(--red); }
+  .fill-gloss { font-size:13px; color:var(--text-dim); margin-bottom:18px; }
+
+  .keytray { display:flex; flex-wrap:wrap; gap:9px; justify-content:center; margin-top:auto; padding-bottom:4px; transition:opacity 300ms; }
+  /* Supply rule (shared with build tiles): supplies present QUIET, spent supply
+     recedes further, the language lights where it lives. Sister differentiation
+     is scale + mechanics: word-tiles relocate, letter-keys deposit. */
+  .keytray .keytile { min-width:46px; min-height:48px; padding:8px 14px; border-radius:var(--radius-sm); background:var(--bg-card); border:1px solid var(--border);
+    font-family:var(--font-display); font-size:19px; font-weight:600; color:var(--text); cursor:pointer;
+    box-shadow:var(--shadow); transition:transform var(--transition), box-shadow var(--transition), opacity var(--transition); }
+  :root[data-theme="dark"] .keytray .keytile { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.14); }
+  .keytray .keytile:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .keytray .keytile.spent { opacity:0.28; pointer-events:none; box-shadow:none; }
+  .keytray .keytile.shake { animation:kshake 300ms ease; border-color:var(--red); }
+  @keyframes kshake { 0%,100%{transform:translateX(0)} 30%{transform:translateX(-4px)} 60%{transform:translateX(4px)} }
+
+  .kbd-affordance { display:flex; align-items:center; gap:8px; margin-top:auto; padding:12px 0 4px;
+    font-size:12.5px; color:var(--text-dim); justify-content:center; }
+  .kbd-affordance svg { color:var(--accent-2); }
+  .hiddeninput { position:absolute; opacity:0; pointer-events:none; left:-9999px; }
+
+  .chancechip { display:inline-block; align-self:flex-start; font-family:var(--font-display); font-size:10.5px; font-weight:600;
+    letter-spacing:0.06em; color:var(--accent-2); background:color-mix(in srgb, var(--accent-2) 13%, transparent);
+    padding:3px 10px; border-radius:20px; margin-bottom:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+      <div class="toprow">
+        <div class="progress"><div></div></div>
+        <svg class="sring" viewBox="0 0 26 26" id="sring">
+          <circle cx="13" cy="13" r="10" fill="none" stroke="var(--bg-elevated)" stroke-width="3.5"/>
+          <circle cx="13" cy="13" r="10" fill="none" stroke="var(--accent-2)" stroke-width="3.5" stroke-linecap="round"
+            stroke-dasharray="62.8" stroke-dashoffset="38" transform="rotate(-90 13 13)"/>
+        </svg>
+      </div>
+      <div class="prompt" id="prompt"></div>
+      <div id="stage" style="flex:1; display:flex; flex-direction:column;"></div>
+      <input class="hiddeninput" id="hiddeninput" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="cycleState()" id="stateBtn">exercise: word fill</button>
+    <button onclick="playState()">play this exercise</button>
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    Letter rungs r2, DERIVED from the exercise-variants base (r1 was hand-approximated and read off-family;
+    every token, the toprow, prompt scale, tray tiles, fuse/sweep/grown/Continue vocabulary now come from the
+    canonical exercise artifact). Two new types filling the production cliff. WORD FILL (word_fill, ~3): the
+    keyword at 30/600 with letter slots on the trap letters; first orthography-yours moment. GLOSS = TRANSLATION ONLY (r3, Tom: the es answer was leaking below the gapped word; the screen holds the es, so the supporting line holds only the en). PHRASE FILL
+    (phrase_fill, ~4.5): full phrase at 22/600, blanks across words, ≤40% of letters. INPUT IS A RUNG
+    DIMENSION (Tom): TRAY mode (scaffolded: needed letters + slip-informed distractors as tiles) and
+    KEYBOARD mode (native keys, no options shown, +1.0 difficulty [tune]) — tray retires per expertise
+    reversal as the item strengthens; keyboard mode is the same type one scaffold later, not a new type.
+    SLOT COLOR LAW (r4, Tom's question exposed an inherited error): the canonical blank is BLUE because there the blank is the tap target; letter slots are NOT individually interactive (input flows only into the next slot), so pending slots are NEUTRAL DIM structure and only the NEXT slot wears gold (attend here). Blue at letter scale would promise interactivity that does not exist. Dash in the slot; NEXT slot wears BRIGHT accent at 3px (r5, Tom: accent-2 reads brown at hairline scale on light — the dark gold is for glyphs-on-light, not thin lines; both themes now use --accent for the attention line). SUPPLY RULE ratified + corrected (r6/r7, Tom ×2): the canonical build tile is bg-card WITH the shadow while live in the tray (raised = pressable is elevation law, separate from the supply rule's color quietness) and flattens only when placed/spent. Keys match exactly: card + shadow live, RECEDE to 0.28 flat when spent; the language LIGHTS where it lives (the slot's settled letter + sweep). Sister differentiation from build tiles is SCALE + MECHANICS, not polarity: word-shaped tiles RELOCATE into the sentence; letter-shaped keys DEPOSIT into slots and stay behind spent, wrong input shakes red and stays (slip logged
+    silently, no copy), forgiveness at the blank (a accepted where á is wanted; the slot settles the
+    accent). Resolution: last slot → 340ms → underlines drop, per-slot green sweeps, grown materializes
+    the meaning line, bottom Continue (learner-paced). SECOND CHANCE state wears the requeue chip; re-asks
+    step down a rung (typed → phrase fill → word fill) and climb back. Blank selection: learn[id].slips +
+    learn[id].conf first, trap heuristics fallback (accents, b/v, c/qu, silent h, vowel clusters), never
+    random. Exercise chrome: no brand row (pending chrome ruling; header = progress + strength ring, the
+    canonical toprow). Em-dash-free UI copy. Frame 390.
+  </div>
+</div>
+
+<script>
+  // ===== Letter-rung states (mirrors the exercise-variants state machine) =====
+  // slot: {f:'x'} fixed · {s:'x'} required · accept: silently-accepted alternates (forgiveness)
+  const states = {
+    wordtray: {
+      label:'exercise: word fill · tray', prompt:'Fill the word', cls:'word', input:'tray', chip:null,
+      gloss:'in cash',
+      words:[ [ {f:'e'},{f:'f'},{f:'e'},{s:'c'},{f:'t'},{f:'i'},{s:'v'},{f:'o'} ] ],
+      tray:['c','v','b','qu'],
+      es:'en efectivo', en:'in cash'
+    },
+    wordkeys: {
+      label:'exercise: word fill · keyboard', prompt:'Type the missing letters', cls:'word', input:'keys', chip:null,
+      gloss:'the change',
+      words:[ [ {f:'c'},{f:'a'},{s:'m'},{s:'b'},{f:'i'},{f:'o'} ] ],
+      tray:[],
+      es:'el cambio', en:'the change'
+    },
+    phrasetray: {
+      label:'exercise: phrase fill · tray', prompt:'Fill the phrase', cls:'phrase', input:'tray', chip:null,
+      gloss:'Can you bring me the check?',
+      words:[
+        [ {f:'¿'},{f:'M'},{s:'e'} ], [ {f:'p'},{s:'u'},{f:'e'},{f:'d'},{f:'e'} ],
+        [ {f:'t'},{f:'r'},{f:'a'},{s:'e'},{f:'r'} ], [ {f:'l'},{f:'a'} ],
+        [ {f:'c'},{s:'u'},{f:'e'},{f:'n'},{f:'t'},{f:'a'},{f:'?'} ]
+      ],
+      tray:['e','u','u','e','a','o'],
+      es:'¿Me puede traer la cuenta?', en:'Can you bring me the check?'
+    },
+    phrasekeys: {
+      label:'exercise: phrase fill · keyboard', prompt:'Type the missing letters', cls:'phrase', input:'keys', chip:null,
+      gloss:'Where is the bathroom?',
+      words:[
+        [ {f:'¿'},{f:'D'},{s:'ó', accept:['o']},{f:'n'},{f:'d'},{f:'e'} ],
+        [ {f:'e'},{f:'s'},{f:'t'},{s:'á', accept:['a']} ],
+        [ {f:'e'},{f:'l'} ],
+        [ {f:'s'},{f:'e'},{f:'r'},{s:'v'},{f:'i'},{f:'c'},{f:'i'},{f:'o'},{f:'?'} ]
+      ],
+      tray:[],
+      es:'¿Dónde está el servicio?', en:'Where is the bathroom?'
+    },
+    secondchance: {
+      label:'exercise: phrase fill · second chance', prompt:'Fill the phrase', cls:'phrase', input:'tray', chip:'SECOND CHANCE',
+      gloss:'How much is a ticket?',
+      words:[
+        [ {f:'¿'},{f:'C'},{f:'u'},{s:'á', accept:['a']},{f:'n'},{f:'t'},{f:'o'} ],
+        [ {f:'c'},{s:'u'},{f:'e'},{f:'s'},{f:'t'},{f:'a'} ],
+        [ {f:'u'},{f:'n'} ],
+        [ {f:'b'},{f:'i'},{f:'l'},{f:'l'},{s:'e'},{f:'t'},{f:'e'},{f:'?'} ]
+      ],
+      tray:['a','u','e','á','o'],
+      es:'¿Cuánto cuesta un billete?', en:'How much is a ticket?'
+    }
+  };
+  const order = ['wordtray','wordkeys','phrasetray','phrasekeys','secondchance'];
+  let si = 0, slots = [], nextSlot = 0, resolved = false;
+
+  function renderState(){
+    const s = states[order[si]];
+    resolved = false;
+    document.getElementById('stateBtn').textContent = s.label;
+    document.getElementById('prompt').textContent = s.prompt;
+    const stage = document.getElementById('stage');
+    stage.innerHTML = '';
+    if (s.chip){
+      const c = document.createElement('span'); c.className = 'chancechip'; c.textContent = s.chip; stage.appendChild(c);
+    }
+    const line = document.createElement('div');
+    line.className = 'fillline ' + s.cls; line.id = 'fillline';
+    slots = []; nextSlot = 0;
+    s.words.forEach((word, wi) => {
+      const w = document.createElement('span'); w.className = 'lt';
+      word.forEach(ch => {
+        const el = document.createElement('span');
+        if (ch.f !== undefined){ el.textContent = ch.f; }
+        else {
+          el.className = 'lslot';
+          el.innerHTML = '<span class="dashes">-</span>';
+          el.dataset.want = ch.s; el.dataset.accept = (ch.accept || []).join(',');
+          slots.push(el);
+        }
+        w.appendChild(el);
+      });
+      line.appendChild(w);
+      if (wi < s.words.length - 1) line.appendChild(document.createTextNode(' '));
+    });
+    stage.appendChild(line);
+    const g = document.createElement('div'); g.className = 'fill-gloss'; g.textContent = s.gloss; stage.appendChild(g);
+
+    const grown = document.createElement('div');
+    grown.className = 'grown bottomcont'; grown.id = 'grown';
+    grown.innerHTML = '<button class="cont" onclick="cycleState()">Continue</button>';
+    stage.appendChild(grown);
+
+    if (s.input === 'tray'){
+      const tray = document.createElement('div'); tray.className = 'keytray'; tray.id = 'keytray';
+      s.tray.forEach(letter => {
+        const b = document.createElement('button'); b.className = 'keytile'; b.textContent = letter;
+        b.onclick = () => acceptInput(letter, b);
+        tray.appendChild(b);
+      });
+      stage.insertBefore(tray, grown);
+    } else {
+      const aff = document.createElement('div'); aff.className = 'kbd-affordance'; aff.id = 'kbdaff';
+      aff.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6"/></svg>No letters offered at this rung. Use your keyboard.';
+      stage.insertBefore(aff, grown);
+      const inp = document.getElementById('hiddeninput'); inp.value = ''; inp.focus();
+    }
+    markNext();
+  }
+
+  function markNext(){
+    slots.forEach(x => x.classList.remove('next'));
+    if (nextSlot < slots.length) slots[nextSlot].classList.add('next');
+  }
+
+  function acceptInput(letter, tile){
+    if (resolved || nextSlot >= slots.length) return;
+    const slot = slots[nextSlot];
+    const want = slot.dataset.want;
+    const accepts = slot.dataset.accept ? slot.dataset.accept.split(',') : [];
+    if (letter === want || accepts.includes(letter)){
+      slot.textContent = want;            // forgiveness: the slot settles the required letter
+      slot.classList.add('filled');
+      if (tile) tile.classList.add('spent');
+      nextSlot++; markNext();
+      if (nextSlot >= slots.length) setTimeout(resolveFill, 340);
+    } else {
+      if (tile) tile.classList.add('shake');
+      slot.classList.add('wrongflash');
+      setTimeout(() => { if (tile) tile.classList.remove('shake'); slot.classList.remove('wrongflash'); }, 340);
+    }
+  }
+
+  document.getElementById('hiddeninput').addEventListener('keydown', (e) => {
+    const s = states[order[si]];
+    if (s.input !== 'keys' || resolved) return;
+    if (e.key.length === 1){ acceptInput(e.key.toLowerCase(), null); e.preventDefault(); }
+  });
+  document.querySelector('.phone').addEventListener('click', () => {
+    const s = states[order[si]];
+    if (s.input === 'keys' && !resolved) document.getElementById('hiddeninput').focus();
+  });
+
+  function resolveFill(){
+    resolved = true;
+    const s = states[order[si]];
+    slots.forEach(x => { x.style.borderBottomColor = 'transparent'; });
+    const tray = document.getElementById('keytray'); if (tray) tray.classList.add('recede');
+    const aff = document.getElementById('kbdaff'); if (aff) aff.style.opacity = '0.28';
+    document.getElementById('grown').classList.add('show');
+  }
+
+  function cycleState(){ si = (si + 1) % order.length; renderState(); }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+
+  // Scripted full playback (audio-free type, so: auto-taps with human pacing)
+  function playState(){
+    renderState();
+    const s = states[order[si]];
+    let i = 0;
+    const step = () => {
+      if (nextSlot >= slots.length) return;
+      const want = slots[nextSlot].dataset.want;
+      if (s.input === 'tray'){
+        const tiles = [...document.querySelectorAll('.keytray .keytile')];
+        const t = tiles.find(x => !x.classList.contains('spent') && x.textContent === want) || null;
+        acceptInput(want, t);
+      } else {
+        acceptInput(want, null);
+      }
+      setTimeout(step, 620);
+    };
+    setTimeout(step, 700);
+  }
+  renderState();
+</script>
+</body>
+</html>

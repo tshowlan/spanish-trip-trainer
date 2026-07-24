@@ -454,6 +454,7 @@ function renderQuestion() {
   wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile")) haptic("press"); });
   $("#quit").addEventListener("click", () => confirmSheet({ title: "Quit lesson?", body: "Your progress in it is lost.", confirmLabel: "Quit lesson", cancelLabel: "Keep going", onConfirm: renderHome }));
   run.answered = false;
+  run.slotT0 = Date.now();                              // per-slot timing telemetry (2026-07-22)
   // strength ring only when exactly one item is on stage (§3.7); multi-item boards
   // (pairs, match) use a collective whisper instead
   const sring = document.getElementById("q-sring");
@@ -466,6 +467,7 @@ function renderQuestion() {
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
      listen_choice: renderListenChoice, reply_listen: renderReply,
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
+     word_fill: renderWordFill, phrase_fill: renderPhraseFill,
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
      reply: renderReplyChat }[q.type])(q);
 }
@@ -1419,6 +1421,159 @@ function renderReplyChat(q) {
   q.esFootnote = true;   // the settled English option IS the meaning; es arrives as the 13px footnote line (no-repeat + footnote zone, §3.7)
 }
 
+/* ===== §7.1b letter rungs (design/letter-rungs.html, 2026-07-22): word_fill + phrase_fill.
+   The production cliff's missing middle: orthography becomes yours letter by letter.
+   Blanks are principled, never random (slip/conf telemetry first, trap heuristics after);
+   forgiveness applies at the blank (a accepted where á is wanted, the slot settles the
+   accent); completion always resolves — the exercise never dead-ends. ===== */
+function _isVowelCh(c) { return "aeiouáéíóúü".includes(c.toLowerCase()); }
+function _trapScore(text, i, learnRec) {
+  const lc = text[i].toLowerCase();
+  let s = 0;
+  if ("áéíóúüñ".includes(lc)) s += 3;                                            // accents + ñ: the top trap
+  if ("bvh".includes(lc)) s += 2;                                                // b/v confusion, silent h
+  if (lc === "q" || (lc === "c" && text[i + 1] && "eiu".includes(text[i + 1].toLowerCase()))) s += 2;  // c/qu family
+  if (text[i + 1] && text[i + 1].toLowerCase() === lc) s += 1.5;                 // doubled letters (ll, rr)
+  if (_isVowelCh(text[i]) && text[i + 1] && _isVowelCh(text[i + 1])) s += 1;     // vowel clusters (ue/ie/ei)
+  if (learnRec && (learnRec.slips || 0) > 0 && "áéíóúüñ".includes(lc)) s += 2;   // this learner's logged trap class
+  if (learnRec && learnRec.conf) learnRec.conf.forEach(cf => {                   // letters where a logged confusion diverges
+    const n1 = norm(cf), n2 = norm(text);
+    if (n1[i] && n2[i] && n1[i] !== n2[i]) s += 1;
+  });
+  return s;
+}
+function _pickSlotIdx(text, learnRec, minSlots) {
+  const letters = [];
+  for (let i = 0; i < text.length; i++) if (/[a-záéíóúüñ]/i.test(text[i])) letters.push(i);
+  const max = Math.max(minSlots || 1, Math.floor(letters.length * 0.4));         // never blank >40% of letters
+  const cap = Math.min(max, Math.floor(letters.length * 0.4)) || 1;
+  const scored = letters.map(i => ({ i, s: _trapScore(text, i, learnRec) + Math.random() * 0.3 }));
+  scored.sort((a, b) => b.s - a.s);
+  return new Set(scored.slice(0, Math.max(minSlots || 1, cap)).map(x => x.i));
+}
+function renderWordFill(q) { renderLetterFill(q, "word"); }
+function renderPhraseFill(q) { renderLetterFill(q, "phrase"); }
+function renderLetterFill(q, scale) {
+  const item = q.item;
+  const learnRec = learnPeek(item);
+  // input is a rung dimension, not a new type: tray (scaffolded) retires to native keys
+  // as the item strengthens (expertise reversal); +1.0 difficulty in the atlas model
+  const exp = learnRec ? learnRec.exposures : 0;
+  const keysMode = q.input === "keys" || (q.input !== "tray" && exp >= 5 + (item.difficulty || 2));
+  q.input = keysMode ? "keys" : "tray";
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">${scale === "word" ? "Complete the word" : "Complete the phrase"}</div>`));
+  // target: word_fill takes the keyword (or the longest word); phrase_fill takes the phrase
+  const clean = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "");
+  let text;
+  if (scale === "word") {
+    const words = item.es.split(/\s+/);
+    const kws = (item.keywords || []).filter(k => /^\S+$/.test(k));
+    text = kws.map(k => words.find(w => norm(clean(w)) === norm(k))).find(Boolean)
+        || words.slice().sort((a, b) => clean(b).length - clean(a).length)[0] || item.es;
+  } else text = item.es;
+  const slotIdx = _pickSlotIdx(text, learnRec, scale === "phrase" ? 2 : 1);
+  const line = el(`<div class="fill-line ${scale}"></div>`);
+  const slots = [];
+  let cursor = 0;
+  text.split(/(\s+)/).forEach(part => {
+    if (!part.length) return;
+    if (/^\s+$/.test(part)) { line.appendChild(document.createTextNode(" ")); cursor += part.length; return; }
+    const w = el(`<span class="lt"></span>`);
+    for (let j = 0; j < part.length; j++) {
+      const gi = cursor + j;               // true global index via running cursor
+      const ch = part[j];
+      if (slotIdx.has(gi)) {
+        const want = ch;
+        const accept = norm(want) !== want.toLowerCase() ? norm(want) : "";
+        const sEl = el(`<span class="lslot" data-want="${want}" data-accept="${accept}"><span class="dashes">-</span></span>`);
+        slots.push(sEl); w.appendChild(sEl);
+      } else w.appendChild(document.createTextNode(ch));
+    }
+    line.appendChild(w);
+    cursor += part.length;
+  });
+  body.appendChild(line);
+  body.appendChild(el(`<div class="fill-gloss">${item.en}</div>`));   // gloss rule: the screen holds es, the line holds en
+  let nextSlot = 0, wrongTaps = 0, done = false;
+  const markNext = () => { slots.forEach(x => x.classList.remove("next")); if (nextSlot < slots.length) slots[nextSlot].classList.add("next"); };
+  const acceptInput = (letter, tile) => {
+    if (done || run.answered || nextSlot >= slots.length) return;
+    const slot = slots[nextSlot];
+    const want = slot.dataset.want;
+    if (letter === want || letter.toLowerCase() === want.toLowerCase() || (slot.dataset.accept && norm(letter) === slot.dataset.accept)) {
+      slot.textContent = want;                       // forgiveness: the slot settles the required letter
+      slot.classList.add("filled");
+      if (tile) tile.classList.add("spent");
+      haptic("press");
+      nextSlot++; markNext();
+      if (nextSlot >= slots.length) { done = true; setTimeout(() => _finishFill(q, item, wrongTaps), 340); }
+    } else {
+      wrongTaps++;                                   // slip logged silently at resolve; no copy, no chastisement
+      if (tile) { tile.classList.add("shake"); setTimeout(() => tile.classList.remove("shake"), 340); }
+      slot.classList.add("wrongflash");
+      setTimeout(() => slot.classList.remove("wrongflash"), 340);
+    }
+  };
+  if (!keysMode) {
+    // tray: needed letters (in slot order, duplicates kept) + slip-informed distractors
+    const wants = slots.map(s => s.dataset.want);
+    const distract = [];
+    wants.forEach(wl => { const n = norm(wl); if (n !== wl.toLowerCase() && !wants.includes(n) && !distract.includes(n)) distract.push(n); });
+    const traps = "áébvhoue".split("").filter(c => !wants.some(x => x.toLowerCase() === c) && !distract.includes(c));
+    while (distract.length < Math.min(3, 2 + Math.floor(wants.length / 2)) && traps.length) distract.push(traps.shift());
+    const tray = el(`<div class="keytray"></div>`);
+    shuffle([...wants, ...distract]).forEach(letter => {
+      const b = el(`<button class="keytile">${letter}</button>`);
+      b.addEventListener("click", () => acceptInput(letter, b));
+      tray.appendChild(b);
+    });
+    body.appendChild(tray);
+    q.onResolve = () => tray.classList.add("recede");
+  } else {
+    const aff = el(`<div class="kbd-affordance"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6"/></svg>No letters offered at this rung. Use your keyboard.</div>`);
+    body.appendChild(aff);
+    const inp = el(`<input class="fill-hidden-input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">`);
+    body.appendChild(inp);
+    setTimeout(() => inp.focus(), 60);
+    inp.addEventListener("keydown", e => { if (e.key.length === 1) { acceptInput(e.key, null); e.preventDefault(); } });
+    body.addEventListener("click", () => { if (!done) inp.focus(); });
+    q.onResolve = () => aff.classList.add("recede");
+  }
+  markNext();
+  q.esOnStage = true; q.noEn = true; q.noAudio = true;   // the completed line is the surface; gloss already holds the en
+}
+/* graceful grading (the exercise never dead-ends): 0-1 wrong taps = pass (slips logged),
+   2+ = a miss for SRS/re-ask purposes while still completing in place [tune] */
+function _finishFill(q, item, wrongTaps) {
+  run.answered = true;
+  const id = itemId(item);
+  const pre = id && state.learn && state.learn[id];
+  const wasFading = !!(pre && pre.exposures >= 1 && itemStrength(pre) < RETENTION_FADE);
+  const strengthBefore = pre ? itemStrength(pre) : 0;
+  const pass = wrongTaps <= 1;
+  _recordSlotTime(q);
+  recordAnswer(id, pass, { mode: q.type });
+  const post = id && state.learn && state.learn[id];
+  if (wrongTaps > 0 && post) post.slips = (post.slips || 0) + wrongTaps;   // silent telemetry feeds future blanks
+  const restored = pass && wasFading;
+  if (restored) run.restored = (run.restored || 0) + 1;
+  if (pass && post && itemStrength(post) > strengthBefore && !(run.exposed && run.exposed.has(id)))
+    (run.strongerIds = run.strongerIds || new Set()).add(id);
+  if (pass) { playSound("correct"); haptic(restored ? "restored" : "correct"); }
+  else { run.wrong++; if (run.missed) run.missed.set(id, item); requeueMiss(item, q.type); }
+  resolveCorrect(item, q, { yoursNow: false, restored, strengthAfter: post ? Math.round(itemStrength(post)) : 0, miss: !pass });
+}
+// per-slot elapsed time -> rolling per-type means (the atlas graduates from estimates
+// to measured medians as this accrues; the word was said 2026-07-22)
+function _recordSlotTime(q) {
+  const ms = run && run.slotT0 ? Date.now() - run.slotT0 : null;
+  if (ms == null || !q || !q.type || ms > 180000) return;
+  const t = state.telem = state.telem || {};
+  const e = t[q.type] = t[q.type] || { n: 0, mean: 0 };
+  e.n++; e.mean = Math.round(e.mean + (ms - e.mean) / e.n);
+}
+
 /* ----- grading + feedback ----- */
 function grade(ok, item) { finishGrade(ok, item, null); }
 // typed answers get typo/accent tolerance (edit distance ≤ 1, accent slips accepted)
@@ -1431,6 +1586,7 @@ function gradeTyped(raw, item) {
 }
 function finishGrade(ok, item, extra, wrong) {
   run.answered = true;
+  _recordSlotTime(run.qs[run.idx]);
   const q = run.qs[run.idx];
   const id = itemId(item);
   // §8.4: was this phrase fading BEFORE we graded it? (seen ≥once + strength under the notify threshold)
@@ -1476,7 +1632,7 @@ function finishGrade(ok, item, extra, wrong) {
    Exit (§8.5, Pacing Rule): self-paced, always: Continue materializes with the frame. ---- */
 function resolveCorrect(item, q, info) {
   const qb = $("#qbody"); if (!qb) return next();
-  qb.classList.add("qcorrect");                                      // base layer: wash on input-style exercises
+  if (!info.miss) qb.classList.add("qcorrect");                      // base layer: wash on input-style exercises (never on a graceful miss)
   clearFooter();                                                     // the resolution owns the exit
   if (q && q.onResolve) try { q.onResolve(); } catch (_) {}          // §7.1 exercise-specific settle (fill the blank, settle the card)
   const barEl = document.querySelector(".pbar > i");                 // progress advances
@@ -1491,8 +1647,9 @@ function resolveCorrect(item, q, info) {
   }
 
   // materialization: es always reveals (the fused build row IS the es), then en + audio grow in
-  // one kicker per resolution; milestone beats event (YOURS NOW > RESTORED)
-  const kick = info.yoursNow ? "yours" : (info.restored ? "restored" : null);
+  // one kicker per resolution; milestone beats event (YOURS NOW > RESTORED); a graceful
+  // miss resolves quietly (no kicker, no wash, no Stronger whisper - the SRS took its note)
+  const kick = info.miss ? null : (info.yoursNow ? "yours" : (info.restored ? "restored" : null));
   const kicker = kick === "yours" ? `<div class="res-yours">YOURS NOW</div>`
     : kick === "restored" ? `<div class="res-kick"><svg class="kring" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6.5" fill="none" stroke="var(--ring-track, var(--bg-elevated))" stroke-width="2.5"/><circle class="kfg" cx="8.5" cy="8.5" r="6.5" fill="none" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 8.5 8.5)"/></svg><span class="res-yours res-restored">RESTORED</span></div>`
     : "";
@@ -1510,17 +1667,19 @@ function resolveCorrect(item, q, info) {
       ? `<div class="res-en">${item.es}</div>`
       : `<div class="es-reveal">${item.es}<span class="sweep2"></span></div>`) : ""}
     ${(q && (q.noEn || q.esFootnote)) ? "" : `<div class="res-en">${item.en}</div>`}
-    <div class="res-audio"></div>
+    ${(q && q.noAudio) ? "" : `<div class="res-audio"></div>`}
     ${note}
     <button class="btn res-cont">Continue</button>
   </div>`);
   let advanced = false;
   const goNext = () => { if (advanced) return; advanced = true; qb.classList.add("leaving"); setTimeout(next, 200); };
   const playWhole = () => speak(item.es);
-  const arow = el(`<div class="res-audio-row"></div>`);
-  arow.appendChild(audioControl(playWhole));
-  arow.appendChild(el(`<span class="audio-hint">Hear it whole</span>`));
-  grown.querySelector(".res-audio").appendChild(arow);
+  if (!(q && q.noAudio)) {
+    const arow = el(`<div class="res-audio-row"></div>`);
+    arow.appendChild(audioControl(playWhole));
+    arow.appendChild(el(`<span class="audio-hint">Hear it whole</span>`));
+    grown.querySelector(".res-audio").appendChild(arow);
+  }
   grown.querySelector(".res-cont").addEventListener("click", goNext);
   qb.appendChild(grown);
   requestAnimationFrame(() => requestAnimationFrame(() => grown.classList.add("show")));
@@ -1533,13 +1692,13 @@ function resolveCorrect(item, q, info) {
     } catch (_) {}
   }, 700);
 
-  // the item's strength ring ticks up, "Stronger" whispers
-  _setQStrength(info.strengthAfter, true);
+  // the item's strength ring ticks up, "Stronger" whispers (never on a graceful miss)
+  _setQStrength(info.strengthAfter, !info.miss);
 
   // Pacing Rule (design system §1.2): the exit is the learner's tap, always. Audio autoplays;
   // no auto-advance, no timers, no dwell math. The resolution delivers NEW information (the es
   // reveal), and new information is never swept away.
-  playWhole();
+  if (!(q && q.noAudio)) playWhole();
 }
 
 // per-item strength ring in the runner's top row (scale ladder: the rep shows ITEM strength, §3.5)

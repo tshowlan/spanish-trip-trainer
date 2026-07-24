@@ -120,7 +120,7 @@ function cramActive() {
 const LADDER = [
   ["present"],                                                  // 0    first sight — teach, never test
   ["mc_es2en", "listen_choice", "sound_choice"],                // 1-2  recognition (incl. hear-and-pick)
-  ["build", "fill_blank", "audio_cloze", "ear_build", "reply"], // 3-4  scaffolded production (mc_en2es retired §7.0)
+  ["word_fill", "build", "fill_blank", "audio_cloze", "phrase_fill", "ear_build", "reply"], // 3-4 scaffolded production (letter rungs 2026-07-22)
   ["type_translation", "listen_type", "speak_it", "ear_build"]  // 5+   cold production (ear_build: more distractors)
 ];
 
@@ -135,6 +135,8 @@ function _modeFeasible(mode, item) {
   if (mode === "sound_choice") return n >= 2;      // needs a frame around the blanked word (renderer verifies a distractor exists)
   if (mode === "ear_build") return n >= 4 && n <= 8;   // same tile constraints as build
   if (mode === "reply") return !!item.replyTo;     // §7.1: dormant until replyTo is authored (Phase-3)
+  if (mode === "word_fill") return item.es.split(/\s+/).some(w => w.replace(/[^a-záéíóúüñA-ZÁÉÍÓÚÜÑ]/g, "").length >= 4);
+  if (mode === "phrase_fill") return n >= 2 && item.es.replace(/[^a-záéíóúüñA-ZÁÉÍÓÚÜÑ]/g, "").length >= 6;
   return true;
 }
 function _tierOfType(type) {
@@ -173,9 +175,14 @@ function _baseTier(exposures, difficulty) {
 // A preference only ever picks among modes the item's own tier already allows — never over-tests.
 const MODE_FAMILY = {
   recognition: ["mc_es2en", "listen_choice", "sound_choice", "reply"],
-  production:  ["build", "fill_blank", "audio_cloze", "type_translation", "speak_it"],
+  production:  ["word_fill", "build", "fill_blank", "audio_cloze", "phrase_fill", "type_translation", "speak_it"],
   audio:       ["listen_choice", "listen_type", "sound_choice", "audio_cloze", "ear_build"]
 };
+// §sound-off rule (2026-07-22): every rung has an audio-free member; the composer swaps
+// ear members for their visual siblings when the learner can't listen. The letter rungs
+// complete the production band's audio-free coverage.
+const EAR_SIBLINGS = { listen_choice: "mc_es2en", sound_choice: "fill_blank", audio_cloze: "phrase_fill", ear_build: "build", listen_type: "type_translation" };
+function _audioOff() { return !(typeof window !== "undefined" && "speechSynthesis" in window) || state.sound === false; }
 function _pickPreferred(tier, item, prefer, s) {
   const want = MODE_FAMILY[prefer]; if (!want) return null;
   let cand = [];
@@ -199,11 +206,22 @@ function chooseType(item, opts) {
   let mode = null;
   if (opts && opts.prefer) mode = _pickPreferred(tier, item, opts.prefer, s);
   if (!mode) mode = _pickModeForTier(tier, item, s);
+  if (_audioOff() && EAR_SIBLINGS[mode] && _modeFeasible(EAR_SIBLINGS[mode], item)) mode = EAR_SIBLINGS[mode];
   if (s) { s.lm = mode; s.lmt = _tierOfType(mode); s.lms = state.sessionSeq || 0; }  // variety-rule memory
   return mode;
 }
-// re-serve a missed item one rung easier than the mode it failed (0 → presentation card)
+// RUNG-DOWN RE-ASK LAW (2026-07-22): re-asks step DOWN into the letter rungs and climb
+// back on success — the scaffold returns with failure (expertise reversal, both directions).
+// Missed a cold/typed rep → phrase fill; missed a scaffolded assembly → word fill.
 function rungDownType(failedType, item) {
+  const stepDown = {
+    type_translation: "phrase_fill", listen_type: "phrase_fill", speak_it: "phrase_fill",
+    close: "phrase_fill", close_swap: "phrase_fill",
+    ear_build: "phrase_fill", audio_cloze: "word_fill", build: "word_fill",
+    fill_blank: "word_fill", phrase_fill: "word_fill"
+  };
+  const sd = stepDown[failedType];
+  if (sd && _modeFeasible(sd, item)) return sd;
   const tier = Math.max(0, _tierOfType(failedType) - 1);
   return tier === 0 ? "present" : _pickModeForTier(tier, item);
 }

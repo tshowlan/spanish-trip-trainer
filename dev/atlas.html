@@ -140,7 +140,8 @@
   // read-only < one-tap < assemble < type.
   const SECONDS = { present:10, mc_es2en:8, listen_choice:10, sound_choice:12, fill_blank:10,
     build:18, audio_cloze:14, ear_build:20, type_translation:22, listen_type:22, speak_it:15,
-    pairs:30, match:25, reply:12, reply_listen:10, close:25, close_swap:28, intro:8 };
+    pairs:30, match:25, reply:12, reply_listen:10, close:25, close_swap:28, intro:8,
+    word_fill:12, phrase_fill:16 };   // letter rungs 2026-07-22 [tune -> measured via state.telem]
   const PRIMER_SECONDS = 20;              // scene -> mission -> guess (first pass only)
   // per-shape time bands (ratified 2026-07-22): a machine lesson is a pattern-drill whose
   // course is the whole trip (spacing beats massing); scenario lessons carry scenes.
@@ -149,7 +150,8 @@
   // difficulty 0–10 per type (scaffolded → cold), + (item.difficulty−2)×0.5 modifier
   const DIFF = { present:0, match:1.5, pairs:2, mc_es2en:2, listen_choice:2.5, sound_choice:3,
     reply:3, reply_listen:2.5, fill_blank:3.5, build:4, audio_cloze:4.5, ear_build:5.5,
-    speak_it:6.5, type_translation:7, listen_type:7.5, close:8, close_swap:8.5, intro:0 };
+    speak_it:6.5, type_translation:7, listen_type:7.5, close:8, close_swap:8.5, intro:0,
+    word_fill:3, phrase_fill:4.5 };   // keys mode = +1.0 (input is a rung dimension)
   const RUNS = 12;                        // sims per lesson (composer is stochastic)
 
   /* ---------- sim state ---------- */
@@ -218,7 +220,8 @@
     const idiff = q.item && q.item.difficulty ? q.item.difficulty : 2;
     const tokens = q.item && q.item.es ? q.item.es.trim().split(/\s+/).length : 3;
     const lenTerm = Math.min(1.5, Math.max(0, (tokens - 3) * 0.2));   // structure the author field doesn't carry
-    return Math.max(0, base + (idiff - 2) * 0.5 + (base > 0 ? lenTerm : 0));
+    const keysTerm = q.input === "keys" ? 1.0 : 0;                    // tray retired = one scaffold later
+    return Math.max(0, base + (idiff - 2) * 0.5 + (base > 0 ? lenTerm : 0) + keysTerm);
   }
 
   /* ---------- gap analysis ---------- */
@@ -387,7 +390,9 @@
       ["Silent forgiveness", "judgeTyped · finishGrade", "Accent + single-char slips accepted silently (slips telemetry only). The always-on es-reveal is the passive correction; the close's input matures to canonical form."],
       ["Cram mode", "cramActive() · Practice", "Trip < 14 days: Practice front-loads dietary/emergency criticals; review share rises; production preferred for production=0 items. Lessons stay pure."],
       ["Practice escalation", "practiceButton · [tune]", "Home's Practice row: quiet → 'N due' badge (due ≥ 3) → urgent ember 'N fading' (due ≥ 12, or retention sag + due ≥ 6) with the one-time arrival breath."],
-      ["Session end", "goHomeAfterSession", "Every completed flow (lesson, practice, chain) ends in the ceremony: dials perform → ledger (new/stronger/restored/soloed) → Option D dissolve. Restores can only happen in Practice now."]
+      ["Session end", "goHomeAfterSession", "Every completed flow (lesson, practice, chain) ends in the ceremony: dials perform → ledger (new/stronger/restored/soloed) → Option D dissolve. Restores can only happen in Practice now."],
+      ["Sound-off siblings", "srs.js EAR_SIBLINGS", "Every rung has an audio-free member: " + Object.entries(typeof EAR_SIBLINGS !== "undefined" ? EAR_SIBLINGS : {}).map(([e,v]) => e + " → " + v).join(" · ") + ". The composer swaps ear members for visual siblings when speech is unavailable or sound is off; the letter rungs complete the production band's coverage."],
+      ["Letter rungs + rung-down re-ask law", "renderLetterFill · rungDownType", "word_fill/phrase_fill fill the production cliff (tray → keys as the item strengthens, +1.0). Re-asks step DOWN (typed → phrase_fill → word_fill) and climb back on success. Blanks: slip/conf telemetry first, trap heuristics after, ≤40% of letters, never random. Grading: 0-1 wrong taps pass, 2+ miss while completing gracefully."]
     ];
     html += `<h2>Decision forks & deviations <span class="sub">every place the flow branches — with code anchors</span></h2>`;
     forks.forEach(([t, w, p]) => { html += `<div class="fork"><b>${t}</b><span class="where">${w}</span><p>${p}</p></div>`; });
