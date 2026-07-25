@@ -80,6 +80,9 @@ doc narrates, this file states only the laws.
 - **The ear never loses the answer:** every listening resolution reveals the played es (the
   played-line: display-scale text + replayable 36px control), correct or missed — es-always-reveals
   at its limit case: the learner never SAW the answer, so the reveal is the weld. *(item 5)*
+- **One correction surface per miss:** where a resolution reveals the answer in place (the
+  ear family's played-line + wrong-then-release + correct wash), the in-place reveal IS the
+  correction and the sheet yields; the sheet only where nothing else does. *(ruling 2026-07-24)*
 - **Distractor axes:** ear-discrimination distractors are sound-neighbors by design (minimal pairs
   are the ear's whole job); meaning-pick distractors are meaning-neighbors never — the paraphrase
   ban applies where meaning is the axis. *(the distractor nuance)*
@@ -234,6 +237,8 @@ doc narrates, this file states only the laws.
   Tom's elimination; the silhouette's structure-preview idea may return as exercise content, not ground).
 - 2026-07-24 — The register concept (per-type field volumes, killed by Tom's "what's the point of
   the register?" — the ground never pumps between reps).
+- 2026-07-24 — "Can't tell, skip" (listen & type's per-rep skip): the whisper escape covers
+  modality, the honest miss + rung-down covers difficulty; a skip denied the engine its signal.
 
 - ~~"Gold buttons carry DARK glyphs; flat cards carry GOLD glyphs"~~ — superseded 2026-07-20 by
   the high-contrast glyph law (the original described artifact stand-ins, not the built truth).

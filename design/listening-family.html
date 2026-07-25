@@ -198,18 +198,17 @@
   .listen-stage .ac-speaker .ac-bars span { width:3.5px; }
   .listen-stage .ac-row { display:flex; align-items:center; }
   .listen-stage .hint { font-size:12.5px; color:var(--text-dim); }
-  .linkbtn { border:none; background:none; font-family:var(--font-display); font-size:13px; font-weight:600;
+  .whisper-escape, .linkbtn { border:none; background:none; font-family:var(--font-display); font-size:13px; font-weight:600;
     color:var(--text-dim); text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:6px;
     transition:color var(--transition); }
   .linkbtn:active { color:var(--text); }
-  .linkbtn.whisper { font-size:12.5px; font-weight:500; align-self:center;
+  .whisper-escape { font-size:12.5px; font-weight:500; align-self:center;
     text-decoration-color:color-mix(in srgb, var(--text-dim) 40%, transparent); margin-bottom:10px; }
   .screen { position:relative; }
   .facet-bg { position:absolute; top:0; left:0; right:0; height:555px; pointer-events:none; z-index:0; }
   .facet-bg svg { width:100%; height:100%; display:block; }
   /* The landscape tracks the SUN, not the theme: lights by local clock (both themes) */
   .facet-bg.no-light .lightgroup { display:none; }
-  .facet-bg.force-light .lightgroup { display:block !important; }
   .screen > *:not(.facet-bg) { position:relative; z-index:1; }
   :root { --solid-card:#ffffff; --solid-track:#d9d4c2; }
   :root[data-theme="dark"] { --solid-card:#201e18; --solid-track:#55523f; }
@@ -277,26 +276,21 @@
   <div class="chrome">
     <button onclick="cycleState()" id="stateBtn">state: type · fresh</button>
     <button onclick="playState()">play this exercise</button>
-    <button onclick="toggleLight(this)">light: auto</button>
     <button onclick="toggleTheme()">dark theme</button>
   </div>
 
   <div class="caption">
-    Listening family r12 · ONE STAGE (Tom: silhouette and bubble removed; the facets design locked in). The backdrop is STATIC MARKUP, zero JS. r14 (Tom): reaches ~555px (three quarters of the 740 frame); LARGE facets ring the outside with SMALL SPRINKLES scattered along the edges too, the middle field of small triangles carries ONE BIG PANE (158,178–258,214–196,300) breaking the segregation for variation; the lower band mixes sizes and the dissolve tips stagger to ~555. 74 facets total. THE LIGHT LAYER (r16, Tom's clarification via the mountain painting: light IN the triangles, not on them): no added shapes — a toggleable layer repaints thirteen EXISTING facets brighter. Six sharp narrow cuts blaze flat gold (12–24%); seven big panes carry INTERNAL GRADIENTS (gold rays fading through, gold-to-blue sky mixes, blue washes) like light passing through the geometry. Still no direction vector (brightness clusters where cuts are sharpest, not where a sun sits), gold remains the app's light, static always. r17 (Tom): the progress bar's unfilled track and the strength ring's unfilled track are OPAQUE too. r18 (Tom: the tracks blended into the ground): --solid-track steps up in contrast (light #cfcab5, a full tone below the ground; dark #55523f, a full tone above) and the progress track gains a hairline inset edge. r19: light track steps back one tone (#d9d4c2, hairline softened to 14%) after reading too proud; the top-left sprinkle behind the prompt's first letters removed — facets never compete with words (a rule for the field: text zones stay facet-free or whisper-only). r20 (Tom, two rulings): (1) THE FIELD GOES APP-WIDE as the exercise ground, in REGISTERS — FULL (this artifact: audio/mic-centerpiece exercises) and QUIET (text-centerpiece: container opacity 0.5, reach ~300px, per the words rule) — one landscape, a volume knob per surface; exercise-base v2 carries the quiet register. (2) THE LIGHT LAYER IS CLOCK-BOUND, r22 (Tom: a permanent-dark user still has daytimes): lights follow the LOCAL TIME OF DAY in BOTH themes — daylight window 7–19 [tune], evaluated at session start, never switching mid-session. Daytime dark theme gets gold rays over navy; at night both themes sleep and the app's light rests in the instruments. The chrome toggle is TRI-STATE: auto = the clock binding (the spec, labeled day/night live) · on = forced, to review gold-over-navy in dark · off = forced matte in light. Auto ships; on/off die at the stamp · base: exercise-base v1 · derived from listening-family-dom.html (v182 truth) +
-    live .ac-* styles. Covers Tom's items 5 and 7. TYPE WHAT YOU HEAR (item 7): the stage treats SOUND AS
-    THE CENTERPIECE — the canonical AudioControl at a hero SIZE VARIANT (64px, same anatomy, scaled never
-    restyled; needs bless) centered on a listening stage with the speed chip, replay hint below, then the
-    live text-input (display font, gold focus). Resolution: typed input matures to canonical es in place
-    (wash, forgiveness silent), the en sits in the ADJACENT grown directly below the matured input (adjacency law; r2, Tom's catch), Continue anchors bottom alone. WHAT DID YOU HEAR (item 5): THE EAR
-    NEVER LOSES THE ANSWER — every listening resolution reveals the played es as a PLAYED-LINE (20/600 +
-    replayable 36px control), correct or missed; on a miss the chosen option wears the built .wrong state
-    then settles .dim, the correct option washes green, and the played-line is the reveal (the es-always-
-    reveals law extended to the ear: the learner must SEE what they heard). No-repeat holds: es on the
-    played-line, en on the options, nothing twice. DISTRACTOR NUANCE (prevents misapplying the paraphrase
-    ban): listen_choice options are SOUND-NEIGHBORS by design (días/tardes/noches are the exercise working;
-    minimal pairs are legal for the ear); the meaning-category rule governs meaning-pick, not ear
-    discrimination. SOUND-OFF ESCAPE (r5, Tom's placement ruling): a WHISPER above Continue (12.5/500 dim, softened underline) on EVERY listening exercise. Escapes live in the exit zone because they are exits; at the stage it read as a major design element. Mirrors the speak escape's promise. Tap = this rep swaps to its visual sibling AND the session flips sound-off (composer keeps swapping per the sound-off rule; system side is Code's: session flag, reset point in the session menu, optional OS mute detection as a pre-emptive prompt). Escapes are whispers in the exit zone; persistence is system. STAGE OPTIONS (r5, cycle the stage button on either fresh state): SILHOUETTE (recommended) = the phrase's word-shape as dash ghosts under the control, a structure preview that inherits the dash vocabulary and RESOLVES into the played-line, information never decoration. FACETS (r8, Tom ×2): full-bleed to the screen edges, NO rectangle and NO mask; the GEOMETRY makes the edge — 26 facets in three depth rows sharing vertices (adjacent light/dark values create the fold illusion), sizes ranging huge-to-sliver for recession, and the bottom dissolve is a JAGGED edge of tips ending at varying depths (196/224/238/204/186px) with opacity falling 17%→3% top to tip. NOTHING goes see-through over the facets (r9, Tom: everything was translucent — the override lost the cascade and missed the choices): an end-of-sheet override puts the audio control, speed chip, input, AND all choice states on --solid-card composite grounds (white / dark #201e18); the green/red washes mix over solid instead of transparent. Static always (motion law). BUBBLE = the sound as an utterance (someone said this; the reply's chrome, future cast attribution). BARE = current build. Tom picks by eye. Autoplay on entry is build behavior (Code's fix, Tom's ruling 2) — demoed here as a
-    brief playing state on arrival. Option count 4 [tune]. Em-dash-free UI. Frame 390.
+    Listening family — APPROVED + STAMP CUT 2026-07-24 (v184 parity re-issue; history lives in the handoff
+    + decisions.md) · base: exercise-base v2.1. SPEC: THE FIELD (73 facets, three-quarter reach, one volume,
+    static markup) is the exercise ground app-wide; light layer clock-bound (7–19 local [tune], both themes,
+    session start); over the field every functional surface is opaque incl. instrument tracks
+    (--solid-card / --solid-track). Hero AudioControl size variant (64px, anatomy untouched) on listening
+    stages; played-line reveal on EVERY listening resolution (the ear never loses the answer); miss =
+    wrong-then-release (900ms [tune]) + correct wash + reveal, settle uniformity (no third state at rest);
+    THE SHEET YIELDS to the in-place reveal for ear exercises (one correction surface per miss).
+    Whisper escape (.whisper-escape, build class) above Continue on every listening exercise; tap swaps the
+    rep to its visual sibling + flips session sound-off. "Can't tell, skip" is retired. Facets never compete
+    with words. Autoplay on entry 350ms [tune]. Em-dash-free UI. Frame 390.
   </div>
 </div>
 
@@ -336,7 +330,7 @@
       stage.innerHTML = `
         <div class="listen-stage">${acHero}<div class="hint">Tap to hear it again</div></div>
         <input class="text-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribe en espa\u00f1ol\u2026">
-        <div class="grown bottomcont show" style="display:flex; flex-direction:column;"><button class="linkbtn whisper" onclick="soundOff()">I can't listen right now</button><button class="cont" onclick="cycleState()">Continue</button></div>`;
+        <div class="grown bottomcont show" style="display:flex; flex-direction:column;"><button class="whisper-escape" onclick="soundOff()">I can't listen right now</button><button class="cont" onclick="cycleState()">Continue</button></div>`;
       autoplayEntry();
     } else if (key === 'typedone'){
       stage.innerHTML = `
@@ -348,7 +342,7 @@
       stage.innerHTML = `
         <div class="listen-stage">${acHero}<div class="hint">Tap to hear it again</div></div>
         ${choicesHtml('fresh')}
-        <div class="grown bottomcont show" style="display:flex; flex-direction:column;"><button class="linkbtn whisper" onclick="soundOff()">I can't listen right now</button><button class="cont" onclick="cycleState()">Continue</button></div>`;
+        <div class="grown bottomcont show" style="display:flex; flex-direction:column;"><button class="whisper-escape" onclick="soundOff()">I can't listen right now</button><button class="cont" onclick="cycleState()">Continue</button></div>`;
       autoplayEntry();
     } else if (key === 'choosecorrect'){
       stage.innerHTML = `
@@ -397,23 +391,11 @@
       <div class="grown bottomcont show"><button class="cont" onclick="renderState()">Continue</button></div>`;
   }
   function cycleState(){ si = (si + 1) % order.length; renderState(); }
-  let lightState = 'auto';
-  const DAY_START = 7, DAY_END = 19; // [tune] local daylight window
+  const DAY_START = 7, DAY_END = 19; // [tune] centralized in build
   function applyLightAuto(){
     const bg = document.querySelector('.facet-bg');
     const h = new Date().getHours();
-    const day = h >= DAY_START && h < DAY_END;
-    bg.classList.toggle('no-light', !day);
-    return day;
-  }
-  function toggleLight(btn){
-    const bg = document.querySelector('.facet-bg');
-    lightState = lightState === 'auto' ? 'on' : lightState === 'on' ? 'off' : 'auto';
-    bg.classList.remove('no-light','force-light');
-    if (lightState === 'on') bg.classList.add('force-light');
-    else if (lightState === 'off') bg.classList.add('no-light');
-    else applyLightAuto();
-    btn.textContent = 'light: ' + lightState + (lightState === 'auto' ? (applyLightAuto() ? ' (day)' : ' (night)') : '');
+    bg.classList.toggle('no-light', !(h >= DAY_START && h < DAY_END));
   }
   applyLightAuto();
   function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }

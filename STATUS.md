@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — STAMP RECONCILED + TWO RULINGS SHIPPED (v185): the listening family is CLOSED
+- Stamped listening-family.html committed (Tom-saved: toggle dead, clock hardwired, .whisper-escape adopted, caption = pure spec). Acceptance diff run: clean after triage (live-token precedence x3, font-stack noise, resolved-state pairs absent from the artifact's initial state; one .hint height row traced to a frozen-pane measurement, visually verified correct).
+- RULING one correction surface per miss: listen_choice misses now resolve IN PLACE (played-line + wrong-then-release + Continue; no sheet, no wash, SRS unchanged) via q.earReveal in finishGrade; constitution law added, design-system SS3.3 gains the ear-family exception. Other ear members keep the sheet until they too reveal in place.
+- RULING "Can't tell, skip" RETIRED from listen & type (the escape covers modality, the miss + rung-down covers difficulty).
+- Grep-the-class-name absorbed chat-side (canvases verify against live styles.css at derivation). Pairs-board field flag: harness shows no collision so far; stays open for Tom's eye.
+- THE LISTENING FAMILY: designed, shipped, built, reconciled, stamped. Next: the splash session.
+
 ## 2026-07-25 — LISTENING FAMILY + THE FIELD SHIPPED (v184)
 - Chat's handoff built in full: listen_type hero stage (64px size variant, matured-input resolution, en adjacent), listen_choice played-line reveal BOTH paths (the ear never loses the answer), wrong-then-release (900ms [tune]) + settle uniformity, autoplay unified 350ms [tune].
 - THE FIELD app-wide: 74-facet landscape (SVG verbatim from the artifact) behind every runner (exercises + chains + speed round); opaque composites --solid-card/--solid-track on all functional surfaces incl. pbar + strength-ring tracks + dark keytiles/pcards; light layer clock-bound (7-19 [tune], run.daylight at session start, both themes).

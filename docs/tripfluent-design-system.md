@@ -85,6 +85,11 @@ One `AudioControl` component, three variants — never ad-hoc speaker buttons. *
 - **Built:** `audioControl(play, {speed})` in `ui.js` (`.ac-*` in `styles.css`), matches `design/audio-control.html`; passed the §5 diff clean. Replaced every ad-hoc audio button (speak-btn/waveButton/slow-btn/pb-speak/intro rows); `corr-audio` stays a plain speaker per the correction-sheet artifact. Note: the speed pill is 30px tall (the approved artifact) rather than the §3.1 44px target, same accepted exception as `corr-audio` (40px).
 
 ### 3.3 Sheets & popovers (the correction-moment fix)
+
+**Ear-family exception (ruling 2026-07-24):** where a listening resolution reveals the answer in
+place (the played-line + wrong-then-release + correct wash), the in-place reveal IS the correction
+and the sheet yields — one correction surface per miss. The sheet remains the miss feedback
+everywhere nothing else reveals.
 - **All modal content is a bottom sheet.** No centered popups, no JS alerts, no toasts carrying important content. Enter: slide-up + scrim fade, `--t-slow`, `--ease-out`. Exit: reverse with `--ease-in`. Drag-to-dismiss where dismissal is allowed.
 - **Correction sheet spec** (learning spec §4c.2): scrim over the exercise (context stays visible behind), sheet with — correct answer large in `--font-ui` 20, chunk-segmented if the item has `chunks`, auto-played audio with replay control, `anchor` line in `--ink-secondary`, single Continue button. Not dismissible by scrim-tap (the tap-through is the pedagogy). Wrong answer shown small and struck-through above the correct one — acknowledgment without dwelling. **Non-chunked items** (no `chunks` field): the phrase renders as a single plain (non-tappable) pill in the same slot — same layout, no popover. **Built:** `showCorrection()` in `lesson.js`, matches `design/correction-sheet.html`. A short forced beat (~1.2s) disables Continue so the correction can't be blown past.
 - **Confirm sheet** (`confirmSheet()` in `ui.js` — replaces all `alert()`/`confirm()`): grabber, title, one-line body, the **safe/stay action as the filled primary**, the destructive choice as a quiet ghost below it (`--red` ghost when `danger:true`). Scrim-tap or the safe button cancels (these ARE dismissible, unlike the correction sheet). Copy per §1.1 (verb buttons).

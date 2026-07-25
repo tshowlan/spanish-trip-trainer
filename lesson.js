@@ -808,6 +808,7 @@ function renderListenChoice(q) {
   // played-line (display text + replayable control), correct or missed. No-repeat
   // holds: es on the played-line, en on the options, nothing twice.
   q.esOnStage = true; q.noEn = true; q.noAudio = true;
+  q.earReveal = true;                                  // one correction surface per miss: the reveal IS the correction
   let revealed = false;
   const revealPlayed = () => {
     if (revealed) return; revealed = true;
@@ -864,12 +865,13 @@ function renderListen(q) {
   // the en sits adjacent below (adjacency law); the hero control keeps the replay
   q.esOnStage = true; q.noAudio = true;
   q.onResolve = () => { input.readOnly = true; input.blur(); input.value = item.es; hint.remove(); };
-  const f = footer(`<button class="btn grey" id="skip">Can't tell, skip</button><div style="height:10px"></div><button class="btn" id="check" disabled>Check</button>`);
+  // "Can't tell, skip" RETIRED (ruling 2026-07-24): the escape covers modality, the honest
+  // miss + rung-down covers difficulty — a skip denied the engine its signal
+  const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
   listenEscape(f, q);
   input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
   input.addEventListener("keydown", e => { if (e.key === "Enter" && input.value.trim() && !run.answered) gradeTyped(input.value, item); });
   f.querySelector("#check").addEventListener("click", () => { if (!run.answered && input.value.trim()) gradeTyped(input.value, item); });
-  f.querySelector("#skip").addEventListener("click", () => { if (!run.answered) grade(false, item); });
 }
 
 /* ----- speak it (M4): say the phrase aloud; Web Speech recognition, lenient match (§7.4).
@@ -1744,7 +1746,15 @@ function finishGrade(ok, item, extra, wrong) {
   haptic(restored ? "restored" : ok ? "correct" : "wrong");
   if (!ok && q && q.item) requeueMiss(item, q.type);
 
-  // §3.3/§4c.2: a wrong answer opens the correction sheet (no footer, no shake — the sheet is the feedback)
+  // ONE CORRECTION SURFACE PER MISS (ruling 2026-07-24): where the resolution reveals the
+  // answer in place (q.earReveal: the played-line + wrong-then-release + correct wash), the
+  // in-place reveal IS the correction and the sheet yields. Ear family first.
+  if (!ok && q && q.earReveal) {
+    clearFooter();
+    resolveCorrect(item, q, { yoursNow: false, restored: false, strengthAfter: post ? Math.round(itemStrength(post)) : 0, miss: true });
+    return;
+  }
+  // §3.3/§4c.2 (everywhere else): a wrong answer opens the correction sheet (no footer, no shake — the sheet is the feedback)
   if (!ok) { clearFooter(); showCorrection(item, extra, wrong); return; }   // drop the exercise's Check footer so its shadow doesn't sit behind Continue
 
   // ---- correct: §3.5 resolution frame (built to design/resolution-frame.html r7) ----
