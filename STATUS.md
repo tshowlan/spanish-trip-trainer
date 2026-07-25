@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — LISTENING FAMILY + THE FIELD SHIPPED (v184)
+- Chat's handoff built in full: listen_type hero stage (64px size variant, matured-input resolution, en adjacent), listen_choice played-line reveal BOTH paths (the ear never loses the answer), wrong-then-release (900ms [tune]) + settle uniformity, autoplay unified 350ms [tune].
+- THE FIELD app-wide: 74-facet landscape (SVG verbatim from the artifact) behind every runner (exercises + chains + speed round); opaque composites --solid-card/--solid-track on all functional surfaces incl. pbar + strength-ring tracks + dark keytiles/pcards; light layer clock-bound (7-19 [tune], run.daylight at session start, both themes).
+- Sound-off escape: whisper above Continue on all five ear exercises; tap = swapnote + sibling swap + session flag (_audioOff extended → composer swaps the rest); reset row in the session sheet ("Turn sound back on"). OS-mute detection dormant (web PWA, Capacitor-only).
+- Ritual done: constitution +2 families +2 graveyard entries, decisions ×6, DESIGN_PAIRS.listeningFamily, specimen field section (SVG pulled LIVE from lesson.js), lint 0 fails, exercise-base v2.1 committed.
+- DELTAS FOR CHAT: (1) the saved artifact is the r22 CANVAS — the stamp cut is owed (caption + tri-state toggle); acceptance diff runs when it lands; (2) .linkbtn.whisper ships as .whisper-escape (class collision); (3) listening misses still open the correction sheet per §3.3 (reveal runs behind its scrim) — rule if the sheet yields for the ear; (4) listen_type footer keeps "Can't tell, skip" (artifact never saw footers) — rule at re-issue; (5) dark matched pairs cards now solid (opacity law outranks their frost).
+
 ## 2026-07-25 — TOM'S FIX BATCH SHIPPED (v183): practice chooser, sound autoplay, swap copy, speak hardening
 - Practice chooser: Recommended = stalest learned lesson ("Review: First words · 13 fading, your oldest weak spot"), topic fallback, disabled until a lesson is done; the next-lesson row is GONE from the chooser (tile owns it). New practiceRecommend() in screen-home.js.
 - Pairs + sound choice auto-play their first tile on entry (450ms, never auto-selects); correct pair matches no longer replay (artifact's "sound, meet spelling" superseded — canvas delta).

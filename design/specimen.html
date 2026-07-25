@@ -176,6 +176,36 @@
       contradiction rule).</div>
   </div>
 
+  <!-- ============ THE FIELD + LISTENING FAMILY ============ -->
+  <div class="spec-h2">The field &amp; the listening family</div>
+  <div class="spec-card">
+    <div id="fieldDemo" style="position:relative; height:300px; border-radius:var(--radius-sm); overflow:hidden;">
+      <div class="facet-bg" id="fieldHost" aria-hidden="true" style="height:100%;"></div>
+      <div style="position:relative; z-index:1; padding:18px 8px 0;">
+        <div class="listen-stage" style="padding:10px 0 12px;">
+          <span class="ac-group"><button class="ac-speaker" aria-label="play"><svg class="ac-glyph" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></button><button class="ac-speed" aria-label="speed">1×</button></span>
+          <div class="hint">Tap to hear it again</div>
+        </div>
+        <div class="played-line show" style="justify-content:center;">
+          <button class="ac-speaker" aria-label="replay"><svg class="ac-glyph" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg></button>
+          <span>Buenos días, ¿cómo está?</span>
+        </div>
+        <button class="whisper-escape" style="margin-top:10px;">I can't listen right now</button>
+      </div>
+    </div>
+    <div class="spec-row" style="margin-top:10px;">
+      <span class="spec-note">field pulled LIVE from lesson.js · light layer follows the local clock</span>
+      <button class="spec-replay" id="fieldLight">toggle day/night</button>
+    </div>
+    <div class="spec-law"><b>The field.</b> The facet landscape is the exercise ground app-wide: one field,
+      one volume. Light lives IN the triangles and follows the LOCAL CLOCK in both themes
+      (daylight window [tune], set at session start). Over the field every functional surface is
+      opaque (<code>--solid-card</code> / <code>--solid-track</code>); facets never compete with words.
+      <b>Sound is the centerpiece:</b> the hero AudioControl is the canonical control scaled to 64px,
+      never restyled. <b>The ear never loses the answer:</b> the played-line reveals the played es at
+      every listening resolution. <b>Escapes are whispers in the exit zone;</b> persistence is system.</div>
+  </div>
+
   <!-- ============ RESOLUTION ============ -->
   <div class="spec-h2">Resolution anatomy</div>
   <div class="spec-card">
@@ -262,6 +292,17 @@
         fg.style.strokeDashoffset = off.toFixed(1);
       }));
     });
+  })();
+
+  // the field, pulled from LIVE lesson.js (no duplication: the constant is the truth)
+  (async function(){
+    try {
+      const src = await (await fetch("../lesson.js")).text();
+      const m = src.match(/FACET_FIELD_SVG = `([^`]+)`/);
+      if (m) document.getElementById("fieldHost").innerHTML = m[1];
+      document.getElementById("fieldLight").addEventListener("click", () =>
+        document.getElementById("fieldHost").classList.toggle("no-light"));
+    } catch (e) {}
   })();
 
   // replayable motion specimens

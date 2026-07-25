@@ -42,6 +42,10 @@
 
   --shadow: 0 3px 0 rgba(28,39,94,.16);
   --shadow-press: 0 1px 0 rgba(28,39,94,.16);   /* §2.1 push-down: the offset shadow collapses on press */
+  /* THE FIELD composites (listening-family 2026-07-25): over the facet ground every
+     functional surface is OPAQUE — these are the solid stand-ins for card/track */
+  --solid-card: #ffffff;
+  --solid-track: #d9d4c2;
   --t-slow: 300ms;                              /* §2.2 sheet / screen transitions (micro = --transition 160ms) */
   font-family: var(--font-text);
 }
@@ -58,6 +62,7 @@
     --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
     --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: rgba(120,112,80,0.35);
     --wordmark-1: #c8d2f5; --wordmark-2: #7aa6db; --shadow: 0 3px 0 rgba(0,0,0,.45); --shadow-press: 0 1px 0 rgba(0,0,0,.45);
+    --solid-card: #201e18; --solid-track: #55523f;
     /* atmosphere (§2.1): dark sits on a gradient ground, not flat black; surfaces frost over it */
     --ground: radial-gradient(120% 52% at 50% -6%, rgba(201,106,43,0.22) 0%, rgba(216,183,19,0.08) 34%, transparent 62%), linear-gradient(180deg, #101226 0%, #0a0b18 40%, #05060d 100%);
     --card-blur: blur(12px);
@@ -69,6 +74,7 @@
   --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
   --green: #3fb56a; --green-dark: #35a05d; --red: #e8586a; --border: rgba(120,112,80,0.35);
   --wordmark-1: #c8d2f5; --wordmark-2: #7aa6db; --shadow: 0 3px 0 rgba(0,0,0,.45); --shadow-press: 0 1px 0 rgba(0,0,0,.45);
+  --solid-card: #201e18; --solid-track: #55523f;
   /* atmosphere (§2.1): dark sits on a gradient ground, not flat black; surfaces frost over it */
   --ground: radial-gradient(120% 52% at 50% -6%, rgba(201,106,43,0.22) 0%, rgba(216,183,19,0.08) 34%, transparent 62%), linear-gradient(180deg, #101226 0%, #0a0b18 40%, #05060d 100%);
   --card-blur: blur(12px);
@@ -1540,3 +1546,65 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
   .lslot.filled::after { animation: none; transform: scaleX(1); }
   .keytray .keytile.shake { animation: none; }
 }
+
+/* ===================== THE LISTENING FAMILY + THE FIELD =====================
+   design/listening-family.html (2026-07-25). The facet landscape is the exercise
+   ground app-wide: ONE FIELD, ONE VOLUME. Light lives IN the triangles and follows
+   the LOCAL CLOCK in both themes (daylight window evaluated at session start,
+   never mid-session). Facets never compete with words; collisions get local fixes. */
+.runner { position: relative; }
+.facet-bg { position: absolute; top: 0; left: 0; right: 0; height: 555px; pointer-events: none; z-index: 0; }
+.facet-bg svg { width: 100%; height: 100%; display: block; }
+.facet-bg.no-light .lightgroup { display: none; }   /* night: the app's light rests in the instruments */
+.runner > *:not(.facet-bg) { position: relative; z-index: 1; }
+
+/* Sound is the centerpiece: hero SIZE VARIANT of the canonical AudioControl
+   (64px, same anatomy, scaled never restyled) centered on the listening stage */
+.listen-stage { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 26px 0 22px; }
+.listen-stage .ac-speaker { width: 64px; height: 64px; min-width: 64px; }
+.listen-stage .ac-speaker .ac-glyph { width: 24px; height: 24px; }
+.listen-stage .ac-speaker .ac-bars { height: 22px; }
+.listen-stage .ac-speaker .ac-bars span { width: 3.5px; }
+.listen-stage .hint { font-size: 12.5px; color: var(--text-dim); }
+
+/* The ear never loses the answer: the played-line reveals the played es at every
+   listening resolution (20/600 display + replayable 36px control), correct or missed */
+.played-line { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 10px; margin: 4px 0 10px; opacity: 0; transform: translateY(4px);
+  transition: opacity 280ms cubic-bezier(.2,.7,.3,1), transform 280ms cubic-bezier(.2,.7,.3,1); }
+.played-line.show { opacity: 1; transform: none; }
+.played-line .ac-speaker { width: 36px; height: 36px; min-width: 36px; }
+.played-line .ac-speaker .ac-glyph { width: 15px; height: 15px; }
+
+/* Escapes are whispers in the exit zone (above Continue); persistence is system.
+   (.whisper-escape, not the artifact's .linkbtn.whisper: the app's .linkbtn is a
+   different, older component — grep-the-class-name law) */
+.whisper-escape { display: block; width: 100%; border: none; background: none; font-family: var(--font-display);
+  font-size: 12.5px; font-weight: 500; color: var(--text-dim); text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--text-dim) 40%, transparent);
+  text-underline-offset: 3px; cursor: pointer; padding: 6px; margin-bottom: 10px; }
+.swapnote { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 22px 0;
+  font-size: 13px; color: var(--text-dim); text-align: center; }
+.swapnote .big { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text); }
+
+/* wrong-then-release (listening resolutions): the chosen wrong option is marked,
+   then released to the uniform dim settle — never left glowing */
+@media (prefers-reduced-motion: reduce) { .played-line { transition: none; } }
+
+/* ===== OPAQUE-OVER-THE-FIELD (end of sheet: cascade-proof, per the artifact) =====
+   Over the field, every functional surface is opaque — controls, inputs, choices,
+   tiles, AND the unfilled portions of instruments. Only the decoration is see-through. */
+.ac-speaker, .ac-speed, .choice, .word, .keytray .keytile, .pcard { background: var(--solid-card); }
+#qbody .text-input, .runner .text-input { background: var(--solid-card); }
+.pbar { background: var(--solid-track); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text-dim) 14%, transparent); }
+#q-sring .sr-bg { stroke: var(--solid-track); }
+.choice.correct { background: color-mix(in srgb, var(--green) 15%, var(--solid-card)); }
+.choice.wrong { background: color-mix(in srgb, var(--red) 15%, var(--solid-card)); }
+#qbody.qcorrect .text-input { background-color: color-mix(in srgb, var(--green) 8%, var(--solid-card)); }
+/* dark-theme functional surfaces go solid over the field too (these outrank the tail
+   list above by specificity, so they get their own dual-block override). The matched
+   pcard's recede reads through opacity, never a see-through ground. */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .keytray .keytile,
+  :root:not([data-theme="light"]) .pcard.matched, :root:not([data-theme="light"]) .pcard.settled { background: var(--solid-card); } }
+:root[data-theme="dark"] .keytray .keytile,
+:root[data-theme="dark"] .pcard.matched, :root[data-theme="dark"] .pcard.settled { background: var(--solid-card); }

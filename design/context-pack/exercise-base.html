@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tripfluent — Exercise Variants (design artifact, §7: sound choice / audio cloze / ear build / the reply)</title>
+<title>Tripfluent — Exercise Base v2 (derivation source)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
 <style>
   /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
@@ -165,52 +165,158 @@
   .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
   .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:440px; line-height:1.55; }
 
-  </style>
+  
+  /* ============ LISTENING FAMILY (derived: exercise-base v1 + live .ac-* truth) ============ */
+  /* Canonical AudioControl anatomy, verbatim from live styles.css */
+  .ac-group { display:inline-flex; align-items:center; flex:none; }
+  .ac-speaker { width:44px; height:44px; min-width:44px; padding:0; border-radius:50%;
+    border:1px solid var(--border); background:var(--bg-card); color:var(--accent-2); box-shadow:var(--shadow);
+    cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
+    font-family:var(--font-display);
+    transition:transform var(--transition), box-shadow var(--transition); }
+  .ac-speaker:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .ac-speaker .ac-glyph { display:block; }
+  .ac-speaker.playing .ac-glyph { display:none; }
+  .ac-speaker .ac-bars { display:none; align-items:flex-end; gap:2.5px; height:16px; }
+  .ac-speaker.playing .ac-bars { display:inline-flex; }
+  .ac-bars span { width:3px; background:var(--accent-2); border-radius:1.5px; animation:acbar 900ms ease-in-out infinite; }
+  .ac-bars span:nth-child(1){ height:7px; animation-delay:0ms; } .ac-bars span:nth-child(2){ height:14px; animation-delay:150ms; }
+  .ac-bars span:nth-child(3){ height:10px; animation-delay:300ms; } .ac-bars span:nth-child(4){ height:15px; animation-delay:450ms; }
+  @keyframes acbar { 0%,100%{ transform:scaleY(0.55); } 50%{ transform:scaleY(1); } }
+  .ac-speed { height:30px; margin-left:8px; padding:0 11px; border-radius:15px;
+    border:1px solid var(--border); background:var(--bg-elevated);
+    font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--text-dim); cursor:pointer;
+    transition:background var(--transition), color var(--transition); }
+  .ac-speed.slowed { background:var(--bg-card); color:var(--accent-2); border-color:var(--accent-2); }
+
+  /* Sound-as-centerpiece: hero SIZE VARIANT of the canonical control (same anatomy,
+     scaled; proposal pending bless — never a restyle) */
+  .listen-stage { display:flex; flex-direction:column; align-items:center; gap:12px; padding:26px 0 22px; }
+  .listen-stage .ac-speaker { width:64px; height:64px; min-width:64px; }
+  .listen-stage .ac-speaker .ac-glyph { width:24px; height:24px; }
+  .listen-stage .ac-speaker .ac-bars { height:22px; }
+  .listen-stage .ac-speaker .ac-bars span { width:3.5px; }
+  .listen-stage .ac-row { display:flex; align-items:center; }
+  .listen-stage .hint { font-size:12.5px; color:var(--text-dim); }
+  .linkbtn { border:none; background:none; font-family:var(--font-display); font-size:13px; font-weight:600;
+    color:var(--text-dim); text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:6px;
+    transition:color var(--transition); }
+  .linkbtn:active { color:var(--text); }
+  .linkbtn.whisper { font-size:12.5px; font-weight:500; align-self:center;
+    text-decoration-color:color-mix(in srgb, var(--text-dim) 40%, transparent); margin-bottom:10px; }
+  .screen { position:relative; }
+  .facet-bg { position:absolute; top:0; left:0; right:0; height:555px; pointer-events:none; z-index:0; }
+  .facet-bg svg { width:100%; height:100%; display:block; }
+  /* The landscape tracks the SUN, not the theme: lights by local clock (both themes) */
+  .facet-bg.no-light .lightgroup { display:none; }
+  .facet-bg.force-light .lightgroup { display:block !important; }
+  .screen > *:not(.facet-bg) { position:relative; z-index:1; }
+  :root { --solid-card:#ffffff; --solid-track:#d9d4c2; }
+  :root[data-theme="dark"] { --solid-card:#201e18; --solid-track:#55523f; }
+  :root[data-theme="dark"] .stage-card { background:rgba(255,255,255,0.04); }
+  .swapnote { display:flex; flex-direction:column; align-items:center; gap:6px; padding:22px 0;
+    font-size:13px; color:var(--text-dim); text-align:center; }
+  .swapnote .big { font-family:var(--font-display); font-size:15px; font-weight:600; color:var(--text); }
+
+  /* The ear's es-reveal: what was played, welded to spelling at resolution */
+  .played-line { font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--text);
+    display:flex; align-items:center; gap:10px; opacity:0; transform:translateY(4px);
+    transition:opacity 280ms cubic-bezier(.2,.7,.3,1), transform 280ms cubic-bezier(.2,.7,.3,1); }
+  .played-line.show { opacity:1; transform:none; }
+  .played-line .ac-speaker { width:36px; height:36px; min-width:36px; }
+  .played-line .ac-speaker .ac-glyph { width:15px; height:15px; }
+
+  /* Choices, verbatim states from live truth */
+  .choices { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+  .choice { text-align:left; background:var(--bg-card); border:2px solid var(--border);
+    color:var(--text); border-radius:var(--radius-md); padding:14px 16px; font-size:15px;
+    font-family:var(--font-display); font-weight:500; min-height:48px; cursor:pointer; box-shadow:var(--shadow);
+    transition:transform var(--transition), border-color var(--transition), background var(--transition), opacity var(--transition); }
+  .choice:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .choice.correct { border-color:var(--green); background:color-mix(in srgb, var(--green) 15%, transparent); }
+  .choice.wrong { border-color:var(--red); background:color-mix(in srgb, var(--red) 15%, transparent); }
+  .choice.dim { opacity:0.4; }
+
+  /* Typed input, live truth + wash */
+  .text-input { width:100%; background:var(--bg-card); border:2px solid var(--border); color:var(--text);
+    border-radius:var(--radius-md); padding:16px; font-size:18px; font-weight:600; outline:none;
+    font-family:var(--font-display);
+    transition:border-color var(--transition), background-color var(--transition); }
+  .text-input:focus { border-color:var(--accent-2); }
+  .text-input.wash { border-color:var(--green); background-color:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+
+  /* ===== OPAQUE-OVER-FACETS (end of sheet: cascade-proof) =====
+     No surface goes see-through over the backdrop: solid composite grounds. */
+  .ac-speaker, .ac-speed, .text-input, .choice { background:var(--solid-card); }
+  .progress { background:var(--solid-track); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--text-dim) 14%, transparent); }
+  .sring circle:first-child { stroke:var(--solid-track); }
+  .choice.correct { background:color-mix(in srgb, var(--green) 15%, var(--solid-card)); }
+  .choice.wrong { background:color-mix(in srgb, var(--red) 15%, var(--solid-card)); }
+  .text-input.wash { background:color-mix(in srgb, var(--green) 8%, var(--solid-card)); }
+
+</style>
 </head>
 <body>
 <div class="wrap">
   <div class="phone">
     <div class="screen">
+      <div class="facet-bg" aria-hidden="true"><svg viewBox="0 0 390 555" preserveAspectRatio="none"><defs><linearGradient id="g-gold-d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.42"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient><linearGradient id="g-gold-r" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.34"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient><linearGradient id="g-sky" x1="0" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.26"/><stop offset="0.55" stop-color="var(--secondary)" stop-opacity="0.10"/><stop offset="1" stop-color="var(--secondary)" stop-opacity="0"/></linearGradient><linearGradient id="g-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--secondary)" stop-opacity="0.30"/><stop offset="1" stop-color="var(--secondary)" stop-opacity="0"/></linearGradient></defs><polygon points="0,0 150,0 84,86" fill="var(--secondary)" opacity="0.16"/><polygon points="150,0 285,0 205,70" fill="var(--primary)" opacity="0.12"/><polygon points="285,0 390,0 330,96" fill="var(--secondary)" opacity="0.18"/><polygon points="0,0 84,86 0,170" fill="var(--accent)" opacity="0.12"/><polygon points="390,0 390,180 330,96" fill="var(--accent)" opacity="0.11"/><polygon points="0,170 84,86 60,260" fill="var(--primary)" opacity="0.10"/><polygon points="390,180 330,96 322,268" fill="var(--primary)" opacity="0.11"/><polygon points="0,170 60,260 0,330" fill="var(--secondary)" opacity="0.08"/><polygon points="390,180 322,268 390,340" fill="var(--secondary)" opacity="0.09"/><polygon points="0,330 60,260 96,368" fill="var(--accent)" opacity="0.055"/><polygon points="390,340 322,268 300,380" fill="var(--accent)" opacity="0.05"/><polygon points="84,86 150,0 148,74" fill="var(--accent)" opacity="0.09"/><polygon points="148,74 150,0 205,70" fill="var(--secondary)" opacity="0.07"/><polygon points="84,86 148,74 132,128" fill="var(--primary)" opacity="0.08"/><polygon points="148,74 205,70 176,120" fill="var(--accent)" opacity="0.075"/><polygon points="132,128 148,74 176,120" fill="var(--secondary)" opacity="0.10"/><polygon points="205,70 262,110 176,120" fill="var(--primary)" opacity="0.065"/><polygon points="205,70 285,0 262,110" fill="var(--secondary)" opacity="0.085"/><polygon points="262,110 285,0 330,96" fill="var(--accent)" opacity="0.07"/><polygon points="262,110 330,96 296,158" fill="var(--secondary)" opacity="0.095"/><polygon points="176,120 262,110 224,164" fill="var(--accent)" opacity="0.06"/><polygon points="132,128 176,120 158,178" fill="var(--secondary)" opacity="0.055"/><polygon points="176,120 224,164 158,178" fill="var(--primary)" opacity="0.07"/><polygon points="224,164 262,110 296,158" fill="var(--primary)" opacity="0.055"/><polygon points="224,164 296,158 258,214" fill="var(--secondary)" opacity="0.065"/><polygon points="158,178 224,164 196,228" fill="var(--accent)" opacity="0.05"/><polygon points="84,86 132,128 108,190" fill="var(--secondary)" opacity="0.06"/><polygon points="108,190 132,128 158,178" fill="var(--accent)" opacity="0.045"/><polygon points="60,260 84,86 108,190" fill="var(--primary)" opacity="0.055"/><polygon points="108,190 158,178 140,248" fill="var(--primary)" opacity="0.045"/><polygon points="140,248 158,178 196,228" fill="var(--secondary)" opacity="0.05"/><polygon points="296,158 330,96 322,268" fill="var(--secondary)" opacity="0.06"/><polygon points="258,214 296,158 322,268" fill="var(--accent)" opacity="0.045"/><polygon points="196,228 224,164 258,214" fill="var(--secondary)" opacity="0.04"/><polygon points="60,260 108,190 140,248" fill="var(--accent)" opacity="0.04"/><polygon points="140,248 196,228 172,310" fill="var(--primary)" opacity="0.035"/><polygon points="196,228 258,214 232,296" fill="var(--secondary)" opacity="0.035"/><polygon points="258,214 322,268 288,330" fill="var(--primary)" opacity="0.03"/><polygon points="96,368 60,260 140,248" fill="var(--secondary)" opacity="0.03"/><polygon points="0,330 96,368 0,430" fill="var(--secondary)" opacity="0.06"/><polygon points="0,430 96,368 70,470" fill="var(--accent)" opacity="0.05"/><polygon points="96,368 120,352 150,400" fill="var(--primary)" opacity="0.05"/><polygon points="120,352 172,310 150,400" fill="var(--secondary)" opacity="0.055"/><polygon points="140,248 172,310 120,352" fill="var(--secondary)" opacity="0.025"/><polygon points="172,310 232,296 230,390" fill="var(--accent)" opacity="0.045"/><polygon points="150,400 172,310 230,390" fill="var(--secondary)" opacity="0.04"/><polygon points="150,400 230,390 180,470" fill="var(--primary)" opacity="0.04"/><polygon points="232,296 288,330 230,390" fill="var(--accent)" opacity="0.04"/><polygon points="230,390 288,330 310,420" fill="var(--secondary)" opacity="0.05"/><polygon points="288,330 300,380 310,420" fill="var(--primary)" opacity="0.045"/><polygon points="232,296 252,372 230,390" fill="var(--primary)" opacity="0.03"/><polygon points="390,340 310,420 390,450" fill="var(--secondary)" opacity="0.06"/><polygon points="310,420 390,450 330,500" fill="var(--accent)" opacity="0.045"/><polygon points="390,450 390,540 330,500" fill="var(--primary)" opacity="0.05"/><polygon points="300,380 390,340 310,420" fill="var(--accent)" opacity="0.035"/><polygon points="0,430 70,470 0,520" fill="var(--primary)" opacity="0.045"/><polygon points="70,470 150,400 100,500" fill="var(--secondary)" opacity="0.04"/><polygon points="100,500 150,400 180,470" fill="var(--accent)" opacity="0.035"/><polygon points="180,470 230,390 260,460" fill="var(--secondary)" opacity="0.04"/><polygon points="260,460 230,390 310,420" fill="var(--accent)" opacity="0.035"/><polygon points="260,460 310,420 330,500" fill="var(--secondary)" opacity="0.035"/><polygon points="70,470 100,500 60,540" fill="var(--secondary)" opacity="0.025"/><polygon points="100,500 180,470 140,545" fill="var(--primary)" opacity="0.025"/><polygon points="180,470 260,460 220,530" fill="var(--accent)" opacity="0.025"/><polygon points="260,460 330,500 285,555" fill="var(--secondary)" opacity="0.02"/><polygon points="330,500 390,540 340,555" fill="var(--primary)" opacity="0.02"/><polygon points="352,44 390,60 368,92" fill="var(--primary)" opacity="0.09"/><polygon points="14,196 52,186 30,238" fill="var(--accent)" opacity="0.07"/><polygon points="356,220 390,240 366,276" fill="var(--secondary)" opacity="0.08"/><polygon points="18,392 54,380 38,428" fill="var(--secondary)" opacity="0.06"/><polygon points="196,12 232,8 214,44" fill="var(--accent)" opacity="0.085"/><polygon points="366,132 390,120 382,168" fill="var(--accent)" opacity="0.07"/><polygon points="158,178 258,214 196,300" fill="var(--secondary)" opacity="0.085"/><g class="lightgroup"><polygon points="148,74 150,0 205,70" fill="var(--accent)" opacity="0.22"/><polygon points="176,120 224,164 158,178" fill="var(--accent)" opacity="0.20"/><polygon points="108,190 132,128 158,178" fill="var(--accent)" opacity="0.16"/><polygon points="196,12 232,8 214,44" fill="var(--accent)" opacity="0.24"/><polygon points="366,132 390,120 382,168" fill="var(--accent)" opacity="0.18"/><polygon points="120,352 172,310 150,400" fill="var(--accent)" opacity="0.12"/><polygon points="285,0 390,0 330,96" fill="url(#g-gold-d)"/><polygon points="0,0 84,86 0,170" fill="url(#g-gold-r)"/><polygon points="262,110 330,96 296,158" fill="url(#g-gold-d)"/><polygon points="158,178 258,214 196,300" fill="url(#g-sky)"/><polygon points="0,170 84,86 60,260" fill="url(#g-blue)"/><polygon points="230,390 288,330 310,420" fill="url(#g-sky)"/><polygon points="150,0 285,0 205,70" fill="url(#g-blue)"/></g></svg></div>
       <div class="toprow">
         <div class="progress"><div></div></div>
-        <svg class="sring" viewBox="0 0 26 26" id="sring">
+        <svg class="sring" viewBox="0 0 26 26">
           <circle cx="13" cy="13" r="10" fill="none" stroke="var(--ring-track, var(--bg-elevated))" stroke-width="3.5"/>
           <circle cx="13" cy="13" r="10" fill="none" stroke="var(--accent-2)" stroke-width="3.5" stroke-linecap="round"
             stroke-dasharray="62.8" stroke-dashoffset="38" transform="rotate(-90 13 13)"/>
         </svg>
       </div>
-      <div class="prompt" id="prompt">Prompt line (14px dim; the 24/700 display pattern applies when the content IS the prompt)</div>
+      <div class="prompt">Prompt line (14px dim; the 24/700 display pattern applies when the content IS the prompt)</div>
       <div id="stage" style="flex:1; display:flex; flex-direction:column;">
-        <!-- Exercise-specific stage builds here. End every state with the standard
-             resolution: fuse/settle in place, sweep, grown materializes, bottom Continue. -->
-        <div class="grown bottomcont show" id="grown">
-          <button class="cont">Continue</button>
-        </div>
+        <div class="grown bottomcont show"><button class="cont">Continue</button></div>
       </div>
     </div>
   </div>
 
   <div class="chrome">
+    <button onclick="toggleLight(this)">light: auto</button>
     <button onclick="toggleTheme()">dark theme</button>
   </div>
 
   <div class="caption">
-    EXERCISE BASE TEMPLATE v1 (2026-07-22) — every new exercise artifact STARTS AS A COPY OF THIS FILE
-    (rule: derive, never approximate; this file is the derivation source). It carries the canonical
-    tokens (conformed to live styles.css), the exercise chrome (toprow: progress + strength ring, no
-    brand row), the 14px prompt, base type/spacing, tray-tile spec, the blank family, the resolution
-    vocabulary (fuse, sweep, grown, bottom Continue, learner-paced exit on screen), reduced-motion rules,
-    and the no-ligatures base. GOVERNANCE: this file changes only via stamped rulings; Code re-exports it
-    after any shipped change to shared exercise chrome; artifacts note their base version. CHECKLIST for
-    every new exercise artifact: every tappable control sets font-family explicitly · no em dashes in UI
-    copy · each string once, in whichever language the screen doesn't hold · blanks use the canonical dash
-    treatment · blue only on things you can tap · gold carries attention · green is success only ·
-    forgiveness is silent · include "play this exercise" scripted playback · exits are learner actions and
-    always on screen. Frame 390.
+    EXERCISE BASE TEMPLATE v2 (2026-07-24, DERIVED FROM listening-family r22 per the derive rule; pending
+    the listening-family stamp) — every new exercise artifact STARTS AS A COPY OF THIS FILE. v2 adds THE
+    FIELD: the facet landscape (73 facets, three-quarter reach ALWAYS) as base exercise ground — ONE FIELD, ONE
+    VOLUME (v2.1, Tom's challenge killed the register: per-type volumes would pump the ground between reps
+    in a mixed session; the ground is the fixed point — collisions with words get LOCAL fixes per the words
+    rule, never a global dimmer); the LIGHT LAYER is clock-bound (local daylight 7–19 [tune], both
+    themes, evaluated at session start; tri-state review toggle); every functional surface over the field
+    is OPAQUE including instrument tracks (--solid-card / --solid-track composites). v1's checklist still
+    binds: fonts on tappables · no em dashes · string rule · dash blanks · blue only on tappables · gold
+    carries attention · green success only · silent forgiveness · scripted playback · exits on screen ·
+    facets never compete with words. GOVERNANCE: changes only via stamped rulings; Code re-exports after
+    shared-chrome changes; artifacts cite their base version. Frame 390.
   </div>
 </div>
 
 <script>
+  let lightState = 'auto';
+  const DAY_START = 7, DAY_END = 19; // [tune]
+  function applyLightAuto(){
+    const bg = document.querySelector('.facet-bg');
+    const h = new Date().getHours();
+    const day = h >= DAY_START && h < DAY_END;
+    bg.classList.toggle('no-light', !day);
+    return day;
+  }
+  function toggleLight(btn){
+    const bg = document.querySelector('.facet-bg');
+    lightState = lightState === 'auto' ? 'on' : lightState === 'on' ? 'off' : 'auto';
+    bg.classList.remove('no-light','force-light');
+    if (lightState === 'on') bg.classList.add('force-light');
+    else if (lightState === 'off') bg.classList.add('no-light');
+    else applyLightAuto();
+    btn.textContent = 'light: ' + lightState + (lightState === 'auto' ? (applyLightAuto() ? ' (day)' : ' (night)') : '');
+  }
+  applyLightAuto();
   function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
 </script>
 </body>

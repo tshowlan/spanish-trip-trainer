@@ -56,6 +56,37 @@ doc narrates, this file states only the laws.
 - **Buttons don't inherit fonts:** every tappable control sets `font-family` explicitly. Found six
   times (.btn, .choice, .word, exercise inputs, .ring-label, .dial-delta). *(cleanup passes)*
 
+## The field (minted in the listening family, 2026-07-24)
+
+- **The field is the exercise ground, app-wide:** the facet landscape (74 facets, three-quarter
+  reach, large-outside/small-inside with sprinkles and one big pane) renders identically behind
+  every exercise — ONE FIELD, ONE VOLUME. Per-type registers were rejected: the ground would pump
+  between reps in a mixed session, and the ground is the fixed point. *(listening family r20)*
+- **Facets never compete with words:** text zones stay facet-free or whisper-only; collisions get
+  LOCAL fixes (precedent: the facet behind "Type", removed r19), never a global dimmer. *(r19)*
+- **Over the field, every functional surface is opaque** — controls, inputs, choices, tiles, AND
+  the unfilled portions of instruments (--solid-card / --solid-track composites; the progress
+  capsule carries a 14% hairline). Only the decoration gets transparency. *(r17-r19)*
+- **The landscape tracks the sun, not the theme:** the light layer (six blazing shards, seven
+  gradient panes — light IN the triangles) follows the LOCAL CLOCK in both themes; daylight
+  window [tune], evaluated at session start, never mid-session. At night the app's light rests
+  in the instruments. No direction vector ever; static always. *(r16-r22)*
+
+## The listening family (minted 2026-07-24)
+
+- **Sound is the centerpiece:** audio-content exercises give the AudioControl a hero SIZE VARIANT
+  (64px, same anatomy, scaled never restyled), centered, speed chip adjacent, replay hint below.
+  *(listening family, item 7)*
+- **The ear never loses the answer:** every listening resolution reveals the played es (the
+  played-line: display-scale text + replayable 36px control), correct or missed — es-always-reveals
+  at its limit case: the learner never SAW the answer, so the reveal is the weld. *(item 5)*
+- **Distractor axes:** ear-discrimination distractors are sound-neighbors by design (minimal pairs
+  are the ear's whole job); meaning-pick distractors are meaning-neighbors never — the paraphrase
+  ban applies where meaning is the axis. *(the distractor nuance)*
+- **Escapes are whispers in the exit zone; persistence is system:** an in-the-moment inability
+  ("I can't listen right now", 12.5/500 dim, softened underline, above Continue) is answered where
+  it happens and remembered where it belongs (session flag + sibling swaps + menu reset). *(r4-r5)*
+
 ## Motion
 
 - **Motion explains, never decorates.** Zero ambient/idle animation.
@@ -198,6 +229,11 @@ doc narrates, this file states only the laws.
 ---
 
 ## Graveyard (superseded, dated — never silently deleted)
+
+- 2026-07-24 — The silhouette and bubble stage options (listening family r5-r11, retired r12 by
+  Tom's elimination; the silhouette's structure-preview idea may return as exercise content, not ground).
+- 2026-07-24 — The register concept (per-type field volumes, killed by Tom's "what's the point of
+  the register?" — the ground never pumps between reps).
 
 - ~~"Gold buttons carry DARK glyphs; flat cards carry GOLD glyphs"~~ — superseded 2026-07-20 by
   the high-contrast glyph law (the original described artifact stand-ins, not the built truth).

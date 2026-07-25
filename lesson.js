@@ -4,6 +4,19 @@
 
 // §8.4 a phrase is "fading" below this strength — the retention-notification threshold (§6.1)
 const RETENTION_FADE = 40;
+
+/* ===== THE FIELD (design/listening-family.html, 2026-07-25) =====
+   The facet landscape is the exercise ground app-wide: one field, one volume.
+   SVG is VERBATIM from the artifact (74 facets + the light layer). The light
+   follows the LOCAL CLOCK in both themes: daylight window [tune], evaluated
+   once at session start (run.daylight), never mid-session. */
+const FIELD_DAY_START = 7, FIELD_DAY_END = 19;   /* [tune] */
+const FACET_FIELD_SVG = `<svg viewBox="0 0 390 555" preserveAspectRatio="none"><defs><linearGradient id="g-gold-d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.42"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient><linearGradient id="g-gold-r" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.34"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient><linearGradient id="g-sky" x1="0" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.26"/><stop offset="0.55" stop-color="var(--secondary)" stop-opacity="0.10"/><stop offset="1" stop-color="var(--secondary)" stop-opacity="0"/></linearGradient><linearGradient id="g-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--secondary)" stop-opacity="0.30"/><stop offset="1" stop-color="var(--secondary)" stop-opacity="0"/></linearGradient></defs><polygon points="0,0 150,0 84,86" fill="var(--secondary)" opacity="0.16"/><polygon points="150,0 285,0 205,70" fill="var(--primary)" opacity="0.12"/><polygon points="285,0 390,0 330,96" fill="var(--secondary)" opacity="0.18"/><polygon points="0,0 84,86 0,170" fill="var(--accent)" opacity="0.12"/><polygon points="390,0 390,180 330,96" fill="var(--accent)" opacity="0.11"/><polygon points="0,170 84,86 60,260" fill="var(--primary)" opacity="0.10"/><polygon points="390,180 330,96 322,268" fill="var(--primary)" opacity="0.11"/><polygon points="0,170 60,260 0,330" fill="var(--secondary)" opacity="0.08"/><polygon points="390,180 322,268 390,340" fill="var(--secondary)" opacity="0.09"/><polygon points="0,330 60,260 96,368" fill="var(--accent)" opacity="0.055"/><polygon points="390,340 322,268 300,380" fill="var(--accent)" opacity="0.05"/><polygon points="84,86 150,0 148,74" fill="var(--accent)" opacity="0.09"/><polygon points="148,74 150,0 205,70" fill="var(--secondary)" opacity="0.07"/><polygon points="84,86 148,74 132,128" fill="var(--primary)" opacity="0.08"/><polygon points="148,74 205,70 176,120" fill="var(--accent)" opacity="0.075"/><polygon points="132,128 148,74 176,120" fill="var(--secondary)" opacity="0.10"/><polygon points="205,70 262,110 176,120" fill="var(--primary)" opacity="0.065"/><polygon points="205,70 285,0 262,110" fill="var(--secondary)" opacity="0.085"/><polygon points="262,110 285,0 330,96" fill="var(--accent)" opacity="0.07"/><polygon points="262,110 330,96 296,158" fill="var(--secondary)" opacity="0.095"/><polygon points="176,120 262,110 224,164" fill="var(--accent)" opacity="0.06"/><polygon points="132,128 176,120 158,178" fill="var(--secondary)" opacity="0.055"/><polygon points="176,120 224,164 158,178" fill="var(--primary)" opacity="0.07"/><polygon points="224,164 262,110 296,158" fill="var(--primary)" opacity="0.055"/><polygon points="224,164 296,158 258,214" fill="var(--secondary)" opacity="0.065"/><polygon points="158,178 224,164 196,228" fill="var(--accent)" opacity="0.05"/><polygon points="84,86 132,128 108,190" fill="var(--secondary)" opacity="0.06"/><polygon points="108,190 132,128 158,178" fill="var(--accent)" opacity="0.045"/><polygon points="60,260 84,86 108,190" fill="var(--primary)" opacity="0.055"/><polygon points="108,190 158,178 140,248" fill="var(--primary)" opacity="0.045"/><polygon points="140,248 158,178 196,228" fill="var(--secondary)" opacity="0.05"/><polygon points="296,158 330,96 322,268" fill="var(--secondary)" opacity="0.06"/><polygon points="258,214 296,158 322,268" fill="var(--accent)" opacity="0.045"/><polygon points="196,228 224,164 258,214" fill="var(--secondary)" opacity="0.04"/><polygon points="60,260 108,190 140,248" fill="var(--accent)" opacity="0.04"/><polygon points="140,248 196,228 172,310" fill="var(--primary)" opacity="0.035"/><polygon points="196,228 258,214 232,296" fill="var(--secondary)" opacity="0.035"/><polygon points="258,214 322,268 288,330" fill="var(--primary)" opacity="0.03"/><polygon points="96,368 60,260 140,248" fill="var(--secondary)" opacity="0.03"/><polygon points="0,330 96,368 0,430" fill="var(--secondary)" opacity="0.06"/><polygon points="0,430 96,368 70,470" fill="var(--accent)" opacity="0.05"/><polygon points="96,368 120,352 150,400" fill="var(--primary)" opacity="0.05"/><polygon points="120,352 172,310 150,400" fill="var(--secondary)" opacity="0.055"/><polygon points="140,248 172,310 120,352" fill="var(--secondary)" opacity="0.025"/><polygon points="172,310 232,296 230,390" fill="var(--accent)" opacity="0.045"/><polygon points="150,400 172,310 230,390" fill="var(--secondary)" opacity="0.04"/><polygon points="150,400 230,390 180,470" fill="var(--primary)" opacity="0.04"/><polygon points="232,296 288,330 230,390" fill="var(--accent)" opacity="0.04"/><polygon points="230,390 288,330 310,420" fill="var(--secondary)" opacity="0.05"/><polygon points="288,330 300,380 310,420" fill="var(--primary)" opacity="0.045"/><polygon points="232,296 252,372 230,390" fill="var(--primary)" opacity="0.03"/><polygon points="390,340 310,420 390,450" fill="var(--secondary)" opacity="0.06"/><polygon points="310,420 390,450 330,500" fill="var(--accent)" opacity="0.045"/><polygon points="390,450 390,540 330,500" fill="var(--primary)" opacity="0.05"/><polygon points="300,380 390,340 310,420" fill="var(--accent)" opacity="0.035"/><polygon points="0,430 70,470 0,520" fill="var(--primary)" opacity="0.045"/><polygon points="70,470 150,400 100,500" fill="var(--secondary)" opacity="0.04"/><polygon points="100,500 150,400 180,470" fill="var(--accent)" opacity="0.035"/><polygon points="180,470 230,390 260,460" fill="var(--secondary)" opacity="0.04"/><polygon points="260,460 230,390 310,420" fill="var(--accent)" opacity="0.035"/><polygon points="260,460 310,420 330,500" fill="var(--secondary)" opacity="0.035"/><polygon points="70,470 100,500 60,540" fill="var(--secondary)" opacity="0.025"/><polygon points="100,500 180,470 140,545" fill="var(--primary)" opacity="0.025"/><polygon points="180,470 260,460 220,530" fill="var(--accent)" opacity="0.025"/><polygon points="260,460 330,500 285,555" fill="var(--secondary)" opacity="0.02"/><polygon points="330,500 390,540 340,555" fill="var(--primary)" opacity="0.02"/><polygon points="352,44 390,60 368,92" fill="var(--primary)" opacity="0.09"/><polygon points="14,196 52,186 30,238" fill="var(--accent)" opacity="0.07"/><polygon points="356,220 390,240 366,276" fill="var(--secondary)" opacity="0.08"/><polygon points="18,392 54,380 38,428" fill="var(--secondary)" opacity="0.06"/><polygon points="196,12 232,8 214,44" fill="var(--accent)" opacity="0.085"/><polygon points="366,132 390,120 382,168" fill="var(--accent)" opacity="0.07"/><polygon points="158,178 258,214 196,300" fill="var(--secondary)" opacity="0.085"/><g class="lightgroup"><polygon points="148,74 150,0 205,70" fill="var(--accent)" opacity="0.22"/><polygon points="176,120 224,164 158,178" fill="var(--accent)" opacity="0.20"/><polygon points="108,190 132,128 158,178" fill="var(--accent)" opacity="0.16"/><polygon points="196,12 232,8 214,44" fill="var(--accent)" opacity="0.24"/><polygon points="366,132 390,120 382,168" fill="var(--accent)" opacity="0.18"/><polygon points="120,352 172,310 150,400" fill="var(--accent)" opacity="0.12"/><polygon points="285,0 390,0 330,96" fill="url(#g-gold-d)"/><polygon points="0,0 84,86 0,170" fill="url(#g-gold-r)"/><polygon points="262,110 330,96 296,158" fill="url(#g-gold-d)"/><polygon points="158,178 258,214 196,300" fill="url(#g-sky)"/><polygon points="0,170 84,86 60,260" fill="url(#g-blue)"/><polygon points="230,390 288,330 310,420" fill="url(#g-sky)"/><polygon points="150,0 285,0 205,70" fill="url(#g-blue)"/></g></svg>`;
+function fieldDaylight() { const h = new Date().getHours(); return h >= FIELD_DAY_START && h < FIELD_DAY_END; }
+function facetField() {
+  const day = (typeof run !== "undefined" && run && ("daylight" in run)) ? run.daylight : fieldDaylight();
+  return el(`<div class="facet-bg${day ? "" : " no-light"}" aria-hidden="true">${FACET_FIELD_SVG}</div>`);
+}
 // §8.3 correct-answer check that draws itself in (stroke animated in CSS); §8.4 restored strength arc
 const CHECK_SVG = `<svg class="draw-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>`;
 const ARC_SVG = `<svg class="restored-ring" viewBox="0 0 36 36" aria-hidden="true"><circle class="rr-bg" cx="18" cy="18" r="15"/><circle class="rr-fg" cx="18" cy="18" r="15"/></svg>`;
@@ -208,7 +221,7 @@ function startLesson(lesson) {
   if (lesson.chain) return renderChain(lesson);   // M4 boss lesson — a chat-style dialogue (§7.5)
   // Compose FIRST (so the primer's guess item is still "new" here and stays in the session),
   // then run the primer on a first pass before the lesson proper. Replays/reviews skip straight in.
-  run = { lesson, qs: composeSession(lesson), idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map() };
+  run = { lesson, qs: composeSession(lesson), idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   // chains may skip the guess moment (nothing new to guess, ruling 2026-07-24) but keep the scene
   if (!lessonDone(lesson.id) && lesson.primer && (lesson.primer.guessItem || lesson.primer.scene)) renderPrimer(lesson, renderQuestion);
   else renderQuestion();
@@ -220,10 +233,12 @@ function startLesson(lesson) {
 function renderChain(lesson) {
   const turns = (lesson.chain && lesson.chain.turns) || [];
   const app = $("#app"); clearFooter(); hideTabbar(); app.innerHTML = "";
-  app.appendChild(el(`<div class="runner chain">
+  const chainWrap = el(`<div class="runner chain">
     <div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button><div class="chain-title">${(lesson.chain || {}).title || lesson.title}</div></div>
     <div class="chain-log" id="clog"></div>
-  </div>`));
+  </div>`);
+  chainWrap.insertBefore(facetField(), chainWrap.firstChild);   // the field backs the chain too
+  app.appendChild(chainWrap);
   $("#quit").addEventListener("click", () => confirmSheet({ title: "Leave the conversation?", body: "Your progress in it is lost.", confirmLabel: "Leave", cancelLabel: "Keep going", onConfirm: renderHome }));
   const log = $("#clog");
   const bubble = (side, es, en) => { log.appendChild(el(`<div class="cbub ${side}"><div class="cbub-es">${es}</div><div class="cbub-en">${en}</div></div>`)); log.scrollTop = 1e6; };
@@ -359,7 +374,7 @@ function renderPrimer(lesson, onDone) {
 function startReview(items) {
   const qs = items && items.length ? items.map(it => reviewQuestion(it, items)) : composeReview();
   if (!qs.length) { toast("Nothing to review yet. Finish a lesson first."); return; }
-  run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map() };
+  run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
 }
 
@@ -381,11 +396,13 @@ function startSpeedRound() {
 function renderSpeedRound(pool) {
   const app = $("#app"); clearFooter(); hideTabbar(); app.innerHTML = "";
   let timeLeft = 60, matched = 0, sel = null, timer = null;
-  app.appendChild(el(`<div class="runner speed">
+  const speedWrap = el(`<div class="runner speed">
     <div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button>
       <div class="speed-timer" id="stime">0:60</div><div class="speed-score" id="sscore">0</div></div>
     <div class="qtype" style="text-align:center;margin:6px 0 12px">Match them, fast!</div>
-    <div class="match" id="sgrid"></div></div>`));
+    <div class="match" id="sgrid"></div></div>`);
+  speedWrap.insertBefore(facetField(), speedWrap.firstChild);   // one field, one volume, everywhere
+  app.appendChild(speedWrap);
   const grid = $("#sgrid");
   const stop = () => { if (timer) clearInterval(timer); timer = null; };
   $("#quit").addEventListener("click", () => { stop(); renderHome(); });
@@ -448,6 +465,7 @@ function renderQuestion() {
   hideTabbar();
   app.innerHTML = "";
   const wrap = el(`<div class="runner ${sceneClass(run.lesson && run.lesson.topic)}"></div>`);   // §8.3 ambient scenario tint
+  wrap.appendChild(facetField());                       // the field: the exercise ground, behind everything
   wrap.appendChild(el(`
     <div class="progress-row">
       <button class="close-btn" id="quit">${icon('x',24)}</button>
@@ -459,7 +477,7 @@ function renderQuestion() {
   app.appendChild(wrap);
   // §8.2 card-press haptic — one delegated listener covers every interactive card in the runner
   wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile")) haptic("press"); });
-  $("#quit").addEventListener("click", () => confirmSheet({ title: "Quit lesson?", body: "Your progress in it is lost.", confirmLabel: "Quit lesson", cancelLabel: "Keep going", onConfirm: renderHome }));
+  $("#quit").addEventListener("click", sessionSheet);
   run.answered = false;
   run.slotT0 = Date.now();                              // per-slot timing telemetry (2026-07-22)
   // strength ring only when exactly one item is on stage (§3.7); multi-item boards
@@ -667,6 +685,46 @@ function coldEffortNote(body) {
 }
 // meaning-pick only (§7.0, 2026-07-20): the shown/heard phrase is es, the options are ENGLISH.
 // The en→es direction (es-phrase options) was phrase-MC and is retired.
+/* ===== Sound-off escape (listening family, 2026-07-25) =====
+   Escapes are whispers in the exit zone; persistence is system. Tap = this rep swaps
+   to its visual sibling AND the session flips sound-off (chooseType keeps swapping the
+   remaining ear members via EAR_SIBLINGS + _audioOff); the reset lives in the session
+   sheet. OS-mute detection is Capacitor-only and stays dormant on the web PWA. */
+function listenEscape(f, q) {
+  const w = el(`<button class="whisper-escape">I can't listen right now</button>`);
+  f.insertBefore(w, f.firstChild);
+  w.addEventListener("click", () => {
+    if (run.answered) return;
+    run.soundOff = true;
+    try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (_) {}
+    q.type = (typeof EAR_SIBLINGS !== "undefined" && EAR_SIBLINGS[q.type]) || "mc_es2en";
+    const body = $("#qbody");
+    body.innerHTML = "";
+    body.appendChild(el(`<div class="swapnote">
+      <span class="big">Switched to reading and typing</span>
+      <span>Sound stays off for this session. Turn it back on any time from the session menu.</span></div>`));
+    const cf = footer(`<button class="btn" id="swapcont">Continue</button>`);
+    cf.querySelector("#swapcont").addEventListener("click", () => renderQuestion());
+  });
+}
+/* The session sheet: quit + (when the escape fired) the sound-off reset point */
+function sessionSheet() {
+  document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
+  const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div><div class="sheet"><div class="sheet-grab"></div>
+    <div class="sheet-title">Quit lesson?</div><div class="confirm-body">Your progress in it is lost.</div>
+    <button class="btn" id="cs-cancel">Keep going</button>
+    ${run && run.soundOff ? `<button class="btn grey" id="cs-sound">Turn sound back on</button>` : ""}
+    <button class="confirm-ghost" id="cs-ok">Quit lesson</button></div></div>`);
+  const close = () => { wrap.classList.remove("show"); setTimeout(() => wrap.remove(), 260); };
+  document.body.appendChild(wrap);
+  requestAnimationFrame(() => wrap.classList.add("show"));
+  wrap.querySelector(".sheet-backdrop").addEventListener("click", close);
+  wrap.querySelector("#cs-cancel").addEventListener("click", close);
+  const sb = wrap.querySelector("#cs-sound");
+  if (sb) sb.addEventListener("click", () => { run.soundOff = false; close(); toast("Sound is back on"); });
+  wrap.querySelector("#cs-ok").addEventListener("click", () => { close(); renderHome(); });
+}
+
 function renderMC(q) {
   const item = q.item;
   const { answer, options } = mcOptions(item, true, q.pool && q.pool.length ? q.pool : run.lesson.items);
@@ -685,7 +743,8 @@ function renderMC(q) {
 // strips only the telltale marks (¿ ¡ ? ! . , : ; and wrapping quotes) — NOT parentheses, which are
 // content (e.g. "Rare (steak)" must keep its closing bracket).
 const choiceLabel = s => String(s).replace(/^[¿¡"«“‘\s]+|[?!.,;:"»”’\s]+$/g, "");
-function mcChoices(options, answer, item) {
+function mcChoices(options, answer, item, mopts) {
+  mopts = mopts || {};
   const ans = choiceLabel(answer);
   const choices = el(`<div class="choices"></div>`);
   options.forEach(opt => {
@@ -694,6 +753,10 @@ function mcChoices(options, answer, item) {
       if (run.answered) return;
       [...choices.children].forEach(ch => ch.classList.add(ch.textContent === ans ? "correct" : (ch === c ? "wrong" : "dim")));
       const ok = choiceLabel(opt) === ans;
+      // wrong-then-release (listening resolutions): the error is marked, then released
+      // to the uniform dim settle — never left glowing (900ms [tune])
+      if (!ok && mopts.wrongRelease) setTimeout(() => { c.classList.remove("wrong"); c.classList.add("dim"); }, 900);
+      if (!ok && mopts.onMiss) try { mopts.onMiss(); } catch (_) {}
       // §5.2b: log the chosen wrong option (single words only) so confusion pairs can
       // spawn targeted sound-choice reps later; capped at the last 3
       if (!ok && /^\S+$/.test(choiceLabel(opt))) {
@@ -735,9 +798,29 @@ function renderListenChoice(q) {
   body.appendChild(el(`<div class="qtype">What did you hear?</div>`));
   const pe = presentEs(item);                          // §4b.3: listening may play a natural variant
   const play = audioControl(slow => { if (slow) q.slow = true; slow ? speak(pe.text, 0.55) : speak(pe.text); }, { speed: true });
-  body.appendChild(play);
-  setTimeout(() => play._fire(), 300);
-  body.appendChild(mcChoices(options, answer, item));
+  // sound is the centerpiece: the canonical control at its hero size variant, centered
+  const stage = el(`<div class="listen-stage"></div>`);
+  stage.appendChild(play);
+  stage.appendChild(el(`<div class="hint">Tap to hear it again</div>`));
+  body.appendChild(stage);
+  setTimeout(() => play._fire(), 350);                 // [tune] autoplay-on-entry
+  // THE EAR NEVER LOSES THE ANSWER: every resolution reveals the played es as a
+  // played-line (display text + replayable control), correct or missed. No-repeat
+  // holds: es on the played-line, en on the options, nothing twice.
+  q.esOnStage = true; q.noEn = true; q.noAudio = true;
+  let revealed = false;
+  const revealPlayed = () => {
+    if (revealed) return; revealed = true;
+    const pl = el(`<div class="played-line"></div>`);
+    pl.appendChild(audioControl(() => speak(pe.text)));
+    pl.appendChild(el(`<span>${pe.text}</span>`));
+    stage.replaceWith(pl);                             // the hero stage gives way to the reveal
+    setTimeout(() => pl.classList.add("show"), 20);    // timeout, not rAF: backgrounded tabs starve rAF
+  };
+  q.onResolve = revealPlayed;                          // correct path (miss path fires via mcChoices)
+  body.appendChild(mcChoices(options, answer, item, { wrongRelease: true, onMiss: revealPlayed }));
+  const f = footer(``);                                // exit zone: the whisper escape lives above Continue
+  listenEscape(f, q);
 }
 
 /* ----- type the translation (English → Spanish) ----- */
@@ -767,12 +850,22 @@ function renderListen(q) {
   const pe = presentEs(item);                          // §4b.3: may play a natural variant (grading accepts it)
   // §5.4: 0.75× slower replay is scaffolding — using it (slow=true) means this rep doesn't earn the `native` axis
   const play = audioControl(slow => { if (slow) q.slow = true; slow ? speak(pe.text, 0.55) : speak(pe.text); }, { speed: true });
-  body.appendChild(play);
-  setTimeout(() => play._fire(), 350);
+  // sound is the centerpiece (item 7): hero size variant, centered, replay hint below
+  const stage = el(`<div class="listen-stage"></div>`);
+  stage.appendChild(play);
+  const hint = el(`<div class="hint">Tap to hear it again</div>`);
+  stage.appendChild(hint);
+  body.appendChild(stage);
+  setTimeout(() => play._fire(), 350);                 // [tune] autoplay-on-entry
   const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe en español…">`);
   body.appendChild(input);
   setTimeout(() => input.focus(), 50);
+  // resolution: the typed input MATURES to canonical es in place (forgiveness silent);
+  // the en sits adjacent below (adjacency law); the hero control keeps the replay
+  q.esOnStage = true; q.noAudio = true;
+  q.onResolve = () => { input.readOnly = true; input.blur(); input.value = item.es; hint.remove(); };
   const f = footer(`<button class="btn grey" id="skip">Can't tell, skip</button><div style="height:10px"></div><button class="btn" id="check" disabled>Check</button>`);
+  listenEscape(f, q);
   input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
   input.addEventListener("keydown", e => { if (e.key === "Enter" && input.value.trim() && !run.answered) gradeTyped(input.value, item); });
   f.querySelector("#check").addEventListener("click", () => { if (!run.answered && input.value.trim()) gradeTyped(input.value, item); });
@@ -1106,7 +1199,7 @@ function renderPairs(q) {
   // the first sound tile auto-plays on entry (Tom's ruling 2026-07-24): the board opens
   // with a voice, not silence — the learner hears tile 1 and starts hunting its meaning
   const firstAudio = grid.querySelector('.pcard.audio');
-  if (firstAudio) setTimeout(() => { if (!run.answered) _cardPlay(firstAudio, items[+firstAudio.dataset.idx].es); }, 450);
+  if (firstAudio) setTimeout(() => { if (!run.answered) _cardPlay(firstAudio, items[+firstAudio.dataset.idx].es); }, 350);   /* [tune] */
   let sel = null, matched = 0;
   const missed = new Set();                       // audio items involved in a mismatch → low-weight outcome
   function tapCard(c) {
@@ -1274,7 +1367,7 @@ function renderSoundChoice(q) {
   body.appendChild(el(`<div class="sc-hint">Tap to hear each. Pick the one that belongs.</div>`));
   // the first sound card auto-plays on entry (Tom's ruling 2026-07-24) — same voice-first
   // opening as the pairs board; the second card stays the learner's tap
-  setTimeout(() => { if (!run.answered && opts.children[0]) _cardPlay(opts.children[0], pairAB[0].w); }, 450);
+  setTimeout(() => { if (!run.answered && opts.children[0]) _cardPlay(opts.children[0], pairAB[0].w); }, 350);   /* [tune] */
   q.esOnStage = true;                              // the filled sentence is the es reveal (no-repeat §3.7)
   q.onResolve = () => {
     [...opts.children].forEach(c => {
@@ -1287,6 +1380,7 @@ function renderSoundChoice(q) {
     if (b) { b.textContent = answer; b.classList.add("filled"); }
   };
   const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
+  listenEscape(f, q);
   f.querySelector("#check").addEventListener("click", () => {
     if (run.answered || !sel) return;
     const ok = sel._opt.right;
@@ -1329,6 +1423,7 @@ function renderAudioCloze(q) {
     if (b) { b.textContent = answer; b.classList.add("filled"); }
   };
   const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
+  listenEscape(f, q);
   input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
   const submit = () => {
     if (run.answered || !input.value.trim()) return;
@@ -1408,6 +1503,7 @@ function renderEarBuild(q) {
     bank.appendChild(tile);
   });
   const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
+  listenEscape(f, q);
   function refresh() { $("#check").disabled = !chosen.length; }
   f.querySelector("#check").addEventListener("click", () => {
     if (run.answered) return;

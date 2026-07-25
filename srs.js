@@ -182,7 +182,12 @@ const MODE_FAMILY = {
 // ear members for their visual siblings when the learner can't listen. The letter rungs
 // complete the production band's audio-free coverage.
 const EAR_SIBLINGS = { listen_choice: "mc_es2en", sound_choice: "fill_blank", audio_cloze: "phrase_fill", ear_build: "build", listen_type: "type_translation" };
-function _audioOff() { return !(typeof window !== "undefined" && "speechSynthesis" in window) || state.sound === false; }
+function _audioOff() {
+  // no TTS · user sound setting off · OR the session-scoped sound-off escape fired
+  // (listening family 2026-07-25: the composer swaps remaining ear members for the session)
+  if (typeof run !== "undefined" && run && run.soundOff) return true;
+  return !(typeof window !== "undefined" && "speechSynthesis" in window) || state.sound === false;
+}
 function _pickPreferred(tier, item, prefer, s) {
   const want = MODE_FAMILY[prefer]; if (!want) return null;
   let cand = [];

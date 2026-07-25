@@ -222,6 +222,22 @@
     ],
     // App state: "Home — returning user" with a seeded 12+ due queue (urgent) — prep drives
     // the artifact to the urgent stack state. Supersedes the home.html-era pairs for the stack.
+    // App state: harness "Exercise — listen & type" / "listen & choose" (fresh + resolved).
+    // Artifact: design/listening-family.html. The whisper maps .linkbtn.whisper -> .whisper-escape
+    // (class renamed in build: the app's .linkbtn is an older component).
+    listeningFamily: [
+      [".listen-stage", ".listen-stage"],
+      [".listen-stage .ac-speaker", ".listen-stage .ac-speaker"],
+      [".listen-stage .hint", ".listen-stage .hint"],
+      [".played-line", ".played-line"],
+      [".played-line .ac-speaker", ".played-line .ac-speaker"],
+      [".choices .choice", ".choices .choice"],
+      [".text-input", "#qbody .text-input"],
+      [".linkbtn.whisper", ".whisper-escape"],
+      [".facet-bg", ".facet-bg"],
+      [".progress", ".pbar"],
+      [".swapnote", ".swapnote"],
+    ],
     homeActionStack: [
       [".tile.fade", ".hero-tile"],
       [".tile.fade .inner", ".hero-tile .hero-inner"],
