@@ -82,10 +82,10 @@ const MEXICO_PACK = {
                     machine: true, frame: "¿dónde está ___?",
                     frameGloss: "¿Dónde está...? = where is...? Point it at anything lost.",
                     items: [
-                      { es: "¿Dónde está el baño?", en: "Where's the bathroom?", note: "Mexico: 'baño'.", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "baño"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" }, frame: "¿dónde está ___?" },
+                      { es: "¿Dónde está el baño?", en: "Where is the bathroom?", note: "Mexico: 'baño'.", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "baño"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" }, frame: "¿dónde está ___?" },
                       { es: "¿Dónde está la estación?", en: "Where is the station?", tier: 1, tags: ["core"], keywords: ["estación"], frame: "¿dónde está ___?" },
                       { es: "¿Dónde está mi hotel?", en: "Where is my hotel?", tier: 1, tags: ["core"], keywords: ["hotel"], frame: "¿dónde está ___?" },
-                      { es: "¿Dónde está la farmacia?", en: "Where's the pharmacy?", tier: 1, tags: ["emergency", "health", "directions"], keywords: ["dónde", "farmacia"], frame: "¿dónde está ___?" },
+                      { es: "¿Dónde está la farmacia?", en: "Where is the pharmacy?", tier: 1, tags: ["emergency", "health", "directions"], keywords: ["dónde", "farmacia"], frame: "¿dónde está ___?" },
                     ]
                   },
                   {

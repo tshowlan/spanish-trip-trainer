@@ -777,6 +777,36 @@ function practiceButton() {
   b.addEventListener("click", practiceChooser);
   return b;
 }
+/* Practice's Recommended = the stalest LEARNED lesson (weakest seen topic as fallback) —
+   never the next lesson: the action tile already owns "what's next", so the chooser
+   repeating it was pure duplication (Tom's ruling 2026-07-24). */
+function practiceRecommend() {
+  const FADE = (typeof RETENTION_FADE !== "undefined") ? RETENTION_FADE : 40;
+  let best = null;
+  DECK.stages.forEach(st => st.lessons.forEach(l => {
+    if (!lessonDone(l.id) || l.chain) return;
+    const learned = (l.items || []).filter(it => { const s = state.learn[it.id]; return s && s.exposures >= 1; });
+    if (learned.length < 3) return;
+    const avg = learned.reduce((a, it) => a + itemStrength(state.learn[it.id]), 0) / learned.length;
+    if (!best || avg < best.avg) best = { lesson: l, avg, items: learned };
+  }));
+  if (best) {
+    const fadingN = best.items.filter(it => itemStrength(state.learn[it.id]) < FADE).length;
+    return { title: `Review: ${best.lesson.title}`,
+      sub: fadingN ? `${fadingN} fading, your oldest weak spot` : `${Math.round(best.avg)}% strong, your weakest lesson`,
+      run: () => startReview(best.items) };
+  }
+  // topic fallback: the weakest category you've actually seen
+  const cats = (typeof coverageCats === "function") ? coverageCats() : {};
+  const seen = Object.keys(cats).filter(c => cats[c].seen > 0)
+    .sort((a, b) => (cats[a].credit / cats[a].total) - (cats[b].credit / cats[b].total));
+  if (seen.length) {
+    const c = seen[0], strong = Math.round((cats[c].credit / cats[c].total) * 100);
+    return { title: `Review: ${c}`, sub: `${strong}% strong, your weakest topic`,
+      run: () => { const its = itemsInCategory(c); if (its.length) startReview(its); } };
+  }
+  return null;
+}
 function practiceChooser() {
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
   const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div>
@@ -788,9 +818,9 @@ function practiceChooser() {
     if (!disabled) b.addEventListener("click", () => { closeSheet(); run(); });
     opts.appendChild(b);
   };
-  const h = heroState();
+  const rec = practiceRecommend();
   const weak = fadingItems().slice(0, 15).map(x => ITEM_INDEX[x.id]).filter(Boolean);
-  add("Recommended", h.title, h.run);
+  add("Recommended", rec ? rec.title + " · " + rec.sub : "Finish a lesson first", rec && rec.run, !rec);
   add("By scenario", "Pick a category to drill", scenarioChooser);
   add("Weakest phrases", weak.length ? `${weak.length} phrases need the most work` : "Nothing weak right now", () => startReview(weak), !weak.length);
   document.body.appendChild(wrap);

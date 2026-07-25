@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — TOM'S FIX BATCH SHIPPED (v183): practice chooser, sound autoplay, swap copy, speak hardening
+- Practice chooser: Recommended = stalest learned lesson ("Review: First words · 13 fading, your oldest weak spot"), topic fallback, disabled until a lesson is done; the next-lesson row is GONE from the chooser (tile owns it). New practiceRecommend() in screen-home.js.
+- Pairs + sound choice auto-play their first tile on entry (450ms, never auto-selects); correct pair matches no longer replay (artifact's "sound, meet spelling" superseded — canvas delta).
+- Close-swap: chip now carries the full target (Ask/Say: composed EN); root-caused the "Wherethis?" bug to mixed en shells ("Where is" + "Where's") — glosses normalized both packs, _enShell refuses non-word-boundary shells.
+- Speak exercise: single active recognizer, abort on escape/resolve, tap-while-live stops, 8s watchdog for engines that never fire onend. Verified: mic-blocked environment resets cleanly and the escape always lands.
+- Harness gained listen & type + speak it stories (both were missing). Chat items in flight separately: listening-family session (5,7), splash session (8).
+
 ## 2026-07-24 — RESIDUE RULINGS: SPAIN READS 36 · 0 · 0 (v182)
 - Chat's three rulings executed: (1) band tolerance ±0.2 min (TOL in atlas; sub-tolerance = model noise, closes s4-hear/sp-help/s3-ferry); (2) kit overage sanctioned when it buys build-eligibility (First words 6.8 / Numbers 6.3 kept; SANCTIONED_OVER note in atlas, shown never silently swallowed; re-measure with telemetry before any trim); (3) s4-landmarks Sagrada Família phrase chunked.
 - Atlas re-read: 36 lessons · 0 open gaps · 0 outside band. SPAIN IS DONE: all lessons in band, all primed, every phrase homed once, the finale says hasta la próxima.

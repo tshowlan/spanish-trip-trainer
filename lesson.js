@@ -74,7 +74,9 @@ function composeSwap(lesson, anchor) {
       type: "close_swap",
       item: { id: itemId(c), es: composedEs, en: composedEn, tags: c.tags },
       prompt: _machineName(lesson.machine ? lesson : _machineLessonOf(frame), frame),
-      swapHtml: `Now ask for: <b>${fen}</b>`
+      // the chip carries the whole target ("Ask: Where is this one?"), not the bare filler —
+      // "Now ask for: this" read like ask-for-the-object (Tom, 2026-07-24)
+      swapHtml: `${/\?$/.test(composedEn) ? "Ask" : "Say"}: <b>${composedEn}</b>`
     };
     if (!taughtEs.has(norm(composedEs))) {
       rep.resNote = "You were never taught this sentence. You built it anyway.";
@@ -798,27 +800,41 @@ function renderSpeak(q) {
   body.appendChild(status);
   body.appendChild(el(`<button class="mic-btn" id="mic">${icon("microphone", 30)}</button>`));
   const f = footer(`<button class="btn grey" id="cant">I can't speak right now</button>`);
-  // equally-hard substitute: retype the current slot as a cold typed rep (same production axis)
-  f.querySelector("#cant").addEventListener("click", () => { q.type = "type_translation"; renderQuestion(); });
 
   const mic = $("#mic");
-  let done = false;
+  let done = false, active = null, watchdog = null;
+  const stopRec = () => {
+    if (watchdog) { clearTimeout(watchdog); watchdog = null; }
+    if (active) { try { active.abort(); } catch (_) {} active = null; }
+    mic.classList.remove("live");
+  };
+  // equally-hard substitute: retype the current slot as a cold typed rep (same production axis).
+  // The escape ALWAYS works: it kills any live recognizer first (a hung "Listening…" was
+  // blocking the exit — Tom, 2026-07-24)
+  f.querySelector("#cant").addEventListener("click", () => { stopRec(); done = true; q.type = "type_translation"; renderQuestion(); });
+
   mic.addEventListener("click", () => {
     if (run.answered || done) return;
+    if (active) { stopRec(); status.textContent = "Tap the mic and say it aloud."; return; }   // tap while live = stop, never stack
     const rec = new Rec();
+    active = rec;
     rec.lang = (typeof activePack === "function" ? activePack().tts : "es-MX");
     rec.interimResults = false; rec.maxAlternatives = 3;
     mic.classList.add("live"); status.textContent = "Listening…";
+    // watchdog: some engines (iOS PWA) never fire onend — after 8s a silent hang resets cleanly
+    watchdog = setTimeout(() => { if (!done && !run.answered) { stopRec(); status.textContent = "Didn't catch that, tap to try again."; } }, 8000);
     rec.onresult = e => {
-      done = true;
+      if (rec !== active) return;                  // a stopped/superseded recognizer never grades
+      done = true; stopRec();
       const alts = [...e.results[0]].map(r => r.transcript);
-      mic.classList.remove("live"); status.textContent = `Heard: “${alts[0]}”`;
+      status.textContent = `Heard: “${alts[0]}”`;
       grade(alts.some(a => speechMatch(a, item)), item);
     };
-    rec.onerror = () => { mic.classList.remove("live"); status.textContent = "Didn't catch that, tap to try again."; };
-    rec.onend = () => { mic.classList.remove("live"); if (!done && !run.answered) status.textContent = "Tap the mic and say it aloud."; };
-    try { rec.start(); } catch (_) { mic.classList.remove("live"); }
+    rec.onerror = () => { if (rec === active) { stopRec(); status.textContent = "Didn't catch that, tap to try again."; } };
+    rec.onend = () => { if (rec === active) { stopRec(); if (!done && !run.answered) status.textContent = "Tap the mic and say it aloud."; } };
+    try { rec.start(); } catch (_) { stopRec(); status.textContent = "Didn't catch that, tap to try again."; }
   });
+  q.onResolve = () => stopRec();                   // leaving the slot never leaves a hot mic
 }
 
 /* ----- fill in the blank ----- */
@@ -1048,6 +1064,9 @@ function _enShell(items) {
     let i = 0; while (i < p.length && i < e.length && p[i] === e[i]) i++; p = p.slice(0, i);
     let j = 0; while (j < s.length && j < e.length && s[s.length - 1 - j] === e[e.length - 1 - j]) j++; s = s.slice(s.length - j);
   }
+  // shell must break at a word boundary: a mixed family ("Where is" + "Where's") collapses
+  // the prefix mid-word and composes garbage ("Wherethis?") — degenerate shells are refused
+  if (p && !/[\s]$/.test(p)) return null;
   return (p.length + s.length) ? { pre: p, post: s } : null;
 }
 function _fillerEn(shell, en) {
@@ -1084,6 +1103,10 @@ function renderPairs(q) {
     grid.appendChild(a); grid.appendChild(e);
   }
   body.appendChild(grid);
+  // the first sound tile auto-plays on entry (Tom's ruling 2026-07-24): the board opens
+  // with a voice, not silence — the learner hears tile 1 and starts hunting its meaning
+  const firstAudio = grid.querySelector('.pcard.audio');
+  if (firstAudio) setTimeout(() => { if (!run.answered) _cardPlay(firstAudio, items[+firstAudio.dataset.idx].es); }, 450);
   let sel = null, matched = 0;
   const missed = new Set();                       // audio items involved in a mismatch → low-weight outcome
   function tapCard(c) {
@@ -1100,7 +1123,9 @@ function renderPairs(q) {
       [a, e].forEach(x => { x.classList.remove("sel"); x.classList.add("matched"); });
       const mi = items[+a.dataset.idx];
       a.innerHTML = `<span class="pc-glyph">${icon('speaker', 16)}</span><span class="es-word">${mi.es}</span><span class="pbars" aria-hidden="true"><span></span><span></span><span></span></span>`;
-      _cardPlay(a, mi.es);                        // sound, meet spelling
+      // no replay on a correct match (Tom's ruling 2026-07-24; the reveal shows the spelling,
+      // the learner just HEARD the sound — replaying it slowed the board). Delta vs the pairs
+      // artifact's "sound, meet spelling" caption: flag at next re-issue.
       haptic("correct");
       // a clean pair is a real review rep; a missed one records at low weight [tune]:
       // exposure only, so the slip neither advances nor resets the item (§5, artifact caption)
@@ -1247,6 +1272,9 @@ function renderSoundChoice(q) {
   });
   body.appendChild(opts);
   body.appendChild(el(`<div class="sc-hint">Tap to hear each. Pick the one that belongs.</div>`));
+  // the first sound card auto-plays on entry (Tom's ruling 2026-07-24) — same voice-first
+  // opening as the pairs board; the second card stays the learner's tap
+  setTimeout(() => { if (!run.answered && opts.children[0]) _cardPlay(opts.children[0], pairAB[0].w); }, 450);
   q.esOnStage = true;                              // the filled sentence is the es reveal (no-repeat §3.7)
   q.onResolve = () => {
     [...opts.children].forEach(c => {

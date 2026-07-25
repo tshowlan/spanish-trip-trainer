@@ -70,7 +70,7 @@ const CURRICULUM = {
                       { es: "¿Dónde está el baño?", en: "Where is the bathroom?", tier: 1, tags: ["core"], keywords: ["baño"], frame: "¿dónde está ___?", note: "In Spain you will also hear el servicio for a restaurant loo." },
                       { es: "¿Dónde está la estación?", en: "Where is the station?", tier: 1, tags: ["core"], keywords: ["estación"], frame: "¿dónde está ___?" },
                       { es: "¿Dónde está mi hotel?", en: "Where is my hotel?", tier: 1, tags: ["core"], keywords: ["hotel"], frame: "¿dónde está ___?" },
-                      { es: "¿Dónde está la farmacia?", en: "Where's the pharmacy?", tier: 1, tags: ["emergency", "health", "directions"], keywords: ["dónde", "farmacia"], frame: "¿dónde está ___?" },
+                      { es: "¿Dónde está la farmacia?", en: "Where is the pharmacy?", tier: 1, tags: ["emergency", "health", "directions"], keywords: ["dónde", "farmacia"], frame: "¿dónde está ___?" },
                     ]
                   },
                   {
