@@ -1356,7 +1356,7 @@ function renderSoundChoice(q) {
   pairAB.forEach(o => {
     const c = el(`<button class="pcard sc-card">${_cardAudioHtml()}</button>`);
     c.addEventListener("click", () => {
-      if (run.answered) return;
+      if (run.answered) { if (c.classList.contains("settled")) _cardPlay(c, o.w); return; }   // the settled reveal stays replayable
       _cardPlay(c, o.w);
       if (sel) sel.classList.remove("sel");
       sel = c; c.classList.add("sel");
@@ -1371,6 +1371,7 @@ function renderSoundChoice(q) {
   // opening as the pairs board; the second card stays the learner's tap
   setTimeout(() => { if (!run.answered && opts.children[0]) _cardPlay(opts.children[0], pairAB[0].w); }, 350);   /* [tune] */
   q.esOnStage = true;                              // the filled sentence is the es reveal (no-repeat §3.7)
+  q.earReveal = true;                              // sheetless: the CORRECT OPTION carries the reveal (wash + replayable)
   q.onResolve = () => {
     [...opts.children].forEach(c => {
       if (c._opt.right) {
@@ -1419,6 +1420,7 @@ function renderAudioCloze(q) {
   body.appendChild(input);
   setTimeout(() => input.focus(), 50);
   q.esOnStage = true;                              // the completed sentence is the es reveal (no-repeat §3.7)
+  q.earReveal = true;                              // sheetless: the fill-in-place settle IS the reveal
   q.onResolve = () => {
     input.readOnly = true; input.blur();
     const b = document.getElementById("sc-blank");
@@ -1504,6 +1506,7 @@ function renderEarBuild(q) {
     });
     bank.appendChild(tile);
   });
+  q.earReveal = true;                              // sheetless: the assembled line's settle IS the reveal
   const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
   listenEscape(f, q);
   function refresh() { $("#check").disabled = !chosen.length; }

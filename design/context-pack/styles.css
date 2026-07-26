@@ -1608,3 +1608,8 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
   :root:not([data-theme="light"]) .pcard.matched, :root:not([data-theme="light"]) .pcard.settled { background: var(--solid-card); } }
 :root[data-theme="dark"] .keytray .keytile,
 :root[data-theme="dark"] .pcard.matched, :root[data-theme="dark"] .pcard.settled { background: var(--solid-card); }
+/* sheetless sound choice (2026-07-25): the correct option carries the reveal — green wash
+   over the solid ground, and it stays replayable after the settle */
+.sc-card.settled { background: color-mix(in srgb, var(--green) 12%, var(--solid-card)); border-color: var(--green); cursor: pointer; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sc-card.settled { background: color-mix(in srgb, var(--green) 12%, var(--solid-card)); } }
+:root[data-theme="dark"] .sc-card.settled { background: color-mix(in srgb, var(--green) 12%, var(--solid-card)); }

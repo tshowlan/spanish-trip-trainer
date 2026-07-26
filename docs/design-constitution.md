@@ -80,9 +80,12 @@ doc narrates, this file states only the laws.
 - **The ear never loses the answer:** every listening resolution reveals the played es (the
   played-line: display-scale text + replayable 36px control), correct or missed — es-always-reveals
   at its limit case: the learner never SAW the answer, so the reveal is the weld. *(item 5)*
-- **One correction surface per miss:** where a resolution reveals the answer in place (the
-  ear family's played-line + wrong-then-release + correct wash), the in-place reveal IS the
-  correction and the sheet yields; the sheet only where nothing else does. *(ruling 2026-07-24)*
+- **One correction surface per miss:** the in-place reveal where it exists, the sheet only
+  where nothing else reveals. Reveal carriers (no-repeat governs): listen_choice + listen_type
+  carry the PLAYED-LINE (their es was never on screen); sound_choice's CORRECT OPTION carries it
+  (wash + replayable — its options are already es, a played-line would duplicate); audio_cloze's
+  fill-in-place settle and ear_build's assembled-line settle ARE the reveal, nothing added.
+  *(ruling 2026-07-24; family-wide 2026-07-25)*
 - **Distractor axes:** ear-discrimination distractors are sound-neighbors by design (minimal pairs
   are the ear's whole job); meaning-pick distractors are meaning-neighbors never — the paraphrase
   ban applies where meaning is the axis. *(the distractor nuance)*

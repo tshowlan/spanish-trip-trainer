@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — SHEETLESS FAMILY-WIDE (v186): earReveal on all five ear exercises
+- Chat's carrier map executed: sound_choice's CORRECT OPTION carries the reveal (green wash over solid, replayable after settle — pairs-pattern tap); audio_cloze's fill settle and ear_build's assembly settle carry theirs (nothing added; a wrong assembly never fuses — the standard res block reveals in place); listen_choice/listen_type keep the played-line.
+- Constitution law restated with the carrier map; all three miss paths verified sheetless in the harness (wash needed a dual-block dark rule — the pcard solid override outranked it). Lint 0 fails.
+
 ## 2026-07-25 — STAMP RECONCILED + TWO RULINGS SHIPPED (v185): the listening family is CLOSED
 - Stamped listening-family.html committed (Tom-saved: toggle dead, clock hardwired, .whisper-escape adopted, caption = pure spec). Acceptance diff run: clean after triage (live-token precedence x3, font-stack noise, resolved-state pairs absent from the artifact's initial state; one .hint height row traced to a frozen-pane measurement, visually verified correct).
 - RULING one correction surface per miss: listen_choice misses now resolve IN PLACE (played-line + wrong-then-release + Continue; no sheet, no wash, SRS unchanged) via q.earReveal in finishGrade; constitution law added, design-system SS3.3 gains the ear-family exception. Other ear members keep the sheet until they too reveal in place.
