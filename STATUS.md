@@ -2,6 +2,9 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — Arrival hotfix 5 (v192): the halo's top edge
+- Tom's catch on v191: a residual line at the TOP of the halo. The aura's box extended only 46px above the mark while its gradient radius wanted ~101px — the glow clipped at its own container's top edge. Fix: closest-side gradient sizing in a roomier box (inset -96/-110), which by definition reaches zero alpha exactly at the nearest edge — nothing can clip, in any engine. Build + artifact.
+
 ## 2026-07-25 — Arrival hotfix 4 (v191): banding, not edges — the tint learns to dither
 - The remaining "lines" were OLED GRADIENT BANDING: the tint's abrupt 60% falloff quantizes into visible elliptical rims at low alpha on device (invisible on desktop). Two-part fix: eased multi-stop gradients (tint 6 stops to 84% reach, aura 5 stops) spread the falloff, and a 5% tiled-noise dither layer (#splash::after, tiny generated PNG) breaks what remains into grain. Applied to build + artifact.
 - Also explains the web-vs-PWA difference Tom saw: the PWA was painting stale cached CSS (network-first still needs a full force-quit to drop the old sheet). v191 + two cold opens should converge both.

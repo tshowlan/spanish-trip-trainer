@@ -121,8 +121,8 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 .splash-lh .lighthouse { height: 110px; width: auto; position: relative; z-index: 1; }
 /* the aura is its own radial LAYER, never a filter: iOS Safari clips the filter's
    paint region at a straight edge (the line above the lighthouse, Tom's device catch) */
-.splash-lh::before { content: ""; position: absolute; inset: -46px -60px; pointer-events: none;
-  background: radial-gradient(50% 50% at 50% 45%,
+.splash-lh::before { content: ""; position: absolute; inset: -96px -110px; pointer-events: none;
+  background: radial-gradient(closest-side at 50% 45%,
     rgba(216,183,19,0.26) 0%, rgba(216,183,19,0.17) 35%, rgba(216,183,19,0.09) 58%,
     rgba(216,183,19,0.035) 78%, rgba(216,183,19,0) 100%); }
 .splash-wm { animation: arr-fade 700ms ease 350ms both; }

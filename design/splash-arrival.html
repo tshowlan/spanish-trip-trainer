@@ -274,8 +274,8 @@
   #splash .splash-lh { position:relative; }
   #splash .splash-lh .lighthouse { height:110px; width:auto; position:relative; z-index:1; }
   /* aura = a radial layer, never a filter (iOS clips filter regions to a straight edge) */
-  #splash .splash-lh::before { content:""; position:absolute; inset:-46px -60px; pointer-events:none;
-    background:radial-gradient(50% 50% at 50% 45%, rgba(216,183,19,0.26) 0%, rgba(216,183,19,0.17) 35%, rgba(216,183,19,0.09) 58%, rgba(216,183,19,0.035) 78%, rgba(216,183,19,0) 100%); }
+  #splash .splash-lh::before { content:""; position:absolute; inset:-96px -110px; pointer-events:none;
+    background:radial-gradient(closest-side at 50% 45%, rgba(216,183,19,0.26) 0%, rgba(216,183,19,0.17) 35%, rgba(216,183,19,0.09) 58%, rgba(216,183,19,0.035) 78%, rgba(216,183,19,0) 100%); }
   #splash .splash-wm { animation:arr-fade 700ms ease 350ms both; }
   #splash .splash-wm .wordmark { height:34px; width:auto; }
   #splash .splash-wm .wordmark path { fill:#c8d2f5; }
