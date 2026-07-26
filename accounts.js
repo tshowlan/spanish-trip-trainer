@@ -40,10 +40,14 @@ async function doLogin(email, pw) {
   const v = await vaultPull(token);
   if (v) {
     state.cloud = Object.assign({}, state.cloud || {}, { playerId: v.player_id, secret: v.secret, optedIn: true });
-    const p = await rpc("get_player", { p_id: v.player_id, p_secret: v.secret });
-    if (p) applyPlayer(p);
+    // RESTORE IS ATOMIC OR THE LOGIN FAILS. A silent miss here once let a fresh install
+    // render empty and then PUSH that emptiness over the good server copy (2026-07-26).
+    let p = await rpc("get_player", { p_id: v.player_id, p_secret: v.secret }).catch(() => null);
+    if (!p) p = await rpc("get_player", { p_id: v.player_id, p_secret: v.secret }).catch(() => null);   // one retry
+    if (!p) throw new Error("Couldn't reach your backup. Nothing was changed, try again.");
+    applyPlayer(p);
     save();
-    await cloudSync().catch(() => {});   // push the MERGED truth up right away — the vault is current from minute one
+    await cloudSync().catch(() => {});   // safe now: this pushes the restored+merged truth
   } else {
     ensureIdentity();
     await vaultPush(token, userId);          // write-once: cannot clobber an existing mapping

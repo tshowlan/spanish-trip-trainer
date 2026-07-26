@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-26 — ROOT CAUSE FOUND + FIXED (v198): the silently-skipped restore that then clobbered the vault
+- The full chain, proven by experiment: (1) doLogin treated a null get_player as OPTIONAL (`if (p) applyPlayer(p)`) — a transient miss silently skipped the restore and rendered a fresh home ("First words"); (2) the v195 post-login push then pushed that fresh-empty state OVER the good server copy (observed live: Tom's row held the day's lesson + 13 learn records at 20:47, clobbered to June-state by his sign-in at ~21:00). The merge itself is INNOCENT (full applyPlayer flow verified perfect against a reconstructed good row on a test player).
+- Fix: RESTORE IS ATOMIC OR LOGIN FAILS — get_player retries once, then throws ("Nothing was changed, try again"); the post-login push only runs after a successful restore. doRestore already safe.
+- Tom's vault repaired by hand from backup: June data + sp0-first-words completion + today's session/history (the 13 clobbered SRS records are unrecoverable; strengths rebuild through practice). Test-player rows used for all destructive experiments; Tom's row backed up before any write.
+
 ## 2026-07-26 — The two-identity diagnosis (v197): vault is write-once, login adopts the authoritative row
 - Tom's vault row inspected via sync code: a JUNE snapshot (pre-restructure lesson ids, 0 learn records, history ends 07-05) — while the device's "backed up just now" pushes verifiably landed elsewhere (sentinel write/read on the row works perfectly). Conclusion: the device pushed under a DIFFERENT player identity than the one the account's vault restores — two identities, login picks the stale mapping.
 - Hardening shipped regardless of which fork Tom confirms: vaultPush is now WRITE-ONCE (ignore-duplicates — a transient vaultPull failure during login can no longer rebind the account to a fresh empty player and orphan the data); login's no-vault branch re-pulls and ADOPTS the authoritative row when one exists.
