@@ -40,6 +40,15 @@ async function cloudSync(opts) {
   const sc = state.scoresCache || (typeof computeScores === "function" ? computeScores() : {});
   const scoreBundle = { tier: (typeof currentTier === "function" ? currentTier() : (state.tier || "Newcomer")),
     readiness: sc.readiness || 0, momentum: sc.momentum || 0, sessions7: sc.sessions7 || 0 };
+  try {
+    await _syncPlayerRpc(opts, sc, scoreBundle);
+    state.cloudLastPush = Date.now(); state.cloudLastPushError = null; save();
+  } catch (e) {
+    state.cloudLastPushError = (e && e.message) || "push failed"; save();
+    throw e;
+  }
+}
+async function _syncPlayerRpc(opts, sc, scoreBundle) {
   await rpc("sync_player", {
     p_id: state.cloud.playerId, p_secret: state.cloud.secret,
     p_name: state.cloud.name || "Traveler", p_group: state.cloud.group || null,

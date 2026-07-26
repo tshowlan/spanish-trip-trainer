@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-26 — Backup made visible (v196): truthful status line + sync code + push telemetry
+- Tom's controlled round-trip FAILED (lesson -> delete -> reinstall -> sign in -> First words again), falsifying the "working as designed" call. Server round-trip verified GOOD via live RPC test (sync_player/get_player return lessons+learn intact) — the break is client-side or sequencing.
+- Instead of guessing: cloudSync now records every push outcome (state.cloudLastPush / cloudLastPushError); Settings' account row shows the truth ("backed up 3 min ago" / "backup FAILED: ..." / "no backup yet"); the sync code escaped the Groups gate (signed-in Settings row) so a failing vault can be inspected directly.
+- Next: Tom re-runs the loop with visible checkpoints (sign in -> status says backed up -> lesson -> status updates -> delete -> reinstall -> sign in). If it fails again, the sync code pinpoints the vault row.
+
 ## 2026-07-26 — Vault diagnosis + login push (v195)
 - Tom's "restore gave me First words" decoded: NOT a restore bug — the vault only receives progress while SIGNED IN, and the recent progress was made signed out (the create-account banner was visible on home throughout). The vault faithfully restored its last signed-in snapshot. Unrecoverable by design; the sign-in door (v193) prevents the recurrence by making sign-in reachable before intake.
 - Hardening: doLogin now pushes the merged state up immediately after restore (was: wait for the next lesson-finish/pagehide sync). Round-trip test prescribed to Tom: lesson -> delete -> reinstall -> sign in -> lesson still done.

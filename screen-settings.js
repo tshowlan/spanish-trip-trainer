@@ -16,9 +16,22 @@ function renderProfile() {
 
   // account
   if (state.account) {
-    const acct = el(`<div class="set-row"><div><div class="set-t">Account</div><div class="set-d">${state.account.email} · progress backed up</div></div>
+    // truthful backup line: shows the LAST SUCCESSFUL push (or the error), never a promise
+    const pushAgo = state.cloudLastPush ? (() => { const m = Math.round((Date.now() - state.cloudLastPush) / 60000);
+      return m < 1 ? "just now" : m < 60 ? m + " min ago" : Math.round(m / 60) + " h ago"; })() : null;
+    const backupLine = state.cloudLastPushError ? "backup FAILED: " + state.cloudLastPushError
+      : pushAgo ? "backed up " + pushAgo : "no backup yet this session";
+    const acct = el(`<div class="set-row"><div><div class="set-t">Account</div><div class="set-d">${state.account.email} · ${backupLine}</div></div>
       <button class="btn grey" id="logout" style="width:auto;padding:8px 14px;box-shadow:none">Log out</button></div>`);
     wrap.appendChild(acct);
+    // debugging + device-carry: the sync code was gated behind Groups; a signed-in user
+    // can now copy it directly (it IS the vault address — keep private)
+    if (state.cloud && state.cloud.playerId && state.cloud.secret) {
+      const syncRow = el(`<div class="set-row" style="cursor:pointer"><div><div class="set-t">Sync code</div><div class="set-d">Copy to move or inspect your backup. Keep it private.</div></div><span class="chev">${icon('caret-right',20)}</span></div>`);
+      syncRow.addEventListener("click", () => { const code = state.cloud.playerId + "." + state.cloud.secret;
+        if (navigator.clipboard) navigator.clipboard.writeText(code); toast("Sync code copied"); });
+      wrap.appendChild(syncRow);
+    }
     acct.querySelector("#logout").addEventListener("click", () => confirmSheet({ title: "Log out?", body: "Your progress stays on this device and in your account.", confirmLabel: "Log out", cancelLabel: "Stay signed in", onConfirm: () => { doLogout(); renderProfile(); } }));
   } else {
     const acct = el(`<div class="set-row" style="cursor:pointer;border-color:var(--accent-2)"><div><div class="set-t">Back up your progress</div><div class="set-d">Create an account so a reinstall never wipes your progress</div></div>
