@@ -263,6 +263,16 @@ function applyPlayer(r) {
       });
       if (r.progress.active && !state.active) state.active = r.progress.active;   // respect this device's active trip
       if (state.active) applyTrip(state.active);             // re-mirror the merged active trip to top level
+      // X-RAY (2026-07-26): record what THIS restore actually received and kept — shown in
+      // Settings so a failing device testifies instead of being inferred from wreckage
+      try {
+        const st = (r.progress.trips[state.active] || {});
+        state.restoreDebug = { at: Date.now(),
+          got: Object.keys(st.learn || {}).length,
+          gotKeys: Object.keys(st.learn || {}).slice(0, 2).join(","),
+          kept: Object.keys(state.learn || {}).length,
+          lessons: Object.keys(state.lessons || {}).length };
+      } catch (_) {}
     } else {                                                 // legacy single-trip backup
       if (r.progress.lessons) state.lessons = _mergeLessons(state.lessons, r.progress.lessons);
       if (r.progress.profile && !state.profile) state.profile = r.progress.profile;

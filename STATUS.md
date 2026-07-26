@@ -2,6 +2,9 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-26 — X-ray (v202): the device testifies
+- v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
+
 ## 2026-07-26 — THE HYDRATION INVARIANT (v201): no read, no write
 - v200's pull was best-effort with an unconditional push — a cold-boot network miss reproduced the ambush (row clobbered again post-v200). The permanent client-side rule: a device that has not successfully READ the vault this session may never WRITE to it. _cloudHydrated gates every push; cloudSync itself pull-merges first when unhydrated and SKIPS the push if the pull fails; login + sync-code restores count as reads. Settings now shows both directions ("backed up X · restored Y").
 

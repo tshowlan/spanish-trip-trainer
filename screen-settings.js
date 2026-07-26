@@ -27,6 +27,11 @@ function renderProfile() {
     const acct = el(`<div class="set-row"><div><div class="set-t">Account</div><div class="set-d">${state.account.email} · ${backupLine}</div></div>
       <button class="btn grey" id="logout" style="width:auto;padding:8px 14px;box-shadow:none">Log out</button></div>`);
     wrap.appendChild(acct);
+    if (state.restoreDebug) {
+      const rd = state.restoreDebug;
+      const mins = Math.round((Date.now() - rd.at) / 60000);
+      wrap.appendChild(el(`<div class="set-d" style="margin:2px 0 8px;font-size:11px">last restore ${mins < 1 ? "just now" : mins + " min ago"}: received ${rd.got} phrase records (${rd.gotKeys || "none"}), kept ${rd.kept}, ${rd.lessons} lessons</div>`));
+    }
     // debugging + device-carry: the sync code was gated behind Groups; a signed-in user
     // can now copy it directly (it IS the vault address — keep private)
     if (state.cloud && state.cloud.playerId && state.cloud.secret) {
