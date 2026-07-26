@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-26 — THE ASSASSIN UNMASKED (v203): the farewell push
+- The X-ray delivered: "received 3" — the device's pull was honest; the server had already been clobbered. Mechanism: the pagehide/close push re-sent the closing instance's boot-time state, licensed by its own (stale) hydration — every seed died the moment Tom CLOSED the app to reopen it. v201's hydration gate guarded the wrong moment.
+- v203: an instance never re-pushes a state it already pushed (payload signature gate). The farewell push becomes a no-op unless real progress happened; idle instances can no longer overwrite anything.
+- Remaining recommendation: server-side jsonb merge in sync_player (Supabase SQL paste) as the absolute guarantee for multi-device futures.
+
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 

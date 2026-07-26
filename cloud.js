@@ -64,14 +64,21 @@ async function cloudSync(opts) {
   const sc = state.scoresCache || (typeof computeScores === "function" ? computeScores() : {});
   const scoreBundle = { tier: (typeof currentTier === "function" ? currentTier() : (state.tier || "Newcomer")),
     readiness: sc.readiness || 0, momentum: sc.momentum || 0, sessions7: sc.sessions7 || 0 };
+  // AN INSTANCE NEVER RE-PUSHES WHAT IT ALREADY PUSHED (2026-07-26): the farewell push
+  // at close was re-sending boot-time state, overwriting anything the server gained while
+  // this instance sat idle — the final clobber mechanism. Unchanged state = no-op push.
+  const sig = JSON.stringify([state.lessons, state.learn, state.history, state.sessions, state.streak]);
+  if (sig === _lastPushSig) return;
   try {
     await _syncPlayerRpc(opts, sc, scoreBundle);
+    _lastPushSig = sig;
     state.cloudLastPush = Date.now(); state.cloudLastPushError = null; save();
   } catch (e) {
     state.cloudLastPushError = (e && e.message) || "push failed"; save();
     throw e;
   }
 }
+let _lastPushSig = null;
 async function _syncPlayerRpc(opts, sc, scoreBundle) {
   await rpc("sync_player", {
     p_id: state.cloud.playerId, p_secret: state.cloud.secret,
