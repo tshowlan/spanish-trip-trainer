@@ -23,7 +23,7 @@ function _bootRender(handled) {
 handleAuthRedirect()
   .then(handled => { _bootRender(handled); })
   .catch(e => { console.error("Tripfluent: auth redirect failed", e); _bootRender(false); })
-  .finally(() => { runSplash(); cloudSync().catch(() => {}); });
+  .finally(() => { runSplash(); bootSync().catch(() => {}); });   // pull-merge-push: boot never blind-pushes
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js")
     .then(reg => { try { reg.update(); } catch (_) {} })    // force an update check every boot — waiting workers stop waiting

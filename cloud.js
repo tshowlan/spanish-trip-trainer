@@ -30,6 +30,18 @@ function ensureIdentity() {
     save();
   }
 }
+/* Boot-time sync: PULL-MERGE-THEN-PUSH. A blind push at app open overwrites any server
+   progress this device hasn't seen (the 2026-07-26 ambush: every vault repair was clobbered
+   the moment the app opened, before the user could sign in to receive it). The pull is
+   best-effort; the push only follows it. */
+async function bootSync() {
+  if (!state.cloud || !state.cloud.optedIn || !state.cloud.playerId) return;
+  try {
+    const p = await rpc("get_player", { p_id: state.cloud.playerId, p_secret: state.cloud.secret });
+    if (p) { applyPlayer(p); save(); }
+  } catch (_) {}
+  await cloudSync();
+}
 async function cloudSync(opts) {
   if (!state.cloud || !state.cloud.optedIn) return;          // nothing leaves the device until you join a group
   ensureIdentity();

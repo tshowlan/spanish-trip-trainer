@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-26 — THE AMBUSH (v200): boot pushed before it ever pulled
+- The final mechanism, post-restart-proven: app.js boot ran cloudSync() (a blind PUSH) the moment the app opened — a signed-in device instantly overwrote any server progress it hadn't seen. Every manual vault repair died at Tom's next app-open, BEFORE the sign-in that was meant to receive it. The zombie-tab and stale-code theories were partially real earlier, but this explains the persistent post-v199 clobbers with verified-current code (harness restores identical data 16/16).
+- v200: bootSync() = pull-merge-THEN-push. The app self-heals from the vault on every launch; sequence discipline is no longer required from anyone.
+
 ## 2026-07-26 — The deeper truth (v199): the device was executing MONTHS-OLD JavaScript
 - Tom's repaired row was clobbered AGAIN by a sign-in that toasted "progress restored" — while the harness restores the EXACT same data perfectly under both fresh-local and stale-local scenarios. By elimination: the device's PWA runs June-era code (the pre-merge-helpers login-rollback bug) under a service worker that never activated its replacements; the version line lied because cache names show pre-created caches of workers that never took over. Every fix since ~v19x has been shipping to a device that never executed it.
 - v199: APP_BUILD stamp in config.js shown beside the SW version on the splash ("v199 · v199" — a mismatch or missing stamp = stale JS, undeniable); registration.update() forced on every boot so waiting workers stop waiting.
