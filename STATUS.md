@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — Arrival hotfix 4 (v191): banding, not edges — the tint learns to dither
+- The remaining "lines" were OLED GRADIENT BANDING: the tint's abrupt 60% falloff quantizes into visible elliptical rims at low alpha on device (invisible on desktop). Two-part fix: eased multi-stop gradients (tint 6 stops to 84% reach, aura 5 stops) spread the falloff, and a 5% tiled-noise dither layer (#splash::after, tiny generated PNG) breaks what remains into grain. Applied to build + artifact.
+- Also explains the web-vs-PWA difference Tom saw: the PWA was painting stale cached CSS (network-first still needs a full force-quit to drop the old sheet). v191 + two cold opens should converge both.
+
 ## 2026-07-25 — Arrival hotfix 3 (v190): the aura is a layer, never a filter
 - The line survived v189 because it was a SECOND artifact: the lantern aura was a CSS drop-shadow FILTER, and iOS Safari clips the filter's paint region at a straight horizontal edge above the mark (desktop doesn't clip, so review missed it). The aura is now its own radial-gradient layer behind the mark (::before, inset -46/-60) — no filter region exists to clip. Applied to build + committed artifact; pattern for the constitution's motion/light family: glows are LAYERS, not filters, on device.
 
