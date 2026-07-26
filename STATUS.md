@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-26 — The two-identity diagnosis (v197): vault is write-once, login adopts the authoritative row
+- Tom's vault row inspected via sync code: a JUNE snapshot (pre-restructure lesson ids, 0 learn records, history ends 07-05) — while the device's "backed up just now" pushes verifiably landed elsewhere (sentinel write/read on the row works perfectly). Conclusion: the device pushed under a DIFFERENT player identity than the one the account's vault restores — two identities, login picks the stale mapping.
+- Hardening shipped regardless of which fork Tom confirms: vaultPush is now WRITE-ONCE (ignore-duplicates — a transient vaultPull failure during login can no longer rebind the account to a fresh empty player and orphan the data); login's no-vault branch re-pulls and ADOPTS the authoritative row when one exists.
+- Tom's row was sentinel-tested and fully restored from backup. Open question to Tom: which email showed on Settings during "backed up just now" vs. which email was used to sign back in — if they differ, the missing progress lives under the other account.
+
 ## 2026-07-26 — Backup made visible (v196): truthful status line + sync code + push telemetry
 - Tom's controlled round-trip FAILED (lesson -> delete -> reinstall -> sign in -> First words again), falsifying the "working as designed" call. Server round-trip verified GOOD via live RPC test (sync_player/get_player return lessons+learn intact) — the break is client-side or sequencing.
 - Instead of guessing: cloudSync now records every push outcome (state.cloudLastPush / cloudLastPushError); Settings' account row shows the truth ("backed up 3 min ago" / "backup FAILED: ..." / "no backup yet"); the sync code escaped the Groups gate (signed-in Settings row) so a failing vault can be inspected directly.

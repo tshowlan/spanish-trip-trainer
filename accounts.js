@@ -11,7 +11,9 @@ async function vaultPush(token, userId) {
   ensureIdentity();
   const res = await fetch(`${SUPABASE_URL}/rest/v1/vault?on_conflict=user_id`, {
     method: "POST",
-    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}`, "Content-Type": "application/json", Prefer: "resolution=merge-duplicates,return=minimal" },
+    // ignore-duplicates: an account's vault mapping is WRITTEN ONCE and never clobbered —
+    // a transient pull failure on login must not rebind the vault to a fresh empty player
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}`, "Content-Type": "application/json", Prefer: "resolution=ignore-duplicates,return=minimal" },
     body: JSON.stringify({ user_id: userId, player_id: state.cloud.playerId, secret: state.cloud.secret, updated_at: new Date().toISOString() })
   });
   if (!res.ok) throw new Error("Couldn't save account vault: " + (await res.text()));
@@ -44,7 +46,13 @@ async function doLogin(email, pw) {
     await cloudSync().catch(() => {});   // push the MERGED truth up right away — the vault is current from minute one
   } else {
     ensureIdentity();
-    await vaultPush(token, userId);
+    await vaultPush(token, userId);          // write-once: cannot clobber an existing mapping
+    const v2 = await vaultPull(token);       // adopt the AUTHORITATIVE row (a pre-existing one wins over our fresh identity)
+    if (v2) {
+      state.cloud = Object.assign({}, state.cloud, { playerId: v2.player_id, secret: v2.secret, optedIn: true });
+      const p2 = await rpc("get_player", { p_id: v2.player_id, p_secret: v2.secret }).catch(() => null);
+      if (p2) applyPlayer(p2);
+    }
     state.cloud.optedIn = true;
     await cloudSync();
   }
