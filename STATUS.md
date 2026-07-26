@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-26 — CLOSED: "received 16, kept 16" — the ring is on the lesson
+- Tom's device X-ray confirms the full pipeline: server -> wire -> merge -> UI, end to end on hardware. The vault saga is over at v203.
+- Final architecture invariants, all client-side: (1) restore is atomic-or-fail at login; (2) the vault mapping is write-once; (3) a device that hasn't successfully read the vault this session cannot write to it; (4) boot pulls-merges before it pushes; (5) an instance never re-pushes a payload it already pushed (the farewell push is disarmed). Plus truthful instrumentation: APP_BUILD beside SW version, backed-up/restored timestamps, and the received/kept X-ray line.
+- Still recommended, optional: server-side jsonb merge in sync_player (Supabase SQL paste) as the absolute multi-device guarantee.
+
 ## 2026-07-26 — THE ASSASSIN UNMASKED (v203): the farewell push
 - The X-ray delivered: "received 3" — the device's pull was honest; the server had already been clobbered. Mechanism: the pagehide/close push re-sent the closing instance's boot-time state, licensed by its own (stale) hydration — every seed died the moment Tom CLOSED the app to reopen it. v201's hydration gate guarded the wrong moment.
 - v203: an instance never re-pushes a state it already pushed (payload signature gate). The farewell push becomes a no-op unless real progress happened; idle instances can no longer overwrite anything.
