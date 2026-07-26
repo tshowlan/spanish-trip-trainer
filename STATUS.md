@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — The reinstall door (v193): sign-in on the onboarding welcome
+- WHY progress dies on reinstall: deleting a PWA wipes device storage (state + auth token) — that is platform behavior, unfixable; the account vault is the recovery. The PRODUCT bug: login lived only in Settings, BEHIND the intake, so a reinstalling user had to redo onboarding to reach the restore. Fix: "Have an account? Sign in" (quiet linkbtn) under Plan my trip on the welcome screen; renderAuth gained a backTo param (back returns to welcome, not Settings); successful login already restores the vault and lands on home. Verified in harness.
+- Delta for chat: the onboarding welcome gained the sign-in door without an artifact pass (Tom-requested, existing components); adopt into the onboarding artifact at next touch.
+
 ## 2026-07-25 — Arrival hotfix 5 (v192): the halo's top edge
 - Tom's catch on v191: a residual line at the TOP of the halo. The aura's box extended only 46px above the mark while its gradient radius wanted ~101px — the glow clipped at its own container's top edge. Fix: closest-side gradient sizing in a roomier box (inset -96/-110), which by definition reaches zero alpha exactly at the nearest edge — nothing can clip, in any engine. Build + artifact.
 

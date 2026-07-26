@@ -71,6 +71,11 @@ function renderOnboarding() {
       const btn = el(`<button class="btn">Plan my trip</button>`);
       btn.addEventListener("click", () => go("where"));
       wrap.appendChild(btn);
+      // the reinstall door (Tom, 2026-07-25): login used to live only in Settings, BEHIND
+      // the intake — a returning user had to redo onboarding just to reach the restore
+      const signin = el(`<button class="linkbtn" style="margin-top:12px">Have an account? Sign in</button>`);
+      signin.addEventListener("click", () => renderAuth("login", () => renderOnboarding()));
+      wrap.appendChild(signin);
 
     } else if (screen === "where") {
       wrap.appendChild(el(`<div class="onb-q">Where are you headed, and when?</div>`));

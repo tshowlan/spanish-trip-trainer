@@ -54,7 +54,9 @@ async function doRecover(email) {
 }
 function doLogout() { state.account = null; save(); }
 
-function renderAuth(mode) {
+function renderAuth(mode, backTo) {
+  // backTo: where the back arrow returns (Settings by default; the onboarding
+  // welcome passes itself so a reinstalling user isn't stranded)
   clearFooter();
   hideTabbar();
   const app = $("#app"); app.innerHTML = "";
@@ -85,8 +87,8 @@ function renderAuth(mode) {
     });
   }
   app.appendChild(wrap);
-  $("#back").addEventListener("click", renderSettings);
-  switchBtn.addEventListener("click", () => renderAuth(mode === "signup" ? "login" : "signup"));
+  $("#back").addEventListener("click", backTo || renderSettings);
+  switchBtn.addEventListener("click", () => renderAuth(mode === "signup" ? "login" : "signup", backTo));
   submit.addEventListener("click", async () => {
     const e = email.value.trim(), p = pw.value;
     if (!e || !p) { toast("Enter your email and password"); return; }
