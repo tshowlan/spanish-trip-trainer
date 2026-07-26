@@ -40,6 +40,8 @@ async function doLogin(email, pw) {
     state.cloud = Object.assign({}, state.cloud || {}, { playerId: v.player_id, secret: v.secret, optedIn: true });
     const p = await rpc("get_player", { p_id: v.player_id, p_secret: v.secret });
     if (p) applyPlayer(p);
+    save();
+    await cloudSync().catch(() => {});   // push the MERGED truth up right away — the vault is current from minute one
   } else {
     ensureIdentity();
     await vaultPush(token, userId);

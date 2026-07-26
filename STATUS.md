@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-26 — Vault diagnosis + login push (v195)
+- Tom's "restore gave me First words" decoded: NOT a restore bug — the vault only receives progress while SIGNED IN, and the recent progress was made signed out (the create-account banner was visible on home throughout). The vault faithfully restored its last signed-in snapshot. Unrecoverable by design; the sign-in door (v193) prevents the recurrence by making sign-in reachable before intake.
+- Hardening: doLogin now pushes the merged state up immediately after restore (was: wait for the next lesson-finish/pagehide sync). Round-trip test prescribed to Tom: lesson -> delete -> reinstall -> sign in -> lesson still done.
+
 ## 2026-07-25 — The staleness class, closed (v194): HTTP-cache bypass + truthful version line
 - Root cause of every "version says new, code is old" this week: the SW's network-first fetch went through the HTTP cache, and GitHub Pages serves max-age=600 — for 10 minutes after a deploy the "fresh" fetch returns stale files, while the splash version line read the INCOMING SW's pre-created cache name. Tom saw v193's label over v192's code (the missing sign-in button).
 - Fix: fetch(request, {cache:"no-cache"}) forces ETag revalidation on every asset (304s, cheap, always fresh); the version line now asks the RUNNING worker via postMessage (cache keys lie mid-update). From v194 on, one cold open lands any update.
