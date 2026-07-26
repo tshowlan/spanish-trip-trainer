@@ -2,6 +2,9 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — Arrival hotfix (v188): the nav pill's centering survived the formation
+- Tom's catch: post-splash the tab bar beached half off-screen. Cause: #tabbar centers via transform translateX(-50%), and the formation's translateY(4px) + arr-in transform:none both sheared it. Fix: the floating nav forms OPACITY-ONLY (the ceremony's precedent, now shared); centered at 0px offset during and after the arriving window, harness-verified.
+
 ## 2026-07-25 — THE ARRIVAL BUILT + SHIPPED (v187): the splash session closed, triage items 1-8 all landed
 - Sequence per the contract: tinted black + lighthouse (arr-rise, gold aura) -> eclipse from behind the lantern (silhouette, consume 1.95s) -> daybreak to the THEME'S ground -> splash removes 2.6s -> formation in session-end's meter (photo 600ms beat, dials at its completion, tile/practice/lines/nav, whisper last 1.55s) -> the candle (atmo-ground ignites 1800ms [tune], one curve, opacity only).
 - Tap-to-skip anywhere snaps to the finished home (verified: mid-eclipse tap -> everything formed instantly). Reduced motion: static marks -> crossfade -> formed home. Non-home boots (onboarding) get the door without the formation, gracefully.

@@ -144,6 +144,10 @@ body.arriving .home-diverge, body.arriving .whisper, body.arriving .presence, bo
   opacity: 0; transform: translateY(4px);
   transition: opacity 300ms cubic-bezier(.2,.7,.3,1), transform 300ms cubic-bezier(.2,.7,.3,1); }
 body.arriving .arr-in:not(.atmo-ground) { opacity: 1 !important; transform: none !important; }
+/* the floating nav centers via translateX(-50%): its formation is OPACITY-ONLY, like the
+   ceremony's (a translateY would shear the centering and beach the pill half off-screen) */
+body.arriving #tabbar { transform: translateX(-50%); }
+body.arriving #tabbar.arr-in { transform: translateX(-50%) !important; }
 /* THE CANDLE: home's corner glow ignites over 1.8s [tune] — OPACITY ONLY, one curve
    (light turns on; it never travels on). Degrades to nothing if the ground is absent. */
 body.arriving .home-atmo .atmo-ground { opacity: 0; }
