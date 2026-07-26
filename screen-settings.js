@@ -19,8 +19,11 @@ function renderProfile() {
     // truthful backup line: shows the LAST SUCCESSFUL push (or the error), never a promise
     const pushAgo = state.cloudLastPush ? (() => { const m = Math.round((Date.now() - state.cloudLastPush) / 60000);
       return m < 1 ? "just now" : m < 60 ? m + " min ago" : Math.round(m / 60) + " h ago"; })() : null;
-    const backupLine = state.cloudLastPushError ? "backup FAILED: " + state.cloudLastPushError
-      : pushAgo ? "backed up " + pushAgo : "no backup yet this session";
+    const pullAgo = state.cloudLastPull ? (() => { const m = Math.round((Date.now() - state.cloudLastPull) / 60000);
+      return m < 1 ? "just now" : m < 60 ? m + " min ago" : Math.round(m / 60) + " h ago"; })() : null;
+    const backupLine = (state.cloudLastPushError ? "backup FAILED: " + state.cloudLastPushError
+      : pushAgo ? "backed up " + pushAgo : "no backup yet this session")
+      + (pullAgo ? " · restored " + pullAgo : " · NOT RESTORED this session");
     const acct = el(`<div class="set-row"><div><div class="set-t">Account</div><div class="set-d">${state.account.email} · ${backupLine}</div></div>
       <button class="btn grey" id="logout" style="width:auto;padding:8px 14px;box-shadow:none">Log out</button></div>`);
     wrap.appendChild(acct);

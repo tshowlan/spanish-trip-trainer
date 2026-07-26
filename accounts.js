@@ -47,6 +47,7 @@ async function doLogin(email, pw) {
     if (!p) throw new Error("Couldn't reach your backup. Nothing was changed, try again.");
     applyPlayer(p);
     save();
+    if (typeof _cloudHydrated !== "undefined") _cloudHydrated = true;   // a login restore IS a successful read
     await cloudSync().catch(() => {});   // safe now: this pushes the restored+merged truth
   } else {
     ensureIdentity();

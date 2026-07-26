@@ -2,6 +2,9 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-26 — THE HYDRATION INVARIANT (v201): no read, no write
+- v200's pull was best-effort with an unconditional push — a cold-boot network miss reproduced the ambush (row clobbered again post-v200). The permanent client-side rule: a device that has not successfully READ the vault this session may never WRITE to it. _cloudHydrated gates every push; cloudSync itself pull-merges first when unhydrated and SKIPS the push if the pull fails; login + sync-code restores count as reads. Settings now shows both directions ("backed up X · restored Y").
+
 ## 2026-07-26 — THE AMBUSH (v200): boot pushed before it ever pulled
 - The final mechanism, post-restart-proven: app.js boot ran cloudSync() (a blind PUSH) the moment the app opened — a signed-in device instantly overwrote any server progress it hadn't seen. Every manual vault repair died at Tom's next app-open, BEFORE the sign-in that was meant to receive it. The zombie-tab and stale-code theories were partially real earlier, but this explains the persistent post-v199 clobbers with verified-current code (harness restores identical data 16/16).
 - v200: bootSync() = pull-merge-THEN-push. The app self-heals from the vault on every launch; sequence discipline is no longer required from anyone.

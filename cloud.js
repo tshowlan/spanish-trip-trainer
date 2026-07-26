@@ -34,16 +34,28 @@ function ensureIdentity() {
    progress this device hasn't seen (the 2026-07-26 ambush: every vault repair was clobbered
    the moment the app opened, before the user could sign in to receive it). The pull is
    best-effort; the push only follows it. */
+let _cloudHydrated = false;   // THE INVARIANT: no successful pull this session -> no push, ever
 async function bootSync() {
   if (!state.cloud || !state.cloud.optedIn || !state.cloud.playerId) return;
+  await _hydrate();
+  if (_cloudHydrated) await cloudSync();
+}
+async function _hydrate() {
+  if (_cloudHydrated) return true;
   try {
     const p = await rpc("get_player", { p_id: state.cloud.playerId, p_secret: state.cloud.secret });
     if (p) { applyPlayer(p); save(); }
-  } catch (_) {}
-  await cloudSync();
+    _cloudHydrated = true;                                  // a definitive read (even an empty row) licenses writes
+    state.cloudLastPull = Date.now(); save();
+    return true;
+  } catch (_) { return false; }                             // network not ready: stay read-only, retry on next sync
 }
 async function cloudSync(opts) {
   if (!state.cloud || !state.cloud.optedIn) return;          // nothing leaves the device until you join a group
+  if (!_cloudHydrated && state.cloud.playerId) {             // never push over a vault you haven't read this session
+    const ok = await _hydrate();
+    if (!ok) return;                                         // still unreachable: skip this push, never clobber
+  }
   ensureIdentity();
   snapshotActive();                                          // make sure the active trip is current in state.trips
   // §3 group rework: with XP gone, the `xp` column is repurposed to carry Trip Readiness so the
@@ -267,6 +279,7 @@ async function doRestore(codeStr) {
     const r = await rpc("get_player", { p_id: id, p_secret: secret });
     if (!r) { toast("No match for that sync code"); return; }
     state.cloud = Object.assign({}, state.cloud, { playerId: id, secret, optedIn: true });
+    _cloudHydrated = true;                                   // a code restore IS a successful read
     applyPlayer(r);
     save(); rebuildDeck(); toast("Synced! Welcome back."); renderGroup();
   } catch (e) { toast("Restore failed: " + e.message); }
