@@ -2,6 +2,9 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — Arrival hotfix 2 (v189): the pre-lit eclipse orb
+- Tom's catch: a glowing line above the lighthouse from frame one. Cause: the flood's two chained animations both used fill-mode BOTH — the later one (arr-flood-out, from opacity:1) wins the cascade during its backwards fill, pre-lighting the orb at t=0. Fix: flood-out fills FORWARDS only; the orb now holds opacity 0 until the eclipse (verified). Same one-word fix applied to the committed artifact (canvas-fixes-now) — chat to mirror in the canvas original.
+
 ## 2026-07-25 — Arrival hotfix (v188): the nav pill's centering survived the formation
 - Tom's catch: post-splash the tab bar beached half off-screen. Cause: #tabbar centers via transform translateX(-50%), and the formation's translateY(4px) + arr-in transform:none both sheared it. Fix: the floating nav forms OPACITY-ONLY (the ceremony's precedent, now shared); centered at 0px offset during and after the arriving window, harness-verified.
 
