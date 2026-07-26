@@ -2,7 +2,7 @@
    Online → always fetch the latest (so updates land without reinstalling).
    Offline → fall back to the cache (works on the plane / no signal).
    Cross-origin requests (e.g. Supabase) are left untouched. */
-const CACHE = "sts-v193";
+const CACHE = "sts-v194";
 const ASSETS = [
   "./", "./index.html", "./styles.css", "./fonts.css",
   "./fonts/plus-jakarta-sans.woff2", "./fonts/inter.woff2", "./fonts/playfair-italic-500.woff2",
@@ -31,7 +31,10 @@ self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
   if (url.origin !== self.location.origin) return;          // don't intercept Supabase etc.
   e.respondWith(
-    fetch(e.request)
+    // cache:"no-cache" bypasses the HTTP cache's TTL (GitHub Pages serves max-age=600 —
+    // for 10 minutes after a deploy a plain fetch returns STALE files; ETag revalidation
+    // costs a 304 and always lands fresh). The recurring "version says new, code is old".
+    fetch(e.request, { cache: "no-cache" })
       .then(res => {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
@@ -39,6 +42,12 @@ self.addEventListener("fetch", e => {
       })
       .catch(() => caches.match(e.request).then(hit => hit || caches.match("./index.html")))
   );
+});
+
+// the splash version line asks the RUNNING worker (cache names lie during an update:
+// the incoming SW pre-creates its cache while the old one still serves the page)
+self.addEventListener("message", e => {
+  if (e.data === "version" && e.source) e.source.postMessage({ version: CACHE });
 });
 
 // ---- push reminders ----

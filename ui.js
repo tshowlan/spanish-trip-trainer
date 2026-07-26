@@ -159,8 +159,14 @@ function initSplash() {
   // small build marker — the SW cache name (sts-vNN) is the source of truth; also handy for spotting stale caches
   const ver = el(`<div class="splash-ver" id="splash-ver"></div>`);
   s.appendChild(ver);
-  if (window.caches && caches.keys) {
-    caches.keys().then(keys => { const c = keys.find(k => /^sts-v\d+/.test(k)); if (c) ver.textContent = c.replace(/^sts-/, ""); }).catch(() => {});
+  // truthful version: ask the CONTROLLING worker (cache keys show the incoming
+  // version mid-update while the old worker still serves the page)
+  const showVer = v => { if (v) ver.textContent = String(v).replace(/^sts-/, ""); };
+  if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.version) showVer(e.data.version); });
+    try { navigator.serviceWorker.controller.postMessage("version"); } catch (_) {}
+  } else if (window.caches && caches.keys) {
+    caches.keys().then(keys => showVer(keys.find(k => /^sts-v\d+/.test(k)))).catch(() => {});
   }
 }
 function runSplash() {

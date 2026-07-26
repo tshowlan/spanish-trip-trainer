@@ -2,6 +2,10 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — The staleness class, closed (v194): HTTP-cache bypass + truthful version line
+- Root cause of every "version says new, code is old" this week: the SW's network-first fetch went through the HTTP cache, and GitHub Pages serves max-age=600 — for 10 minutes after a deploy the "fresh" fetch returns stale files, while the splash version line read the INCOMING SW's pre-created cache name. Tom saw v193's label over v192's code (the missing sign-in button).
+- Fix: fetch(request, {cache:"no-cache"}) forces ETag revalidation on every asset (304s, cheap, always fresh); the version line now asks the RUNNING worker via postMessage (cache keys lie mid-update). From v194 on, one cold open lands any update.
+
 ## 2026-07-25 — The reinstall door (v193): sign-in on the onboarding welcome
 - WHY progress dies on reinstall: deleting a PWA wipes device storage (state + auth token) — that is platform behavior, unfixable; the account vault is the recovery. The PRODUCT bug: login lived only in Settings, BEHIND the intake, so a reinstalling user had to redo onboarding to reach the restore. Fix: "Have an account? Sign in" (quiet linkbtn) under Plan my trip on the welcome screen; renderAuth gained a backTo param (back returns to welcome, not Settings); successful login already restores the vault and lands on home. Verified in harness.
 - Delta for chat: the onboarding welcome gained the sign-in door without an artifact pass (Tom-requested, existing components); adopt into the onboarding artifact at next touch.
