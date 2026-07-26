@@ -268,7 +268,11 @@
     animation:arr-consume 400ms ease 1950ms both; }
   @keyframes arr-consume { from { opacity:1; } to { opacity:0; } }
   #splash .splash-lh { animation:arr-rise 900ms cubic-bezier(.2,.7,.3,1) both; }
-  #splash .splash-lh .lighthouse { height:110px; width:auto; filter:drop-shadow(0 0 22px rgba(216,183,19,0.35)); }
+  #splash .splash-lh { position:relative; }
+  #splash .splash-lh .lighthouse { height:110px; width:auto; position:relative; z-index:1; }
+  /* aura = a radial layer, never a filter (iOS clips filter regions to a straight edge) */
+  #splash .splash-lh::before { content:""; position:absolute; inset:-46px -60px; pointer-events:none;
+    background:radial-gradient(50% 50% at 50% 45%, rgba(216,183,19,0.28) 0%, rgba(216,183,19,0.10) 55%, rgba(216,183,19,0) 100%); }
   #splash .splash-wm { animation:arr-fade 700ms ease 350ms both; }
   #splash .splash-wm .wordmark { height:34px; width:auto; }
   #splash .splash-wm .wordmark path { fill:#c8d2f5; }

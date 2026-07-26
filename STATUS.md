@@ -2,6 +2,9 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — Arrival hotfix 3 (v190): the aura is a layer, never a filter
+- The line survived v189 because it was a SECOND artifact: the lantern aura was a CSS drop-shadow FILTER, and iOS Safari clips the filter's paint region at a straight horizontal edge above the mark (desktop doesn't clip, so review missed it). The aura is now its own radial-gradient layer behind the mark (::before, inset -46/-60) — no filter region exists to clip. Applied to build + committed artifact; pattern for the constitution's motion/light family: glows are LAYERS, not filters, on device.
+
 ## 2026-07-25 — Arrival hotfix 2 (v189): the pre-lit eclipse orb
 - Tom's catch: a glowing line above the lighthouse from frame one. Cause: the flood's two chained animations both used fill-mode BOTH — the later one (arr-flood-out, from opacity:1) wins the cascade during its backwards fill, pre-lighting the orb at t=0. Fix: flood-out fills FORWARDS only; the orb now holds opacity 0 until the eclipse (verified). Same one-word fix applied to the committed artifact (canvas-fixes-now) — chat to mirror in the canvas original.
 
