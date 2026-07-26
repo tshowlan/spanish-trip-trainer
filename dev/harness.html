@@ -177,6 +177,16 @@
         "Exercise — build the sentence": () => ask("build", normItem),
         "Exercise — fill the blank": () => ask("fill_blank", normItem),
         "Exercise — listen & choose": () => ask("listen_choice", normItem),
+        "Arrival — the door (tap to skip)": () => {
+          clean();
+          document.body.classList.remove("arriving");
+          document.querySelectorAll("#splash").forEach(n => n.remove());
+          const s = document.createElement("div"); s.id = "splash";
+          document.body.insertBefore(s, document.body.firstChild);
+          safe(initSplash);            // sets body.arriving before home paints
+          safe(renderHome);
+          safe(runSplash);
+        },
         "Exercise — listen & type": () => ask("listen_type", normItem),
         "Exercise — listen & choose (night field)": () => { ask("listen_choice", normItem); const f = document.querySelector(".facet-bg"); if (f) f.classList.add("no-light"); },
         "Exercise — speak it": () => ask("speak_it", normItem),

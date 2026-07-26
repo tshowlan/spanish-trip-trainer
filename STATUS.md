@@ -2,6 +2,13 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-25 — THE ARRIVAL BUILT + SHIPPED (v187): the splash session closed, triage items 1-8 all landed
+- Sequence per the contract: tinted black + lighthouse (arr-rise, gold aura) -> eclipse from behind the lantern (silhouette, consume 1.95s) -> daybreak to the THEME'S ground -> splash removes 2.6s -> formation in session-end's meter (photo 600ms beat, dials at its completion, tile/practice/lines/nav, whisper last 1.55s) -> the candle (atmo-ground ignites 1800ms [tune], one curve, opacity only).
+- Tap-to-skip anywhere snaps to the finished home (verified: mid-eclipse tap -> everything formed instantly). Reduced motion: static marks -> crossfade -> formed home. Non-home boots (onboarding) get the door without the formation, gracefully.
+- Formation mapped artifact->app: .atmo->.home-atmo .atmo-photo, .dials->.scores/.empty-hero, stack->.hero-tile/.practice, lines->.topbar/.trip/.home-diverge, .ground->.atmo-ground (the candle). Marks recomposed verbatim, never redrawn; runSplashZoom stays dormant; beacon sequence retired (markup canonical).
+- Laws merged (light-turns-on, two-doors-one-meter, splash-is-a-curtain), decisions + graveyard appended, harness story "Arrival — the door", real-boot verified (zero stuck-hidden elements). Lint green.
+- BOARD: Mexico (pack-state exported, narr cast waiting) · practice-chooser design · Progress depth brief · session-end stamp cut.
+
 ## 2026-07-25 — SHEETLESS FAMILY-WIDE (v186): earReveal on all five ear exercises
 - Chat's carrier map executed: sound_choice's CORRECT OPTION carries the reveal (green wash over solid, replayable after settle — pairs-pattern tap); audio_cloze's fill settle and ear_build's assembly settle carry theirs (nothing added; a wrong assembly never fuses — the standard res block reveals in place); listen_choice/listen_type keep the played-line.
 - Constitution law restated with the carrier map; all three miss paths verified sheetless in the harness (wash needed a dual-block dark rule — the pcard solid override outranked it). Lint 0 fails.

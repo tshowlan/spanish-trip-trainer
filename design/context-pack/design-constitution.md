@@ -95,6 +95,16 @@ doc narrates, this file states only the laws.
 
 ## Motion
 
+- **Light turns on; it never travels on:** ignitions animate intensity, never geometry — scaling
+  a gradient layer parades its falloff edge across the screen. *(the arrival's relight, minted by
+  the vertical-line catch)*
+- **The two doors share one meter:** session-end and the cold-open arrival use the same refill
+  grammar (photo's beat → anchor → world → whisper last), pointed in opposite directions.
+  Deviations (the arrival's trimmed photo-hold, dials-at-fade-completion) are arrival-specific
+  rulings, not new grammars. *(the arrival)*
+- **The splash is a curtain:** the one surface where scene is legal; even curtains stay static
+  (no ambient motion). *(the arrival)*
+
 - **Motion explains, never decorates.** Zero ambient/idle animation.
 - **Entrance motion is the quiet pop** (fade + small rise). Overshoot/bounce is spring physics
   from the playful dialect — banned from the calm vocabulary. Liveliness comes from sequencing,

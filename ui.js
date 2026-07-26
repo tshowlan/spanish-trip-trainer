@@ -133,23 +133,28 @@ function lighthouse(h = 40) {
 }
 
 /* ---------- splash ----------
-   SPLASH_STYLE: "beacon" = big lighthouse + wordmark below, light sweeps and reveals the app.
-                 "zoom"   = wordmark+lighthouse lockup shrinks into its home-screen spot. */
-const SPLASH_STYLE = "beacon";
+   SPLASH_STYLE: "arrival" = THE ARRIVAL (design/splash-arrival.html): black + lighthouse
+                 tinted by its own light, eclipse from behind the lantern, daybreak to the
+                 theme's ground, then the formation in session-end's meter + the candle.
+                 "zoom" = dormant alternate (lockup shrinks into its home spot). */
+const SPLASH_STYLE = "arrival";
 
 function splashMarkup() {
   if (SPLASH_STYLE === "zoom")
     return `<div class="hero-mark">${wordmark(56)}${lighthouse(70)}</div>`;
-  return `<div class="splash-flood"></div>
+  // marks verbatim (recomposed, never redrawn); daybreak = the theme-aware clearing layer
+  return `<div class="daybreak"></div><div class="splash-flood"></div>
     <div class="splash-stack">
-      <div class="splash-lh">${lighthouse(200)}</div>
-      <div class="splash-wm">${wordmark(46)}</div>
+      <div class="splash-lh">${lighthouse(110)}</div>
+      <div class="splash-wm">${wordmark(34)}</div>
     </div>`;
 }
 function initSplash() {
   const s = document.getElementById("splash");
   if (!s) return;
   s.classList.add(SPLASH_STYLE);
+  // the formation's hidden states must be on BEFORE home paints beneath the splash
+  if (SPLASH_STYLE === "arrival") document.body.classList.add("arriving");
   s.innerHTML = splashMarkup();
   // small build marker — the SW cache name (sts-vNN) is the source of truth; also handy for spotting stale caches
   const ver = el(`<div class="splash-ver" id="splash-ver"></div>`);
@@ -162,7 +167,45 @@ function runSplash() {
   const splash = document.getElementById("splash");
   if (!splash) return;
   const ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
-  (SPLASH_STYLE === "zoom" ? runSplashZoom : runSplashBeacon)(splash, ready);
+  (SPLASH_STYLE === "zoom" ? runSplashZoom : runSplashArrival)(splash, ready);
+}
+/* THE ARRIVAL: black + lighthouse (0-1.4s) -> eclipse (1.45-2.25) -> daybreak (2.2-2.65)
+   -> the formation (session-end's meter) -> the candle. Tap-to-skip at any moment snaps
+   to the finished home (skips lose waiting, never information). [tune]: hold, cadence. */
+function runSplashArrival(splash, ready) {
+  const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // the formation applies only when home booted beneath; any other screen just gets the door
+  const homeBelow = !!document.querySelector(".home");
+  const ORDER = [                                        // [selector list, delay from formation t0]
+    [[".home-atmo .atmo-photo"], 0],                     // the photo: 600ms fade, the establishing beat
+    [[".home-atmo .atmo-ground"], 1800],                 // THE CANDLE [tune]: last thing that moves is the gentlest
+    [[".scores", ".empty-hero"], 650],                   // the anchor arrives at the photo's completion
+    [[".hero-tile"], 800],
+    [[".practice"], 950],
+    [[".topbar", ".trip", ".home-diverge"], 1100],       // the lines, one step
+    [["#tabbar"], 1250],                                 // nav
+    [[".whisper", ".presence"], 1550]                    // whisper last
+  ];
+  let timers = [];
+  const buildup = instant => {
+    timers.forEach(clearTimeout); timers = [];
+    ORDER.forEach(step => {
+      const apply = () => step[0].forEach(sel => document.querySelectorAll(sel).forEach(n => n.classList.add("arr-in")));
+      if (instant || reduced) apply(); else timers.push(setTimeout(apply, step[1]));
+    });
+    const done = () => document.body.classList.remove("arriving");
+    if (instant || reduced) done(); else timers.push(setTimeout(done, 3750));
+  };
+  let finished = false;
+  const finish = skip => {
+    if (finished) return; finished = true;
+    splash.classList.add("out");
+    setTimeout(() => splash.remove(), skip ? 120 : 500);
+    if (homeBelow) buildup(!!skip);
+    else document.body.classList.remove("arriving");
+  };
+  splash.addEventListener("pointerdown", () => finish(true));
+  ready.then(() => setTimeout(() => finish(false), reduced ? 450 : 2600));
 }
 function runSplashBeacon(splash, ready) {
   ready.then(() => {                                    // hold on the lighthouse, then flood + reveal

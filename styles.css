@@ -92,43 +92,72 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 .hero-mark { display: flex; align-items: center; gap: 4px; }
 .lighthouse { flex: none; }
 
-/* splash / loading screen */
+/* ===== THE ARRIVAL (splash, design/splash-arrival.html 2026-07-25) =====
+   Black and the lighthouse (tinted by its own light) -> eclipse from behind the
+   lantern -> daybreak to the THEME'S ground -> the formation (session-end's refill
+   grammar) -> the candle (home's corner glow, 1.8s, one curve). Tap-to-skip snaps
+   to the finished home. Tint + relight ARE the design (stamped). */
 #splash {
-  position: fixed; inset: 0; z-index: 2000; background: var(--bg);
-  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  position: fixed; inset: 0; z-index: 2000; overflow: hidden;
+  background:
+    radial-gradient(130% 100% at 50% 27%, rgba(201,106,43,0.15) 0%, rgba(216,183,19,0.07) 26%, rgba(3,4,8,0) 60%), #030408;
   transition: opacity .5s ease;
 }
 #splash.out { opacity: 0; pointer-events: none; }
-
-/* -- zoom style: lockup shrinks into place -- */
+#splash .daybreak { position: absolute; inset: 0; background: var(--bg); opacity: 0;
+  animation: arr-fade 450ms ease 2200ms both; }
+#splash .splash-stack { position: absolute; left: 50%; top: 34%; transform: translate(-50%,-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 18px; z-index: 2;
+  animation: arr-consume 400ms ease 1950ms both; }
+@keyframes arr-consume { from { opacity: 1; } to { opacity: 0; } }
+.splash-lh { animation: arr-rise 900ms cubic-bezier(.2,.7,.3,1) both; }
+.splash-lh .lighthouse { height: 110px; width: auto; filter: drop-shadow(0 0 22px rgba(216,183,19,0.35)); }
+.splash-wm { animation: arr-fade 700ms ease 350ms both; }
+.splash-wm .wordmark { height: 34px; width: auto; }
+/* halo rule: marks on the black frame carry the dark-theme brand fills, both themes */
+.splash-wm .wordmark path { fill: #c8d2f5; }
+.splash-wm .wordmark g g:nth-child(n+5) path { fill: #7aa6db; }
+@keyframes arr-rise { from { transform: translateY(14px) scale(.92); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes arr-fade { from { opacity: 0; } to { opacity: 1; } }
+/* the eclipse: the flood swells FROM BEHIND THE LANTERN (z1, under the stack) —
+   the mark silhouettes against its own light before it is consumed */
+.splash-flood { position: absolute; left: 50%; top: calc(34% - 55px); width: 34px; height: 34px; z-index: 1;
+  border-radius: 50%; transform: translate(-50%,-50%) scale(1); opacity: 0; pointer-events: none;
+  background: radial-gradient(circle, #fffdf0 0%, rgba(255,250,214,.92) 38%, rgba(216,183,19,.55) 68%, rgba(216,183,19,0) 100%);
+  animation: arr-flood 800ms cubic-bezier(.5,.05,.3,1) 1450ms both, arr-flood-out 650ms ease 2300ms both; }
+@keyframes arr-flood { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(85); opacity: 1; } }
+@keyframes arr-flood-out { from { opacity: 1; } to { opacity: 0; } }
+.splash-ver { position: absolute; left: 0; right: 0; bottom: calc(22px + env(safe-area-inset-bottom)); z-index: 2;
+  text-align: center; font-family: var(--font-text); font-size: 11px; font-weight: 600; letter-spacing: .05em;
+  color: #a7a494; opacity: .7; }
+/* -- dormant zoom style (kept for the alternate) -- */
 #splash.zoom { transition: opacity .5s ease .2s; }
 #splash.zoom .hero-mark { transform-origin: center center; will-change: transform;
   transition: transform .7s cubic-bezier(.5,.05,.2,1); }
 
-/* -- beacon style: big lighthouse + wordmark below; a beam turns toward you and floods to reveal -- */
-#splash.beacon { flex-direction: column; }
-.splash-stack { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: min(20px, 3vh); padding: 24px; }
-.splash-lh { animation: splash-rise .7s cubic-bezier(.2,.7,.3,1) both; }
-.splash-lh .lighthouse { height: min(200px, 26vh); width: auto; filter: drop-shadow(0 8px 18px rgba(28,39,94,.14)); }
-.splash-wm { animation: splash-fade .7s ease .25s both; }
-.splash-wm .wordmark { height: min(46px, 6.5vh); }
-.splash-ver { position: absolute; left: 0; right: 0; bottom: calc(22px + env(safe-area-inset-bottom)); z-index: 2;
-  text-align: center; font-family: var(--font-text); font-size: 11px; font-weight: 600; letter-spacing: .05em;
-  color: var(--text-dim); opacity: .5; }
-@keyframes splash-rise { from { transform: translateY(18px) scale(.95); opacity: 0; } to { transform: none; opacity: 1; } }
-@keyframes splash-fade { from { opacity: 0; } to { opacity: 1; } }
-
-/* flood: the lantern light gently fills the page, then the splash fades to reveal the app */
-.splash-flood {
-  position: absolute; left: 50%; top: 40%; width: 34px; height: 34px; z-index: 3; pointer-events: none;
-  border-radius: 50%; transform: translate(-50%,-50%);
-  background: radial-gradient(circle, #fffdf0 0%, rgba(255,250,214,.9) 38%, rgba(216,183,19,0) 72%);
-  animation: splash-flood 1s cubic-bezier(.32,0,.2,1) 2.3s both;
-}
-@keyframes splash-flood {
-  0%   { transform: translate(-50%,-50%) scale(1);  opacity: 0; }
-  35%  { opacity: 1; }
-  100% { transform: translate(-50%,-50%) scale(85); opacity: 1; }
+/* THE FORMATION: session-end's refill grammar as the cold-open (photo's beat ->
+   anchor -> world -> whisper last), app selectors. Quiet pops, 300ms, 4px rise. */
+body.arriving .home-atmo .atmo-photo { transition-duration: 600ms !important; }
+body.arriving .home-atmo .atmo-photo, body.arriving .topbar, body.arriving .trip,
+body.arriving .scores, body.arriving .empty-hero, body.arriving .hero-tile, body.arriving .practice,
+body.arriving .home-diverge, body.arriving .whisper, body.arriving .presence, body.arriving #tabbar {
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 300ms cubic-bezier(.2,.7,.3,1), transform 300ms cubic-bezier(.2,.7,.3,1); }
+body.arriving .arr-in:not(.atmo-ground) { opacity: 1 !important; transform: none !important; }
+/* THE CANDLE: home's corner glow ignites over 1.8s [tune] — OPACITY ONLY, one curve
+   (light turns on; it never travels on). Degrades to nothing if the ground is absent. */
+body.arriving .home-atmo .atmo-ground { opacity: 0; }
+body.arriving .home-atmo .atmo-ground.arr-in { animation: ground-ignite 1800ms cubic-bezier(.45,.05,.3,.95) both; opacity: 1; }
+@keyframes ground-ignite { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  #splash .splash-stack, .splash-lh, .splash-wm, .splash-flood, #splash .daybreak { animation: none !important; }
+  .splash-lh, .splash-wm { opacity: 1; }
+  .splash-flood { display: none; }
+  #splash .daybreak { opacity: 1; }
+  body.arriving .home-atmo .atmo-photo, body.arriving .topbar, body.arriving .trip,
+  body.arriving .scores, body.arriving .empty-hero, body.arriving .hero-tile, body.arriving .practice,
+  body.arriving .home-diverge, body.arriving .whisper, body.arriving .presence, body.arriving #tabbar,
+  body.arriving .home-atmo .atmo-ground { opacity: 1; transform: none; transition: none; animation: none !important; }
 }
 .icon-btn { background: none; border: none; cursor: pointer; color: var(--text-dim); padding: 4px; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
 .icon-btn:active { transform: translateY(1px); }
