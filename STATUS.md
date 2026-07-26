@@ -2,6 +2,11 @@
 
 Running handoff log. Most recent entry at top. Terse: dates, what changed, deviations, what's next.
 
+## 2026-07-26 — The deeper truth (v199): the device was executing MONTHS-OLD JavaScript
+- Tom's repaired row was clobbered AGAIN by a sign-in that toasted "progress restored" — while the harness restores the EXACT same data perfectly under both fresh-local and stale-local scenarios. By elimination: the device's PWA runs June-era code (the pre-merge-helpers login-rollback bug) under a service worker that never activated its replacements; the version line lied because cache names show pre-created caches of workers that never took over. Every fix since ~v19x has been shipping to a device that never executed it.
+- v199: APP_BUILD stamp in config.js shown beside the SW version on the splash ("v199 · v199" — a mismatch or missing stamp = stale JS, undeniable); registration.update() forced on every boot so waiting workers stop waiting.
+- Tom's row re-repaired (third time). Prescribed device reset: delete the PWA AND clear Safari website data for tshowlan.github.io, reinstall from Safari, sign in. That guarantees a fresh worker + fresh code; the vault restores from the server.
+
 ## 2026-07-26 — ROOT CAUSE FOUND + FIXED (v198): the silently-skipped restore that then clobbered the vault
 - The full chain, proven by experiment: (1) doLogin treated a null get_player as OPTIONAL (`if (p) applyPlayer(p)`) — a transient miss silently skipped the restore and rendered a fresh home ("First words"); (2) the v195 post-login push then pushed that fresh-empty state OVER the good server copy (observed live: Tom's row held the day's lesson + 13 learn records at 20:47, clobbered to June-state by his sign-in at ~21:00). The merge itself is INNOCENT (full applyPlayer flow verified perfect against a reconstructed good row on a test player).
 - Fix: RESTORE IS ATOMIC OR LOGIN FAILS — get_player retries once, then throws ("Nothing was changed, try again"); the post-login push only runs after a successful restore. doRestore already safe.

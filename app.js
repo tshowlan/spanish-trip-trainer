@@ -24,7 +24,11 @@ handleAuthRedirect()
   .then(handled => { _bootRender(handled); })
   .catch(e => { console.error("Tripfluent: auth redirect failed", e); _bootRender(false); })
   .finally(() => { runSplash(); cloudSync().catch(() => {}); });
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js")
+    .then(reg => { try { reg.update(); } catch (_) {} })    // force an update check every boot — waiting workers stop waiting
+    .catch(() => {});
+}
 
 // Flush progress to the cloud when the app is backgrounded or closed, so recent work is never
 // stranded only on-device (e.g. before a reinstall). keepalive lets the request outlive the page.

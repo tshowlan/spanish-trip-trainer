@@ -161,7 +161,7 @@ function initSplash() {
   s.appendChild(ver);
   // truthful version: ask the CONTROLLING worker (cache keys show the incoming
   // version mid-update while the old worker still serves the page)
-  const showVer = v => { if (v) ver.textContent = String(v).replace(/^sts-/, ""); };
+  const showVer = v => { if (v) ver.textContent = (typeof APP_BUILD !== "undefined" ? APP_BUILD + " · " : "") + String(v).replace(/^sts-/, ""); };
   if (navigator.serviceWorker && navigator.serviceWorker.controller) {
     navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.version) showVer(e.data.version); });
     try { navigator.serviceWorker.controller.postMessage("version"); } catch (_) {}
