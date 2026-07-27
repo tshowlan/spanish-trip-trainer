@@ -93,6 +93,22 @@ doc narrates, this file states only the laws.
   ("I can't listen right now", 12.5/500 dim, softened underline, above Continue) is answered where
   it happens and remembered where it belongs (session flag + sibling swaps + menu reset). *(r4-r5)*
 
+## Data integrity (the vault laws, minted by the sync saga, 2026-07-26)
+
+- **Restore is atomic-or-fail:** login either fully restores or throws loudly; a failed read
+  is never optional. *(the silent-skip restore)*
+- **The vault mapping is write-once:** an account can never be silently rebound to a fresh
+  empty identity. *(the two-identity split)*
+- **No read, no write:** a device that has not successfully pulled this session may never push.
+  *(the hydration invariant)*
+- **Boot pulls before it pushes.** *(the boot ambush)*
+- **Never re-push what you already pushed:** pushes are signature-gated; an idle instance's
+  farewell push is a no-op. *(the final assassin)*
+- **The build stamp lives beside the SW version** (`vNNN · vNNN` on the splash): the executing
+  code identifies itself; caches never speak for it. *(the lying version line)*
+- **"Received N / kept N" is a trust instrument, not scaffolding:** the Settings restore X-ray
+  stays permanently — quiet, but present — in a product whose promise is "your effort is safe."
+
 ## Device rendering (the luminous rule-set, minted by the arrival's five device catches, 2026-07-26)
 
 - **Never animate transforms on elements whose resting transform does layout work**
@@ -242,6 +258,11 @@ doc narrates, this file states only the laws.
   cross-lesson touch. *(2026-07-21)*
 
 ## Process laws (how laws are made)
+
+- **When every component is proven innocent, instrument the crime scene:** on-device X-ray
+  before theory-driven fixes. Sibling of verify-by-position and the luminous-screenshot rule —
+  all three are one truth: THE ARTIFACT OF PROOF MUST LIVE WHERE THE FAILURE LIVES. *(the
+  vault saga, 2026-07-26)*
 
 - **No user-facing UI ships from a text description alone** — artifact → approval → match exactly
   → mechanical diff acceptance (DESIGN_PAIRS).
