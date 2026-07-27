@@ -58,6 +58,19 @@ Momentum, Retention), deliberately anti-Duolingo.
   real composed exercise flows, difficulty/time scores, engine forks, and gap flags from the LIVE engine.
   `dev/harness.html` is the per-component review surface; the atlas is the system-level one.
 
+## Hard-won engineering rules (the vault saga, 2026-07-26 — read docs/postmortem-vault-saga.md)
+- **Sync invariants are law** (cloud.js/accounts.js): atomic-or-fail restore · write-once vault ·
+  no read no write · boot pulls before pushing · never re-push an unchanged payload.
+- **No `catch(() => {})` on data-critical paths** — record and surface every failure.
+- **Never trust self-reported success**: critical ops show verifiable ground truth (counts,
+  timestamps, received/kept), not optimistic toasts.
+- **Verify code-on-device before debugging behavior**: the splash build stamp (`vNNN · vNNN`)
+  must match; a mismatch means stale JS and no theory about behavior is worth having yet.
+- **When every component tests innocent, instrument the crime scene** — ship X-ray diagnostics
+  to the failing environment instead of iterating theories.
+- **No choreography-dependent fixes**: anything requiring humans to act in precise order will
+  race and lose. Make operations idempotent and merge-based instead.
+
 ## Conventions (do these every time)
 - **Ship-report format (Tom's standing rule):** every work-completing reply ends with four labeled
   sections, in order: **TL;DR** (a few sentences, everything Tom needs) → **What I did** (full
