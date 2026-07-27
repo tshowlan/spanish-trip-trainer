@@ -93,6 +93,22 @@ doc narrates, this file states only the laws.
   ("I can't listen right now", 12.5/500 dim, softened underline, above Continue) is answered where
   it happens and remembered where it belongs (session flag + sibling swaps + menu reset). *(r4-r5)*
 
+## Device rendering (the luminous rule-set, minted by the arrival's five device catches, 2026-07-26)
+
+- **Never animate transforms on elements whose resting transform does layout work**
+  (translateX centering etc.); their formations are opacity-only. The ceremony's precedent
+  now binds both doors and all future choreography. *(the beached nav pill)*
+- **Chained enter/exit pairs: the exit fills forwards only** — backwards fill pre-lights
+  the element at t=0. *(the pre-lit eclipse orb)*
+- **Glows are LAYERS, never filters** — iOS clips drop-shadow paint regions at a straight
+  edge; desktop review cannot see it. *(the line above the lighthouse)*
+- **Low-alpha gradients over black: eased multi-stop falloffs + a ~5% noise dither [tune]** —
+  hard stops draw rims on OLED. *(the banding ellipses)*
+- **Radial glows size with closest-side:** the fade completes inside its own box; fixed
+  percentages clip at container edges. *(the halo's top edge)*
+- **Process: anything luminous gets a DEVICE SCREENSHOT before the stamp.** Desktop review
+  cannot see banding, filter clipping, or fill timing on the medium the door opens on.
+
 ## Motion
 
 - **Light turns on; it never travels on:** ignitions animate intensity, never geometry — scaling
