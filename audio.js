@@ -16,44 +16,60 @@ function speak(text, rate, onend) {
   speechSynthesis.speak(u);
 }
 
-let actx = null;
-function _ensureCtx() {
-  if (!actx) {
-    try {
-      // iOS: join the media channel TTS already uses, so the rule holds — if the voice is
-      // audible, the ding is audible (the silent switch mutes WebAudio but not TTS otherwise).
-      if (navigator.audioSession) navigator.audioSession.type = "playback";
-      actx = new (window.AudioContext || window.webkitAudioContext)();
-    } catch { actx = null; }
+/* The dings, as media clips. Live WebAudio on iOS is muted by the silent switch and its
+   clock is interrupted by TTS/lock/calls — notes scheduled there vanish silently (the
+   v207/v208 saga). TTS never fails because it rides the MEDIA lane. So each sound is
+   synthesized ONCE (offline render → WAV blob) and played through an <audio> element:
+   the same lane as the voice, by construction. */
+function _renderClip(notes, seconds) {
+  const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  const ctx = new OAC(1, Math.ceil(44100 * seconds), 44100);
+  for (const [freq, start, dur, type, gain] of notes) {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type || "sine"; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, start);
+    g.gain.exponentialRampToValueAtTime(gain || 0.18, start + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+    o.connect(g).connect(ctx.destination); o.start(start); o.stop(start + dur + 0.03);
   }
-  return actx;
+  return ctx.startRendering().then(buf => {
+    const pcm = buf.getChannelData(0), n = pcm.length;
+    const v = new DataView(new ArrayBuffer(44 + n * 2));
+    const tag = (off, s) => { for (let i = 0; i < s.length; i++) v.setUint8(off + i, s.charCodeAt(i)); };
+    tag(0, "RIFF"); v.setUint32(4, 36 + n * 2, true); tag(8, "WAVEfmt ");
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, 44100, true); v.setUint32(28, 88200, true);
+    v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    tag(36, "data"); v.setUint32(40, n * 2, true);
+    for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, pcm[i])) * 32767, true);
+    const el = new Audio(URL.createObjectURL(new Blob([v.buffer], { type: "audio/wav" })));
+    el.setAttribute("playsinline", ""); el.preload = "auto";
+    return el;
+  });
 }
-// iOS suspends/interrupts the context after TTS, lock/unlock, or calls, and only a user
-// gesture may revive it — every tap is that gesture, so this listener stays for the page's life.
+const _clips = {};
+try {
+  if (navigator.audioSession) navigator.audioSession.type = "playback";
+  _renderClip([[659.25, 0, 0.12], [987.77, 0.09, 0.16]], 0.4).then(el => _clips.correct = el);   // E5 + B5
+  _renderClip([523.25, 659.25, 783.99, 1046.5].map((f, i) => [f, i * 0.11, 0.22]), 0.8).then(el => _clips.win = el);
+  _renderClip([[196, 0, 0.22, "triangle", 0.12]], 0.4).then(el => _clips.wrong = el);
+} catch (e) { /* no offline audio: dings degrade to silence, the app is unaffected */ }
+// iOS lets an <audio> element play programmatically only after it has once played inside a
+// user gesture — prime each clip (muted play/pause) on taps until all three are unlocked.
 document.addEventListener("pointerdown", () => {
-  const c = _ensureCtx();
-  if (c && c.state !== "running") c.resume().catch(() => {});
+  for (const k in _clips) {
+    const el = _clips[k];
+    if (el._primed) continue;
+    el.muted = true;
+    el.play().then(() => { el.pause(); el.currentTime = 0; el.muted = false; el._primed = true; })
+      .catch(() => { el.muted = false; });
+  }
 }, { capture: true, passive: true });
-function note(freq, start, dur, type = "sine", gain = 0.18) {
-  const o = actx.createOscillator(), g = actx.createGain();
-  o.type = type; o.frequency.value = freq;
-  g.gain.setValueAtTime(0.0001, start);
-  g.gain.exponentialRampToValueAtTime(gain, start + 0.02);
-  g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
-  o.connect(g).connect(actx.destination); o.start(start); o.stop(start + dur + 0.03);
-}
 function playSound(kind) {
   if (!state.sound) return;
-  const c = _ensureCtx(); if (!c) return;
-  const go = () => {
-    const n = c.currentTime;
-    if (kind === "correct") { note(659.25, n, 0.12); note(987.77, n + 0.09, 0.16); }         // E5 + B5
-    else if (kind === "win") { [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => note(f, n + i * 0.11, 0.22)); }
-    else if (kind === "wrong") { note(196, n, 0.22, "triangle", 0.12); }
-  };
-  // a suspended clock is frozen — notes scheduled on it get swallowed. Wake it first.
-  if (c.state !== "running") c.resume().then(go).catch(() => {});
-  else go();
+  const el = _clips[kind]; if (!el) return;
+  try { el.currentTime = 0; } catch (e) {}
+  el.play().catch(() => {});
 }
 
 /* §8.2 haptic map — one event, one haptic, always. Uses Capacitor Haptics when the app is

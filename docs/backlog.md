@@ -33,7 +33,7 @@ already be fixed, Tom re-checks on current build. Sourced from Tom's 7/24–7/27
    backdrop/cancel exits (bug: every sheet must be dismissible).
 5. ~~[CODE]~~ DONE (7d window, copy updated) · copy→CHAT open: 7/26-7 Insights whisper window: 2 weeks → 1 week (logic). New-user empty copy = CHAT flag
    (what should it say before there's a trend?).
-6. ~~[CODE] 7/25-6~~ DONE v207 ordering + v208 root cause (media-channel + wake-on-tap; ding now plays whenever the voice does): The correct-answer ding should play even while the phrase is being spoken (audio
+6. ~~[CODE] 7/25-6~~ DONE v207 ordering + v209 real fix (dings are now media clips on the TTS lane; v208's WebAudio rescue was not enough on device): The correct-answer ding should play even while the phrase is being spoken (audio
    layering; today one suppresses the other).
 7. ~~[CODE]~~ DONE (fills now speak at resolve; row/speak flags decoupled) · flags→CHAT: 7/24-8 Sound audit: sweep every exercise type for missing/incorrect resolve audio; fix
    mechanical gaps, flag design questions.

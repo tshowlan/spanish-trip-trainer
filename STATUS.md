@@ -15,6 +15,15 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-28 — The ding becomes media (v209)
+- v208 (audioSession + wake-on-tap) did NOT fix it on device: live WebAudio on the iOS PWA stays
+  unreliable — TTS interrupts it and the silent switch mutes it regardless. Stopped fighting it:
+  each ding is now synthesized ONCE offline (OfflineAudioContext -> WAV blob) and played through an
+  <audio> element — the same media lane TTS rides. "If the voice is audible, the ding is audible"
+  is now true by construction. Clips prime (muted play/pause) on early taps to satisfy the
+  gesture-unlock rule; playSound is a rewind-and-play. Ding loudness stays at the authored gain
+  (0.18) [tune if quiet next to TTS].
+
 ## 2026-07-28 — The missing ding, root-caused (v208)
 - Tom's real complaint behind 7/25-6: the ding often doesn't play AT ALL on iPhone, even with the
   silent switch off. Cause was three iOS facts in audio.js: (1) TTS and WebAudio live on different
