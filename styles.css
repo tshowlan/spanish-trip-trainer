@@ -331,7 +331,9 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .rec-tag { font-size: 10px; font-weight: 800; color: #fff; background: var(--secondary); border-radius: 999px; padding: 1px 7px; vertical-align: 2px; }
 
 /* ---------- lesson runner ---------- */
-.runner { padding: 16px 18px 40px; }
+.runner { padding: calc(16px + env(safe-area-inset-top)) 18px 40px; }   /* rail-shed (v204): the runner is
+  now the topmost element, so it carries the safe-area inset itself — the progress row
+  must clear the dynamic island / notch */
 .progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
 .close-btn { background: none; border: none; color: var(--text-dim); font-size: 26px; cursor: pointer; padding: 0 4px; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
 .pbar { flex: 1; height: 4px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }   /* thin hairline per design/correct-feedback.html */

@@ -15,6 +15,9 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-27 — Rail-shed hotfix (v205): the runner carries its own safe-area
+- Tom's catch: with the rail gone, runner content became topmost and the progress row clipped under the dynamic island (the topbar had been absorbing the inset). .runner now pads calc(16px + safe-area-inset-top). The shift-up itself is the intended design (the runner owns the screen); only the inset was missing. Applies to questions/chains/speed (shared .runner padding).
+
 ## 2026-07-26 — HEADER BEYOND HOME stamped + BUILT (v204)
 - The rail beyond home: wordmark + flame (Tom kept the logo at review); chip home-only; eased veil; screens own titles. (chat's stamp, same-night session)
 - Build: chip gated to body.home-lit (display none beyond); rail padding 14/24/8; the eased 4-stop veil replaces the 85% cutoff everywhere the topbar renders; DESIGN_PAIRS.headerBeyondHome added; constitution gains "the rail" family.
