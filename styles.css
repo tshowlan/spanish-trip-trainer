@@ -184,9 +184,13 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
 /* atmosphere ground: gradient in dark (via --ground), cream fallback in light; fixed = stable ground while scrolling */
 /* keep the native rubber-band (feedback, not ambient animation) but contain it so a drag-down can't
    fire the browser's pull-to-refresh (decisions 2026-07-16). `none` killed the bounce → felt frozen. */
-html { overflow-x: clip; }   /* the app pans vertically only: sideways drag parks off-center (no rubber-band on real scroll) */
+/* the app pans vertically only — but the sideways CLIP must live on #app, never on html/body:
+   an overflow-x rule on the page root silently breaks position:sticky on iOS Safari (the topbar
+   scrolled away with the veil on every scrolling tab — Tom, 2026-07-28). touch-action pan-y is
+   what actually stops the finger; #app's clip catches real layout overflow. */
+main#app { overflow-x: clip; }
 body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats the i's dot ("wifi") — learners need to SEE letters */
-  overscroll-behavior-x: none; overflow-x: clip;
+  overscroll-behavior-x: none;
   touch-action: pan-y pinch-zoom;   /* fingers pan vertically only — the native feel */
   max-width: 480px; margin: 0 auto; min-height: 100vh; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; background: var(--ground, var(--bg)); background-attachment: fixed; }
 /* font law (constitution: buttons don't inherit fonts — every tappable sets font-family).
