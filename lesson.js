@@ -631,7 +631,7 @@ function renderPresent(q) {
   const opts = el(`<div class="opts">${two.map(o => `<button class="opt" data-ok="${o.ok}">${o.t}</button>`).join("")}</div>`);
   let odone = false;
   opts.querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => {
-    if (b.dataset.ok === "1") { if (odone) return; odone = true; haptic("correct"); b.classList.add("got"); setTimeout(advance, 650); }
+    if (b.dataset.ok === "1") { if (odone) return; odone = true; playSound("correct"); haptic("correct"); b.classList.add("got"); setTimeout(advance, 650); }
     else { haptic("press"); opts.querySelectorAll(".opt").forEach(o => { if (o.dataset.ok === "1") o.classList.add("hinted"); }); }
   }));
   body.appendChild(opts);

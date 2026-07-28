@@ -15,6 +15,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-28 — New-phrase meaning check gets the ding (v212)
+- Tom: the correct ping was missing on the new-phrase card. The present card's two-option meaning
+  check gave the success haptic but no sound (it predates the resolve-audio work). Correct tap now
+  dings; the wrong tap stays soft on purpose (the card is ungraded and can't be failed - it
+  gold-rings the right answer instead).
+
 ## 2026-07-28 — Keeper reverted: the voice outranks the ding (v211)
 - Tom: with v210's keeper, exercise-start audio broke — on iOS a playing media element stomps on
   speechSynthesis. The keeper is gone (and a comment in audio.js forbids its return). Media-clip
