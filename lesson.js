@@ -632,7 +632,7 @@ function renderPresent(q) {
   let odone = false;
   opts.querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => {
     if (b.dataset.ok === "1") { if (odone) return; odone = true; playSound("correct"); haptic("correct"); b.classList.add("got"); setTimeout(advance, 650); }
-    else { haptic("press"); opts.querySelectorAll(".opt").forEach(o => { if (o.dataset.ok === "1") o.classList.add("hinted"); }); }
+    else { haptic("press"); b.classList.add("dim"); opts.querySelectorAll(".opt").forEach(o => { if (o.dataset.ok === "1") o.classList.add("hinted"); }); }
   }));
   body.appendChild(opts);
   // §feedback #1: Back — step back to the previous present card (never rewind into a graded question)

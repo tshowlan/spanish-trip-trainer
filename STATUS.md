@@ -15,6 +15,11 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-28 — Meaning check: wrong option recedes (v213)
+- Tom: on the new-phrase meaning check, a wrong tap should grey out the tapped option, not just
+  gold-ring the correct one. Added .opt.dim (0.45 opacity, dim text, untappable) on the wrong
+  tap alongside the existing gold-ring hint. Delta flagged for chat's present-card artifact.
+
 ## 2026-07-28 — New-phrase meaning check gets the ding (v212)
 - Tom: the correct ping was missing on the new-phrase card. The present card's two-option meaning
   check gave the success haptic but no sound (it predates the resolve-audio work). Correct tap now
