@@ -22,7 +22,16 @@ already be fixed, Tom re-checks on current build. Sourced from Tom's 7/24–7/27
   always shows one via a fallback offset). Absent-not-broken; CHAT delta only if the absence
   should say something.
 
-## SPRINT 1 — CODE quick-fix batch — SHIPPED v207 (2026-07-27)
+## SPRINT 1 — CODE quick-fix batch — SHIPPED v207, follow-ups through v214 (closed 2026-07-28)
+
+Follow-on fixes Tom's device testing surfaced after the v207 batch:
+- ~~Ding missing on device~~ v209: dings are now pre-baked media clips on the same audio lane as
+  the voice (v208's WebAudio rescue was insufficient; v210's latency keeper broke TTS, reverted v211).
+- ~~New-phrase meaning check silent~~ v212: correct tap dings (wrong tap soft on purpose, ungraded card).
+- ~~Meaning check wrong tap~~ v213: tapped wrong option greys out beside the gold-ring hint.
+- ~~Topbar + veil scrolled away on Learn/Progress/Profile~~ v214: iOS sticky bug (root overflow-x
+  clip from v169) - clip moved to main#app, rail now pins on device.
+
 
 1. ~~[CODE] 7/26-2~~ DONE: Hide the streak flame during onboarding (a new user has no streak to show).
 2. ~~[CODE] 7/26-3~~ DONE (300ms [tune]): Tap guard after advancing: ignore input for ~300ms [tune] when a new exercise renders
