@@ -42,6 +42,9 @@ function applyTheme() {
 }
 function renderTopbar() {
   $("#stat-streak").textContent = state.streak;
+  // no flame on the intake: a brand-new user has no streak to show (backlog 7/26-2)
+  const streakEl = document.querySelector(".stat.streak");
+  if (streakEl) streakEl.style.display = state.profile ? "" : "none";
   const brand = $("#topbar-brand");
   if (brand) brand.innerHTML = wordmark(22);
   const flag = $("#lang-flag");

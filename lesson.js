@@ -479,6 +479,12 @@ function renderQuestion() {
     </div>`));
   wrap.appendChild(el(`<div id="qbody" class="qenter"></div>`));   // §8.3 each question springs in
   app.appendChild(wrap);
+  // tap guard (backlog 7/26-3): a fast Continue tap was landing on the NEXT exercise's
+  // options — a fresh question swallows input for its first 300ms [tune], capture-phase
+  run.guardT = Date.now() + 300;
+  ["pointerdown", "click"].forEach(ev => wrap.addEventListener(ev, e => {
+    if (Date.now() < run.guardT) { e.stopPropagation(); e.preventDefault(); }
+  }, true));
   // §8.2 card-press haptic — one delegated listener covers every interactive card in the runner
   wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile")) haptic("press"); });
   $("#quit").addEventListener("click", sessionSheet);
@@ -1681,7 +1687,9 @@ function renderLetterFill(q, scale) {
     q.onResolve = () => aff.classList.add("recede");
   }
   markNext();
-  q.esOnStage = true; q.noEn = true; q.noAudio = true;   // the completed line is the surface; gloss already holds the en
+  q.esOnStage = true; q.noEn = true; q.noAudioRow = true;   // the completed line is the surface; gloss already holds
+  // the en. Row hidden but the phrase still SPEAKS at resolve (redundancy rule: sound meets
+  // spelling; the fills were silently resolving — backlog 7/24-8)
 }
 /* graceful grading (the exercise never dead-ends): 0-1 wrong taps = pass (slips logged),
    2+ = a miss for SRS/re-ask purposes while still completing in place [tune] */
@@ -1815,14 +1823,14 @@ function resolveCorrect(item, q, info) {
       ? `<div class="res-en">${item.es}</div>`
       : `<div class="es-reveal">${item.es}<span class="sweep2"></span></div>`) : ""}
     ${(q && (q.noEn || q.esFootnote)) ? "" : `<div class="res-en">${item.en}</div>`}
-    ${(q && q.noAudio) ? "" : `<div class="res-audio"></div>`}
+    ${(q && (q.noAudio || q.noAudioRow)) ? "" : `<div class="res-audio"></div>`}
     ${note}
     <button class="btn res-cont">Continue</button>
   </div>`);
   let advanced = false;
   const goNext = () => { if (advanced) return; advanced = true; qb.classList.add("leaving"); setTimeout(next, 200); };
   const playWhole = () => speak(item.es);
-  if (!(q && q.noAudio)) {
+  if (!(q && (q.noAudio || q.noAudioRow))) {
     const arow = el(`<div class="res-audio-row"></div>`);
     arow.appendChild(audioControl(playWhole));
     arow.appendChild(el(`<span class="audio-hint">Hear it whole</span>`));
@@ -1846,7 +1854,9 @@ function resolveCorrect(item, q, info) {
   // Pacing Rule (design system §1.2): the exit is the learner's tap, always. Audio autoplays;
   // no auto-advance, no timers, no dwell math. The resolution delivers NEW information (the es
   // reveal), and new information is never swept away.
-  if (!(q && q.noAudio)) playWhole();
+  // the ding lands first, THEN the phrase speaks: on iOS, starting TTS immediately ducks
+  // the WebAudio ding into silence (backlog 7/25-6). 250ms [tune].
+  if (!(q && q.noAudio)) setTimeout(playWhole, 250);
 }
 
 // per-item strength ring in the runner's top row (scale ladder: the rep shows ITEM strength, §3.5)

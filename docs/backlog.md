@@ -17,26 +17,27 @@ already be fixed, Tom re-checks on current build. Sourced from Tom's 7/24–7/27
   nav → whisper) shipped AFTER this note and may already be the wish. Re-watch a cold open on v206;
   if the wish is narrower (dials static, only trended numbers materialize), it's a CHAT delta on
   the arrival's formation.
-- 7/26-6c Pace marker timing — believed correct-by-design (the tick renders once a pace projection
-  exists, which needs a few days of history). CODE will confirm the exact condition and report;
-  if the empty state looks broken rather than absent, it becomes a CHAT delta.
+- 7/26-6c Pace marker timing — CONFIRMED correct-by-design: the home tick renders once the glide
+  path is honest = trip date set + 5 lifetime sessions + score history (the first-reveal screen
+  always shows one via a fallback offset). Absent-not-broken; CHAT delta only if the absence
+  should say something.
 
-## SPRINT 1 — CODE quick-fix batch (one ship, no design dependencies)
+## SPRINT 1 — CODE quick-fix batch — SHIPPED v207 (2026-07-27)
 
-1. [CODE] 7/26-2 Hide the streak flame during onboarding (a new user has no streak to show).
-2. [CODE] 7/26-3 Tap guard after advancing: ignore input for ~300ms [tune] when a new exercise renders
+1. ~~[CODE] 7/26-2~~ DONE: Hide the streak flame during onboarding (a new user has no streak to show).
+2. ~~[CODE] 7/26-3~~ DONE (300ms [tune]): Tap guard after advancing: ignore input for ~300ms [tune] when a new exercise renders
    (fast Continue taps are mis-selecting into the next exercise).
-3. [CODE] 7/26-6a/b Scores-intro screen: top text under the camera (safe-area inset, same class as the
+3. ~~[CODE] 7/26-6a/b~~ DONE (safe-area + overflow:visible): Scores-intro screen: top text under the camera (safe-area inset, same class as the
    v205 runner fix) + pace-tick circle clipped (overflow). Mechanical.
-4. [CODE] 7/24-5 "By scenario" sheet traps the user — no way out except picking. Add the standard
+4. ~~[CODE] 7/24-5~~ DONE (sheet max-height 78vh, backdrop always reachable): "By scenario" sheet traps the user — no way out except picking. Add the standard
    backdrop/cancel exits (bug: every sheet must be dismissible).
-5. [CODE, copy→CHAT] 7/26-7 Insights whisper window: 2 weeks → 1 week (logic). New-user empty copy = CHAT flag
+5. ~~[CODE]~~ DONE (7d window, copy updated) · copy→CHAT open: 7/26-7 Insights whisper window: 2 weeks → 1 week (logic). New-user empty copy = CHAT flag
    (what should it say before there's a trend?).
-6. [CODE] 7/25-6 The correct-answer ding should play even while the phrase is being spoken (audio
+6. ~~[CODE] 7/25-6~~ DONE (ding first, speak +250ms [tune]): The correct-answer ding should play even while the phrase is being spoken (audio
    layering; today one suppresses the other).
-7. [CODE, flags→CHAT] 7/24-8 Sound audit: sweep every exercise type for missing/incorrect resolve audio; fix
+7. ~~[CODE]~~ DONE (fills now speak at resolve; row/speak flags decoupled) · flags→CHAT: 7/24-8 Sound audit: sweep every exercise type for missing/incorrect resolve audio; fix
    mechanical gaps, flag design questions.
-8. [CODE investigates → CHAT rules] 7/24-2 "Where is a table for two" — investigate: likely the close-swap composer welding a
+8. ~~[CODE investigated]~~ evidence in Tom's folder (composer-evidence.md, 121 novel welds) · CHAT rules: 7/24-2 "Where is a table for two" — investigate: likely the close-swap composer welding a
    grammatical-but-silly composition. CODE diagnoses + guards; the rule (what compositions are
    legal) goes back to CHAT with the evidence.
 

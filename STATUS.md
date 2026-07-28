@@ -15,6 +15,10 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-27 — SPRINT 1 SHIPPED (v207): eight backlog quick fixes
+- Streak flame hidden until a profile exists (intake shows no streak) · 300ms tap guard on fresh exercises [tune] (fast Continues were mis-selecting) · score-reveal clears the camera + pace tick un-clipped (overflow:visible) · sheets cap at 78vh so the backdrop escape is always reachable (the by-scenario trap) · insights whisper = 1 week [tune] with copy updated (new-user empty copy = open chat question) · the ding lands before the phrase speaks (250ms [tune]; TTS was ducking it) · sound audit: word/phrase fill were resolving SILENTLY (noAudio conflated row+speech; decoupled via noAudioRow — fills now speak, redundancy rule) · composer evidence generated: 121 novel welds enumerated to Tom's folder for chat's legality ruling (the "Where is a table for two" family).
+- Pace-tick timing confirmed correct-by-design (trip date + 5 sessions + history); first-reveal always shows one via fallback.
+
 ## 2026-07-27 — Rail-shed hotfix (v205): the runner carries its own safe-area
 - Tom's catch: with the rail gone, runner content became topmost and the progress row clipped under the dynamic island (the topbar had been absorbing the inset). .runner now pads calc(16px + safe-area-inset-top). The shift-up itself is the intended design (the runner owns the screen); only the inset was missing. Applies to questions/chains/speed (shared .runner padding).
 

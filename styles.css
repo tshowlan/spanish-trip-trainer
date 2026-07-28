@@ -1060,7 +1060,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* A full-screen TAKEOVER (fixed inset:0), not flow content: as flow content it started below the topbar,
    so a 100vh/svh box ended past the viewport and the margin-top:auto prompt fell below the fold. */
 .reveal { position: fixed; inset: 0; z-index: 55; overflow-y: auto;
-  padding: 32px 28px calc(28px + env(safe-area-inset-bottom));
+  padding: calc(32px + env(safe-area-inset-top)) 28px calc(28px + env(safe-area-inset-bottom));   /* clear the camera (backlog 7/26-6a) */
   display: flex; flex-direction: column; align-items: center; text-align: center;
   background: var(--ground, var(--bg)); }
 .reveal::before { content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -1068,6 +1068,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .reveal > * { position: relative; }   /* keep content above the tint */
 .reveal-kicker { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--accent-2); margin-bottom: 20px; }
 .reveal-ring { position: relative; margin-bottom: 8px; }
+.reveal-ring svg { overflow: visible; }   /* the pace tick + its halo live past the viewBox (backlog 7/26-6b) */
 .reveal .band-chip { margin-top: -4px; opacity: 0; transition: opacity 400ms; }
 .reveal .band-chip.show { opacity: 1; }
 .rv-num { font-family: var(--font-display); font-weight: 700; font-size: 38px; fill: var(--text); }
@@ -1128,6 +1129,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .sheet-wrap { position: fixed; inset: 0; z-index: 60; }
 .sheet-backdrop { position: absolute; inset: 0; background: rgba(5,5,5,.35); opacity: 0; transition: opacity .25s; }
 .sheet { position: absolute; left: 0; right: 0; bottom: 0; max-width: 480px; margin: 0 auto; background: var(--bg-card);
+  max-height: 78vh; overflow-y: auto;   /* a long list must never swallow the backdrop — the tap-out escape stays reachable (backlog 7/24-5) */
   border-radius: 22px 22px 0 0; padding: 12px 22px calc(24px + env(safe-area-inset-bottom));
   transform: translateY(100%); transition: transform .3s cubic-bezier(.3,.7,.3,1); box-shadow: 0 -8px 30px rgba(28,39,94,.18); }
 .sheet-wrap.show .sheet-backdrop { opacity: 1; }
