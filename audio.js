@@ -17,6 +17,23 @@ function speak(text, rate, onend) {
 }
 
 let actx = null;
+function _ensureCtx() {
+  if (!actx) {
+    try {
+      // iOS: join the media channel TTS already uses, so the rule holds — if the voice is
+      // audible, the ding is audible (the silent switch mutes WebAudio but not TTS otherwise).
+      if (navigator.audioSession) navigator.audioSession.type = "playback";
+      actx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch { actx = null; }
+  }
+  return actx;
+}
+// iOS suspends/interrupts the context after TTS, lock/unlock, or calls, and only a user
+// gesture may revive it — every tap is that gesture, so this listener stays for the page's life.
+document.addEventListener("pointerdown", () => {
+  const c = _ensureCtx();
+  if (c && c.state !== "running") c.resume().catch(() => {});
+}, { capture: true, passive: true });
 function note(freq, start, dur, type = "sine", gain = 0.18) {
   const o = actx.createOscillator(), g = actx.createGain();
   o.type = type; o.frequency.value = freq;
@@ -27,12 +44,16 @@ function note(freq, start, dur, type = "sine", gain = 0.18) {
 }
 function playSound(kind) {
   if (!state.sound) return;
-  try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); }
-  catch { return; }
-  const n = actx.currentTime;
-  if (kind === "correct") { note(659.25, n, 0.12); note(987.77, n + 0.09, 0.16); }           // E5 + B5
-  else if (kind === "win") { [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => note(f, n + i * 0.11, 0.22)); }
-  else if (kind === "wrong") { note(196, n, 0.22, "triangle", 0.12); }
+  const c = _ensureCtx(); if (!c) return;
+  const go = () => {
+    const n = c.currentTime;
+    if (kind === "correct") { note(659.25, n, 0.12); note(987.77, n + 0.09, 0.16); }         // E5 + B5
+    else if (kind === "win") { [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => note(f, n + i * 0.11, 0.22)); }
+    else if (kind === "wrong") { note(196, n, 0.22, "triangle", 0.12); }
+  };
+  // a suspended clock is frozen — notes scheduled on it get swallowed. Wake it first.
+  if (c.state !== "running") c.resume().then(go).catch(() => {});
+  else go();
 }
 
 /* §8.2 haptic map — one event, one haptic, always. Uses Capacitor Haptics when the app is

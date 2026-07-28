@@ -15,6 +15,17 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-28 — The missing ding, root-caused (v208)
+- Tom's real complaint behind 7/25-6: the ding often doesn't play AT ALL on iPhone, even with the
+  silent switch off. Cause was three iOS facts in audio.js: (1) TTS and WebAudio live on different
+  audio channels — the silent switch mutes WebAudio (the ding) but not TTS (the voice); (2) iOS
+  suspends/interrupts the WebAudio context after TTS, lock, or calls, and playSound scheduled notes
+  on the frozen clock without waiting for resume() — those notes are swallowed silently; (3) nothing
+  re-woke the context after interruptions.
+- Fix: navigator.audioSession.type = "playback" (iOS 17+) puts the ding on the same media channel as
+  the voice — the law is now "if the voice is audible, the ding is audible"; a persistent pointerdown
+  listener re-wakes the context on every tap; playSound waits for resume() before scheduling.
+
 ## 2026-07-27 — SPRINT 1 SHIPPED (v207): eight backlog quick fixes
 - Streak flame hidden until a profile exists (intake shows no streak) · 300ms tap guard on fresh exercises [tune] (fast Continues were mis-selecting) · score-reveal clears the camera + pace tick un-clipped (overflow:visible) · sheets cap at 78vh so the backdrop escape is always reachable (the by-scenario trap) · insights whisper = 1 week [tune] with copy updated (new-user empty copy = open chat question) · the ding lands before the phrase speaks (250ms [tune]; TTS was ducking it) · sound audit: word/phrase fill were resolving SILENTLY (noAudio conflated row+speech; decoupled via noAudioRow — fills now speak, redundancy rule) · composer evidence generated: 121 novel welds enumerated to Tom's folder for chat's legality ruling (the "Where is a table for two" family).
 - Pace-tick timing confirmed correct-by-design (trip date + 5 sessions + history); first-reveal always shows one via fallback.
