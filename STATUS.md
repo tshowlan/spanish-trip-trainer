@@ -15,6 +15,15 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-28 — The ding starts on time (v210)
+- Tom: v209 dings land but a beat LATE. Cause: iOS spins the media pipeline down when idle; a
+  cold <audio> play() pays the wake-up cost. Fix: a keeper — an inaudible looping clip (20Hz at
+  -60dB) that holds the pipeline warm while the user is actively tapping, self-pausing after 60s
+  [tune] of quiet so background music isn't held hostage between lessons. Any tap or ding
+  (re)starts it. Also: the correct-ding recipe is UNCHANGED since forever (E5+B5, same envelope,
+  same gain); v209 only changed the delivery lane — it now follows media volume, not ringer
+  volume, and the full two-note chime finally plays reliably, which can read as "different".
+
 ## 2026-07-28 — The ding becomes media (v209)
 - v208 (audioSession + wake-on-tap) did NOT fix it on device: live WebAudio on the iOS PWA stays
   unreliable — TTS interrupts it and the silent switch mutes it regardless. Stopped fighting it:
