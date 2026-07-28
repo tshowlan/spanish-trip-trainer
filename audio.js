@@ -53,38 +53,27 @@ try {
   _renderClip([[659.25, 0, 0.12], [987.77, 0.09, 0.16]], 0.4).then(el => _clips.correct = el);   // E5 + B5
   _renderClip([523.25, 659.25, 783.99, 1046.5].map((f, i) => [f, i * 0.11, 0.22]), 0.8).then(el => _clips.win = el);
   _renderClip([[196, 0, 0.22, "triangle", 0.12]], 0.4).then(el => _clips.wrong = el);
-  // the keeper: an inaudible loop (20Hz at -60dB) that holds the pipeline warm — see _keepWarm
-  _renderClip([[20, 0, 0.45, "sine", 0.001]], 0.5).then(el => { el.loop = true; _clips.keep = el; });
 } catch (e) { /* no offline audio: dings degrade to silence, the app is unaffected */ }
-// Latency: iOS spins the media pipeline down when idle, so a cold ding starts a beat late.
-// The keeper loop holds it warm while the user is actively tapping, then pauses itself after
-// 60s [tune] of quiet so background music isn't held hostage between lessons.
-let _keepT = null;
-function _keepWarm() {
-  const k = _clips.keep; if (!k) return;
-  if (k.paused) k.play().catch(() => {});
-  clearTimeout(_keepT);
-  _keepT = setTimeout(() => k.pause(), 60000);
-}
+// NO background keeper loop here, ever: a playing media element stomps on iOS
+// speechSynthesis, and the voice outranks the ding (learned v210, reverted v211).
 // iOS lets an <audio> element play programmatically only after it has once played inside a
 // user gesture — prime each clip (muted play/pause) on taps until all three are unlocked.
-// (The keeper unlocks itself: _keepWarm's play() runs inside this same gesture.)
 document.addEventListener("pointerdown", () => {
   for (const k in _clips) {
     const el = _clips[k];
-    if (k === "keep" || el._primed) continue;
+    if (el._primed) continue;
     el.muted = true;
     el.play().then(() => { el.pause(); el.currentTime = 0; el.muted = false; el._primed = true; })
       .catch(() => { el.muted = false; });
   }
-  _keepWarm();
 }, { capture: true, passive: true });
 function playSound(kind) {
   if (!state.sound) return;
-  _keepWarm();
   const el = _clips[kind]; if (!el) return;
-  if (el.currentTime) { try { el.currentTime = 0; } catch (e) {} }
   el.play().catch(() => {});
+  // rewind AFTER (and on ended), not before: a pre-play seek adds latency to the next ding
+  el.onended = () => { el.currentTime = 0; };
+  if (!el.paused && el.currentTime > 0.03) { el.currentTime = 0; }   // rapid re-fire: restart mid-clip
 }
 
 /* §8.2 haptic map — one event, one haptic, always. Uses Capacitor Haptics when the app is

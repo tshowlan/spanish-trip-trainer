@@ -15,6 +15,14 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-28 — Keeper reverted: the voice outranks the ding (v211)
+- Tom: with v210's keeper, exercise-start audio broke — on iOS a playing media element stomps on
+  speechSynthesis. The keeper is gone (and a comment in audio.js forbids its return). Media-clip
+  dings stay (v209 reliability); latency trimmed instead by rewinding clips AFTER playback (a
+  pre-play seek was adding to the next ding's start cost). Residual cold-start beat on the first
+  ding of a burst is an iOS floor; options if it still bothers: fire the ding on pointerdown
+  inside renderers, or re-bake clips louder/sharper so onset reads faster. Awaiting device read.
+
 ## 2026-07-28 — The ding starts on time (v210)
 - Tom: v209 dings land but a beat LATE. Cause: iOS spins the media pipeline down when idle; a
   cold <audio> play() pays the wake-up cost. Fix: a keeper — an inaudible looping clip (20Hz at
