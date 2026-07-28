@@ -51,7 +51,8 @@ Momentum, Retention), deliberately anti-Duolingo.
 - **Tiered spiral:** 3 passes (Survival / Comfort / Fluent), `pass:N` on stages. Item identity is the
   **phrase** — auto-id `pack:slug(es)`, so items keep SRS history across reshuffles.
 - Item fields (all optional beyond `es`/`en`): `tier, tags, keywords, difficulty, contextEs/En, note,
-  anchor, variants, reply, requires, primer, chain`. Authoring content = writing phrase pairs; exercises
+  anchor, variants, reply, requires, primer, chain, weld` (weld = composer guard: feature tags + per-frame
+  article forms, default-closed — see decisions 2026-07-28). Authoring content = writing phrase pairs; exercises
   are generated. Content/engine separation is a protected invariant — adding a country never touches the engine.
 - Validate packs with `node tools/audit-pack.mjs <pack>.js` (keyword coverage, n+1, cast-name-in-`es`, dupes).
 - **Big-picture content audit: `dev/atlas.html`** (localhost, via tools/serve.py) — computes lesson maps,

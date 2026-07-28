@@ -54,10 +54,10 @@ const CURRICULUM = {
                     machine: true, frame: "quiero ___",
                     frameGloss: "Quiero = I want. Works at every counter in the Spanish-speaking world.",
                     items: [
-                      { es: "Quiero esto", en: "I want this one", tier: 1, tags: ["core"], keywords: ["esto"], frame: "quiero ___", contextEs: "Quiero esto, por favor", contextEn: "I want this one, please", note: "Point at it. Esto plus a finger orders almost anything." },
-                      { es: "Quiero un café", en: "I want a coffee", tier: 1, tags: ["core"], keywords: ["café"], frame: "quiero ___", anchor: "Shortcut: Un café, por favor is a complete order too. The machine is optional; the noun is not." },
-                      { es: "Quiero una mesa para dos", en: "I want a table for two", tier: 1, tags: ["core"], keywords: ["mesa"], frame: "quiero ___" },
-                      { es: "Quiero un taxi", en: "I want a taxi", tier: 1, tags: ["core"], keywords: ["taxi"], frame: "quiero ___" },
+                      { es: "Quiero esto", en: "I want this one", tier: 1, tags: ["core"], keywords: ["esto"], frame: "quiero ___", weld: { tags: ["deictic"] }, contextEs: "Quiero esto, por favor", contextEn: "I want this one, please", note: "Point at it. Esto plus a finger orders almost anything." },
+                      { es: "Quiero un café", en: "I want a coffee", tier: 1, tags: ["core"], keywords: ["café"], frame: "quiero ___", weld: { tags: ["bringable", "purchasable", "consumable"], indef: { es: "un café", en: "a coffee" } }, anchor: "Shortcut: Un café, por favor is a complete order too. The machine is optional; the noun is not." },
+                      { es: "Quiero una mesa para dos", en: "I want a table for two", tier: 1, tags: ["core"], keywords: ["mesa"], frame: "quiero ___", weld: { tags: ["amenity"], indef: { es: "una mesa para dos", en: "a table for two" } } },
+                      { es: "Quiero un taxi", en: "I want a taxi", tier: 1, tags: ["core"], keywords: ["taxi"], frame: "quiero ___", weld: { tags: ["service", "purchasable"], indef: { es: "un taxi", en: "a taxi" } } },
                     ]
                   },
                   {
@@ -67,10 +67,10 @@ const CURRICULUM = {
                     machine: true, frame: "¿dónde está ___?",
                     frameGloss: "¿Dónde está...? = where is...? Point it at anything lost.",
                     items: [
-                      { es: "¿Dónde está el baño?", en: "Where is the bathroom?", tier: 1, tags: ["core"], keywords: ["baño"], frame: "¿dónde está ___?", note: "In Spain you will also hear el servicio for a restaurant loo." },
-                      { es: "¿Dónde está la estación?", en: "Where is the station?", tier: 1, tags: ["core"], keywords: ["estación"], frame: "¿dónde está ___?" },
-                      { es: "¿Dónde está mi hotel?", en: "Where is my hotel?", tier: 1, tags: ["core"], keywords: ["hotel"], frame: "¿dónde está ___?" },
-                      { es: "¿Dónde está la farmacia?", en: "Where is the pharmacy?", tier: 1, tags: ["emergency", "health", "directions"], keywords: ["dónde", "farmacia"], frame: "¿dónde está ___?" },
+                      { es: "¿Dónde está el baño?", en: "Where is the bathroom?", tier: 1, tags: ["core"], keywords: ["baño"], frame: "¿dónde está ___?", weld: { tags: ["place"], indef: { es: "un baño", en: "a bathroom" } }, note: "In Spain you will also hear el servicio for a restaurant loo." },
+                      { es: "¿Dónde está la estación?", en: "Where is the station?", tier: 1, tags: ["core"], keywords: ["estación"], frame: "¿dónde está ___?", weld: { tags: ["place"] } },
+                      { es: "¿Dónde está mi hotel?", en: "Where is my hotel?", tier: 1, tags: ["core"], keywords: ["hotel"], frame: "¿dónde está ___?", weld: { tags: ["place"] } },
+                      { es: "¿Dónde está la farmacia?", en: "Where is the pharmacy?", tier: 1, tags: ["emergency", "health", "directions"], keywords: ["dónde", "farmacia"], frame: "¿dónde está ___?", weld: { tags: ["place"], indef: { es: "una farmacia", en: "a pharmacy" } } },
                     ]
                   },
                   {
@@ -99,10 +99,10 @@ const CURRICULUM = {
                     machine: true, frame: "¿cuánto cuesta ___?",
                     frameGloss: "¿Cuánto cuesta...? = how much is...? Ask before you nod.",
                     items: [
-                      { es: "¿Cuánto cuesta esto?", en: "How much is this?", tier: 1, tags: ["core"], keywords: ["cuesta"], frame: "¿cuánto cuesta ___?", note: "Esto again. Point, ask, decide." },
-                      { es: "¿Cuánto cuesta la entrada?", en: "How much is the entrance ticket?", tier: 1, tags: ["core"], keywords: ["entrada"], frame: "¿cuánto cuesta ___?" },
-                      { es: "¿Cuánto cuesta un billete?", en: "How much is a ticket?", tier: 1, tags: ["core"], keywords: ["billete"], frame: "¿cuánto cuesta ___?" },
-                      { es: "¿Cuánto cuesta la habitación?", en: "How much is the room?", tier: 1, tags: ["core"], keywords: ["habitación"], frame: "¿cuánto cuesta ___?" },
+                      { es: "¿Cuánto cuesta esto?", en: "How much is this?", tier: 1, tags: ["core"], keywords: ["cuesta"], frame: "¿cuánto cuesta ___?", weld: { tags: ["deictic"] }, note: "Esto again. Point, ask, decide." },
+                      { es: "¿Cuánto cuesta la entrada?", en: "How much is the entrance ticket?", tier: 1, tags: ["core"], keywords: ["entrada"], frame: "¿cuánto cuesta ___?", weld: { tags: ["purchasable", "place"], def: { es: "la entrada", en: "the entrance" }, indef: { es: "una entrada", en: "a ticket" } } },
+                      { es: "¿Cuánto cuesta un billete?", en: "How much is a ticket?", tier: 1, tags: ["core"], keywords: ["billete"], frame: "¿cuánto cuesta ___?", weld: { tags: ["purchasable"], indef: { es: "un billete", en: "a ticket" } } },
+                      { es: "¿Cuánto cuesta la habitación?", en: "How much is the room?", tier: 1, tags: ["core"], keywords: ["habitación"], frame: "¿cuánto cuesta ___?", weld: { tags: ["place", "purchasable"], def: { es: "la habitación", en: "the room" }, indef: { es: "una habitación", en: "a room" } } },
                     ]
                   },
                   {
@@ -112,10 +112,10 @@ const CURRICULUM = {
                     machine: true, frame: "¿me puede traer ___?",
                     frameGloss: "¿Me puede traer...? = could you bring me...? The polite ask that works on anyone.",
                     items: [
-                      { es: "¿Me puede traer la cuenta?", en: "Could you bring me the check?", tier: 1, tags: ["core"], keywords: ["cuenta"], frame: "¿me puede traer ___?", variants: ["¿Me trae la cuenta?"], note: "Me trae...? is the same machine with the jacket off. Both are right.", anchor: "Think: traer is to bring. You are asking them to bring it, not going to get it." },
-                      { es: "¿Me puede traer agua?", en: "Could you bring me water?", tier: 1, tags: ["core"], keywords: ["agua"], frame: "¿me puede traer ___?", variants: ["¿Me trae agua?"] },
-                      { es: "¿Me puede traer el menú?", en: "Could you bring me the menu?", tier: 1, tags: ["core"], keywords: ["menú"], frame: "¿me puede traer ___?", variants: ["¿Me trae el menú?"] },
-                      { es: "¿Me puede traer otra caña?", en: "Could you bring me another beer?", tier: 1, tags: ["core"], keywords: ["caña"], frame: "¿me puede traer ___?", variants: ["¿Me trae otra caña?"], note: "A caña is the small draft beer Spain actually orders." },
+                      { es: "¿Me puede traer la cuenta?", en: "Could you bring me the check?", tier: 1, tags: ["core"], keywords: ["cuenta"], frame: "¿me puede traer ___?", weld: { tags: ["bringable"] }, variants: ["¿Me trae la cuenta?"], note: "Me trae...? is the same machine with the jacket off. Both are right.", anchor: "Think: traer is to bring. You are asking them to bring it, not going to get it." },
+                      { es: "¿Me puede traer agua?", en: "Could you bring me water?", tier: 1, tags: ["core"], keywords: ["agua"], frame: "¿me puede traer ___?", weld: { tags: ["bringable", "consumable"], indef: { es: "agua", en: "water" } }, variants: ["¿Me trae agua?"] },
+                      { es: "¿Me puede traer el menú?", en: "Could you bring me the menu?", tier: 1, tags: ["core"], keywords: ["menú"], frame: "¿me puede traer ___?", weld: { tags: ["bringable"], indef: { es: "un menú", en: "a menu" } }, variants: ["¿Me trae el menú?"] },
+                      { es: "¿Me puede traer otra caña?", en: "Could you bring me another beer?", tier: 1, tags: ["core"], keywords: ["caña"], frame: "¿me puede traer ___?", weld: { tags: ["bringable", "consumable"] }, variants: ["¿Me trae otra caña?"], note: "A caña is the small draft beer Spain actually orders." },
                     ]
                   },
                   {
@@ -125,10 +125,10 @@ const CURRICULUM = {
                     machine: true, frame: "¿hay ___?",
                     frameGloss: "¿Hay...? = is there...? Availability in one word.",
                     items: [
-                      { es: "¿Hay wifi?", en: "Is there wifi?", tier: 1, tags: ["core"], keywords: ["wifi"], frame: "¿hay ___?", contextEs: "¿Hay wifi aquí?", contextEn: "Is there wifi here?" },
+                      { es: "¿Hay wifi?", en: "Is there wifi?", tier: 1, tags: ["core"], keywords: ["wifi"], frame: "¿hay ___?", weld: { tags: ["amenity"] }, contextEs: "¿Hay wifi aquí?", contextEn: "Is there wifi here?" },
                       { es: "¿Hay una farmacia cerca?", en: "Is there a pharmacy nearby?", tier: 1, tags: ["core"], keywords: ["farmacia", "cerca"], frame: "¿hay ___?" },
                       { es: "¿Hay mesa?", en: "Is there a table?", tier: 1, tags: ["core"], keywords: ["mesa"], frame: "¿hay ___?", contextEs: "¿Hay mesa para dos?", contextEn: "Is there a table for two?" },
-                      { es: "¿Hay algo sin gluten?", en: "Is there anything gluten-free?", tier: 1, tags: ["core"], keywords: ["gluten"], frame: "¿hay ___?" },
+                      { es: "¿Hay algo sin gluten?", en: "Is there anything gluten-free?", tier: 1, tags: ["core"], keywords: ["gluten"], frame: "¿hay ___?", weld: { tags: ["consumable"], indef: { es: "algo sin gluten", en: "something gluten-free" } } },
                     ]
                   },
                   {
@@ -152,10 +152,10 @@ const CURRICULUM = {
                     frameGloss: "Necesito = I need. For when wanting is too polite.",
                     items: [
                       { es: "Necesito ayuda", en: "I need help", tier: 1, tags: ["core"], keywords: ["ayuda"], frame: "necesito ___", contextEs: "Necesito ayuda, por favor", contextEn: "I need help, please" },
-                      { es: "Necesito un médico", en: "I need a doctor", tier: 1, tags: ["emergency", "health"], keywords: ["médico"], variants: ["Necesito un doctor"], frame: "necesito ___" },
-                      { es: "Necesito un taxi", en: "I need a taxi", tier: 1, tags: ["core"], keywords: ["taxi"], frame: "necesito ___" },
-                      { es: "Necesito un cargador", en: "I need a charger", tier: 1, tags: ["core"], keywords: ["cargador"], frame: "necesito ___", note: "The dead-phone phrase. Learn it before you need it." },
-                      { es: "Necesito ir al aeropuerto", en: "I need to go to the airport", note: "The machine takes verbs too: necesito ir, necesito cambiar, necesito volver.", tier: 1, tags: ["core"], keywords: ["ir"], frame: "necesito ___" },
+                      { es: "Necesito un médico", en: "I need a doctor", tier: 1, tags: ["emergency", "health"], keywords: ["médico"], variants: ["Necesito un doctor"], frame: "necesito ___", weld: { tags: ["person", "service"], indef: { es: "un médico", en: "a doctor" } } },
+                      { es: "Necesito un taxi", en: "I need a taxi", tier: 1, tags: ["core"], keywords: ["taxi"], frame: "necesito ___", weld: { tags: ["service", "purchasable"], indef: { es: "un taxi", en: "a taxi" } } },
+                      { es: "Necesito un cargador", en: "I need a charger", tier: 1, tags: ["core"], keywords: ["cargador"], frame: "necesito ___", weld: { tags: ["bringable", "purchasable"], indef: { es: "un cargador", en: "a charger" } }, note: "The dead-phone phrase. Learn it before you need it." },
+                      { es: "Necesito ir al aeropuerto", en: "I need to go to the airport", note: "The machine takes verbs too: necesito ir, necesito cambiar, necesito volver.", tier: 1, tags: ["core"], keywords: ["ir"], frame: "necesito ___", weld: { tags: ["verbal"] } },
                     ]
                   },
                   {

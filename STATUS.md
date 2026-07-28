@@ -15,6 +15,17 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-28 — Composer guard executed: semantic tags, default-closed (v215)
+- Chat's ruling on the 121-weld evidence (tripfluent-composer-ruling.md) is live: fillers carry
+  feature tags in curriculum.js (`weld:` field, 22 items authored), frames declare accepts
+  (WELD_ACCEPTS, lesson.js), article law enforced (hay = indef only, donde esta = def only,
+  quiero/necesito prefer indef, cuesta/traer keep home dress), everything else DEFAULT CLOSED.
+- 121 welds -> 49, every chat spot verdict passes (asserted by script against the REAL extracted
+  functions; roster in composer-welds-after-guard.md). Live in-app check: all six frames emit only
+  legal welds, none starved. decisions.md + CLAUDE.md item-fields updated.
+- Two flagged deviations for chat: place excluded from quiero/necesito accepts; deictic + amenity
+  added as tags. Mexico pack fillers are untagged -> composer closed there until its authoring pass.
+
 ## 2026-07-28 — The rail stays pinned while tabs scroll (v214)
 - Tom: on the three non-home tabs, scrolling carried the topbar (and its veil tint) off-screen.
   Root cause: the v169 axis-lock put overflow-x: clip on html+body, and an overflow-x rule on the

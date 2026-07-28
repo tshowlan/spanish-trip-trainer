@@ -63,6 +63,33 @@ function _machineLessonOf(frame) {
   for (const st of (pk && pk.stages) || []) for (const l of st.lessons || []) if (l.machine && l.frame === frame) return l;
   return null;
 }
+/* Composer guard (chat ruling 2026-07-27, decisions.md): semantic tags, DEFAULT CLOSED.
+   A weld exists only when the home frame declares the filler's feature tag AND the article
+   law is satisfied: hay takes the authored indef form only (existential hay rejects
+   definiteness); dónde está takes the def form only; quiero/necesito prefer the indef form
+   over the filler's home dress; cuesta/traer keep the home dress. Untagged filler,
+   undeclared frame, or missing form = the weld does not exist — novelty is earned at
+   authoring time, never assumed by the engine.
+   (Two conservative tightenings on the ruling, flagged to chat: `place` is excluded from
+   quiero/necesito — want-a-place reads as toddler-speak, want-to-GO is the verbal filler's
+   job — and `deictic`/`amenity` were added as tags so esto and the hay-family fillers can
+   compose without opening ¿Hay esto?.) */
+const WELD_ACCEPTS = {
+  "quiero ___": ["bringable", "purchasable", "service", "person", "consumable", "amenity", "deictic", "verbal"],
+  "necesito ___": ["bringable", "purchasable", "service", "person", "consumable", "amenity", "deictic", "verbal"],
+  "¿dónde está ___?": ["place", "person"],
+  "¿cuánto cuesta ___?": ["purchasable", "service"],
+  "¿me puede traer ___?": ["bringable", "consumable", "deictic"],
+  "¿hay ___?": ["place", "bringable", "purchasable", "service", "person", "consumable", "amenity"]
+};
+function _weldFiller(frame, cand, homeDress) {
+  const accepts = WELD_ACCEPTS[frame]; if (!accepts) return null;   // undeclared frame: closed
+  const w = cand.weld; if (!w || !(w.tags || []).some(t => accepts.includes(t))) return null;
+  if (frame === "¿hay ___?") return w.indef || null;                // article law, strict
+  if (frame === "¿dónde está ___?") return w.def || null;
+  if ((frame === "quiero ___" || frame === "necesito ___") && w.indef) return w.indef;
+  return homeDress;                                                 // cuesta/traer: the filler as taught
+}
 function composeSwap(lesson, anchor) {
   const frame = lesson.machine ? lesson.frame : anchor.frame;
   if (!frame || /a qué hora/i.test(frame)) return null;
@@ -80,8 +107,10 @@ function composeSwap(lesson, anchor) {
     const p = _frameParts(c.frame, c.es); if (!p) continue;
     const fen = _fillerEn(_enShell((ALL_ITEMS || []).filter(x => x.frame === c.frame)), c.en);
     if (!fen) continue;
-    const composedEs = parts.pre + p.filler + parts.post;
-    const fenCased = homeShell.pre ? fen.charAt(0).toLowerCase() + fen.slice(1) : fen;   // mid-sentence position
+    const w = _weldFiller(frame, c, { es: p.filler, en: fen });
+    if (!w) continue;                                               // DEFAULT CLOSED
+    const composedEs = parts.pre + w.es + parts.post;
+    const fenCased = homeShell.pre ? w.en.charAt(0).toLowerCase() + w.en.slice(1) : w.en;   // mid-sentence position
     const composedEn = homeShell.pre + fenCased + homeShell.post;
     const rep = {
       type: "close_swap",

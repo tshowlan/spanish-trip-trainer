@@ -155,3 +155,14 @@ Tom explicitly reopens. Do not relitigate.
 - 2026-07-26 — DATA INTEGRITY family ratified (the vault saga's five laws + the build stamp + the X-ray): restore atomic-or-fail, vault write-once, no read no write, boot pulls first, never re-push unchanged. "Received N / kept N" stays in Settings permanently: a trust instrument, not scaffolding. Shared process law minted: when every component is proven innocent, instrument the crime scene (sibling of verify-by-position and the luminous screenshot; the artifact of proof must live where the failure lives).
 - 2026-07-26 — The header beyond home: wordmark + flame, nothing else (chip home-only; Tom kept the logo at review) (switching = home trip header + Profile trips); veil eased 4-stop; screens own titles (Progress/Profile adopt at next touch). Runner double-chrome flagged for reconciliation.
 - 2026-07-26 — Code reconciliation of the double-chrome flag: NOT a leaking variant — the export's "runners don't render the topbar" line was documentation error; no code ever hid it. Now enforced: body.in-runner sheds the rail on every runner surface (questions, chains, speed round, primers); every tab surface restores it. One wording note back: home's trip header itself is not tappable for switching (the home-only chip carries it, plus Profile's trips row) — coverage intact either way.
+
+## 2026-07-28 — Composer guard: semantic tags, default-closed, per-frame article forms
+Chat's ruling on composer-evidence.md (121 welds): novelty is earned at authoring, never assumed.
+Fillers carry feature tags (place, bringable, purchasable, service, person, consumable, verbal, plus
+Code's flagged additions deictic + amenity); frames declare what they accept (WELD_ACCEPTS,
+lesson.js); article law: hay takes only the authored indef form, donde esta only the def form,
+quiero/necesito prefer indef, cuesta/traer keep the home dress. Untagged filler, undeclared frame,
+or missing form = no weld. Option (b) taught-only was rejected: novel recombination IS the transfer
+we teach. Code deviation flagged to chat: place excluded from quiero/necesito accepts (want-a-place
+reads as toddler-speak; want-to-go is the verbal filler's job). Result: 121 -> 49 welds, all spot
+verdicts pass (composer-welds-after-guard.md).

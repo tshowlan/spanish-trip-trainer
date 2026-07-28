@@ -13,10 +13,8 @@ already be fixed, Tom re-checks on current build. Sourced from Tom's 7/24–7/27
 
 ## VERIFY on current build (Tom, 2 minutes)
 
-- 7/25-9 Home materialization on launch — the Arrival's formation (photo → dials → tile → lines →
-  nav → whisper) shipped AFTER this note and may already be the wish. Re-watch a cold open on v206;
-  if the wish is narrower (dials static, only trended numbers materialize), it's a CHAT delta on
-  the arrival's formation.
+- ~~7/25-9 Home materialization on launch~~ — CLOSED 2026-07-28: Tom re-watched a cold open and
+  ruled the Arrival's formation good as-is.
 - 7/26-6c Pace marker timing — CONFIRMED correct-by-design: the home tick renders once the glide
   path is honest = trip date set + 5 lifetime sessions + score history (the first-reveal screen
   always shows one via a fallback offset). Absent-not-broken; CHAT delta only if the absence
@@ -46,7 +44,7 @@ Follow-on fixes Tom's device testing surfaced after the v207 batch:
    layering; today one suppresses the other).
 7. ~~[CODE]~~ DONE (fills now speak at resolve; row/speak flags decoupled) · flags→CHAT: 7/24-8 Sound audit: sweep every exercise type for missing/incorrect resolve audio; fix
    mechanical gaps, flag design questions.
-8. ~~[CODE investigated]~~ evidence in Tom's folder (composer-evidence.md, 121 novel welds) · CHAT rules: 7/24-2 "Where is a table for two" — investigate: likely the close-swap composer welding a
+8. ~~[CODE investigated + CHAT ruled + CODE executed v215]~~ semantic tags default-closed, 121 -> 49 welds (composer-welds-after-guard.md) · was: 7/24-2 "Where is a table for two" — investigate: likely the close-swap composer welding a
    grammatical-but-silly composition. CODE diagnoses + guards; the rule (what compositions are
    legal) goes back to CHAT with the evidence.
 
