@@ -225,6 +225,12 @@
     // App state: harness "Exercise — listen & type" / "listen & choose" (fresh + resolved).
     // Artifact: design/listening-family.html. The whisper maps .linkbtn.whisper -> .whisper-escape
     // (class renamed in build: the app's .linkbtn is an older component).
+    // App state: any non-home tab (e.g. Learn); artifact: design/header-beyond-home.html
+    headerBeyondHome: [
+      [".rail", ".topbar"],
+      [".rail .rail-brand .wordmark", ".topbar-brand .wordmark"],
+      [".rail .flame", ".stat.streak"],
+    ],
     listeningFamily: [
       [".listen-stage", ".listen-stage"],
       [".listen-stage .ac-speaker", ".listen-stage .ac-speaker"],

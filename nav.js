@@ -52,6 +52,7 @@ function navTo(tabId) {
   setTimeout(() => { tab.render(); app.classList.remove("tab-fade"); }, 180);
 }
 function showTabbar(active) {
+  document.body.classList.remove("in-runner");   // every tab surface restores the rail
   const bar = document.getElementById("tabbar");
   if (active !== "home" && typeof clearHomeAtmo === "function") clearHomeAtmo();   // tear down the home photo/glow off-home
   if (!bar) return;

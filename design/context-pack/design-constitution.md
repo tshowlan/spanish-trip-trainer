@@ -155,6 +155,14 @@ doc narrates, this file states only the laws.
   never information. *(session-end r18)*
 - Reduced motion: instant final states, no staggers, no sweeps — every motion law carries this.
 
+## The rail (the header beyond home, minted 2026-07-26)
+
+- **The screens own their titles:** section identity lives in content (24/700 tabtitle),
+  never in the chrome bar; the bar above the work is an instrument margin, not a header.
+- **The rail's two constants:** the wordmark (identity) and the flame (the pilot light) —
+  nothing else rides the bar beyond home; everything contextual lives in content. The chip
+  is home-only; runners wear no rail at all (the field is identity).
+
 ## Type
 
 - **Type split:** display font (Plus Jakarta Sans) for headings, phrases, buttons, labels, and ALL

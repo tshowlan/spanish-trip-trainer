@@ -216,14 +216,20 @@ body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats th
 .topbar {
   position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; gap: 9px;
-  padding: calc(16px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) 12px calc(24px + env(safe-area-inset-left));
-  background: linear-gradient(180deg, var(--bg) 85%, transparent);
+  padding: calc(14px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) 8px calc(24px + env(safe-area-inset-left));
+  /* the veil (header-beyond-home): eased 4-stop, no hard cutoff — the OLED lesson applied preemptively */
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 55%, color-mix(in srgb, var(--bg) 55%, transparent) 82%, transparent 100%);
 }
+/* runners wear NO topbar: the field is identity, the runner owns its chrome (the
+   double-chrome reconciliation — the old "runners don't render it" contract line was
+   documentation, not code, until now) */
+body.in-runner .topbar { display: none; }
 /* language flag sits just left of the gear (mirrors the flame→profile spacing) */
 /* §3.2 language indicator (design/home.html .lang): a small text chip, not the flag emoji */
 .topbar .lang-flag-top { font-family: var(--font-display); font-size: 11px; font-weight: 600; color: var(--text-dim);
   border: 1px solid var(--border); background: var(--bg-card); border-radius: 12px; padding: 4px 9px;
-  cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  cursor: pointer; display: none; align-items: center; justify-content: center; }   /* chip is HOME-ONLY (Tom's verdict) */
+body.home-lit .topbar .lang-flag-top { display: inline-flex; }
 body.home-lit .topbar .lang-flag-top { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.3); color: #fff; }
 /* §3.2 header flame (design/home.html .flame): gold, display font — "gold is the app's light" */
 .stat { display: flex; align-items: center; gap: 4px; font-family: var(--font-display); font-weight: 600; font-size: 13px; }

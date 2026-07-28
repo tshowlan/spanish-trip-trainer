@@ -15,6 +15,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-26 — HEADER BEYOND HOME stamped + BUILT (v204)
+- The rail beyond home: wordmark + flame (Tom kept the logo at review); chip home-only; eased veil; screens own titles. (chat's stamp, same-night session)
+- Build: chip gated to body.home-lit (display none beyond); rail padding 14/24/8; the eased 4-stop veil replaces the 85% cutoff everywhere the topbar renders; DESIGN_PAIRS.headerBeyondHome added; constitution gains "the rail" family.
+- DOUBLE-CHROME RECONCILED: not a leaking variant — the export's "runners don't render the topbar" line was documentation error (no code ever hid it; every runner wore both chromes). Now enforced: body.in-runner sheds the rail on questions/chains/speed/primers; every tab surface restores it via showTabbar. Wording note to chat: home's trip header itself is not tappable for switching — the home-only chip + Profile trips carry it; coverage intact.
+- Canvas deltas logged: Progress/Profile adopt content tabtitles at next touch.
+
 ## 2026-07-26 — THE HYDRATION INVARIANT (v201): no read, no write
 - v200's pull was best-effort with an unconditional push — a cold-boot network miss reproduced the ambush (row clobbered again post-v200). The permanent client-side rule: a device that has not successfully READ the vault this session may never WRITE to it. _cloudHydrated gates every push; cloudSync itself pull-merges first when unhydrated and SKIPS the push if the pull fails; login + sync-code restores count as reads. Settings now shows both directions ("backed up X · restored Y").
 

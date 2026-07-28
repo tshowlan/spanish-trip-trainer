@@ -233,6 +233,7 @@ function startLesson(lesson) {
 function renderChain(lesson) {
   const turns = (lesson.chain && lesson.chain.turns) || [];
   const app = $("#app"); clearFooter(); hideTabbar(); app.innerHTML = "";
+  document.body.classList.add("in-runner");
   const chainWrap = el(`<div class="runner chain">
     <div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button><div class="chain-title">${(lesson.chain || {}).title || lesson.title}</div></div>
     <div class="chain-log" id="clog"></div>
@@ -317,6 +318,7 @@ function renderPrimer(lesson, onDone) {
   // no guessItem = the guess moment is skipped by design (chains: nothing new to guess)
   const guess = p.guessItem ? (items.find(it => it.es === p.guessItem || it.id === p.guessItem || (it.keywords || []).includes(p.guessItem)) || items[0]) : null;
   const app = $("#app"); clearFooter(); hideTabbar();
+  document.body.classList.add("in-runner");             // the primer is the runner's front porch
   const photo = introPhoto(lesson);
 
   const scene = () => {
@@ -395,6 +397,7 @@ function startSpeedRound() {
 }
 function renderSpeedRound(pool) {
   const app = $("#app"); clearFooter(); hideTabbar(); app.innerHTML = "";
+  document.body.classList.add("in-runner");
   let timeLeft = 60, matched = 0, sel = null, timer = null;
   const speedWrap = el(`<div class="runner speed">
     <div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button>
@@ -463,6 +466,7 @@ function renderQuestion() {
   if ([25, 50, 75].some(m => prevPct < m && run.pct >= m)) haptic("milestone");
   clearFooter();
   hideTabbar();
+  document.body.classList.add("in-runner");             // runners wear no topbar (the field is identity)
   app.innerHTML = "";
   const wrap = el(`<div class="runner ${sceneClass(run.lesson && run.lesson.topic)}"></div>`);   // §8.3 ambient scenario tint
   wrap.appendChild(facetField());                       // the field: the exercise ground, behind everything
