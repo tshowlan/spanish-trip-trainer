@@ -113,6 +113,17 @@
 
   // Selector registry: artifact selector -> app selector, per artifact.
   const DESIGN_PAIRS = {
+    // lesson-breath.html (Sprint 2, stamped 2026-07-27) is a SEQUENCING canvas: it rules flow
+    // (beat order, slide, universal Continue), not pixels — exercise internals defer to their
+    // stamped artifacts. Pairs cover the elements the canvas newly mints.
+    // App state: a machine drill rendered (conveyor/exchange, Sprint 2 increments 4+).
+    lessonBreath: [
+      [".frame-mount", ".frame-mount"],
+      [".frame-mount .slot", ".frame-mount .slot"],
+      [".cue", ".conv-cue"],
+      [".convdots", ".conv-dots"],
+      [".grown .cont", ".res-cont"],
+    ],
     // SUPERSEDED 2026-07-19: correct-feedback.html is do-not-build-against; the resolution frame
     // (design/resolution-frame.html) is the match target for correct-answer feedback.
     // App state: a correct answer resolved — .build-answer.fused or .res-grown.show in the DOM.

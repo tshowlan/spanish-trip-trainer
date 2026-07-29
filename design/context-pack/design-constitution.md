@@ -265,6 +265,40 @@ doc narrates, this file states only the laws.
   Practice; restores never appear in lessons. The close's frame-swap filler is the one sanctioned
   cross-lesson touch. *(2026-07-21)*
 
+## The breath (lesson sequencing, minted Sprint 2, 2026-07-27)
+
+- **Universal Continue:** every exercise resolution, every family, ends in the learner-paced
+  Continue, live from first paint. The voice finishing gates nothing — advance-on-TTS is the
+  graveyarded auto-advance, and its socket stays removed from `speak()`. *(Sprint 2 ruling 1)*
+- **The slide:** exercise-to-exercise transitions travel the content only — outgoing slides
+  40px left + fades (200ms), incoming enters from the right (260ms, system curve). THE FIELD
+  NEVER MOVES: the ground is the fixed point; the work travels across it. Horizontal is the
+  lesson's progress axis (authored transitions, not gestures — the one-axis law governs
+  fingers). Reduced motion: crossfade. *(Sprint 2 ruling 2)*
+- **The intro ladder:** a new item's first lesson runs Present → Grasp (word-scale MC) →
+  Build (tiles) → Variation (the frame swaps one chunk) → Produce (typed cold, forgiving
+  maturation). The order is fixed on first exposure; expertise reversal governs after.
+  *(Sprint 2 ruling 3)*
+- **MC is word-scale, 3 options, only:** phrase-scale MC and 4-option MC are retired —
+  scan-reading is not recognition. Phrase recognition lives in the listening family, pairs,
+  and the reply. *(Sprint 2 ruling 4, Tom's inversion)*
+- **Glue words are never targets:** no exercise targets a bare function word; glue is tested
+  where it lives — the blank, the build, the weld. *(Sprint 2 ruling 5)*
+- **The machine drills are the conveyor and the exchange:** conveyor = one mounted frame,
+  streamed meaning-cues, the learner fills the slot every rep — production, zero options; the
+  composer guard's tag table defines the legal stream. Exchange = the learner produces the
+  ask, the typical reply plays through current listening truth, and the rep resolves on
+  comprehension of the ANSWER — the answer is the exercise. *(Sprint 2 ruling 6)*
+- **The encore, then the close:** the lesson's penultimate phase replays every item taught
+  this lesson once, production form, brisk (~90s cap [tune]); the close remains the ending —
+  completion copy lives in its resolution kicker, never on a placard. No done screens exist.
+  *(Sprint 2 rulings 7-8)*
+- **The input climbs by expertise:** first exposure summits the ITEM at typed cold; the
+  machine drills stay at tray. Full cold frame production is an expertise rung — the conveyor
+  and the close swap tiles for the keyboard as exposures accrue (threshold [tune], shared
+  with the letter rungs). The lesson's shape never changes; only the input hardens.
+  *(Sprint 2 ruling 9)*
+
 ## Process laws (how laws are made)
 
 - **When every component is proven innocent, instrument the crime scene:** on-device X-ray
