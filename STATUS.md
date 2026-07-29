@@ -15,6 +15,22 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-28 — SPRINT 2 STAMPED by chat; build increment 1 SHIPPED (v216)
+- Chat's lesson-feel session closed: nine Tom-ratified rulings (headline: advance-on-TTS is the
+  graveyarded auto-advance), the breath map (INTRO ARCS -> THE MIX -> ENCORE -> CLOSE), conveyor +
+  exchange as the machine drills. Files: tripfluent-sprint2-handoff.md + composer ruling (executed
+  v215) + design/lesson-breath.html (STAMPED canvas - NOT YET RECEIVED, Tom to export; constitution
+  ritual + canvas-dependent builds wait on it).
+- Increment 1 (checklist item 1) live: the present card's 650ms auto-advance replaced with a
+  learner-paced Continue (it was the app's LAST timer-paced exit - the resolution frame already
+  conformed); speak()'s dead onend socket removed so advance-on-TTS can't return; reveal [tune]s
+  applied (res-grown 600ms hold -> live from first paint with ~150ms staggered beats, option settle
+  300ms, played-line already 280ms).
+- OPEN (chat): reply-set authoring on fresh pack-state (export riding with this report) · insights
+  whisper copy (chat votes #2: "Insights arrive after a week of practice." - Tom's word pending).
+- NEXT (build order): slide -> intro ladder -> MC/glue retirement -> conveyor+exchange -> encore +
+  input climb -> harness stories.
+
 ## 2026-07-28 — Composer guard executed: semantic tags, default-closed (v215)
 - Chat's ruling on the 121-weld evidence (tripfluent-composer-ruling.md) is live: fillers carry
   feature tags in curriculum.js (`weld:` field, 22 items authored), frames declare accepts

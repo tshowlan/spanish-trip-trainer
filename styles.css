@@ -482,7 +482,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   color: var(--text); border-radius: var(--radius); padding: 14px 16px; font-size: 15px;
   font-family: var(--font-display);       /* buttons don't inherit font (same fix as .btn) */
   font-weight: 500; min-height: 48px;     /* variants artifact .opt: 15/500, 48px target */
-  cursor: pointer; box-shadow: var(--shadow); transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s;
+  cursor: pointer; box-shadow: var(--shadow); transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s,
+    opacity 300ms cubic-bezier(.2,.7,.3,1), border-color 300ms, background 300ms;   /* option settle 300ms [tune], Sprint 2 ruling 1 */
 }
 .choice:active { transform: translateY(2px); box-shadow: var(--shadow-press); }   /* §2.1 push-down */
 .choice.correct { border-color: var(--green); background: color-mix(in srgb, var(--green) 15%, transparent); }
@@ -1349,8 +1350,14 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .bank { transition: opacity 450ms; }
 .bank.recede { opacity: .28; pointer-events: none; }
 /* materialization block: es reveal + en + audio grow in around the achievement object */
-.res-grown { opacity: 0; transform: translateY(5px); transition: opacity 360ms cubic-bezier(.2,.7,.3,1) 600ms, transform 360ms cubic-bezier(.2,.7,.3,1) 600ms; margin-top: 16px; }
+/* Sprint 2 ruling 1 [tune]s: no 600ms hold — the frame (and its Continue) is live from first
+   paint; the reveal beats stagger in at ~150ms steps behind it instead */
+.res-grown { opacity: 0; transform: translateY(5px); transition: opacity 300ms cubic-bezier(.2,.7,.3,1), transform 300ms cubic-bezier(.2,.7,.3,1); margin-top: 16px; }
 .res-grown.show { opacity: 1; transform: none; }
+.res-grown .res-en, .res-grown .res-audio, .res-grown .res-note { opacity: 0; transition: opacity 300ms cubic-bezier(.2,.7,.3,1); }
+.res-grown.show .res-en { opacity: 1; transition-delay: 150ms; }
+.res-grown.show .res-audio { opacity: 1; transition-delay: 300ms; }
+.res-grown.show .res-note { opacity: 1; transition-delay: 450ms; }
 .es-reveal { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--text); position: relative; display: inline-block; margin-bottom: 4px; }
 .es-reveal .sweep2 { position: absolute; left: 0; right: 0; bottom: -6px; height: 2.5px; background: var(--green); border-radius: 2px;
   transform: scaleX(0); transform-origin: left center; }
@@ -1381,7 +1388,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .stick.show { opacity: 1; transform: none; }
 .runner { position: relative; }
 @media (prefers-reduced-motion: reduce) {
-  .build-answer, .build-answer .word, .res-grown, .stick, .bank { transition: none; }
+  .build-answer, .build-answer .word, .res-grown, .stick, .bank,
+  .res-grown .res-en, .res-grown .res-audio, .res-grown .res-note { transition: none; }
   .build-answer.fused .sweep, .res-grown.show .sweep2 { animation: none; transform: scaleX(1); }
 }
 

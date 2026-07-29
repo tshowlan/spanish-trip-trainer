@@ -166,3 +166,10 @@ or missing form = no weld. Option (b) taught-only was rejected: novel recombinat
 we teach. Code deviation flagged to chat: place excluded from quiero/necesito accepts (want-a-place
 reads as toddler-speak; want-to-go is the verbal filler's job). Result: 121 -> 49 welds, all spot
 verdicts pass (composer-welds-after-guard.md).
+
+## 2026-07-27 — Sprint 2 rulings (the lesson's breath)
+Universal Continue (auto-advance conformance) · the slide (the field never moves) · the intro
+ladder (Present -> Grasp -> Build -> Variation -> Produce, first exposure) · MC word-scale-3 only ·
+glue never targeted · machine drills = conveyor + exchange (the answer is the exercise) · encore ->
+close (no done screens ever) · input climbs by expertise (tray -> keyboard). Spec: design/
+lesson-breath.html (stamped canvas) + tripfluent-sprint2-handoff.md.
