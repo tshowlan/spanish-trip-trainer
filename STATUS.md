@@ -15,6 +15,13 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-29 — Reply-sets banked (v219)
+- Chat's 28 exchange replies (5 machines) transcribed onto machine lessons as `replies:` in
+  curriculum.js - pure data, unused until the exchange builds (increment 4). Exact-match pass
+  found 5 reuse welds (chat marked 4; "Está cerrado hasta las cinco" also matches verbatim).
+  Authoring rules merged into the constitution (Replies family). Pack audit clean.
+- Sprint 2 build order stays: increment 3 (intro ladder + MC retirement) next; nothing blocked.
+
 ## 2026-07-29 — The slide's final speed: equal halves 400/400 (v218)
 - Tom A/B'd four speeds in the harness (450/500 shipped, -10/-15/-20%); the winner is SYMMETRIC:
   400ms out, 400ms in. Shipped app-wide; harness variants collapsed back to the one shipped story.

@@ -65,6 +65,14 @@ const CURRICULUM = {
                     primer: { scene: "The finding machine. Ask where anything is, and know enough of the answer to start walking." },
                     beat: "The finding machine.",
                     machine: true, frame: "¿dónde está ___?",
+                    // exchange reply-sets (chat, 2026-07-28): heard-only, no SRS homes; reuseId welds where a reply IS a taught item
+                    replies: [
+                      { es: "A la derecha, al final de la calle", en: "Right, at the end of the street", target: { q: "Which way?", options: [{ t: "Right, at the end of the street", ok: 1 }, { t: "Left, at the corner", ok: 0 }, { t: "Straight ahead", ok: 0 }] } },
+                      { es: "Todo recto, cinco minutos", en: "Straight ahead, five minutes", target: { q: "Which way?", options: [{ t: "Straight on, 5 minutes", ok: 1 }, { t: "To the right, 5 minutes", ok: 0 }, { t: "It's far away", ok: 0 }] } },
+                      { es: "La segunda calle a la izquierda", en: "Second street on the left", target: { q: "Which way?", options: [{ t: "Second street left", ok: 1 }, { t: "Second street right", ok: 0 }, { t: "At the square", ok: 0 }] } },
+                      { es: "Está cerca, en la esquina", en: "It's close, on the corner", target: { q: "Where?", options: [{ t: "Nearby, on the corner", ok: 1 }, { t: "Far, at the station", ok: 0 }, { t: "Inside the square", ok: 0 }] } },
+                      { es: "Está lejos. Mejor un taxi", en: "It's far. Better take a taxi", target: { q: "Where?", options: [{ t: "Far: take a taxi", ok: 1 }, { t: "Very close", ok: 0 }, { t: "It's closed today", ok: 0 }] }, note: "mejor is heard-content; the target rides lejos + taxi" },
+                    ],
                     frameGloss: "¿Dónde está...? = where is...? Point it at anything lost.",
                     items: [
                       { es: "¿Dónde está el baño?", en: "Where is the bathroom?", tier: 1, tags: ["core"], keywords: ["baño"], frame: "¿dónde está ___?", weld: { tags: ["place"], indef: { es: "un baño", en: "a bathroom" } }, note: "In Spain you will also hear el servicio for a restaurant loo." },
@@ -97,6 +105,15 @@ const CURRICULUM = {
                     primer: { scene: "The price machine. Nothing in Spain will have a price you can't ask about." },
                     beat: "The price machine.",
                     machine: true, frame: "¿cuánto cuesta ___?",
+                    // exchange reply-sets (chat, 2026-07-28): heard-only, no SRS homes; reuseId welds where a reply IS a taught item
+                    replies: [
+                      { es: "Son dos con cincuenta", en: "That's two fifty", target: { q: "How much?", options: [{ t: "€2.50", ok: 1 }, { t: "€5.20", ok: 0 }, { t: "€3.50", ok: 0 }] } },
+                      { es: "Diez euros", en: "Ten euros", target: { q: "How much?", options: [{ t: "€10", ok: 1 }, { t: "€2", ok: 0 }, { t: "€6", ok: 0 }] } },
+                      { es: "Son cinco con veinte", en: "That's five twenty", target: { q: "How much?", options: [{ t: "€5.20", ok: 1 }, { t: "€2.50", ok: 0 }, { t: "€5.50", ok: 0 }] }, reuseId: "spain:son-cinco-con-veinte" },
+                      { es: "Son veinte con diez", en: "That's twenty ten", target: { q: "How much?", options: [{ t: "€20.10", ok: 1 }, { t: "€10.20", ok: 0 }, { t: "€20.50", ok: 0 }] } },
+                      { es: "Son tres euros", en: "That's three euros", target: { q: "How much?", options: [{ t: "€3", ok: 1 }, { t: "€6", ok: 0 }, { t: "€7", ok: 0 }] } },
+                      { es: "Cincuenta euros la noche", en: "Fifty a night", target: { q: "How much?", options: [{ t: "€50 per night", ok: 1 }, { t: "€15 per night", ok: 0 }, { t: "€100 per night", ok: 0 }] }, note: "habitación filler's natural reply" },
+                    ],
                     frameGloss: "¿Cuánto cuesta...? = how much is...? Ask before you nod.",
                     items: [
                       { es: "¿Cuánto cuesta esto?", en: "How much is this?", tier: 1, tags: ["core"], keywords: ["cuesta"], frame: "¿cuánto cuesta ___?", weld: { tags: ["deictic"] }, note: "Esto again. Point, ask, decide." },
@@ -110,6 +127,15 @@ const CURRICULUM = {
                     primer: { scene: "The bring-me machine. Polite enough for anywhere, strong enough to get the check." },
                     beat: "The bring-me machine. Your table workhorse.",
                     machine: true, frame: "¿me puede traer ___?",
+                    // exchange reply-sets (chat, 2026-07-28): heard-only, no SRS homes; reuseId welds where a reply IS a taught item
+                    replies: [
+                      { es: "Ahora mismo", en: "Right away", target: { q: "When is it coming?", options: [{ t: "Right away", ok: 1 }, { t: "In an hour", ok: 0 }, { t: "It's not available", ok: 0 }] }, reuseId: "spain:ahora-mismo" },
+                      { es: "Claro, ahora se la traigo", en: "Of course, bringing it now", target: { q: "What did they say?", options: [{ t: "Yes, it's coming", ok: 1 }, { t: "They don't have it", ok: 0 }, { t: "Pay first", ok: 0 }] } },
+                      { es: "Marchando", en: "Coming right up", target: { q: "What did they say?", options: [{ t: "On its way", ok: 1 }, { t: "We're closed", ok: 0 }, { t: "Wrong table", ok: 0 }] }, note: "the bar-counter word; pure Spain" },
+                      { es: "¿Le pongo algo más?", en: "Shall I get you anything else?", target: { q: "What are they asking?", options: [{ t: "Do you want anything else?", ok: 1 }, { t: "Are you paying now?", ok: 0 }, { t: "Is the table free?", ok: 0 }] }, reuseId: "spain:le-pongo-algo-mas" },
+                      { es: "Lo siento, no queda", en: "Sorry, there's none left", target: { q: "What did they say?", options: [{ t: "None left", ok: 1 }, { t: "Right away", ok: 0 }, { t: "It's on the house", ok: 0 }] } },
+                      { es: "Aquí tiene", en: "Here you go", target: { q: "What did they say?", options: [{ t: "Here it is", ok: 1 }, { t: "Take it away", ok: 0 }, { t: "How many?", ok: 0 }] }, reuseId: "spain:aqui-tiene" },
+                    ],
                     frameGloss: "¿Me puede traer...? = could you bring me...? The polite ask that works on anyone.",
                     items: [
                       { es: "¿Me puede traer la cuenta?", en: "Could you bring me the check?", tier: 1, tags: ["core"], keywords: ["cuenta"], frame: "¿me puede traer ___?", weld: { tags: ["bringable"] }, variants: ["¿Me trae la cuenta?"], note: "Me trae...? is the same machine with the jacket off. Both are right.", anchor: "Think: traer is to bring. You are asking them to bring it, not going to get it." },
@@ -123,6 +149,14 @@ const CURRICULUM = {
                     primer: { scene: "The is-there machine. One little word opens every \"does this place have...\" question you'll ever need." },
                     beat: "The is-there machine.",
                     machine: true, frame: "¿hay ___?",
+                    // exchange reply-sets (chat, 2026-07-28): heard-only, no SRS homes; reuseId welds where a reply IS a taught item
+                    replies: [
+                      { es: "Sí, al fondo a la derecha", en: "Yes, at the back on the right", target: { q: "Is there one?", options: [{ t: "Yes: at the back, right side", ok: 1 }, { t: "No, none here", ok: 0 }, { t: "Yes: upstairs on the left", ok: 0 }] }, note: "fondo is heard-content; derecha carries the target" },
+                      { es: "No, no hay. Pero hay una cerca", en: "No, but there's one nearby", target: { q: "Is there one?", options: [{ t: "Not here, but one nearby", ok: 1 }, { t: "Yes, right here", ok: 0 }, { t: "No, none in town", ok: 0 }] } },
+                      { es: "Sí, la contraseña está en el ticket", en: "Yes, the password's on the receipt", target: { q: "Is there wifi?", options: [{ t: "Yes: password on the receipt", ok: 1 }, { t: "No wifi here", ok: 0 }, { t: "Ask at the bar", ok: 0 }] } },
+                      { es: "Sí, ¿para cuántos?", en: "Yes, for how many?", target: { q: "Is there a table?", options: [{ t: "Yes: how many people?", ok: 1 }, { t: "No tables tonight", ok: 0 }, { t: "Only at the bar", ok: 0 }] } },
+                      { es: "Sí, tenemos. Un momento", en: "Yes we have some. One moment", target: { q: "Anything gluten-free?", options: [{ t: "Yes, one moment", ok: 1 }, { t: "No, nothing", ok: 0 }, { t: "Only the bread", ok: 0 }] } },
+                    ],
                     frameGloss: "¿Hay...? = is there...? Availability in one word.",
                     items: [
                       { es: "¿Hay wifi?", en: "Is there wifi?", tier: 1, tags: ["core"], keywords: ["wifi"], frame: "¿hay ___?", weld: { tags: ["amenity"] }, contextEs: "¿Hay wifi aquí?", contextEn: "Is there wifi here?" },
@@ -136,6 +170,15 @@ const CURRICULUM = {
                     primer: { scene: "The when machine. Opening times, closing times, the last train back." },
                     beat: "The when machine.",
                     machine: true, frame: "¿a qué hora ___?",
+                    // exchange reply-sets (chat, 2026-07-28): heard-only, no SRS homes; reuseId welds where a reply IS a taught item
+                    replies: [
+                      { es: "A las ocho de la noche", en: "At eight in the evening", target: { q: "When?", options: [{ t: "8 in the evening", ok: 1 }, { t: "8 in the morning", ok: 0 }, { t: "10 at night", ok: 0 }] } },
+                      { es: "Abre a las diez", en: "It opens at ten", target: { q: "When?", options: [{ t: "Opens at 10", ok: 1 }, { t: "Closes at 10", ok: 0 }, { t: "Opens at 2", ok: 0 }] } },
+                      { es: "Está cerrado hasta las cinco", en: "Closed until five", target: { q: "What did they say?", options: [{ t: "Closed until 5", ok: 1 }, { t: "Open until 5", ok: 0 }, { t: "Closing right now", ok: 0 }] }, reuseId: "spain:esta-cerrado-hasta-las-cinco" },
+                      { es: "El tren sale a las dos y media", en: "The train leaves at half past two", target: { q: "When?", options: [{ t: "2:30", ok: 1 }, { t: "2:00", ok: 0 }, { t: "3:30", ok: 0 }] } },
+                      { es: "Empieza a las nueve", en: "It starts at nine", target: { q: "When?", options: [{ t: "Starts at 9", ok: 1 }, { t: "Ends at 9", ok: 0 }, { t: "Starts at 5", ok: 0 }] } },
+                      { es: "Cierra a mediodía los domingos", en: "Closes at midday on Sundays", target: { q: "What did they say?", options: [{ t: "Closes midday Sunday", ok: 1 }, { t: "Open all Sunday", ok: 0 }, { t: "Closes at 2", ok: 0 }] }, note: "the stretch reply; cut if it tests hot" },
+                    ],
                     frameGloss: "¿A qué hora...? = at what time...? Opens, closes, leaves: the schedule machine.",
                     items: [
                       { es: "¿A qué hora abre?", en: "What time does it open?", tier: 1, tags: ["time"], keywords: ["hora", "abre"], reply: { es: "A las nueve de la mañana", en: "At nine in the morning" }, frame: "¿a qué hora ___?" },

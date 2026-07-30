@@ -173,3 +173,9 @@ ladder (Present -> Grasp -> Build -> Variation -> Produce, first exposure) · MC
 glue never targeted · machine drills = conveyor + exchange (the answer is the exercise) · encore ->
 close (no done screens ever) · input climbs by expertise (tray -> keyboard). Spec: design/
 lesson-breath.html (stamped canvas) + tripfluent-sprint2-handoff.md.
+
+## 2026-07-28 — Exchange reply-sets authored
+28 replies / 5 machines (chat, tripfluent-reply-sets.md); replies are a heard-only content class
+(no homes, reuseId welds where items exist - 5 exact welds found); targets decode from taught
+anchors; every machine keeps a negative reply. Data lives on machine lessons as `replies:` in
+curriculum.js; the exchange drill (Sprint 2 increment 4) is the consumer.

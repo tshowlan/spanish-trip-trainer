@@ -219,6 +219,19 @@ doc narrates, this file states only the laws.
 - **Recommends, never threatens** (the standing copy guardrail); no capability claims about the
   learner's current state in primers.
 
+## Replies (heard-only content, minted with the exchange reply-sets, 2026-07-28)
+
+- **Replies are heard-only:** never production targets, never SRS items, no homes. The
+  taught-once law does not apply to them — but where a reply IS a taught item, the reuseId
+  welds it (one recording, one string, the spiral audible).
+- **Targets decode from taught anchors:** heard-content words beyond the curriculum are legal
+  in replies ONLY when the target never depends on them (lejos carries the meaning; mejor is
+  atmosphere).
+- **Number options: taught numbers only.** Price distractors may be digit-swaps of the correct
+  answer (ear discrimination on numbers is sound-neighbor-legal).
+- **Every machine keeps a no:** each reply-set holds a negative reply (no queda · no hay) —
+  Spain sometimes says no, and the learner should survive it.
+
 ## Resolution vocabulary
 
 - **One resolution language:** every correct answer matures the page IN PLACE — fusion/settle,
