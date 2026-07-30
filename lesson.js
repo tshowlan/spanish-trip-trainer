@@ -1994,15 +1994,15 @@ function requeueMiss(item, failedType) {
 /* THE SLIDE, exit half (Sprint 2 ruling 2): release the entrance animation FIRST — its
    fill pins transform, and an animation beats a transition, so starting the travel in the
    same style pass renders as a SNAP, not a slide (Tom's catch, 2026-07-29). Reflow between
-   the release and the travel makes the browser honor the transition. 450ms matches
-   #qbody.leaving. */
+   the release and the travel makes the browser honor the transition. 400ms matches
+   #qbody.leaving (Tom's A/B pick: equal halves, 400/400). */
 function slideOut(after) {
   const qb = $("#qbody");
   if (!qb) { after(); return; }
   qb.classList.remove("qenter");
   void qb.offsetWidth;
   qb.classList.add("leaving");
-  setTimeout(after, 450);
+  setTimeout(after, 400);
 }
 function next() {
   clearFooter();

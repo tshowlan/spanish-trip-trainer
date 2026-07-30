@@ -509,11 +509,11 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* §8.3 each question springs in — continuous motion is most of "feels alive" */
 /* THE SLIDE (Sprint 2 ruling 2): the work travels across the still field — in from the
    right on the system curve; horizontal is the lesson's progress axis.
-   [tune] 2026-07-29 (Tom, round 3): nudge distances read as invisible — the slide is now a
-   FULL page travel: old work rides entirely off the left edge (450ms), new work rides in from
-   off-screen right (500ms), no fade needed, the field visibly still beneath both. #app's
-   overflow-x clip (v214) is what keeps the off-stage halves from widening the page. */
-#qbody.qenter { animation: qenter 500ms cubic-bezier(.2,.7,.3,1) both; }
+   [tune] 2026-07-29 (Tom, final): FULL page travel, EQUAL halves — 400ms out, 400ms in
+   (Tom A/B'd 450/500, ±10/15/20%; symmetric 400/400 won). No fade needed; the field visibly
+   still beneath both. #app's overflow-x clip (v214) keeps the off-stage halves from widening
+   the page. */
+#qbody.qenter { animation: qenter 400ms cubic-bezier(.2,.7,.3,1) both; }
 @keyframes qenter { from { transform: translateX(110%); } to { transform: none; } }
 /* §8.3 wrong answer — restrained iOS-passcode shake, no red splash */
 .shake-x { animation: shake .34s; }
@@ -1189,11 +1189,11 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
    onboarding inputs keep the global .text-input as-is. */
 #qbody .text-input { font-family: var(--font-display); }
 #qbody.qcorrect .text-input { border-color: var(--green); background-color: color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
-/* the slide, outgoing: the whole exercise rides off the left edge, solid, 450ms.
+/* the slide, outgoing: the whole exercise rides off the left edge, solid, 400ms.
    animation:none is LOAD-BEARING: the qenter animation's fill pins transform forever and an
    animation beats a transition — without this line the exit never renders (Tom's catch: the
    old exercise "just goes", found 2026-07-29). */
-#qbody.leaving { animation: none; transform: translateX(-110%); transition: transform 450ms cubic-bezier(.4,.05,.7,.5); }
+#qbody.leaving { animation: none; transform: translateX(-110%); transition: transform 400ms cubic-bezier(.4,.05,.7,.5); }
 
 /* §3.3 correction sheet — built to design/correction-sheet.html */
 .corr-wrap { position: fixed; inset: 0; z-index: 70; }
