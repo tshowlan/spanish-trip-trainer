@@ -15,6 +15,20 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-29 — Sprint 2 increment 2: THE SLIDE (v217)
+- The slide is live, Tom-approved in the harness after three tuning rounds: the whole exercise
+  rides off the LEFT edge solid (450ms), the next rides in from off-screen RIGHT (500ms), the
+  field + progress chrome persist as the same DOM nodes (runner shell reuse in renderQuestion).
+  Final values are [tune]d well past the canvas's 260ms/40px, which read as invisible on eye.
+- THE BUG THAT HID IT: qenter's animation fill pins transform forever, and an animation beats a
+  transition — every previous exit SNAPPED invisibly. slideOut() now releases the entrance class,
+  forces a reflow, then starts the travel; all four exit paths route through it. Traced the
+  computed transform frame-by-frame to prove real travel.
+- Insights whisper empty state shipped (Tom's pick, chat's #2): "Insights arrive after a week of
+  practice." when no trend exists yet; flat/falling weeks for established users stay silent.
+  Closes the last Sprint 1 open.
+- New harness story: "Sprint 2 — THE SLIDE (3 exercises, tap through)".
+
 ## 2026-07-28 — SPRINT 2 STAMPED by chat; build increment 1 SHIPPED (v216)
 - Chat's lesson-feel session closed: nine Tom-ratified rulings (headline: advance-on-TTS is the
   graveyarded auto-advance), the breath map (INTRO ARCS -> THE MIX -> ENCORE -> CLOSE), conveyor +

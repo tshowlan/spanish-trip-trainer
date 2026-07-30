@@ -496,27 +496,43 @@ function renderQuestion() {
   clearFooter();
   hideTabbar();
   document.body.classList.add("in-runner");             // runners wear no topbar (the field is identity)
-  app.innerHTML = "";
-  const wrap = el(`<div class="runner ${sceneClass(run.lesson && run.lesson.topic)}"></div>`);   // §8.3 ambient scenario tint
-  wrap.appendChild(facetField());                       // the field: the exercise ground, behind everything
-  wrap.appendChild(el(`
-    <div class="progress-row">
-      <button class="close-btn" id="quit">${icon('x',24)}</button>
-      <div class="pbar"><i style="width:${run.pct}%"></i></div>
-      <span class="q-sring" id="q-sring"></span>
-      <div class="stick" id="q-stick">Stronger</div>
-    </div>`));
-  wrap.appendChild(el(`<div id="qbody" class="qenter"></div>`));   // §8.3 each question springs in
-  app.appendChild(wrap);
+  // THE SLIDE (Sprint 2 ruling 2): between exercises the runner SHELL holds — the field,
+  // the chrome, the progress bar never move — and only the work travels: the outgoing
+  // content left via .leaving (40px left + fade), the incoming #qbody enters from the right.
+  const scene = sceneClass(run.lesson && run.lesson.topic);
+  let wrap = app.querySelector(".runner[data-scene]");
+  if (wrap && wrap.dataset.scene === scene) {
+    const old = wrap.querySelector("#qbody"); if (old) old.remove();
+    window.scrollTo(0, 0);                             // a tall exercise may have scrolled; the new one enters with the shell at rest
+    const bar = wrap.querySelector(".pbar > i"); if (bar) bar.style.width = run.pct + "%";
+    const sr = wrap.querySelector("#q-sring"); if (sr) sr.innerHTML = "";
+    const st = wrap.querySelector("#q-stick"); if (st) st.classList.remove("show");
+    wrap.appendChild(el(`<div id="qbody" class="qenter"></div>`));
+  } else {
+    app.innerHTML = "";
+    wrap = el(`<div class="runner ${scene}"></div>`);    // §8.3 ambient scenario tint
+    wrap.dataset.scene = scene;
+    wrap.appendChild(facetField());                      // the field: the exercise ground, behind everything
+    wrap.appendChild(el(`
+      <div class="progress-row">
+        <button class="close-btn" id="quit">${icon('x',24)}</button>
+        <div class="pbar"><i style="width:${run.pct}%"></i></div>
+        <span class="q-sring" id="q-sring"></span>
+        <div class="stick" id="q-stick">Stronger</div>
+      </div>`));
+    wrap.appendChild(el(`<div id="qbody" class="qenter"></div>`));
+    app.appendChild(wrap);
+    // listeners live on the persistent shell — bound once per runner, not per question
+    ["pointerdown", "click"].forEach(ev => wrap.addEventListener(ev, e => {
+      if (Date.now() < run.guardT) { e.stopPropagation(); e.preventDefault(); }
+    }, true));
+    // §8.2 card-press haptic — one delegated listener covers every interactive card in the runner
+    wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile")) haptic("press"); });
+    wrap.querySelector("#quit").addEventListener("click", sessionSheet);
+  }
   // tap guard (backlog 7/26-3): a fast Continue tap was landing on the NEXT exercise's
   // options — a fresh question swallows input for its first 300ms [tune], capture-phase
   run.guardT = Date.now() + 300;
-  ["pointerdown", "click"].forEach(ev => wrap.addEventListener(ev, e => {
-    if (Date.now() < run.guardT) { e.stopPropagation(); e.preventDefault(); }
-  }, true));
-  // §8.2 card-press haptic — one delegated listener covers every interactive card in the runner
-  wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile")) haptic("press"); });
-  $("#quit").addEventListener("click", sessionSheet);
   run.answered = false;
   run.slotT0 = Date.now();                              // per-slot timing telemetry (2026-07-22)
   // strength ring only when exactly one item is on stage (§3.7); multi-item boards
@@ -665,7 +681,7 @@ function renderPresent(q) {
     if (b.dataset.ok === "1") {
       if (odone) return; odone = true; playSound("correct"); haptic("correct"); b.classList.add("got");
       const f = footer(`<button class="btn" id="pcont">Continue</button>`);
-      f.querySelector("#pcont").addEventListener("click", advance);
+      f.querySelector("#pcont").addEventListener("click", () => slideOut(advance));   // the present card leaves on the slide too
     }
     else { haptic("press"); b.classList.add("dim"); opts.querySelectorAll(".opt").forEach(o => { if (o.dataset.ok === "1") o.classList.add("hinted"); }); }
   }));
@@ -1316,7 +1332,7 @@ function renderPairs(q) {
       <div class="pairs-allset">Four sounds, four meanings, four spellings. All yours.</div>
       <button class="btn res-cont">Continue</button>
     </div>`);
-    grown.querySelector(".res-cont").addEventListener("click", () => { $("#qbody").classList.add("leaving"); setTimeout(next, 200); });
+    grown.querySelector(".res-cont").addEventListener("click", () => slideOut(next));
     body.appendChild(grown);
     setTimeout(() => grown.classList.add("show"), reduced ? 0 : 1050);
   }
@@ -1863,7 +1879,7 @@ function resolveCorrect(item, q, info) {
     <button class="btn res-cont">Continue</button>
   </div>`);
   let advanced = false;
-  const goNext = () => { if (advanced) return; advanced = true; qb.classList.add("leaving"); setTimeout(next, 200); };
+  const goNext = () => { if (advanced) return; advanced = true; slideOut(next); };
   const playWhole = () => speak(item.es);
   if (!(q && (q.noAudio || q.noAudioRow))) {
     const arow = el(`<div class="res-audio-row"></div>`);
@@ -1961,7 +1977,8 @@ function showCorrection(item, extra, wrong) {
   setTimeout(() => { cont.disabled = false; }, 1200);
   cont.addEventListener("click", () => {
     if (cont.disabled) return;
-    wrap.classList.remove("show"); setTimeout(() => wrap.remove(), 300); next();
+    wrap.classList.remove("show"); setTimeout(() => wrap.remove(), 300);
+    slideOut(next);                                    // the exercise below leaves on the slide too
   });
 }
 // missed item → re-serve later in the session, one ladder rung easier (capped to avoid spirals)
@@ -1973,6 +1990,19 @@ function requeueMiss(item, failedType) {
   const type = rungDownType(failedType, item);
   const pos = Math.min(run.qs.length, run.idx + 3 + Math.floor(Math.random() * 3));   // 3-5 slots later
   run.qs.splice(pos, 0, { type, item, requeued: true });
+}
+/* THE SLIDE, exit half (Sprint 2 ruling 2): release the entrance animation FIRST — its
+   fill pins transform, and an animation beats a transition, so starting the travel in the
+   same style pass renders as a SNAP, not a slide (Tom's catch, 2026-07-29). Reflow between
+   the release and the travel makes the browser honor the transition. 450ms matches
+   #qbody.leaving. */
+function slideOut(after) {
+  const qb = $("#qbody");
+  if (!qb) { after(); return; }
+  qb.classList.remove("qenter");
+  void qb.offsetWidth;
+  qb.classList.add("leaving");
+  setTimeout(after, 450);
 }
 function next() {
   clearFooter();

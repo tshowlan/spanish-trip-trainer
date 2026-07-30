@@ -861,7 +861,9 @@ function divergenceLine() {
    encouraging case — a positive 2-week Readiness move; silence otherwise (never a negative nudge). */
 function insightLine() {
   const tr = (typeof scoreTrend === "function") ? scoreTrend("readiness", 7) : null;   /* [tune] one week (backlog 7/26-7) */
-  if (!tr || tr.delta <= 0) return null;   // new users + flat weeks: silent (empty-state copy = open CHAT question)
+  // no trend yet (under ~a week of history): name the future instead of silence (Tom's pick 2026-07-29, chat's #2)
+  if (!tr) return el(`<div class="whisper"><span>Insights arrive after a week of practice.</span></div>`);
+  if (tr.delta <= 0) return null;          // flat or falling week for an established user: silent, never scolding
   return el(`<div class="whisper"><span class="spark"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg></span><span>Your last week moved Readiness <span class="num">+${tr.delta}</span></span></div>`);
 }
 

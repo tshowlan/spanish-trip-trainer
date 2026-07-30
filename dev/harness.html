@@ -187,6 +187,15 @@
           safe(renderHome);
           safe(runSplash);
         },
+        // Sprint 2 ruling 2: a real multi-exercise run — answer + Continue to see the work
+        // travel across the still field (out 200ms left, in 260ms from the right)
+        "Sprint 2 — THE SLIDE (3 exercises, tap through)": () => {
+          clean();
+          run = { lesson: { id: "__harness__", topic: "Ordering food", title: "At the restaurant", items: lessonItems },
+            qs: [{ type: "mc_es2en", item: normItem }, { type: "build", item: chunkItem }, { type: "listen_choice", item: shortItem }],
+            idx: 0, pct: 20, wrong: 0, restored: 0, answered: false, reasks: {}, review: false, missed: new Map() };
+          renderQuestion();
+        },
         "Exercise — listen & type": () => ask("listen_type", normItem),
         "Exercise — listen & choose (night field)": () => { ask("listen_choice", normItem); const f = document.querySelector(".facet-bg"); if (f) f.classList.add("no-light"); },
         "Exercise — speak it": () => ask("speak_it", normItem),

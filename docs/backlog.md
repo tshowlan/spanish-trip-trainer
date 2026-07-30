@@ -38,7 +38,7 @@ Follow-on fixes Tom's device testing surfaced after the v207 batch:
    v205 runner fix) + pace-tick circle clipped (overflow). Mechanical.
 4. ~~[CODE] 7/24-5~~ DONE (sheet max-height 78vh, backdrop always reachable): "By scenario" sheet traps the user — no way out except picking. Add the standard
    backdrop/cancel exits (bug: every sheet must be dismissible).
-5. ~~[CODE]~~ DONE (7d window, copy updated) · copy→CHAT open: 7/26-7 Insights whisper window: 2 weeks → 1 week (logic). New-user empty copy = CHAT flag
+5. ~~[CODE]~~ DONE (7d window v207; empty-state copy v217: "Insights arrive after a week of practice.") · was: 7/26-7 Insights whisper window: 2 weeks → 1 week (logic). New-user empty copy = CHAT flag
    (what should it say before there's a trend?).
 6. ~~[CODE] 7/25-6~~ DONE v207 ordering + v209 real fix (dings are now media clips on the TTS lane; v208's WebAudio rescue was not enough on device): The correct-answer ding should play even while the phrase is being spoken (audio
    layering; today one suppresses the other).
