@@ -154,6 +154,30 @@
         });
         state.lessons = { "s1-rescue": { stars: 3, at: new Date().toISOString() } };
       }
+      // slide speed testing: scale the CSS halves AND the slideOut handoff together
+      function setSlideScale(s) {
+        window._slideScale = s;
+        let st = document.getElementById("slide-scale");
+        if (!st) { st = document.createElement("style"); st.id = "slide-scale"; document.head.appendChild(st); }
+        st.textContent = `#qbody.qenter{animation-duration:${Math.round(500 * s)}ms}#qbody.leaving{transition-duration:${Math.round(450 * s)}ms}`;
+      }
+      // harness-only: slideOut with the scaled handoff (the app version hardcodes 450ms)
+      slideOut = function (after) {
+        const qb = $("#qbody");
+        if (!qb) { after(); return; }
+        qb.classList.remove("qenter");
+        void qb.offsetWidth;
+        qb.classList.add("leaving");
+        setTimeout(after, Math.round(450 * (window._slideScale || 1)));
+      };
+      function slideStory(scale) {
+        clean();
+        setSlideScale(scale);
+        run = { lesson: { id: "__harness__", topic: "Ordering food", title: "At the restaurant", items: lessonItems },
+          qs: [{ type: "mc_es2en", item: normItem }, { type: "build", item: chunkItem }, { type: "listen_choice", item: shortItem }],
+          idx: 0, pct: 20, wrong: 0, restored: 0, answered: false, reasks: {}, review: false, missed: new Map() };
+        renderQuestion();
+      }
       const STORIES = {
         "Home — returning user": screen(renderHome, "home"),
         // §3.9 action stack: quiet → due badge → urgent field + one-time arrival breath
@@ -188,14 +212,10 @@
           safe(runSplash);
         },
         // Sprint 2 ruling 2: a real multi-exercise run — answer + Continue to see the work
-        // travel across the still field (out 200ms left, in 260ms from the right)
-        "Sprint 2 — THE SLIDE (3 exercises, tap through)": () => {
-          clean();
-          run = { lesson: { id: "__harness__", topic: "Ordering food", title: "At the restaurant", items: lessonItems },
-            qs: [{ type: "mc_es2en", item: normItem }, { type: "build", item: chunkItem }, { type: "listen_choice", item: shortItem }],
-            idx: 0, pct: 20, wrong: 0, restored: 0, answered: false, reasks: {}, review: false, missed: new Map() };
-          renderQuestion();
-        },
+        // travel across the still field. Speed variants scale BOTH halves + the JS handoff.
+        "Sprint 2 — THE SLIDE (shipped speed, 450/500ms)": () => slideStory(1),
+        "Sprint 2 — THE SLIDE (10% faster, 405/450ms)": () => slideStory(0.9),
+        "Sprint 2 — THE SLIDE (20% faster, 360/400ms)": () => slideStory(0.8),
         "Exercise — listen & type": () => ask("listen_type", normItem),
         "Exercise — listen & choose (night field)": () => { ask("listen_choice", normItem); const f = document.querySelector(".facet-bg"); if (f) f.classList.add("no-light"); },
         "Exercise — speak it": () => ask("speak_it", normItem),
@@ -298,11 +318,29 @@
         "Profile / settings": screen(renderProfile, "profile")
       };
 
-      // wire the picker
+      // wire the picker — grouped (the flat list outgrew itself at ~40 stories, Tom 2026-07-29).
+      // Grouping is by name prefix so new stories file themselves; unknown prefixes land in "Other".
+      const GROUP_OF = name =>
+        /^Sprint 2/.test(name) ? "Sprint 2 (in build)" :
+        /^(Home|First score|Arrival|Learn|Progress|Profile)/.test(name) ? "Screens" :
+        /^(Present card|Correction)/.test(name) ? "Teach: present + correction" :
+        /letter rungs/.test(name) ? "Exercises: letter rungs" :
+        /listen|sound choice|audio cloze|ear build/.test(name) ? "Exercises: listening" :
+        /^Exercise/.test(name) ? "Exercises: production + recognition" :
+        /^Session end/.test(name) ? "Session end" : "Other";
+      const GROUP_ORDER = ["Sprint 2 (in build)", "Screens", "Teach: present + correction",
+        "Exercises: production + recognition", "Exercises: listening", "Exercises: letter rungs",
+        "Session end", "Other"];
       const sel = document.getElementById("hstory");
-      Object.keys(STORIES).forEach(name => {
-        const o = document.createElement("option"); o.value = name; o.textContent = name; sel.appendChild(o);
-      });
+      const buckets = new Map(GROUP_ORDER.map(g => [g, []]));
+      Object.keys(STORIES).forEach(name => buckets.get(GROUP_OF(name)).push(name));
+      for (const g of GROUP_ORDER) {
+        const names = buckets.get(g);
+        if (!names.length) continue;
+        const og = document.createElement("optgroup"); og.label = g;
+        names.forEach(name => { const o = document.createElement("option"); o.value = name; o.textContent = name.replace(/^(Exercise|Session end|Sprint 2) — /, ""); og.appendChild(o); });
+        sel.appendChild(og);
+      }
       function run_story(name) {
         try { STORIES[name](); }
         catch (e) { const a = $("#app"); if (a) a.innerHTML = `<pre style="padding:24px;color:#c0392b;white-space:pre-wrap">${name}\n\n${e.stack || e.message}</pre>`; }
