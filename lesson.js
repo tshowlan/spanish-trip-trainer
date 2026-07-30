@@ -85,10 +85,16 @@ const WELD_ACCEPTS = {
 function _weldFiller(frame, cand, homeDress) {
   const accepts = WELD_ACCEPTS[frame]; if (!accepts) return null;   // undeclared frame: closed
   const w = cand.weld; if (!w || !(w.tags || []).some(t => accepts.includes(t))) return null;
-  if (frame === "¿hay ___?") return w.indef || null;                // article law, strict
-  if (frame === "¿dónde está ___?") return w.def || null;
-  if ((frame === "quiero ___" || frame === "necesito ___") && w.indef) return w.indef;
-  return homeDress;                                                 // cuesta/traer: the filler as taught
+  let f = null;
+  if (frame === "¿hay ___?") f = w.indef || null;                   // article law, strict
+  else if (frame === "¿dónde está ___?") f = w.def || null;
+  else if ((frame === "quiero ___" || frame === "necesito ___") && w.indef) f = w.indef;
+  else f = homeDress;                                               // cuesta/traer: the filler as taught
+  if (!f) return null;
+  // gloss-forms (chat ruling 2026-07-28): English glosses follow ENGLISH — a filler may carry
+  // a gloss beside its article forms that overrides the extracted en (esto's is "this one":
+  // deictic bare "this" implies you already hold it; the Spanish was always fine)
+  return w.gloss ? { es: f.es, en: w.gloss } : f;
 }
 function composeSwap(lesson, anchor) {
   const frame = lesson.machine ? lesson.frame : anchor.frame;

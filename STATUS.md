@@ -15,6 +15,13 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-29 — Gloss-forms + all three rulings settled (v220)
+- Chat's rulings back: weld 5 blessed, BOTH guard deviations upheld (place stays out of
+  quiero/necesito; deictic + amenity join the set - nine tags total). New gloss ruling from Tom's
+  catch executed: fillers carry gloss-forms beside article forms (weld.gloss overrides the
+  extracted en); esto glosses "this one" - "Could you bring me this" is gone from every weld.
+  Re-audit: 49 welds, 0 failures, no bare "this". decisions.md records all four.
+
 ## 2026-07-29 — Reply-sets banked (v219)
 - Chat's 28 exchange replies (5 machines) transcribed onto machine lessons as `replies:` in
   curriculum.js - pure data, unused until the exchange builds (increment 4). Exact-match pass

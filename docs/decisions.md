@@ -179,3 +179,11 @@ lesson-breath.html (stamped canvas) + tripfluent-sprint2-handoff.md.
 (no homes, reuseId welds where items exist - 5 exact welds found); targets decode from taught
 anchors; every machine keeps a negative reply. Data lives on machine lessons as `replies:` in
 curriculum.js; the exchange drill (Sprint 2 increment 4) is the consumer.
+
+## 2026-07-28 — Filler gloss-forms join article forms in the guard table
+Deictic glosses render "this one". English glosses follow English (chat ruling on Tom's catch:
+"Could you bring me this" was off in ENGLISH only - the Spanish esto + pointed finger is the
+register the anchor already teaches). A filler's `weld.gloss` overrides the extracted en in every
+composed weld. Same session: weld 5 blessed ("Está cerrado hasta las cinco"), both guard
+deviations upheld (place excluded from quiero/necesito; deictic + amenity join the tag set - nine
+tags total).

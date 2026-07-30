@@ -54,7 +54,7 @@ const CURRICULUM = {
                     machine: true, frame: "quiero ___",
                     frameGloss: "Quiero = I want. Works at every counter in the Spanish-speaking world.",
                     items: [
-                      { es: "Quiero esto", en: "I want this one", tier: 1, tags: ["core"], keywords: ["esto"], frame: "quiero ___", weld: { tags: ["deictic"] }, contextEs: "Quiero esto, por favor", contextEn: "I want this one, please", note: "Point at it. Esto plus a finger orders almost anything." },
+                      { es: "Quiero esto", en: "I want this one", tier: 1, tags: ["core"], keywords: ["esto"], frame: "quiero ___", weld: { tags: ["deictic"], gloss: "this one" }, contextEs: "Quiero esto, por favor", contextEn: "I want this one, please", note: "Point at it. Esto plus a finger orders almost anything." },
                       { es: "Quiero un café", en: "I want a coffee", tier: 1, tags: ["core"], keywords: ["café"], frame: "quiero ___", weld: { tags: ["bringable", "purchasable", "consumable"], indef: { es: "un café", en: "a coffee" } }, anchor: "Shortcut: Un café, por favor is a complete order too. The machine is optional; the noun is not." },
                       { es: "Quiero una mesa para dos", en: "I want a table for two", tier: 1, tags: ["core"], keywords: ["mesa"], frame: "quiero ___", weld: { tags: ["amenity"], indef: { es: "una mesa para dos", en: "a table for two" } } },
                       { es: "Quiero un taxi", en: "I want a taxi", tier: 1, tags: ["core"], keywords: ["taxi"], frame: "quiero ___", weld: { tags: ["service", "purchasable"], indef: { es: "un taxi", en: "a taxi" } } },
@@ -116,7 +116,7 @@ const CURRICULUM = {
                     ],
                     frameGloss: "¿Cuánto cuesta...? = how much is...? Ask before you nod.",
                     items: [
-                      { es: "¿Cuánto cuesta esto?", en: "How much is this?", tier: 1, tags: ["core"], keywords: ["cuesta"], frame: "¿cuánto cuesta ___?", weld: { tags: ["deictic"] }, note: "Esto again. Point, ask, decide." },
+                      { es: "¿Cuánto cuesta esto?", en: "How much is this?", tier: 1, tags: ["core"], keywords: ["cuesta"], frame: "¿cuánto cuesta ___?", weld: { tags: ["deictic"], gloss: "this one" }, note: "Esto again. Point, ask, decide." },
                       { es: "¿Cuánto cuesta la entrada?", en: "How much is the entrance ticket?", tier: 1, tags: ["core"], keywords: ["entrada"], frame: "¿cuánto cuesta ___?", weld: { tags: ["purchasable", "place"], def: { es: "la entrada", en: "the entrance" }, indef: { es: "una entrada", en: "a ticket" } } },
                       { es: "¿Cuánto cuesta un billete?", en: "How much is a ticket?", tier: 1, tags: ["core"], keywords: ["billete"], frame: "¿cuánto cuesta ___?", weld: { tags: ["purchasable"], indef: { es: "un billete", en: "a ticket" } } },
                       { es: "¿Cuánto cuesta la habitación?", en: "How much is the room?", tier: 1, tags: ["core"], keywords: ["habitación"], frame: "¿cuánto cuesta ___?", weld: { tags: ["place", "purchasable"], def: { es: "la habitación", en: "the room" }, indef: { es: "una habitación", en: "a room" } } },
