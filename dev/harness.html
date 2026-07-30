@@ -154,25 +154,25 @@
         });
         state.lessons = { "s1-rescue": { stars: 3, at: new Date().toISOString() } };
       }
-      // slide speed testing: scale the CSS halves AND the slideOut handoff together
-      function setSlideScale(s) {
-        window._slideScale = s;
+      // slide speed testing: set the CSS halves AND the slideOut handoff together
+      function setSlideMs(outMs, inMs) {
+        window._slideOutMs = outMs;
         let st = document.getElementById("slide-scale");
         if (!st) { st = document.createElement("style"); st.id = "slide-scale"; document.head.appendChild(st); }
-        st.textContent = `#qbody.qenter{animation-duration:${Math.round(500 * s)}ms}#qbody.leaving{transition-duration:${Math.round(450 * s)}ms}`;
+        st.textContent = `#qbody.qenter{animation-duration:${inMs}ms}#qbody.leaving{transition-duration:${outMs}ms}`;
       }
-      // harness-only: slideOut with the scaled handoff (the app version hardcodes 450ms)
+      // harness-only: slideOut with the variable handoff (the app version hardcodes 450ms)
       slideOut = function (after) {
         const qb = $("#qbody");
         if (!qb) { after(); return; }
         qb.classList.remove("qenter");
         void qb.offsetWidth;
         qb.classList.add("leaving");
-        setTimeout(after, Math.round(450 * (window._slideScale || 1)));
+        setTimeout(after, window._slideOutMs || 450);
       };
-      function slideStory(scale) {
+      function slideStory(scale, outMs, inMs) {
         clean();
-        setSlideScale(scale);
+        setSlideMs(outMs || Math.round(450 * scale), inMs || Math.round(500 * scale));
         run = { lesson: { id: "__harness__", topic: "Ordering food", title: "At the restaurant", items: lessonItems },
           qs: [{ type: "mc_es2en", item: normItem }, { type: "build", item: chunkItem }, { type: "listen_choice", item: shortItem }],
           idx: 0, pct: 20, wrong: 0, restored: 0, answered: false, reasks: {}, review: false, missed: new Map() };
@@ -215,7 +215,7 @@
         // travel across the still field. Speed variants scale BOTH halves + the JS handoff.
         "Sprint 2 — THE SLIDE (shipped speed, 450/500ms)": () => slideStory(1),
         "Sprint 2 — THE SLIDE (10% faster, 405/450ms)": () => slideStory(0.9),
-        "Sprint 2 — THE SLIDE (15% faster, 383/425ms)": () => slideStory(0.85),
+        "Sprint 2 — THE SLIDE (15% faster, equal halves 400/400ms)": () => slideStory(0, 400, 400),
         "Sprint 2 — THE SLIDE (20% faster, 360/400ms)": () => slideStory(0.8),
         "Exercise — listen & type": () => ask("listen_type", normItem),
         "Exercise — listen & choose (night field)": () => { ask("listen_choice", normItem); const f = document.querySelector(".facet-bg"); if (f) f.classList.add("no-light"); },
