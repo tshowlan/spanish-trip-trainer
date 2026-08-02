@@ -117,6 +117,16 @@
     // (beat order, slide, universal Continue), not pixels — exercise internals defer to their
     // stamped artifacts. Pairs cover the elements the canvas newly mints.
     // App state: a machine drill rendered (conveyor/exchange, Sprint 2 increments 4+).
+    // ladder-beats.html r1 (stamped 2026-07-28): Grasp + Variation pixel artifact.
+    // App state: a grasp or variation beat rendered (harness stories under Sprint 2).
+    ladderBeats: [
+      [".grasp-word", ".grasp-word"],
+      [".cue-label", ".cue-label"],
+      [".cue-meaning", ".cue-meaning"],
+      [".frame-mount", ".frame-mount"],
+      [".frame-mount .slot", ".frame-mount .slot"],
+      [".tray", ".var-tray"],
+    ],
     lessonBreath: [
       [".frame-mount", ".frame-mount"],
       [".frame-mount .slot", ".frame-mount .slot"],

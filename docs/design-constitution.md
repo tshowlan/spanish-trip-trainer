@@ -306,6 +306,12 @@ doc narrates, this file states only the laws.
   this lesson once, production form, brisk (~90s cap [tune]); the close remains the ending —
   completion copy lives in its resolution kicker, never on a placard. No done screens exist.
   *(Sprint 2 rulings 7-8)*
+- **The cue grammar:** a production cue = micro-caps label (11/600 dim) + the MEANING at
+  content scale (17/600 text) — the cue is the en-side of the rep, never chrome. Minted on the
+  Variation; the conveyor's cue adopts it at build time. *(ladder-beats r1)*
+- **Arc misses don't re-queue:** the arc's remaining beats are the retest; the Present card
+  never re-serves (re-teaching reads as punishment — rung-down's floor is recognition); a
+  missed summit is absorbed by the encore, served scaffolded. *(Sprint 2 miss ruling, c+)*
 - **The input climbs by expertise:** first exposure summits the ITEM at typed cold; the
   machine drills stay at tray. Full cold frame production is an expertise rung — the conveyor
   and the close swap tiles for the keyboard as exposures accrue (threshold [tune], shared

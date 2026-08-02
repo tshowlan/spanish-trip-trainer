@@ -15,6 +15,16 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-02 — Increment-3 rulings executed + ladder-beats stamped (v222)
+- Miss ruling (option c+) live: arc-internal misses never re-queue (the arc's remaining beats are
+  the retest); a PRODUCE miss marks run.summitMissed for the encore to serve scaffolded (increment
+  5 consumes); rung-down's floor is now recognition - the Present card NEVER re-serves.
+- ladder-beats.html r1 committed to design/ (Grasp + Variation pixel artifact). Cue grammar
+  minted + built: micro-caps label (11/600 dim) + meaning at content scale (17/600) - the
+  conveyor's cue adopts it at build time. Wrong tile: wrong-then-release (900ms) then dim; tray
+  recedes on settle (supply rule); grasp audio already at standard 44. Constitution + DESIGN_PAIRS
+  + context pack updated; lint green (0 failing, 7 checked).
+
 ## 2026-07-29 — Sprint 2 increment 3: THE INTRO LADDER + MC retirement (v221)
 - Ruling 3 live: every new item's first lesson runs Present -> Grasp -> Build -> Variation ->
   Produce (typed cold - the sanctioned first summit, ruling 9). Arcs interleave 2 at a time;

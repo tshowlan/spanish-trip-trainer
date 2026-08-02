@@ -965,7 +965,10 @@ function renderGrasp(q) {
 function renderVariation(q) {
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Same frame, new filling</div>`));
-  body.appendChild(el(`<div class="prompt-sub">Make it: <b>${q.item.en}</b></div>`));
+  // THE CUE GRAMMAR (ladder-beats r1): micro-caps label + the meaning at content scale —
+  // the cue is the en-side of the rep, never chrome. The conveyor's cue adopts this too.
+  body.appendChild(el(`<div class="cue-label">Make it</div>`));
+  body.appendChild(el(`<div class="cue-meaning">${q.item.en}</div>`));
   const mount = el(`<div class="frame-mount">${q.parts.pre}<span class="slot"><span class="dashes">– – –</span></span>${q.parts.post}</div>`);
   body.appendChild(mount);
   const tray = el(`<div class="var-tray"></div>`);
@@ -979,10 +982,14 @@ function renderVariation(q) {
         tile.classList.add("used");
         playSound("correct"); haptic("correct");
         recordExposure(itemId(q.item));                            // exposure, not achievement
+        tray.classList.add("recede");                              // supply rule: spent supply recedes
         q.esOnStage = true;                                        // the mounted frame IS the es
         const st = learnPeek(q.item);
         resolveCorrect(q.item, q, { yoursNow: false, restored: false, strengthAfter: st ? Math.round(itemStrength(st)) : 0, miss: false });
-      } else { haptic("press"); tile.classList.add("dim"); }
+      } else {   // wrong-then-release (900ms), then the tile recedes (ladder-beats r1)
+        haptic("wrong"); tile.classList.add("vwrong");
+        setTimeout(() => { tile.classList.remove("vwrong"); tile.classList.add("dim"); }, 900);
+      }
     });
     tray.appendChild(tile);
   });
@@ -1864,7 +1871,7 @@ function _finishFill(q, item, wrongTaps) {
   if (pass && post && itemStrength(post) > strengthBefore && !(run.exposed && run.exposed.has(id)))
     (run.strongerIds = run.strongerIds || new Set()).add(id);
   if (pass) { playSound("correct"); haptic(restored ? "restored" : "correct"); }
-  else { run.wrong++; if (run.missed) run.missed.set(id, item); requeueMiss(item, q.type); }
+  else { run.wrong++; if (run.missed) run.missed.set(id, item); if (!q.arc) requeueMiss(item, q.type); }
   resolveCorrect(item, q, { yoursNow: false, restored, strengthAfter: post ? Math.round(itemStrength(post)) : 0, miss: !pass });
 }
 // per-slot elapsed time -> rolling per-type means (the atlas graduates from estimates
@@ -1914,7 +1921,10 @@ function finishGrade(ok, item, extra, wrong) {
   if (ok && q && q.type === "fill_blank" && (q.blanks || 1) === 1) { const st = state.learn && state.learn[id]; if (st) st.fill1 = (st.fill1 || 0) + 1; }
   playSound(ok ? "correct" : "wrong");
   haptic(restored ? "restored" : ok ? "correct" : "wrong");
-  if (!ok && q && q.item) requeueMiss(item, q.type);
+  // Sprint 2 miss ruling (option c+): ARC misses never re-queue — the arc's remaining beats
+  // are the retest; a missed summit is absorbed by the encore (served scaffolded, not cold)
+  if (!ok && q && q.arc && q.type === "type_translation") (run.summitMissed = run.summitMissed || new Set()).add(itemId(item));
+  if (!ok && q && q.item && !q.arc) requeueMiss(item, q.type);
 
   // ONE CORRECTION SURFACE PER MISS (ruling 2026-07-24): where the resolution reveals the
   // answer in place (q.earReveal: the played-line + wrong-then-release + correct wash), the

@@ -234,8 +234,10 @@ function rungDownType(failedType, item) {
   };
   const sd = stepDown[failedType];
   if (sd && _modeFeasible(sd, item)) return sd;
-  const tier = Math.max(0, _tierOfType(failedType) - 1);
-  return tier === 0 ? "present" : _pickModeForTier(tier, item);
+  // the Present card NEVER re-serves (Sprint 2 miss ruling: re-teaching reads as punishment);
+  // the floor is recognition
+  const tier = Math.max(1, _tierOfType(failedType) - 1);
+  return _pickModeForTier(tier, item);
 }
 
 /* ---------- typed-answer judging: accept accent slips + single-char typos ---------- */

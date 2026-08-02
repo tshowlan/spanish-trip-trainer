@@ -187,3 +187,10 @@ register the anchor already teaches). A filler's `weld.gloss` overrides the extr
 composed weld. Same session: weld 5 blessed ("Está cerrado hasta las cinco"), both guard
 deviations upheld (place excluded from quiero/necesito; deictic + amenity join the tag set - nine
 tags total).
+
+## 2026-07-28 — Arc misses don't re-queue; the Present card never re-serves; the encore catches what the summit drops
+Sprint 2 miss ruling, option (c) plus the encore clause: arc-internal misses never re-queue (the
+arc's remaining beats are the retest); a PRODUCE miss marks run.summitMissed so that item's encore
+rep serves scaffolded instead of cold (encore builds in increment 5); rung-down re-ask governs
+post-arc and review only, and its floor is recognition - never the card. Cue grammar minted
+(ladder-beats r1): micro-caps label + meaning at content scale; the conveyor's cue adopts it.

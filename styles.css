@@ -223,6 +223,11 @@ body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats th
 .frame-mount .slot .dashes { color: var(--text-dim); letter-spacing: 2px; }
 .frame-mount .slot .filled { color: var(--green); animation: qfade 200ms ease both; }
 .var-tray { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.var-tray.recede { opacity: .28; transition: opacity 300ms; pointer-events: none; }   /* supply rule */
+/* the cue grammar (ladder-beats r1): micro-caps label + meaning at content scale */
+.cue-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--text-dim); margin: 2px 0 3px; }
+.cue-meaning { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.vtile.vwrong { border-color: var(--red); background: color-mix(in srgb, var(--red) 15%, transparent); }
 .word.dim { opacity: .4; pointer-events: none; }   /* the tapped wrong tile recedes (mirrors .opt.dim) */
 
 /* ---------- top bar ---------- */

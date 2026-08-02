@@ -219,6 +219,19 @@ doc narrates, this file states only the laws.
 - **Recommends, never threatens** (the standing copy guardrail); no capability claims about the
   learner's current state in primers.
 
+## Replies (heard-only content, minted with the exchange reply-sets, 2026-07-28)
+
+- **Replies are heard-only:** never production targets, never SRS items, no homes. The
+  taught-once law does not apply to them — but where a reply IS a taught item, the reuseId
+  welds it (one recording, one string, the spiral audible).
+- **Targets decode from taught anchors:** heard-content words beyond the curriculum are legal
+  in replies ONLY when the target never depends on them (lejos carries the meaning; mejor is
+  atmosphere).
+- **Number options: taught numbers only.** Price distractors may be digit-swaps of the correct
+  answer (ear discrimination on numbers is sound-neighbor-legal).
+- **Every machine keeps a no:** each reply-set holds a negative reply (no queda · no hay) —
+  Spain sometimes says no, and the learner should survive it.
+
 ## Resolution vocabulary
 
 - **One resolution language:** every correct answer matures the page IN PLACE — fusion/settle,
@@ -293,6 +306,12 @@ doc narrates, this file states only the laws.
   this lesson once, production form, brisk (~90s cap [tune]); the close remains the ending —
   completion copy lives in its resolution kicker, never on a placard. No done screens exist.
   *(Sprint 2 rulings 7-8)*
+- **The cue grammar:** a production cue = micro-caps label (11/600 dim) + the MEANING at
+  content scale (17/600 text) — the cue is the en-side of the rep, never chrome. Minted on the
+  Variation; the conveyor's cue adopts it at build time. *(ladder-beats r1)*
+- **Arc misses don't re-queue:** the arc's remaining beats are the retest; the Present card
+  never re-serves (re-teaching reads as punishment — rung-down's floor is recognition); a
+  missed summit is absorbed by the encore, served scaffolded. *(Sprint 2 miss ruling, c+)*
 - **The input climbs by expertise:** first exposure summits the ITEM at typed cold; the
   machine drills stay at tray. Full cold frame production is an expertise rung — the conveyor
   and the close swap tiles for the keyboard as exposures accrue (threshold [tune], shared

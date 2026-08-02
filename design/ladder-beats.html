@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripfluent — Exercise Base v2 (derivation source)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
+<style>
+  /* ============ TOKENS — reference snapshot; live styles.css wins (§5) ============ */
+  :root {
+    --bg: #fcfcf3; --bg-card: #ffffff; --bg-elevated: #f1eee1;
+    --text: #050505; --text-dim: #5e6672;
+    --primary: #1c275e; --secondary: #4a7fc1;
+    --accent: #d8b713; --accent-2: #a98a0c;
+    --green: #2f9e57; --red: #d3384c;
+    --border: #e6e2d2;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-text: "Inter", system-ui, sans-serif;
+    --text-sm: 14px;
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px;
+    --transition: 160ms cubic-bezier(.2,.7,.3,1);
+    --shadow: 0 3px 0 rgba(28,39,94,.16);
+  }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #05060d; --bg-card: rgba(38,36,26,0.72); --bg-elevated: rgba(48,45,32,0.6);
+    --text: #f6f4ea; --text-dim: #a7a494;
+    --primary: #3a4894; --secondary: #7aa6db; --accent: #e6c62a; --accent-2: #e0bf2e;
+    --green: #3fb56a; --red: #e8586a; --border: rgba(120,112,80,0.35);
+    --shadow: 0 3px 0 rgba(0,0,0,.45);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; font-variant-ligatures:no-common-ligatures; /* build rule: learners see letters, not glyph fusions */ }
+  body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+  .wrap { display:flex; flex-direction:column; align-items:center; }
+  .phone { width:390px; height:740px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+  :root[data-theme="dark"] .phone { background:linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%); }
+  .screen { padding:24px; height:100%; display:flex; flex-direction:column; }
+
+  .toprow { display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+  .progress { flex:1; height:4px; background:var(--bg-elevated); border-radius:2px; }
+  .progress > div { width:52%; height:100%; background:var(--accent); border-radius:2px; }
+  .sring { width:26px; height:26px; }
+  .stick { position:absolute; top:20px; right:56px; font-family:var(--font-display); font-size:11px; font-weight:600;
+    color:var(--green); opacity:0; transform:translateY(3px); transition:opacity 300ms, transform 300ms; }
+  .stick.show { opacity:1; transform:none; }
+
+  .prompt { font-size:var(--text-sm); color:var(--text-dim); margin-bottom:16px; }
+
+  /* Shared: sentence with a blank */
+  .sentence { font-family:var(--font-display); font-size:21px; font-weight:500; color:var(--text); line-height:1.6; margin-bottom:18px; position:relative; }
+  .sentence .blank { display:inline-block; min-width:96px; border-bottom:2px solid var(--secondary); color:var(--secondary); text-align:center; font-weight:600;
+    transition:color var(--transition), border-color var(--transition); }
+  .sentence .blank .dashes { color:var(--text-dim); letter-spacing:2px; font-weight:500; }
+  .sentence .blank.filled .dashes { display:none; }
+  .sentence .blank.filled { color:var(--text); border-bottom-color:transparent; position:relative; }
+  .sentence .blank.filled::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--green); border-radius:2px;
+    transform:scaleX(0); transform-origin:left center; animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+  @keyframes sweep { to { transform:scaleX(1); } }
+
+  /* Audio option cards (sound choice) + audio chips */
+  .audio-opts { display:flex; gap:10px; margin-bottom:8px; }
+  .audio-card { flex:1; border:1.5px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    min-height:58px; padding:10px; cursor:pointer; box-shadow:var(--shadow);
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    font-family:var(--font-display); font-size:15px; font-weight:500; color:var(--text);
+    transition:transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition); }
+  .audio-card:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .audio-card.sel { border-color:var(--secondary); box-shadow:0 0 0 3px color-mix(in srgb, var(--secondary) 15%, transparent), var(--shadow); }
+  .audio-card.settled { border-color:var(--border); box-shadow:none; background:var(--bg-elevated); cursor:default; }
+  :root[data-theme="dark"] .audio-card.settled { background:rgba(255,255,255,0.05); }
+  /* Two audio elements, two glyph colors: gold BUTTONS (standard control) carry
+     the dark glyph; flat CARDS (pairs / sound-choice options) carry the gold
+     glyph. Never gold-on-gold. */
+  .audio-card .glyph { color:var(--accent-2); display:flex; }
+  .bigspk .glyph { color:#231e05; display:flex; line-height:0; }
+  .bars { display:flex; align-items:flex-end; gap:2px; height:12px; }
+  .bars span { width:2px; background:var(--accent-2); border-radius:2px; height:3px; }
+  .playing .bars span { animation:bar 900ms ease-in-out infinite; }
+  .playing .bars span:nth-child(2){ animation-delay:120ms; } .playing .bars span:nth-child(3){ animation-delay:240ms; }
+  @keyframes bar { 0%,100%{height:3px} 50%{height:11px} }
+
+  /* Big speaker (audio cloze / ear build / the reply prompt line) */
+  .bigspk { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+  .bigspk .btn { width:48px; height:48px; border-radius:50%; border:none; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; color:#231e05; cursor:pointer;
+    box-shadow:0 2px 0 color-mix(in srgb, var(--accent-2) 60%, transparent);
+    transition:transform var(--transition), box-shadow var(--transition); }
+  .bigspk .btn:active { transform:translateY(2px); box-shadow:none; }
+  .bigspk .hint { font-size:12.5px; color:var(--text-dim); }
+
+  /* Typed input (audio cloze) */
+  .inputbox { border:1.5px solid var(--border); border-radius:var(--radius-md); padding:13px; min-height:50px;
+    font-family:var(--font-display); font-size:17px; color:var(--text); position:relative;
+    transition:border-color var(--transition), background var(--transition); }
+  .inputbox.wash { border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+  .inputbox .cursor { display:inline-block; width:1.5px; height:1.1em; background:var(--secondary); vertical-align:text-bottom; animation:blink 1000ms steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+
+  /* Tiles (ear build) — answer row fuses per resolution law */
+  .answer-row { min-height:52px; border-bottom:1.5px solid var(--border); padding-bottom:9px; margin-bottom:18px;
+    display:flex; flex-wrap:wrap; align-items:flex-end; gap:8px; position:relative; transition:gap 300ms cubic-bezier(.2,.7,.3,1); }
+  .answer-row.fused { gap:5px; border-bottom-color:transparent; }
+  .answer-row .tile { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:8px 12px; font-family:var(--font-display); font-size:17px; font-weight:500; color:var(--text); box-shadow:var(--shadow);
+    transition:background 300ms, border-color 300ms, box-shadow 300ms, padding 300ms cubic-bezier(.2,.7,.3,1); }
+  .answer-row.fused .tile { background:transparent; border-color:transparent; box-shadow:none; padding:8px 0;
+    font-weight:600; font-size:22px; transition:background 300ms, border-color 300ms, box-shadow 300ms, padding 300ms cubic-bezier(.2,.7,.3,1), font-size 450ms cubic-bezier(.2,.7,.3,1); }
+  .answer-row .sweep { position:absolute; left:0; bottom:7px; height:2.5px; width:100%; background:var(--green); border-radius:2px;
+    transform:scaleX(0); transform-origin:left center; }
+  .answer-row.fused .sweep { animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 200ms forwards; }
+  .tray { display:flex; flex-wrap:wrap; gap:8px; transition:opacity 300ms; }
+  .tray .tile { background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:8px 12px; font-family:var(--font-display); font-size:17px; font-weight:500; color:var(--text-dim); cursor:pointer; }
+  .tray.recede { opacity:0.28; }
+
+  /* Local bubble (the reply) */
+  .bubble { background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px;
+    padding:13px 15px; margin-bottom:6px; }
+  :root[data-theme="dark"] .bubble { background:rgba(255,255,255,0.06); }
+  .bubble .who { font-family:var(--font-display); font-size:10.5px; font-weight:600; letter-spacing:0.05em; color:var(--accent-2); margin-bottom:5px; }
+  .bubble .line { display:flex; align-items:center; gap:9px; font-family:var(--font-display); font-size:16.5px; font-weight:500; color:var(--text); }
+  .bubble .line .spk { width:44px; height:44px; min-width:44px; border-radius:50%; border:none; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; color:#231e05; cursor:pointer;
+    box-shadow:0 2px 0 color-mix(in srgb, var(--accent-2) 60%, transparent);
+    transition:transform var(--transition), box-shadow var(--transition); }
+  .bubble .line .spk:active { transform:translateY(2px); box-shadow:none; }
+  .bubble .line .spk .glyph { display:flex; line-height:0; }
+  .bubble .line .spk .glyph svg { width:18px; height:18px; transform:translateX(1px); }
+  .bubble .en-gloss { font-size:12px; color:var(--text-dim); margin-top:5px; transition:opacity 280ms; }
+  .bubble .en-gloss.gated { opacity:0; }
+  .bubble .en-gloss.gated.revealed { opacity:1; }
+  .bubble .local-es { position:relative; padding-bottom:2px; }
+  .bubble .local-es.resolved::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+    background:var(--green); border-radius:2px; transform:scaleX(0); transform-origin:left center;
+    animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+
+  /* English meaning options (the reply, sound-choice-adjacent) */
+  .opts { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .opt { border:1px solid var(--border); background:var(--bg-card); border-radius:var(--radius-md);
+    padding:12px 14px; font-family:var(--font-display); font-size:15px; font-weight:500; color:var(--text);
+    cursor:pointer; box-shadow:var(--shadow); min-height:48px; text-align:left;
+    transition:transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition); }
+  .opt:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .opt.got { border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+
+  /* Resolution materialization */
+  .grown { opacity:0; transform:translateY(5px); transition:opacity 280ms cubic-bezier(.2,.7,.3,1) 250ms, transform 280ms cubic-bezier(.2,.7,.3,1) 250ms; margin-top:16px; }
+  .grown.bottomcont { margin-top:auto; }
+  .grown.show { opacity:1; transform:none; }
+  .es-line { font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .en-line { font-size:13px; color:var(--text-dim); margin-bottom:14px; }
+  .cont { width:100%; border:none; background:var(--primary); color:#fff; border-radius:var(--radius-md);
+    padding:14px; font-family:var(--font-display); font-size:15px; font-weight:600; min-height:48px;
+    cursor:pointer; box-shadow:var(--shadow); transition:transform var(--transition), box-shadow var(--transition); }
+  .cont:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+
+  @media (prefers-reduced-motion: reduce){
+    .grown, .stick, .answer-row, .answer-row .tile, .tray { transition:none; }
+    .sentence .blank.filled::after, .answer-row.fused .sweep { animation:none; transform:scaleX(1); }
+    .inputbox .cursor { animation:none; }
+    .playing .bars span { animation:none; height:8px; }
+  }
+
+  .chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+  .caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:440px; line-height:1.55; }
+
+  
+  /* ============ LISTENING FAMILY (derived: exercise-base v1 + live .ac-* truth) ============ */
+  /* Canonical AudioControl anatomy, verbatim from live styles.css */
+  .ac-group { display:inline-flex; align-items:center; flex:none; }
+  .ac-speaker { width:44px; height:44px; min-width:44px; padding:0; border-radius:50%;
+    border:1px solid var(--border); background:var(--bg-card); color:var(--accent-2); box-shadow:var(--shadow);
+    cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
+    font-family:var(--font-display);
+    transition:transform var(--transition), box-shadow var(--transition); }
+  .ac-speaker:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .ac-speaker .ac-glyph { display:block; }
+  .ac-speaker.playing .ac-glyph { display:none; }
+  .ac-speaker .ac-bars { display:none; align-items:flex-end; gap:2.5px; height:16px; }
+  .ac-speaker.playing .ac-bars { display:inline-flex; }
+  .ac-bars span { width:3px; background:var(--accent-2); border-radius:1.5px; animation:acbar 900ms ease-in-out infinite; }
+  .ac-bars span:nth-child(1){ height:7px; animation-delay:0ms; } .ac-bars span:nth-child(2){ height:14px; animation-delay:150ms; }
+  .ac-bars span:nth-child(3){ height:10px; animation-delay:300ms; } .ac-bars span:nth-child(4){ height:15px; animation-delay:450ms; }
+  @keyframes acbar { 0%,100%{ transform:scaleY(0.55); } 50%{ transform:scaleY(1); } }
+  .ac-speed { height:30px; margin-left:8px; padding:0 11px; border-radius:15px;
+    border:1px solid var(--border); background:var(--bg-elevated);
+    font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--text-dim); cursor:pointer;
+    transition:background var(--transition), color var(--transition); }
+  .ac-speed.slowed { background:var(--bg-card); color:var(--accent-2); border-color:var(--accent-2); }
+
+  /* Sound-as-centerpiece: hero SIZE VARIANT of the canonical control (same anatomy,
+     scaled; proposal pending bless — never a restyle) */
+  .listen-stage { display:flex; flex-direction:column; align-items:center; gap:12px; padding:26px 0 22px; }
+  .listen-stage .ac-speaker { width:64px; height:64px; min-width:64px; }
+  .listen-stage .ac-speaker .ac-glyph { width:24px; height:24px; }
+  .listen-stage .ac-speaker .ac-bars { height:22px; }
+  .listen-stage .ac-speaker .ac-bars span { width:3.5px; }
+  .listen-stage .ac-row { display:flex; align-items:center; }
+  .listen-stage .hint { font-size:12.5px; color:var(--text-dim); }
+  .linkbtn { border:none; background:none; font-family:var(--font-display); font-size:13px; font-weight:600;
+    color:var(--text-dim); text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:6px;
+    transition:color var(--transition); }
+  .linkbtn:active { color:var(--text); }
+  .linkbtn.whisper { font-size:12.5px; font-weight:500; align-self:center;
+    text-decoration-color:color-mix(in srgb, var(--text-dim) 40%, transparent); margin-bottom:10px; }
+  .screen { position:relative; }
+  .facet-bg { position:absolute; top:0; left:0; right:0; height:555px; pointer-events:none; z-index:0; }
+  .facet-bg svg { width:100%; height:100%; display:block; }
+  /* The landscape tracks the SUN, not the theme: lights by local clock (both themes) */
+  .facet-bg.no-light .lightgroup { display:none; }
+  .facet-bg.force-light .lightgroup { display:block !important; }
+  .screen > *:not(.facet-bg) { position:relative; z-index:1; }
+  :root { --solid-card:#ffffff; --solid-track:#d9d4c2; }
+  :root[data-theme="dark"] { --solid-card:#201e18; --solid-track:#55523f; }
+  :root[data-theme="dark"] .stage-card { background:rgba(255,255,255,0.04); }
+  .swapnote { display:flex; flex-direction:column; align-items:center; gap:6px; padding:22px 0;
+    font-size:13px; color:var(--text-dim); text-align:center; }
+  .swapnote .big { font-family:var(--font-display); font-size:15px; font-weight:600; color:var(--text); }
+
+  /* The ear's es-reveal: what was played, welded to spelling at resolution */
+  .played-line { font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--text);
+    display:flex; align-items:center; gap:10px; opacity:0; transform:translateY(4px);
+    transition:opacity 280ms cubic-bezier(.2,.7,.3,1), transform 280ms cubic-bezier(.2,.7,.3,1); }
+  .played-line.show { opacity:1; transform:none; }
+  .played-line .ac-speaker { width:36px; height:36px; min-width:36px; }
+  .played-line .ac-speaker .ac-glyph { width:15px; height:15px; }
+
+  /* Choices, verbatim states from live truth */
+  .choices { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+  .choice { text-align:left; background:var(--bg-card); border:2px solid var(--border);
+    color:var(--text); border-radius:var(--radius-md); padding:14px 16px; font-size:15px;
+    font-family:var(--font-display); font-weight:500; min-height:48px; cursor:pointer; box-shadow:var(--shadow);
+    transition:transform var(--transition), border-color var(--transition), background var(--transition), opacity var(--transition); }
+  .choice:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(28,39,94,.16); }
+  .choice.correct { border-color:var(--green); background:color-mix(in srgb, var(--green) 15%, transparent); }
+  .choice.wrong { border-color:var(--red); background:color-mix(in srgb, var(--red) 15%, transparent); }
+  .choice.dim { opacity:0.4; }
+
+  /* Typed input, live truth + wash */
+  .text-input { width:100%; background:var(--bg-card); border:2px solid var(--border); color:var(--text);
+    border-radius:var(--radius-md); padding:16px; font-size:18px; font-weight:600; outline:none;
+    font-family:var(--font-display);
+    transition:border-color var(--transition), background-color var(--transition); }
+  .text-input:focus { border-color:var(--accent-2); }
+  .text-input.wash { border-color:var(--green); background-color:color-mix(in srgb, var(--green) 8%, var(--bg-card)); }
+
+  /* ===== OPAQUE-OVER-FACETS (end of sheet: cascade-proof) =====
+     No surface goes see-through over the backdrop: solid composite grounds. */
+  .ac-speaker, .ac-speed, .text-input, .choice { background:var(--solid-card); }
+  .progress { background:var(--solid-track); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--text-dim) 14%, transparent); }
+  .sring circle:first-child { stroke:var(--solid-track); }
+  .choice.correct { background:color-mix(in srgb, var(--green) 15%, var(--solid-card)); }
+  .choice.wrong { background:color-mix(in srgb, var(--red) 15%, var(--solid-card)); }
+  .text-input.wash { background:color-mix(in srgb, var(--green) 8%, var(--solid-card)); }
+
+
+  /* ===== LADDER BEATS: GRASP + VARIATION (pixel artifact) ===== */
+  /* THE CUE GRAMMAR (minted): the production-target line = micro-caps label + MEANING AT
+     CONTENT SCALE. The cue is the en-side of the rep, never chrome. */
+  .cue-label { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:0.08em;
+    color:var(--text-dim); text-transform:uppercase; margin-bottom:3px; }
+  .cue-meaning { font-family:var(--font-display); font-size:17px; font-weight:600; color:var(--text);
+    margin-bottom:16px; }
+
+  .grasp-word { font-family:var(--font-display); font-size:30px; font-weight:700; color:var(--text);
+    margin:2px 0 10px; }
+  .grasp-audio { margin-bottom:16px; }
+
+  .frame-mount { font-family:var(--font-display); font-size:22px; font-weight:600; color:var(--text);
+    margin:2px 0 16px; line-height:1.55; }
+  /* Slot: NEUTRAL underline (blue only on tappables — the slot is a location, the tiles are the controls) */
+  .frame-mount .slot { display:inline-block; min-width:118px; text-align:center; font-weight:600;
+    color:var(--text-dim); border-bottom:2px solid var(--accent); }
+  .frame-mount .slot.filled { color:var(--text); border-bottom-color:transparent; position:relative; }
+  .frame-mount .slot.filled::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+    background:var(--green); border-radius:2px; transform:scaleX(0); transform-origin:left center;
+    animation:sweep 300ms cubic-bezier(.2,.7,.3,1) 60ms forwards; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+<div class="facet-bg" aria-hidden="true"><svg viewBox="0 0 390 555" preserveAspectRatio="none"><defs><linearGradient id="g-gold-d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.42"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient><linearGradient id="g-gold-r" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.34"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient><linearGradient id="g-sky" x1="0" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.26"/><stop offset="0.55" stop-color="var(--secondary)" stop-opacity="0.10"/><stop offset="1" stop-color="var(--secondary)" stop-opacity="0"/></linearGradient><linearGradient id="g-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--secondary)" stop-opacity="0.30"/><stop offset="1" stop-color="var(--secondary)" stop-opacity="0"/></linearGradient></defs><polygon points="0,0 150,0 84,86" fill="var(--secondary)" opacity="0.16"/><polygon points="150,0 285,0 205,70" fill="var(--primary)" opacity="0.12"/><polygon points="285,0 390,0 330,96" fill="var(--secondary)" opacity="0.18"/><polygon points="0,0 84,86 0,170" fill="var(--accent)" opacity="0.12"/><polygon points="390,0 390,180 330,96" fill="var(--accent)" opacity="0.11"/><polygon points="0,170 84,86 60,260" fill="var(--primary)" opacity="0.10"/><polygon points="390,180 330,96 322,268" fill="var(--primary)" opacity="0.11"/><polygon points="0,170 60,260 0,330" fill="var(--secondary)" opacity="0.08"/><polygon points="390,180 322,268 390,340" fill="var(--secondary)" opacity="0.09"/><polygon points="0,330 60,260 96,368" fill="var(--accent)" opacity="0.055"/><polygon points="390,340 322,268 300,380" fill="var(--accent)" opacity="0.05"/><polygon points="84,86 150,0 148,74" fill="var(--accent)" opacity="0.09"/><polygon points="148,74 150,0 205,70" fill="var(--secondary)" opacity="0.07"/><polygon points="84,86 148,74 132,128" fill="var(--primary)" opacity="0.08"/><polygon points="148,74 205,70 176,120" fill="var(--accent)" opacity="0.075"/><polygon points="132,128 148,74 176,120" fill="var(--secondary)" opacity="0.10"/><polygon points="205,70 262,110 176,120" fill="var(--primary)" opacity="0.065"/><polygon points="205,70 285,0 262,110" fill="var(--secondary)" opacity="0.085"/><polygon points="262,110 285,0 330,96" fill="var(--accent)" opacity="0.07"/><polygon points="262,110 330,96 296,158" fill="var(--secondary)" opacity="0.095"/><polygon points="176,120 262,110 224,164" fill="var(--accent)" opacity="0.06"/><polygon points="132,128 176,120 158,178" fill="var(--secondary)" opacity="0.055"/><polygon points="176,120 224,164 158,178" fill="var(--primary)" opacity="0.07"/><polygon points="224,164 262,110 296,158" fill="var(--primary)" opacity="0.055"/><polygon points="224,164 296,158 258,214" fill="var(--secondary)" opacity="0.065"/><polygon points="158,178 224,164 196,228" fill="var(--accent)" opacity="0.05"/><polygon points="84,86 132,128 108,190" fill="var(--secondary)" opacity="0.06"/><polygon points="108,190 132,128 158,178" fill="var(--accent)" opacity="0.045"/><polygon points="60,260 84,86 108,190" fill="var(--primary)" opacity="0.055"/><polygon points="108,190 158,178 140,248" fill="var(--primary)" opacity="0.045"/><polygon points="140,248 158,178 196,228" fill="var(--secondary)" opacity="0.05"/><polygon points="296,158 330,96 322,268" fill="var(--secondary)" opacity="0.06"/><polygon points="258,214 296,158 322,268" fill="var(--accent)" opacity="0.045"/><polygon points="196,228 224,164 258,214" fill="var(--secondary)" opacity="0.04"/><polygon points="60,260 108,190 140,248" fill="var(--accent)" opacity="0.04"/><polygon points="140,248 196,228 172,310" fill="var(--primary)" opacity="0.035"/><polygon points="196,228 258,214 232,296" fill="var(--secondary)" opacity="0.035"/><polygon points="258,214 322,268 288,330" fill="var(--primary)" opacity="0.03"/><polygon points="96,368 60,260 140,248" fill="var(--secondary)" opacity="0.03"/><polygon points="0,330 96,368 0,430" fill="var(--secondary)" opacity="0.06"/><polygon points="0,430 96,368 70,470" fill="var(--accent)" opacity="0.05"/><polygon points="96,368 120,352 150,400" fill="var(--primary)" opacity="0.05"/><polygon points="120,352 172,310 150,400" fill="var(--secondary)" opacity="0.055"/><polygon points="140,248 172,310 120,352" fill="var(--secondary)" opacity="0.025"/><polygon points="172,310 232,296 230,390" fill="var(--accent)" opacity="0.045"/><polygon points="150,400 172,310 230,390" fill="var(--secondary)" opacity="0.04"/><polygon points="150,400 230,390 180,470" fill="var(--primary)" opacity="0.04"/><polygon points="232,296 288,330 230,390" fill="var(--accent)" opacity="0.04"/><polygon points="230,390 288,330 310,420" fill="var(--secondary)" opacity="0.05"/><polygon points="288,330 300,380 310,420" fill="var(--primary)" opacity="0.045"/><polygon points="232,296 252,372 230,390" fill="var(--primary)" opacity="0.03"/><polygon points="390,340 310,420 390,450" fill="var(--secondary)" opacity="0.06"/><polygon points="310,420 390,450 330,500" fill="var(--accent)" opacity="0.045"/><polygon points="390,450 390,540 330,500" fill="var(--primary)" opacity="0.05"/><polygon points="300,380 390,340 310,420" fill="var(--accent)" opacity="0.035"/><polygon points="0,430 70,470 0,520" fill="var(--primary)" opacity="0.045"/><polygon points="70,470 150,400 100,500" fill="var(--secondary)" opacity="0.04"/><polygon points="100,500 150,400 180,470" fill="var(--accent)" opacity="0.035"/><polygon points="180,470 230,390 260,460" fill="var(--secondary)" opacity="0.04"/><polygon points="260,460 230,390 310,420" fill="var(--accent)" opacity="0.035"/><polygon points="260,460 310,420 330,500" fill="var(--secondary)" opacity="0.035"/><polygon points="70,470 100,500 60,540" fill="var(--secondary)" opacity="0.025"/><polygon points="100,500 180,470 140,545" fill="var(--primary)" opacity="0.025"/><polygon points="180,470 260,460 220,530" fill="var(--accent)" opacity="0.025"/><polygon points="260,460 330,500 285,555" fill="var(--secondary)" opacity="0.02"/><polygon points="330,500 390,540 340,555" fill="var(--primary)" opacity="0.02"/><polygon points="352,44 390,60 368,92" fill="var(--primary)" opacity="0.09"/><polygon points="14,196 52,186 30,238" fill="var(--accent)" opacity="0.07"/><polygon points="356,220 390,240 366,276" fill="var(--secondary)" opacity="0.08"/><polygon points="18,392 54,380 38,428" fill="var(--secondary)" opacity="0.06"/><polygon points="196,12 232,8 214,44" fill="var(--accent)" opacity="0.085"/><polygon points="366,132 390,120 382,168" fill="var(--accent)" opacity="0.07"/><polygon points="158,178 258,214 196,300" fill="var(--secondary)" opacity="0.085"/><g class="lightgroup"><polygon points="148,74 150,0 205,70" fill="var(--accent)" opacity="0.22"/><polygon points="176,120 224,164 158,178" fill="var(--accent)" opacity="0.20"/><polygon points="108,190 132,128 158,178" fill="var(--accent)" opacity="0.16"/><polygon points="196,12 232,8 214,44" fill="var(--accent)" opacity="0.24"/><polygon points="366,132 390,120 382,168" fill="var(--accent)" opacity="0.18"/><polygon points="120,352 172,310 150,400" fill="var(--accent)" opacity="0.12"/><polygon points="285,0 390,0 330,96" fill="url(#g-gold-d)"/><polygon points="0,0 84,86 0,170" fill="url(#g-gold-r)"/><polygon points="262,110 330,96 296,158" fill="url(#g-gold-d)"/><polygon points="158,178 258,214 196,300" fill="url(#g-sky)"/><polygon points="0,170 84,86 60,260" fill="url(#g-blue)"/><polygon points="230,390 288,330 310,420" fill="url(#g-sky)"/><polygon points="150,0 285,0 205,70" fill="url(#g-blue)"/></g></svg></div>
+      <div class="toprow">
+        <div class="progress"><div style="width:34%"></div></div>
+        <svg class="sring" viewBox="0 0 26 26">
+          <circle cx="13" cy="13" r="10" fill="none" stroke="var(--ring-track, var(--bg-elevated))" stroke-width="3.5"/>
+          <circle cx="13" cy="13" r="10" fill="none" stroke="var(--accent-2)" stroke-width="3.5" stroke-linecap="round"
+            stroke-dasharray="62.8" stroke-dashoffset="38" transform="rotate(-90 13 13)"/>
+        </svg>
+      </div>
+      <div class="prompt" id="prompt"></div>
+      <div id="stage" style="flex:1; display:flex; flex-direction:column;"></div>
+    </div>
+  </div>
+
+  <div class="chrome">
+    <button onclick="cycleState()" id="stateBtn">state: grasp · fresh</button>
+    <button onclick="toggleTheme()">dark theme</button>
+  </div>
+
+  <div class="caption">
+    LADDER BEATS r1 — Grasp + Variation pixel artifact (base: exercise-base v2.1; derived from
+    ladder-beats-dom.html v221). GRASP (word-scale MC-3 per the Sprint 2 ruling): the word at 30/700
+    display, the canonical AudioControl at standard 44 below it (audio is secondary here: the WORD is the
+    content, so no hero scale), three built choices, resolution per the family (correct wash, others dim,
+    settle uniformity, learner-paced Continue). VARIATION: THE CUE GRAMMAR minted (Tom's footnote-scale
+    flag): the production target = micro-caps LABEL (11/600 dim, "MAKE IT") + the MEANING AT CONTENT SCALE
+    (17/600 text) — the cue is the en-side of the rep, never chrome; the conveyor's cue adopts the same
+    grammar at build time. Slot underline GOLD per current build (r2, Tom: keep it — gold carries attention and the slot is the
+    attention point; lawful and precedented by the letter rungs' NEXT-slot accent); fill = text + green sweep, tray recedes, adjacent grown +
+    bottom Continue. Wrong tile: wrong-then-release (900ms) then dim. RULING RECORDED (miss re-ask, option
+    c+): arc-internal misses never re-queue — the arc's remaining beats are the retest; a PRODUCE miss is
+    absorbed by the encore (that item's encore rep serves scaffolded, not cold); rung-down re-ask governs
+    post-arc and review only. Frame 390.
+  </div>
+</div>
+
+<script>
+  const spk = '<svg class="ac-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
+  const bars = '<span class="ac-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>';
+  const ac = '<span class="ac-group"><button class="ac-speaker" onclick="pulse(this)" aria-label="Play audio">' + spk + bars + '</button></span>';
+  function pulse(btn){ btn.classList.add('playing'); setTimeout(() => btn.classList.remove('playing'), 1300); }
+
+  const states = ['grasp · fresh', 'grasp · correct', 'grasp · miss', 'variation · fresh', 'variation · done'];
+  let si = 0;
+
+  function render(){
+    const s = states[si];
+    document.getElementById('stateBtn').textContent = 'state: ' + s;
+    const stage = document.getElementById('stage');
+    const graspChoices = (mode) => `
+      <div class="choices">
+        <button class="choice${mode==='correct'||mode==='miss' ? ' correct' : ''}" onclick="hit(this)">milk</button>
+        <button class="choice${mode==='miss' ? ' wrongheld' : (mode==='correct' ? ' dim' : '')}" onclick="missTap(this)">sugar</button>
+        <button class="choice${(mode==='correct'||mode==='miss') ? ' dim' : ''}" onclick="missTap(this)">bread</button>
+      </div>`;
+    if (s.startsWith('grasp')){
+      document.getElementById('prompt').textContent = 'What does this mean?';
+      const mode = s.includes('correct') ? 'correct' : s.includes('miss') ? 'miss' : 'fresh';
+      stage.innerHTML = `
+        <div class="grasp-word">leche</div>
+        <div class="grasp-audio">${ac}</div>
+        ${graspChoices(mode)}
+        <div class="grown bottomcont${mode!=='fresh' ? ' show' : ''}" id="grown"><button class="cont" onclick="cycleState()">Continue</button></div>`;
+      if (mode === 'miss'){
+        const w = stage.querySelector('.wrongheld');
+        w.classList.remove('wrongheld'); w.classList.add('wrong');
+        setTimeout(() => { w.classList.remove('wrong'); w.classList.add('dim'); }, 900);
+      }
+      if (mode === 'fresh') setTimeout(() => { const h = stage.querySelector('.ac-speaker'); if (h) pulse(h); }, 350);
+    } else {
+      document.getElementById('prompt').textContent = 'Same frame, new filling';
+      const done = s.includes('done');
+      stage.innerHTML = `
+        <div class="cue-label">Make it</div>
+        <div class="cue-meaning">A coffee with sugar</div>
+        <div class="frame-mount">Un café con <span class="slot${done ? ' filled' : ''}" id="slot">${done ? 'azúcar' : '<span class="dashes">– – –</span>'}</span></div>
+        <div class="tray${done ? ' recede' : ''}">
+          <div class="tile" onclick="fill(this,'azúcar',true)">azúcar</div>
+          <div class="tile" onclick="fill(this,'leche',false)">leche</div>
+          <div class="tile" onclick="fill(this,'pan',false)">pan</div>
+        </div>
+        <div class="grown${done ? ' show' : ''}" id="agrown"><div class="en-line">A coffee with sugar</div></div>
+        <div class="grown bottomcont${done ? ' show' : ''}" id="grown"><button class="cont" onclick="cycleState()">Continue</button></div>`;
+    }
+  }
+  function hit(btn){
+    btn.classList.add('correct');
+    btn.parentElement.querySelectorAll('.choice').forEach(c => { if (c !== btn) c.classList.add('dim'); });
+    document.getElementById('grown').classList.add('show');
+  }
+  function missTap(btn){
+    btn.classList.add('wrong');
+    setTimeout(() => { btn.classList.remove('wrong'); btn.classList.add('dim'); }, 900);
+  }
+  function fill(tile, text, ok){
+    if (!ok){ missTap(tile); return; }
+    const slot = document.getElementById('slot');
+    slot.textContent = text; slot.classList.add('filled');
+    tile.parentElement.classList.add('recede');
+    document.getElementById('agrown').classList.add('show');
+    document.getElementById('grown').classList.add('show');
+  }
+  function cycleState(){ si = (si + 1) % states.length; render(); }
+  function toggleTheme(){ const r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+  render();
+</script>
+</body>
+</html>
