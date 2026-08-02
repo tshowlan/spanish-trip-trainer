@@ -15,6 +15,21 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-07-29 — Sprint 2 increment 3: THE INTRO LADDER + MC retirement (v221)
+- Ruling 3 live: every new item's first lesson runs Present -> Grasp -> Build -> Variation ->
+  Produce (typed cold - the sanctioned first summit, ruling 9). Arcs interleave 2 at a time;
+  Produce holds to the end. Beats an item can't honor are skipped, never faked. Machine items
+  derive their Grasp from the frame filler (_graspFromFrame) and grasp distractors from sibling
+  filler glosses - all 5 machine lessons run the full arc. Two new renderers: grasp (word-scale
+  MC, 3 opts) + variation (frame-mount, slot, filler tiles; ungraded, exposure only).
+- Ruling 4 live: MC is word-scale (<= 2 tokens) only, everywhere; ALL option-picks are 3 options
+  (mcOptions, reply); ladder fallback + sound-off swaps honor the ban (phrase items fall to
+  letter rungs, never MC). Ruling 5 audit: packs clean (Si/No are answers, not glue).
+- Verified: 34/34 lessons compose with zero ladder violations; real-click walkthrough
+  primer -> present -> grasp -> ... ; Tom played the machine-lesson arc and approved.
+- OPEN (chat): the re-ask after a missed NEW phrase (Tom: same-type re-serve feels punitive);
+  variation/grasp visual design session (cue line too small - DOM exports in Tom's folder).
+
 ## 2026-07-29 — Gloss-forms + all three rulings settled (v220)
 - Chat's rulings back: weld 5 blessed, BOTH guard deviations upheld (place stays out of
   quiero/necesito; deictic + amenity join the set - nine tags total). New gloss ruling from Tom's

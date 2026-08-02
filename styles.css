@@ -216,6 +216,15 @@ body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats th
 }
 .pill:active { transform: translateY(1px); }
 
+/* ---------- Sprint 2 intro ladder: the Grasp word + the Variation frame-mount ---------- */
+.grasp-word { font-family: var(--font-display); font-size: 30px; font-weight: 700; margin: 8px 0 10px; }
+.frame-mount { font-family: var(--font-display); font-size: 23px; font-weight: 600; margin: 14px 0 18px; line-height: 1.5; }
+.frame-mount .slot { display: inline-block; min-width: 84px; text-align: center; border-bottom: 2px solid var(--accent); padding: 0 6px; }
+.frame-mount .slot .dashes { color: var(--text-dim); letter-spacing: 2px; }
+.frame-mount .slot .filled { color: var(--green); animation: qfade 200ms ease both; }
+.var-tray { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.word.dim { opacity: .4; pointer-events: none; }   /* the tapped wrong tile recedes (mirrors .opt.dim) */
+
 /* ---------- top bar ---------- */
 .topbar {
   position: sticky; top: 0; z-index: 10;

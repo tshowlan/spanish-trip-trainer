@@ -128,6 +128,7 @@ function _speechSupported() { return typeof window !== "undefined" && !!(window.
 function _wordCount(item) { return item.es.trim().split(/\s+/).length; }
 function _modeFeasible(mode, item) {
   const n = _wordCount(item);
+  if (mode === "mc_es2en") return n <= 2;          // Sprint 2 ruling 4: MC is WORD-SCALE only (phrase MC retired; scan-reading is not recognition)
   if (mode === "build") return n >= 4 && n <= 8;   // §1b.3: no tap-to-build under 4 tokens
   if (mode === "fill_blank") return n >= 3;        // §1b.3: no fill-in-the-blank under 3 tokens
   if (mode === "speak_it") return _speechSupported();  // M4: only where Web Speech exists (else the rung uses type/listen)
@@ -160,7 +161,8 @@ function _pickModeForTier(tier, item, s) {
     const feasible = _varietyDrop(LADDER[t].filter(m => _modeFeasible(m, item)), s, t);
     if (feasible.length) return pick(feasible);
   }
-  return "mc_es2en";                                // recognition always works
+  // last resort honors ruling 4: word-scale falls to MC, phrase-scale to the ear
+  return _wordCount(item) <= 2 ? "mc_es2en" : "listen_choice";
 }
 // §4.1: rung thresholds scale with the item's own difficulty (1-5, default 2),
 // so short easy phrases graduate quickly and elaborate ones get more runway.
@@ -211,7 +213,12 @@ function chooseType(item, opts) {
   let mode = null;
   if (opts && opts.prefer) mode = _pickPreferred(tier, item, opts.prefer, s);
   if (!mode) mode = _pickModeForTier(tier, item, s);
-  if (_audioOff() && EAR_SIBLINGS[mode] && _modeFeasible(EAR_SIBLINGS[mode], item)) mode = EAR_SIBLINGS[mode];
+  if (_audioOff() && EAR_SIBLINGS[mode]) {
+    // sound-off swap honors feasibility: phrase items can't fall to MC (ruling 4) — they
+    // step to the letter rungs instead, the production band's audio-free members
+    const sib = [EAR_SIBLINGS[mode], "word_fill", "phrase_fill"].find(m => _modeFeasible(m, item));
+    if (sib) mode = sib;
+  }
   if (s) { s.lm = mode; s.lmt = _tierOfType(mode); s.lms = state.sessionSeq || 0; }  // variety-rule memory
   return mode;
 }

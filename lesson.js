@@ -143,11 +143,46 @@ function _machineName(mlesson, frame) {
 }
 // safety-critical phrases cram mode front-loads when the trip is near
 function isCritical(item) { return (item.tags || []).some(t => t === "dietary" || t === "emergency"); }
-// first practice after teaching: order the sentence if we can (production), else recognise it
-// among its just-taught siblings. Never a bare "match the word you just saw".
-function introRep(item) {
-  const n = item.es.trim().split(/\s+/).length;
-  return (n >= 4 && n <= 8) ? "build" : "mc_es2en";   // §1b.3: short items go to recognition, not a 2-tile "build"
+/* introRep DELETED 2026-07-29 — superseded by the intro ladder (Sprint 2 ruling 3). */
+// the Grasp beat (ladder rung 2): the NEW CHUNK alone at recognition scale.
+// Needs a derivable word+gloss — chunk tagged "new", else the keyword's chunk.
+// No derivable gloss = the beat is skipped, never faked (default closed).
+function graspOf(item) {
+  const chunks = Array.isArray(item.chunks) && item.chunks.length ? item.chunks : null;
+  if (!chunks) return null;
+  const nc = chunks.find(c => c[2] === "new");
+  if (nc && nc[1]) return { word: nc[0], en: nc[1] };
+  const kw = (item.keywords || [])[0];
+  if (kw) { const c = chunks.find(x => norm(x[0]).includes(norm(kw))); if (c && c[1]) return { word: c[0], en: c[1] }; }
+  return null;
+}
+// machine items derive their grasp mechanically: the new chunk IS the filler
+// (the frame is the lesson's constant; the filler is what this item teaches)
+function _graspFromFrame(item) {
+  const frame = item.frame; if (!frame) return null;
+  const p = _frameParts(frame, item.es); if (!p || !p.filler.trim()) return null;
+  const fam = (ALL_ITEMS || []).filter(x => x.frame === frame);
+  const fen = _fillerEn(_enShell(fam), item.en);
+  return fen ? { word: p.filler, en: fen } : null;
+}
+// the Variation beat (ladder rung 4): the frame swaps one chunk — mount the item's frame,
+// cue a TAUGHT same-frame sibling (or one presented earlier this lesson), tiles = fillers.
+// Ungraded scaffold: exposure only, the pattern-feel rep, never an achievement.
+function variationOf(item, lessonItems) {
+  const frame = item.frame; if (!frame || /a qué hora/i.test(frame)) return null;
+  const myIdx = lessonItems.indexOf(item);
+  const sibs = (ALL_ITEMS || []).filter(x => x.frame === frame && x !== item &&
+    (exposuresOf(x) >= 1 || (lessonItems.indexOf(x) >= 0 && lessonItems.indexOf(x) < myIdx)));
+  if (!sibs.length) return null;
+  const sib = pick(sibs);
+  const sp = _frameParts(frame, sib.es);
+  const ip = _frameParts(frame, item.es);
+  if (!sp || !ip || norm(sp.filler) === norm(ip.filler)) return null;
+  const family = (ALL_ITEMS || []).filter(x => x.frame === frame && x !== sib && x !== item)
+    .map(x => { const p = _frameParts(frame, x.es); return p && p.filler; })
+    .filter(f => f && norm(f) !== norm(sp.filler) && norm(f) !== norm(ip.filler));
+  const tiles = shuffle([sp.filler, ip.filler, ...sample([...new Set(family)], 1)]);
+  return { type: "variation", item: sib, parts: sp, tiles, correct: sp.filler, arc: true };
 }
 
 /* ---- session composer (M2): warm-up misses + new items + trip-wide review ---- */
@@ -180,30 +215,46 @@ function composeSession(lesson) {
     return out;
   }
 
-  // §6.1b micro-batch weave: never >2 presentation cards in a row; each new item gets a rung-1
-  // retrieval within ~3 slots of its card, then an expanding-gap re-test later; due reviews fill the
-  // gaps. Replaces the old massed photo-intro (a 10-card slideshow the user reflexively skims). The
-  // one scene photo lives in the primer (§4c.4), not on every card — cards are typographic beats.
+  // SPRINT 2 RULING 3 — THE INTRO LADDER: a new item's first lesson runs a fixed mini-arc,
+  // Present → Grasp (the new chunk alone, word-scale MC) → Build (tiles/letters) → Variation
+  // (the frame swaps one chunk) → Produce (typed cold). The order is fixed on first exposure;
+  // expertise reversal governs after. Beats an item can't honor are skipped, never faked.
+  // Arcs interleave ~2 at a time (the breath map); reviews fill gaps (empty in first-pass
+  // lessons — lesson purity); every Produce lands at the end, after 2-4 (the ruling), which
+  // is ALSO the encore's seat when it builds (increment 5). Supersedes: T1 ear-first
+  // (2026-07-21) and, for arc beats only, the §4.1 never-cold first-pass cap — the ladder's
+  // Produce IS the sanctioned first cold (ruling 9: first exposure summits the ITEM).
   const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap)));
   let ri = 0; const nextReview = () => (ri < reviews.length ? reviews[ri++] : null);
-  const later = [];                                                    // expanding-gap re-tests
+  const glossPool = [];                                                // grasp distractors: every chunk gloss + frame-filler gloss in the lesson
+  lessonItems.forEach(it => {
+    (it.chunks || []).forEach(c => { if (c[1]) glossPool.push(c[1]); });
+    const fg = _graspFromFrame(it); if (fg) glossPool.push(fg.en);
+  });
+  const mid = [], prod = [];                                           // Build+Variation queue · the Produce summit
   for (let b = 0; b < newItems.length; b += 2) {
     const batch = newItems.slice(b, b + 2);                            // ≤2 new items → ≤2 cards in a row
-    batch.forEach(it => qs.push({ type: "present", item: it }));       // present (card precedes any test)
-    // §6.1b T₁ is EAR-FIRST (2026-07-21): the card handed over text+sound+meaning, so the
-    // first retrieval tests sound WITHOUT spelling — the first true decode, and the trip
-    // skill itself. Distractors = co-introduced items (deliberate: early ear-discrimination
-    // among fresh phonology). Sound-off fallback: no speech, or sound off → read-and-pick.
-    const t1 = (typeof window !== "undefined" && "speechSynthesis" in window && state.sound !== false) ? "listen_choice" : "mc_es2en";
-    batch.forEach(it => qs.push({ type: t1, item: it, pool: newItems, t1: true }));  // immediate rung-1 retrieval, rhythm-proof
-    const r = nextReview(); if (r) qs.push(r);                         // gap filler
-    batch.forEach(it => later.push({ type: introRep(it), item: it, pool: newItems }));  // schedule expanding re-test
-    if (later.length >= 4) { qs.push(later.shift()); const r2 = nextReview(); if (r2) qs.push(r2); }
+    for (const it of batch) {
+      qs.push({ type: "present", item: it, arc: true });               // 1 Present (card precedes any test)
+      const g = graspOf(it) || _graspFromFrame(it);
+      if (g) qs.push({ type: "grasp", item: it, word: g.word, wordEn: g.en, pool: glossPool, arc: true });   // 2 Grasp
+      else if (_wordCount(it) <= 2) qs.push({ type: "mc_es2en", item: it, pool: newItems, arc: true });      // word-scale item: its own MC IS the grasp
+    }
+    const r = nextReview(); if (r) qs.push(r);
+    for (const it of batch) {
+      const bt = ["build", "word_fill", "phrase_fill"].find(m => _modeFeasible(m, it));
+      if (bt) mid.push({ type: bt, item: it, pool: newItems, arc: true });                                   // 3 Build
+      const v = variationOf(it, lessonItems);
+      if (v) mid.push(v);                                                                                    // 4 Variation
+      prod.push({ type: "type_translation", item: it, arc: true });                                          // 5 Produce (held to the end)
+    }
+    if (mid.length >= 3) { qs.push(mid.shift()); const r2 = nextReview(); if (r2) qs.push(r2); }
   }
-  while (later.length || ri < reviews.length) {                        // drain re-tests + leftover reviews
-    if (later.length) qs.push(later.shift());
+  while (mid.length || ri < reviews.length) {                          // drain Build/Variation + leftover reviews
+    if (mid.length) qs.push(mid.shift());
     const r = nextReview(); if (r) qs.push(r);
   }
+  prod.forEach(q => qs.push(q));                                       // the summit: every new item, produced cold
   const out = applyRhythm(qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it })));  // safety net
   out.push(...closeReps(lesson));                                     // §7.1 the close: the last reps, always
   return out;
@@ -219,7 +270,7 @@ function applyRhythm(qs) {
   if (idx.length < 3) return qs;                          // too short to have a rhythm
   const steer = (i, prefer) => {
     const q = qs[i], t = chooseType(q.item, { prefer });
-    if (q.t1) return;                                   // §6.1b: the ear-first T₁ outranks the rhythm steer
+    if (q.t1 || q.arc) return;                          // ladder beats are fixed by ruling 3 (t1 kept for legacy composed runs)
     if (t === q.type) return;
     if (needsPool(t) && !(Array.isArray(q.pool) && q.pool.length >= 3)) return;   // no distractors → leave as-is
     q.type = t;
@@ -550,6 +601,7 @@ function renderQuestion() {
   // make the mistake re-queue visible: label a phrase you missed coming back around
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">${icon('arrows-clockwise', 15)} Second chance, you missed this one</div>`));
   ({ present: renderPresent, build: renderBuild, mc_es2en: renderMC,
+     grasp: renderGrasp, variation: renderVariation,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
      listen_choice: renderListenChoice, reply_listen: renderReply,
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
@@ -731,7 +783,7 @@ function mcOptions(item, es2en, siblings) {
   if (cand.length < 3) add(all.filter(sameShape));                  // any lesson · same shape (legacy)
   if (cand.length < 3) add(sibs);                                   // same lesson · any shape
   if (cand.length < 3) add(all);                                    // last resort
-  const distract = [...new Set(sample(cand, 8).map(val))].filter(v => v !== answer).slice(0, 3);
+  const distract = [...new Set(sample(cand, 8).map(val))].filter(v => v !== answer).slice(0, 2);   // 3 options total (Sprint 2 ruling 4: the 4th bought scan-reading, not recognition)
   return { answer, options: shuffle([answer, ...distract]) };
 }
 
@@ -853,7 +905,7 @@ function renderReply(q) {
   setTimeout(() => play._fire(), 300);
   const answer = r.en;
   const pool = [...new Set((ALL_ITEMS || []).flatMap(x => x.reply && x.reply.en !== answer ? [x.reply.en] : []).concat((ALL_ITEMS || []).filter(x => x.en !== answer).map(x => x.en)))];
-  const options = shuffle([answer, ...sample(pool, 3)]);
+  const options = shuffle([answer, ...sample(pool, 2)]);   // 3 options (Sprint 2 ruling 4)
   body.appendChild(mcChoices(options, answer, item));
 }
 
@@ -889,6 +941,52 @@ function renderListenChoice(q) {
   body.appendChild(mcChoices(options, answer, item, { wrongRelease: true, onMiss: revealPlayed }));
   const f = footer(``);                                // exit zone: the whisper escape lives above Continue
   listenEscape(f, q);
+}
+
+/* ----- the Grasp (Sprint 2 ruling 3, canvas beat 2): the new chunk alone, word-scale MC ----- */
+function renderGrasp(q) {
+  const item = q.item;
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">New piece</div>`));
+  body.appendChild(el(`<div class="grasp-word">${q.word}</div>`));
+  const row = el(`<div class="present-audio"></div>`);
+  row.appendChild(audioControl(() => speak(q.word)));
+  body.appendChild(row);
+  setTimeout(() => { if (!run.answered) speak(q.word); }, 350);   /* [tune] autoplay-on-entry */
+  body.appendChild(el(`<div class="prompt-sub">What does it mean?</div>`));
+  const pool = [...new Set((q.pool || []).filter(g => g && norm(g) !== norm(q.wordEn)))];
+  const options = shuffle([q.wordEn, ...sample(pool, 2)]);
+  body.appendChild(mcChoices(options, q.wordEn, item));           // grades the REAL item, mode "grasp"
+}
+
+/* ----- the Variation (Sprint 2 ruling 3, canvas beat 4): same frame, new filling.
+   Ungraded scaffold — the correct tile settles the slot (exposure only), a wrong tile
+   recedes; the pattern-feel rep, never an achievement. ----- */
+function renderVariation(q) {
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Same frame, new filling</div>`));
+  body.appendChild(el(`<div class="prompt-sub">Make it: <b>${q.item.en}</b></div>`));
+  const mount = el(`<div class="frame-mount">${q.parts.pre}<span class="slot"><span class="dashes">– – –</span></span>${q.parts.post}</div>`);
+  body.appendChild(mount);
+  const tray = el(`<div class="var-tray"></div>`);
+  q.tiles.forEach(t => {
+    const tile = el(`<button class="word vtile">${t}</button>`);
+    tile.addEventListener("click", () => {
+      if (run.answered) return;
+      if (norm(t) === norm(q.correct)) {
+        run.answered = true;
+        mount.querySelector(".slot").innerHTML = `<span class="filled">${q.correct}</span>`;
+        tile.classList.add("used");
+        playSound("correct"); haptic("correct");
+        recordExposure(itemId(q.item));                            // exposure, not achievement
+        q.esOnStage = true;                                        // the mounted frame IS the es
+        const st = learnPeek(q.item);
+        resolveCorrect(q.item, q, { yoursNow: false, restored: false, strengthAfter: st ? Math.round(itemStrength(st)) : 0, miss: false });
+      } else { haptic("press"); tile.classList.add("dim"); }
+    });
+    tray.appendChild(tile);
+  });
+  body.appendChild(tray);
 }
 
 /* ----- type the translation (English → Spanish) ----- */

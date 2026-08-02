@@ -214,6 +214,33 @@
         // Sprint 2 ruling 2: a real multi-exercise run — answer + Continue to see the work
         // travel across the still field. Speed variants scale BOTH halves + the JS handoff.
         "Sprint 2 — THE SLIDE (shipped: equal halves 400/400ms)": () => slideStory(0, 400, 400),
+        // ruling 3: a REAL machine lesson composed fresh — Present, Grasp, Build, Variation,
+        // Produce per item, then the close. Clear its learn state so every item is new.
+        "Sprint 2 — INTRO LADDER (real machine lesson, full arc)": () => {
+          clean();
+          const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
+          state.learn = state.learn || {};
+          m.items.forEach(it => { delete state.learn[it.id]; });
+          startLesson(m);
+        },
+        "Sprint 2 — Grasp (word-scale MC, 3 options)": () => {
+          clean();
+          run = { lesson: { id: "__harness__", topic: "Ordering food", title: "At the restaurant", items: lessonItems },
+            qs: [{ type: "grasp", item: chunkItem, word: "creo que hay", wordEn: "I think there's",
+                   pool: ["excuse me", "a mistake", "on the bill", "right away"], arc: true }],
+            idx: 0, pct: 30, wrong: 0, restored: 0, answered: false, reasks: {}, review: false, missed: new Map() };
+          renderQuestion();
+        },
+        "Sprint 2 — Variation (frame swaps a chunk)": () => {
+          clean();
+          const fam = ALL_ITEMS.filter(x => x.frame === "¿me puede traer ___?");
+          const sib = fam.find(x => /cuenta/.test(x.es)) || fam[0];
+          run = { lesson: { id: "__harness__", topic: "Ordering food", title: "At the restaurant", items: fam },
+            qs: [{ type: "variation", item: sib, parts: _frameParts(sib.frame, sib.es),
+                   tiles: shuffle(["la cuenta", "el menú", "agua"]), correct: "la cuenta", arc: true }],
+            idx: 0, pct: 45, wrong: 0, restored: 0, answered: false, reasks: {}, review: false, missed: new Map() };
+          renderQuestion();
+        },
         "Exercise — listen & type": () => ask("listen_type", normItem),
         "Exercise — listen & choose (night field)": () => { ask("listen_choice", normItem); const f = document.querySelector(".facet-bg"); if (f) f.classList.add("no-light"); },
         "Exercise — speak it": () => ask("speak_it", normItem),

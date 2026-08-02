@@ -56,10 +56,10 @@ coats — pace, scaffolding, and the 4-choice grind:
 - [CHAT] 7/27-1 Duolingo first-lessons inspiration: broken-up new words · bolded new word · in-lesson
   transitions that slow it down · slow build (word → word → +with → +please) · variations
   (coffee with sugar / milk with sugar) · round-robin ending.
-- [CHAT] 7/26-4 Lessons feel too fast; many exercises auto-advance with no Continue (scrambles the brain).
+- ~~[CHAT ruled + CODE shipped v216]~~ 7/26-4 auto-advance dead (universal Continue).
 - [CHAT] 7/25-5 New-phrase intro needs a Continue; exercises should SLIDE between, not blink.
 - [CHAT, maybe just a CODE tune] 7/25-8 The listen-choice reveal is too fast/jumpy (same pacing family).
-- [CHAT] 7/26-5 The 4-choice select-one: hated, especially single words — too fast, reads as trick-
+- ~~[CHAT ruled + CODE shipped v221]~~ 7/26-5 MC word-scale-3 only; was: The 4-choice select-one: hated, especially single words — too fast, reads as trick-
   reading, not production. Candidate: retire/demote mc for words, replace with pairs/small-
   sentence contexts.
 - [CHAT] 7/26-9 Switch phrase-intro to cold production (or similar).
