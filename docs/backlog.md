@@ -1,5 +1,12 @@
 # Backlog (managed; sequenced 2026-07-27)
 
+INTAKE PROCESS (Tom's rule, 2026-08-02): Tom sends observations the moment he notices them, raw
+and unsorted, any time - mid-sprint included. Code triages every item into exactly one of:
+ALREADY DONE (named, with version) · ALREADY QUEUED (named, where) · QUICK FIX (shipped now or
+slotted into the current increment) · NEEDS CHAT (parked here with owner label) · NEW (logged
+here, dated). Code answers each item's disposition in one line. Deduplication is CODE's job,
+never Tom's - sending a duplicate costs nothing and loses nothing.
+
 Owner key: CODE = build directly, no design needed · CHAT = design/pedagogy session · VERIFY = may
 already be fixed, Tom re-checks on current build. Sourced from Tom's 7/24–7/27 notes.
 
