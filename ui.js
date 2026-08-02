@@ -40,11 +40,18 @@ function applyTheme() {
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta && bg) meta.setAttribute("content", bg);
 }
+let _flameSwelled = false;
 function renderTopbar() {
   $("#stat-streak").textContent = state.streak;
   // no flame on the intake: a brand-new user has no streak to show (backlog 7/26-2)
   const streakEl = document.querySelector(".stat.streak");
   if (streakEl) streakEl.style.display = state.profile ? "" : "none";
+  // the flame swells once per open (Tom, 2026-08-02): a greeting, not a metronome
+  if (streakEl && state.profile && state.streak > 0 && !_flameSwelled) {
+    _flameSwelled = true;
+    streakEl.classList.add("swell");
+    setTimeout(() => streakEl.classList.remove("swell"), 1900);
+  }
   const brand = $("#topbar-brand");
   if (brand) brand.innerHTML = wordmark(22);
   const flag = $("#lang-flag");

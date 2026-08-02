@@ -252,7 +252,10 @@ body.home-lit .topbar .lang-flag-top { background: rgba(255,255,255,.14); border
 /* §3.2 header flame (design/home.html .flame): gold, display font — "gold is the app's light" */
 .stat { display: flex; align-items: center; gap: 4px; font-family: var(--font-display); font-weight: 600; font-size: 13px; }
 .stat .ic.flame { display: inline-flex; }
-.stat.streak { color: var(--accent-2); margin-left: auto; }   /* pushes flame + lang into the right group */
+.stat.streak { color: var(--accent-2); margin-left: auto; }
+.stat.streak.swell { animation: flame-swell 1.8s cubic-bezier(.2,.7,.3,1) both; transform-origin: center; }
+@keyframes flame-swell { 0% { transform: scale(1); } 25% { transform: scale(1.45); } 55% { transform: scale(1.45); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .stat.streak.swell { animation: none; } }   /* pushes flame + lang into the right group */
 .stat.xp { color: var(--green); }
 .stat.gems { color: var(--secondary); }
 .topbar .spacer { flex: 1; }

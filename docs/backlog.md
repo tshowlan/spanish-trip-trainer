@@ -103,6 +103,50 @@ experience spec — Tom's notes are the missing brief for it.
   Rule candidate: no taught question without its answerable reply. The `reply:` item field
   exists; this is authoring + possibly a reply-exercise emphasis.
 
+## Tom's notes 2026-08-02 (with 7/28-7/29 carryovers) — triaged
+
+Quick fixes SHIPPED v223: flame swell on open · pairs caps (<=3 words / 18 chars) + varied seat ·
+sound-off escape re-bites at render (regression since the ladder fixed types at compose) · dial
+numbers NaN-proofed + the insights promise-line restricted to genuinely new users (veterans with
+a sparse week stay silent - the line was reading as a broken dial).
+
+- [CHAT · Sprint 3 brief, enriched] Primer as WORLD-ENTRY: pulled into a scenario, visual language
+  not rigid story ("a bag left on a park bench", "my glasses on a bench in Cusco"); words TOP,
+  photo BOTTOM (7/29-3); plus: smoother entry when jumping into lessons from Learn (no primer on
+  replays = thrown in cold).
+- [CHAT · ear family delta] sound_choice miss: show WHICH option was wrong too; the auto-select of
+  the correct one reads confusing (Tom x2: 8/2-6 + 7/28-3).
+- [CHAT · letter rungs delta] word_fill quality: single-letter fills feel trivial ("taxi" + i,
+  8/2-15) - reserve word_fill for complicated words, and always show the word inside its sentence.
+- [CHAT · rhythm tune] Post-arc diet: fewer bare word-picks after intro, more in-sentence types
+  (8/2-7; partially served by v221 MC retirement - the residue is review-session composition).
+- [CHAT · increment-4 flag] Machine drills should FIRST drill the frame itself (assemble/type
+  "hay" from Spanish words) before filler drills; more production than selection (7/29-4). Flag
+  rides to chat with the conveyor build.
+- [CODE · investigate] Correct ding still intermittently absent (8/2-10) - instrument the miss
+  (counter or visible tick) rather than iterate theories; ask Tom to name the exercise next time.
+- [CODE · repro needed] Audio icon clips into selections on some exercises (8/2-12) - need which
+  exercise; harness sweep otherwise.
+- [CODE] Home hero photo paints later than the rest after quitting a lesson (8/2-13) - profile,
+  then warm/decode-hint the image.
+- [CODE · queued into increment 4] Fill-family EN cue at content scale per the cue grammar
+  (8/2-3: "I had to search for the English") - same law as MAKE IT.
+- [CHAT · Sprint 4 additions] Review sessions: 40 items is far too many (8/2-16, the 140-pile item
+  already queued); basics (Si/No/gracias/por favor) need a review-exemption rule (8/2-17); paced
+  review sessions (7/29-7).
+- [CHAT · onboarding] Intake ending: a screen showing HOW the plan flexed to the user's choices
+  (8/2-18).
+- [CHAT · content] Numbers lesson finale: a sentence build composed from the lesson's earlier
+  builds, never bare "translate One" (7/28-2).
+- [CHAT blessing + CODE] The sound map, next pass: tile-tap sounds on builds; correct-streak dings
+  walk up the scale (7/28-1.3/1.4).
+
+Answered inline (no action): "Me trae el menu" AND "Me puede traer" are both correct (taught note
+covers it - poder is the polite jacket) · "bring me this one" grammar fixed v220 (gloss-forms) ·
+confirm-button pattern already matches Duolingo's (picks grade on tap, builds have Check) ·
+1-of-4 phrase selection already dead (v221) · one-cold-at-the-end already addressed by the encore
++ input climb (increment 5, queued) · dedicated second-chance screen already queued (Sprint 5).
+
 ## Standing board (unchanged, slots between sprints at Tom's call)
 
 Mexico pack session · Progress tab depth · session-end stamp cut · Progress/Profile tabtitle

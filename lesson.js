@@ -38,7 +38,9 @@ function reviewQuestion(item, pool, cap) {
    review workhorse. Items ARE the pairs (audio + en are item fields); best for kit
    items, machine fillers, short forms. Mutates the pool (the four leave their solo slots). */
 function extractPairsBoard(pool) {
-  const shorts = pool.filter(it => it.es.trim().split(/\s+/).length <= 4 && exposuresOf(it) >= 1);
+  // caps [tune]: 4-word phrases stacked 3 lines deep in the cards (Tom, 2026-08-02) - boards
+  // take short items only; long phrases review through their own rungs instead
+  const shorts = pool.filter(it => it.es.trim().split(/\s+/).length <= 3 && it.es.length <= 18 && exposuresOf(it) >= 1);
   if (shorts.length < 4) return null;
   const four = sample(shorts, 4);
   four.forEach(it => { const i = pool.indexOf(it); if (i >= 0) pool.splice(i, 1); });
@@ -209,7 +211,9 @@ function composeSession(lesson) {
   if (!newItems.length) {
     const board = extractPairsBoard(reviewPool);                      // §7.1 pairs: the review workhorse
     shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap))).forEach(q => qs.push(q));
-    if (board) qs.splice(Math.min(1, qs.length), 0, board);
+    // varied seat [tune]: every replay opened ON the board (Tom, 2026-08-02) - it now lands
+    // anywhere in the first few slots so replays don't all begin identically
+    if (board) qs.splice(Math.min(pick([0, 1, 2, 3]), qs.length), 0, board);
     const out = applyRhythm(qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it })));
     out.push(...closeReps(lesson));                                   // §7.1 the close: the last reps, always
     return out;
@@ -590,6 +594,13 @@ function renderQuestion() {
   // tap guard (backlog 7/26-3): a fast Continue tap was landing on the NEXT exercise's
   // options — a fresh question swallows input for its first 300ms [tune], capture-phase
   run.guardT = Date.now() + 300;
+  // the listening escape holds for the WHOLE session: already-composed ear beats swap to
+  // their visual siblings here (compose-time types are fixed since the ladder; the escape
+  // must bite at render - Tom's catch, 2026-08-02)
+  if (run.soundOff && q.item && EAR_SIBLINGS[q.type]) {
+    const sib = [EAR_SIBLINGS[q.type], "word_fill", "phrase_fill"].find(m => _modeFeasible(m, q.item));
+    if (sib) q.type = sib;
+  }
   run.answered = false;
   run.slotT0 = Date.now();                              // per-slot timing telemetry (2026-07-22)
   // strength ring only when exactly one item is on stage (§3.7); multi-item boards

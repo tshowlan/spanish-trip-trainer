@@ -186,14 +186,14 @@ function renderHome(opts) {
     // ceremony consumes the animation budget. Arcs + numbers land instantly, then tick.
     setTimeout(() => {
       home.querySelectorAll(".ring-fg").forEach(c => { if (c.dataset.fill != null) { c.style.transition = "none"; c.style.strokeDashoffset = c.dataset.fill; } });
-      home.querySelectorAll(".ring-num").forEach(n => { n.firstChild.textContent = n.dataset.to; });
+      home.querySelectorAll(".ring-num").forEach(n => { n.firstChild.textContent = String(Math.round(+n.dataset.to) || 0); });
     }, 0);
   } else if (started) {
     // cold open keeps the load-in fill: arcs sweep + numbers count up
     setTimeout(() => {
       home.querySelectorAll(".ring-fg").forEach(c => { if (c.dataset.fill != null) c.style.strokeDashoffset = c.dataset.fill; });
       home.querySelectorAll(".ring-num").forEach(n => {
-        const to = +n.dataset.to; const t0 = performance.now();
+        const to = Math.round(+n.dataset.to) || 0; const t0 = performance.now();   // NaN-proof: a broken score reads 0, never a blank dial
         const step = now => {
           const k = Math.min(1, (now - t0) / 650), e = 1 - Math.pow(1 - k, 3);
           n.firstChild.textContent = Math.round(to * e);
@@ -861,8 +861,13 @@ function divergenceLine() {
    encouraging case — a positive 2-week Readiness move; silence otherwise (never a negative nudge). */
 function insightLine() {
   const tr = (typeof scoreTrend === "function") ? scoreTrend("readiness", 7) : null;   /* [tune] one week (backlog 7/26-7) */
-  // no trend yet (under ~a week of history): name the future instead of silence (Tom's pick 2026-07-29, chat's #2)
-  if (!tr) return el(`<div class="whisper"><span>Insights arrive after a week of practice.</span></div>`);
+  // no trend yet: the promise line is for genuinely NEW users only (Tom's pick 2026-07-29, chat's #2).
+  // A veteran with a sparse week (no 2 points in-window) stays silent - telling them insights
+  // "arrive after a week" read as a broken dial (Tom, 2026-08-02).
+  if (!tr) {
+    const newUser = (state.scoreHistory || []).length < 2 && ((state.scoresCache || {}).lifetimeSessions || 0) < 8;
+    return newUser ? el(`<div class="whisper"><span>Insights arrive after a week of practice.</span></div>`) : null;
+  }
   if (tr.delta <= 0) return null;          // flat or falling week for an established user: silent, never scolding
   return el(`<div class="whisper"><span class="spark"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg></span><span>Your last week moved Readiness <span class="num">+${tr.delta}</span></span></div>`);
 }

@@ -15,6 +15,13 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-02 — Tom's 28-note triage: 4 quick fixes shipped (v223)
+- Intake process live: Tom streams notes, Code triages. This batch: 4 QUICK FIXES (flame swell on
+  open · pairs caps + varied seat · sound-off escape re-bites at render, a real regression since
+  compose-time types · dial numbers NaN-proofed + promise-line restricted to new users), 13 items
+  logged/parked with owners in docs/backlog.md, 6 answered inline, rest confirmed already
+  done/queued. Full triage in the backlog's 2026-08-02 section.
+
 ## 2026-08-02 — Increment-3 rulings executed + ladder-beats stamped (v222)
 - Miss ruling (option c+) live: arc-internal misses never re-queue (the arc's remaining beats are
   the retest); a PRODUCE miss marks run.summitMissed for the encore to serve scaffolded (increment
