@@ -237,7 +237,7 @@
           state.learn = state.learn || {}; m.items.forEach(it => { delete state.learn[it.id]; });   // fresh: first-meetings + new-marks visible
           const shell = _enShell(m.items);
           const cues = m.items.map(it => ({ item: it, p: _frameParts(m.frame, it.es), fen: _fillerEn(shell, it.en) })).filter(x => x.p && x.fen);
-          run = { lesson: m, qs: [{ type: "machine_drill", forge: true, frame: m.frame, mlesson: m, cues: cues.slice(0, 2), all: cues, arc: true }],
+          run = { lesson: m, qs: [{ type: "machine_drill", forge: true, frame: m.frame, mlesson: m, cues, all: cues, arc: true }],
             idx: 0, pct: 30, wrong: 0, restored: 0, answered: false, reasks: {}, review: false, missed: new Map() };
           renderQuestion();
         },
