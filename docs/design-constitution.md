@@ -312,6 +312,16 @@ doc narrates, this file states only the laws.
 - **Arc misses don't re-queue:** the arc's remaining beats are the retest; the Present card
   never re-serves (re-teaching reads as punishment — rung-down's floor is recognition); a
   missed summit is absorbed by the encore, served scaffolded. *(Sprint 2 miss ruling, c+)*
+- **The machine arc:** machine lessons run FORGE-PRESENT (one screen: the machine meets you
+  like a new phrase - meaning, use, voice - and the BUILD is the active confirmation) →
+  CONVEYOR → EXCHANGE → close. No present cards in machine lessons; the frame's taught-moment
+  is the fuse, each filler's is its first conveyor serve. Short frames forge at letter scale.
+  *(machine restructure ruling, 2026-08-02)*
+- **The new-mark:** first-meeting words settle in (the formation's quiet rise, 300ms) and
+  speak once, then wear DOTTED GOLD (never confusable with the slot's solid gold) with
+  tap-to-check (inline gloss chip; taps are uncertainty telemetry). The mark clears after the
+  item's first successful production [tune]. A settled-correct word's slot line is SOLID
+  green, always - green never hedges. *(new-mark ruling + Tom's semi-correct catch, 2026-08-02)*
 - **The input climbs by expertise:** first exposure summits the ITEM at typed cold; the
   machine drills stay at tray. Full cold frame production is an expertise rung — the conveyor
   and the close swap tiles for the keyboard as exposures accrue (threshold [tune], shared

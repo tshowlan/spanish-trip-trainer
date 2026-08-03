@@ -114,6 +114,10 @@ a sparse week stay silent - the line was reading as a broken dial).
   not rigid story ("a bag left on a park bench", "my glasses on a bench in Cusco"); words TOP,
   photo BOTTOM (7/29-3); plus: smoother entry when jumping into lessons from Learn (no primer on
   replays = thrown in cold).
+- [CHAT · exchange artifact session] The flying-speaker reveal (hero glides + scales into the
+  played-line seat, words after landing): Tom wants it but the composite reflows mid-flight
+  (choices pull up, icon clips) and speed never read right blind - needs the artifact, with the
+  layout frozen during flight. Chat already blessed the motion as lawful; the fade ships interim.
 - [CHAT · ear family delta] sound_choice miss: show WHICH option was wrong too; the auto-select of
   the correct one reads confusing (Tom x2: 8/2-6 + 7/28-3).
 - [CHAT · letter rungs delta] word_fill quality: single-letter fills feel trivial ("taxi" + i,

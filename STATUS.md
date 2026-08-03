@@ -15,6 +15,25 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-02 — SPRINT 2 INCREMENT 4 SHIPPED: the machine family (v224)
+- THE FORGE-PRESENT: machine lessons open with ONE present-card screen (frame big with dim slot,
+  meaning, the beat line as context, anchor, voice) and the BUILD as active confirmation. Fuse ->
+  the slot opens (200ms) -> the same stage becomes THE CONVEYOR: streamed cues (cue grammar at
+  23/700, blessed), learner fills the slot from the lesson's fillers, the machine speaks each
+  phrase made. No present cards in machine lessons; taught-moments moved to fuse/first-serve.
+- THE NEW-MARK: first serve = settle-in rise + one autoplay + dotted gold on the tile;
+  tap-to-check gloss chip on marked settled words (nmTaps telemetry); clears on first
+  production. Settled-correct slot line = SOLID green always (Tom: dotted green read as
+  semi-correct). Short frames (hay) forge at letter scale; quiero/necesito borrow the bring-me
+  confirmations for their exchange.
+- THE EXCHANGE: the ask mounted, the reply through the hero stage (autoplay), resolve on
+  comprehension; reuseId welds record exposure (the spiral audible); stage breathes into the
+  played-line. The FLYING-SPEAKER reveal is PARKED for the exchange artifact session (layout
+  reflows mid-flight; chat blessed the motion, the fade ships interim).
+- Also: fill-family EN lines at cue scale; forge->conveyor handoff breathes; five embedded
+  "Think:" anchor prefixes cleaned in both packs (doubled on present cards). Constitution:
+  machine arc + new-mark laws merged; decisions recorded.
+
 ## 2026-08-02 — Tom's 28-note triage: 4 quick fixes shipped (v223)
 - Intake process live: Tom streams notes, Code triages. This batch: 4 QUICK FIXES (flame swell on
   open · pairs caps + varied seat · sound-off escape re-bites at render, a real regression since

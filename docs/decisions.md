@@ -194,3 +194,17 @@ arc's remaining beats are the retest); a PRODUCE miss marks run.summitMissed so 
 rep serves scaffolded instead of cold (encore builds in increment 5); rung-down re-ask governs
 post-arc and review only, and its floor is recognition - never the card. Cue grammar minted
 (ladder-beats r1): micro-caps label + meaning at content scale; the conveyor's cue adopts it.
+
+## 2026-08-02 — The Forge: machines drill the frame first, built by the learner
+The fused frame becomes the conveyor's mount; filler-Grasp removed from machine arcs. Machine
+arcs re-order: Present -> Forge -> Conveyor -> Exchange (-> close). Short frames (Hay) forge at
+letter scale; the input climb applies to the Forge like everything else. Non-machine items keep
+the five-beat ladder unchanged. (Chat ruling on Tom's frame-first flag, rides with increment 4.)
+
+## 2026-08-02 — Machines: one Forge-present, fillers taught in use, the new-mark
+The new-mark (settle-in + dotted gold + tap-gloss) replaces cards; exposure records move to
+fuse/first-serve. Machine arc: FORGE-PRESENT (frame meaning + build it, one screen) -> CONVEYOR ->
+EXCHANGE; no present cards in machine lessons. Cue at 23/700 on the machine screen blessed (the
+cue is the task); the exchange's flying-speaker reveal blessed as lawful motion (the control that
+played becomes the reveal's replay control). New-mark taps are telemetry (nmTaps on the learn
+record); the mark clears after the item's first successful production [tune].

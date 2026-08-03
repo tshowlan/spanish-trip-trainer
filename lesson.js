@@ -219,6 +219,35 @@ function composeSession(lesson) {
     return out;
   }
 
+  // ===== MACHINE ARC (the Forge ruling, 2026-08-02): Present → Forge → Conveyor →
+  // Exchange → close. The learner BUILDS the frame itself, then operates it; fillers are
+  // taught by the conveyor's cues (the filler-Grasp MC is REMOVED for machines — more
+  // production, less selection). Non-machine lessons keep the five-beat ladder below. =====
+  if (lesson.machine && lesson.frame) {
+    const shell = _enShell(lessonItems);
+    const cues = lessonItems.map(it => ({ item: it, p: _frameParts(lesson.frame, it.es), fen: _fillerEn(shell, it.en) }))
+      .filter(x => x.p && x.p.filler.trim() && x.fen);
+    if (cues.length >= 2) {
+      // MACHINE INTRO RESTRUCTURE (chat ruling 2026-08-02, supersedes the Forge arc order):
+      // ONE Forge-present screen (frame meaning + build it - the machine IS the new phrase),
+      // then the conveyor serves every filler (taught-moment = first serve, the new-mark
+      // guides the first meeting), then the exchange. No present cards in machine lessons.
+      qs.push({ type: "machine_drill", forge: true, frame: lesson.frame, mlesson: lesson,
+                cues, all: cues, arc: true });
+      // quiero/necesito borrow the bring-me confirmations (reply-sets: "shared with
+      // Quiero/Necesito confirmations" - Marchando answers a want as well as a bring)
+      let replyPool = lesson.replies || [];
+      if (!replyPool.length && /^(quiero|necesito)/.test(lesson.frame)) {
+        const donor = _machineLessonOf("¿me puede traer ___?");
+        replyPool = (donor && donor.replies) || [];
+      }
+      const reps = replyPool.length ? sample(replyPool, Math.min(2, replyPool.length)) : [];
+      reps.forEach(r => qs.push({ type: "exchange", reply: r, frame: lesson.frame, mlesson: lesson, cue: pick(cues), arc: true }));
+      qs.push(...closeReps(lesson));
+      return qs;
+    }
+  }
+
   // SPRINT 2 RULING 3 — THE INTRO LADDER: a new item's first lesson runs a fixed mini-arc,
   // Present → Grasp (the new chunk alone, word-scale MC) → Build (tiles/letters) → Variation
   // (the frame swaps one chunk) → Produce (typed cold). The order is fixed on first exposure;
@@ -613,6 +642,7 @@ function renderQuestion() {
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">${icon('arrows-clockwise', 15)} Second chance, you missed this one</div>`));
   ({ present: renderPresent, build: renderBuild, mc_es2en: renderMC,
      grasp: renderGrasp, variation: renderVariation,
+     machine_drill: renderMachineDrill, exchange: renderExchange,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
      listen_choice: renderListenChoice, reply_listen: renderReply,
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
@@ -1007,6 +1037,226 @@ function renderVariation(q) {
   body.appendChild(tray);
 }
 
+/* ===== THE MACHINE DRILLS (ruling 6 + the Forge, 2026-08-02): the learner BUILDS the
+   frame (tiles; letter scale for one-word frames), the slot OPENS in the fused frame, and
+   the same stage becomes the conveyor's mount — streamed cues (cue grammar), the learner
+   fills the slot from the lesson's fillers. Production, zero option-picking. ===== */
+function _frameTokens(frame) {
+  return frame.replace("___", " ").replace(/[¿¡?!.,]/g, " ").split(/\s+/).filter(Boolean);
+}
+function renderMachineDrill(q) {
+  const body = $("#qbody");
+  const parts = q.cues[0].p;
+  const shell = _enShell(q.mlesson.items) || { pre: "", post: "" };
+  if (!q.forge) body.appendChild(el(`<div class="qtype">The machine again</div>`));
+  const cueBlock = el(`<div class="conv-cuewrap"></div>`);
+  const mountWrap = el(`<div class="machine-stage"></div>`);
+  body.appendChild(cueBlock);
+  body.appendChild(mountWrap);
+  let mountEl, slotEl;
+  if (q.forge) forgePhase(); else { mountFrame(); conveyorPhase(); }
+
+  function forgePhase() {
+    // FORGE-PRESENT composed like a present card (Tom, 2026-08-02): the machine meets you
+    // the way a new phrase does - what it is, how you'll use it, its voice - and the BUILD
+    // below is the active confirmation, sitting where the meaning check sits on cards.
+    const anchorItem = q.mlesson.items.find(it => it.anchor) || q.mlesson.items.find(it => it.note);
+    const frameSpeak = (parts.pre + " " + parts.post).replace(/\s+/g, " ").trim();
+    body.insertBefore(el(`<div class="present-label">NEW MACHINE</div>`), cueBlock);
+    body.insertBefore(el(`<div class="present-card">
+      <div class="present-es">${parts.pre}<span class="pm-slot">___</span>${parts.post}</div>
+      <div class="present-en">${shell.pre}...${shell.post}</div>
+      ${q.mlesson.beat ? `<div class="present-note">${q.mlesson.beat}</div>` : ""}
+      ${anchorItem && anchorItem.anchor ? `<div class="present-anchor"><span class="lead">Think:</span> ${anchorItem.anchor}</div>` : ""}
+    </div>`), cueBlock);
+    const arow = el(`<div class="present-audio"></div>`);
+    arow.appendChild(audioControl(() => speak(frameSpeak)));
+    arow.appendChild(el(`<span class="audio-hint">Tap to hear it</span>`));
+    body.insertBefore(arow, cueBlock);
+    setTimeout(() => { if (!run.answered) speak(frameSpeak); }, 350);   /* [tune] the card speaks first */
+    cueBlock.appendChild(el(`<div class="cue-label">Build it</div>`));
+    const tokens = _frameTokens(parts.pre + " " + parts.post);   // real casing from the taught item, not the lowercase frame key
+    const letterScale = tokens.length <= 1;          // short frames (¿Hay?) forge at letter scale
+    const seq = letterScale ? (tokens[0] || "").split("") : tokens;
+    const ans = el(`<div class="build-answer forge-answer"></div>`);
+    const bank = el(`<div class="bank"></div>`);
+    mountWrap.appendChild(ans); mountWrap.appendChild(bank);
+    let need = 0;
+    shuffle(seq.map((t, i) => ({ t, i }))).forEach(({ t }) => {
+      const tile = el(`<button class="word${letterScale ? " lkey" : ""}">${t}</button>`);
+      tile.addEventListener("click", () => {
+        if (run.answered || tile.classList.contains("used")) return;
+        if (norm(tile.textContent) === norm(seq[need])) {
+          tile.classList.add("used");
+          ans.appendChild(el(`<span class="word">${seq[need]}</span>`));
+          need++;
+          if (need === seq.length) fuse();
+        } else { haptic("wrong"); tile.classList.add("vwrong"); setTimeout(() => tile.classList.remove("vwrong"), 900); }
+      });
+      bank.appendChild(tile);
+    });
+    function fuse() {
+      playSound("correct"); haptic("correct");
+      ans.appendChild(el(`<span class="sweep"></span>`));
+      requestAnimationFrame(() => ans.classList.add("fused"));
+      bank.classList.add("recede");
+      // THE SLOT OPENS: the fused frame becomes the conveyor's mount — continuity is the
+      // point, so the handoff BREATHES: the fused build fades (250ms), the mounted frame
+      // fades in with the slot growing open (Tom: the cut was jumpy, 2026-08-02)
+      setTimeout(() => {
+        mountWrap.classList.add("phase-out"); cueBlock.classList.add("phase-out");
+        setTimeout(() => {
+          mountWrap.innerHTML = ""; cueBlock.innerHTML = "";
+          mountWrap.classList.remove("phase-out"); cueBlock.classList.remove("phase-out");
+          mountWrap.classList.add("phase-in"); cueBlock.classList.add("phase-in");
+          mountFrame(true); conveyorPhase();
+          setTimeout(() => { mountWrap.classList.remove("phase-in"); cueBlock.classList.remove("phase-in"); }, 420);
+        }, 260);
+      }, 900);   /* [tune] let the fuse land before the handoff */
+    }
+  }
+  function mountFrame(opening) {
+    mountEl = el(`<div class="frame-mount">${parts.pre}<span class="slot${opening ? " opening" : ""}"><span class="dashes">– – –</span></span>${parts.post}</div>`);
+    mountWrap.appendChild(mountEl);
+    slotEl = mountEl.querySelector(".slot");
+  }
+  function conveyorPhase() {
+    const dots = el(`<div class="conv-dots">${q.cues.map(() => `<i></i>`).join("")}</div>`);
+    const cueLabel = el(`<div class="cue-label">Ask for</div>`);
+    const cueMeaning = el(`<div class="cue-meaning conv-cue"></div>`);
+    cueBlock.appendChild(dots); cueBlock.appendChild(cueLabel); cueBlock.appendChild(cueMeaning);
+    const tray = el(`<div class="var-tray conv-tray"></div>`);
+    mountWrap.appendChild(tray);
+    shuffle(q.all.slice()).forEach(cue => {
+      const f = cue.p.filler;
+      const tile = el(`<button class="word vtile">${f}</button>`);
+      const st0 = learnPeek(cue.item);
+      // the new-mark persists on met-but-never-produced words (dotted gold; clears after
+      // the item's first successful production [tune])
+      if (st0 && st0.exposures > 0 && !(st0.axes && st0.axes.production)) tile.classList.add("new-mark");
+      tile.addEventListener("click", () => onTile(f, tile));
+      tray.appendChild(tile);
+    });
+    let ci = -1, wrongTaps = 0, current = null;
+    const nextCue = () => {
+      ci++;
+      if (ci >= q.cues.length) return doneAll();
+      current = q.cues[ci]; wrongTaps = 0;
+      cueMeaning.textContent = current.fen;
+      slotEl.innerHTML = `<span class="dashes">– – –</span>`;
+      // taught-moment = the first conveyor serve (the record the present cards owned);
+      // the new-mark guides the first meeting: the answer tile settles in, speaks once,
+      // wears the dotted gold until first successful production
+      if (exposuresOf(current.item) === 0) {
+        recordExposure(itemId(current.item));
+        const tile = [...tray.children].find(t => norm(t.textContent) === norm(current.p.filler));
+        if (tile) {
+          tile.classList.add("new-mark", "settle-pop");
+          setTimeout(() => tile.classList.remove("settle-pop"), 420);
+          setTimeout(() => speak(current.p.filler), 250);   /* one autoplay of the word [tune] */
+        }
+      }
+      [...dots.children].forEach((d, i) => d.className = i === ci ? "now" : (i < ci ? "done" : ""));
+    };
+    function onTile(f, tile) {
+      if (run.answered || !current || tile.classList.contains("used")) return;
+      if (norm(f) === norm(current.p.filler)) {
+        tile.classList.add("used");
+        const st1 = learnPeek(current.item);
+        const marked = st1 && !(st1.axes && st1.axes.production);
+        slotEl.innerHTML = `<span class="filled${marked ? " new-mark" : ""}">${current.p.filler}</span>`;
+        if (marked) {
+          const cur = current;
+          slotEl.querySelector(".filled").addEventListener("click", e => {
+            e.stopPropagation();
+            const st2 = learnPeek(cur.item); if (st2) st2.nmTaps = (st2.nmTaps || 0) + 1;   // uncertainty telemetry
+            const chip = el(`<span class="gloss-chip">${cur.fen}</span>`);
+            slotEl.appendChild(chip);
+            setTimeout(() => chip.remove(), 1800);
+          });
+        }
+        playSound("correct"); haptic("correct");
+        speak(current.item.es);                          // the machine speaks what it just made
+        recordAnswer(itemId(current.item), wrongTaps === 0, { mode: "conveyor" });
+        if (wrongTaps > 0) run.wrong++;
+        setTimeout(nextCue, 900);   /* [tune] the beat between orders */
+      } else { wrongTaps++; haptic("wrong"); tile.classList.add("vwrong"); setTimeout(() => tile.classList.remove("vwrong"), 900); }
+    }
+    function doneAll() {
+      run.answered = true; current = null;
+      tray.classList.add("recede");
+      q.esOnStage = true; q.noAudio = true;
+      if (q.forge) q.resNote = "You built the machine. Then you ran it.";
+      resolveCorrect({ es: `${parts.pre}___${parts.post}`, en: `${shell.pre}...${shell.post}` }, q,
+        { yoursNow: false, restored: false, strengthAfter: 0, miss: false });
+    }
+    nextCue();
+  }
+}
+
+/* the Exchange (ruling 6): the learner's ask is mounted, Spain ANSWERS through current
+   listening truth, and the rep resolves on comprehension of the ANSWER. Replies are
+   heard-only (no SRS homes); reuseId welds record exposure — the spiral audible. */
+function renderExchange(q) {
+  if (run.soundOff || !("speechSynthesis" in window) || state.sound === false) { next(); return; }   // pure ear beat: steps aside without sound
+  const body = $("#qbody");
+  const r = q.reply;
+  body.appendChild(el(`<div class="qtype">The exchange</div>`));
+  body.appendChild(el(`<div class="prompt-sub">You ask:</div>`));
+  body.appendChild(el(`<div class="frame-mount exch-ask">${q.cue.item.es}</div>`));
+  const play = audioControl(slow => { slow ? speak(r.es, 0.55) : speak(r.es); }, { speed: true });
+  const stage = el(`<div class="listen-stage"></div>`);
+  stage.appendChild(play);
+  stage.appendChild(el(`<div class="hint">They answer. Tap to hear it again</div>`));
+  body.appendChild(stage);
+  setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
+  body.appendChild(el(`<div class="prompt">${r.target.q}</div>`));
+  const opts = shuffle(r.target.options.slice());
+  const choices = el(`<div class="choices"></div>`);
+  const reveal = () => {   // the ear never loses the answer: the played-line carries the reveal
+    // The flying-speaker version (hero glides into the played-line seat) is PARKED with chat:
+    // the surrounding layout reflows mid-flight (choices pull up, the icon clips) - it needs
+    // the exchange's artifact session, not blind tuning (Tom, 2026-08-02). Until then: the
+    // stage becomes the played-line via a breath.
+    stage.classList.add("phase-out");
+    setTimeout(() => {
+      const pl = el(`<div class="played-line"></div>`);
+      pl.appendChild(audioControl(() => speak(r.es)));
+      pl.appendChild(el(`<span>${r.es}</span>`));
+      stage.replaceWith(pl);
+      setTimeout(() => pl.classList.add("show"), 20);
+    }, 240);
+  };
+  const resolve = miss => {
+    run.answered = true;
+    if (!miss && r.reuseId) recordExposure(r.reuseId);
+    if (miss) run.wrong++;
+    reveal();
+    q.esOnStage = true; q.noAudio = true;
+    clearFooter();
+    resolveCorrect({ es: r.es, en: r.en }, q, { yoursNow: false, restored: false, strengthAfter: 0, miss });
+  };
+  opts.forEach(o => {
+    const c = el(`<button class="choice">${o.t}</button>`);
+    c.addEventListener("click", () => {
+      if (run.answered) return;
+      if (o.ok) {
+        c.classList.add("correct"); playSound("correct"); haptic("correct");
+        [...choices.children].forEach(x => { if (x !== c) x.classList.add("dim"); });   // the others recede (300ms settle)
+        resolve(false);
+      }
+      else {
+        c.classList.add("wrong"); haptic("wrong");
+        setTimeout(() => { c.classList.remove("wrong"); c.classList.add("dim"); }, 900);
+        [...choices.children].forEach((x, i) => { if (opts[i].ok) x.classList.add("correct"); });
+        resolve(true);
+      }
+    });
+    choices.appendChild(c);
+  });
+  body.appendChild(choices);
+}
+
 /* ----- type the translation (English → Spanish) ----- */
 function renderType(q) {
   const item = q.item;
@@ -1153,7 +1403,7 @@ function renderFill(q) {
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Fill in the blank</div>`));
   body.appendChild(el(`<div class="prompt es-stage-line">${shown}</div>`));
-  body.appendChild(el(`<div class="prompt-sub">${item.en}</div>`));
+  body.appendChild(el(`<div class="cue-meaning">${item.en}</div>`));   // cue grammar: the meaning is the instruction, content scale (Tom 2026-08-02)
   const choices = el(`<div class="choices"></div>`);
   options.forEach(opt => {
     const c = el(`<button class="choice">${opt}</button>`);
@@ -1182,7 +1432,7 @@ function renderFillTwo(q, item, words, clean, blankIdxs) {
   }).join(" ");
   body.appendChild(el(`<div class="qtype">Fill in the blanks</div>`));
   const prompt = el(`<div class="prompt es-stage-line">${shown}</div>`); body.appendChild(prompt);
-  body.appendChild(el(`<div class="prompt-sub">${item.en}</div>`));
+  body.appendChild(el(`<div class="cue-meaning">${item.en}</div>`));   // cue grammar: the meaning is the instruction, content scale (Tom 2026-08-02)
   const tags = item.tags || [], na = answers.map(a => norm(a));
   const kwsFrom = arr => [...new Set(arr.flatMap(x => (x.keywords || []).map(clean)))].filter(w => /^\S+$/.test(w) && !na.includes(norm(w)) && w.length >= 3);
   let distract = kwsFrom((ALL_ITEMS || []).filter(x => (x.tags || []).some(t => tags.includes(t))));

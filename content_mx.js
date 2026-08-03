@@ -56,7 +56,7 @@ const MEXICO_PACK = {
                       { es: "Buenas tardes", en: "Good afternoon", tier: 1, tags: ["greetings"], contextEs: "Buenas tardes, señor", contextEn: "Good afternoon, sir", keywords: ["tardes"] },
                       { es: "Buenas noches", en: "Good evening / night", tier: 1, tags: ["greetings"], contextEs: "Buenas noches, hasta mañana", contextEn: "Good night, see you tomorrow", keywords: ["noches"] },
                       { es: "Por favor", en: "Please", tier: 1, tags: ["politeness"], contextEs: "Un café, por favor", contextEn: "A coffee, please", keywords: ["por favor"] },
-                      { es: "Gracias", en: "Thank you", tier: 1, tags: ["politeness"], contextEs: "Muchas gracias por todo", contextEn: "Thank you very much for everything", anchor: "Think: 'gratitude.'", variants: ["Muchas gracias"], reply: { es: "De nada", en: "You're welcome" } },
+                      { es: "Gracias", en: "Thank you", tier: 1, tags: ["politeness"], contextEs: "Muchas gracias por todo", contextEn: "Thank you very much for everything", anchor: "'gratitude.'", variants: ["Muchas gracias"], reply: { es: "De nada", en: "You're welcome" } },
                       { es: "De nada", en: "You're welcome", tier: 1, tags: ["politeness"], contextEs: "Gracias. De nada.", contextEn: "Thanks. You're welcome." },
                       { es: "Con permiso", en: "Excuse me (getting past)", tier: 1, tags: ["politeness"], note: "Very Mexican, say it squeezing by or leaving a table.", contextEs: "Con permiso, voy a pasar", contextEn: "Excuse me, I'm coming through", keywords: ["permiso"] },
                       { es: "Disculpe", en: "Excuse me (to get attention)", tier: 1, tags: ["politeness"], contextEs: "Disculpe, ¿me ayuda?", contextEn: "Excuse me, can you help me?", keywords: ["disculpe"] },
@@ -104,7 +104,7 @@ const MEXICO_PACK = {
                       { es: "diez", en: "ten", tier: 1, tags: ["numbers"], difficulty: 1, contextEs: "Diez pesos", contextEn: "Ten pesos" },
                       { es: "veinte", en: "twenty", tier: 1, tags: ["numbers", "money"], contextEs: "Veinte pesos", contextEn: "Twenty pesos" },
                       { es: "cincuenta", en: "fifty", tier: 1, tags: ["numbers", "money"], contextEs: "Cincuenta pesos", contextEn: "Fifty pesos" },
-                      { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien pesos", contextEn: "One hundred pesos", anchor: "Think: 'century / percent', 100." },
+                      { es: "cien", en: "one hundred", tier: 1, tags: ["numbers", "money"], contextEs: "Cien pesos", contextEn: "One hundred pesos", anchor: "'century / percent', 100." },
                       { es: "En efectivo", en: "In cash", tier: 1, tags: ["money"], contextEs: "Voy a pagar en efectivo", contextEn: "I'll pay in cash", keywords: ["efectivo"] },
                     ]
                   },
@@ -126,7 +126,7 @@ const MEXICO_PACK = {
                     machine: true, frame: "¿me puede traer ___?",
                     frameGloss: "¿Me puede traer...? = could you bring me...? The polite ask that works on anyone.",
                     items: [
-                      { es: "¿Me puede traer la cuenta?", en: "Could you bring me the check?", tier: 1, tags: ["core"], keywords: ["cuenta"], frame: "¿me puede traer ___?", variants: ["¿Me trae la cuenta?"], note: "Me trae...? is the same machine with the jacket off. Both are right.", anchor: "Think: traer is to bring. You are asking them to bring it, not going to get it." },
+                      { es: "¿Me puede traer la cuenta?", en: "Could you bring me the check?", tier: 1, tags: ["core"], keywords: ["cuenta"], frame: "¿me puede traer ___?", variants: ["¿Me trae la cuenta?"], note: "Me trae...? is the same machine with the jacket off. Both are right.", anchor: "traer is to bring. You are asking them to bring it, not going to get it." },
                       { es: "¿Me puede traer agua?", en: "Could you bring me water?", tier: 1, tags: ["core"], keywords: ["agua"], frame: "¿me puede traer ___?", variants: ["¿Me trae agua?"] },
                       { es: "¿Me puede traer el menú?", en: "Could you bring me the menu?", tier: 1, tags: ["core"], keywords: ["menú"], frame: "¿me puede traer ___?", variants: ["¿Me trae el menú?"] },
                       { es: "¿Me puede traer otra cerveza?", en: "Could you bring me another beer?", tier: 1, tags: ["core"], keywords: ["cerveza"], frame: "¿me puede traer ___?", variants: ["¿Me trae otra cerveza?"] },
