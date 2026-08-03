@@ -42,5 +42,18 @@ Refreshed by tools/refresh-context-pack.sh on $(date +%Y-%m-%d) — do not edit
 these copies by hand; edit the sources and re-run the script.
 EOF
 
+# mirror to Tom's Desktop bundle (the folder he drags into chat sessions) so the pack
+# he hands over can never go stale (drift postmortem, 2026-08-03). DOM exports made by
+# Code land in the Desktop bundle directly; this sync only refreshes the law layer.
+DESK="/Users/thomashowland/Desktop/Projects/Tripfluent/chat-design-pack"
+if [ -d "$DESK" ]; then
+  cp docs/design-constitution.md styles.css "$DESK/"
+  for f in design/exercise-base.html design/lesson-breath.html design/ladder-beats.html \
+           design/listening-family.html design/resolution-frame.html design/presentation-card.html; do
+    [ -e "$f" ] && cp "$f" "$DESK/"
+  done
+  echo "desktop chat-design-pack synced"
+fi
+
 echo "context-pack refreshed:"
 ls -1 "$PACK"
