@@ -2493,7 +2493,7 @@ function slideOut(after) {
   qb.classList.remove("qenter");
   void qb.offsetWidth;
   qb.classList.add("leaving");
-  setTimeout(after, 400);
+  setTimeout(after, 350);
 }
 function next() {
   clearFooter();

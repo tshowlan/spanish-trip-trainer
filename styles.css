@@ -576,7 +576,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
    (Tom A/B'd 450/500, ±10/15/20%; symmetric 400/400 won). No fade needed; the field visibly
    still beneath both. #app's overflow-x clip (v214) keeps the off-stage halves from widening
    the page. */
-#qbody.qenter { animation: qenter 400ms cubic-bezier(.2,.7,.3,1) both; }
+#qbody.qenter { animation: qenter 350ms cubic-bezier(.2,.7,.3,1) both; }   /* [tune] 400 -> 350 (Tom, 2026-08-03) */
 @keyframes qenter { from { transform: translateX(110%); } to { transform: none; } }
 /* §8.3 wrong answer — restrained iOS-passcode shake, no red splash */
 .shake-x { animation: shake .34s; }
@@ -1256,7 +1256,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
    animation:none is LOAD-BEARING: the qenter animation's fill pins transform forever and an
    animation beats a transition — without this line the exit never renders (Tom's catch: the
    old exercise "just goes", found 2026-07-29). */
-#qbody.leaving { animation: none; transform: translateX(-110%); transition: transform 400ms cubic-bezier(.4,.05,.7,.5); }
+#qbody.leaving { animation: none; transform: translateX(-110%); transition: transform 350ms cubic-bezier(.4,.05,.7,.5); }   /* [tune] */
 
 /* §3.3 correction sheet — built to design/correction-sheet.html */
 .corr-wrap { position: fixed; inset: 0; z-index: 70; }

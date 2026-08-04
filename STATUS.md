@@ -15,6 +15,9 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-03 — Slide re-tuned to 350/350 (v227)
+- Tom's re-pick from the harness variants: the slide runs 350ms both halves (was 400/400).
+
 ## 2026-08-03 — Tom's 10-note triage: 4 quick fixes (v226)
 - fill_blank was the LAST 4-option exercise: now 3 (ruling 4 finally complete app-wide).
 - Pairs matches ding and CLIMB: each match re-pitches the correct clip (playbackRate,
