@@ -276,8 +276,15 @@ body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats th
 @media (prefers-reduced-motion: reduce) { .frame-mount .slot.opening { animation: none; } }
 .word.dim { opacity: .4; pointer-events: none; }   /* the tapped wrong tile recedes (mirrors .opt.dim) */
 .lap-chip { color: var(--text-dim); }                              /* the encore's opening line, quiet */
-.slot-input { width: 130px; font-size: 19px; padding: 4px 8px; text-align: center; }   /* the climbed conveyor types into the slot */
-.slot-input.vwrong { border-color: var(--red); }
+/* the climbed conveyor types INTO the slot: the input is invisible - no box, no border -
+   the letters land on the slot's own gold underline at frame scale (Tom, 2026-08-03: the
+   boxed .text-input is the STANDALONE typing pattern; in a sentence, the input IS the slot) */
+.frame-mount .slot .slot-input {
+  background: transparent; border: none; box-shadow: none; border-radius: 0; outline: none;
+  font-family: var(--font-display); font-size: inherit; font-weight: inherit; color: var(--text);
+  width: 120px; padding: 0 2px; text-align: center; caret-color: var(--accent);
+}
+.frame-mount .slot:has(.slot-input.vwrong) { border-bottom-color: var(--red); }   /* the LINE flags the miss, briefly */
 
 /* ---------- top bar ---------- */
 .topbar {

@@ -1193,7 +1193,8 @@ function renderMachineDrill(q) {
       // THE INPUT CLIMB: a climbed filler is TYPED into the slot; tiles serve the rest
       if (_inputClimbed(current.item)) {
         tray.style.display = "none";
-        const inp = el(`<input class="text-input slot-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">`);
+        const inp = el(`<input class="slot-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Type the word">`);
+        inp.style.width = Math.max(6, current.p.filler.length + 2) + "ch";   // sized to the answer, sentence stays one line
         slotEl.innerHTML = "";
         slotEl.appendChild(inp);
         setTimeout(() => inp.focus(), 50);

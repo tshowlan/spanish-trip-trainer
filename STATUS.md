@@ -15,6 +15,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-03 — Climb input unboxed (v229)
+- Tom's catch: the climbed conveyor rendered the STANDALONE boxed .text-input inside the
+  sentence, breaking the frame line. The slot input is now invisible - no box, letters land on
+  the slot's own gold underline at frame scale, width sized to the answer; a miss flags the
+  LINE red briefly. The boxed input remains correct for standalone typing (type/weld-typed).
+
 ## 2026-08-03 — INCREMENT 5: encore + input climb. SPRINT 2 COMPLETE (v228)
 - THE ENCORE live: ladder lessons run the lap before the close (every taught item once,
   production form via chooseType prefer, capped at 6 reps [tune ~90s], "The lap: everything
