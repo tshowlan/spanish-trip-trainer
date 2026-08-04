@@ -152,6 +152,28 @@ confirm-button pattern already matches Duolingo's (picks grade on tap, builds ha
 1-of-4 phrase selection already dead (v221) · one-cold-at-the-end already addressed by the encore
 + input climb (increment 5, queued) · dedicated second-chance screen already queued (Sprint 5).
 
+## Tom's notes 2026-08-03 — triaged
+
+Quick fixes SHIPPED v226: fill_blank was the last 4-option exercise (now 3, ruling 4 complete) ·
+pairs matches now DING and climb a chord as the board completes [tune] (the sound map's first
+landing; chat blessing rides with the sound-map session) · idle waveform bars hidden on
+matched/settled cards (read as stray dots; shown only while playing - artifact delta flagged) ·
+slide speed variants back in the harness (400 shipped / 350 / 300) for Tom's re-pick.
+
+- [CHAT · entry experience] Lesson RE-ENTRY screen (8/3-1): returning to a completed lesson
+  should greet - previous stats? congratulations? Joins the parked jump-in-from-Learn item.
+- [CHAT · ear family] sound_choice: show the English translation - what you're solving for is
+  unclear (8/3-2). Joins the sound_choice miss-pattern item (D4 sequencing queued for CODE).
+- [CHAT · brand] Tint on the app logo - Tom wants to try it (8/3-5).
+- [CHAT · letter rungs] Long-phrase trays: a sea of 10+ letters confuses - explore progressive
+  letter supply (fewer at start, more appear as you fill) with its cons (8/3-9).
+- [CHAT · the close] Cold production, especially the close, feels bare - more on screen, maybe
+  ceremony (8/3-10). Candidate for the close's artifact session; touches increment 5's encore.
+- [Tom re-pick · CODE ships] Slide speed (8/3-8): variants live in the harness.
+
+Answered inline: sound-completes-it "three dots" and pairs "three dots" were the same idle
+waveform bars - hidden at rest now (v226) · 4-option residue found and killed (fill_blank).
+
 ## Standing board (unchanged, slots between sprints at Tom's call)
 
 Mexico pack session · Progress tab depth · session-end stamp cut · Progress/Profile tabtitle

@@ -68,9 +68,13 @@ document.addEventListener("pointerdown", () => {
       .catch(() => { el.muted = false; });
   }
 }, { capture: true, passive: true });
-function playSound(kind) {
+function playSound(kind, opts) {
   if (!state.sound) return;
   const el = _clips[kind]; if (!el) return;
+  // opts.rate re-pitches the baked clip (preservesPitch off, so rate IS pitch) - the pairs
+  // board climbs a chord as matches land [tune]; everything else plays at 1
+  try { el.preservesPitch = false; el.webkitPreservesPitch = false; } catch (e) {}
+  el.playbackRate = (opts && opts.rate) || 1;
   el.play().catch(() => {});
   // rewind AFTER (and on ended), not before: a pre-play seek adds latency to the next ding
   el.onended = () => { el.currentTime = 0; };

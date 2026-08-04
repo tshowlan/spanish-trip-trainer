@@ -1513,7 +1513,7 @@ function renderFill(q) {
   let otherWords = kwsFrom((ALL_ITEMS || []).filter(sameTag));       // same-category content words
   if (otherWords.length < 3) { const lw = wordsFrom(run.lesson.items); otherWords = lw.filter(w => Math.abs(w.length - answer.length) <= 3); if (otherWords.length < 3) otherWords = lw; }
   if (otherWords.length < 3) otherWords = wordsFrom(ALL_ITEMS);
-  const options = shuffle([answer, ...sample(otherWords, 3)]);
+  const options = shuffle([answer, ...sample(otherWords, 2)]);   // 3 options (ruling 4; the last 4-option residue - Tom's catch 2026-08-03)
 
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Fill in the blank</div>`));
@@ -1770,6 +1770,7 @@ function renderPairs(q) {
       // the learner just HEARD the sound — replaying it slowed the board). Delta vs the pairs
       // artifact's "sound, meet spelling" caption: flag at next re-issue.
       haptic("correct");
+      playSound("correct", { rate: [1, 1.12, 1.26, 1.414][matched] || 1.414 });   // the tune: each match climbs [tune] (Tom 2026-08-03)
       // a clean pair is a real review rep; a missed one records at low weight [tune]:
       // exposure only, so the slip neither advances nor resets the item (§5, artifact caption)
       const id = itemId(mi);

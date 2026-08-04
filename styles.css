@@ -258,6 +258,11 @@ body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats th
 .gloss-chip { position: absolute; transform: translateY(-34px); background: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 9px; padding: 4px 9px; font-size: 12.5px; font-weight: 600; color: var(--text); white-space: nowrap; box-shadow: var(--shadow); }
 .frame-mount .slot { position: relative; }
+/* idle waveform bars read as stray dots beside settled words (Tom 2026-08-03): matched and
+   settled cards hide them at rest, show them only while playing. Delta flagged for the
+   pairs + sound-choice artifacts. */
+.pcard.matched .pbars, .sc-card.settled .pbars, .sc-card.settled .ac-bars { display: none; }
+.pcard.matched.playing .pbars, .sc-card.settled.playing .pbars, .sc-card.settled.playing .ac-bars { display: inline-flex; }
 @media (prefers-reduced-motion: reduce) { .settle-pop { animation: none; } }
 /* THE FLIGHT (machine-family r6, D5): measured transit between two true states;
    nothing hand-styled survives a landing */
