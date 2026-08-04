@@ -312,11 +312,42 @@ doc narrates, this file states only the laws.
 - **Arc misses don't re-queue:** the arc's remaining beats are the retest; the Present card
   never re-serves (re-teaching reads as punishment — rung-down's floor is recognition); a
   missed summit is absorbed by the encore, served scaffolded. *(Sprint 2 miss ruling, c+)*
+- **The machine arc:** machine lessons run FORGE-PRESENT (one screen: the machine meets you
+  like a new phrase - meaning, use, voice - and the BUILD is the active confirmation) →
+  CONVEYOR → EXCHANGE → close. No present cards in machine lessons; the frame's taught-moment
+  is the fuse, each filler's is its first conveyor serve. Short frames forge at letter scale.
+  *(machine restructure ruling, 2026-08-02)*
+- **The new-mark:** first-meeting words settle in (the formation's quiet rise, 300ms) and
+  speak once, then wear DOTTED GOLD (never confusable with the slot's solid gold) with
+  tap-to-check (inline gloss chip; taps are uncertainty telemetry). The mark clears after the
+  item's first successful production [tune]. A settled-correct word's slot line is SOLID
+  green, always - green never hedges. *(new-mark ruling + Tom's semi-correct catch, 2026-08-02)*
 - **The input climbs by expertise:** first exposure summits the ITEM at typed cold; the
   machine drills stay at tray. Full cold frame production is an expertise rung — the conveyor
   and the close swap tiles for the keyboard as exposures accrue (threshold [tune], shared
   with the letter rungs). The lesson's shape never changes; only the input hardens.
   *(Sprint 2 ruling 9)*
+
+## Anti-drift (minted by the machine-family session, 2026-08-03 — consistency inherited, not achieved)
+
+- **The shell is issued, not assembled:** every design session starts by copying
+  artifact-shell.html from the chat-design-pack — fonts at the app's full weights (Jakarta
+  400-800, Inter 400-600), live styles.css embedded, phone frame + field + chrome + caption +
+  state harness + build stamp, all pre-wired. The ritual script regenerates it. (The old base
+  loaded fonts only to 700; every past artifact synthesized its boldest weight.)
+- **Resting states are shipped markup:** any state a screen can rest in is verbatim DOM-export
+  markup or composed purely of shipped classes. Custom CSS may exist only for TRANSIT, and
+  nothing hand-styled survives a landing.
+- **No invented screens:** canvases contain only real states; connective tissue between states
+  is the real next state, never a placeholder.
+- **The build stamp law:** every artifact renders its build number visibly in the chrome;
+  stamp and filename bump together.
+- **The structure check:** before presenting, chat diffs the artifact's per-state class
+  patterns against the DOM export and live styles.css; classes used but undefined (or defined
+  but misapplied) block the presentation.
+- **Verification declares its limits:** chat's checker reads structure and logic, not pixels.
+  Every verification report states what was NOT checked; anything visual needs Tom's eye (or a
+  device screenshot, per the luminous law) before a stamp.
 
 ## Process laws (how laws are made)
 

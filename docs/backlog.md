@@ -114,12 +114,13 @@ a sparse week stay silent - the line was reading as a broken dial).
   not rigid story ("a bag left on a park bench", "my glasses on a bench in Cusco"); words TOP,
   photo BOTTOM (7/29-3); plus: smoother entry when jumping into lessons from Learn (no primer on
   replays = thrown in cold).
-- [CHAT · exchange artifact session] The flying-speaker reveal (hero glides + scales into the
+- ~~[CHAT solved: machine-family r6 D5, built v225]~~ The flying-speaker reveal (hero glides + scales into the
   played-line seat, words after landing): Tom wants it but the composite reflows mid-flight
   (choices pull up, icon clips) and speed never read right blind - needs the artifact, with the
   layout frozen during flight. Chat already blessed the motion as lawful; the fade ships interim.
-- [CHAT · ear family delta] sound_choice miss: show WHICH option was wrong too; the auto-select of
-  the correct one reads confusing (Tom x2: 8/2-6 + 7/28-3).
+- ~~[CHAT ruled via D4]~~ sound_choice miss pattern: wrong-then-release (900ms -> dim), THEN the
+  correct washes - never instant auto-select. Applied to the exchange (v225); [CODE queued]
+  apply the same sequencing to sound_choice's own renderer.
 - [CHAT · letter rungs delta] word_fill quality: single-letter fills feel trivial ("taxi" + i,
   8/2-15) - reserve word_fill for complicated words, and always show the word inside its sentence.
 - [CHAT · rhythm tune] Post-arc diet: fewer bare word-picks after intro, more in-sentence types

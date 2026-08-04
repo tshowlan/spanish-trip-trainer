@@ -234,6 +234,9 @@ function composeSession(lesson) {
       // guides the first meeting), then the exchange. No present cards in machine lessons.
       qs.push({ type: "machine_drill", forge: true, frame: lesson.frame, mlesson: lesson,
                 cues, all: cues, arc: true });
+      // THE WELD x2 (D3, flow ruling 2026-08-03): full-sentence builds between conveyor and exchange
+      sample(cues, Math.min(2, cues.length)).forEach(c =>
+        qs.push({ type: "weld", item: c.item, cue: c, arc: true }));
       // quiero/necesito borrow the bring-me confirmations (reply-sets: "shared with
       // Quiero/Necesito confirmations" - Marchando answers a want as well as a bring)
       let replyPool = lesson.replies || [];
@@ -642,7 +645,7 @@ function renderQuestion() {
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">${icon('arrows-clockwise', 15)} Second chance, you missed this one</div>`));
   ({ present: renderPresent, build: renderBuild, mc_es2en: renderMC,
      grasp: renderGrasp, variation: renderVariation,
-     machine_drill: renderMachineDrill, exchange: renderExchange,
+     machine_drill: renderMachineDrill, exchange: renderExchange, weld: renderWeld,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
      listen_choice: renderListenChoice, reply_listen: renderReply,
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
@@ -1071,13 +1074,15 @@ function renderMachineDrill(q) {
     </div>`), cueBlock);
     const arow = el(`<div class="present-audio"></div>`);
     arow.appendChild(audioControl(() => speak(frameSpeak)));
-    arow.appendChild(el(`<span class="audio-hint">Tap to hear it</span>`));
+    arow.appendChild(el(`<span class="audio-hint">Tap to hear it again</span>`));   /* D1: one string app-wide (entries autoplay, "again" is always true) */
     body.insertBefore(arow, cueBlock);
     setTimeout(() => { if (!run.answered) speak(frameSpeak); }, 350);   /* [tune] the card speaks first */
     cueBlock.appendChild(el(`<div class="cue-label">Build it</div>`));
-    const tokens = _frameTokens(parts.pre + " " + parts.post);   // real casing from the taught item, not the lowercase frame key
+    const tokens = _frameTokens(parts.pre + " " + parts.post);
     const letterScale = tokens.length <= 1;          // short frames (¿Hay?) forge at letter scale
-    const seq = letterScale ? (tokens[0] || "").split("") : tokens;
+    // D6: TILES ARE BARE — lowercase, no punctuation, no case cues that telegraph position;
+    // capitalization and marks arrive at the fuse (maturation in place, after the sweep)
+    const seq = (letterScale ? (tokens[0] || "").split("") : tokens).map(t => t.toLowerCase());
     const ans = el(`<div class="build-answer forge-answer"></div>`);
     const bank = el(`<div class="bank"></div>`);
     mountWrap.appendChild(ans); mountWrap.appendChild(bank);
@@ -1100,6 +1105,13 @@ function renderMachineDrill(q) {
       ans.appendChild(el(`<span class="sweep"></span>`));
       requestAnimationFrame(() => ans.classList.add("fused"));
       bank.classList.add("recede");
+      // D6: the fuse DRESSES the bare tiles — case and marks mature in place after the sweep
+      setTimeout(() => {
+        const dressed = (parts.pre + "___" + parts.post).trim().split(/\s+/);
+        ans.querySelectorAll(".word").forEach(w => w.remove());
+        const sweepEl = ans.querySelector(".sweep");
+        dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
+      }, 550);   /* [tune] after the sweep lands */
       // THE SLOT OPENS: the fused frame becomes the conveyor's mount — continuity is the
       // point, so the handoff BREATHES: the fused build fades (250ms), the mounted frame
       // fades in with the slot growing open (Tom: the cut was jumpy, 2026-08-02)
@@ -1194,6 +1206,57 @@ function renderMachineDrill(q) {
   }
 }
 
+/* THE WELD (D3, machine-family r6): a full-sentence build after the conveyor, before the
+   exchange — the assembly skill the forge taught, now producing a complete ask. Bank tiles
+   are BARE lowercase words (D6); the fuse dresses them in place. A real production rep. */
+function renderWeld(q) {
+  const item = q.item;
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">The weld</div>`));
+  const cueBlock = el(`<div class="conv-cuewrap"></div>`);
+  cueBlock.appendChild(el(`<div class="cue-label">Ask for</div>`));
+  cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${q.cue.fen}</div>`));
+  body.appendChild(cueBlock);
+  const stage = el(`<div class="machine-stage"></div>`);
+  const ans = el(`<div class="build-answer"></div>`);
+  const bank = el(`<div class="bank"></div>`);
+  stage.appendChild(ans); stage.appendChild(bank);
+  body.appendChild(stage);
+  const dressed = item.es.split(/\s+/);
+  const seq = dressed.map(w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "").toLowerCase()).filter(Boolean);
+  let need = 0, wrongTaps = 0;
+  shuffle(seq.map((t, i) => ({ t, i }))).forEach(({ t }) => {
+    const tile = el(`<button class="word">${t}</button>`);
+    tile.addEventListener("click", () => {
+      if (run.answered || tile.classList.contains("used")) return;
+      if (norm(tile.textContent) === norm(seq[need])) {
+        tile.classList.add("used");
+        ans.appendChild(el(`<span class="word">${seq[need]}</span>`));
+        need++;
+        if (need === seq.length) fuse();
+      } else { wrongTaps++; haptic("wrong"); tile.classList.add("vwrong"); setTimeout(() => tile.classList.remove("vwrong"), 900); }
+    });
+    bank.appendChild(tile);
+  });
+  function fuse() {
+    run.answered = true;
+    playSound("correct"); haptic("correct");
+    ans.appendChild(el(`<span class="sweep"></span>`));
+    requestAnimationFrame(() => ans.classList.add("fused"));
+    bank.classList.add("recede");
+    setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
+      ans.querySelectorAll(".word").forEach(w => w.remove());
+      const sweepEl = ans.querySelector(".sweep");
+      dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
+    }, 550);
+    recordAnswer(itemId(item), wrongTaps === 0, { mode: "weld" });
+    if (wrongTaps > 0) run.wrong++;
+    q.esOnStage = true;
+    const st = learnPeek(item);
+    setTimeout(() => resolveCorrect(item, q, { yoursNow: false, restored: false, strengthAfter: st ? Math.round(itemStrength(st)) : 0, miss: false }), 700);
+  }
+}
+
 /* the Exchange (ruling 6): the learner's ask is mounted, Spain ANSWERS through current
    listening truth, and the rep resolves on comprehension of the ANSWER. Replies are
    heard-only (no SRS homes); reuseId welds record exposure — the spiral audible. */
@@ -1213,43 +1276,95 @@ function renderExchange(q) {
   body.appendChild(el(`<div class="prompt">${r.target.q}</div>`));
   const opts = shuffle(r.target.options.slice());
   const choices = el(`<div class="choices"></div>`);
-  const reveal = () => {   // the ear never loses the answer: the played-line carries the reveal
-    // The flying-speaker version (hero glides into the played-line seat) is PARKED with chat:
-    // the surrounding layout reflows mid-flight (choices pull up, the icon clips) - it needs
-    // the exchange's artifact session, not blind tuning (Tom, 2026-08-02). Until then: the
-    // stage becomes the played-line via a breath.
-    stage.classList.add("phase-out");
+  // D5 — THE FLIGHT (machine-family r6, solved; fragile to "improvements", built exactly):
+  // the REAL played-line is inserted at its destination, invisible but occupying true space,
+  // while the stage gives up exactly its height in the same frame (net zero, nothing moves).
+  // The hero flies alone (420ms, transform-only, scale measured from true rects); the words
+  // rise in AFTER landing (200ms); the flown icon is removed and the real component becomes
+  // visible (nothing hand-styled survives the landing); only then does the stage's leftover
+  // height collapse so the choices glide up once. Reduced motion: the fade.
+  const flight = after => {
+    const hero = stage.querySelector(".ac-speaker");
+    const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const seat = el(`<div class="played-line show"></div>`);
+    const seatCtl = audioControl(() => speak(r.es));
+    const seatWords = el(`<span>${r.es}</span>`);
+    seat.appendChild(seatCtl); seat.appendChild(seatWords);
+    stage.parentElement.insertBefore(seat, stage);
+    const seatSpk = seatCtl.querySelector(".ac-speaker") || seatCtl;
+    if (reduced || !hero) {
+      stage.style.display = "none";
+      if (after) after();
+      return;
+    }
+    seatSpk.style.visibility = "hidden";
+    seatWords.style.visibility = "hidden"; seatWords.style.opacity = "0";
+    seatWords.style.transform = "translateY(4px)";
+    seatWords.style.transition = "opacity 200ms ease, transform 200ms cubic-bezier(.2,.7,.3,1)";
+    // freeze the composite: the stage gives up exactly the seat's FOOTPRINT (height + its
+    // vertical margins - rects exclude margins, and the 10px gap read as a mid-flight nudge)
+    const scs = getComputedStyle(seat);
+    const seatH = seat.getBoundingClientRect().height + (parseFloat(scs.marginTop) || 0) + (parseFloat(scs.marginBottom) || 0);
+    const lH = stage.getBoundingClientRect().height;
+    stage.classList.add("frozen");
+    stage.style.height = Math.max(0, lH - seatH) + "px";
+    const hint = stage.querySelector(".hint"); if (hint) hint.style.opacity = "0";
+    // measured flight between two true states
+    const box = body; box.style.position = "relative";
+    const boxRect = box.getBoundingClientRect();
+    const hRect = hero.getBoundingClientRect();
+    const tRect = seatSpk.getBoundingClientRect();
+    hero.classList.add("flying");
+    hero.style.left = (hRect.left - boxRect.left) + "px";
+    hero.style.top = (hRect.top - boxRect.top) + "px";
+    hero.style.width = hRect.width + "px"; hero.style.height = hRect.height + "px";
+    box.appendChild(hero);
+    const scale = tRect.height / hRect.height;
+    const dx = tRect.left - hRect.left, dy = tRect.top - hRect.top;
     setTimeout(() => {
-      const pl = el(`<div class="played-line"></div>`);
-      pl.appendChild(audioControl(() => speak(r.es)));
-      pl.appendChild(el(`<span>${r.es}</span>`));
-      stage.replaceWith(pl);
-      setTimeout(() => pl.classList.add("show"), 20);
-    }, 240);
+      hero.style.transformOrigin = "top left";
+      hero.style.transform = `translate(${dx}px,${dy}px) scale(${scale})`;
+    }, 30);
+    setTimeout(() => {
+      seatSpk.style.visibility = "";
+      hero.remove();
+      seatWords.style.visibility = "";
+      setTimeout(() => { seatWords.style.opacity = "1"; seatWords.style.transform = "none"; }, 20);
+      setTimeout(() => {
+        stage.style.height = "0px"; stage.style.paddingTop = "0"; stage.style.paddingBottom = "0";
+        if (after) after();
+      }, 120);
+    }, 470);
   };
   const resolve = miss => {
     run.answered = true;
     if (!miss && r.reuseId) recordExposure(r.reuseId);
     if (miss) run.wrong++;
-    reveal();
     q.esOnStage = true; q.noAudio = true;
     clearFooter();
-    resolveCorrect({ es: r.es, en: r.en }, q, { yoursNow: false, restored: false, strengthAfter: 0, miss });
+    flight(() => resolveCorrect({ es: r.es, en: r.en }, q, { yoursNow: false, restored: false, strengthAfter: 0, miss }));
   };
   opts.forEach(o => {
     const c = el(`<button class="choice">${o.t}</button>`);
     c.addEventListener("click", () => {
       if (run.answered) return;
+      run.answered = true;                                 // lock immediately; the sequences below own the beat
       if (o.ok) {
         c.classList.add("correct"); playSound("correct"); haptic("correct");
-        [...choices.children].forEach(x => { if (x !== c) x.classList.add("dim"); });   // the others recede (300ms settle)
+        [...choices.children].forEach(x => { if (x !== c) x.classList.add("dim"); });
         resolve(false);
-      }
-      else {
-        c.classList.add("wrong"); haptic("wrong");
-        setTimeout(() => { c.classList.remove("wrong"); c.classList.add("dim"); }, 900);
-        [...choices.children].forEach((x, i) => { if (opts[i].ok) x.classList.add("correct"); });
-        resolve(true);
+      } else {
+        // D4: YOUR pick wears wrong-then-release (900ms → dim), THEN the correct washes and
+        // the reveal flies — never an instant auto-select
+        haptic("wrong"); c.classList.add("wrong");
+        setTimeout(() => {
+          c.classList.remove("wrong"); c.classList.add("dim");
+          [...choices.children].forEach((x, i) => {
+            if (opts[i].ok) x.classList.add("correct");
+            else if (x !== c) x.classList.add("dim");
+          });
+          resolve(true);
+        }, 900);
       }
     });
     choices.appendChild(c);
@@ -2259,7 +2374,7 @@ function resolveCorrect(item, q, info) {
   if (!(q && (q.noAudio || q.noAudioRow))) {
     const arow = el(`<div class="res-audio-row"></div>`);
     arow.appendChild(audioControl(playWhole));
-    arow.appendChild(el(`<span class="audio-hint">Hear it whole</span>`));
+    arow.appendChild(el(`<span class="audio-hint">Tap to hear it again</span>`));   /* D1 */
     grown.querySelector(".res-audio").appendChild(arow);
   }
   grown.querySelector(".res-cont").addEventListener("click", goNext);

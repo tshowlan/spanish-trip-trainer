@@ -119,6 +119,16 @@
     // App state: a machine drill rendered (conveyor/exchange, Sprint 2 increments 4+).
     // ladder-beats.html r1 (stamped 2026-07-28): Grasp + Variation pixel artifact.
     // App state: a grasp or variation beat rendered (harness stories under Sprint 2).
+    // machine-family.html r6 (stamped 2026-08-03): forge-present, conveyor, weld, exchange.
+    // App state: machine drill / weld / exchange rendered (harness stories under Sprint 2).
+    machineFamily: [
+      [".present-card .present-es", ".present-card .present-es"],
+      [".conv-cuewrap .cue-meaning", ".conv-cuewrap .cue-meaning"],
+      [".frame-mount .slot", ".frame-mount .slot"],
+      [".conv-dots", ".conv-dots"],
+      [".played-line", ".played-line"],
+      [".listen-stage", ".listen-stage"],
+    ],
     ladderBeats: [
       [".grasp-word", ".grasp-word"],
       [".cue-label", ".cue-label"],

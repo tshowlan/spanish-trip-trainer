@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The machine family — artifact r2 (app-frame)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* ===== LIVE styles.css, embedded verbatim ===== */
 :root {
   /* ---- color (light / cream theme) ---- */
   --bg: #fcfcf3;            /* cream */
@@ -259,11 +270,9 @@ body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats th
   border-radius: 9px; padding: 4px 9px; font-size: 12.5px; font-weight: 600; color: var(--text); white-space: nowrap; box-shadow: var(--shadow); }
 .frame-mount .slot { position: relative; }
 @media (prefers-reduced-motion: reduce) { .settle-pop { animation: none; } }
-/* THE FLIGHT (machine-family r6, D5): measured transit between two true states;
-   nothing hand-styled survives a landing */
-.listen-stage.frozen { overflow: hidden; transition: height 240ms cubic-bezier(.2,.7,.3,1) 120ms; }
-.flying { position: absolute; z-index: 30; transition: transform 420ms cubic-bezier(.3,.6,.25,1); margin: 0; }
-@media (prefers-reduced-motion: reduce) { .flying { transition: none; } .listen-stage.frozen { transition: none; } }
+/* the exchange's flying speaker: hero -> played-line seat (fixed-position FLIP clone) */
+.ac-flyer { position: fixed; z-index: 600; margin: 0; transition: left 650ms cubic-bezier(.2,.7,.3,1), top 650ms cubic-bezier(.2,.7,.3,1), width 650ms cubic-bezier(.2,.7,.3,1), height 650ms cubic-bezier(.2,.7,.3,1); }   /* [tune] 380ms read as invisible (Tom) */
+.played-line .pl-text { transition: opacity 260ms ease 40ms; }
 /* phase breath for in-beat handoffs (forge -> conveyor, stage -> played-line) */
 .phase-out { opacity: 0 !important; transition: opacity 250ms ease; }
 .phase-in { animation: qfade 380ms cubic-bezier(.2,.7,.3,1) both; }
@@ -1756,3 +1765,252 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .sc-card.settled { background: color-mix(in srgb, var(--green) 12%, var(--solid-card)); border-color: var(--green); cursor: pointer; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sc-card.settled { background: color-mix(in srgb, var(--green) 12%, var(--solid-card)); } }
 :root[data-theme="dark"] .sc-card.settled { background: color-mix(in srgb, var(--green) 12%, var(--solid-card)); }
+
+/* ===== ARTIFACT SHELL (from exercise-base v2.1, verbatim) ===== */
+body { font-family:var(--font-text); background:var(--bg-elevated); display:flex; justify-content:center; padding:24px 12px; min-height:100vh; }
+.wrap { display:flex; flex-direction:column; align-items:center; }
+.phone { width:390px; height:740px; background:var(--bg); border-radius:32px; overflow:hidden; position:relative; border:1px solid var(--border); }
+.screen { padding:24px; height:100%; display:flex; flex-direction:column; }
+.chrome { display:flex; gap:14px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+.chrome button { border:none; background:none; font-family:var(--font-text); font-size:12px; color:#5e6672; text-decoration:underline; cursor:pointer; }
+.caption { text-align:center; font-size:12px; color:#5e6672; margin-top:12px; max-width:440px; line-height:1.55; }
+.facet-bg { position:absolute; top:0; left:0; right:0; height:555px; pointer-events:none; z-index:0; }
+.facet-bg svg { width:100%; height:100%; display:block; }
+.toprow { display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+.progress { flex:1; height:4px; background:var(--bg-elevated); border-radius:2px; }
+.sring { width:26px; height:26px; }
+:root[data-theme="dark"] .phone { background:linear-gradient(180deg, #101226 0%, #0a0b18 38%, #05060d 100%); }
+/* ===== DELTAS (named; see caption) ===== */
+.listen-stage.frozen { overflow: hidden; transition: height 240ms cubic-bezier(.2,.7,.3,1) 120ms; }
+.flying { position: absolute; z-index: 30; transition: transform 420ms cubic-bezier(.3,.6,.25,1); margin: 0; }
+.played-seat { display: flex; align-items: center; gap: 10px; min-height: 40px; margin-bottom: 10px; }
+.played-seat .words { opacity: 0; transform: translateY(4px);
+  transition: opacity 200ms ease, transform 200ms cubic-bezier(.2,.7,.3,1); }
+.played-seat .words.in { opacity: 1; transform: none; }
+.played-seat .ac-speaker { width: 36px; height: 36px; min-width: 36px; }
+@media (prefers-reduced-motion: reduce){ .flying { transition: none; } .listen-stage.frozen { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="phone">
+    <div class="screen">
+      <div class="facet-bg" aria-hidden="true"><svg viewBox="0 0 390 555" preserveAspectRatio="none"><defs><linearGradient id="g-gold-d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.42"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient><linearGradient id="g-gold-r" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.34"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient><linearGradient id="g-sky" x1="0" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.26"/><stop offset="0.55" stop-color="var(--secondary)" stop-opacity="0.10"/><stop offset="1" stop-color="var(--secondary)" stop-opacity="0"/></linearGradient><linearGradient id="g-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--secondary)" stop-opacity="0.30"/><stop offset="1" stop-color="var(--secondary)" stop-opacity="0"/></linearGradient></defs><polygon points="0,0 150,0 84,86" fill="var(--secondary)" opacity="0.16"/><polygon points="150,0 285,0 205,70" fill="var(--primary)" opacity="0.12"/><polygon points="285,0 390,0 330,96" fill="var(--secondary)" opacity="0.18"/><polygon points="0,0 84,86 0,170" fill="var(--accent)" opacity="0.12"/><polygon points="390,0 390,180 330,96" fill="var(--accent)" opacity="0.11"/><polygon points="0,170 84,86 60,260" fill="var(--primary)" opacity="0.10"/><polygon points="390,180 330,96 322,268" fill="var(--primary)" opacity="0.11"/><polygon points="0,170 60,260 0,330" fill="var(--secondary)" opacity="0.08"/><polygon points="390,180 322,268 390,340" fill="var(--secondary)" opacity="0.09"/><polygon points="0,330 60,260 96,368" fill="var(--accent)" opacity="0.055"/><polygon points="390,340 322,268 300,380" fill="var(--accent)" opacity="0.05"/><polygon points="84,86 150,0 148,74" fill="var(--accent)" opacity="0.09"/><polygon points="148,74 150,0 205,70" fill="var(--secondary)" opacity="0.07"/><polygon points="84,86 148,74 132,128" fill="var(--primary)" opacity="0.08"/><polygon points="148,74 205,70 176,120" fill="var(--accent)" opacity="0.075"/><polygon points="132,128 148,74 176,120" fill="var(--secondary)" opacity="0.10"/><polygon points="205,70 262,110 176,120" fill="var(--primary)" opacity="0.065"/><polygon points="205,70 285,0 262,110" fill="var(--secondary)" opacity="0.085"/><polygon points="262,110 285,0 330,96" fill="var(--accent)" opacity="0.07"/><polygon points="262,110 330,96 296,158" fill="var(--secondary)" opacity="0.095"/><polygon points="176,120 262,110 224,164" fill="var(--accent)" opacity="0.06"/><polygon points="132,128 176,120 158,178" fill="var(--secondary)" opacity="0.055"/><polygon points="176,120 224,164 158,178" fill="var(--primary)" opacity="0.07"/><polygon points="224,164 262,110 296,158" fill="var(--primary)" opacity="0.055"/><polygon points="224,164 296,158 258,214" fill="var(--secondary)" opacity="0.065"/><polygon points="158,178 224,164 196,228" fill="var(--accent)" opacity="0.05"/><polygon points="84,86 132,128 108,190" fill="var(--secondary)" opacity="0.06"/><polygon points="108,190 132,128 158,178" fill="var(--accent)" opacity="0.045"/><polygon points="60,260 84,86 108,190" fill="var(--primary)" opacity="0.055"/><polygon points="108,190 158,178 140,248" fill="var(--primary)" opacity="0.045"/><polygon points="140,248 158,178 196,228" fill="var(--secondary)" opacity="0.05"/><polygon points="296,158 330,96 322,268" fill="var(--secondary)" opacity="0.06"/><polygon points="258,214 296,158 322,268" fill="var(--accent)" opacity="0.045"/><polygon points="196,228 224,164 258,214" fill="var(--secondary)" opacity="0.04"/><polygon points="60,260 108,190 140,248" fill="var(--accent)" opacity="0.04"/><polygon points="140,248 196,228 172,310" fill="var(--primary)" opacity="0.035"/><polygon points="196,228 258,214 232,296" fill="var(--secondary)" opacity="0.035"/><polygon points="258,214 322,268 288,330" fill="var(--primary)" opacity="0.03"/><polygon points="96,368 60,260 140,248" fill="var(--secondary)" opacity="0.03"/><polygon points="0,330 96,368 0,430" fill="var(--secondary)" opacity="0.06"/><polygon points="0,430 96,368 70,470" fill="var(--accent)" opacity="0.05"/><polygon points="96,368 120,352 150,400" fill="var(--primary)" opacity="0.05"/><polygon points="120,352 172,310 150,400" fill="var(--secondary)" opacity="0.055"/><polygon points="140,248 172,310 120,352" fill="var(--secondary)" opacity="0.025"/><polygon points="172,310 232,296 230,390" fill="var(--accent)" opacity="0.045"/><polygon points="150,400 172,310 230,390" fill="var(--secondary)" opacity="0.04"/><polygon points="150,400 230,390 180,470" fill="var(--primary)" opacity="0.04"/><polygon points="232,296 288,330 230,390" fill="var(--accent)" opacity="0.04"/><polygon points="230,390 288,330 310,420" fill="var(--secondary)" opacity="0.05"/><polygon points="288,330 300,380 310,420" fill="var(--primary)" opacity="0.045"/><polygon points="232,296 252,372 230,390" fill="var(--primary)" opacity="0.03"/><polygon points="390,340 310,420 390,450" fill="var(--secondary)" opacity="0.06"/><polygon points="310,420 390,450 330,500" fill="var(--accent)" opacity="0.045"/><polygon points="390,450 390,540 330,500" fill="var(--primary)" opacity="0.05"/><polygon points="300,380 390,340 310,420" fill="var(--accent)" opacity="0.035"/><polygon points="0,430 70,470 0,520" fill="var(--primary)" opacity="0.045"/><polygon points="70,470 150,400 100,500" fill="var(--secondary)" opacity="0.04"/><polygon points="100,500 150,400 180,470" fill="var(--accent)" opacity="0.035"/><polygon points="180,470 230,390 260,460" fill="var(--secondary)" opacity="0.04"/><polygon points="260,460 230,390 310,420" fill="var(--accent)" opacity="0.035"/><polygon points="260,460 310,420 330,500" fill="var(--secondary)" opacity="0.035"/><polygon points="70,470 100,500 60,540" fill="var(--secondary)" opacity="0.025"/><polygon points="100,500 180,470 140,545" fill="var(--primary)" opacity="0.025"/><polygon points="180,470 260,460 220,530" fill="var(--accent)" opacity="0.025"/><polygon points="260,460 330,500 285,555" fill="var(--secondary)" opacity="0.02"/><polygon points="330,500 390,540 340,555" fill="var(--primary)" opacity="0.02"/><polygon points="352,44 390,60 368,92" fill="var(--primary)" opacity="0.09"/><polygon points="14,196 52,186 30,238" fill="var(--accent)" opacity="0.07"/><polygon points="356,220 390,240 366,276" fill="var(--secondary)" opacity="0.08"/><polygon points="18,392 54,380 38,428" fill="var(--secondary)" opacity="0.06"/><polygon points="196,12 232,8 214,44" fill="var(--accent)" opacity="0.085"/><polygon points="366,132 390,120 382,168" fill="var(--accent)" opacity="0.07"/><polygon points="158,178 258,214 196,300" fill="var(--secondary)" opacity="0.085"/><g class="lightgroup"><polygon points="148,74 150,0 205,70" fill="var(--accent)" opacity="0.22"/><polygon points="176,120 224,164 158,178" fill="var(--accent)" opacity="0.20"/><polygon points="108,190 132,128 158,178" fill="var(--accent)" opacity="0.16"/><polygon points="196,12 232,8 214,44" fill="var(--accent)" opacity="0.24"/><polygon points="366,132 390,120 382,168" fill="var(--accent)" opacity="0.18"/><polygon points="120,352 172,310 150,400" fill="var(--accent)" opacity="0.12"/><polygon points="285,0 390,0 330,96" fill="url(#g-gold-d)"/><polygon points="0,0 84,86 0,170" fill="url(#g-gold-r)"/><polygon points="262,110 330,96 296,158" fill="url(#g-gold-d)"/><polygon points="158,178 258,214 196,300" fill="url(#g-sky)"/><polygon points="0,170 84,86 60,260" fill="url(#g-blue)"/><polygon points="230,390 288,330 310,420" fill="url(#g-sky)"/><polygon points="150,0 285,0 205,70" fill="url(#g-blue)"/></g></svg></div>
+      <div class="toprow">
+        <div class="progress"><div style="width:45%"></div></div>
+        <svg class="sring" viewBox="0 0 26 26">
+          <circle cx="13" cy="13" r="10" fill="none" stroke="var(--ring-track, var(--bg-elevated))" stroke-width="3.5"/>
+          <circle cx="13" cy="13" r="10" fill="none" stroke="var(--accent-2)" stroke-width="3.5" stroke-linecap="round"
+            stroke-dasharray="62.8" stroke-dashoffset="38" transform="rotate(-90 13 13)"/>
+        </svg>
+      </div>
+      <div id="stage" style="flex:1; display:flex; flex-direction:column; position:relative; z-index:1;"></div>
+    </div>
+  </div>
+  <div class="chrome">
+    <button onclick="cycleState()" id="stateBtn">state: forge-present</button>
+    <button onclick="toggleTheme()">dark theme</button>
+    <span style="font:600 11px system-ui; color:#8a8fa3; align-self:center;">build r6 · 2026-08-03</span>
+  </div>
+  <div class="caption">
+MACHINE FAMILY — APPROVED + STAMPED 2026-08-03 (build r6). APP-FRAME PRESENTATION (Tom: designs render as they would in the app; phone frame, the field, one state at a time) — REBUILT AS A DERIVATION (Tom's drift call; the chat-design-pack is the ground).
+Base: machine-family-dom.html v224 verbatim + live styles.css embedded. DELTAS, stated per the README rule:
+D1 audio hint unified to "Tap to hear it again" (one string app-wide; entries autoplay so "again" is true).
+D2 interactivity attributes only (no structural changes to shipped markup).
+D3 THE WELD (new beat, ruled): full-sentence build after the conveyor, before the exchange — composed from
+shipped classes only (conv-cuewrap, cue grammar, machine-stage, build-answer, bank, word). Flow ruled:
+Forge → Conveyor (4×1) → Weld ×2 → Exchange ×2 → Close; machine encore 2 reps [tune]; the input climb
+covers conveyor AND weld.
+D4 exchange miss path: your pick wears wrong-then-release (900ms → dim), the correct washes, the reveal
+flies — never auto-select (the sound-choice rider's pattern, applied here).
+D5 THE FLIGHT (r3 fix, Tom: landing size + font were off because the flight landed a hand-styled clone — now the REAL played-line component sits invisibly at the destination, the flight is MEASURED against it (scale from true rects), and on touchdown the real component becomes visible and the flown icon is removed; nothing hand-styled survives the landing): on resolve the played-line is inserted while the listen-stage gives up
+exactly the seat's height in the same frame (net zero — nothing moves), the hero flies ALONE (420ms
+[tune], 64→36, transform only), the words rise in AFTER landing (200ms), and only then does the stage's
+leftover height collapse (240ms) so the choices glide up ONCE. Reduced motion: the shipped fade.
+NOTE (r6, fonts): the artifact now loads the app's faces via Google Fonts INCLUDING WEIGHT 800 (the live css uses 800 on display headings; the stamped base only loaded to 700, so bold display text has been synthesizing its weight in artifacts — pack fix for Code). The deployed fonts.css link was unreachable from the preview, falling everything back to system fonts (Tom's 'fonts look off'). NOTE (r5): the tap-gloss chip demo was removed from the conveyor tile — tap-to-check belongs to MARKED SETTLED WORDS in text, never to the tile mid-use (Tom's toast catch); it gets its pixel pass when a marked-settled surface has its session. D6 TILES ARE BARE; THE FUSE DRESSES THEM (Tom's ruling): punctuation is never a tile, and tiles carry no case or punctuation cues that telegraph position (the weld bank is four bare lowercase words; the shipped forge's capitalized 'Me' gets the same fix). Capitalization and question marks arrive when the build fuses (r4: maturation happens on the fused words IN PLACE, after the green sweep plays; the green settle lines are live truth — the filled word rides inside the slot and the LINE speaks, the fused row keeps its sweep).
+Everything not listed above is shipped truth, untouched.
+</div>
+</div>
+
+<script>
+  var stateNames = ['forge-present','conveyor','weld (new)','exchange \u00b7 fresh + flight','exchange \u00b7 resolved (reference)','exchange \u00b7 miss'];
+  var stateHtml = [
+    `<div id="s1wrap"><div id="q1"><div class="present-label">NEW MACHINE</div><div class="present-card"><div class="present-es">¿Me puede traer <span class="pm-slot">___</span>?</div><div class="present-en">Could you bring me ...?</div><div class="present-note">The bring-me machine. Your table workhorse.</div><div class="present-anchor"><span class="lead">Think:</span> traer is to bring. You are asking them to bring it, not going to get it.</div></div><div class="present-audio"><span class="ac-group"><button class="ac-speaker" aria-label="Play audio"><svg class="ac-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg><span class="ac-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span></button></span><span class="audio-hint">Tap to hear it again</span></div><div class="conv-cuewrap"><div class="cue-label">Build it</div></div><div class="machine-stage"><div class="build-answer forge-answer"><div class="sweep"></div></div><div class="bank"><button class="word" onclick="forgeTake(this,2)">traer</button><button class="word" onclick="forgeTake(this,1)">puede</button><button class="word" onclick="forgeTake(this,0)">me</button></div></div></div></div></div>`,
+    `<div id="q2"><div class="conv-cuewrap"><div class="conv-dots"><i class="now"></i><i class=""></i></div><div class="cue-label">Ask for</div><div class="cue-meaning conv-cue">the check</div></div><div class="machine-stage"><div class="frame-mount">¿Me puede traer <span class="slot opening"><span class="dashes">– – –</span></span>?</div><div class="var-tray conv-tray"><button class="word vtile" onclick="wrongTile(this)">agua</button><button class="word vtile" onclick="wrongTile(this)">el menú</button><button class="word vtile" onclick="wrongTile(this)">otra caña</button><button class="word vtile new-mark" onclick="convFill(this)">la cuenta</button></div></div></div></div>`,
+    `<div id="qw"><div class="conv-cuewrap"><div class="cue-label">Ask for</div><div class="cue-meaning conv-cue">the water</div></div><div class="machine-stage"><div class="build-answer" id="weldrow"><div class="sweep"></div></div><div class="bank" id="weldbank"><button class="word" onclick="weldTake(this,3)">agua</button><button class="word" onclick="weldTake(this,0)">me</button><button class="word" onclick="weldTake(this,2)">traer</button><button class="word" onclick="weldTake(this,1)">puede</button></div></div></div></div>`,
+    `<div id="q3"><div class="qtype">The exchange</div><div class="prompt-sub">You ask:</div><div class="frame-mount exch-ask">¿Cuánto cuesta esto?</div><div class="listen-stage"><span class="ac-group"><button class="ac-speaker" aria-label="Play audio"><svg class="ac-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg><span class="ac-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span></button><button class="ac-speed" aria-label="Playback speed">1×</button></span><div class="hint">They answer. Tap to hear it again</div></div><div class="prompt">How much?</div><div class="choices"><button class="choice" onclick="exPick(this,true)">€2.50</button><button class="choice" onclick="exPick(this,false)">€5.20</button><button class="choice" onclick="exPick(this,false)">€3.50</button></div></div></div>`,
+    `<div id="q4"><div class="qtype">The exchange</div><div class="prompt-sub">You ask:</div><div class="frame-mount exch-ask">¿Cuánto cuesta esto?</div><div class="played-line show"><span class="ac-group"><button class="ac-speaker" aria-label="Play audio"><svg class="ac-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg><span class="ac-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span></button></span><span>Son dos con cincuenta</span></div><div class="prompt">How much?</div><div class="choices"><button class="choice correct">€2.50</button><button class="choice dim">€5.20</button><button class="choice dim">€3.50</button></div><div class="res-grown show"><div class="res-en">That's two fifty</div><button class="btn res-cont">Continue</button></div></div></div>`,
+    `<div id="q5"><div class="qtype">The exchange</div><div class="prompt-sub">You ask:</div><div class="frame-mount exch-ask">¿Cuánto cuesta esto?</div><div class="listen-stage"><span class="ac-group"><button class="ac-speaker" aria-label="Play audio"><svg class="ac-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg><span class="ac-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span></button><button class="ac-speed" aria-label="Playback speed">1×</button></span><div class="hint">They answer. Tap to hear it again</div></div><div class="prompt">How much?</div><div class="choices"><button class="choice" data-ok="1">€2.50</button><button class="choice" data-ok="0">€5.20</button><button class="choice" data-ok="0">€3.50</button></div></div></div>`
+  ];
+  var si = 0;
+  var pending = [];
+  function later(fn, ms){ pending.push(setTimeout(fn, ms)); }
+  function renderState(){
+    pending.forEach(clearTimeout); pending = [];
+    if (typeof placed !== 'undefined') placed = 0;
+    if (typeof forgePlaced !== 'undefined'){ forgePlaced = 0; forgeRun++; }
+    document.getElementById('stateBtn').textContent = 'state: ' + stateNames[si];
+    document.getElementById('stage').style.opacity = '';
+    document.getElementById('stage').innerHTML = '<div class="statebox" style="position:relative; flex:1; display:flex; flex-direction:column;">' + stateHtml[si] + '</div>';
+    if (si === 5) later(runMiss, 900);
+    if (si === 0 || si === 3){ later(function(){ var h = document.querySelector('#stage .ac-speaker'); if (h) pulse(h); }, 350); }
+  }
+  function cycleState(){ si = (si + 1) % stateNames.length; renderState(); }
+  function toggleTheme(){ var r = document.documentElement; r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; }
+</script>
+<script>
+  var spkSvg = document.querySelector('.ac-glyph') ? null : null;
+  function pulse(btn){ btn.classList.add('playing'); setTimeout(function(){ btn.classList.remove('playing'); }, 1300); }
+
+  // State 1: forge build -> breathing handoff (250 out / 380 in) revealing a conveyor-style continuation note
+  var placed = 0;
+  var forgePlaced = 0, forgeRun = 0;
+  function forgeTake(tile, idx){
+    if (idx !== forgePlaced){ wrongTile(tile); return; }
+    var row = document.querySelector('#s1wrap .build-answer');
+    var t = document.createElement('button'); t.className = 'word'; t.textContent = tile.textContent;
+    row.insertBefore(t, row.querySelector('.sweep'));
+    tile.style.visibility = 'hidden';
+    forgePlaced++;
+    if (forgePlaced === 3){
+      forgePlaced = 0;
+      var myRun = ++forgeRun;
+      row.classList.add('fused');
+      later(function(){
+        if (!row.isConnected) return;
+        var ws = row.querySelectorAll('.word');
+        ws[0].textContent = '\u00bfMe'; ws[ws.length-1].textContent = 'traer ___?';
+      }, 550);
+      var wrap = document.getElementById('s1wrap');
+      later(function(){
+        if (myRun !== forgeRun) return;
+        var stage = document.getElementById('stage');
+        stage.style.transition = 'opacity 250ms ease'; stage.style.opacity = '0';
+        later(function(){
+          si = 1; renderState();
+          var st = document.getElementById('stage');
+          st.style.opacity = '0'; st.style.transition = 'opacity 380ms ease';
+          requestAnimationFrame(function(){ requestAnimationFrame(function(){ st.style.opacity = '1'; }); });
+          later(function(){ st.style.transition = ''; }, 420);
+        }, 260);
+      }, 650);
+    }
+  }
+  function weldTake(tile, idx){
+    if (idx !== placed){ wrongTile(tile); return; }
+    var row = document.getElementById('weldrow');
+    var t = document.createElement('button'); t.className = 'word'; t.textContent = tile.textContent;
+    row.insertBefore(t, row.querySelector('.sweep'));
+    tile.style.visibility = 'hidden';
+    placed++;
+    if (placed === 4){
+      placed = 0;
+      row.classList.add('fused');
+      document.getElementById('weldbank').classList.add('recede');
+      later(function(){
+        if (!row.isConnected) return;
+        var ws = row.querySelectorAll('.word');
+        ws[0].textContent = '\u00bfMe'; ws[ws.length-1].textContent = 'agua?';
+      }, 550);
+    }
+  }
+  function wrongTile(el){ el.classList.add('wrong'); setTimeout(function(){ el.classList.remove('wrong'); el.classList.add('dim'); }, 900); }
+
+  // State 2: conveyor fill + gloss chip on the marked tile (tap-to-check)
+  function convFill(tile){
+    var slot = document.querySelector('#q2 .slot');
+    slot.innerHTML = '<span class="filled">la cuenta</span>';
+    slot.classList.remove('opening');
+    tile.classList.remove('new-mark');
+    document.querySelector('#q2 .conv-tray').classList.add('recede');
+    var dots = document.querySelectorAll('#q2 .conv-dots i');
+    dots[1].classList.remove('now'); dots[1].classList.add('done');
+  }
+
+  // States 3/5: THE FLIGHT
+  function exPick(btn, ok){
+    var box = btn.closest('.statebox');
+    if (!ok){ wrongTile(btn); return; }
+    btn.classList.add('correct');
+    box.querySelectorAll('.choice').forEach(function(c){ if (c !== btn) c.classList.add('dim'); });
+    fly(box);
+  }
+  function fly(box){
+    var lstage = box.querySelector('.listen-stage');
+    var hero = lstage.querySelector('.ac-speaker');
+    if (!hero || hero.dataset.flew) return;
+    hero.dataset.flew = '1';
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // The REAL reveal component, placed at its destination, invisible but occupying true space
+    var seat = document.createElement('div');
+    seat.className = 'played-line show';
+    seat.innerHTML = hero.outerHTML.replace('data-flew="1"', '') + '<span>Son dos con cincuenta</span>';
+    var seatSpk = null;
+    lstage.parentElement.insertBefore(seat, lstage);
+    seatSpk = seat.querySelector('.ac-speaker');
+    seatSpk.dataset.flew = '';
+    seatSpk.style.visibility = 'hidden';
+    var seatWords = seat.querySelector('span:last-child');
+    seatWords.style.visibility = 'hidden';
+    seatWords.style.opacity = '0';
+    seatWords.style.transform = 'translateY(4px)';
+    seatWords.style.transition = 'opacity 200ms ease, transform 200ms cubic-bezier(.2,.7,.3,1)';
+
+    // Freeze the composite: the stage gives up exactly the seat's height in the same frame
+    var seatH = seat.getBoundingClientRect().height;
+    var lH = lstage.getBoundingClientRect().height;
+    lstage.classList.add('frozen');
+    lstage.style.height = Math.max(0, lH - seatH) + 'px';
+    var hint = lstage.querySelector('.hint'); if (hint) hint.style.opacity = '0';
+
+    function landed(){
+      seatSpk.style.visibility = '';
+      seatSpk.onclick = function(){ pulse(seatSpk); };
+      hero.remove();
+      seatWords.style.visibility = '';
+      requestAnimationFrame(function(){ seatWords.style.opacity = '1'; seatWords.style.transform = 'none'; });
+      setTimeout(function(){
+        lstage.style.height = '0px'; lstage.style.paddingTop = '0'; lstage.style.paddingBottom = '0';
+        var rg = box.querySelector('.res-grown'); if (rg) rg.classList.add('show');
+      }, 120);
+    }
+
+    if (reduced){ landed(); lstage.style.display = 'none'; return; }
+
+    // MEASURED flight: start rect vs the real seat speaker's rect; scale from true sizes
+    var boxRect = box.getBoundingClientRect();
+    var hRect = hero.getBoundingClientRect();
+    var tRect = seatSpk.getBoundingClientRect();
+    hero.classList.add('flying');
+    hero.style.left = (hRect.left - boxRect.left) + 'px';
+    hero.style.top = (hRect.top - boxRect.top) + 'px';
+    hero.style.width = hRect.width + 'px';
+    hero.style.height = hRect.height + 'px';
+    box.appendChild(hero);
+    var scale = tRect.height / hRect.height;
+    var dx = tRect.left - hRect.left, dy = tRect.top - hRect.top;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      hero.style.transformOrigin = 'top left';
+      hero.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + scale + ')';
+    }); });
+    setTimeout(landed, 440);
+  }
+
+  function runMiss(){
+    var q5 = document.getElementById('q5');
+    if (!q5) return;
+    var choices = q5.querySelectorAll('.choice');
+    var wrong = choices[1], correct = choices[0];
+    wrong.classList.add('wrong');
+    setTimeout(function(){
+      wrong.classList.remove('wrong'); wrong.classList.add('dim');
+      correct.classList.add('correct');
+      choices.forEach(function(c){ if (c !== correct && c !== wrong) c.classList.add('dim'); });
+      fly(q5.closest('.statebox'));
+    }, 900);
+  }
+</script>
+<script>renderState();</script>
+</body>
+</html>

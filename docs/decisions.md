@@ -208,3 +208,11 @@ EXCHANGE; no present cards in machine lessons. Cue at 23/700 on the machine scre
 cue is the task); the exchange's flying-speaker reveal blessed as lawful motion (the control that
 played becomes the reveal's replay control). New-mark taps are telemetry (nmTaps on the learn
 record); the mark clears after the item's first successful production [tune].
+
+## 2026-08-03 — Machine family stamped (r6): four rulings
+- Machine flow: Forge -> Conveyor 4x1 -> Weld x2 -> Exchange x2 -> Close; machine encore 2 reps
+  [tune]; the input climb covers conveyor + weld.
+- Tiles are bare; the fuse dresses them (no punctuation tiles, no case/position telegraphs;
+  maturation at fuse).
+- The flight: measured transit between two true states; nothing hand-styled survives a landing.
+- Tap-gloss belongs to marked settled words in text, never to tiles mid-use.

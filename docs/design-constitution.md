@@ -328,6 +328,27 @@ doc narrates, this file states only the laws.
   with the letter rungs). The lesson's shape never changes; only the input hardens.
   *(Sprint 2 ruling 9)*
 
+## Anti-drift (minted by the machine-family session, 2026-08-03 — consistency inherited, not achieved)
+
+- **The shell is issued, not assembled:** every design session starts by copying
+  artifact-shell.html from the chat-design-pack — fonts at the app's full weights (Jakarta
+  400-800, Inter 400-600), live styles.css embedded, phone frame + field + chrome + caption +
+  state harness + build stamp, all pre-wired. The ritual script regenerates it. (The old base
+  loaded fonts only to 700; every past artifact synthesized its boldest weight.)
+- **Resting states are shipped markup:** any state a screen can rest in is verbatim DOM-export
+  markup or composed purely of shipped classes. Custom CSS may exist only for TRANSIT, and
+  nothing hand-styled survives a landing.
+- **No invented screens:** canvases contain only real states; connective tissue between states
+  is the real next state, never a placeholder.
+- **The build stamp law:** every artifact renders its build number visibly in the chrome;
+  stamp and filename bump together.
+- **The structure check:** before presenting, chat diffs the artifact's per-state class
+  patterns against the DOM export and live styles.css; classes used but undefined (or defined
+  but misapplied) block the presentation.
+- **Verification declares its limits:** chat's checker reads structure and logic, not pixels.
+  Every verification report states what was NOT checked; anything visual needs Tom's eye (or a
+  device screenshot, per the luminous law) before a stamp.
+
 ## Process laws (how laws are made)
 
 - **When every component is proven innocent, instrument the crime scene:** on-device X-ray

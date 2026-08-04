@@ -46,6 +46,7 @@ EOF
 # he hands over can never go stale (drift postmortem, 2026-08-03). DOM exports made by
 # Code land in the Desktop bundle directly; this sync only refreshes the law layer.
 DESK="/Users/thomashowland/Desktop/Projects/Tripfluent/chat-design-pack"
+node tools/build-artifact-shell.mjs   # anti-drift rule 1: the shell is issued, not assembled
 if [ -d "$DESK" ]; then
   cp docs/design-constitution.md styles.css "$DESK/"
   for f in design/exercise-base.html design/lesson-breath.html design/ladder-beats.html \

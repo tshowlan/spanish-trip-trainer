@@ -221,13 +221,54 @@ body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats th
 .frame-mount { font-family: var(--font-display); font-size: 23px; font-weight: 600; margin: 14px 0 18px; line-height: 1.5; }
 .frame-mount .slot { display: inline-block; min-width: 84px; text-align: center; border-bottom: 2px solid var(--accent); padding: 0 6px; }
 .frame-mount .slot .dashes { color: var(--text-dim); letter-spacing: 2px; }
-.frame-mount .slot .filled { color: var(--green); animation: qfade 200ms ease both; }
+.frame-mount .slot .filled { color: var(--text); animation: qfade 200ms ease both; }   /* the WORD stays text-color; the LINE speaks (Tom, 2026-08-02) */
+.frame-mount .slot:has(.filled) { border-bottom-color: var(--green); }                   /* settled = SOLID green line, always -
+   green is success and never dilutes (Tom: dotted green read as "semi-correct"); the
+   new-mark's dotted gold lives on tray tiles and unsettled contexts only */
+.frame-mount .slot .filled.new-mark { border-bottom: none; padding-bottom: 0; }          /* no double underline inside the slot */
 .var-tray { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
 .var-tray.recede { opacity: .28; transition: opacity 300ms; pointer-events: none; }   /* supply rule */
 /* the cue grammar (ladder-beats r1): micro-caps label + meaning at content scale */
 .cue-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--text-dim); margin: 2px 0 3px; }
 .cue-meaning { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-.vtile.vwrong { border-color: var(--red); background: color-mix(in srgb, var(--red) 15%, transparent); }
+.vtile.vwrong, .word.vwrong { border-color: var(--red); background: color-mix(in srgb, var(--red) 15%, transparent); }
+/* the machine drills (Sprint 2 increment 4): forge + conveyor + exchange */
+.machine-stage { margin-top: 4px; }
+.conv-cuewrap { min-height: 10px; }
+.conv-dots { display: flex; gap: 6px; margin: 2px 0 10px; }
+.conv-dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--bg-elevated); }
+.conv-dots i.now { background: var(--accent); }
+.conv-dots i.done { background: var(--green); }
+.frame-mount .slot.opening { animation: slot-open 200ms cubic-bezier(.2,.7,.3,1) both; transform-origin: left; }
+@keyframes slot-open { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+.word.lkey { min-width: 40px; padding: 10px 12px; }
+.forge-answer { min-height: 44px; }
+.exch-ask { font-size: 19px; margin: 2px 0 12px; }
+/* the machine's cue reads at PROMPT scale — it is the thing you translate (Tom, 2026-08-02;
+   cue-grammar delta flagged to chat: conveyor/forge cues outrank the 17px content scale) */
+.conv-cuewrap .cue-meaning { font-family: var(--font-display); font-size: 23px; font-weight: 700; line-height: 1.3; }
+/* THE NEW-MARK (chat ruling 2026-08-02): first-meeting words settle in (the formation's
+   quiet rise) + speak once, then wear DOTTED gold (never confusable with the slot's solid
+   gold) with tap-to-check until first successful production */
+.new-mark { border-bottom: 2px dotted var(--accent); padding-bottom: 1px; }
+.settle-pop { animation: settle-pop 300ms cubic-bezier(.2,.7,.3,1) both; }
+@keyframes settle-pop { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+.machine-explain { font-size: 14px; color: var(--text-dim); line-height: 1.45; margin: 2px 0 10px; }
+.present-es .pm-slot { color: var(--text-dim); letter-spacing: 1.5px; }   /* the empty mouth of the machine, dim not gold (nothing to tap yet) */
+.gloss-chip { position: absolute; transform: translateY(-34px); background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: 9px; padding: 4px 9px; font-size: 12.5px; font-weight: 600; color: var(--text); white-space: nowrap; box-shadow: var(--shadow); }
+.frame-mount .slot { position: relative; }
+@media (prefers-reduced-motion: reduce) { .settle-pop { animation: none; } }
+/* THE FLIGHT (machine-family r6, D5): measured transit between two true states;
+   nothing hand-styled survives a landing */
+.listen-stage.frozen { overflow: hidden; transition: height 240ms cubic-bezier(.2,.7,.3,1) 120ms; }
+.flying { position: absolute; z-index: 30; transition: transform 420ms cubic-bezier(.3,.6,.25,1); margin: 0; }
+@media (prefers-reduced-motion: reduce) { .flying { transition: none; } .listen-stage.frozen { transition: none; } }
+/* phase breath for in-beat handoffs (forge -> conveyor, stage -> played-line) */
+.phase-out { opacity: 0 !important; transition: opacity 250ms ease; }
+.phase-in { animation: qfade 380ms cubic-bezier(.2,.7,.3,1) both; }
+@media (prefers-reduced-motion: reduce) { .phase-in { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .frame-mount .slot.opening { animation: none; } }
 .word.dim { opacity: .4; pointer-events: none; }   /* the tapped wrong tile recedes (mirrors .opt.dim) */
 
 /* ---------- top bar ---------- */
@@ -252,7 +293,10 @@ body.home-lit .topbar .lang-flag-top { background: rgba(255,255,255,.14); border
 /* §3.2 header flame (design/home.html .flame): gold, display font — "gold is the app's light" */
 .stat { display: flex; align-items: center; gap: 4px; font-family: var(--font-display); font-weight: 600; font-size: 13px; }
 .stat .ic.flame { display: inline-flex; }
-.stat.streak { color: var(--accent-2); margin-left: auto; }   /* pushes flame + lang into the right group */
+.stat.streak { color: var(--accent-2); margin-left: auto; }
+.stat.streak.swell { animation: flame-swell 1.8s cubic-bezier(.2,.7,.3,1) both; transform-origin: center; }
+@keyframes flame-swell { 0% { transform: scale(1); } 25% { transform: scale(1.45); } 55% { transform: scale(1.45); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .stat.streak.swell { animation: none; } }   /* pushes flame + lang into the right group */
 .stat.xp { color: var(--green); }
 .stat.gems { color: var(--secondary); }
 .topbar .spacer { flex: 1; }
