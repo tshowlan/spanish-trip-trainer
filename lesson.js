@@ -246,6 +246,10 @@ function composeSession(lesson) {
       }
       const reps = replyPool.length ? sample(replyPool, Math.min(2, replyPool.length)) : [];
       reps.forEach(r => qs.push({ type: "exchange", reply: r, frame: lesson.frame, mlesson: lesson, cue: pick(cues), arc: true }));
+      // machine encore = 2 reps [tune] (flow ruling 2026-08-03): one weld-form, one conveyor-form
+      const enc = sample(cues, Math.min(2, cues.length));
+      if (enc[0]) qs.push({ type: "weld", item: enc[0].item, cue: enc[0], encoreFirst: true });
+      if (enc[1]) qs.push({ type: "machine_drill", forge: false, frame: lesson.frame, mlesson: lesson, cues: [enc[1]], all: cues });
       qs.push(...closeReps(lesson));
       return qs;
     }
@@ -292,8 +296,21 @@ function composeSession(lesson) {
   }
   prod.forEach(q => qs.push(q));                                       // the summit: every new item, produced cold
   const out = applyRhythm(qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it })));  // safety net
+  out.push(...encoreReps(lesson, newItems));                          // THE ENCORE: the lap (ruling 7)
   out.push(...closeReps(lesson));                                     // §7.1 the close: the last reps, always
   return out;
+}
+
+/* THE ENCORE (Sprint 2 ruling 7, increment 5): the lesson's penultimate phase - every item
+   taught THIS lesson returns exactly once, production form, brisk (~90s cap [tune] = 6 reps),
+   rings ticking. The miss ruling's clause lands here: an item whose SUMMIT was missed
+   (run.summitMissed, read at render time via q.summitCheck) serves SCAFFOLDED, not cold. */
+function encoreReps(lesson, newItems) {
+  const pool = (newItems && newItems.length ? newItems : lesson.items || []).slice(0, 6);   /* [tune] the 90s cap */
+  if (!pool.length) return [];
+  return shuffle(pool.slice()).map((it, i) => ({
+    type: "encore", item: it, encoreFirst: i === 0
+  }));
 }
 // §8.5 exercise-variety rhythm: shape the *type* of graded slots by position — open on
 // recognition warm-ups, lean production through the middle, close on an audio item — without
@@ -643,6 +660,16 @@ function renderQuestion() {
   _setQStrength(qs ? Math.round(itemStrength(qs)) : 0, false);
   // make the mistake re-queue visible: label a phrase you missed coming back around
   if (q.requeued) $("#qbody").appendChild(el(`<div class="retry-chip">${icon('arrows-clockwise', 15)} Second chance, you missed this one</div>`));
+  // THE ENCORE resolves its production form at RENDER time (ruling 7 + miss ruling c+):
+  // a missed summit serves SCAFFOLDED - the encore catches what the summit drops; everyone
+  // else takes the ladder's production pick. Post-arc: normal grading, rung-downs apply.
+  if (q.type === "encore") {
+    const missedSummit = run.summitMissed && run.summitMissed.has(itemId(q.item));
+    q.type = missedSummit
+      ? (["build", "word_fill", "phrase_fill"].find(m => _modeFeasible(m, q.item)) || "mc_es2en")
+      : chooseType(q.item, { prefer: "production" });
+  }
+  if (q.encoreFirst) $("#qbody").appendChild(el(`<div class="retry-chip lap-chip">The lap: everything from today, once, quick.</div>`));
   ({ present: renderPresent, build: renderBuild, mc_es2en: renderMC,
      grasp: renderGrasp, variation: renderVariation,
      machine_drill: renderMachineDrill, exchange: renderExchange, weld: renderWeld,
@@ -1044,6 +1071,13 @@ function renderVariation(q) {
    frame (tiles; letter scale for one-word frames), the slot OPENS in the fused frame, and
    the same stage becomes the conveyor's mount — streamed cues (cue grammar), the learner
    fills the slot from the lesson's fillers. Production, zero option-picking. ===== */
+/* THE INPUT CLIMB (ruling 9 + machine flow ruling): the conveyor and the weld swap tiles
+   for the KEYBOARD as an item strengthens - same threshold as the letter rungs' keys mode
+   [tune, shared]. The lesson's shape never changes; only the input hardens. */
+function _inputClimbed(item) {
+  const st = learnPeek(item);
+  return !!(st && st.exposures >= 5 + (item.difficulty || 2));
+}
 function _frameTokens(frame) {
   return frame.replace("___", " ").replace(/[¿¡?!.,]/g, " ").split(/\s+/).filter(Boolean);
 }
@@ -1156,6 +1190,21 @@ function renderMachineDrill(q) {
       current = q.cues[ci]; wrongTaps = 0;
       cueMeaning.textContent = current.fen;
       slotEl.innerHTML = `<span class="dashes">– – –</span>`;
+      // THE INPUT CLIMB: a climbed filler is TYPED into the slot; tiles serve the rest
+      if (_inputClimbed(current.item)) {
+        tray.style.display = "none";
+        const inp = el(`<input class="text-input slot-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">`);
+        slotEl.innerHTML = "";
+        slotEl.appendChild(inp);
+        setTimeout(() => inp.focus(), 50);
+        inp.addEventListener("keydown", e => {
+          if (e.key !== "Enter" || !inp.value.trim() || run.answered) return;
+          const cur = current;
+          const ok = [cur.p.filler].some(t => judgeTyped(inp.value, t).ok);
+          if (ok) settleCue(cur, null);
+          else { wrongTaps++; haptic("wrong"); inp.classList.add("vwrong"); setTimeout(() => inp.classList.remove("vwrong"), 900); }
+        });
+      } else tray.style.display = "";
       // taught-moment = the first conveyor serve (the record the present cards owned);
       // the new-mark guides the first meeting: the answer tile settles in, speaks once,
       // wears the dotted gold until first successful production
@@ -1170,29 +1219,30 @@ function renderMachineDrill(q) {
       }
       [...dots.children].forEach((d, i) => d.className = i === ci ? "now" : (i < ci ? "done" : ""));
     };
+    function settleCue(cur, tile) {
+      if (tile) tile.classList.add("used");
+      const st1 = learnPeek(cur.item);
+      const marked = st1 && !(st1.axes && st1.axes.production);
+      slotEl.innerHTML = `<span class="filled${marked ? " new-mark" : ""}">${cur.p.filler}</span>`;
+      if (marked) {
+        slotEl.querySelector(".filled").addEventListener("click", e => {
+          e.stopPropagation();
+          const st2 = learnPeek(cur.item); if (st2) st2.nmTaps = (st2.nmTaps || 0) + 1;   // uncertainty telemetry
+          const chip = el(`<span class="gloss-chip">${cur.fen}</span>`);
+          slotEl.appendChild(chip);
+          setTimeout(() => chip.remove(), 1800);
+        });
+      }
+      playSound("correct"); haptic("correct");
+      speak(cur.item.es);                                // the machine speaks what it just made
+      recordAnswer(itemId(cur.item), wrongTaps === 0, { mode: "conveyor" });
+      if (wrongTaps > 0) run.wrong++;
+      setTimeout(nextCue, 900);   /* [tune] the beat between orders */
+    }
     function onTile(f, tile) {
       if (run.answered || !current || tile.classList.contains("used")) return;
-      if (norm(f) === norm(current.p.filler)) {
-        tile.classList.add("used");
-        const st1 = learnPeek(current.item);
-        const marked = st1 && !(st1.axes && st1.axes.production);
-        slotEl.innerHTML = `<span class="filled${marked ? " new-mark" : ""}">${current.p.filler}</span>`;
-        if (marked) {
-          const cur = current;
-          slotEl.querySelector(".filled").addEventListener("click", e => {
-            e.stopPropagation();
-            const st2 = learnPeek(cur.item); if (st2) st2.nmTaps = (st2.nmTaps || 0) + 1;   // uncertainty telemetry
-            const chip = el(`<span class="gloss-chip">${cur.fen}</span>`);
-            slotEl.appendChild(chip);
-            setTimeout(() => chip.remove(), 1800);
-          });
-        }
-        playSound("correct"); haptic("correct");
-        speak(current.item.es);                          // the machine speaks what it just made
-        recordAnswer(itemId(current.item), wrongTaps === 0, { mode: "conveyor" });
-        if (wrongTaps > 0) run.wrong++;
-        setTimeout(nextCue, 900);   /* [tune] the beat between orders */
-      } else { wrongTaps++; haptic("wrong"); tile.classList.add("vwrong"); setTimeout(() => tile.classList.remove("vwrong"), 900); }
+      if (norm(f) === norm(current.p.filler)) settleCue(current, tile);
+      else { wrongTaps++; haptic("wrong"); tile.classList.add("vwrong"); setTimeout(() => tile.classList.remove("vwrong"), 900); }
     }
     function doneAll() {
       run.answered = true; current = null;
@@ -1218,6 +1268,20 @@ function renderWeld(q) {
   cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${q.cue.fen}</div>`));
   body.appendChild(cueBlock);
   const stage = el(`<div class="machine-stage"></div>`);
+  if (_inputClimbed(item)) {
+    // the climb: tiles retire, the keyboard serves (typed weld; typo/accent tolerance,
+    // standard resolution + correction). The cue chrome stays - the task is unchanged.
+    const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe aquí…">`);
+    stage.appendChild(input);
+    body.appendChild(stage);
+    setTimeout(() => input.focus(), 50);
+    const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
+    input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
+    const submit = () => { if (!run.answered && input.value.trim()) gradeTyped(input.value, item); };
+    input.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
+    f.querySelector("#check").addEventListener("click", submit);
+    return;
+  }
   const ans = el(`<div class="build-answer"></div>`);
   const bank = el(`<div class="bank"></div>`);
   stage.appendChild(ans); stage.appendChild(bank);

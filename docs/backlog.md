@@ -55,7 +55,7 @@ Follow-on fixes Tom's device testing surfaced after the v207 batch:
    grammatical-but-silly composition. CODE diagnoses + guards; the rule (what compositions are
    legal) goes back to CHAT with the evidence.
 
-## SPRINT 2 — CHAT: the lesson-feel session (the big one; highest daily-felt payoff)
+## SPRINT 2 — SHIPPED COMPLETE v216-v228 (conformance, slide, ladder, machine family, encore + climb)
 
 One session, one theme: **how a lesson breathes**. Tom's items are one complaint wearing seven
 coats — pace, scaffolding, and the 4-choice grind:

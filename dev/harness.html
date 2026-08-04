@@ -243,6 +243,32 @@
             idx: 0, pct: 30, wrong: 0, restored: 0, answered: false, reasks: {}, review: false, missed: new Map() };
           renderQuestion();
         },
+        "Sprint 2 — THE ENCORE (machine, weld + conveyor forms)": () => {
+          clean();
+          const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
+          state.learn = state.learn || {};
+          m.items.forEach(it => { state.learn[it.id] = { exposures: 3, streak: 1, lapses: 0, interval: 2, ease: 2.3, axes: {} }; });
+          const shell = _enShell(m.items);
+          const cues = m.items.map(it => ({ item: it, p: _frameParts(m.frame, it.es), fen: _fillerEn(shell, it.en) })).filter(x => x.p && x.fen);
+          run = { lesson: m, qs: [
+              { type: "weld", item: cues[0].item, cue: cues[0], encoreFirst: true },
+              { type: "machine_drill", forge: false, frame: m.frame, mlesson: m, cues: [cues[1]], all: cues }
+            ], idx: 0, pct: 80, wrong: 0, restored: 0, answered: false, reasks: {}, review: false, missed: new Map() };
+          renderQuestion();
+        },
+        "Sprint 2 — THE CLIMB (conveyor + weld, keyboard)": () => {
+          clean();
+          const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
+          state.learn = state.learn || {};
+          m.items.forEach(it => { state.learn[it.id] = { exposures: 9, streak: 3, lapses: 0, interval: 5, ease: 2.5, axes: { production: true } }; });
+          const shell = _enShell(m.items);
+          const cues = m.items.map(it => ({ item: it, p: _frameParts(m.frame, it.es), fen: _fillerEn(shell, it.en) })).filter(x => x.p && x.fen);
+          run = { lesson: m, qs: [
+              { type: "machine_drill", forge: false, frame: m.frame, mlesson: m, cues: cues.slice(0, 2), all: cues },
+              { type: "weld", item: cues[2].item, cue: cues[2] }
+            ], idx: 0, pct: 60, wrong: 0, restored: 0, answered: false, reasks: {}, review: false, missed: new Map() };
+          renderQuestion();
+        },
         "Sprint 2 — THE EXCHANGE (Spain answers)": () => {
           clean();
           const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /cuesta/.test(l.frame || "") && (l.replies || []).length);

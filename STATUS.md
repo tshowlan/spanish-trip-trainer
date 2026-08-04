@@ -15,6 +15,24 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-03 — INCREMENT 5: encore + input climb. SPRINT 2 COMPLETE (v228)
+- THE ENCORE live: ladder lessons run the lap before the close (every taught item once,
+  production form via chooseType prefer, capped at 6 reps [tune ~90s], "The lap: everything
+  from today, once, quick." chip on rep 1). The miss ruling's clause lands: a missed summit
+  serves SCAFFOLDED at the encore (run.summitMissed consumed). Machine encore = 2 reps as
+  ruled: one weld-form + one conveyor-form.
+- THE INPUT CLIMB live: conveyor and weld swap tiles for the KEYBOARD at the letter-rung
+  threshold (exposures >= 5 + difficulty [tune, shared]) - climbed conveyor cues type the
+  filler into the slot (typo/accent tolerance), climbed welds type the sentence (standard
+  grading + correction). The lesson's shape never changes; the input hardens.
+- Harness: THE ENCORE + THE CLIMB stories added. Verified: composed shapes (machine ends
+  weld-encore -> conveyor-encore -> close), summit-miss scaffolding, slot typing, typed weld.
+- SPRINT 2 IS COMPLETE: conformance (v216) · the slide (v217/227) · intro ladder + MC
+  retirement (v221) · machine family with Forge/Conveyor/Weld/Exchange (v224-225) · encore +
+  climb (v228). Every lesson in the app now breathes to the ruled map.
+- Noted for Sprint 4: one Survival lesson composes ~50 beats (13 items x full ladder) - lesson
+  SIZE is now the pacing frontier, not exercise flow.
+
 ## 2026-08-03 — Slide re-tuned to 350/350 (v227)
 - Tom's re-pick from the harness variants: the slide runs 350ms both halves (was 400/400).
 
