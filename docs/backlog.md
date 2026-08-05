@@ -174,6 +174,15 @@ slide speed variants back in the harness (400 shipped / 350 / 300) for Tom's re-
 Answered inline: sound-completes-it "three dots" and pairs "three dots" were the same idle
 waveform bars - hidden at rest now (v226) · 4-option residue found and killed (fill_blank).
 
+## Tom's note 2026-08-04 — triaged
+
+- [CHAT · the field family] BOTTOM LANDSCAPE (8/4-1): exercises with little at the bottom of
+  the screen should ground in a cubist mountain range - Tom's reference is the Stowe Cider
+  "High and Dry" can (faceted geometric peaks with a treeline; Tom holds the image to hand
+  chat). Fits the field's existing facet language; the ruling must reconcile with the field
+  laws (one field one volume - is this the SAME field reaching a bottom register on sparse
+  screens, or new geography?), the opaque-over-the-field law, and text-zones-stay-clear.
+
 ## Standing board (unchanged, slots between sprints at Tom's call)
 
 Mexico pack session · Progress tab depth · session-end stamp cut · Progress/Profile tabtitle
