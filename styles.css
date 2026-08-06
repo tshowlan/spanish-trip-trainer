@@ -660,6 +660,10 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   padding: 16px 18px calc(16px + env(safe-area-inset-bottom)); background: var(--bg);
   border-top: 1px solid var(--border);
 }
+/* over the range, the exit zone floats: no black band cutting the mountains (Tom's
+   screenshots, 2026-08-05). The BUTTONS stay opaque (the law); the container clears.
+   Chat owns the exit zone's final grounding treatment - this is the lawful interim. */
+body.in-runner .footer { background: transparent; border-top: none; }
 .footer.correct { background: color-mix(in srgb, var(--green) 12%, var(--bg)); }
 .footer.wrong { background: color-mix(in srgb, var(--red) 12%, var(--bg)); }
 .fb-title { font-weight: 800; font-size: 17px; margin-bottom: 2px; display: flex; align-items: center; gap: 7px; }
@@ -1593,6 +1597,10 @@ body.in-ceremony .home-atmo, body.in-ceremony .topbar,
 body.in-ceremony .home > :not(.hero), body.in-ceremony #tabbar {
   opacity: 0; transition: opacity 550ms cubic-bezier(.2,.7,.3,1); pointer-events: none;
 }
+/* the topbar's ceremony hide is BINARY (Tom's device screenshot showed it alive mid-ceremony
+   while the harness computed 0 - whatever the cascade quirk, visibility can't lose; it flips
+   back instantly on exit while opacity carries the fade-in) */
+body.in-ceremony .topbar { visibility: hidden; transition: opacity 550ms cubic-bezier(.2,.7,.3,1), visibility 0s; }
 /* the atmosphere breathes back in slowest (artifact: 900ms bloom rise) — the world
    arrives with weight, not as a page load */
 body.in-ceremony .home-atmo { transition: opacity 900ms cubic-bezier(.2,.7,.3,1); }

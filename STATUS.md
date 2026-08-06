@@ -15,6 +15,14 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-05 — Landscape STAMPED by Tom + two screenshot fixes (v231)
+- Tom stamped the range on device. His screenshots surfaced: (1) the topbar alive mid-ceremony
+  on device while the harness computes opacity 0 - the hide is now BINARY (visibility: hidden
+  rides along; flips back instantly on exit while opacity carries the fade-in); (2) the fixed
+  footer painted a black band cutting the mountains on every runner - the exit zone now floats
+  (container transparent, buttons stay opaque per the law); chat owns the final grounding
+  treatment (parked with the screenshots' insight).
+
 ## 2026-08-04 — THE BOTTOM LANDSCAPE built (v230; Tom's device eye completes the stamp)
 - The field reaches both shores (bottom-landscape r11): THE RANGE - stacked triangle massifs,
   hand-scattered facet forest, alpenglow riding the lightgroup - embedded inside the ONE field
