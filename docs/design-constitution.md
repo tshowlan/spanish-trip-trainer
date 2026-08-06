@@ -67,6 +67,19 @@ doc narrates, this file states only the laws.
 - **Over the field, every functional surface is opaque** — controls, inputs, choices, tiles, AND
   the unfilled portions of instruments (--solid-card / --solid-track composites; the progress
   capsule carries a 14% hairline). Only the decoration gets transparency. *(r17-r19)*
+- **The field reaches both shores:** the one persistent field node grows full-bleed; the
+  shipped 74 facets keep their exact 555px top box, untouched; THE RANGE is bottom-anchored
+  geometry inside the same node (svg.range, 390x245, height 33% [tune]). Exercises slide over
+  it; dense screens bury it; sparse screens reveal it; it enters, slides, and fades WITH the
+  runner shell as one surface and never receives its own choreography. The top register's
+  facets fade out across the zone where the peaks rise — an overlap, never a seam. Runners
+  only; home keeps its own atmosphere. *(bottom landscape r11, 2026-08-04)*
+- **The range speaks the facet tongue:** every shape is a triangle plane — stacked massifs,
+  two tonal depths, outlier stones in the sky, and the forest as facets (discrete triangle
+  trees, hand-scattered, no three collinear; large in the valleys, small and dim up the
+  faces). No serration, no rectangles, no straight horizontals. The light falls on the
+  mountain: two faces wear faint washes from the field's own gradient defs, riding the
+  lightgroup so the clock rests them at night. Flat fills throughout. *(r11)*
 - **The landscape tracks the sun, not the theme:** the light layer (six blazing shards, seven
   gradient panes — light IN the triangles) follows the LOCAL CLOCK in both themes; daylight
   window [tune], evaluated at session start, never mid-session. At night the app's light rests

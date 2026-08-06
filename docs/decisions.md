@@ -216,3 +216,9 @@ record); the mark clears after the item's first successful production [tune].
   maturation at fuse).
 - The flight: measured transit between two true states; nothing hand-styled survives a landing.
 - Tap-gloss belongs to marked settled words in text, never to tiles mid-use.
+
+## 2026-08-04 — The field reaches both shores
+The range (peaks + facet forest) is bottom register of the ONE field node, runners only, no own
+choreography; light falls on the mountain via the field's own defs; every shape a triangle plane.
+(bottom-landscape.html r11; device confirmation rides Code's first on-device build per the
+luminous law.)

@@ -176,7 +176,7 @@ waveform bars - hidden at rest now (v226) · 4-option residue found and killed (
 
 ## Tom's note 2026-08-04 — triaged
 
-- [CHAT · the field family] BOTTOM LANDSCAPE (8/4-1): exercises with little at the bottom of
+- ~~[CHAT ruled r11 + CODE shipped v230]~~ BOTTOM LANDSCAPE (8/4-1): exercises with little at the bottom of
   the screen should ground in a cubist mountain range - Tom's reference is the Stowe Cider
   "High and Dry" can (faceted geometric peaks with a treeline; Tom holds the image to hand
   chat). Fits the field's existing facet language; the ruling must reconcile with the field

@@ -15,6 +15,17 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-04 — THE BOTTOM LANDSCAPE built (v230; Tom's device eye completes the stamp)
+- The field reaches both shores (bottom-landscape r11): THE RANGE - stacked triangle massifs,
+  hand-scattered facet forest, alpenglow riding the lightgroup - embedded inside the ONE field
+  node beside the 74 facets (defs referenced, not duplicated). Geometry + CSS verbatim; dark
+  overrides shipped in BOTH blocks (dual-dark law twin added to the handoff's data-theme rules).
+- Integration truth the artifact's fixed frame implied: the runner now claims min-height 100dvh
+  so the range grounds at the TRUE screen bottom (it was surfacing under the content edge).
+- Zero transition work by construction (the range rides the persistent shell). Constitution:
+  both laws merged into the field family; decisions recorded; backlog item closed.
+- GATE: device screenshot (dark theme) - Tom's eye completes the stamp per the luminous law.
+
 ## 2026-08-03 — Climb input unboxed (v229)
 - Tom's catch: the climbed conveyor rendered the STANDALONE boxed .text-input inside the
   sentence, breaking the frame line. The slot input is now invisible - no box, letters land on

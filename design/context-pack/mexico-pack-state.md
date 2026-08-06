@@ -1,4 +1,4 @@
-# Mexico pack state (repo truth, 2026-08-04)
+# Mexico pack state (repo truth, 2026-08-06)
 
 Auto-exported by tools/export-pack-state.mjs (context-pack ritual). Phrase lists are the
 taught-once law's ground truth: author against THIS, never memory. Atlas numbers merged from

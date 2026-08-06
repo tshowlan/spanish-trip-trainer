@@ -258,6 +258,11 @@ body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats th
 .gloss-chip { position: absolute; transform: translateY(-34px); background: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 9px; padding: 4px 9px; font-size: 12.5px; font-weight: 600; color: var(--text); white-space: nowrap; box-shadow: var(--shadow); }
 .frame-mount .slot { position: relative; }
+/* idle waveform bars read as stray dots beside settled words (Tom 2026-08-03): matched and
+   settled cards hide them at rest, show them only while playing. Delta flagged for the
+   pairs + sound-choice artifacts. */
+.pcard.matched .pbars, .sc-card.settled .pbars, .sc-card.settled .ac-bars { display: none; }
+.pcard.matched.playing .pbars, .sc-card.settled.playing .pbars, .sc-card.settled.playing .ac-bars { display: inline-flex; }
 @media (prefers-reduced-motion: reduce) { .settle-pop { animation: none; } }
 /* THE FLIGHT (machine-family r6, D5): measured transit between two true states;
    nothing hand-styled survives a landing */
@@ -270,6 +275,16 @@ body { font-variant-ligatures: no-common-ligatures;   /* the fi ligature eats th
 @media (prefers-reduced-motion: reduce) { .phase-in { animation: none; } }
 @media (prefers-reduced-motion: reduce) { .frame-mount .slot.opening { animation: none; } }
 .word.dim { opacity: .4; pointer-events: none; }   /* the tapped wrong tile recedes (mirrors .opt.dim) */
+.lap-chip { color: var(--text-dim); }                              /* the encore's opening line, quiet */
+/* the climbed conveyor types INTO the slot: the input is invisible - no box, no border -
+   the letters land on the slot's own gold underline at frame scale (Tom, 2026-08-03: the
+   boxed .text-input is the STANDALONE typing pattern; in a sentence, the input IS the slot) */
+.frame-mount .slot .slot-input {
+  background: transparent; border: none; box-shadow: none; border-radius: 0; outline: none;
+  font-family: var(--font-display); font-size: inherit; font-weight: inherit; color: var(--text);
+  width: 120px; padding: 0 2px; text-align: center; caret-color: var(--accent);
+}
+.frame-mount .slot:has(.slot-input.vwrong) { border-bottom-color: var(--red); }   /* the LINE flags the miss, briefly */
 
 /* ---------- top bar ---------- */
 .topbar {
@@ -571,7 +586,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
    (Tom A/B'd 450/500, ±10/15/20%; symmetric 400/400 won). No fade needed; the field visibly
    still beneath both. #app's overflow-x clip (v214) keeps the off-stage halves from widening
    the page. */
-#qbody.qenter { animation: qenter 400ms cubic-bezier(.2,.7,.3,1) both; }
+#qbody.qenter { animation: qenter 350ms cubic-bezier(.2,.7,.3,1) both; }   /* [tune] 400 -> 350 (Tom, 2026-08-03) */
 @keyframes qenter { from { transform: translateX(110%); } to { transform: none; } }
 /* §8.3 wrong answer — restrained iOS-passcode shake, no red splash */
 .shake-x { animation: shake .34s; }
@@ -1251,7 +1266,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
    animation:none is LOAD-BEARING: the qenter animation's fill pins transform forever and an
    animation beats a transition — without this line the exit never renders (Tom's catch: the
    old exercise "just goes", found 2026-07-29). */
-#qbody.leaving { animation: none; transform: translateX(-110%); transition: transform 400ms cubic-bezier(.4,.05,.7,.5); }
+#qbody.leaving { animation: none; transform: translateX(-110%); transition: transform 350ms cubic-bezier(.4,.05,.7,.5); }   /* [tune] */
 
 /* §3.3 correction sheet — built to design/correction-sheet.html */
 .corr-wrap { position: fixed; inset: 0; z-index: 70; }
@@ -1697,6 +1712,39 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
    never mid-session). Facets never compete with words; collisions get local fixes. */
 .runner { position: relative; }
 .facet-bg { position: absolute; top: 0; left: 0; right: 0; height: 555px; pointer-events: none; z-index: 0; }
+/* ===== THE BOTTOM LANDSCAPE (bottom-landscape.html r11): the one field reaches its bottom shore ===== */
+.runner { min-height: 100vh; min-height: 100dvh; box-sizing: border-box; }   /* the runner claims the full screen so the range grounds at the TRUE bottom (the artifact's fixed frame implied it) */
+.facet-bg { bottom: 0; height: auto; }                 /* the node grows full-bleed; top geometry untouched */
+.facet-bg svg:first-child { height: 555px; }           /* the shipped 74 facets keep their exact box */
+.facet-bg svg.range { position: absolute; bottom: 0; left: 0; width: 100%; height: 33%; }  /* one third [tune], Tom: higher + stacked */
+.facet-bg .range .rf  { fill: var(--secondary); opacity: 0.07; }
+.facet-bg .range .rfs { fill: var(--primary);   opacity: 0.05; }
+.facet-bg .range .rf2 { fill: var(--secondary); opacity: 0.11; }
+.facet-bg .range .rn2 { fill: var(--primary);   opacity: 0.09; }
+.facet-bg .range .rn  { fill: var(--primary);   opacity: 0.13; }
+.facet-bg .range .rns { fill: var(--accent-2);  opacity: 0.06; }
+.facet-bg .range .rt  { fill: var(--primary);   opacity: 0.09; }
+.facet-bg .range .rtb { fill: var(--primary);   opacity: 0.045; }
+/* dark overrides, BOTH blocks (dual-dark law - the handoff's data-theme rules get their
+   prefers-color-scheme twins so system-dark users see the stamped values too) */
+:root[data-theme="dark"] .facet-bg .range .rf  { opacity: 0.10; }
+:root[data-theme="dark"] .facet-bg .range .rfs { opacity: 0.07; }
+:root[data-theme="dark"] .facet-bg .range .rf2 { opacity: 0.14; }
+:root[data-theme="dark"] .facet-bg .range .rn  { opacity: 0.17; }
+:root[data-theme="dark"] .facet-bg .range .rns { opacity: 0.08; }
+:root[data-theme="dark"] .facet-bg .range .rn2 { opacity: 0.12; }
+:root[data-theme="dark"] .facet-bg .range .rt  { opacity: 0.18; }
+:root[data-theme="dark"] .facet-bg .range .rtb { opacity: 0.10; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .facet-bg .range .rf  { opacity: 0.10; }
+  :root:not([data-theme="light"]) .facet-bg .range .rfs { opacity: 0.07; }
+  :root:not([data-theme="light"]) .facet-bg .range .rf2 { opacity: 0.14; }
+  :root:not([data-theme="light"]) .facet-bg .range .rn  { opacity: 0.17; }
+  :root:not([data-theme="light"]) .facet-bg .range .rns { opacity: 0.08; }
+  :root:not([data-theme="light"]) .facet-bg .range .rn2 { opacity: 0.12; }
+  :root:not([data-theme="light"]) .facet-bg .range .rt  { opacity: 0.18; }
+  :root:not([data-theme="light"]) .facet-bg .range .rtb { opacity: 0.10; }
+}
 .facet-bg svg { width: 100%; height: 100%; display: block; }
 .facet-bg.no-light .lightgroup { display: none; }   /* night: the app's light rests in the instruments */
 .runner > *:not(.facet-bg) { position: relative; z-index: 1; }
