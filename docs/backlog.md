@@ -183,6 +183,35 @@ waveform bars - hidden at rest now (v226) · 4-option residue found and killed (
   laws (one field one volume - is this the SAME field reaching a bottom register on sparse
   screens, or new geography?), the opaque-over-the-field law, and text-zones-stay-clear.
 
+## Tom's notes 2026-08-05 — triaged
+
+- [SCREENSHOT ASKED] Topbar shows through at the end of some lessons (8/5-A5) - need which
+  surface (mid-ceremony? after? which lesson type) before touching the finish flow.
+- [SCREENSHOT ASKED + CHAT] The listening whisper + Continue overlay the bottom (8/5-B1) -
+  likely the exit zone floating over the new range (the fixed footer predates the landscape);
+  the exit zone's grounding treatment over the range is a field-family delta once seen.
+- [CHAT · splash] Lighthouse-beam tint: the light dark at the beams' top/bottom edges (8/5-A1);
+  joins the logo-tint item (8/2-5) as one brand-light session.
+- [CHAT · sound-choice bundle, enriched] The ambiguity is now concrete: "otra caña"/"otro café"
+  both grammatically complete the frame - without showing the EN being solved for, normal
+  distractors break (8/5-A2). Layout delta: the correct word centers ALONE, icon to its right
+  (8/5-A3). Joins 8/3-2 + the D4 sequencing already queued.
+- [CHAT · letter rungs bundle, enriched] Complete-the-word must show the REST of the phrase and
+  spell only the word (8/5-A4, same family as 8/2-8) · is 7 taps too many for phrase fill
+  (8/5-B2) · progressive letter supply (8/3-9).
+- [CHAT · field family] More lower-landscape designs (8/5-A6) - alternate ranges, possibly
+  per-destination geography.
+- [CHAT · presentation] The words being translated presented more broadly/dynamically
+  (8/5-B7) - the "exercises more substantial" thread; ties to the close-as-ceremony (8/3-10).
+- [CHAT · pedagogy + CODE data] Lesson length: how is a lesson sized, still feels short
+  (8/5-B5). Code brings atlas medians + composed beat counts to the discussion.
+
+Answered inline: keyboard already pops in keys mode (auto-focus + tap-to-refocus shipped with
+the letter rungs) (8/5-B3) · second-chance fills already bias toward the missed letters - the
+slips telemetry from every miss feeds _pickSlotIdx (8/5-B4) · every runner exercise HAS the
+mountains now - one field, both shores; dense screens bury it, sparse reveal it; home and tabs
+excluded by law (8/5-B6).
+
 ## Standing board (unchanged, slots between sprints at Tom's call)
 
 Mexico pack session · Progress tab depth · session-end stamp cut · Progress/Profile tabtitle
