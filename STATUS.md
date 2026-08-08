@@ -15,6 +15,16 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-05 — Test-Lab findings round 1: five fixes + real times (v233)
+- Tom fabricated a user, ran the bring-me machine, produced 9 findings + the telemetry
+  screenshot. REAL TIMES are 2-4x faster than paper estimates (machine lesson ~2 real min) -
+  dossier addendum written; the sizing session now argues from measured fact.
+- Fixed: conveyor speech queues (no more beheaded agua); exchange gained the listening escape;
+  dial delta line always reserved; over-target active-days copy; TEST LAB chip into the header.
+- Four design items enriched + parked (Tom taking to chat): BUILD IT presence, weld cue
+  framing/register, THE REPLY EXPERIENCE RULE (never meet a phrase first via listening), and
+  resolution spacing/EN scale.
+
 ## 2026-08-05 — THE TEST LAB + the depth dossier (v232)
 - Test Lab in Profile (Tom's ask): fabricate ANY user - journey %, days to trip, streak, exact
   due count, cadence (sessions/week x weeks). Per-lesson RESET-TO-NEW (primers replay).

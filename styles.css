@@ -1821,8 +1821,9 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .lab-val { color: var(--text-dim); font-size: 13px; }
 .lab-btns { display: flex; gap: 10px; margin-top: 14px; }
 .lab-btns .btn { flex: 1; }
+.dial-delta.empty { visibility: hidden; }
 .lab-telem { font-size: 12px; color: var(--text-dim); line-height: 1.7; padding: 8px 10px; background: var(--bg-card); border-radius: 8px; }
 .lab-select { flex: 1.4; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 9px; font-size: 13px; font-family: var(--font-display); min-width: 0; }
 .lab-active { background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid var(--accent); color: var(--accent-2); font-size: 12px; font-weight: 700; border-radius: 9px; padding: 6px 10px; margin: 10px 0 2px; letter-spacing: .4px; }
-#lab-chip { position: fixed; bottom: calc(70px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 90;
-  background: var(--accent); color: #221c04; font: 700 10.5px/1 var(--font-display); letter-spacing: 1.2px; padding: 5px 11px; border-radius: 99px; pointer-events: none; opacity: .92; }
+#lab-chip { display: inline-flex; align-items: center; margin-left: 8px;
+  background: var(--accent); color: #221c04; font: 700 9.5px/1 var(--font-display); letter-spacing: 1px; padding: 4px 8px; border-radius: 99px; pointer-events: none; }

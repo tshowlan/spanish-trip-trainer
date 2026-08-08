@@ -212,6 +212,29 @@ slips telemetry from every miss feeds _pickSlotIdx (8/5-B4) · every runner exer
 mountains now - one field, both shores; dense screens bury it, sparse reveal it; home and tabs
 excluded by law (8/5-B6).
 
+## Tom's Test-Lab findings 2026-08-05 (evening) — triaged
+
+CODE fixes SHIPPED v233: conveyor speech QUEUES so each phrase finishes even racing (900ms beat
+-> 1300 [tune]) · the listening escape joined the exchange (it was missing) · dial delta line
+always reserved (momentum dial no longer sits high/low vs a sibling with a delta) · "6 of 5
+active days" reads "5 of 5" at/over target · TEST LAB chip moved into the header beside the
+wordmark (was floating over Continue).
+
+- [CHAT · Tom taking] BUILD IT needs more presence on the forge-present (8/5-1, red circle).
+- [CHAT · Tom taking] The weld cue underspeaks: tiny ASK FOR + "another beer" reads thin - the
+  cue should carry the full ask framing; register note: in real bars "otra cana, por favor" is
+  the natural form (8/5-3).
+- [CHAT · Tom taking · joins the depth session] EXCHANGE REPLY EXPERIENCE RULE (8/5-4, the big
+  one): never introduce a NEVER-heard phrase via listening comprehension - the standard reply
+  is produced/met first, variations after; and the option-text vs literal-translation mismatch
+  ("Yes, it's coming" option vs "Of course, bringing it now" reveal) confuses. Reply-sets need
+  an experience ladder.
+- [CHAT · Tom taking] Resolution spacing: gap between finished phrase and its translation too
+  big; the EN should be less of a whisper (8/5-6). Resolution-frame tune.
+- Momentum 94 at 4x3 cadence + "12 sessions" screenshot: math checks out for the trailing-14d
+  formula on fabricated dense cadence; the 12 likely an earlier denser Apply. Not a bug; copy
+  fixed (above).
+
 ## Standing board (unchanged, slots between sprints at Tom's call)
 
 Mexico pack session · Progress tab depth · session-end stamp cut · Progress/Profile tabtitle

@@ -46,9 +46,11 @@ function renderTopbar() {
   // no flame on the intake: a brand-new user has no streak to show (backlog 7/26-2)
   const streakEl = document.querySelector(".stat.streak");
   if (streakEl) streakEl.style.display = state.profile ? "" : "none";
-  // TEST LAB indicator: fabricated progress is labeled on every screen, always
+  // TEST LAB indicator: rides the header beside the wordmark (Tom: the floating chip
+  // overlapped Continue). Runners hide the header; the Profile banner still labels the state.
   const labChip = document.getElementById("lab-chip");
-  if (state.simMode && !labChip) document.body.appendChild(el(`<div id="lab-chip">TEST LAB</div>`));
+  const brandEl = document.getElementById("topbar-brand");
+  if (state.simMode && !labChip && brandEl) brandEl.appendChild(el(`<span id="lab-chip">TEST LAB</span>`));
   if (!state.simMode && labChip) labChip.remove();
   // the flame swells once per open (Tom, 2026-08-02): a greeting, not a metronome
   if (streakEl && state.profile && state.streak > 0 && !_flameSwelled) {

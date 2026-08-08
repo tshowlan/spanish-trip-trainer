@@ -61,3 +61,15 @@ screenshot of that line to the sizing session.*
 | On the plane | 8 | 32 | 12.2 | ladder |
 | Real conversations | 8 | 34 | 12.6 | ladder |
 | Complaints & mix-ups | 8 | 35 | 12.8 | ladder |
+
+## ADDENDUM (2026-08-05): Tom's real measured times landed
+
+From the device (Profile -> Test lab): listen_choice 5.2s (x84) · mc 8.2s (x51) · sound_choice
+7.9s (x21) · close 14.3s (x17) · phrase_fill 22.1s (x17) · word_fill 12.2s (x15) · close_swap
+17.2s (x10) · build 15.5s (x8) · type 11.5s (x6) · fill_blank 6.9s (x5) · ear_build 6.3s ·
+listen_type 11.7s · reply_listen 6.2s.
+
+Real times run 2-4x FASTER than the paper estimates above. Recomputed with measured medians,
+a machine lesson (~8 beats) is roughly 2 REAL minutes and a mid-size ladder lesson (~33 beats)
+roughly 6-7. Tom's "too short" feeling is confirmed measured fact, strongest for machines.
+The sizing session should set a target in MINUTES using these numbers, then choose levers.

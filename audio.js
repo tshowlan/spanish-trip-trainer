@@ -8,9 +8,12 @@ function voiceFor(lang) {
 }
 // NO onend hook, on purpose (Sprint 2 ruling 1): the voice finishing gates NOTHING —
 // advance-on-TTS is the graveyarded auto-advance, and removing the socket keeps it dead.
-function speak(text, rate) {
+function speak(text, rate, opts) {
   if (!("speechSynthesis" in window)) return;
-  speechSynthesis.cancel();
+  // opts.queue lets rapid-fire surfaces (the conveyor) FINISH each phrase instead of
+  // beheading it (Tom: "agua wasn't finished before otra cana came in") - utterances
+  // queue naturally when we skip the cancel; everything else keeps cancel-and-speak
+  if (!(opts && opts.queue)) speechSynthesis.cancel();
   const lang = (typeof activePack === "function" ? activePack().tts : "es-ES");
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang; const v = voiceFor(lang); if (v) u.voice = v; u.rate = rate || 0.9;

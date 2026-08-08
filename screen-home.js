@@ -46,7 +46,9 @@ function _todayDelta(metric) {
 }
 function _dialDelta(metric) {
   const d = _todayDelta(metric);
-  if (!d) return "";
+  // the line is ALWAYS reserved: a dial with no delta must not sit higher than its
+  // sibling (Tom x2: "the momentum dial lowered from its spot")
+  if (!d) return `<div class="dial-delta empty">&nbsp;</div>`;
   return `<div class="dial-delta ${d > 0 ? "up" : "down"}">${d > 0 ? "+" : "−"}${Math.abs(d)}</div>`;
 }
 function sparkBars(arr) {
@@ -641,7 +643,7 @@ function scoreSheet(which) {
   } else if (which === "momentum") {
     title = "Momentum";
     role = "Are you doing the work? This is your only same-day lever: one session and it moves today.";
-    drivers = [`${s.activeDays7} of 5 active days`, `${s.sessions7} sessions this week`];
+    drivers = [s.activeDays7 >= 5 ? `5 of 5 active days` : `${s.activeDays7} of 5 active days`, `${s.sessions7} sessions this week`];   /* over-target reads as met, never "6 of 5" (Tom) */
   } else {
     title = "Retention";
     role = "Is it sticking? Your lever: steer a session toward review instead of new content.";

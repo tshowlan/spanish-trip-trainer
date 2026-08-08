@@ -1240,10 +1240,10 @@ function renderMachineDrill(q) {
         });
       }
       playSound("correct"); haptic("correct");
-      speak(cur.item.es);                                // the machine speaks what it just made
+      speak(cur.item.es, null, { queue: true });         // the machine speaks what it just made - and finishes, even if you race
       recordAnswer(itemId(cur.item), wrongTaps === 0, { mode: "conveyor" });
       if (wrongTaps > 0) run.wrong++;
-      setTimeout(nextCue, 900);   /* [tune] the beat between orders */
+      setTimeout(nextCue, 1300);   /* [tune] the beat between orders (900 clipped the voice) */
     }
     function onTile(f, tile) {
       if (run.answered || !current || tile.classList.contains("used")) return;
@@ -1440,6 +1440,8 @@ function renderExchange(q) {
     choices.appendChild(c);
   });
   body.appendChild(choices);
+  const ef = footer(``);                               // the escape lives in the exit zone here too (Tom: it was missing)
+  listenEscape(ef, q);
 }
 
 /* ----- type the translation (English → Spanish) ----- */
