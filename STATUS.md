@@ -15,6 +15,18 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-05 — THE TEST LAB + the depth dossier (v232)
+- Test Lab in Profile (Tom's ask): fabricate ANY user - journey %, days to trip, streak, exact
+  due count, cadence (sessions/week x weeks). Per-lesson RESET-TO-NEW (primers replay).
+  Measured per-type exercise times readout (device telemetry, accruing since 7/22). SAFETY:
+  first Apply snapshots real state to a separate slot; bootSync + cloudSync sealed while
+  simming (the vault never learns fabricated progress); TEST LAB chip on every screen;
+  Restore = wholesale local restore + clean reboot (vault re-pull).
+- Lesson-length dossier (docs/ + Tom's folder): the "too short" lessons are the MACHINES -
+  8 beats/~5 paper-min vs ladders' 29-55 beats; depth levers unused (28 replies, 2 served;
+  2 of 4 welds; 1 conveyor serve; 49 legal welds, 1 touched). Kickoff written for the depth
+  session (lesson depth + the return door + practice depth-over-breadth).
+
 ## 2026-08-05 — Landscape STAMPED by Tom + two screenshot fixes (v231)
 - Tom stamped the range on device. His screenshots surfaced: (1) the topbar alive mid-ceremony
   on device while the harness computes opacity 0 - the hide is now BINARY (visibility: hidden

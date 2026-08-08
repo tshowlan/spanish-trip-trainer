@@ -36,6 +36,7 @@ function ensureIdentity() {
    best-effort; the push only follows it. */
 let _cloudHydrated = false;   // THE INVARIANT: no successful pull this session -> no push, ever
 async function bootSync() {
+  if (state.simMode) return;   // TEST LAB: fabricated progress never touches the vault (no pull, no push)
   if (!state.cloud || !state.cloud.optedIn || !state.cloud.playerId) return;
   await _hydrate();
   if (_cloudHydrated) await cloudSync();
@@ -51,6 +52,7 @@ async function _hydrate() {
   } catch (_) { return false; }                             // network not ready: stay read-only, retry on next sync
 }
 async function cloudSync(opts) {
+  if (state.simMode) return;   // TEST LAB seal
   if (!state.cloud || !state.cloud.optedIn) return;          // nothing leaves the device until you join a group
   if (!_cloudHydrated && state.cloud.playerId) {             // never push over a vault you haven't read this session
     const ok = await _hydrate();

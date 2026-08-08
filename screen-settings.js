@@ -100,10 +100,133 @@ function renderProfile() {
     }).catch(() => {});
   }
 
+  _labCard(wrap);                                      // THE TEST LAB (Tom, 2026-08-05)
   app.appendChild(wrap);
   $("#snd").addEventListener("click", e => {
     state.sound = !state.sound; save();
     e.currentTarget.classList.toggle("on", state.sound);
     if (state.sound) playSound("correct");
   });
+}
+
+/* ===== THE TEST LAB (Tom, 2026-08-05): a parameterized journey simulator. Four static
+   profiles don't scale - this fabricates ANY user: position in the pack, days to trip,
+   streak, due pile, cadence. SAFETY RAILS: the first Apply snapshots the REAL state to a
+   separate localStorage slot; every cloud sync path is sealed while simming (the vault
+   never learns about fabricated progress); a fixed TEST LAB chip labels every screen;
+   Restore brings the real state back wholesale and reboots clean (bootSync then re-pulls
+   the untouched vault). ===== */
+function _labCard(wrap) {
+  const hasBackup = !!localStorage.getItem("sts_lab_backup");
+  const lab = el(`<div class="lab-card">
+    <div class="set-h">Test lab</div>
+    <div class="set-d">Fabricate a user and walk the app as them. Your real progress is snapshotted on first apply, and cloud backup pauses until you restore.</div>
+    ${state.simMode ? `<div class="lab-active">TEST LAB ACTIVE: this is fabricated progress</div>` : ""}
+    <label class="lab-row">Journey through the pack<span class="lab-val" id="lab-pct-v">40%</span></label>
+    <input type="range" id="lab-pct" min="0" max="100" step="5" value="40" class="lab-slider">
+    <label class="lab-row">Days to trip<input type="number" id="lab-days" value="30" min="0" max="365"></label>
+    <label class="lab-row">Streak<input type="number" id="lab-streak" value="6" min="0" max="365"></label>
+    <label class="lab-row">Phrases due now<input type="number" id="lab-due" value="8" min="0" max="60"></label>
+    <label class="lab-row">Sessions per week<input type="number" id="lab-wk" value="4" min="0" max="14"></label>
+    <label class="lab-row">Weeks active<input type="number" id="lab-weeks" value="3" min="1" max="12"></label>
+    <div class="lab-btns">
+      <button class="btn" id="lab-apply">Apply</button>
+      <button class="btn grey" id="lab-restore" ${hasBackup ? "" : "disabled"}>Restore my real progress</button>
+    </div>
+    <div class="set-d" style="margin-top:14px">Your measured exercise times (real medians from this device's play):</div>
+    <div class="lab-telem">${Object.keys(state.telem || {}).length
+      ? Object.entries(state.telem).sort((a, b) => b[1].n - a[1].n).map(([t, e]) => `${t}: ${(e.mean / 1000).toFixed(1)}s (x${e.n})`).join(" · ")
+      : "none yet - play a lesson and they accrue"}</div>
+    <div class="set-d" style="margin-top:14px">Make one lesson brand new again (primer + full first-pass arc on next entry):</div>
+    <div class="lab-btns">
+      <select id="lab-lesson" class="lab-select"></select>
+      <button class="btn grey" id="lab-fresh">Reset to never-seen</button>
+    </div>
+  </div>`);
+  wrap.appendChild(lab);
+  lab.querySelector("#lab-pct").addEventListener("input", e => { lab.querySelector("#lab-pct-v").textContent = e.target.value + "%"; });
+  lab.querySelector("#lab-apply").addEventListener("click", () => {
+    labApply({
+      pct: +lab.querySelector("#lab-pct").value,
+      daysOut: +lab.querySelector("#lab-days").value,
+      streak: +lab.querySelector("#lab-streak").value,
+      dueN: +lab.querySelector("#lab-due").value,
+      perWeek: +lab.querySelector("#lab-wk").value,
+      weeks: +lab.querySelector("#lab-weeks").value
+    });
+    toast("Lab user applied");
+    renderProfile();
+  });
+  lab.querySelector("#lab-restore").addEventListener("click", labRestore);
+  // per-lesson freshness (Tom, 2026-08-05): experience any primer again without a full re-journey
+  const lsel = lab.querySelector("#lab-lesson");
+  DECK.stages.flatMap(st => st.lessons).filter(l => (l.items || []).length).forEach(l => {
+    lsel.appendChild(el(`<option value="${l.id}">${l.title || l.id}</option>`));
+  });
+  lab.querySelector("#lab-fresh").addEventListener("click", () => {
+    const l = DECK.stages.flatMap(st => st.lessons).find(x => x.id === lsel.value);
+    if (!l) return;
+    if (!localStorage.getItem("sts_lab_backup")) localStorage.setItem("sts_lab_backup", JSON.stringify(state));
+    state.simMode = true;
+    delete state.lessons[l.id];
+    (l.items || []).forEach(it => { delete state.learn[it.id]; });
+    state.scoresCache = computeScores();
+    save(); renderTopbar();
+    toast(`"${l.title || l.id}" is new again`);
+  });
+}
+function labApply(p) {
+  if (!localStorage.getItem("sts_lab_backup")) localStorage.setItem("sts_lab_backup", JSON.stringify(state));   // FIRST apply keeps the real snapshot; re-applies never overwrite it
+  state.simMode = true;
+  state.profile = state.profile || { destination: "spain", tripType: "leisure", needs: [], allergies: [], level: "some", lodging: ["hotel"], transport: ["walk"] };
+  const d = new Date(); d.setDate(d.getDate() + p.daysOut);
+  state.profile.tripDate = d.toISOString().slice(0, 10);
+  state.streak = p.streak;
+  state.lastActive = todayStr();
+  const lessons = DECK.stages.flatMap(st => st.lessons).filter(l => (l.items || []).length && !l.chain);
+  const K = Math.round(lessons.length * p.pct / 100);
+  const span = Math.max(2, p.weeks * 7);
+  state.lessons = {}; state.learn = {};
+  lessons.slice(0, K).forEach((l, li) => {
+    const age = Math.max(1, Math.round(span * (K - li) / Math.max(1, K)));   // earliest lessons furthest back
+    state.lessons[l.id] = { stars: 2 + (Math.random() < 0.6 ? 1 : 0), at: new Date(Date.now() - age * 864e5).toISOString() };
+    (l.items || []).forEach(it => {
+      const seen = Math.max(1, Math.min(age, 1 + Math.floor(Math.random() * age)));
+      state.learn[it.id] = {
+        exposures: 3 + Math.floor(Math.random() * 5), streak: 1 + Math.floor(Math.random() * 3),
+        lapses: Math.random() < 0.3 ? 1 : 0, interval: 3 + Math.floor(Math.random() * 9),
+        ease: 2.2 + Math.random() * 0.4,
+        lastSeen: daysAgoStr(seen), lastCorrect: daysAgoStr(seen), due: daysAgoStr(-(2 + Math.floor(Math.random() * 12))),   // future: the Due dial owns the count exactly
+        axes: { production: Math.random() < 0.75, cold: Math.random() < 0.45, native: Math.random() < 0.35, chained: Math.random() < 0.2 }
+      };
+    });
+  });
+  const ids = Object.keys(state.learn);
+  shuffle(ids.slice()).slice(0, Math.min(p.dueN, ids.length)).forEach(id => {
+    const r = state.learn[id]; r.lastSeen = daysAgoStr(9); r.lastCorrect = daysAgoStr(9); r.due = daysAgoStr(1);
+  });
+  state.sessions = [];
+  for (let w = p.weeks; w >= 1; w--) for (let sn = 0; sn < p.perWeek; sn++) {
+    const ago = (w - 1) * 7 + Math.min(6, Math.floor(sn * 7 / Math.max(1, p.perWeek)));
+    state.sessions.push({ at: new Date(Date.now() - ago * 864e5).toISOString(), lessonId: "__lab__", category: "Review", phrases: 12, correct: 10 });
+  }
+  const sc = computeScores();
+  state.scoreHistory = [];
+  for (let a = span; a >= 1; a -= 2) {
+    const f = 1 - a / span;
+    state.scoreHistory.push({ date: daysAgoStr(a),
+      readiness: Math.max(2, Math.round(sc.readiness * (0.35 + 0.65 * f))),
+      momentum: Math.max(2, Math.round(sc.momentum * (0.5 + 0.5 * f))),
+      retention: Math.max(2, Math.round(sc.retention * (0.6 + 0.4 * f))) });
+  }
+  state.scoresCache = computeScores();
+  save();
+  renderTopbar();                                       // the TEST LAB chip appears immediately
+}
+function labRestore() {
+  const b = localStorage.getItem("sts_lab_backup");
+  if (!b) { toast("No snapshot to restore"); return; }
+  localStorage.setItem(STORE_KEY, b);                  // real state back, wholesale
+  localStorage.removeItem("sts_lab_backup");
+  location.reload();                                    // clean boot; bootSync re-pulls the untouched vault
 }
