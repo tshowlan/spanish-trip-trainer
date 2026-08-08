@@ -74,6 +74,8 @@ doc narrates, this file states only the laws.
   runner shell as one surface and never receives its own choreography. The top register's
   facets fade out across the zone where the peaks rise — an overlap, never a seam. Runners
   only; home keeps its own atmosphere. *(bottom landscape r11, 2026-08-04)*
+- **The runner claims min-height 100dvh:** the range grounds at the true screen bottom;
+  fixed-frame artifacts imply it, the build states it. *(v230 build note, ratified 2026-08-05)*
 - **The range speaks the facet tongue:** every shape is a triangle plane — stacked massifs,
   two tonal depths, outlier stones in the sky, and the forest as facets (discrete triangle
   trees, hand-scattered, no three collinear; large in the valleys, small and dim up the

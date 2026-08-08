@@ -15,6 +15,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-05 — Landscape device gate CLOSED; both v230 build notes ratified
+- Chat confirmed v230: dual-dark twins were the law working; the min-height 100dvh line is now
+  LAW in the field family verbatim ("fixed-frame artifacts imply it, the build states it").
+  Tom's screenshot was the stamp; the bottom landscape is fully law. Side note from chat: the
+  "Cuanto cuesta un medico?" weld in the screenshot is the composer guard working as ruled.
+
 ## 2026-08-05 — Test-Lab findings round 1: five fixes + real times (v233)
 - Tom fabricated a user, ran the bring-me machine, produced 9 findings + the telemetry
   screenshot. REAL TIMES are 2-4x faster than paper estimates (machine lesson ~2 real min) -

@@ -660,6 +660,10 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   padding: 16px 18px calc(16px + env(safe-area-inset-bottom)); background: var(--bg);
   border-top: 1px solid var(--border);
 }
+/* over the range, the exit zone floats: no black band cutting the mountains (Tom's
+   screenshots, 2026-08-05). The BUTTONS stay opaque (the law); the container clears.
+   Chat owns the exit zone's final grounding treatment - this is the lawful interim. */
+body.in-runner .footer { background: transparent; border-top: none; }
 .footer.correct { background: color-mix(in srgb, var(--green) 12%, var(--bg)); }
 .footer.wrong { background: color-mix(in srgb, var(--red) 12%, var(--bg)); }
 .fb-title { font-weight: 800; font-size: 17px; margin-bottom: 2px; display: flex; align-items: center; gap: 7px; }
@@ -1593,6 +1597,10 @@ body.in-ceremony .home-atmo, body.in-ceremony .topbar,
 body.in-ceremony .home > :not(.hero), body.in-ceremony #tabbar {
   opacity: 0; transition: opacity 550ms cubic-bezier(.2,.7,.3,1); pointer-events: none;
 }
+/* the topbar's ceremony hide is BINARY (Tom's device screenshot showed it alive mid-ceremony
+   while the harness computed 0 - whatever the cascade quirk, visibility can't lose; it flips
+   back instantly on exit while opacity carries the fade-in) */
+body.in-ceremony .topbar { visibility: hidden; transition: opacity 550ms cubic-bezier(.2,.7,.3,1), visibility 0s; }
 /* the atmosphere breathes back in slowest (artifact: 900ms bloom rise) — the world
    arrives with weight, not as a page load */
 body.in-ceremony .home-atmo { transition: opacity 900ms cubic-bezier(.2,.7,.3,1); }
@@ -1804,3 +1812,18 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .sc-card.settled { background: color-mix(in srgb, var(--green) 12%, var(--solid-card)); border-color: var(--green); cursor: pointer; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sc-card.settled { background: color-mix(in srgb, var(--green) 12%, var(--solid-card)); } }
 :root[data-theme="dark"] .sc-card.settled { background: color-mix(in srgb, var(--green) 12%, var(--solid-card)); }
+
+/* ===== THE TEST LAB (Tom 2026-08-05): fabricate any user; never confusable with real progress ===== */
+.lab-card { margin-top: 22px; padding: 16px; border: 1.5px dashed var(--border); border-radius: var(--radius); }
+.lab-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; margin: 10px 0 4px; color: var(--text); font-weight: 500; }
+.lab-row input[type="number"] { width: 78px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 7px 9px; font-size: 14px; font-family: var(--font-display); text-align: center; }
+.lab-slider { width: 100%; accent-color: var(--accent); margin: 2px 0 6px; }
+.lab-val { color: var(--text-dim); font-size: 13px; }
+.lab-btns { display: flex; gap: 10px; margin-top: 14px; }
+.lab-btns .btn { flex: 1; }
+.dial-delta.empty { visibility: hidden; }
+.lab-telem { font-size: 12px; color: var(--text-dim); line-height: 1.7; padding: 8px 10px; background: var(--bg-card); border-radius: 8px; }
+.lab-select { flex: 1.4; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 9px; font-size: 13px; font-family: var(--font-display); min-width: 0; }
+.lab-active { background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid var(--accent); color: var(--accent-2); font-size: 12px; font-weight: 700; border-radius: 9px; padding: 6px 10px; margin: 10px 0 2px; letter-spacing: .4px; }
+#lab-chip { display: inline-flex; align-items: center; margin-left: 8px;
+  background: var(--accent); color: #221c04; font: 700 9.5px/1 var(--font-display); letter-spacing: 1px; padding: 4px 8px; border-radius: 99px; pointer-events: none; }
