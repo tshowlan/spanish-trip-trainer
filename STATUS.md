@@ -15,6 +15,17 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-05 — DEPTH SESSION phase 1: machine lessons at ~4 real minutes (v234)
+- Ruling 2 live: machine lessons recompose to drill(forge+lap1) -> WELD x4 (all fillers) ->
+  conveyor lap 2 (shuffled) -> THE STRETCH x2 (authored variants built weld-style: "Me trae
+  agua?") -> EXCHANGE x4 (distinct replies) -> close. 4.4 real minutes at Tom's medians,
+  verified in composition. The in-lesson machine encore retires (lap 2 + stretch absorbed it;
+  the encore form becomes the return door's lap).
+- Ruling 1 live: the atlas now scores in REAL minutes from Tom's measured medians (paper
+  numbers replaced in its SECONDS table; new types added).
+- return-door.html (r2) committed to design/. Phases next: chooser + composeReview reform
+  (rulings 3-4, one system), then the return door wiring (ruling 5).
+
 ## 2026-08-05 — Landscape device gate CLOSED; both v230 build notes ratified
 - Chat confirmed v230: dual-dark twins were the law working; the min-height 100dvh line is now
   LAW in the field family verbatim ("fixed-frame artifacts imply it, the build states it").

@@ -92,7 +92,7 @@
       <option value="replay">scenario: replay (mid-strength)</option>
       <option value="strong">scenario: replay (strong / cold-ready)</option>
     </select>
-    <span class="note">computed live from composeSession + the ladder · clean-run estimates (misses add time) · read-only, never touches your saved state</span>
+    <span class="note">computed live from composeSession + the ladder · REAL minutes from measured medians (2026-08-05; misses add time) · read-only, never touches your saved state</span>
   </div>
   <main id="main"></main>
 
@@ -138,10 +138,14 @@
   /* ---------- MODELS (the audit's dials — all [tune], edit here) ---------- */
   // seconds per slot, clean run (no misses). Anchored to type mechanics, not vibes:
   // read-only < one-tap < assemble < type.
-  const SECONDS = { present:10, mc_es2en:8, listen_choice:10, sound_choice:12, fill_blank:10,
-    build:18, audio_cloze:14, ear_build:20, type_translation:22, listen_type:22, speak_it:15,
-    pairs:30, match:25, reply:12, reply_listen:10, close:25, close_swap:28, intro:8,
-    word_fill:12, phrase_fill:16 };   // letter rungs 2026-07-22 [tune -> measured via state.telem]
+  // PAPER MINUTES ARE DEAD (depth ruling 1, 2026-08-05): these are Tom's MEASURED medians
+  // from device telemetry (the Test Lab line). Types he hasn't hit yet keep conservative
+  // estimates scaled to the measured ratio (~0.6x of the old paper numbers).
+  const SECONDS = { present:10, mc_es2en:8.2, listen_choice:5.2, sound_choice:7.9, fill_blank:6.9,
+    build:15.5, audio_cloze:9, ear_build:6.3, type_translation:11.5, listen_type:11.7, speak_it:10,
+    pairs:30, match:25, reply:12, reply_listen:6.2, close:14.3, close_swap:17.2, intro:8,
+    word_fill:12.2, phrase_fill:22.1,
+    grasp:8, variation:10, machine_drill:62, weld:16, stretch:16, exchange:8 };   // measured 2026-08-05
   const PRIMER_SECONDS = 20;              // scene -> mission -> guess (first pass only)
   // per-shape time bands (ratified 2026-07-22): a machine lesson is a pattern-drill whose
   // course is the whole trip (spacing beats massing); scenario lessons carry scenes.

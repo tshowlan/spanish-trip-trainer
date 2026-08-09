@@ -237,11 +237,20 @@ function composeSession(lesson) {
       // ONE Forge-present screen (frame meaning + build it - the machine IS the new phrase),
       // then the conveyor serves every filler (taught-moment = first serve, the new-mark
       // guides the first meeting), then the exchange. No present cards in machine lessons.
+      // DEPTH RULING 2 (2026-08-05): the machine lesson grows to ~4 REAL minutes, sized by
+      // Tom's measured medians (paper minutes are dead). Forge-present + lap 1 → Weld x4
+      // (all fillers) → Conveyor lap 2 (cues shuffled; keyboard once climbed) → The stretch
+      // x2 (authored variants built weld-style) → Exchange x4 (no same-lesson repeats) → Close.
       qs.push({ type: "machine_drill", forge: true, frame: lesson.frame, mlesson: lesson,
                 cues, all: cues, arc: true });
-      // THE WELD x2 (D3, flow ruling 2026-08-03): full-sentence builds between conveyor and exchange
-      sample(cues, Math.min(2, cues.length)).forEach(c =>
-        qs.push({ type: "weld", item: c.item, cue: c, arc: true }));
+      cues.forEach(c => qs.push({ type: "weld", item: c.item, cue: c, arc: true }));
+      qs.push({ type: "machine_drill", forge: false, frame: lesson.frame, mlesson: lesson,
+                cues: shuffle(cues.slice()), all: cues, arc: true });
+      // the stretch: another way to say it, from the authored variants field [tune x2]
+      const stretches = [];
+      cues.forEach(c => (c.item.variants || []).forEach(v => stretches.push({ item: c.item, cue: c, ves: v })));
+      sample(stretches, Math.min(2, stretches.length)).forEach(sv =>
+        qs.push({ type: "stretch", item: sv.item, cue: sv.cue, ves: sv.ves, arc: true }));
       // quiero/necesito borrow the bring-me confirmations (reply-sets: "shared with
       // Quiero/Necesito confirmations" - Marchando answers a want as well as a bring)
       let replyPool = lesson.replies || [];
@@ -249,12 +258,10 @@ function composeSession(lesson) {
         const donor = _machineLessonOf("¿me puede traer ___?");
         replyPool = (donor && donor.replies) || [];
       }
-      const reps = replyPool.length ? sample(replyPool, Math.min(2, replyPool.length)) : [];
+      const reps = replyPool.length ? sample(replyPool, Math.min(4, replyPool.length)) : [];   // x4, drawn without same-lesson repeats (depth ruling 2)
       reps.forEach(r => qs.push({ type: "exchange", reply: r, frame: lesson.frame, mlesson: lesson, cue: pick(cues), arc: true }));
-      // machine encore = 2 reps [tune] (flow ruling 2026-08-03): one weld-form, one conveyor-form
-      const enc = sample(cues, Math.min(2, cues.length));
-      if (enc[0]) qs.push({ type: "weld", item: enc[0].item, cue: enc[0], encoreFirst: true });
-      if (enc[1]) qs.push({ type: "machine_drill", forge: false, frame: lesson.frame, mlesson: lesson, cues: [enc[1]], all: cues });
+      // the in-lesson machine encore (flow ruling 2026-08-03) RETIRES under depth ruling 2:
+      // lap 2 + the stretch absorbed its job; the encore FORM lives on as the return door's lap
       qs.push(...closeReps(lesson));
       return qs;
     }
@@ -677,7 +684,7 @@ function renderQuestion() {
   if (q.encoreFirst) $("#qbody").appendChild(el(`<div class="retry-chip lap-chip">The lap: everything from today, once, quick.</div>`));
   ({ present: renderPresent, build: renderBuild, mc_es2en: renderMC,
      grasp: renderGrasp, variation: renderVariation,
-     machine_drill: renderMachineDrill, exchange: renderExchange, weld: renderWeld,
+     machine_drill: renderMachineDrill, exchange: renderExchange, weld: renderWeld, stretch: renderWeld,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
      listen_choice: renderListenChoice, reply_listen: renderReply,
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
@@ -1267,10 +1274,11 @@ function renderMachineDrill(q) {
    are BARE lowercase words (D6); the fuse dresses them in place. A real production rep. */
 function renderWeld(q) {
   const item = q.item;
+  const target = q.ves || item.es;                     // the stretch builds an authored VARIANT (depth ruling 2)
   const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">The weld</div>`));
+  body.appendChild(el(`<div class="qtype">${q.ves ? "The stretch" : "The weld"}</div>`));
   const cueBlock = el(`<div class="conv-cuewrap"></div>`);
-  cueBlock.appendChild(el(`<div class="cue-label">Ask for</div>`));
+  cueBlock.appendChild(el(`<div class="cue-label">${q.ves ? "Another way to ask for" : "Ask for"}</div>`));
   cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${q.cue.fen}</div>`));
   body.appendChild(cueBlock);
   const stage = el(`<div class="machine-stage"></div>`);
@@ -1292,7 +1300,7 @@ function renderWeld(q) {
   const bank = el(`<div class="bank"></div>`);
   stage.appendChild(ans); stage.appendChild(bank);
   body.appendChild(stage);
-  const dressed = item.es.split(/\s+/);
+  const dressed = target.split(/\s+/);
   const seq = dressed.map(w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "").toLowerCase()).filter(Boolean);
   let need = 0, wrongTaps = 0;
   shuffle(seq.map((t, i) => ({ t, i }))).forEach(({ t }) => {
@@ -1319,11 +1327,11 @@ function renderWeld(q) {
       const sweepEl = ans.querySelector(".sweep");
       dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
     }, 550);
-    recordAnswer(itemId(item), wrongTaps === 0, { mode: "weld" });
+    recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });
     if (wrongTaps > 0) run.wrong++;
     q.esOnStage = true;
     const st = learnPeek(item);
-    setTimeout(() => resolveCorrect(item, q, { yoursNow: false, restored: false, strengthAfter: st ? Math.round(itemStrength(st)) : 0, miss: false }), 700);
+    setTimeout(() => resolveCorrect(q.ves ? { es: target, en: item.en } : item, q, { yoursNow: false, restored: false, strengthAfter: st ? Math.round(itemStrength(st)) : 0, miss: false }), 700);
   }
 }
 

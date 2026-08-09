@@ -222,3 +222,11 @@ The range (peaks + facet forest) is bottom register of the ONE field node, runne
 choreography; light falls on the mountain via the field's own defs; every shape a triangle plane.
 (bottom-landscape.html r11; device confirmation rides Code's first on-device build per the
 luminous law.)
+
+## 2026-08-05 — The depth session: five rulings
+- Paper minutes die: sizing by measured medians.
+- Machine lessons: 17 beats / ~4 real min (welds x4, two conveyor laps, the stretch, exchanges x4).
+- Practice chooser: merged smart default + By scenario + The machine shop; Recommended/Weakest
+  confusion resolved by merger.
+- Practice drills 5-8 items at depth (2-3 forms, climbing); the pile is paced.
+- The return door: one screen, two cases; strong case honors extra reps ("Run the lap").
