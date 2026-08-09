@@ -779,36 +779,10 @@ function practiceButton() {
   b.addEventListener("click", practiceChooser);
   return b;
 }
-/* Practice's Recommended = the stalest LEARNED lesson (weakest seen topic as fallback) —
-   never the next lesson: the action tile already owns "what's next", so the chooser
-   repeating it was pure duplication (Tom's ruling 2026-07-24). */
-function practiceRecommend() {
-  const FADE = (typeof RETENTION_FADE !== "undefined") ? RETENTION_FADE : 40;
-  let best = null;
-  DECK.stages.forEach(st => st.lessons.forEach(l => {
-    if (!lessonDone(l.id) || l.chain) return;
-    const learned = (l.items || []).filter(it => { const s = state.learn[it.id]; return s && s.exposures >= 1; });
-    if (learned.length < 3) return;
-    const avg = learned.reduce((a, it) => a + itemStrength(state.learn[it.id]), 0) / learned.length;
-    if (!best || avg < best.avg) best = { lesson: l, avg, items: learned };
-  }));
-  if (best) {
-    const fadingN = best.items.filter(it => itemStrength(state.learn[it.id]) < FADE).length;
-    return { title: `Review: ${best.lesson.title}`,
-      sub: fadingN ? `${fadingN} fading, your oldest weak spot` : `${Math.round(best.avg)}% strong, your weakest lesson`,
-      run: () => startReview(best.items) };
-  }
-  // topic fallback: the weakest category you've actually seen
-  const cats = (typeof coverageCats === "function") ? coverageCats() : {};
-  const seen = Object.keys(cats).filter(c => cats[c].seen > 0)
-    .sort((a, b) => (cats[a].credit / cats[a].total) - (cats[b].credit / cats[b].total));
-  if (seen.length) {
-    const c = seen[0], strong = Math.round((cats[c].credit / cats[c].total) * 100);
-    return { title: `Review: ${c}`, sub: `${strong}% strong, your weakest topic`,
-      run: () => { const its = itemsInCategory(c); if (its.length) startReview(its); } };
-  }
-  return null;
-}
+/* DEPTH RULING 3 (2026-08-05): Recommended and Weakest phrases MERGE. The lesson-slice vs
+   item-slice of nearly the same content was the confusion (Tom's catch); the smart default
+   IS the engine's pick, with one line saying what it picked and why. Three doors:
+   Practice (smart default) / By scenario / The machine shop. */
 function practiceChooser() {
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
   const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div>
@@ -820,11 +794,40 @@ function practiceChooser() {
     if (!disabled) b.addEventListener("click", () => { closeSheet(); run(); });
     opts.appendChild(b);
   };
-  const rec = practiceRecommend();
-  const weak = fadingItems().slice(0, 15).map(x => ITEM_INDEX[x.id]).filter(Boolean);
-  add("Recommended", rec ? rec.title + " · " + rec.sub : "Finish a lesson first", rec && rec.run, !rec);
-  add("By scenario", "Pick a category to drill", scenarioChooser);
-  add("Weakest phrases", weak.length ? `${weak.length} phrases need the most work` : "Nothing weak right now", () => startReview(weak), !weak.length);
+  const picked = (typeof _practicePick === "function") ? _practicePick(null) : [];
+  const line = (typeof practicePickLine === "function") ? practicePickLine(picked) : null;
+  add("Practice", line || "Finish a lesson first", () => startReview(), !picked.length);
+  add("By scenario", "Pick a category, drill it at depth", scenarioChooser);
+  const shops = machineShopLessons();
+  add("The machine shop", shops.length ? "One machine, drilled full" : "Meet a machine first", machineShopChooser, !shops.length);
+  document.body.appendChild(wrap);
+  requestAnimationFrame(() => wrap.classList.add("show"));
+  wrap.querySelector(".sheet-backdrop").addEventListener("click", closeSheet);
+}
+/* THE MACHINE SHOP door: machine lessons you have met, one per row; picking one runs the
+   full drill (conveyor lap + all welds + 3 exchanges) via startMachineShop. */
+function machineShopLessons() {
+  const out = [];
+  (DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
+    if (!l.frame) return;
+    if ((l.items || []).some(it => exposuresOf(it) >= 1)) out.push(l);
+  }));
+  return out;
+}
+function machineShopChooser() {
+  document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
+  const shops = machineShopLessons();
+  const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div>
+    <div class="sheet"><div class="sheet-grab"></div><div class="sheet-title">The machine shop</div>
+      <div class="practice-opts"></div></div></div>`);
+  const opts = wrap.querySelector(".practice-opts");
+  shops.forEach(l => {
+    const learned = (l.items || []).filter(it => exposuresOf(it) >= 1);
+    const avg = learned.length ? Math.round(learned.reduce((a, it) => a + itemStrength(state.learn[it.id] || {}), 0) / learned.length) : 0;
+    const b = el(`<button class="practice-opt"><div class="po-t">${l.frame}</div><div class="po-s">${l.title} · ${avg}% strong</div></button>`);
+    b.addEventListener("click", () => { closeSheet(); startMachineShop(l); });
+    opts.appendChild(b);
+  });
   document.body.appendChild(wrap);
   requestAnimationFrame(() => wrap.classList.add("show"));
   wrap.querySelector(".sheet-backdrop").addEventListener("click", closeSheet);

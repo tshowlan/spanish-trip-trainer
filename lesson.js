@@ -259,7 +259,7 @@ function composeSession(lesson) {
         replyPool = (donor && donor.replies) || [];
       }
       const reps = replyPool.length ? sample(replyPool, Math.min(4, replyPool.length)) : [];   // x4, drawn without same-lesson repeats (depth ruling 2)
-      reps.forEach(r => qs.push({ type: "exchange", reply: r, frame: lesson.frame, mlesson: lesson, cue: pick(cues), arc: true }));
+      reps.forEach(r => qs.push({ type: "exchange", reply: r, frame: lesson.frame, mlesson: lesson, cue: sample(cues, 1)[0], arc: true }));
       // the in-lesson machine encore (flow ruling 2026-08-03) RETIRES under depth ruling 2:
       // lap 2 + the stretch absorbed its job; the encore FORM lives on as the return door's lap
       qs.push(...closeReps(lesson));
@@ -348,28 +348,79 @@ function applyRhythm(qs) {
   return qs;
 }
 // pure-review session (Home "Review" entry / all lessons complete): mistakes first, then due
-function composeReview() {
-  state.sessionSeq = (state.sessionSeq || 0) + 1; save();             // §6 variety rule clock
-  // §6 lesson purity (2026-07-21): Practice owns ALL cross-lesson maintenance — recent
-  // misses lead (§5.2 warm-up), then the due backlog; cram front-loads safety-critical
-  // items here (moved out of lesson sessions with the rest of the review weave).
-  const mistakes = mistakesPool();
-  const due = dueForReview();
-  let seen = [...new Set([...mistakes, ...due])];
-  if (cramActive()) {
-    const crit = (ALL_ITEMS || []).filter(it => { const s = learnPeek(it); return s && s.exposures >= 1 && isCritical(it) && !seen.includes(it); });
-    seen = [...mistakes, ...crit, ...seen.filter(it => !mistakes.includes(it))];
+/* DEPTH RULING 4 (2026-08-05): a practice session takes the 5-8 items that most need work
+   and drills each with 2-3 CLIMBING forms (recognition round, scaffolded round, cold round -
+   the input climbs within the set; machines drill in their NATIVE forms). The 14x1 breadth
+   shape retires; the pile is PACED - a daily portion at depth, never purged; the basics
+   exemption holds (8/2-17). Old mistakes-first front-load folds into the scoring: a missed
+   item is weak AND overdue, so it surfaces on its own. */
+const PRACTICE_BASICS = new Set(["si", "no", "gracias", "por favor", "hola", "adios", "perdon", "de nada", "vale"]);
+function _practicePick(pool) {
+  const now = Date.now();
+  const cands = [];
+  for (const it of (pool && pool.length ? pool : (ALL_ITEMS || []))) {
+    const st = learnPeek(it); if (!st || !st.exposures) continue;
+    if (PRACTICE_BASICS.has(norm(it.es))) continue;              // basics never eat a depth slot
+    const strength = itemStrength(st);
+    const overdue = st.due ? Math.max(0, (now - new Date(st.due + "T00:00:00").getTime()) / 864e5) : 0;
+    const stakes = isCritical(it) ? 1.5 : 1;
+    cands.push({ it, st, strength, overdue, score: (1 + Math.min(overdue, 21)) * (1.2 - strength / 100) * stakes });
   }
-  const pool = (seen.length ? seen : dueForReview(0)).slice(0, 14);
-  const board = extractPairsBoard(pool);                              // §7.1 pairs: the review workhorse
-  const qs = applyRhythm(pool.map(it => reviewQuestion(it, pool)));
-  if (board) qs.splice(Math.min(1, qs.length), 0, board);
+  cands.sort((a, b) => b.score - a.score);
+  return cands.slice(0, Math.min(8, cands.length));
+}
+function _practiceForms(it, st) {
+  const strength = itemStrength(st);
+  const forms = [];
+  const frameParts = it.frame ? _frameParts(it.frame, it.es) : null;
+  if (frameParts) {                                              // machines drill in native forms
+    const shell = _enShell((ALL_ITEMS || []).filter(x => x.frame === it.frame));
+    const fen = _fillerEn(shell, it.en);
+    if (strength < 55) forms.push({ type: "listen_choice", item: it, pool: ALL_ITEMS });
+    if (fen) forms.push({ type: "weld", item: it, cue: { item: it, p: frameParts, fen }, arc: true });
+    forms.push({ type: chooseType(it, { prefer: "production" }) || "type_translation", item: it, pool: ALL_ITEMS });
+  } else {
+    if (strength < 55) forms.push({ type: chooseType(it, { prefer: "recognition" }), item: it, pool: ALL_ITEMS });
+    forms.push({ type: chooseType(it, { prefer: "production" }), item: it, pool: ALL_ITEMS });
+    forms.push({ type: _modeFeasible("type_translation", it) && strength >= 40 ? "type_translation" : (_modeFeasible("phrase_fill", it) ? "phrase_fill" : "type_translation"), item: it, pool: ALL_ITEMS });
+  }
+  return forms.slice(0, strength < 55 ? 3 : 2);
+}
+function practicePickLine(picked) {
+  if (!picked || !picked.length) return null;
+  const fades = picked.filter(p => p.overdue > 0).length;
+  const machines = picked.filter(p => p.it.frame).length;
+  const bits = [];
+  if (fades) bits.push(`${fades} fading`);
+  if (machines) bits.push(`${machines} machine phrase${machines === 1 ? "" : "s"}`);
+  if (!bits.length) bits.push("your weakest");
+  return `${picked.length} items: ${bits.join(" + ")}`;
+}
+function _composeDepth(pool) {
+  state.sessionSeq = (state.sessionSeq || 0) + 1; save();
+  const picked = _practicePick(pool);
+  if (!picked.length) return [];
+  state.practiceLine = practicePickLine(picked);
+  const perItem = picked.map(p => _practiceForms(p.it, p.st));
+  const qs = [];                                                 // round-robin: the whole set climbs together
+  for (let round = 0; ; round++) {
+    let added = false;
+    for (const forms of perItem) if (forms[round]) { qs.push(forms[round]); added = true; }
+    if (!added) break;
+  }
   return qs;
 }
+function composeReview() { return _composeDepth(null); }
+
 
 let run = null;
 function startLesson(lesson) {
   if (lesson.chain) return renderChain(lesson);   // M4 boss lesson — a chat-style dialogue (§7.5)
+  // THE RETURN DOOR (depth ruling 5): a completed lesson greets before it drills
+  if (lessonDone(lesson.id)) return renderReturnDoor(lesson);
+  return _startLessonProper(lesson);
+}
+function _startLessonProper(lesson) {
   // Compose FIRST (so the primer's guess item is still "new" here and stays in the session),
   // then run the primer on a first pass before the lesson proper. Replays/reviews skip straight in.
   run = { lesson, qs: composeSession(lesson), idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
@@ -525,10 +576,100 @@ function renderPrimer(lesson, onDone) {
 }
 // startReview() → due-item session; startReview(items) → focused review of those items (e.g. mistakes)
 function startReview(items) {
-  const qs = items && items.length ? items.map(it => reviewQuestion(it, items)) : composeReview();
+  const qs = _composeDepth(items && items.length ? items : null);   // depth ruling 4: 5-8 at depth, from the pool or the world
   if (!qs.length) { toast("Nothing to review yet. Finish a lesson first."); return; }
   run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
+}
+
+/* THE MACHINE SHOP (depth ruling 3, door 3): ONE machine drilled full - conveyor lap +
+   all welds + 3 exchanges (~4 min). A practice form, so no close (the close is the
+   lesson's ritual) and review-style bookkeeping. */
+function startMachineShop(lesson) {
+  const items = lesson.items || [];
+  const shell = _enShell(items);
+  const cues = items.map(it => ({ item: it, p: _frameParts(lesson.frame, it.es), fen: _fillerEn(shell, it.en) }))
+    .filter(x => x.p && x.p.filler.trim() && x.fen);
+  if (cues.length < 2) { toast("Meet this machine in its lesson first."); return; }
+  const qs = [{ type: "machine_drill", forge: false, frame: lesson.frame, mlesson: lesson, cues: shuffle(cues.slice()), all: cues, arc: true }];
+  cues.forEach(c => qs.push({ type: "weld", item: c.item, cue: c, arc: true }));
+  let replyPool = lesson.replies || [];
+  if (!replyPool.length && /^(quiero|necesito)/.test(lesson.frame)) {
+    const donor = _machineLessonOf("¿me puede traer ___?");
+    replyPool = (donor && donor.replies) || [];
+  }
+  sample(replyPool, Math.min(3, replyPool.length)).forEach(r =>
+    qs.push({ type: "exchange", reply: r, frame: lesson.frame, mlesson: lesson, cue: sample(cues, 1)[0], arc: true }));
+  state.sessionSeq = (state.sessionSeq || 0) + 1; save();
+  run = { lesson: { id: "__shop__", topic: lesson.topic, items }, qs, idx: 0, wrong: 0, restored: 0,
+    answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
+  renderQuestion();
+}
+
+/* THE LAP (depth ruling 5, the strong return): every item of the lesson once, production
+   form, brisk - the encore form re-homed at the return door. Review bookkeeping. */
+function startLap(lesson) {
+  const items = (lesson.items || []).filter(it => exposuresOf(it) >= 1);
+  if (!items.length) { toast("Nothing to lap yet."); return; }
+  const qs = shuffle(items.map(it => {
+    const fp = it.frame ? _frameParts(it.frame, it.es) : null;
+    if (fp) {
+      const shell = _enShell((lesson.items || []).filter(x => x.frame === it.frame));
+      const fen = _fillerEn(shell, it.en);
+      if (fen) return { type: "weld", item: it, cue: { item: it, p: fp, fen }, arc: true };
+    }
+    const t = ["build", "phrase_fill", "type_translation"].find(m => _modeFeasible(m, it)) || "type_translation";
+    return { type: t, item: it, pool: lesson.items };
+  }));
+  state.sessionSeq = (state.sessionSeq || 0) + 1; save();
+  run = { lesson: { id: "__lap__", topic: lesson.topic, items: lesson.items }, qs, idx: 0, wrong: 0, restored: 0,
+    answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
+  renderQuestion();
+}
+
+/* THE RETURN DOOR (depth ruling 5, return-door.html r2): one screen on re-entering a
+   completed lesson - the record line, then EITHER the fade report ("Bring them back" ->
+   the replay drill) or the hat-tip ("Run the lap" -> the encore form). X exits. */
+const _NUMWORD = ["zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen"];
+function renderReturnDoor(lesson) {
+  const app = $("#app"); clearFooter(); hideTabbar(); app.innerHTML = "";
+  document.body.classList.add("in-runner");
+  const wrap = el(`<div class="runner ${sceneClass(lesson.topic)}"></div>`);
+  wrap.appendChild(facetField());
+  wrap.appendChild(el(`<div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button></div>`));
+  const body = el(`<div id="qbody" class="qenter"></div>`);
+  wrap.appendChild(body);
+  app.appendChild(wrap);
+  wrap.querySelector("#quit").addEventListener("click", () => renderLearn());
+  const rec = state.lessons[lesson.id] || {};
+  const when = rec.at ? new Date(rec.at).toLocaleDateString("en-US", { month: "short", day: "numeric" }).toUpperCase() : "";
+  const items = (lesson.items || []).filter(it => exposuresOf(it) >= 1);
+  const fading = items.filter(it => { const st = learnPeek(it); return st && itemStrength(st) < RETENTION_FADE; });
+  const total = items.length;
+  const label = `COMPLETED${when ? " " + when : ""} · ${total} PHRASE${total === 1 ? "" : "S"}`;
+  const word = n => (_NUMWORD[n] || String(n));
+  if (fading.length) {
+    body.appendChild(el(`<div class="qtype">Return · ${lesson.title || lesson.id}</div>`));
+    body.appendChild(el(`<div class="present-card">
+      <div class="present-label">${label}</div>
+      <div class="present-es" style="font-size:21px;">${word(fading.length)} piece${fading.length === 1 ? " is" : "s are"} slipping.</div>
+      <div class="present-en" style="margin-top:10px;">${fading.slice(0, 3).map(it => it.es).join(" · ")}</div>
+      <div class="present-anchor" style="margin-top:12px;"><span class="lead">The record:</span> you built this once. Bring them back.</div>
+    </div>`));
+    const grown = el(`<div class="res-grown show"><button class="btn res-cont">Bring them back</button></div>`);
+    grown.querySelector(".res-cont").addEventListener("click", () => _startLessonProper(lesson));
+    body.appendChild(grown);
+  } else {
+    body.appendChild(el(`<div class="qtype">Return · ${lesson.title || lesson.id}</div>`));
+    body.appendChild(el(`<div class="present-card">
+      <div class="present-label">${label}</div>
+      <div class="present-es" style="font-size:21px;">All ${word(total).toLowerCase()}, still holding.</div>
+      <div class="present-anchor" style="margin-top:12px;"><span class="lead">The record:</span> nothing needs rescuing. Extra reps today are what make it automatic in Spain.</div>
+    </div>`));
+    const grown = el(`<div class="res-grown show"><button class="btn res-cont">Run the lap</button></div>`);
+    grown.querySelector(".res-cont").addEventListener("click", () => startLap(lesson));
+    body.appendChild(grown);
+  }
 }
 
 /* ----- speed round (M4, §6.4/§7.6): 60s timed match over phrases you already own. Advances nothing —

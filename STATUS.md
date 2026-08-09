@@ -15,6 +15,31 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-09 — DEPTH SESSION phases 2+3: practice at depth + the return door (v235)
+- Ruling 4 live: composeReview/startReview replaced by the depth composer. A practice session
+  takes the 5-8 items scoring highest on (overdue x weakness x stakes), drills each with 2-3
+  CLIMBING forms served round-robin (recognition round -> scaffolded round -> cold round;
+  machines drill in native weld forms). Basics exemption (si/no/gracias/...) holds; the pile
+  is paced, never purged; mistakes-first front-load folds into the scoring.
+- Ruling 3 live: the practice chooser is three doors. "Practice" is the merged smart default
+  with the engine's one-line pick summary ("8 items: 8 fading + 2 machine phrases");
+  practiceRecommend retired. "By scenario" now drills its category at depth (rides the same
+  composer). "The machine shop" lists met machines by frame; picking one runs conveyor lap +
+  ALL welds + 3 exchanges (~4 min, review bookkeeping, no close).
+- Ruling 5 live: THE RETURN DOOR. startLesson on a done, non-chain lesson renders one screen
+  from design/return-door.html r2 grammar. FADING (any item under RETENTION_FADE): record
+  line "COMPLETED MAY 21 · 4 PHRASES", "Three pieces are slipping.", up to 3 named, CTA
+  "Bring them back" -> the replay drill (_startLessonProper). STRONG: "All four, still
+  holding." + the extra-reps line, CTA "Run the lap" -> startLap (every item once,
+  production-native, shuffled). X exits to Learn. No secondary buttons.
+- Harness: new "Depth session (in build)" group (practice set / both door cases / the shop)
+  with fabricated-SRS seeders; INTRO LADDER story now clears the lesson-done record so the
+  door doesn't intercept it. Sprint 2 group relabeled (shipped).
+- Verified in-browser: 8x3 climbing composition + summary line; both door cases match the
+  artifact text verbatim; shop = drill + weld x4 + exchange x3; conformance lint 0 failing.
+- Next: Test Lab passes on real fabricated profiles; telemetry re-read after a week of new
+  sizes; Mexico pass.
+
 ## 2026-08-05 — DEPTH SESSION phase 1: machine lessons at ~4 real minutes (v234)
 - Ruling 2 live: machine lessons recompose to drill(forge+lap1) -> WELD x4 (all fillers) ->
   conveyor lap 2 (shuffled) -> THE STRETCH x2 (authored variants built weld-style: "Me trae

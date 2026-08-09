@@ -146,6 +146,24 @@
 
       const screen = (fn, tab) => () => { clean(); renderTopbar(); fn(); showTabbar(tab); };
       // seed N overdue items so the Practice row shows a specific escalation state
+
+      // depth-session seeders: fabricated SRS states with real strength math
+      const _dstr = n => { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); };
+      function _seedWeak(id) { state.learn[id] = { exposures: 4, streak: 0, lapses: 1, interval: 2, lastSeen: _dstr(6), lastCorrect: _dstr(6), due: _dstr(3) }; }
+      function _seedStrong(id) { state.learn[id] = { exposures: 10, streak: 5, lapses: 0, interval: 30, lastSeen: _dstr(1), lastCorrect: _dstr(1), due: _dstr(-20), axes: { production: 2 } }; }
+      function seedLesson(l, mode) {
+        state.learn = state.learn || {}; state.lessons = state.lessons || {};
+        (l.items || []).forEach((it, i) => (mode === "fading" && i < 3 ? _seedWeak : _seedStrong)(it.id));
+        state.lessons[l.id] = { stars: 3, at: new Date(Date.now() - 80 * 864e5).toISOString() };
+      }
+      function seedDepthMix() {
+        state.learn = state.learn || {}; state.lessons = state.lessons || {};
+        const ls = DECK.stages.flatMap(st => st.lessons).filter(l => !l.chain).slice(0, 4);
+        ls.forEach((l, li) => {
+          (l.items || []).forEach((it, i) => ((li + i) % 3 === 0 ? _seedWeak : _seedStrong)(it.id));
+          state.lessons[l.id] = { stars: 3, at: new Date(Date.now() - 30 * 864e5).toISOString() };
+        });
+      }
       function seedDue(n, fading) {
         state.learn = {}; state.practiceProm = "quiet";
         DECK.stages.flatMap(s => s.lessons).flatMap(l => l.items).slice(0, n).forEach(it => {
@@ -179,6 +197,28 @@
         renderQuestion();
       }
       const STORIES = {
+        // DEPTH SESSION stories (2026-08-05): seed learn states, then run the real doors
+        "Depth — Practice set (5-8 items, climbing forms)": () => {
+          clean(); seedDepthMix(); startReview();
+        },
+        "Depth — Return door (fading: Bring them back)": () => {
+          clean();
+          const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
+          seedLesson(m, "fading");
+          startLesson(m);
+        },
+        "Depth — Return door (strong: Run the lap)": () => {
+          clean();
+          const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
+          seedLesson(m, "strong");
+          startLesson(m);
+        },
+        "Depth — The machine shop (one machine, full)": () => {
+          clean();
+          const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
+          seedLesson(m, "fading");
+          startMachineShop(m);
+        },
         "Home — returning user": screen(renderHome, "home"),
         // §3.9 action stack: quiet → due badge → urgent field + one-time arrival breath
         "Home — practice quiet (1 due)": () => { clean(); seedDue(1); renderTopbar(); renderHome(); showTabbar("home"); },
@@ -223,6 +263,7 @@
           const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
           state.learn = state.learn || {};
           m.items.forEach(it => { delete state.learn[it.id]; });
+          delete state.lessons[m.id];   // the return door greets DONE lessons; this story wants the intro arc
           startLesson(m);
         },
         "Sprint 2 — Grasp (word-scale MC, 3 options)": () => {
@@ -393,14 +434,15 @@
       // wire the picker — grouped (the flat list outgrew itself at ~40 stories, Tom 2026-07-29).
       // Grouping is by name prefix so new stories file themselves; unknown prefixes land in "Other".
       const GROUP_OF = name =>
-        /^Sprint 2/.test(name) ? "Sprint 2 (in build)" :
+        /^Depth/.test(name) ? "Depth session (in build)" :
+        /^Sprint 2/.test(name) ? "Sprint 2 (shipped)" :
         /^(Home|First score|Arrival|Learn|Progress|Profile)/.test(name) ? "Screens" :
         /^(Present card|Correction)/.test(name) ? "Teach: present + correction" :
         /letter rungs/.test(name) ? "Exercises: letter rungs" :
         /listen|sound choice|audio cloze|ear build/.test(name) ? "Exercises: listening" :
         /^Exercise/.test(name) ? "Exercises: production + recognition" :
         /^Session end/.test(name) ? "Session end" : "Other";
-      const GROUP_ORDER = ["Sprint 2 (in build)", "Screens", "Teach: present + correction",
+      const GROUP_ORDER = ["Depth session (in build)", "Sprint 2 (shipped)", "Screens", "Teach: present + correction",
         "Exercises: production + recognition", "Exercises: listening", "Exercises: letter rungs",
         "Session end", "Other"];
       const sel = document.getElementById("hstory");
