@@ -396,6 +396,9 @@ doc narrates, this file states only the laws.
   the register?" — the ground never pumps between reps).
 - 2026-07-24 — "Can't tell, skip" (listen & type's per-rep skip): the whisper escape covers
   modality, the honest miss + rung-down covers difficulty; a skip denied the engine its signal.
+- 2026-08-06 — The in-lesson machine encore (flow ruling 8/03) retires under depth ruling 2:
+  lap 2 + the stretch absorbed its function; the encore FORM re-homes at the return door's
+  "Run the lap." Superseded, not deleted.
 
 - ~~"Gold buttons carry DARK glyphs; flat cards carry GOLD glyphs"~~ — superseded 2026-07-20 by
   the high-contrast glyph law (the original described artifact stand-ins, not the built truth).
