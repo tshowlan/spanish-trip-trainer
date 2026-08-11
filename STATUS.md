@@ -15,6 +15,18 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-10 — Tom's batch triaged; two quick fixes (v236)
+- QUICK FIX 8/10-6: out-of-lesson welds (depth sets, the shop, the lap) cue the full English
+  sentence ("Say it in Spanish: I need a taxi") - the bare filler left the machine a guess.
+  Final register still belongs to chat's parked weld-cue item.
+- QUICK FIX 8/10-8: the review action tile leads with the paced portion ("Bring back today's
+  8"), the pile count demoted to the sub line.
+- Parked for CHAT (backlog 8/10): voice session (copy reads too Claude), return door r3
+  (whisper not headline, scene pictures, cheeky strength-calibrated mess-up lines), letter-rungs
+  reform ESCALATED (remove bare letter fills, word-in-sentence always, cognates exposed not
+  drilled), prompt hierarchy (EN first), picture-selection exercise.
+- BOARD CORRECTION: Mexico is catch-up-only; Spain finalization is the track.
+
 ## 2026-08-09 — DEPTH SESSION phases 2+3: practice at depth + the return door (v235)
 - Ruling 4 live: composeReview/startReview replaced by the depth composer. A practice session
   takes the 5-8 items scoring highest on (overdue x weakness x stakes), drills each with 2-3

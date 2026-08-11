@@ -1419,8 +1419,9 @@ function renderWeld(q) {
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">${q.ves ? "The stretch" : "The weld"}</div>`));
   const cueBlock = el(`<div class="conv-cuewrap"></div>`);
-  cueBlock.appendChild(el(`<div class="cue-label">${q.ves ? "Another way to ask for" : "Ask for"}</div>`));
-  cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${q.cue.fen}</div>`));
+  const outOfLesson = run && run.review;   // depth set / shop / lap: no machine established on screen
+  cueBlock.appendChild(el(`<div class="cue-label">${q.ves ? "Another way to ask for" : (outOfLesson ? "Say it in Spanish" : "Ask for")}</div>`));
+  cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${outOfLesson && !q.ves ? q.item.en : q.cue.fen}</div>`));
   body.appendChild(cueBlock);
   const stage = el(`<div class="machine-stage"></div>`);
   if (_inputClimbed(item)) {

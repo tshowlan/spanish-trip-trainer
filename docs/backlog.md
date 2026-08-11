@@ -235,7 +235,45 @@ wordmark (was floating over Continue).
   formula on fabricated dense cadence; the 12 likely an earlier denser Apply. Not a bug; copy
   fixed (above).
 
-## Standing board (unchanged, slots between sprints at Tom's call)
+## Tom's notes 2026-08-10 — triaged
 
-Mexico pack session · Progress tab depth · session-end stamp cut · Progress/Profile tabtitle
-deltas · optional Supabase server-merge hardening.
+CODE quick fixes SHIPPED v236: practice/shop/lap welds now cue the FULL English sentence
+("Say it in Spanish: I need a taxi") - out of the lesson no machine is established, so the
+bare filler left the frame a guess (8/10-6) · the review action tile leads with the paced
+portion ("Bring back today's 8 · 34 in the queue, a set a day works it down"), never the raw
+pile count (8/10-8).
+
+- [CHAT · voice session, NEW] Copy tone reads "too Claude" overall; specific offenders Tom
+  spotted: "The single metric is X" and "this is your own" (exact screens TBD, Tom to
+  screenshot when they recur). Wants a defined app voice; ties to the original ordering-humor
+  register (8/10-1, 8/10-2).
+- [CHAT · return door r3, NEW] The return door needs a rethink beyond r2 (8/10-3): too busy at
+  first glance; "two pieces slipping" should be a WHISPER, not the headline; drop "you built
+  this once. Bring them back" in favor of the app's cheeky register - machine title slide
+  ("your bring-me machine"), a scene photo to place you in the moment, then a real-world
+  mess-up line calibrated to strength ("Smart to review now, you almost ordered a chicken
+  instead of a croissant"). Build a library of these per strength case + define how we speak
+  to each case. Pictures TBD.
+- [CHAT · letter-rungs bundle, ESCALATED] 8/10-4 + 8/10-5 fold into the parked letter-rungs
+  item and raise it: REMOVE bare letter-fill exercises (single-letter "t_axi" fills and
+  naked "complete the word" with no sentence around it); replace with cold production or
+  fill-the-word-in-the-sentence. Cognates like "taxi" should appear inside Spanish sentences
+  for exposure but never be drilled solo. Also: when the EN shows the full sentence, showing
+  only the bare word wastes exposure (habitacion screenshot).
+- [CHAT · joins letter-rungs/chrome, NEW] Prompt hierarchy: the eye lands on the Spanish to
+  fill before reading the EN meaning, so you can pattern-match letters without recalling
+  meaning; the translation the user should read FIRST needs the visual weight (8/10-7).
+- [CHAT · NEW] Picture-selection exercise (choose the image) - needs a free icon/illustration
+  source; ties into the return-door pictures thinking (8/10-9).
+
+BOARD CORRECTION (Tom, 8/10): Mexico is NOT next. Spain finalization is the track; Mexico
+gets touched only when a structural change makes catch-up significant. Chat's board should
+read: Spain polish (voice, return door r3, letter rungs, exercise chrome) > Progress depth >
+session-end stamp cut; Mexico parked as catch-up-only.
+
+## Standing board (corrected 2026-08-10, slots between sprints at Tom's call)
+
+Spain finalization first (voice session · return door r3 · letter-rungs reform · exercise
+chrome) · Progress tab depth · session-end stamp cut · Progress/Profile tabtitle deltas ·
+optional Supabase server-merge hardening. Mexico: catch-up only on significant structural
+change, not a scheduled session.

@@ -722,8 +722,10 @@ function heroState() {
     const fad = fadingItems().filter(x => x.strength < 55).slice(0, 12).map(x => ITEM_INDEX[x.id]).filter(Boolean);
     if (fad.length) return { kind: "review", title: `${dv.fading} phrases are fading, bring them back`, sub: "Point today at review, not new content", run: () => startReview(fad) };
   }
-  if (backlog.length >= 15)
-    return { kind: "review", title: `Review ${backlog.length} due items`, sub: "Quickest way to lift Retention", run: () => startReview(backlog) };
+  if (backlog.length >= 15) {
+    const portion = Math.min(8, backlog.length);   // mirrors the depth composer's set size
+    return { kind: "review", title: `Bring back today's ${portion}`, sub: `${backlog.length} in the queue, a set a day works it down`, run: () => startReview(backlog) };
+  }
   if (lastDays !== null && lastDays >= 2 && backlog.length)
     return { kind: "momentum", title: "Momentum's dipping, 3 minutes brings it back", run: () => startReview(backlog.slice(0, 8)) };
   if (next)   // §7.3 coverage problem: retention solid but too little covered → new content, said plainly
