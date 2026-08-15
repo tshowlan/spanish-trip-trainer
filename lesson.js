@@ -2573,8 +2573,10 @@ function resolveCorrect(item, q, info) {
   const kicker = kick === "yours" ? `<div class="res-yours">YOURS NOW</div>`
     : kick === "restored" ? `<div class="res-kick"><svg class="kring" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6.5" fill="none" stroke="var(--ring-track, var(--bg-elevated))" stroke-width="2.5"/><circle class="kfg" cx="8.5" cy="8.5" r="6.5" fill="none" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 8.5 8.5)"/></svg><span class="res-yours res-restored">RESTORED</span></div>`
     : "";
+  // YOURS NOW rides silent (Tom, 2026-08-15): the kicker is the whole message, the
+  // explaining sentence dignified the moment (voice law 4). RESTORED keeps its note: it
+  // carries information the kicker alone does not (that the item had faded).
   const note = (q && q.resNote) ? `<div class="res-note">${q.resNote}</div>`
-    : kick === "yours" ? `<div class="res-note">You typed it cold. That is the strongest kind of rep.</div>`
     : kick === "restored" ? `<div class="res-note">This one was fading. You brought it back.</div>` : "";
   // no-repeat (§3.7): the grown carries only what's MISSING from the screen. When the
   // exercise's own sentence completed in place (fused row, filled blank, typed close),

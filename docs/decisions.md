@@ -232,3 +232,5 @@ luminous law.)
 - The return door: one screen, two cases; strong case honors extra reps ("Run the lap").
 
 - 2026-08-11 — THE VOICE ruled: direct, literal, stakes-funny. Five laws + the order test (constitution); calibration round 2 added the three moves (specific beats severe, the contrast move, affection allowed) and the scene clarification. Rewrite list applied verbatim; the mess-up register and library feed return door r3; safety content never jokes.
+- 2026-08-11 — Dial factor-lines name the factor plainly; number-lines carry the number. (Recency deviation approved 2026-08-15.)
+- 2026-08-15 — YOURS NOW rides silent: the kicker alone, no explaining sentence (Tom's cut, voice law 4).

@@ -15,6 +15,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-15 — Voice closeout (v238)
+- Chat approved the Recency deviation; decisions.md carries the factor-line/number-line rule.
+- Tom's cut: "You typed it cold. That is the strongest kind of rep." removed - YOURS NOW rides
+  silent, the kicker is the whole message. RESTORED keeps its note (informative, not dignifying).
+- Voice session closed on both sides. Next Spain-track session: return door r3.
+
 ## 2026-08-15 — VOICE SESSION applied (v237)
 - THE VOICE merged to the constitution: five laws (literal, full sentences, stakes humor, serve
   don't dignify, quiet dials) + the order test + the safety carve-out + the three moves; "filling"
