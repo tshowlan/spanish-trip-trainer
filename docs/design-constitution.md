@@ -234,6 +234,47 @@ doc narrates, this file states only the laws.
 - **Recommends, never threatens** (the standing copy guardrail); no capability claims about the
   learner's current state in primers.
 
+## The voice (minted by the voice session, 2026-08-11)
+
+**The register in one line: direct, utilitarian, wry. The humor is in the situation, never in the phrasing.**
+
+1. **THE LITERAL LAW.** Every word means exactly what it says. No metaphors, euphemisms, or
+   figurative dress ("the jacket off", "the polish", "before the tapas land"). If a word is not
+   literally true, cut it. The wit comes from real stakes plainly named, not from clever wrapping.
+   Clarified at calibration (Tom's 1918 door handle): WORDS stay literal, but the SCENE may
+   exaggerate for comedy as long as it stays picturable.
+2. **FULL SENTENCES OR PLAIN IMPERATIVES.** No reverent fragments ("No text. Just your ear." /
+   "All yours.") and no comma-splice appositives ("One machine, drilled full"). If a line drops
+   its verb to sound weighty, it fails.
+3. **THE STAKES LAW (where humor lives).** Jokes are concrete travel outcomes: the wrong dish,
+   the wrong door, the change that comes back short. If a joke would work in any app, it dies.
+   "You almost ordered a chicken instead of a croissant" is the model.
+4. **SERVE, DON'T DIGNIFY.** A line must tell the user something useful: what to do, what
+   happens, what it costs, what it buys. Lines that exist to make a moment feel meaningful die
+   ("This one travels with you." / "It's on your profile now, for good.").
+5. **THE QUIET DIALS.** Instruments speak in numbers and mechanics, no personality ("One session
+   adds about 4."). The humor lives in teaching moments only: notes, primers, the return door,
+   the practice framing.
+
+**THE ORDER TEST (the checkable gate, sibling of the decay test).** For any rendered line ask:
+(a) is every word literal? (b) is it a full sentence or plain imperative? (c) does it inform, or
+only dignify? (d) if it is funny, is the joke a real Spain outcome? Any failure blocks the line.
+
+**The carve-out:** allergy, medical, and emergency content NEVER gets jokes. Straight talk only
+("Sin gluten was fading. That one is not optional.").
+
+**The three moves** (Tom's calibration, in strength order, for writing new stakes lines):
+1. **SPECIFIC BEATS SEVERE**: tiny stakes are fine if the image is vivid ("manhandling a door
+   handle from 1918" beats any lecture about embarrassment).
+2. **THE CONTRAST MOVE**: what you'd get vs what you wanted ("a tour of the train depot, not the
+   Picasso exhibit").
+3. **AFFECTION IS ALLOWED**: some lines celebrate what the phrase buys, not what missing it costs
+   ("what's lunch without a second round?").
+
+**Retired vocabulary:** "filling" (euphemism, Tom 2026-08-11) — the variation label is "Swap one
+part"; the machine framing is "One frame. Many asks." The metaphor-vocabulary law's word list
+updates: machines, frames, slots, patterns, asks.
+
 ## Replies (heard-only content, minted with the exchange reply-sets, 2026-07-28)
 
 - **Replies are heard-only:** never production targets, never SRS items, no homes. The

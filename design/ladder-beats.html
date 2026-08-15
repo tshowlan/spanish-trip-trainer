@@ -352,7 +352,7 @@
       }
       if (mode === 'fresh') setTimeout(() => { const h = stage.querySelector('.ac-speaker'); if (h) pulse(h); }, 350);
     } else {
-      document.getElementById('prompt').textContent = 'Same frame, new filling';
+      document.getElementById('prompt').textContent = 'Swap one part';
       const done = s.includes('done');
       stage.innerHTML = `
         <div class="cue-label">Make it</div>

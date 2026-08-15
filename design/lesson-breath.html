@@ -365,7 +365,7 @@
           <div class="tile" onclick="take(this,3)">leche</div>
           <div class="tile" onclick="take(this,2)">con</div>
         </div>` },
-    { tag:'VARIATION · 4 of 10', prompt:'Same frame, new filling: a coffee with sugar', html: () => `
+    { tag:'VARIATION · 4 of 10', prompt:'Swap one part: a coffee with sugar', html: () => `
         <div class="frame-mount">Un café con <span class="slot" id="slot"><span class="dashes">– – –</span></span></div>
         <div class="tray">
           <div class="tile" onclick="fillSlot(this,'azúcar',true)">azúcar</div>
@@ -379,7 +379,7 @@
         <div class="es-big" style="font-size:23px;">¿Me puede traer ___?</div>
         <div class="en-sub">Can you bring me ___?</div>
         <div style="margin-bottom:12px;">${ac}</div>
-        <div class="prompt">One frame. Many fillings. You are about to operate it.</div>
+        <div class="prompt">One frame. Many asks. You are about to operate it.</div>
         ${grown()}` , auto:true },
     { tag:'THE CONVEYOR · 7 of 10', prompt:'Fill the slot. Three orders coming.', html: () => `
         <div class="convdots" id="dots"><i class="now"></i><i></i><i></i></div>

@@ -654,7 +654,7 @@ function renderReturnDoor(lesson) {
       <div class="present-label">${label}</div>
       <div class="present-es" style="font-size:21px;">${word(fading.length)} piece${fading.length === 1 ? " is" : "s are"} slipping.</div>
       <div class="present-en" style="margin-top:10px;">${fading.slice(0, 3).map(it => it.es).join(" · ")}</div>
-      <div class="present-anchor" style="margin-top:12px;"><span class="lead">The record:</span> you built this once. Bring them back.</div>
+      <div class="present-anchor" style="margin-top:12px;">Smart to catch these now.</div>
     </div>`));
     const grown = el(`<div class="res-grown show"><button class="btn res-cont">Bring them back</button></div>`);
     grown.querySelector(".res-cont").addEventListener("click", () => _startLessonProper(lesson));
@@ -664,7 +664,7 @@ function renderReturnDoor(lesson) {
     body.appendChild(el(`<div class="present-card">
       <div class="present-label">${label}</div>
       <div class="present-es" style="font-size:21px;">All ${word(total).toLowerCase()}, still holding.</div>
-      <div class="present-anchor" style="margin-top:12px;"><span class="lead">The record:</span> nothing needs rescuing. Extra reps today are what make it automatic in Spain.</div>
+      <div class="present-anchor" style="margin-top:12px;">Nothing needs rescuing. Extra reps today make it automatic in Spain.</div>
     </div>`));
     const grown = el(`<div class="res-grown show"><button class="btn res-cont">Run the lap</button></div>`);
     grown.querySelector(".res-cont").addEventListener("click", () => startLap(lesson));
@@ -732,7 +732,7 @@ function renderSpeedRound(pool) {
     app.appendChild(el(`<div class="complete">
       <h2>Speed round</h2>
       <div class="scorebar"><div class="score"><div class="n">${matched}</div><div class="l">pairs matched</div></div></div>
-      <div class="reward">Pure practice, nothing on the line, just reps that keep your phrases sharp.</div>
+      <div class="reward">Nothing is scored here. These reps keep your phrases sharp.</div>
       <button class="btn accent" id="again">Go again</button><div style="height:10px"></div>
       <button class="btn grey" id="done">Done</button></div>`));
     $("#again").addEventListener("click", startSpeedRound);
@@ -822,7 +822,7 @@ function renderQuestion() {
       ? (["build", "word_fill", "phrase_fill"].find(m => _modeFeasible(m, q.item)) || "mc_es2en")
       : chooseType(q.item, { prefer: "production" });
   }
-  if (q.encoreFirst) $("#qbody").appendChild(el(`<div class="retry-chip lap-chip">The lap: everything from today, once, quick.</div>`));
+  if (q.encoreFirst) $("#qbody").appendChild(el(`<div class="retry-chip lap-chip">The lap: today's phrases, once each, fast.</div>`));
   ({ present: renderPresent, build: renderBuild, mc_es2en: renderMC,
      grasp: renderGrasp, variation: renderVariation,
      machine_drill: renderMachineDrill, exchange: renderExchange, weld: renderWeld, stretch: renderWeld,
@@ -1024,7 +1024,7 @@ function presentEs(item) {
 function coldEffortNote(body) {
   if (state.effortColdShown) return;
   state.effortColdShown = true; save();
-  body.appendChild(el(`<div class="effort-line">${icon('pencil', 16)} Typing it cold is what makes it stick. This is the rep that counts.</div>`));
+  body.appendChild(el(`<div class="effort-line">${icon('pencil', 16)} Typing it cold is what makes it stick.</div>`));
 }
 // meaning-pick only (§7.0, 2026-07-20): the shown/heard phrase is es, the options are ENGLISH.
 // The en→es direction (es-phrase options) was phrase-MC and is retired.
@@ -1183,12 +1183,12 @@ function renderGrasp(q) {
   body.appendChild(mcChoices(options, q.wordEn, item));           // grades the REAL item, mode "grasp"
 }
 
-/* ----- the Variation (Sprint 2 ruling 3, canvas beat 4): same frame, new filling.
+/* ----- the Variation (Sprint 2 ruling 3, canvas beat 4): same frame, swap one part.
    Ungraded scaffold — the correct tile settles the slot (exposure only), a wrong tile
    recedes; the pattern-feel rep, never an achievement. ----- */
 function renderVariation(q) {
   const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">Same frame, new filling</div>`));
+  body.appendChild(el(`<div class="qtype">Swap one part</div>`));
   // THE CUE GRAMMAR (ladder-beats r1): micro-caps label + the meaning at content scale —
   // the cue is the en-side of the rep, never chrome. The conveyor's cue adopts this too.
   body.appendChild(el(`<div class="cue-label">Make it</div>`));
@@ -2039,7 +2039,7 @@ function renderPairs(q) {
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
     const grown = el(`<div class="res-grown pairs-grown">
       ${clean ? `<div class="pairs-tick">${clean} stronger</div>` : ""}
-      <div class="pairs-allset">Four sounds, four meanings, four spellings. All yours.</div>
+      <div class="pairs-allset">Match the four sounds to their meanings and spellings.</div>
       <button class="btn res-cont">Continue</button>
     </div>`);
     grown.querySelector(".res-cont").addEventListener("click", () => slideOut(next));
@@ -2249,7 +2249,7 @@ function renderEarBuild(q) {
   const distractors = _earDistractors(item, dCount);
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Build what you hear</div>`));
-  const row = el(`<div class="bigspk"><span class="ac-mount"></span><span class="audio-hint">No text. Just your ear.</span></div>`);
+  const row = el(`<div class="bigspk"><span class="ac-mount"></span><span class="audio-hint">This one is listening only.</span></div>`);
   const play = audioControl(() => speak(item.es));
   row.querySelector(".ac-mount").replaceWith(play);
   body.appendChild(row);
@@ -2574,7 +2574,7 @@ function resolveCorrect(item, q, info) {
     : kick === "restored" ? `<div class="res-kick"><svg class="kring" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6.5" fill="none" stroke="var(--ring-track, var(--bg-elevated))" stroke-width="2.5"/><circle class="kfg" cx="8.5" cy="8.5" r="6.5" fill="none" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 8.5 8.5)"/></svg><span class="res-yours res-restored">RESTORED</span></div>`
     : "";
   const note = (q && q.resNote) ? `<div class="res-note">${q.resNote}</div>`
-    : kick === "yours" ? `<div class="res-note">Produced cold, no help. This one travels with you.</div>`
+    : kick === "yours" ? `<div class="res-note">You typed it cold. That is the strongest kind of rep.</div>`
     : kick === "restored" ? `<div class="res-note">This one was fading. You brought it back.</div>` : "";
   // no-repeat (§3.7): the grown carries only what's MISSING from the screen. When the
   // exercise's own sentence completed in place (fused row, filled blank, typed close),

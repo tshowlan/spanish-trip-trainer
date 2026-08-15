@@ -15,6 +15,21 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-15 — VOICE SESSION applied (v237)
+- THE VOICE merged to the constitution: five laws (literal, full sentences, stakes humor, serve
+  don't dignify, quiet dials) + the order test + the safety carve-out + the three moves; "filling"
+  retired from the metaphor vocabulary (now: machines, frames, slots, patterns, asks).
+- Part 2 rewrite list applied verbatim: 34 lines across screen-home, lesson, onboarding, tiers,
+  push, curriculum, and two design artifacts (lesson-breath, ladder-beats). Variation label is
+  "Swap one part"; return door interim anchors per the ruling (r3 rewrites the layout).
+- ONE DEVIATION (flagged to chat): "A session today moves Recency most." carries a factor name,
+  not a number, so "One session adds about ___." could not land verbatim; applied as "One session
+  moves Recency most." in the quiet-dials register.
+- "filling" grep: remaining hits are plain-English uses (spec "word filling the slot", decisions
+  "corner glow filling", letter-rungs doc "types filling the cliff") - not the euphemism, left.
+- Part 3 (strength-case register + mess-up library) parked verbatim in tripfluent-voice.md for
+  return door r3, the next Spain-track session.
+
 ## 2026-08-10 — Tom's batch triaged; two quick fixes (v236)
 - QUICK FIX 8/10-6: out-of-lesson welds (depth sets, the shop, the lap) cue the full English
   sentence ("Say it in Spanish: I need a taxi") - the bare filler left the machine a guess.

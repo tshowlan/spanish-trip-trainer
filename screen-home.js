@@ -222,7 +222,7 @@ function renderHome(opts) {
   }
 
   if (!state.account) {
-    const banner = el(`<div class="backup-banner"><span>${icon('lock', 16)} Back up your progress, create an account so a reinstall never wipes your progress.</span><button class="btn" style="margin-top:10px">Create account</button></div>`);
+    const banner = el(`<div class="backup-banner"><span>${icon('lock', 16)} Back up your progress. An account means a reinstall never wipes it.</span><button class="btn" style="margin-top:10px">Create account</button></div>`);
     banner.querySelector("button").addEventListener("click", () => renderAuth("signup"));
     home.appendChild(banner);
   }
@@ -405,7 +405,7 @@ function maybeStatusMoment() {
     return statusOverlay({
       kicker: `${di.flag} ${di.label} · trip complete`,
       title: `${r.readinessAtDeparture}%`, titleClass: band.cls,
-      body: `${band.label}. You put in ${r.sessionsCompleted} session${r.sessionsCompleted === 1 ? "" : "s"} and carried ${r.phrasesLearned} phrases into the trip. It's on your profile now, for good.`,
+      body: `${band.label}: ${r.sessionsCompleted} session${r.sessionsCompleted === 1 ? "" : "s"}, ${r.phrasesLearned} phrases carried into the trip. Logged on your profile.`,
       cta: "Continue"
     });
   }
@@ -481,7 +481,7 @@ function scoreRevealCard() {
     <div class="reveal-ring" id="rv-ring"></div>
     <span class="band-chip" id="rv-band"></span>
     <div class="reveal-edu" id="rv-edu">
-      <p>Readiness measures your preparation for this trip. It reflects where you are <b>today</b>: it climbs with practice and fades with time.</p>
+      <p>Readiness is how prepared you are for this trip right now. It climbs with practice and fades if you stop.</p>
       <p>The <span class="rv-gold">gold mark</span> is your pace. Stay ahead of it and you'll land <b>Tripfluent</b>.</p>
     </div>
     <div class="reveal-rep" id="rv-rep">
@@ -604,7 +604,7 @@ function readinessSheet() {
       <div class="rd-desc">${d.desc}</div>
     </div>`;
   }).join("");
-  const moves = held ? "Reviews alone hold this. New material is a bonus now." : `A session today moves <b>Recency</b> most.`;
+  const moves = held ? "Reviews alone hold this. New material is a bonus now." : `One session moves <b>Recency</b> most.`;
   const wrap = el(`<div class="sheet-wrap">
     <div class="sheet-backdrop"></div>
     <div class="sheet rd-sheet">
@@ -716,21 +716,21 @@ function heroState() {
   const next = firstOpenLesson();
   const dv = scoreDivergence();                        // §7.3: the divergence steers the recommendation, not just copy
   if (days !== null && days <= 14)
-    return { kind: "cram", title: `${days} day${days === 1 ? "" : "s"} out, drill your essentials`, run: () => startReview(backlog.length ? backlog : seenItems()) };
+    return { kind: "cram", title: `${days} day${days === 1 ? "" : "s"} out. Drill your essentials.`, run: () => startReview(backlog.length ? backlog : seenItems()) };
   // §7.3 quality problem: doing the work but earlier phrases decaying → steer today to review
   if (dv && dv.kind === "review") {
     const fad = fadingItems().filter(x => x.strength < 55).slice(0, 12).map(x => ITEM_INDEX[x.id]).filter(Boolean);
-    if (fad.length) return { kind: "review", title: `${dv.fading} phrases are fading, bring them back`, sub: "Point today at review, not new content", run: () => startReview(fad) };
+    if (fad.length) return { kind: "review", title: `${dv.fading} phrases are fading. Bring them back.`, sub: "Point today at review, not new content", run: () => startReview(fad) };
   }
   if (backlog.length >= 15) {
     const portion = Math.min(8, backlog.length);   // mirrors the depth composer's set size
-    return { kind: "review", title: `Bring back today's ${portion}`, sub: `${backlog.length} in the queue, a set a day works it down`, run: () => startReview(backlog) };
+    return { kind: "review", title: `Bring back today's ${portion}`, sub: `${backlog.length} in the queue. A set a day works it down.`, run: () => startReview(backlog) };
   }
   if (lastDays !== null && lastDays >= 2 && backlog.length)
-    return { kind: "momentum", title: "Momentum's dipping, 3 minutes brings it back", run: () => startReview(backlog.slice(0, 8)) };
+    return { kind: "momentum", title: "Momentum is dipping. Three minutes brings it back.", run: () => startReview(backlog.slice(0, 8)) };
   if (next)   // §7.3 coverage problem: retention solid but too little covered → new content, said plainly
     return { kind: "lesson", lesson: next, title: `Start: ${next.title}`, sub: dv && dv.kind === "cover" ? `${destInfo(p.destination).label} needs more, ${dv.untouched} categories untouched` : next.topic, run: () => startLesson(next) };
-  return { kind: "caught", title: "You're ahead, up for a speed round?", run: () => startSpeedRound() };   // §7.6 pure fun, advances nothing
+  return { kind: "caught", title: "You're ahead. Up for a speed round?", run: () => startSpeedRound() };   // §7.6 pure fun, advances nothing
 }
 function heroTile() {
   const h = heroState();
@@ -799,9 +799,9 @@ function practiceChooser() {
   const picked = (typeof _practicePick === "function") ? _practicePick(null) : [];
   const line = (typeof practicePickLine === "function") ? practicePickLine(picked) : null;
   add("Practice", line || "Finish a lesson first", () => startReview(), !picked.length);
-  add("By scenario", "Pick a category, drill it at depth", scenarioChooser);
+  add("By scenario", "Pick a category and drill it hard", scenarioChooser);
   const shops = machineShopLessons();
-  add("The machine shop", shops.length ? "One machine, drilled full" : "Meet a machine first", machineShopChooser, !shops.length);
+  add("The machine shop", shops.length ? "Drill one machine start to finish" : "Meet a machine first", machineShopChooser, !shops.length);
   document.body.appendChild(wrap);
   requestAnimationFrame(() => wrap.classList.add("show"));
   wrap.querySelector(".sheet-backdrop").addEventListener("click", closeSheet);

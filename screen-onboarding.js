@@ -66,7 +66,7 @@ function renderOnboarding() {
       wrap.appendChild(el(`
         <div class="onb-card">
           <div class="hero-mark" style="margin-bottom:16px">${wordmark(36)}${lighthouse(48)}</div>
-          <p>Not a fluency app, a get-ready-for-<i>this trip</i> app. A few quick questions and I'll build a plan timed to your departure.</p>
+          <p>Not a fluency app. A get-ready-for-<i>this trip</i> app. A few quick questions and you'll get a plan timed to your departure.</p>
         </div>`));
       const btn = el(`<button class="btn">Plan my trip</button>`);
       btn.addEventListener("click", () => go("where"));
@@ -145,7 +145,7 @@ function renderOnboarding() {
 
     } else if (screen === "needs") {
       wrap.appendChild(el(`<div class="onb-q">Anything we should tailor for?</div>`));
-      wrap.appendChild(el(`<div class="onb-sub">Pick any. Dietary needs get their own safety phrases, our specialty.</div>`));
+      wrap.appendChild(el(`<div class="onb-sub">Pick any. Dietary needs get their own safety phrases. It's our specialty.</div>`));
       const chips = el(`<div class="chips"></div>`);
       NEEDS.forEach(([key, label]) => {
         const on = draft.needs.includes(key);

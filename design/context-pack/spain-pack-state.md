@@ -1,4 +1,4 @@
-# Spain pack state (repo truth, 2026-08-11)
+# Spain pack state (repo truth, 2026-08-15)
 
 Auto-exported by tools/export-pack-state.mjs (context-pack ritual). Phrase lists are the
 taught-once law's ground truth: author against THIS, never memory. Atlas numbers merged from
@@ -83,7 +83,7 @@ tools/atlas-snapshot.json (2026-07-24).
 - primer: EXISTS (scene: "The bring-me machine. Polite enough for anywhere, strong enough to get the check.")
 - atlas (2026-07-24): 2.7 min · in band 2-4 · difficulty 2.6 · ramp 3.6
 - phrases (4; first = anchor):
-  1. ¿Me puede traer la cuenta? — Could you bring me the check?  (5 tok)  [note: Me trae...? is the same machine with the jacket off. Both are right. · kw: cuenta]
+  1. ¿Me puede traer la cuenta? — Could you bring me the check?  (5 tok)  [note: Me trae...? is the shorter version of the same ask. Both are right. · kw: cuenta]
   2. ¿Me puede traer agua? — Could you bring me water?  (4 tok)  [kw: agua]
   3. ¿Me puede traer el menú? — Could you bring me the menu?  (5 tok)  [kw: menú]
   4. ¿Me puede traer otra caña? — Could you bring me another beer?  (5 tok)  [note: A caña is the small draft beer Spain actually orders. · kw: caña]
@@ -160,7 +160,7 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### First words at the table  `sp-table`
 - topic/setting: Restaurant · Ordering · shape: scenario
-- primer: EXISTS (scene: "It's packed at Marina's tasca. She wipes down a table, waves you into a chair, and sets do...") · guessItem: "Soy alérgico al marisco" · mission: "Get a table, order, and warn her about the shellfish before the tapas land."
+- primer: EXISTS (scene: "It's packed at Marina's tasca. She wipes down a table, waves you into a chair, and sets do...") · guessItem: "Soy alérgico al marisco" · mission: "Get a table, order, and warn her about the shellfish before anything arrives."
 - reward (invert to promise): "You can get a table, order, ask for the check, and flag your shellfish allergy. Night one at the tapas bar: handled."
 - atlas (2026-07-24): 5.1 min · in band 5-8 · difficulty 2.2 · ramp 2.1
 - phrases (8; first = anchor):
@@ -170,13 +170,13 @@ tools/atlas-snapshot.json (2026-07-24).
   4. La cuenta, por favor — The check, please  (4 tok)  [kw: cuenta]
   5. Soy alérgico al marisco — I'm allergic to shellfish  (4 tok)  [note: Women: 'alérgica'. · kw: alérgico, marisco]
   6. Sin gluten — Gluten-free  (2 tok)  [kw: gluten]
-  7. Para compartir — To share  (2 tok)  [note: Tapas grammar. One plate, two forks, no explanation needed. · kw: compartir]
+  7. Para compartir — To share  (2 tok)  [note: One plate with two forks is a completely normal tapas order. · kw: compartir]
   8. Un poco más de pan, por favor — A little more bread, please  (7 tok)  [kw: pan]
 - build-eligible (4-8 tok): 5/8
 
 ### Where's the loo  `s2-bathroom`
 - topic/setting: Restaurant · Bathrooms · shape: scenario
-- primer: EXISTS (scene: "Two unmarked doors at the back of Marina's place, and a waiter squeezing past with a tray ...") · guessItem: "Entrada" · mission: "Ask where the loo is, and read the door before you push."
+- primer: EXISTS (scene: "Two unmarked doors at the back of Marina's place, and a waiter squeezing past with a tray ...") · guessItem: "Entrada" · mission: "Ask where the loo is, and go in the right door every time."
 - reward (invert to promise): "You can find a bathroom and read a door. Push vs. pull humiliation: avoided."
 - atlas (2026-07-24): 5.2 min · in band 5-8 · difficulty 1.9 · ramp 1.3
 - phrases (9; first = anchor):
@@ -338,7 +338,7 @@ tools/atlas-snapshot.json (2026-07-24).
   3. Son las dos — It's two o'clock  (3 tok)  [kw: dos]
   4. a las ocho — at eight  (3 tok)  [kw: ocho]
   5. Son las dos y media — It's half past two  (5 tok)  [kw: media]
-  6. a las ocho de la noche — at eight in the evening  (6 tok)  [note: Dinner time. Really. · kw: noche]
+  6. a las ocho de la noche — at eight in the evening  (6 tok)  [note: Dinner in Spain starts this late. Plan on it. · kw: noche]
   7. Está cerrado hasta las cinco — It's closed until five  (5 tok)  [note: The shop closed until 'later' from the primer, now with a number. · kw: cerrado]
   8. El desayuno es de ocho a diez — Breakfast is from eight to ten  (7 tok)  [kw: desayuno]
 - build-eligible (4-8 tok): 4/8
@@ -519,7 +519,7 @@ tools/atlas-snapshot.json (2026-07-24).
   5. Perdone, ¿este tren va al centro? — Excuse me, does this train go to the center?  (6 tok)  [kw: tren, centro]
   6. ¿Sería posible cambiar de habitación? — Would it be possible to change rooms?  (5 tok)  [kw: cambiar, habitación]
   7. ¿Nos puede sacar una foto? — Can you take a photo of us?  (5 tok)  [kw: sacar, foto]
-  8. ¿Me pone otra, cuando pueda? — Another one, when you get a chance?  (5 tok)  [note: Bar-regular register. 'Cuando pueda' is the polish. · kw: otra, pueda]
+  8. ¿Me pone otra, cuando pueda? — Another one, when you get a chance?  (5 tok)  [note: Regulars add 'cuando pueda'. It softens the ask. · kw: otra, pueda]
 - build-eligible (4-8 tok): 6/8
 
 ### Complaints & mix-ups  `s5-fix`

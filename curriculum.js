@@ -138,7 +138,7 @@ const CURRICULUM = {
                     ],
                     frameGloss: "¿Me puede traer...? = could you bring me...? The polite ask that works on anyone.",
                     items: [
-                      { es: "¿Me puede traer la cuenta?", en: "Could you bring me the check?", tier: 1, tags: ["core"], keywords: ["cuenta"], frame: "¿me puede traer ___?", weld: { tags: ["bringable"] }, variants: ["¿Me trae la cuenta?"], note: "Me trae...? is the same machine with the jacket off. Both are right.", anchor: "traer is to bring. You are asking them to bring it, not going to get it." },
+                      { es: "¿Me puede traer la cuenta?", en: "Could you bring me the check?", tier: 1, tags: ["core"], keywords: ["cuenta"], frame: "¿me puede traer ___?", weld: { tags: ["bringable"] }, variants: ["¿Me trae la cuenta?"], note: "Me trae...? is the shorter version of the same ask. Both are right.", anchor: "traer is to bring. You are asking them to bring it, not going to get it." },
                       { es: "¿Me puede traer agua?", en: "Could you bring me water?", tier: 1, tags: ["core"], keywords: ["agua"], frame: "¿me puede traer ___?", weld: { tags: ["bringable", "consumable"], indef: { es: "agua", en: "water" } }, variants: ["¿Me trae agua?"] },
                       { es: "¿Me puede traer el menú?", en: "Could you bring me the menu?", tier: 1, tags: ["core"], keywords: ["menú"], frame: "¿me puede traer ___?", weld: { tags: ["bringable"], indef: { es: "un menú", en: "a menu" } }, variants: ["¿Me trae el menú?"] },
                       { es: "¿Me puede traer otra caña?", en: "Could you bring me another beer?", tier: 1, tags: ["core"], keywords: ["caña"], frame: "¿me puede traer ___?", weld: { tags: ["bringable", "consumable"] }, variants: ["¿Me trae otra caña?"], note: "A caña is the small draft beer Spain actually orders." },
@@ -242,7 +242,7 @@ const CURRICULUM = {
         {
           id: "sp-table", topic: "Restaurant · Ordering", title: "First words at the table",
           reward: "You can get a table, order, ask for the check, and flag your shellfish allergy. Night one at the tapas bar: handled.",
-          primer: { scene: "It's packed at Marina's tasca. She wipes down a table, waves you into a chair, and sets down pa amb tomàquet, the tomato bread that arrives with everything here. Don't ask for butter. '¿Para cuántos?' she asks.", mission: "Get a table, order, and warn her about the shellfish before the tapas land.", guessItem: "Soy alérgico al marisco" },
+          primer: { scene: "It's packed at Marina's tasca. She wipes down a table, waves you into a chair, and sets down pa amb tomàquet, the tomato bread that arrives with everything here. Don't ask for butter. '¿Para cuántos?' she asks.", mission: "Get a table, order, and warn her about the shellfish before anything arrives.", guessItem: "Soy alérgico al marisco" },
           items: [
             { es: "Una mesa para dos, por favor", en: "A table for two, please", tier: 2, tags: ["restaurant", "food"], keywords: ["mesa"], variants: ["Mesa para dos, por favor"] },
             { es: "La carta, por favor", en: "The menu, please", note: "In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día.", tier: 2, tags: ["restaurant", "food"], keywords: ["carta"], variants: ["¿Me trae la carta?"] },
@@ -250,14 +250,14 @@ const CURRICULUM = {
             { es: "La cuenta, por favor", en: "The check, please", tier: 2, tags: ["restaurant", "money"], keywords: ["cuenta"], variants: ["¿Me trae la cuenta?"] },
             { es: "Soy alérgico al marisco", en: "I'm allergic to shellfish", note: "Women: 'alérgica'.", tier: 2, tags: ["dietary", "health"], anchor: "'alérgico' = allergic.", keywords: ["alérgico", "marisco"] },
             { es: "Sin gluten", en: "Gluten-free", tier: 1, tags: ["dietary", "food"], contextEs: "¿Tienen algo sin gluten?", contextEn: "Do you have anything gluten-free?", keywords: ["gluten"] },
-            { es: "Para compartir", en: "To share", note: "Tapas grammar. One plate, two forks, no explanation needed.", tier: 1, tags: ["restaurant","food"], keywords: ["compartir"] },
+            { es: "Para compartir", en: "To share", note: "One plate with two forks is a completely normal tapas order.", tier: 1, tags: ["restaurant","food"], keywords: ["compartir"] },
             { es: "Un poco más de pan, por favor", en: "A little more bread, please", tier: 1, tags: ["restaurant","food"], keywords: ["pan"] },
           ]
         },
         {
           id: "s2-bathroom", topic: "Restaurant · Bathrooms", title: "Where's the loo",
           reward: "You can find a bathroom and read a door. Push vs. pull humiliation: avoided.",
-          primer: { scene: "Two unmarked doors at the back of Marina's place, and a waiter squeezing past with a tray of vermut. The signs, when you find them, might not even be in Spanish. This is Catalonia. Pick the right door before you push.", mission: "Ask where the loo is, and read the door before you push.", guessItem: "Entrada" },
+          primer: { scene: "Two unmarked doors at the back of Marina's place, and a waiter squeezing past with a tray of vermut. The signs, when you find them, might not even be in Spanish. This is Catalonia. Pick the right door before you push.", mission: "Ask where the loo is, and go in the right door every time.", guessItem: "Entrada" },
           items: [
             { es: "¿Dónde está el servicio?", en: "Where is the bathroom?", note: "Spain says 'el servicio / los servicios'. Signs read 'Aseos'.", latam: "Latin America: '¿Dónde está el baño?'", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "servicio"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
             { es: "los aseos", en: "the restrooms (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "Los aseos están al fondo", contextEn: "The restrooms are at the back", keywords: ["aseos"] },
@@ -413,7 +413,7 @@ const CURRICULUM = {
             { es: "Son las dos", en: "It's two o'clock", tier: 1, tags: ["time"], contextEs: "Son las dos de la tarde", contextEn: "It's two in the afternoon", keywords: ["dos"] },
             { es: "a las ocho", en: "at eight", tier: 1, tags: ["time"], contextEs: "Quedamos a las ocho", contextEn: "Let's meet at eight", keywords: ["ocho"] },
             { es: "Son las dos y media", en: "It's half past two", tier: 1, tags: ["time"], keywords: ["media"] },
-            { es: "a las ocho de la noche", en: "at eight in the evening", note: "Dinner time. Really.", tier: 1, tags: ["time"], keywords: ["noche"] },
+            { es: "a las ocho de la noche", en: "at eight in the evening", note: "Dinner in Spain starts this late. Plan on it.", tier: 1, tags: ["time"], keywords: ["noche"] },
             { es: "Está cerrado hasta las cinco", en: "It's closed until five", note: "The shop closed until 'later' from the primer, now with a number.", tier: 1, tags: ["time"], keywords: ["cerrado"] },
             { es: "El desayuno es de ocho a diez", en: "Breakfast is from eight to ten", tier: 1, tags: ["time","food"], keywords: ["desayuno"] },
           ]
@@ -593,7 +593,7 @@ const CURRICULUM = {
             { es: "Perdone, ¿este tren va al centro?", en: "Excuse me, does this train go to the center?", tier: 3, tags: ["train", "transport"], difficulty: 3, keywords: ["tren", "centro"] },
             { es: "¿Sería posible cambiar de habitación?", en: "Would it be possible to change rooms?", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["cambiar", "habitación"] },
             { es: "¿Nos puede sacar una foto?", en: "Can you take a photo of us?", tier: 3, tags: ["social"], difficulty: 3, keywords: ["sacar","foto"] },
-            { es: "¿Me pone otra, cuando pueda?", en: "Another one, when you get a chance?", note: "Bar-regular register. 'Cuando pueda' is the polish.", tier: 3, tags: ["restaurant","social"], difficulty: 3, keywords: ["otra","pueda"] },
+            { es: "¿Me pone otra, cuando pueda?", en: "Another one, when you get a chance?", note: "Regulars add 'cuando pueda'. It softens the ask.", tier: 3, tags: ["restaurant","social"], difficulty: 3, keywords: ["otra","pueda"] },
           ]
         },
         {

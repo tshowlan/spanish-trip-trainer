@@ -91,7 +91,7 @@ function nextTierCondition() {
     "Finish a trip at 85%+ Readiness to reach Culturist.",
     "Finish a second trip at 85%+ (or reach 70% in another language) to reach Ambassador.",
     "Reach 85%+ across two languages and two trips to reach World Citizen.",
-    "World Citizen — the top tier. Every trip from here is a victory lap."
+    "World Citizen is the top tier. From here, every trip is a victory lap."
   ][i];
 }
 if (typeof module !== "undefined") module.exports = { TIERS, earnedTier, currentTier, migrateXpToFloor, applyTierUpdate, nextTierCondition };
