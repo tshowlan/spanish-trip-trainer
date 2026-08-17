@@ -15,6 +15,22 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-17 — RETURN DOOR r5.5 built (v239)
+- Chat's stamped artifact committed (design/return-door.html supersedes r2); renderReturnDoor
+  rebuilt to the composition: scene (introPhoto, home's atmo blend verbatim), machine badge in
+  the logo's faces (seven names via frame lookup; ladder doors wear the wordmark + title as
+  pedestal), frame as pedestal (gold slot dashes), mess-up headline (voice Part 3 library keyed
+  by categoryOf, rotates per lesson + day, safety carve-out enforced, status word colored),
+  count whisper, record line, one CTA.
+- Three cases wired: FADING -> Bring them back -> depth drill over the lesson pool · STRONG ->
+  Run the lap -> encore lap · GONE (>50% under RETENTION_FADE, DOOR_GONE_FRAC [tune]) ->
+  Rebuild it -> depth drill starting scaffolded (recognition round dropped, scaffolded
+  production opens). Never a lesson re-run from the door.
+- Playfair Display Italic 500 was already self-hosted (fonts.css + sw ASSETS): build note 1
+  pre-satisfied. DESIGN_PAIRS gains returnDoor. Harness: GONE + ladder-door stories added.
+- Library gap flagged to chat: Sights and no-category lessons fall back to a plain weakest-item
+  line pending authored entries.
+
 ## 2026-08-15 — Voice closeout (v238)
 - Chat approved the Recency deviation; decisions.md carries the factor-line/number-line rule.
 - Tom's cut: "You typed it cold. That is the strongest kind of rep." removed - YOURS NOW rides

@@ -113,6 +113,16 @@
 
   // Selector registry: artifact selector -> app selector, per artifact.
   const DESIGN_PAIRS = {
+    // return-door.html r5.5 (stamped 2026-08-12): the door surface deltas.
+    // App state: a return door rendered (harness stories under Depth session).
+    returnDoor: [
+      [".door-photo", ".door-photo"],
+      [".door-badge", ".door-badge"],
+      [".door-frame", ".door-frame"],
+      [".door-head", ".door-head"],
+      [".door-fade", ".door-fade"],
+      [".door-rec", ".door-rec"]
+    ],
     // lesson-breath.html (Sprint 2, stamped 2026-07-27) is a SEQUENCING canvas: it rules flow
     // (beat order, slide, universal Continue), not pixels — exercise internals defer to their
     // stamped artifacts. Pairs cover the elements the canvas newly mints.

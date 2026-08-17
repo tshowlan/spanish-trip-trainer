@@ -1827,3 +1827,33 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .lab-active { background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid var(--accent); color: var(--accent-2); font-size: 12px; font-weight: 700; border-radius: 9px; padding: 6px 10px; margin: 10px 0 2px; letter-spacing: .4px; }
 #lab-chip { display: inline-flex; align-items: center; margin-left: 8px;
   background: var(--accent); color: #221c04; font: 700 9.5px/1 var(--font-display); letter-spacing: 1px; padding: 4px 8px; border-radius: 99px; pointer-events: none; }
+
+/* ===== THE RETURN DOOR r5.5 (design/return-door.html, stamped 2026-08-12) =====
+   The scene wears home's atmo blend verbatim; the badge wears the logo's faces; the frame
+   is the pedestal. Deltas minted for the surface: door-photo/badge/frame/head/fade/rec +
+   st-hold/st-slip/st-fade. Runner padding is 18px, so full-bleed pulls -18px (artifact's
+   -24px was its own phone padding). */
+.door-photo { position: relative; margin: 6px -18px 2px; height: 210px; }
+.door-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 62%; display: block;
+  filter: saturate(.72) brightness(.82) contrast(.95);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%);
+          mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%); }
+.door-photo::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 34%); }
+.door-badge { position: absolute; top: 12px; left: 16px; z-index: 1; font-size: 15px; letter-spacing: -0.01em;
+  text-shadow: 0 1px 8px rgba(0,0,0,.5); }
+.door-badge::before { content: ""; position: absolute; inset: -14px -26px -16px -20px; z-index: -1; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0,0,0,.38) 0%, rgba(0,0,0,.2) 55%, transparent 100%); }
+.door-badge .t1 { font-family: var(--font-display); font-weight: 800; color: #c8d2f5; }
+.door-badge .t2 { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 500; color: #7aa6db; }
+.door-badge .wordmark { --wordmark-1: #c8d2f5; --wordmark-2: #7aa6db; display: block; }
+.door-frame { margin: -26px 0 12px; position: relative; }
+.door-frame::before { content: ""; position: absolute; inset: -16px -30px -12px -30px; z-index: -1;
+  background: radial-gradient(closest-side, var(--bg) 45%, color-mix(in srgb, var(--bg) 60%, transparent) 75%, transparent 100%); }
+.door-frame .frame-mount { position: relative; }
+.door-title { font-family: var(--font-display); font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: var(--text); position: relative; }
+.door-head { font-family: var(--font-display); font-size: 21px; font-weight: 500; line-height: 1.35; color: var(--text); margin-bottom: 10px; }
+.st-hold { color: var(--green); } .st-slip { color: var(--accent-2); } .st-fade { color: var(--text-dim); }
+.door-fade .st-fade { color: color-mix(in srgb, var(--text) 70%, var(--text-dim)); }
+.door-fade { font-size: 12.5px; color: var(--text-dim); margin: 2px 0 0; }
+.door-rec { font-size: 11.5px; color: var(--text-dim); opacity: .7; margin: 3px 0 4px; }

@@ -369,22 +369,28 @@ function _practicePick(pool) {
   cands.sort((a, b) => b.score - a.score);
   return cands.slice(0, Math.min(8, cands.length));
 }
-function _practiceForms(it, st) {
+function _practiceForms(it, st, opts) {
   const strength = itemStrength(st);
+  const scaffold = opts && opts.scaffoldFirst;   // GONE rebuild (door r5.5): skip recognition, open with scaffolded production
   const forms = [];
   const frameParts = it.frame ? _frameParts(it.frame, it.es) : null;
   if (frameParts) {                                              // machines drill in native forms
     const shell = _enShell((ALL_ITEMS || []).filter(x => x.frame === it.frame));
     const fen = _fillerEn(shell, it.en);
-    if (strength < 55) forms.push({ type: "listen_choice", item: it, pool: ALL_ITEMS });
+    if (!scaffold && strength < 55) forms.push({ type: "listen_choice", item: it, pool: ALL_ITEMS });
     if (fen) forms.push({ type: "weld", item: it, cue: { item: it, p: frameParts, fen }, arc: true });
     forms.push({ type: chooseType(it, { prefer: "production" }) || "type_translation", item: it, pool: ALL_ITEMS });
+    if (scaffold) forms.push({ type: _modeFeasible("phrase_fill", it) ? "phrase_fill" : "type_translation", item: it, pool: ALL_ITEMS });
+  } else if (scaffold) {
+    forms.push({ type: _modeFeasible("word_fill", it) ? "word_fill" : (_modeFeasible("build", it) ? "build" : "fill_blank"), item: it, pool: ALL_ITEMS });
+    forms.push({ type: chooseType(it, { prefer: "production" }), item: it, pool: ALL_ITEMS });
+    forms.push({ type: _modeFeasible("phrase_fill", it) ? "phrase_fill" : "type_translation", item: it, pool: ALL_ITEMS });
   } else {
     if (strength < 55) forms.push({ type: chooseType(it, { prefer: "recognition" }), item: it, pool: ALL_ITEMS });
     forms.push({ type: chooseType(it, { prefer: "production" }), item: it, pool: ALL_ITEMS });
     forms.push({ type: _modeFeasible("type_translation", it) && strength >= 40 ? "type_translation" : (_modeFeasible("phrase_fill", it) ? "phrase_fill" : "type_translation"), item: it, pool: ALL_ITEMS });
   }
-  return forms.slice(0, strength < 55 ? 3 : 2);
+  return forms.slice(0, (scaffold || strength < 55) ? 3 : 2);
 }
 function practicePickLine(picked) {
   if (!picked || !picked.length) return null;
@@ -396,12 +402,12 @@ function practicePickLine(picked) {
   if (!bits.length) bits.push("your weakest");
   return `${picked.length} items: ${bits.join(" + ")}`;
 }
-function _composeDepth(pool) {
+function _composeDepth(pool, opts) {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();
   const picked = _practicePick(pool);
   if (!picked.length) return [];
   state.practiceLine = practicePickLine(picked);
-  const perItem = picked.map(p => _practiceForms(p.it, p.st));
+  const perItem = picked.map(p => _practiceForms(p.it, p.st, opts));
   const qs = [];                                                 // round-robin: the whole set climbs together
   for (let round = 0; ; round++) {
     let added = false;
@@ -575,8 +581,8 @@ function renderPrimer(lesson, onDone) {
   scene();
 }
 // startReview() → due-item session; startReview(items) → focused review of those items (e.g. mistakes)
-function startReview(items) {
-  const qs = _composeDepth(items && items.length ? items : null);   // depth ruling 4: 5-8 at depth, from the pool or the world
+function startReview(items, opts) {
+  const qs = _composeDepth(items && items.length ? items : null, opts);   // depth ruling 4: 5-8 at depth, from the pool or the world
   if (!qs.length) { toast("Nothing to review yet. Finish a lesson first."); return; }
   run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
@@ -627,9 +633,72 @@ function startLap(lesson) {
   renderQuestion();
 }
 
-/* THE RETURN DOOR (depth ruling 5, return-door.html r2): one screen on re-entering a
-   completed lesson - the record line, then EITHER the fade report ("Bring them back" ->
-   the replay drill) or the hat-tip ("Run the lap" -> the encore form). X exits. */
+/* THE RETURN DOOR r5.5 (design/return-door.html, stamped 2026-08-12): the scene (the
+   lesson's introPhoto in home's atmo blend), the machine badge in the logo's faces (ladder
+   lessons wear the wordmark + their title as pedestal), the frame as pedestal, the mess-up
+   headline from the voice library, the count whisper, the record line, one CTA. Three
+   cases: FADING -> Bring them back (depth drill) · STRONG -> Run the lap (encore) ·
+   GONE (>50% under RETENTION_FADE [tune]) -> Rebuild it (depth drill starting scaffolded;
+   never a lesson re-run). X exits. */
+const DOOR_GONE_FRAC = 0.5;   /* [tune] fraction of items faded that reads as GONE */
+const _MACHINE_NAMES = [
+  [/traer/, "Bring"], [/cuesta/, "Price"], [/hay\b/, "There"], [/necesito/, "Need"],
+  [/hora/, "When"], [/quiero/, "Want"], [/d[o\u00f3]nde/, "Find"]
+];
+function _machineBadgeName(frame) {
+  const f = norm(frame || "");
+  const hit = _MACHINE_NAMES.find(([re]) => re.test(f));
+  return hit ? hit[1] : null;
+}
+/* The mess-up library (voice session Part 3; the artifact's own line joins the food set).
+   Keyed by categoryOf(topic). Safety items always straight talk (voice law carve-out). */
+const _MESSUP_LIB = {
+  "Food & Drink": [
+    "Good timing. La cuenta was slipping, and the check never comes to the table that can't ask.",
+    "Smart to review now. You were one letter from ordering pollo (chicken) instead of bollo (a bun).",
+    "Good timing. Otra ca\u00f1a was slipping, and what's lunch without a second round?"
+  ],
+  "Numbers & Time": [
+    "Smart to review now. Quince and cincuenta look alike until the change comes back wrong.",
+    "Good timing. Mix up las dos and las cinco and you wait three hours outside a closed shop."
+  ],
+  "Directions": [
+    "Smart to review now. Izquierda and derecha were blurring. That is two blocks the wrong way."
+  ],
+  "Transport": [
+    "Good timing. Transbordo was fading. You were about to get a tour of the train depot, not the Picasso exhibit.",
+    "Smart to review now. Without your numbers, the meter is a matter of trust."
+  ],
+  "Lodging": [
+    "Good timing. La llave was fading. The front desk can only mime so much."
+  ],
+  "Basics": [
+    "Good timing. Tirar means pull. You were about to be manhandling a door handle from 1918."
+  ]
+};
+function _doorHeadline(kase, lesson, fading, total) {
+  const wrap = (line, cls) => line.replace(/\b(slipping|holding|faded|fading)\b/, `<span class="${cls}">$1</span>`);
+  if (kase === "strong")
+    return wrap(`All ${_NUMWORD[total] ? _NUMWORD[total].toLowerCase() : total}, still holding. Extra reps today make it automatic in Spain.`, "st-hold");
+  if (kase === "gone")
+    return wrap("Most of this has faded. In Spain that is pointing at the menu and hoping.", "st-fade");
+  const safety = fading.find(it => (it.tags || []).some(t => t === "dietary" || t === "emergency"));
+  if (safety) return wrap(`${safety.es} was fading. That one is not optional.`, "st-slip");
+  // machines key by FRAME first (their topic reads "Core"); categories cover the rest
+  const frameLib = lesson.frame ? ({
+    traer: ["Good timing. La cuenta was slipping, and the check never comes to the table that can't ask."],
+    cuesta: ["Smart to review now. Quince and cincuenta look alike until the change comes back wrong."],
+    hora: ["Good timing. Mix up las dos and las cinco and you wait three hours outside a closed shop."],
+    donde: ["Smart to review now. Izquierda and derecha were blurring. That is two blocks the wrong way."]
+  })[norm(lesson.frame).replace(/[^a-z]/g, " ").split(/\s+/).find(w => ["traer","cuesta","hora","donde"].includes(w)) || ""] : null;
+  const lines = frameLib || _MESSUP_LIB[categoryOf(lesson.topic || "")] || null;
+  if (lines) {
+    const seed = (lesson.id || "").length + new Date().getDate();   // rotates per lesson + day
+    return wrap(lines[seed % lines.length], "st-slip");
+  }
+  // no library entry for this category yet: name the weakest item plainly (flagged to chat)
+  return wrap(`Good timing. ${fading[0].es} was slipping, and this lesson leans on it.`, "st-slip");
+}
 const _NUMWORD = ["zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen"];
 function renderReturnDoor(lesson) {
   const app = $("#app"); clearFooter(); hideTabbar(); app.innerHTML = "";
@@ -641,35 +710,45 @@ function renderReturnDoor(lesson) {
   wrap.appendChild(body);
   app.appendChild(wrap);
   wrap.querySelector("#quit").addEventListener("click", () => renderLearn());
-  const rec = state.lessons[lesson.id] || {};
-  const when = rec.at ? new Date(rec.at).toLocaleDateString("en-US", { month: "short", day: "numeric" }).toUpperCase() : "";
+
   const items = (lesson.items || []).filter(it => exposuresOf(it) >= 1);
   const fading = items.filter(it => { const st = learnPeek(it); return st && itemStrength(st) < RETENTION_FADE; });
   const total = items.length;
-  const label = `COMPLETED${when ? " " + when : ""} · ${total} PHRASE${total === 1 ? "" : "S"}`;
-  const word = n => (_NUMWORD[n] || String(n));
-  if (fading.length) {
-    body.appendChild(el(`<div class="qtype">Return · ${lesson.title || lesson.id}</div>`));
-    body.appendChild(el(`<div class="present-card">
-      <div class="present-label">${label}</div>
-      <div class="present-es" style="font-size:21px;">${word(fading.length)} piece${fading.length === 1 ? " is" : "s are"} slipping.</div>
-      <div class="present-en" style="margin-top:10px;">${fading.slice(0, 3).map(it => it.es).join(" · ")}</div>
-      <div class="present-anchor" style="margin-top:12px;">Smart to catch these now.</div>
-    </div>`));
-    const grown = el(`<div class="res-grown show"><button class="btn res-cont">Bring them back</button></div>`);
-    grown.querySelector(".res-cont").addEventListener("click", () => _startLessonProper(lesson));
-    body.appendChild(grown);
+  const kase = !fading.length ? "strong" : (fading.length > total * DOOR_GONE_FRAC ? "gone" : "fading");
+
+  // the scene: the lesson's photo under home's atmo blend; the badge rides it
+  const badgeName = lesson.frame ? _machineBadgeName(lesson.frame) : null;
+  const badge = badgeName
+    ? `<div class="door-badge"><span class="t1">${badgeName}</span><span class="t2">machine</span></div>`
+    : `<div class="door-badge">${wordmark(15)}</div>`;
+  body.appendChild(el(`<div class="door-photo">${badge}<img src="${introPhoto(lesson)}" alt=""></div>`));
+
+  // the pedestal: the machine's frame (gold slot) or the ladder lesson's title
+  if (lesson.frame) {
+    const disp = lesson.frame.replace(/[a-záéíóúñ]/i, c => c.toUpperCase());   // first LETTER: "¿me..." -> "¿Me..."
+    body.appendChild(el(`<div class="door-frame"><div class="frame-mount">${disp.replace("___", '<span class="slot"><span class="dashes">\u2013 \u2013 \u2013</span></span>')}</div></div>`));
   } else {
-    body.appendChild(el(`<div class="qtype">Return · ${lesson.title || lesson.id}</div>`));
-    body.appendChild(el(`<div class="present-card">
-      <div class="present-label">${label}</div>
-      <div class="present-es" style="font-size:21px;">All ${word(total).toLowerCase()}, still holding.</div>
-      <div class="present-anchor" style="margin-top:12px;">Nothing needs rescuing. Extra reps today make it automatic in Spain.</div>
-    </div>`));
-    const grown = el(`<div class="res-grown show"><button class="btn res-cont">Run the lap</button></div>`);
-    grown.querySelector(".res-cont").addEventListener("click", () => startLap(lesson));
-    body.appendChild(grown);
+    body.appendChild(el(`<div class="door-frame"><div class="door-title">${lesson.title || ""}</div></div>`));
   }
+
+  body.appendChild(el(`<div class="door-head">${_doorHeadline(kase, lesson, fading, total)}</div>`));
+  const whisper = kase === "strong" ? `${total} of ${total} <span class="st-hold">holding</span>`
+    : kase === "gone" ? `${fading.length} of ${total} phrases <span class="st-fade">faded</span>`
+    : `${fading.length} of ${total} phrases <span class="st-slip">slipping</span>`;
+  body.appendChild(el(`<div class="door-fade">${whisper}</div>`));
+  const rec = state.lessons[lesson.id] || {};
+  const when = rec.at ? new Date(rec.at).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : "";
+  if (when) body.appendChild(el(`<div class="door-rec">Completed ${when}</div>`));
+
+  const cta = kase === "strong" ? "Run the lap" : kase === "gone" ? "Rebuild it" : "Bring them back";
+  const grown = el(`<div class="res-grown show"><button class="btn res-cont">${cta}</button></div>`);
+  grown.querySelector(".res-cont").addEventListener("click", () => {
+    if (kase === "strong") return startLap(lesson);
+    // fading AND gone run the depth drill over this lesson's pool - never a lesson re-run,
+    // no one re-sits the primer (r5.5); gone starts scaffolded
+    startReview(items, { scaffoldFirst: kase === "gone" });
+  });
+  body.appendChild(grown);
 }
 
 /* ----- speed round (M4, §6.4/§7.6): 60s timed match over phrases you already own. Advances nothing —

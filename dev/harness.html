@@ -153,9 +153,14 @@
       function _seedStrong(id) { state.learn[id] = { exposures: 10, streak: 5, lapses: 0, interval: 30, lastSeen: _dstr(1), lastCorrect: _dstr(1), due: _dstr(-20), axes: { production: 2 } }; }
       function seedLesson(l, mode) {
         state.learn = state.learn || {}; state.lessons = state.lessons || {};
-        (l.items || []).forEach((it, i) => (mode === "fading" && i < 3 ? _seedWeak : _seedStrong)(it.id));
+        (l.items || []).forEach((it, i) => {
+          const weakN = mode === "gone" ? Math.ceil(l.items.length * 0.75) : Math.min(3, Math.floor(l.items.length / 2));
+          const weak = mode !== "strong" && i < weakN;
+          (weak ? _seedWeak : _seedStrong)(it.id);
+        });
         state.lessons[l.id] = { stars: 3, at: new Date(Date.now() - 80 * 864e5).toISOString() };
       }
+      function lessonDoneSeedable(l) { return (l.items || []).length >= 4; }
       function seedDepthMix() {
         state.learn = state.learn || {}; state.lessons = state.lessons || {};
         const ls = DECK.stages.flatMap(st => st.lessons).filter(l => !l.chain).slice(0, 4);
@@ -212,6 +217,18 @@
           const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
           seedLesson(m, "strong");
           startLesson(m);
+        },
+        "Depth — Return door (GONE: Rebuild it)": () => {
+          clean();
+          const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
+          seedLesson(m, "gone");
+          startLesson(m);
+        },
+        "Depth — Return door (ladder lesson: wordmark badge)": () => {
+          clean();
+          const l = DECK.stages.flatMap(st => st.lessons).find(x => !x.frame && !x.chain && lessonDoneSeedable(x));
+          seedLesson(l, "fading");
+          startLesson(l);
         },
         "Depth — The machine shop (one machine, full)": () => {
           clean();
