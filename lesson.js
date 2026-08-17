@@ -674,6 +674,9 @@ const _MESSUP_LIB = {
   ],
   "Basics": [
     "Good timing. Tirar means pull. You were about to be manhandling a door handle from 1918."
+  ],
+  "Sights": [
+    "__ES__ was slipping, and the ticket line is no place to improvise."
   ]
 };
 function _doorHeadline(kase, lesson, fading, total) {
@@ -689,12 +692,15 @@ function _doorHeadline(kase, lesson, fading, total) {
     traer: ["Good timing. La cuenta was slipping, and the check never comes to the table that can't ask."],
     cuesta: ["Smart to review now. Quince and cincuenta look alike until the change comes back wrong."],
     hora: ["Good timing. Mix up las dos and las cinco and you wait three hours outside a closed shop."],
-    donde: ["Smart to review now. Izquierda and derecha were blurring. That is two blocks the wrong way."]
-  })[norm(lesson.frame).replace(/[^a-z]/g, " ").split(/\s+/).find(w => ["traer","cuesta","hora","donde"].includes(w)) || ""] : null;
+    donde: ["Smart to review now. Izquierda and derecha were blurring. That is two blocks the wrong way."],
+    quiero: ["Quiero was slipping. Mime alone orders the mystery plate."],
+    hay: ["\u00bfHay...? was fading. Without it, finding the bathroom becomes a self-guided tour."],
+    necesito: ["Necesito was slipping, and a dead phone can't ask for a charger."]
+  })[norm(lesson.frame).replace(/[^a-z]/g, " ").split(/\s+/).find(w => ["traer","cuesta","hora","donde","quiero","hay","necesito"].includes(w)) || ""] : null;
   const lines = frameLib || _MESSUP_LIB[categoryOf(lesson.topic || "")] || null;
   if (lines) {
     const seed = (lesson.id || "").length + new Date().getDate();   // rotates per lesson + day
-    return wrap(lines[seed % lines.length], "st-slip");
+    return wrap(lines[seed % lines.length].replace("__ES__", fading[0].es), "st-slip");
   }
   // no library entry for this category yet: name the weakest item plainly (flagged to chat)
   return wrap(`Good timing. ${fading[0].es} was slipping, and this lesson leans on it.`, "st-slip");

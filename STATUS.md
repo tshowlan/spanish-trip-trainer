@@ -15,6 +15,13 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-17 — Door library complete (v240)
+- Chat's four lines landed: wantmachine (mystery plate), theremachine (self-guided tour),
+  needmachine (dead phone, deliberately non-medical), Sights (ticket line, weakest item
+  interpolated). No-category fallback KEPT (passed the order test as written).
+- GONE rebuild behavior ratified; decisions.md carries the scaffolded-first rule.
+- Door fully closed pending Tom's device screenshot (luminous gate).
+
 ## 2026-08-17 — RETURN DOOR r5.5 built (v239)
 - Chat's stamped artifact committed (design/return-door.html supersedes r2); renderReturnDoor
   rebuilt to the composition: scene (introPhoto, home's atmo blend verbatim), machine badge in
