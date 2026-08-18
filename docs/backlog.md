@@ -271,6 +271,38 @@ gets touched only when a structural change makes catch-up significant. Chat's bo
 read: Spain polish (voice, return door r3, letter rungs, exercise chrome) > Progress depth >
 session-end stamp cut; Mexico parked as catch-up-only.
 
+## Tom's batch 2, 2026-08-18 — triaged
+
+Device screenshots PASSED the luminous gate (door scrims clean both themes, badge legible);
+return door r5.5 stamp CLOSED. CODE quick fix SHIPPED v241: greetings joined the practice
+basics exemption (buenos dias / buenas tardes / buenas noches / hasta luego) so a depth set
+never ends cold on a greeting (8/18-6, part).
+
+- [CODE · VERIFY with Tom] 8/18-3 listen-exercise correct ding: the ding call exists on every
+  graded type (finishGrade -> playSound). Hypothesis: iOS suppresses the media clip while TTS
+  is still speaking - Tom to confirm whether it is missing only when answering while/just
+  after the voice speaks. Fix direction depends on the answer (delay is off the table, Sprint
+  1 ruled dings must feel instant).
+- [CHAT · notif engine §6] 8/18-1 weekly progress push + 8/18-2 consecutive-days compliment.
+  FLAG for chat: "x% of people never get here" needs real data we do not collect, and the
+  ruled notification register is "no streaks, no guilt" - the compliment push needs a ruling
+  against that register, not just copy.
+- [CHAT · content] 8/18-4 "Can you ___?" (¿puede ___?) as a new machine frame - content
+  session decision (composer guard + weld tags would follow).
+- [CHAT · letter rungs, QUEUED] 8/18-5 bigger letter tiles for phrase fill - joins the
+  letter-rungs session opening next.
+- [CHAT · depth ruling 4 delta] 8/18-6 (rest): state the set's contents at session start
+  (the chooser line exists; in-session naming is new) + order items by difficulty so the
+  final cold rep lands on a hard item, never a greeting/cognate.
+- [CODE analysis done · CHAT content] 8/18-7 hay machine short - CONFIRMED structural: hay has
+  0 authored variants (stretch never composes) and no reply set (exchanges shrink). Same gap:
+  quiero, cuesta, donde. Needs a machines content pass (variants + replies), not a composer fix.
+- [CHAT · new session] 8/18-8 multiple levels of the machines - big pedagogy door; folds the
+  8/18-7 content pass in naturally.
+- [CHAT · next design session] 8/18-9 primer upgrade: machine primers adopt the return-door
+  grammar (badges/logo faces), pictures incorporation TBD - this IS the "pictures" slot on the
+  Spain track (after letter rungs).
+
 ## Standing board (corrected 2026-08-10, slots between sprints at Tom's call)
 
 Spain finalization first (voice session · return door r3 · letter-rungs reform · exercise

@@ -354,7 +354,7 @@ function applyRhythm(qs) {
    shape retires; the pile is PACED - a daily portion at depth, never purged; the basics
    exemption holds (8/2-17). Old mistakes-first front-load folds into the scoring: a missed
    item is weak AND overdue, so it surfaces on its own. */
-const PRACTICE_BASICS = new Set(["si", "no", "gracias", "por favor", "hola", "adios", "perdon", "de nada", "vale"]);
+const PRACTICE_BASICS = new Set(["si", "no", "gracias", "por favor", "hola", "adios", "perdon", "de nada", "vale", "buenos dias", "buenas tardes", "buenas noches", "hasta luego"]);   // greetings joined 8/18 (Tom: cold-producing Buenos dias is silly)
 function _practicePick(pool) {
   const now = Date.now();
   const cands = [];

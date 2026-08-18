@@ -15,6 +15,13 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-18 — Device pass + batch 2 triage (v241)
+- Tom's device screenshots passed the luminous gate (both themes); return door stamp CLOSED.
+- Greetings joined PRACTICE_BASICS (no more cold-producing Buenos dias in a depth set).
+- Batch 2 triaged into backlog 8/18: listen-ding hypothesis awaiting Tom's answer; notif ideas
+  flagged against the no-streaks register; hay machine confirmed content-short (0 variants,
+  no replies; also quiero/cuesta/donde); machine levels + primer upgrade parked as sessions.
+
 ## 2026-08-17 — Door library complete (v240)
 - Chat's four lines landed: wantmachine (mystery plate), theremachine (self-guided tour),
   needmachine (dead phone, deliberately non-medical), Sights (ticket line, weakest item
