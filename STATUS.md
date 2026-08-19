@@ -15,6 +15,15 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-18 — Listen ding fix (v242)
+- Tom's device answer pinned 8/18-3: the ding dies only when answering near the voice's end.
+  Fix in playSound: grade dings (correct/wrong) cancel any active/pending TTS first (the
+  answer ends the listening; the conveyor's queued speech is untouched - grade dings only),
+  plus a one-shot 60ms retry when iOS rejects the first play() at TTS teardown. No delay:
+  Sprint 1's instant-ding ruling holds.
+- Verification limit: iOS audio-session behavior cannot reproduce in the desktop pane;
+  node --check + logic review here, device confirmation is Tom's.
+
 ## 2026-08-18 — Device pass + batch 2 triage (v241)
 - Tom's device screenshots passed the luminous gate (both themes); return door stamp CLOSED.
 - Greetings joined PRACTICE_BASICS (no more cold-producing Buenos dias in a depth set).

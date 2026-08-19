@@ -74,11 +74,18 @@ document.addEventListener("pointerdown", () => {
 function playSound(kind, opts) {
   if (!state.sound) return;
   const el = _clips[kind]; if (!el) return;
+  // iOS swallows the clip when it lands too close to active/ending TTS (Tom, 8/18: ding
+  // plays if he waits, dies if he answers near the voice's end). A GRADE ding always means
+  // the exercise is answered, so the phrase has done its job: cancel speech first, freeing
+  // the audio session. Grade dings only - the conveyor's queued speech must never be cut.
+  if ((kind === "correct" || kind === "wrong") && "speechSynthesis" in window
+      && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel();
   // opts.rate re-pitches the baked clip (preservesPitch off, so rate IS pitch) - the pairs
   // board climbs a chord as matches land [tune]; everything else plays at 1
   try { el.preservesPitch = false; el.webkitPreservesPitch = false; } catch (e) {}
   el.playbackRate = (opts && opts.rate) || 1;
-  el.play().catch(() => {});
+  // one imperceptible retry: right at TTS teardown iOS can reject the first play()
+  el.play().catch(() => { setTimeout(() => { try { el.play().catch(() => {}); } catch (_) {} }, 60); });
   // rewind AFTER (and on ended), not before: a pre-play seek adds latency to the next ding
   el.onended = () => { el.currentTime = 0; };
   if (!el.paused && el.currentTime > 0.03) { el.currentTime = 0; }   // rapid re-fire: restart mid-clip
