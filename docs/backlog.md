@@ -278,11 +278,9 @@ return door r5.5 stamp CLOSED. CODE quick fix SHIPPED v241: greetings joined the
 basics exemption (buenos dias / buenas tardes / buenas noches / hasta luego) so a depth set
 never ends cold on a greeting (8/18-6, part).
 
-- [CODE · VERIFY with Tom] 8/18-3 listen-exercise correct ding: the ding call exists on every
-  graded type (finishGrade -> playSound). Hypothesis: iOS suppresses the media clip while TTS
-  is still speaking - Tom to confirm whether it is missing only when answering while/just
-  after the voice speaks. Fix direction depends on the answer (delay is off the table, Sprint
-  1 ruled dings must feel instant).
+- ~~8/18-3 listen-exercise correct ding~~ - CONFIRMED by Tom (dies near voice end) and
+  SHIPPED v242: grade dings cancel active TTS first + one-shot retry on iOS play rejection.
+  No delay (Sprint 1 instant-ding ruling holds). Tom re-checks on device.
 - [CHAT · notif engine §6] 8/18-1 weekly progress push + 8/18-2 consecutive-days compliment.
   FLAG for chat: "x% of people never get here" needs real data we do not collect, and the
   ruled notification register is "no streaks, no guilt" - the compliment push needs a ruling
