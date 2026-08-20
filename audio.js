@@ -54,9 +54,12 @@ function _renderClip(notes, seconds) {
 const _clips = {};
 try {
   if (navigator.audioSession) navigator.audioSession.type = "playback";
-  _renderClip([[659.25, 0, 0.12], [987.77, 0.09, 0.16]], 0.4).then(el => _clips.correct = el);   // E5 + B5
-  _renderClip([523.25, 659.25, 783.99, 1046.5].map((f, i) => [f, i * 0.11, 0.22]), 0.8).then(el => _clips.win = el);
-  _renderClip([[196, 0, 0.22, "triangle", 0.12]], 0.4).then(el => _clips.wrong = el);
+  // gains re-leveled 8/19 (Tom: the ding sat well under the voice): correct/win bake at
+  // 0.45/0.4 peak (~+8dB over the old 0.18, still clip-safe with note overlap); wrong stays
+  // deliberately soft - errors never blare.
+  _renderClip([[659.25, 0, 0.12, "sine", 0.45], [987.77, 0.09, 0.16, "sine", 0.45]], 0.4).then(el => _clips.correct = el);   // E5 + B5
+  _renderClip([523.25, 659.25, 783.99, 1046.5].map((f, i) => [f, i * 0.11, 0.22, "sine", 0.4]), 0.8).then(el => _clips.win = el);
+  _renderClip([[196, 0, 0.22, "triangle", 0.18]], 0.4).then(el => _clips.wrong = el);
 } catch (e) { /* no offline audio: dings degrade to silence, the app is unaffected */ }
 // NO background keeper loop here, ever: a playing media element stomps on iOS
 // speechSynthesis, and the voice outranks the ding (learned v210, reverted v211).
