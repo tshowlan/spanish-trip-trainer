@@ -15,6 +15,12 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-19 — Correct ding voiced up + normalized (v245)
+- Gain bumps stalled (two short thin sines read quiet at any level), so the clip changed
+  instead: octave-down partial under each note for body, slightly longer decays, and the
+  renderer gained peak-normalization - correct now renders at 0.95 true peak, the loudest
+  possible without distortion. Win/wrong untouched (Tom ruled win about right).
+
 ## 2026-08-19 — Ding re-level (v243)
 - Tom confirmed the v242 TTS-cancel fix works on device, then caught the ding sitting well
   under the voice: the clips baked at 0.18 peak vs the voice's full volume. Correct/win

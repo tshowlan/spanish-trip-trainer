@@ -25,7 +25,7 @@ function speak(text, rate, opts) {
    v207/v208 saga). TTS never fails because it rides the MEDIA lane. So each sound is
    synthesized ONCE (offline render → WAV blob) and played through an <audio> element:
    the same lane as the voice, by construction. */
-function _renderClip(notes, seconds) {
+function _renderClip(notes, seconds, normTo) {
   const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
   const ctx = new OAC(1, Math.ceil(44100 * seconds), 44100);
   for (const [freq, start, dur, type, gain] of notes) {
@@ -38,6 +38,13 @@ function _renderClip(notes, seconds) {
   }
   return ctx.startRendering().then(buf => {
     const pcm = buf.getChannelData(0), n = pcm.length;
+    // normTo: scale the finished waveform so its true peak lands at normTo of full scale -
+    // the loudest this clip can be with zero clipping, independent of how partials sum
+    if (normTo) {
+      let peak = 0;
+      for (let i = 0; i < n; i++) { const a = Math.abs(pcm[i]); if (a > peak) peak = a; }
+      if (peak > 0.0001) { const k = normTo / peak; for (let i = 0; i < n; i++) pcm[i] *= k; }
+    }
     const v = new DataView(new ArrayBuffer(44 + n * 2));
     const tag = (off, s) => { for (let i = 0; i < s.length; i++) v.setUint8(off + i, s.charCodeAt(i)); };
     tag(0, "RIFF"); v.setUint32(4, 36 + n * 2, true); tag(8, "WAVEfmt ");
@@ -57,7 +64,12 @@ try {
   // gains re-leveled 8/19 (Tom: the ding sat well under the voice): correct/win bake at
   // 0.45/0.4 peak (~+8dB over the old 0.18, still clip-safe with note overlap); wrong stays
   // deliberately soft - errors never blare.
-  _renderClip([[659.25, 0, 0.12, "sine", 0.7], [987.77, 0.09, 0.16, "sine", 0.7]], 0.4).then(el => _clips.correct = el);   // E5 + B5 (0.7: two SHORT notes read quieter than the win's four - matched by ear, Tom 8/19)
+  // Correct: E5+B5 with an octave-down partial under each for body (two short thin sines
+  // kept reading quiet at any gain - Tom, 8/19), then normalized to 0.95 true peak.
+  _renderClip([
+    [659.25, 0, 0.16, "sine", 0.6], [329.63, 0, 0.16, "sine", 0.22],
+    [987.77, 0.09, 0.2, "sine", 0.6], [493.88, 0.09, 0.2, "sine", 0.22]
+  ], 0.4, 0.95).then(el => _clips.correct = el);
   _renderClip([523.25, 659.25, 783.99, 1046.5].map((f, i) => [f, i * 0.11, 0.22, "sine", 0.4]), 0.8).then(el => _clips.win = el);
   _renderClip([[196, 0, 0.22, "triangle", 0.18]], 0.4).then(el => _clips.wrong = el);
 } catch (e) { /* no offline audio: dings degrade to silence, the app is unaffected */ }
