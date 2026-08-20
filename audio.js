@@ -64,11 +64,12 @@ try {
   // gains re-leveled 8/19 (Tom: the ding sat well under the voice): correct/win bake at
   // 0.45/0.4 peak (~+8dB over the old 0.18, still clip-safe with note overlap); wrong stays
   // deliberately soft - errors never blare.
-  // Correct: E5+B5 with an octave-down partial under each for body (two short thin sines
-  // kept reading quiet at any gain - Tom, 8/19), then normalized to 0.95 true peak.
+  // Correct: the ORIGINAL bright E5+B5 chime (octave-DOWN partials read as a different,
+  // duller sound - Tom, 8/19), original snappy decays, a whisper of octave-UP sparkle,
+  // normalized to 0.95 true peak: the loudness win without the timbre loss.
   _renderClip([
-    [659.25, 0, 0.16, "sine", 0.6], [329.63, 0, 0.16, "sine", 0.22],
-    [987.77, 0.09, 0.2, "sine", 0.6], [493.88, 0.09, 0.2, "sine", 0.22]
+    [659.25, 0, 0.12, "sine", 0.6], [1318.51, 0, 0.12, "sine", 0.12],
+    [987.77, 0.09, 0.16, "sine", 0.6], [1975.53, 0.09, 0.16, "sine", 0.12]
   ], 0.4, 0.95).then(el => _clips.correct = el);
   _renderClip([523.25, 659.25, 783.99, 1046.5].map((f, i) => [f, i * 0.11, 0.22, "sine", 0.4]), 0.8).then(el => _clips.win = el);
   _renderClip([[196, 0, 0.22, "triangle", 0.18]], 0.4).then(el => _clips.wrong = el);
