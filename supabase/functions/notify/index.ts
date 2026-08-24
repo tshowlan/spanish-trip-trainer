@@ -56,7 +56,7 @@ function decide(sub: any, tz: string, now: { minutes: number; hour: number; ymd:
   // COUNTDOWN — 30/14/7 days out, fires regardless of behavior
   for (const m of [30, 14, 7]) {
     if (n.daysOut === m && !lastOf(recent, `countdown_${m}`)) {
-      return { type: `countdown_${m}`, title: `${m === 7 ? "One week" : m + " days"} to ${dest(n)}`, body: `You're at ${n.readiness}% — ${band(n.readiness)}.` };
+      return { type: `countdown_${m}`, title: `${m === 7 ? "One week" : m + " days"} to ${dest(n)}`, body: `You're at ${n.readiness}%: ${band(n.readiness)}.` };
     }
   }
 
@@ -82,7 +82,7 @@ function decide(sub: any, tz: string, now: { minutes: number; hour: number; ymd:
   // USER-SCHEDULED reminder — neutral fallback at the chosen slot; suppressed if practiced today (§6.2)
   if (sub.enabled) {
     const doneToday = n.lastSession && local(tz, new Date(n.lastSession)).ymd === now.ymd;
-    if (!doneToday) return { type: "reminder", title: `Time to practice`, body: `A few minutes keeps your ${dest(n)} phrases fresh — you're at ${n.readiness}%.` };
+    if (!doneToday) return { type: "reminder", title: `Time to practice`, body: `A few minutes keeps your ${dest(n)} phrases fresh.` };
   }
   return null;
 }

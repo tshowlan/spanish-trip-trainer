@@ -1505,7 +1505,7 @@ function renderWeld(q) {
   body.appendChild(el(`<div class="qtype">${q.ves ? "The stretch" : "The weld"}</div>`));
   const cueBlock = el(`<div class="conv-cuewrap"></div>`);
   const outOfLesson = run && run.review;   // depth set / shop / lap: no machine established on screen
-  cueBlock.appendChild(el(`<div class="cue-label">${q.ves ? "Another way to ask for" : (outOfLesson ? "Say it in Spanish" : "Ask for")}</div>`));
+  cueBlock.appendChild(el(`<div class="cue-label">${q.ves ? "Another way to ask for" : (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for")}</div>`));
   cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${outOfLesson && !q.ves ? q.item.en : q.cue.fen}</div>`));
   body.appendChild(cueBlock);
   const stage = el(`<div class="machine-stage"></div>`);
@@ -2465,6 +2465,7 @@ function renderLetterFill(q, scale) {
   const slotIdx = _pickSlotIdx(text, learnRec, scale === "phrase" ? 2 : 1);
   const line = el(`<div class="fill-line ${scale}"></div>`);
   const slots = [];
+  const fixedChars = new Set();   // printed (non-slot) letters: taps matching them are neutral, never a miss
   let cursor = 0;
   text.split(/(\s+)/).forEach(part => {
     if (!part.length) return;
@@ -2478,7 +2479,7 @@ function renderLetterFill(q, scale) {
         const accept = norm(want) !== want.toLowerCase() ? norm(want) : "";
         const sEl = el(`<span class="lslot" data-want="${want}" data-accept="${accept}"><span class="dashes">-</span></span>`);
         slots.push(sEl); w.appendChild(sEl);
-      } else w.appendChild(document.createTextNode(ch));
+      } else { w.appendChild(document.createTextNode(ch)); if (/[a-z\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1\u00fc]/i.test(ch)) fixedChars.add(norm(ch)); }
     }
     line.appendChild(w);
     cursor += part.length;
@@ -2499,6 +2500,11 @@ function renderLetterFill(q, scale) {
       nextSlot++; markNext();
       if (nextSlot >= slots.length) { done = true; setTimeout(() => _finishFill(q, item, wrongTaps), 340); }
     } else {
+      // already on the board (printed text or a settled slot)? Reading the word and tapping
+      // a letter that is visibly there is not a slip - neutral, no flash (Tom, 8/19-3)
+      const visible = new Set(fixedChars);
+      for (let i = 0; i < nextSlot; i++) visible.add(norm(slots[i].dataset.want));
+      if (visible.has(norm(letter))) { haptic("press"); return; }
       wrongTaps++;                                   // slip logged silently at resolve; no copy, no chastisement
       if (tile) { tile.classList.add("shake"); setTimeout(() => tile.classList.remove("shake"), 340); }
       slot.classList.add("wrongflash");
@@ -2512,7 +2518,7 @@ function renderLetterFill(q, scale) {
     // the slot (green sweep, the existing forgiveness path).
     const wants = slots.map(s => norm(s.dataset.want));
     const distract = [];
-    const traps = "bvhoue".split("").filter(c => !wants.some(x => x.toLowerCase() === c) && !distract.includes(c));
+    const traps = "bvhoue".split("").filter(c => !wants.some(x => x.toLowerCase() === c) && !fixedChars.has(c) && !distract.includes(c));
     while (distract.length < Math.min(3, 2 + Math.floor(wants.length / 2)) && traps.length) distract.push(traps.shift());
     const tray = el(`<div class="keytray"></div>`);
     shuffle([...wants, ...distract]).forEach(letter => {

@@ -15,6 +15,18 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-19 — Batch 3 + north-star prep (v248)
+- Ding saga closed at v247 (original waveform, 0.95 normalized - Tom confirmed).
+- CODE fixes v248: already-visible letter taps are neutral in the letter rungs (printed or
+  settled letters never flash wrong; distractors avoid the word's own letters); typed
+  out-of-lesson weld labeled "Type it in Spanish".
+- SERVER deployed (Supabase notify): em dash out; stale readiness % dropped from the
+  reminder (snapshot is as-of last app open - wrong exactly when reminders fire). FLAG:
+  server notification copy never went through the voice audit.
+- Batch 3 triaged (backlog 8/19). NORTH-STAR session prepped:
+  tripfluent-northstar-kickoff.md (Tom's framing verbatim, the already-ruled ethos
+  collected, open questions, build-side tensions, deliverable shape).
+
 ## 2026-08-19 — Correct ding voiced up + normalized (v245)
 - Gain bumps stalled (two short thin sines read quiet at any level), so the clip changed
   instead: octave-down partial under each note for body, slightly longer decays, and the

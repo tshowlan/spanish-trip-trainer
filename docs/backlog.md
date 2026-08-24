@@ -301,6 +301,33 @@ never ends cold on a greeting (8/18-6, part).
   grammar (badges/logo faces), pictures incorporation TBD - this IS the "pictures" slot on the
   Spain track (after letter rungs).
 
+## Tom's batch 3, 2026-08-19 — triaged
+
+CODE quick fixes SHIPPED v248: tapping a letter already visible on the board (printed text
+or a settled slot) is neutral, never a wrong flash (8/19-3); tray distractors no longer
+collide with the word's own printed letters; the typed out-of-lesson weld says "Type it in
+Spanish" (8/19-7, part). SERVER (deployed live to Supabase): notification em dash removed
+and the STALE readiness percent dropped from the reminder line - the snapshot is as-of last
+app open, so the number is wrong exactly when the reminder fires (8/19-4 both halves).
+
+- [CHAT · flag] The server notification lines (supabase/functions/notify) never went through
+  the voice audit - the copy inventory only covered client JS. Small audit pass owed.
+- [CHAT · door delta] 8/19-1 top edge of the door photos + 8/19-2 the range/mountains fight
+  the photos on the return door (the landscape law's "dense screens bury it" is the lever -
+  does the door count as dense?).
+- [CHAT · design] 8/19-5 + 8/19-6 pair: a door for the review action tile + grounding the
+  review session (scene jumps between items, the strength ring churns). Candidate: review
+  sessions get one fixed scene + a session door naming the set (ties to the 8/18-6 "state
+  what's in the review" delta).
+- [CHAT · part] 8/19-7 rest: the typed weld affordance (big empty type block under English)
+  needs a design look beyond the label fix.
+- [CHAT] 8/19-8 introduce the teaching structure/exercise names to users (the weld, the
+  machines) - ties into the north-star session.
+- [INFO] 8/19-9 orientation: manifest already declares portrait; iOS ignores it. Only lever
+  is a landscape guard overlay - chat's call whether it is worth one.
+- [NORTH STAR] 8/19-10 lessons bridging/forming into each other + AI-composed review
+  sessions - folded into the north-star kickoff (tripfluent-northstar-kickoff.md).
+
 ## Standing board (corrected 2026-08-10, slots between sprints at Tom's call)
 
 Spain finalization first (voice session · return door r3 · letter-rungs reform · exercise
