@@ -1,0 +1,6 @@
+{
+  "projectId": "6125b01f-a805-4efc-b847-93cbd7de7226",
+  "projectName": "Tripfluent Design System",
+  "shape": "package",
+  "offScript": "css-only vanilla-JS design system: no React components, no dist/, no _ds_bundle.js. Bundle is hand-assembled (styles.css closure + fonts + guidelines + pattern cards). See NOTES.md."
+}
