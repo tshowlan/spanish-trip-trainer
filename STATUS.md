@@ -15,6 +15,29 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-27 — North star build steps 1-2 (v249)
+- Constitution merge: THE LEARNING CONSTITUTION merged verbatim as the constitution's FIRST
+  family (above voice) - star, method, six tenets + tests, rulings, core/periphery/frozen,
+  the scenes, two tracks. Handoff's three decision lines appended.
+- design/scene-poc.html committed (stamped r15); played end to end in the pane before
+  building (Tom's gate): door window -> 2 exchanges -> cash-only weld -> overheard line ->
+  crossword listen -> regular's-move build -> resolution.
+- NARRATIVE CUES live: any exercise cue may carry one diegetic line (item.narr). Weld +
+  conveyor render it as a cue-label prefix ("The glass is empty · Ask for"). Author pass:
+  29 lines across all seven machines, role-nouns only (cast-met-first law holds; no names
+  in machine lessons). Lines listed in the report for chat's review; safety items straight.
+- Note for chat: cue-label is micro-caps, so the diegetic line renders in caps; if the
+  scenes' warmth wants sentence case here, that is a small design delta.
+- Next per build order: (3) the scene runner (beat player per POC, templates as data,
+  composer fills slots), (4) scene authoring v1 (Tom + chat), (5) tilt wiring.
+
+## 2026-08-19 — NORTH STAR closed: the learning constitution ratified + THE SCENES POC stamped (r15)
+- The star, the method, the tilt, six tested tenets; scenes = the review room's identity; two
+  tracks; the window ruled.
+- Build order: constitution merge -> narrative cues in lessons -> scene runner -> scene
+  authoring v1 (Tom + chat workstream) -> tilt wiring.
+- Spain track resumes after: letter rungs, then pictures (scene photo sourcing folds into it).
+
 ## 2026-08-19 — Batch 3 + north-star prep (v248)
 - Ding saga closed at v247 (original waveform, 0.95 normalized - Tom confirmed).
 - CODE fixes v248: already-visible letter taps are neutral in the letter rungs (printed or

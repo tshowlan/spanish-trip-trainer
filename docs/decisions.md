@@ -236,3 +236,6 @@ luminous law.)
 - 2026-08-15 — YOURS NOW rides silent: the kicker alone, no explaining sentence (Tom's cut, voice law 4).
 - 2026-08-12 — The return door r5: scene + machine badge (the seven [x]machine names, logo faces) + the frame as pedestal + mess-up headline + whispered counts. Ladder doors wear the wordmark and their title. Status palette: green holds, gold slips, grey drains (70/30 mix in dim contexts). GONE case added (>50% [tune]) → scaffolded rebuild.
 - 2026-08-13 — Rebuild opens on native scaffolded forms; recognition serves only when nothing scaffolded is feasible.
+- 2026-08-19 — The learning constitution ratified (star, method, six tenets + tests, AI boundary, two tracks, core/periphery, Fluent pass frozen, consecutive-days push dead).
+- 2026-08-19 — The scenes: authored spine templates with item slots; scene laws (stanza, cast-met-first, overheard line, narrative cues in lessons, jealousy test).
+- 2026-08-19 — The window: scene doors carry a framed full photograph (mitered maple + white mat); POC r15 is the spec.

@@ -11,6 +11,101 @@ doc narrates, this file states only the laws.
 
 ---
 
+## The learning constitution (north star session, ratified 2026-08-19)
+
+### THE STAR
+
+**Get one person ready for one trip in six weeks. The trip is the teacher.**
+
+Duolingo's teacher is a mascot with a guilt schedule. Tripfluent's teacher is the trip itself: the deadline that paces you, the scenes that frame every phrase, the stakes that make a rep matter, the cast who answer back. The app's job is to keep the trip in the room.
+
+**Where the best learning experiences actually come from** (Tom's question, answered honestly): a real goal with a visible clock; challenge pitched just past comfort; producing the thing, not recognizing it; and a guide who makes the material matter. Great teachers work because they carry stakes and belief, not because they're fun. This app already has all four — the countdown, the ladder, cold production, and the trip-as-guide — which is why the star is a naming, not a pivot.
+
+---
+
+### THE METHOD (how we take someone through)
+
+*The tenets test what we build; the method is how we teach. Three scales.*
+
+### How one phrase is taught (the item's journey)
+
+Meet it in a scene before you meet it as words — the primer shows the moment, the guess comes before the reveal, so the phrase lands as the answer to a situation, not a vocabulary entry. Then the hands take over: grasp its meaning, build it from pieces, watch the frame vary so the pattern shows itself, and type it cold — the summit, because retrieval under mild pressure is what writes it in. The scaffolds dissolve as competence shows (tiles give way to the keyboard); misses move the ladder, never punish. And the phrase never retires: it comes back in exchanges, welds into new company, and appears in the review room next to phrases it will really stand beside in Spain. A phrase is DONE when it shows up beside strangers and still comes out cold.
+
+### How one session is shaped (the six minutes)
+
+A session is one breath: arrive through a door that says where you are and why now; climb — each beat slightly harder or newer than the last; the middle weaves new phrases among returning ones so nothing is learned in isolation; the lap runs today's material once more at speed; the close bows out doing the thing; the ceremony shows what actually moved. Sequence is the app's, pace is the learner's, and the session never asks for more than it said it would.
+
+### How six weeks moves a person (the arc)
+
+**Week by week, the mix tilts.** Early: survival essentials first, then scenario waves in demand order — mostly MEETING new phrases. Middle: the machines arrive and multiply what a person can say (seven frames × everything they've learned); learning and composing run side by side. Late: **the tilt inverts** — the review room's share grows as the countdown falls, until the final week is mostly REHEARSAL: composed stretches of the actual trip, run end to end, everything the person owns arranged in the day-shapes they'll live. The countdown doesn't just pace the person; it changes what kind of app this is as the date approaches. Six weeks out, Tripfluent is a teacher. One week out, it's a training camp.
+
+---
+
+### THE SIX TENETS (each with its test)
+
+1. **THE TRIP IS THE TEACHER.** Every feature, screen, and line must trace to a moment on the trip. *The moment test: name the Spain moment this serves. Can't name it → periphery or cut.*
+2. **PRODUCTION IS THE PROOF.** A phrase is learned when it's produced cold; recognition exists only as the road to production. *The cold test: does this rep move the item toward cold production? A feature that adds recognition without a path up the ladder fails.*
+3. **DEPTH BEATS BREADTH.** Fewer phrases at automaticity over more phrases at familiarity; the demand weights decide what's in. *The automaticity test: would we rather the user own this phrase colder, or meet a new one? Default to colder.*
+4. **CELEBRATION, NEVER MANIPULATION** (the unwritten line, written). Reward marks real progress after the fact; nothing is engineered to create anxiety, obligation, or a return-loop. *The manipulation test: does this mechanic inform the user about their readiness, or induce behavior by feeling? Would we keep it if it didn't increase opens? Both answers must be the honest one.*
+5. **QUIET UNTIL USEFUL.** The app speaks only when it has something true to say about readiness. *The usefulness test: does this message tell the user something about being ready for the trip? "You've opened the app 5 days straight" fails (it's about the app). "Your essentials are drilled; 12 days out" passes (it's about the trip).* — This settles the compliment-push class permanently.
+6. **SYNTHESIS IS THE SUMMIT.** Lessons teach pieces; competence is pieces composing. The review room is where phrases from different lessons meet, and it is designed as the app's highest experience, not its maintenance closet. *The composition test: does the learner ever use this phrase NEXT TO phrases it will really stand next to in Spain?*
+
+---
+
+### THE OPEN QUESTIONS, RULED
+
+**1. The teacher.** No persona, no narrator — ruled and kept. The teacher's functions are distributed: stakes live in the countdown and the voice; scenes live in the primers; warmth and being-known live in the CAST and the personalization (your destination, your dates, your dietary lines). Where more warmth is wanted, the answer is MORE CAST (Marina, Núria, Sra. Rosa appearing across more surfaces), never a mascot. *The cheap probe first: extend the cast into review framing before inventing anything.*
+
+**2. Bridging.** Yes — and it has a home: **the review room** (see the first build). Lessons stay islands on purpose (focused, scoped); the review room is where the map assembles.
+
+**3. The AI boundary.** **The engine composes; it never invents.** At runtime, everything the learner sees or hears is authored atoms combined under authored guards (the composer's tags, the reply sets, the variants field) — the broken-Spanish precedent stands as the reason. AI-GENERATED content is legal only at AUTHORING TIME, entering the same human pipeline as everything else (drafts for Tom's review, never straight to the learner). The pipe-dream stress test (novel sentences from everything due) is buildable INSIDE this boundary: compose authored frames + legal welds + banked replies into new sequences — new arrangements, never new Spanish.
+
+**4. Teaching the structure.** Name it once, then let it work. Each named mechanism gets ONE introduction line at first meeting, in the voice ("Your first machine: one frame, many asks."), and nothing else — no tour, no manual, no methodology screen. Named because a method you can name is a method you trust; once because explanation is clutter after the first use.
+
+---
+
+### CORE / PERIPHERY / FROZEN
+
+**CORE (the star's body):** the Spain pack · countdown + readiness + pace · the ladder + the machines + depth practice · the review room · the two doors and the ceremonies · the voice · the field.
+
+**PERIPHERY, KEPT CHEAP (earns its place, never grows expensive):** the speed round ("pure fun, advances nothing" is its license) · the tiers (Ambassador/World Citizen serve the repeat-trip arc; quiet, milestone-driven, already decay-test clean) · group readiness (cheap, social proof for the trip) · Mexico (catch-up passes only, already ruled).
+
+**FROZEN pending the moment test (Tom's call):** the Fluent pass — if it can't name its trip moment, it waits. Nothing else builds on it until it passes.
+
+**DEAD by tenet:** the consecutive-days compliment push (fails tenet 5's usefulness test — it's about the app, not the trip). Any future streak-adjacent mechanic dies the same way.
+
+---
+
+### THE FIRST BUILD: THE SCENES (the review room's full form — Tom's ruling, 2026-08-19)
+
+**Review sessions are SCENES: short authored micro-stories set in real Spain moments, starring the cast, where the learner's due items ARE the story's beats.** This is the answer to the disjointed review and the orphan exercises in one move — Dígame and Que aproveche stop floating because they are SCENE GLUE: every atmospheric phrase gets authored scene-homes (dígame when the shopkeeper turns to you; que aproveche as you leave the table), and the scene is where they finally mean something.
+
+**The spine (Pixar's, worn lightly).** Every scene runs: EVERY DAY (the setting, one visual line: "Morning rush at Bar Paloma. The marble counter is cold; Marina is fast.") → UNTIL ONE DAY (the disruption: the card machine dies, the last table is taken, Sra. Rosa waves you over) → BECAUSE OF THAT (2-4 beats of the learner DOING: asking, ordering, handling it — each beat an exercise serving a due item) → UNTIL FINALLY (the resolution + the human moment: the cuenta comes, que aproveche follows you out, Marina knows your order). Setup and resolution are authored; the middle beats are slots.
+
+**The authoring shape (the AI boundary holds).** A scene is an authored template: setting + cast + spine + ITEM SLOTS typed by category and machine + glue lines. The engine composes which due items ride which slots — new arrangements, never new Spanish. One scene serves many due-sets; 2-4 scenes per scenario category to start.
+
+**The writing bar:** **THE JEALOUSY TEST** — would someone reading this scene wish it had happened to them? Plus brevity law: max TWO framing lines per beat, visual wording (things you can see and touch: marble, the cortado sliding over), all voice laws hold.
+
+**The door:** THE WINDOW (ruled at the POC, 2026-08-19) — a framed full photograph: skinny mitered maple frame, white mat flush inside, the whole photo in the window; below it the scene's name, the setting line, and the opening stanza; one CTA into the morning.
+
+**The scene laws (minted at the POC, all Tom-ratified):**
+- **THE STANZA FORM**: framing prose renders one short line per sentence with air between, haiku-adjacent, never a paragraph block.
+- **THE CAST IS MET IN LESSONS FIRST**: scenes only star characters the learner knows; unknowns stay anonymous ("the woman with the crossword") until a lesson introduces them. First names only.
+- **THE OVERHEARD LINE**: one heard-only line per scene may foreshadow other content and deepen the cast (the local asking Marina "¿Tocas esta noche?").
+- **NARRATIVE CUES REACH LESSONS TOO**: any exercise cue may carry one diegetic line ("Marina waits · Ask what the cortado costs") — the weld is the real ask, a named person waiting.
+- The jealousy test, the two-line brevity law, full sentences, and all voice laws hold in scene prose.
+
+---
+
+### THE STRUCTURAL RULING: TWO TRACKS
+
+**Learn is the acquisition track; Scenes is the living track.** Chapters stay visible where phrases are MET (the ladder needs scoped islands), but chapters are packaging, not the product: chapter 3 is never revisited as chapter 3 — its phrases graduate into scenes and live there. THE TILT runs between the tracks: early weeks are mostly Learn, late weeks mostly Scenes, the final week almost entirely rehearsal in scene form. **The machines were the first step of this ruling already**: they never belonged to chapters, and scenes are largely machine operations in sequence — the machines are the grammar, the scenes are the sentences. Every future content decision asks: does this teach a piece (Learn) or compose the pieces (Scenes)?
+
+
+---
+
+---
+
 ## Color & light
 
 - **Gold is the app's light.** Gold marks what is lit / current / alive: the flame, audio glyphs,

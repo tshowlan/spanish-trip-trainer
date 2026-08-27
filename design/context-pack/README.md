@@ -14,5 +14,5 @@ current truth instead of memory:
 Plus, if the session touches an existing surface: that surface's current
 artifact from design/.
 
-Refreshed by tools/refresh-context-pack.sh on 2026-08-17 — do not edit
+Refreshed by tools/refresh-context-pack.sh on 2026-08-27 — do not edit
 these copies by hand; edit the sources and re-run the script.
