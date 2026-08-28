@@ -709,16 +709,9 @@ function renderSceneDoor(q) {
 function renderSceneClose(q) {
   const body = $("#qbody");
   const sc = q.scene;
-  body.appendChild(el(`<svg class="scene-art" viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-<path d="M30 96 L170 96" stroke-width="1.5" opacity="0.65"/>
-<ellipse cx="78" cy="88" rx="20" ry="7"/>
-<ellipse cx="78" cy="80" rx="20" ry="7"/>
-<path d="M58 80 L58 88 M98 80 L98 88" stroke-width="1.6"/>
-<ellipse cx="122" cy="90" rx="16" ry="6" opacity="0.85"/>
-<circle cx="146" cy="72" r="11" opacity="0.9"/>
-<path d="M142 72 Q146 68 150 72" stroke-width="1.4" opacity="0.7"/>
-</svg>`));
-  const st = el(`<div class="scene-line"></div>`);
+  // the close ships WITHOUT art: the POC's line drawing was a placeholder - the pictures
+  // session decides sourcing (Tom's catch, 2026-08-27; POC caption said so and I missed it)
+  const st = el(`<div class="scene-line" style="margin-top:34px"></div>`);
   sc.close.forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
   body.appendChild(st);
   body.appendChild(el(`<div class="qtype" style="text-align:center; margin-top:14px;">THAT'S THE SCENE \u00b7 ${q.count} PHRASE${q.count === 1 ? "" : "S"}, ${sc.closeTag || "ONE SCENE"}</div>`));
