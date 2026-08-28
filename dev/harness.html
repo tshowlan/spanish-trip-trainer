@@ -233,7 +233,7 @@
         "Scenes — Bar Paloma (POC template, composed live)": () => {
           clean(); seedDepthMix();
           // the scene's slot items must be SEEN (scene law): seed them
-          ["pongo","aproveche","cobras","cuenta"].forEach(kw => {
+          ["pongo","aproveche","cobra","cuenta"].forEach(kw => {
             ALL_ITEMS.filter(it => (it.keywords || []).includes(kw)).forEach(it => _seedWeak(it.id));
           });
           ALL_ITEMS.filter(it => (it.tags || []).includes("numbers")).slice(0, 4).forEach(it => _seedWeak(it.id));

@@ -633,29 +633,48 @@ function startLap(lesson) {
   renderQuestion();
 }
 
-/* THE SCENES (learning constitution first build, POC r15 is the reference): an authored
-   micro-story template whose beats are slots; the engine composes which due items ride
-   which slots under the authored accepts - new arrangements, never new Spanish. */
-function _scenePick(accepts, used) {
-  const cands = (ALL_ITEMS || []).filter(it => {
-    if (used.has(it.id)) return false;
-    if (exposuresOf(it) < 1) return false;                        // known content only (scene law)
-    if (accepts.frame) return norm(it.frame || "") === norm(accepts.frame) && !!_frameParts(it.frame, it.es);
-    if (accepts.keywords) return (it.keywords || []).some(k => accepts.keywords.includes(k));
-    if (accepts.tags) return (it.tags || []).some(t => accepts.tags.includes(t));
-    return false;
-  });
-  if (!cands.length) return null;
-  // due-first, then weakest: the scene is the review room
+/* THE SCENES (learning constitution first build; re-ruled 2026-08-21): scenes PIN their
+   phrases; THE ENGINE PICKS THE SCENE, NOT THE PIECES - it selects which scene to serve by
+   due-mass across the scene's own items, and swaps nothing inside. Flexibility exists only
+   where the author wrote it: alt lists (authored alternates) on beats whose stanza names no
+   content. (Slot-composition retired to the graveyard: composed slots failed the jealousy
+   test in the wild, v250.) */
+function _sceneItem(beat, used) {
+  const byEs = es => (ALL_ITEMS || []).find(it => norm(it.es) === norm(es));
+  const cands = [];
+  if (beat.es) { const it = byEs(beat.es); if (it) cands.push(it); }
+  (beat.alt || []).forEach(es => { const it = byEs(es); if (it) cands.push(it); });
+  const seen = cands.filter(it => !used.has(it.id) && exposuresOf(it) >= 1);   // known content only
+  if (!seen.length) return null;
   const now = Date.now();
-  cands.sort((a, b) => {
+  seen.sort((a, b) => {                                          // due-first, then weakest
     const sa = learnPeek(a), sb = learnPeek(b);
     const oa = sa && sa.due ? (now - new Date(sa.due + "T00:00:00").getTime()) : -1;
     const ob = sb && sb.due ? (now - new Date(sb.due + "T00:00:00").getTime()) : -1;
     if (oa !== ob) return ob - oa;
     return itemStrength(sa) - itemStrength(sb);
   });
-  return cands[0];
+  return seen[0];
+}
+/* due-mass: how much this scene's own items need review right now - the scene chooser's
+   score (coverage amendment: scenes crown the room; depth sets keep the floor) */
+function sceneDueMass(scene) {
+  let mass = 0, known = 0;
+  const now = Date.now();
+  scene.beats.forEach(b => {
+    const it = _sceneItem(b, new Set());
+    if (!it) return;
+    known++;
+    const st = learnPeek(it);
+    const overdue = st && st.due ? Math.max(0, (now - new Date(st.due + "T00:00:00").getTime()) / 864e5) : 0;
+    mass += (1 + Math.min(overdue, 21)) * (1.2 - itemStrength(st) / 100);
+  });
+  return known >= 3 ? mass : 0;                                  // a scene missing its cast of phrases is not servable
+}
+function pickSceneForReview() {
+  const scored = sceneList().map(sc => ({ sc, mass: sceneDueMass(sc) })).filter(x => x.mass > 0);
+  scored.sort((a, b) => b.mass - a.mass);
+  return scored.length ? scored[0].sc : null;
 }
 function _scenePhoto(scene) {
   const region = (state.active === "spain" && ES_PHOTOS.has(scene.img)) ? "es" : "mx";
@@ -666,8 +685,8 @@ function startScene(scene) {
   const qs = [{ type: "scene_door", scene }];
   const used = new Set();
   scene.beats.forEach(b => {
-    const it = _scenePick(b.accepts, used);
-    if (!it) return;                                              // a slot with nothing rideable yields
+    const it = _sceneItem(b, used);
+    if (!it) return;                                             // an unmet pinned phrase yields its beat
     used.add(it.id);
     if (b.kind === "weld" && it.frame) {
       const fp = _frameParts(it.frame, it.es);

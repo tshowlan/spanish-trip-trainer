@@ -144,7 +144,7 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### I only speak a little  `s1-rescue`
 - topic/setting: How do you say · shape: scenario
-- primer: EXISTS (scene: "Marina, who runs the little tasca on the corner, just reeled off today's specials, and you...") · guessItem: "¿Puede repetir, por favor?" · mission: "Admit your Spanish is shaky, and ask her to slow down."
+- primer: EXISTS (scene: "Rosa, who runs the little tasca on the corner, just reeled off today's specials, and you c...") · guessItem: "¿Puede repetir, por favor?" · mission: "Admit your Spanish is shaky, and ask her to slow down."
 - reward (invert to promise): "Now you can confess your Spanish is bad, in Spanish. Meta. Keep going so you don't have to."
 - atlas (2026-07-24): 5.1 min · in band 5-8 · difficulty 2.2 · ramp 1.7
 - phrases (8; first = anchor):
@@ -160,7 +160,7 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### First words at the table  `sp-table`
 - topic/setting: Restaurant · Ordering · shape: scenario
-- primer: EXISTS (scene: "It's packed at Marina's tasca. She wipes down a table, waves you into a chair, and sets do...") · guessItem: "Soy alérgico al marisco" · mission: "Get a table, order, and warn her about the shellfish before anything arrives."
+- primer: EXISTS (scene: "It's packed at Rosa's tasca. She wipes down a table, waves you into a chair, and sets down...") · guessItem: "Soy alérgico al marisco" · mission: "Get a table, order, and warn her about the shellfish before anything arrives."
 - reward (invert to promise): "You can get a table, order, ask for the check, and flag your shellfish allergy. Night one at the tapas bar: handled."
 - atlas (2026-07-24): 5.1 min · in band 5-8 · difficulty 2.2 · ramp 2.1
 - phrases (8; first = anchor):
@@ -176,7 +176,7 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### Where's the loo  `s2-bathroom`
 - topic/setting: Restaurant · Bathrooms · shape: scenario
-- primer: EXISTS (scene: "Two unmarked doors at the back of Marina's place, and a waiter squeezing past with a tray ...") · guessItem: "Entrada" · mission: "Ask where the loo is, and go in the right door every time."
+- primer: EXISTS (scene: "Two unmarked doors at the back of Rosa's place, and a waiter squeezing past with a tray of...") · guessItem: "Entrada" · mission: "Ask where the loo is, and go in the right door every time."
 - reward (invert to promise): "You can find a bathroom and read a door. Push vs. pull humiliation: avoided."
 - atlas (2026-07-24): 5.2 min · in band 5-8 · difficulty 1.9 · ramp 1.3
 - phrases (9; first = anchor):
@@ -246,12 +246,12 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### What locals say to you  `s4-hear`
 - topic/setting: Common phrases you'll hear · shape: scenario
-- primer: EXISTS (scene: "It's not just you talking now. Marina rattles something off as she sets your plate down, t...") · guessItem: "¿Todo bien?" · mission: "Catch what locals say to you, and know what they mean."
+- primer: EXISTS (scene: "It's not just you talking now. Rosa rattles something off as she sets your plate down, the...") · guessItem: "¿Todo bien?" · mission: "Catch what locals say to you, and know what they mean."
 - reward (invert to promise): "You can now understand what's being said TO you. Eavesdropping unlocked. Use responsibly."
 - atlas (2026-07-24): 4.9 min · in band 5-8 · difficulty 2.1 · ramp 1.5
 - phrases (8; first = anchor):
   1. Que tenga un buen día — Have a good day  (5 tok)  [kw: día]
-  2. ¿Le pongo algo más? — Shall I get you anything else?  (4 tok)  [note: Marina's version of 'anything else': pongo, literally 'shall I put'. · kw: pongo]
+  2. ¿Le pongo algo más? — Shall I get you anything else?  (4 tok)  [note: Rosa's version of 'anything else': pongo, literally 'shall I put'. · kw: pongo]
   3. ¿Todo bien? — Everything okay?  (2 tok)  [kw: todo]
   4. Ahora mismo — Right away  (2 tok)  [kw: mismo]
   5. ¿Qué le pongo? — What can I get you?  (3 tok)  [note: Counter Spanish. Pongo again: literally 'what shall I put you'. · kw: pongo]
@@ -262,7 +262,7 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### If something's wrong  `sp-help`
 - topic/setting: Problems & emergencies · shape: scenario
-- primer: EXISTS (scene: "You pat every pocket twice, your wallet's gone. Sra. Rosa, the farmacéutica on the corner,...") · guessItem: "Me han robado" · mission: "Get help fast, a doctor, the police, or her farmacia."
+- primer: EXISTS (scene: "You pat every pocket twice, your wallet's gone. Montse, the farmacéutica on the corner, ca...") · guessItem: "Me han robado" · mission: "Get help fast, a doctor, the police, or her farmacia."
 - reward (invert to promise): "The safety net's in place. Now go enjoy Barcelona, you're covered."
 - atlas (2026-07-24): 4.9 min · in band 5-8 · difficulty 2.4 · ramp 3.4
 - phrases (7; first = anchor):
@@ -270,7 +270,7 @@ tools/atlas-snapshot.json (2026-07-24).
   2. No me siento bien — I don't feel well  (4 tok)  [kw: siento]
   3. Llame a una ambulancia — Call an ambulance  (4 tok)  [note: Same shape as 'llame a la policía'. 112 reaches both. · kw: ambulancia]
   4. He perdido mi pasaporte — I've lost my passport  (4 tok)  [kw: pasaporte]
-  5. ¿Dónde está la farmacia de guardia? — Where's the 24-hour pharmacy?  (6 tok)  [note: The flashing green cross. Sra. Rosa's night-shift colleagues. · kw: guardia]
+  5. ¿Dónde está la farmacia de guardia? — Where's the 24-hour pharmacy?  (6 tok)  [note: The flashing green cross. Montse runs the night shift. · kw: guardia]
   6. ¿Hay un hospital cerca? — Is there a hospital nearby?  (4 tok)  [kw: hospital]
   7. Es urgente — It's urgent  (2 tok)  [kw: urgente]
 - build-eligible (4-8 tok): 5/7
@@ -279,7 +279,7 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### Order like a regular  `sp-order`
 - topic/setting: Restaurant · Ordering · shape: scenario
-- primer: EXISTS (scene: "Day two, back at Marina's, and this time you're early. It's not even lunch and the counter...") · guessItem: "¿Qué recomienda?" · mission: "Order like you've been coming for years: a drink, the steak, how you want it cooked."
+- primer: EXISTS (scene: "Day two, back at Rosa's, and this time you're early. It's not even lunch and the counter c...") · guessItem: "¿Qué recomienda?" · mission: "Order like you've been coming for years: a drink, the steak, how you want it cooked."
 - reward (invert to promise): "Steak temperature, a caña, 'what do you recommend', you order like a regular now."
 - atlas (2026-07-24): 5.8 min · in band 5-8 · difficulty 1.9 · ramp 1.5
 - phrases (10; first = anchor):
@@ -297,7 +297,7 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### Coffee shop  `s2-coffee`
 - topic/setting: Coffee shop · shape: scenario
-- primer: EXISTS (scene: "The café by the plaza, morning one. Pau works the machine like a drummer, and everyone ahe...") · guessItem: "Un croissant, por favor" · mission: "Order your coffee like a local, and survive the cash-only counter."
+- primer: EXISTS (scene: "The café by the plaza, morning one. Marina works the machine and hums over the steam, and ...") · guessItem: "Un croissant, por favor" · mission: "Order your coffee like a local, and survive the cash-only counter."
 - reward (invert to promise): "You can order a cortado and survive a 'cash only' barista. Caffeine: secured."
 - atlas (2026-07-24): 5.2 min · in band 5-8 · difficulty 2.3 · ramp 2.5
 - phrases (8; first = anchor):
@@ -313,7 +313,7 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### Paying & prices  `sp-pay`
 - topic/setting: Restaurant · Paying · shape: scenario
-- primer: EXISTS (scene: "The plates are empty and Marina is in no hurry. The bill won't come until you ask, that's ...") · guessItem: "¿Está incluido el servicio?" · mission: "Ask for the bill, pay it, and tip like a local, not like a tourist."
+- primer: EXISTS (scene: "The plates are empty and Rosa is in no hurry. The bill won't come until you ask, that's th...") · guessItem: "¿Está incluido el servicio?" · mission: "Ask for the bill, pay it, and tip like a local, not like a tourist."
 - reward (invert to promise): "Card, cash, tip, a broken datáfono, the nearest cajero, the bill holds no fear."
 - atlas (2026-07-24): 5.4 min · in band 5-8 · difficulty 2.3 · ramp 2.6
 - phrases (8; first = anchor):
@@ -508,7 +508,7 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### Real conversations  `s5-real`
 - topic/setting: Advanced · Real situations · shape: scenario
-- primer: EXISTS (scene: "No more single lines. From here the conversations run whole: Marina asks, you answer, she ...") · guessItem: "¿Podría recomendarme un plato típico de aquí?" · mission: "Hold your end of a real exchange, question to answer to reply."
+- primer: EXISTS (scene: "No more single lines. From here the conversations run whole: Rosa asks, you answer, she an...") · guessItem: "¿Podría recomendarme un plato típico de aquí?" · mission: "Hold your end of a real exchange, question to answer to reply."
 - reward (invert to promise): "Look at you, full sentences now. People might mistake you for someone who lives here."
 - atlas (2026-07-24): 5.4 min · in band 5-8 · difficulty 3.4 · ramp 2.5
 - phrases (8; first = anchor):
@@ -524,7 +524,7 @@ tools/atlas-snapshot.json (2026-07-24).
 
 ### Complaints & mix-ups  `s5-fix`
 - topic/setting: Advanced · When things go wrong · shape: scenario
-- primer: EXISTS (scene: "The order comes out wrong at a place that isn't Marina's. The bill has a mystery line. The...") · guessItem: "¿Puede llamar a un médico, por favor?" · mission: "Fix what went wrong: flag it, explain it, settle it."
+- primer: EXISTS (scene: "The order comes out wrong at a place that isn't Rosa's. The bill has a mystery line. The r...") · guessItem: "¿Puede llamar a un médico, por favor?" · mission: "Fix what went wrong: flag it, explain it, settle it."
 - reward (invert to promise): "Lost, overcharged, double-booked, you can talk your way out of it. Travel boss mode."
 - atlas (2026-07-24): 5.4 min · in band 5-8 · difficulty 3.3 · ramp 2.7
 - phrases (8; first = anchor):
@@ -538,11 +538,11 @@ tools/atlas-snapshot.json (2026-07-24).
   8. ¿Puede revisar la reserva? — Can you check the reservation?  (4 tok)  [kw: revisar]
 - build-eligible (4-8 tok): 7/8
 
-### Dinner at Marina's  `sp-chain-dinner`
+### Dinner at Rosa's  `sp-chain-dinner`
 - topic/setting: Advanced · Boss · shape: chain
-- primer: EXISTS (scene: "Friday night at the tasca and you don't wait to be seated. You catch Marina's eye across t...") · mission: "Run the full dinner: greet, order, handle the hiccup, pay, say goodnight."
+- primer: EXISTS (scene: "Friday night at the tasca and you don't wait to be seated. You catch Rosa's eye across the...") · mission: "Run the full dinner: greet, order, handle the hiccup, pay, say goodnight."
 - reward (invert to promise): "Greeting to bill, you ran a whole dinner at the tasca without switching to English. That's the trip, rehearsed."
-- cultureNote (cast dialogue stream): "In a tasca you don't wait to be seated formally, you catch Marina's eye and she waves you to a table. And when your plate lands, 'que aproveche' is the local 'enjoy', say it back to the next table over."
+- cultureNote (cast dialogue stream): "In a tasca you don't wait to be seated formally, you catch Rosa's eye and she waves you to a table. And when your plate lands, 'que aproveche' is the local 'enjoy', say it back to the next table over."
 - atlas (2026-07-24): 3 min · in band 3-9 · difficulty 6 · ramp 0
 - chain (15 turns; user lines are the graded items):
   1. NPC: ¡Buenas noches! ¿Mesa para cuántos? — Good evening! Table for how many?

@@ -97,6 +97,15 @@ A session is one breath: arrive through a door that says where you are and why n
 
 ---
 
+**AMENDMENTS (2026-08-21, Tom-ratified):**
+- **THE ENGINE PICKS THE SCENE, NOT THE PIECES.** Scenes pin their specific phrases; the
+  composer selects which scene to serve by due-mass across its items. Flexibility exists only
+  via AUTHORED ALTERNATES (the story line written per candidate) or situation-shaped stanzas
+  that name no content. The AI boundary is untouched (authoring-time drafting stays legal).
+- **THE COVERAGE AMENDMENT.** A review session = the chosen scene(s) PLUS classic depth sets
+  for uncovered due items. Scenes crown the room; depth sets keep the floor. No item ever
+  waits for a scene to exist.
+
 ### THE STRUCTURAL RULING: TWO TRACKS
 
 **Learn is the acquisition track; Scenes is the living track.** Chapters stay visible where phrases are MET (the ladder needs scoped islands), but chapters are packaging, not the product: chapter 3 is never revisited as chapter 3 — its phrases graduate into scenes and live there. THE TILT runs between the tracks: early weeks are mostly Learn, late weeks mostly Scenes, the final week almost entirely rehearsal in scene form. **The machines were the first step of this ruling already**: they never belonged to chapters, and scenes are largely machine operations in sequence — the machines are the grammar, the scenes are the sentences. Every future content decision asks: does this teach a piece (Learn) or compose the pieces (Scenes)?
@@ -535,6 +544,9 @@ updates: machines, frames, slots, patterns, asks.
   the register?" — the ground never pumps between reps).
 - 2026-07-24 — "Can't tell, skip" (listen & type's per-rep skip): the whisper escape covers
   modality, the honest miss + rung-down covers difficulty; a skip denied the engine its signal.
+- 2026-08-21 — Slot-composition retired: composed slots failed the jealousy test in the wild
+  (v250); the POC read coherent because it was hand-matched — which was the finding, not the
+  fluke.
 - 2026-08-06 — The in-lesson machine encore (flow ruling 8/03) retires under depth ruling 2:
   lap 2 + the stretch absorbed its function; the encore FORM re-homes at the return door's
   "Run the lap." Superseded, not deleted.

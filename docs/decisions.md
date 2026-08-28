@@ -240,3 +240,6 @@ luminous law.)
 - 2026-08-19 — The scenes: authored spine templates with item slots; scene laws (stanza, cast-met-first, overheard line, narrative cues in lessons, jealousy test).
 - 2026-08-19 — The window: scene doors carry a framed full photograph (mitered maple + white mat); POC r15 is the spec.
 - 2026-08-20 — Diegetic cues are sentence case; caps are for chrome, not story.
+- 2026-08-21 — Scenes re-ruled: the engine picks the SCENE (by due-mass), never the pieces; phrases pin; alternates and content-free stanzas are the only flexibility. Slot-composition graveyarded.
+- 2026-08-21 — Coverage amendment: review = chosen scene(s) + depth sets for uncovered due items.
+- 2026-08-21 — Cast canon: Marina = Bar Paloma's barista (sings after dark); Pau = her regular; Rosa = the tasca; Montse = the farmacia night shift; Nuria unchanged. POC patched r15.1 (Cantas).

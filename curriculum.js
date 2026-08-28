@@ -12,10 +12,12 @@
 /* ---- BARCELONA CAST (§9b.2) — fictional recurring characters; food/places are real.
    Cast names live ONLY in English scene/primer text, never in a graded `es` answer.
    - Andrés  — the taxi driver who picks you up at El Prat; dry, knows every shortcut. (ex-Jordi, canon 2026-07-21)
-   - Marina  — runs a tiny tasca (comedor) off the Barri Gòtic; feeds you like family.
+   - Marina  — Bar Paloma's barista; young, fast, hums over the steam. She SINGS somewhere after dark.
+   - Pau     — Marina's regular at Bar Paloma; asks the overheard questions.
+   - Rosa    — runs a tiny tasca (comedor) off the Barri Gòtic; feeds you like family.
    - Toni    — the bartender at a vermutería; pours vermut and opinions in equal measure.
    - Núria   — a vendor at La Boqueria market; will let you taste before you buy.
-   - Sra. Rosa — the farmacéutica on the corner; unflappable in an emergency.
+   - Montse  — the farmacéutica on the corner (night shift); unflappable in an emergency.
    Real anchors: pa amb tomàquet / pan con tomate, vermut, jamón, patatas bravas, cava,
    La Boqueria, el Barri Gòtic, Plaça Reial, la Sagrada Família, Montjuïc. ---- */
 
@@ -227,7 +229,7 @@ const CURRICULUM = {
         {
           id: "s1-rescue", topic: "How do you say", title: "I only speak a little",
           reward: "Now you can confess your Spanish is bad, in Spanish. Meta. Keep going so you don't have to.",
-          primer: { scene: "Marina, who runs the little tasca on the corner, just reeled off today's specials, and you caught maybe one word. She waits, order pad in hand, patient.", mission: "Admit your Spanish is shaky, and ask her to slow down.", guessItem: "¿Puede repetir, por favor?" },
+          primer: { scene: "Rosa, who runs the little tasca on the corner, just reeled off today's specials, and you caught maybe one word. She waits, order pad in hand, patient.", mission: "Admit your Spanish is shaky, and ask her to slow down.", guessItem: "¿Puede repetir, por favor?" },
           items: [
             { es: "Hablo solo un poco de español", en: "I only speak a little Spanish", tier: 2, tags: ["communication"], keywords: ["español"] },
             { es: "¿Cómo se dice...?", en: "How do you say...?", tier: 2, tags: ["communication"], keywords: ["dice"] },
@@ -242,7 +244,7 @@ const CURRICULUM = {
         {
           id: "sp-table", topic: "Restaurant · Ordering", title: "First words at the table",
           reward: "You can get a table, order, ask for the check, and flag your shellfish allergy. Night one at the tapas bar: handled.",
-          primer: { scene: "It's packed at Marina's tasca. She wipes down a table, waves you into a chair, and sets down pa amb tomàquet, the tomato bread that arrives with everything here. Don't ask for butter. '¿Para cuántos?' she asks.", mission: "Get a table, order, and warn her about the shellfish before anything arrives.", guessItem: "Soy alérgico al marisco" },
+          primer: { scene: "It's packed at Rosa's tasca. She wipes down a table, waves you into a chair, and sets down pa amb tomàquet, the tomato bread that arrives with everything here. Don't ask for butter. '¿Para cuántos?' she asks.", mission: "Get a table, order, and warn her about the shellfish before anything arrives.", guessItem: "Soy alérgico al marisco" },
           items: [
             { es: "Una mesa para dos, por favor", en: "A table for two, please", tier: 2, tags: ["restaurant", "food"], keywords: ["mesa"], variants: ["Mesa para dos, por favor"] },
             { es: "La carta, por favor", en: "The menu, please", note: "In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día.", tier: 2, tags: ["restaurant", "food"], keywords: ["carta"], variants: ["¿Me trae la carta?"] },
@@ -257,7 +259,7 @@ const CURRICULUM = {
         {
           id: "s2-bathroom", topic: "Restaurant · Bathrooms", title: "Where's the loo",
           reward: "You can find a bathroom and read a door. Push vs. pull humiliation: avoided.",
-          primer: { scene: "Two unmarked doors at the back of Marina's place, and a waiter squeezing past with a tray of vermut. The signs, when you find them, might not even be in Spanish. This is Catalonia. Pick the right door before you push.", mission: "Ask where the loo is, and go in the right door every time.", guessItem: "Entrada" },
+          primer: { scene: "Two unmarked doors at the back of Rosa's place, and a waiter squeezing past with a tray of vermut. The signs, when you find them, might not even be in Spanish. This is Catalonia. Pick the right door before you push.", mission: "Ask where the loo is, and go in the right door every time.", guessItem: "Entrada" },
           items: [
             { es: "¿Dónde está el servicio?", en: "Where is the bathroom?", note: "Spain says 'el servicio / los servicios'. Signs read 'Aseos'.", latam: "Latin America: '¿Dónde está el baño?'", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "servicio"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
             { es: "los aseos", en: "the restrooms (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "Los aseos están al fondo", contextEn: "The restrooms are at the back", keywords: ["aseos"] },
@@ -323,10 +325,10 @@ const CURRICULUM = {
         {
           id: "s4-hear", topic: "Common phrases you'll hear", title: "What locals say to you",
           reward: "You can now understand what's being said TO you. Eavesdropping unlocked. Use responsibly.",
-          primer: { scene: "It's not just you talking now. Marina rattles something off as she sets your plate down, the shopkeeper next door calls out as you pass, and you catch the tune but not the words. Time to tune your ear the other way.", mission: "Catch what locals say to you, and know what they mean.", guessItem: "¿Todo bien?" },
+          primer: { scene: "It's not just you talking now. Rosa rattles something off as she sets your plate down, the shopkeeper next door calls out as you pass, and you catch the tune but not the words. Time to tune your ear the other way.", mission: "Catch what locals say to you, and know what they mean.", guessItem: "¿Todo bien?" },
           items: [
             { es: "Que tenga un buen día", en: "Have a good day", tier: 2, tags: ["social", "politeness"], keywords: ["día"] },
-            { es: "¿Le pongo algo más?", en: "Shall I get you anything else?", tier: 2, tags: ["social", "restaurant"], keywords: ["pongo"], note: "Marina's version of 'anything else': pongo, literally 'shall I put'." },
+            { es: "¿Le pongo algo más?", en: "Shall I get you anything else?", tier: 2, tags: ["social", "restaurant"], keywords: ["pongo"], note: "Rosa's version of 'anything else': pongo, literally 'shall I put'." },
             { es: "¿Todo bien?", en: "Everything okay?", tier: 2, tags: ["social"], keywords: ["todo"] },
             { es: "Ahora mismo", en: "Right away", tier: 2, tags: ["social"], keywords: ["mismo"] },
             { es: "¿Qué le pongo?", en: "What can I get you?", note: "Counter Spanish. Pongo again: literally 'what shall I put you'.", tier: 2, tags: ["social"], keywords: ["pongo"] },
@@ -338,13 +340,13 @@ const CURRICULUM = {
         {
           id: "sp-help", topic: "Problems & emergencies", title: "If something's wrong",
           reward: "The safety net's in place. Now go enjoy Barcelona, you're covered.",
-          primer: { scene: "You pat every pocket twice, your wallet's gone. Sra. Rosa, the farmacéutica on the corner, catches your face and asks if you're okay. Anything truly serious, she says, is 112, and they'll find you someone who speaks English. Everything else starts right here.", mission: "Get help fast, a doctor, the police, or her farmacia.", guessItem: "Me han robado" },
+          primer: { scene: "You pat every pocket twice, your wallet's gone. Montse, the farmacéutica on the corner, catches your face and asks if you're okay. Anything truly serious, she says, is 112, and they'll find you someone who speaks English. Everything else starts right here.", mission: "Get help fast, a doctor, the police, or her farmacia.", guessItem: "Me han robado" },
           items: [
             { es: "Me han robado", en: "I've been robbed", tier: 2, tags: ["emergency"], keywords: ["robado"] },
             { es: "No me siento bien", en: "I don't feel well", tier: 2, tags: ["emergency", "health"], keywords: ["siento"] },
             { es: "Llame a una ambulancia", en: "Call an ambulance", note: "Same shape as 'llame a la policía'. 112 reaches both.", tier: 2, tags: ["emergency","health"], keywords: ["ambulancia"] },
             { es: "He perdido mi pasaporte", en: "I've lost my passport", tier: 2, tags: ["emergency"], keywords: ["pasaporte"] },
-            { es: "¿Dónde está la farmacia de guardia?", en: "Where's the 24-hour pharmacy?", note: "The flashing green cross. Sra. Rosa's night-shift colleagues.", tier: 2, tags: ["emergency","health"], keywords: ["guardia"] },
+            { es: "¿Dónde está la farmacia de guardia?", en: "Where's the 24-hour pharmacy?", note: "The flashing green cross. Montse runs the night shift.", tier: 2, tags: ["emergency","health"], keywords: ["guardia"] },
             { es: "¿Hay un hospital cerca?", en: "Is there a hospital nearby?", tier: 2, tags: ["emergency","health"], keywords: ["hospital"] },
             { es: "Es urgente", en: "It's urgent", tier: 2, tags: ["emergency"], keywords: ["urgente"] },
           ]
@@ -358,7 +360,7 @@ const CURRICULUM = {
       lessons: [
         {
           id: "sp-order", topic: "Restaurant · Ordering", title: "Order like a regular",
-          primer: { scene: "Day two, back at Marina's, and this time you're early. It's not even lunch and the counter crowd is drinking vermut from the tap, olives speared on toothpicks, patatas bravas making it official. Marina slides you a menu and waits to see what you've learned.", mission: "Order like you've been coming for years: a drink, the steak, how you want it cooked.", guessItem: "¿Qué recomienda?" },
+          primer: { scene: "Day two, back at Rosa's, and this time you're early. It's not even lunch and the counter crowd is drinking vermut from the tap, olives speared on toothpicks, patatas bravas making it official. Marina slides you a menu and waits to see what you've learned.", mission: "Order like you've been coming for years: a drink, the steak, how you want it cooked.", guessItem: "¿Qué recomienda?" },
           reward: "Steak temperature, a caña, 'what do you recommend', you order like a regular now.",
           items: [
             { es: "¿Qué recomienda?", en: "What do you recommend?", tier: 2, tags: ["restaurant", "food"], keywords: ["recomienda"], reply: { es: "La paella está muy buena", en: "The paella is very good" } },
@@ -375,7 +377,7 @@ const CURRICULUM = {
         },
         {
           id: "s2-coffee", topic: "Coffee shop", title: "Coffee shop",
-          primer: { scene: "The café by the plaza, morning one. Pau works the machine like a drummer, and everyone ahead of you orders the same thing: cortado, cortado, solo. Café con leche after lunch is how they spot the tourists. When your turn comes, you'll know.", mission: "Order your coffee like a local, and survive the cash-only counter.", guessItem: "Un croissant, por favor" },
+          primer: { scene: "The café by the plaza, morning one. Marina works the machine and hums over the steam, and everyone ahead of you orders the same thing: cortado, cortado, solo. Café con leche after lunch is how they spot the tourists. When your turn comes, you'll know.", mission: "Order your coffee like a local, and survive the cash-only counter.", guessItem: "Un croissant, por favor" },
           reward: "You can order a cortado and survive a 'cash only' barista. Caffeine: secured.",
           items: [
             { es: "Un café con leche, por favor", en: "A coffee with milk, please", tier: 2, tags: ["coffee", "drink"], keywords: ["café", "leche"] },
@@ -390,7 +392,7 @@ const CURRICULUM = {
         },
         {
           id: "sp-pay", topic: "Restaurant · Paying", title: "Paying & prices",
-          primer: { scene: "The plates are empty and Marina is in no hurry. The bill won't come until you ask, that's the rule here, and when it does, nobody expects twenty percent. Round up, leave the coins, say it right.", mission: "Ask for the bill, pay it, and tip like a local, not like a tourist.", guessItem: "¿Está incluido el servicio?" },
+          primer: { scene: "The plates are empty and Rosa is in no hurry. The bill won't come until you ask, that's the rule here, and when it does, nobody expects twenty percent. Round up, leave the coins, say it right.", mission: "Ask for the bill, pay it, and tip like a local, not like a tourist.", guessItem: "¿Está incluido el servicio?" },
           reward: "Card, cash, tip, a broken datáfono, the nearest cajero, the bill holds no fear.",
           items: [
             { es: "¿Puedo pagar con tarjeta?", en: "Can I pay by card?", tier: 2, tags: ["money"], keywords: ["tarjeta"], variants: ["¿Aceptan tarjeta?"] },
@@ -583,7 +585,7 @@ const CURRICULUM = {
       lessons: [
         {
           id: "s5-real", topic: "Advanced · Real situations", title: "Real conversations",
-          primer: { scene: "No more single lines. From here the conversations run whole: Marina asks, you answer, she answers back, and nobody slows down for you. You've been ready longer than you think.", mission: "Hold your end of a real exchange, question to answer to reply.", guessItem: "¿Podría recomendarme un plato típico de aquí?" },
+          primer: { scene: "No more single lines. From here the conversations run whole: Rosa asks, you answer, she answers back, and nobody slows down for you. You've been ready longer than you think.", mission: "Hold your end of a real exchange, question to answer to reply.", guessItem: "¿Podría recomendarme un plato típico de aquí?" },
           reward: "Look at you, full sentences now. People might mistake you for someone who lives here.",
           items: [
             { es: "¿Podría recomendarme un plato típico de aquí?", en: "Could you recommend a typical local dish?", tier: 3, tags: ["restaurant", "food"], difficulty: 4, keywords: ["plato", "típico"], chunks: [["¿Podría recomendarme", "could you recommend me", "new"], ["un plato típico de aquí?", "a typical local dish"]] },
@@ -598,7 +600,7 @@ const CURRICULUM = {
         },
         {
           id: "s5-fix", topic: "Advanced · When things go wrong", title: "Complaints & mix-ups",
-          primer: { scene: "The order comes out wrong at a place that isn't Marina's. The bill has a mystery line. The room key opens nothing. Tonight you talk your way out of all three, in Spanish.", mission: "Fix what went wrong: flag it, explain it, settle it.", guessItem: "¿Puede llamar a un médico, por favor?" },
+          primer: { scene: "The order comes out wrong at a place that isn't Rosa's. The bill has a mystery line. The room key opens nothing. Tonight you talk your way out of all three, in Spanish.", mission: "Fix what went wrong: flag it, explain it, settle it.", guessItem: "¿Puede llamar a un médico, por favor?" },
           reward: "Lost, overcharged, double-booked, you can talk your way out of it. Travel boss mode.",
           items: [
             { es: "Reservé una habitación pero no aparece", en: "I booked a room but it's not showing up", tier: 3, tags: ["hotel", "lodging"], difficulty: 4, keywords: ["reservé", "aparece"] },
@@ -612,13 +614,13 @@ const CURRICULUM = {
           ]
         },
         {
-          id: "sp-chain-dinner", topic: "Advanced · Boss", title: "Dinner at Marina's",
-          primer: { scene: "Friday night at the tasca and you don't wait to be seated. You catch Marina's eye across the room; she waves you to the corner table like she's been holding it all week. A plate lands at the next table and someone says que aproveche. Tonight you run the whole dinner, greeting to bill, without a word of English.", mission: "Run the full dinner: greet, order, handle the hiccup, pay, say goodnight." },
+          id: "sp-chain-dinner", topic: "Advanced · Boss", title: "Dinner at Rosa's",
+          primer: { scene: "Friday night at the tasca and you don't wait to be seated. You catch Rosa's eye across the room; she waves you to the corner table like she's been holding it all week. A plate lands at the next table and someone says que aproveche. Tonight you run the whole dinner, greeting to bill, without a word of English.", mission: "Run the full dinner: greet, order, handle the hiccup, pay, say goodnight." },
           reward: "Greeting to bill, you ran a whole dinner at the tasca without switching to English. That's the trip, rehearsed.",
-          cultureNote: "In a tasca you don't wait to be seated formally, you catch Marina's eye and she waves you to a table. And when your plate lands, 'que aproveche' is the local 'enjoy', say it back to the next table over.",
+          cultureNote: "In a tasca you don't wait to be seated formally, you catch Rosa's eye and she waves you to a table. And when your plate lands, 'que aproveche' is the local 'enjoy', say it back to the next table over.",
           items: [],
           chain: {
-            title: "Dinner at Marina's",
+            title: "Dinner at Rosa's",
             turns: [
               { npc: { es: "¡Buenas noches! ¿Mesa para cuántos?", en: "Good evening! Table for how many?" } },
               { user: "Una mesa para dos, por favor" },
@@ -640,7 +642,7 @@ const CURRICULUM = {
         },
         {
           id: "sp-chain-lastnight", topic: "Advanced · Capstone", title: "Your last night",
-          primer: { scene: "Last night in Barcelona. Andrés drops you near Plaça Reial and your feet carry you back to Marina's tasca, one more time. Somewhere between the vermut and the bill, someone will wish you buen viaje, and you'll know what to say back.", mission: "One last evening, the whole trip in one sitting: arrive, order, the mix-up, pay, and the goodbye that means until next time.", guessItem: "Gracias, hasta la próxima" },
+          primer: { scene: "Last night in Barcelona. Andrés drops you near Plaça Reial and your feet carry you back to Rosa's tasca, one more time. Somewhere between the vermut and the bill, someone will wish you buen viaje, and you'll know what to say back.", mission: "One last evening, the whole trip in one sitting: arrive, order, the mix-up, pay, and the goodbye that means until next time.", guessItem: "Gracias, hasta la próxima" },
           reward: "That was the whole trip in one evening, greeting, ordering, an allergy, a mix-up, paying, goodbyes. You didn't switch to English once. You're ready for Barcelona.",
           cultureNote: "When someone says 'buen viaje,' the warm reply is 'gracias, hasta la próxima', 'until next time', even if you both know it may be a while. In Catalonia you'll also hear 'adéu' for goodbye; 'adéu-siau' is the fond, old-fashioned version.",
           items: [
@@ -687,20 +689,27 @@ const CURRICULUM = {
       id: "sc-bar-paloma", title: "Bar Paloma", sub: "CAFETER\u00cdA \u00b7 MORNING \u00b7 SCENE ONE",
       img: "cafe", fieldTopic: "coffee", closeTag: "ONE MORNING",
       door: ["The smell of roasted coffee pulls you through the doorway.", "The caf\u00e9 is reaching its rush, but you spot some open seats.", "Perfect, caffeine awaits."],
+      /* PINNED CONTRACT (re-ruling 2026-08-21): beats pin their exact phrase (es) or carry
+         AUTHORED ALTERNATES (alt) only where the stanza names no content. The engine picks
+         the SCENE by due-mass; it never swaps pieces. */
       beats: [
-        { kind: "hear", accepts: { keywords: ["pongo"] }, sub: "Marina turns to you:" },
-        { kind: "weld", accepts: { frame: "\u00bfcu\u00e1nto cuesta ___?" }, narr: "Marina waits",
+        { kind: "hear", es: "\u00bfQu\u00e9 le pongo?", sub: "Marina turns to you:" },
+        { kind: "weld", es: "\u00bfCu\u00e1nto cuesta esto?", narr: "Marina waits",
           stanza: ["A paper slip is clipped to the menu: SOLO EFECTIVO HOY.", "You count your coins.", "The cortado is worth it."] },
-        { kind: "hear", accepts: { tags: ["numbers"] }, sub: "Your answer comes over the grinder:",
-          stanza: ["While she pulls the shot, a local asks Marina, \u201c\u00bfTocas esta noche?\u201d", "She laughs and says maybe.", "So the barista plays somewhere after dark."] },
-        { kind: "hear", accepts: { keywords: ["aproveche"] },
+          /* WRITING-NIGHT FLAG: stanza names the cortado; pinned phrase says esto - one of
+             the two gets rewritten at the writing night so story and phrase match. */
+        { kind: "hear", alt: ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"],
+          sub: "Your answer comes over the grinder:",
+          stanza: ["While she pulls the shot, a local asks Marina, \u201c\u00bfCantas esta noche?\u201d", "She laughs and says maybe.", "So the barista sings somewhere after dark."] },
+        { kind: "hear", es: "Que aproveche",
           stanza: ["A woman settles onto the next stool and folds her newspaper to the crossword.", "She nods at your cup and says:"] },
-        { kind: "produce", accepts: { keywords: ["cobras", "cuenta"] }, narr: "Catch her eye",
+        { kind: "produce", es: "\u00bfMe cobra, por favor?", alt: ["\u00bfMe puede traer la cuenta?"], narr: "Catch her eye",
           stanza: ["Nothing is left but the crema ring.", "The bar is loud now, but you know the regular's move."] }
       ],
       close: ["You count your coins onto the marble.", "The crossword woman sends you off with \u201cque aproveche\u201d.", "Marina calls \u201chasta ma\u00f1ana\u201d like she means it."]
     }
   ]
+
 
 };
 

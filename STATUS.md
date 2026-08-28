@@ -15,6 +15,25 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-27 — CONSOLIDATED RULINGS applied: pinned scenes + cast canon (v252)
+- RE-RULING live: the engine picks the SCENE, not the pieces. Beats pin exact phrases (es)
+  or carry authored alternates (alt) only where the stanza names no content; _sceneItem
+  resolves due-first among authored candidates only; sceneDueMass + pickSceneForReview select
+  the scene; _scenePick slot-composer deleted. Constitution carries both amendments (engine
+  picks the scene + coverage amendment) and the graveyard entry verbatim.
+- CAST CANON migrated: Marina = Bar Paloma's barista (sings after dark), Pau = her regular,
+  Rosa = the tasca (12 primer/title/note sites moved), Montse = the farmacia night shift.
+  Directions mission checked: venue-neutral, STANDS as Marina. POC patched r15.1 (Cantas);
+  the pack's scene template matches.
+- docs/cast-registry.md created (canon + met-in + threads; anonymous figures listed).
+- v250 keyword bug confirmed and mooted: the cobras accept never matched ("cobra" is the
+  keyword) - pinned phrases end that failure class.
+- Verified composed run is the authored story exactly: pongo -> cuesta weld -> number
+  (situation-shaped alt) -> aproveche -> Me cobra build -> close. Due-mass 22.9, picker
+  selects sc-bar-paloma.
+- WRITING-NIGHT FLAG in the template: the cortado stanza rides a pinned "esto" phrase - one
+  gets rewritten at the writing night. Writing night is UNBLOCKED.
+
 ## 2026-08-27 — THE SCENE RUNNER (north star step 3) + cue verdicts (v250)
 - Chat's cue pass applied: 4 rewrites verbatim; SENTENCE-CASE ruling live (.cue-narr span
   resets the label's micro-caps; ruling merged to the voice family + decisions).
