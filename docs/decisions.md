@@ -239,3 +239,4 @@ luminous law.)
 - 2026-08-19 — The learning constitution ratified (star, method, six tenets + tests, AI boundary, two tracks, core/periphery, Fluent pass frozen, consecutive-days push dead).
 - 2026-08-19 — The scenes: authored spine templates with item slots; scene laws (stanza, cast-met-first, overheard line, narrative cues in lessons, jealousy test).
 - 2026-08-19 — The window: scene doors carry a framed full photograph (mitered maple + white mat); POC r15 is the spec.
+- 2026-08-20 — Diegetic cues are sentence case; caps are for chrome, not story.

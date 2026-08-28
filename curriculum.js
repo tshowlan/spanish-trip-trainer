@@ -76,7 +76,7 @@ const CURRICULUM = {
                     frameGloss: "¿Dónde está...? = where is...? Point it at anything lost.",
                     items: [
                       { es: "¿Dónde está el baño?", en: "Where is the bathroom?", narr: "Two unmarked doors", tier: 1, tags: ["core"], keywords: ["baño"], frame: "¿dónde está ___?", weld: { tags: ["place"], indef: { es: "un baño", en: "a bathroom" } }, note: "In Spain you will also hear el servicio for a restaurant loo." },
-                      { es: "¿Dónde está la estación?", en: "Where is the station?", narr: "The streets stopped making sense", tier: 1, tags: ["core"], keywords: ["estación"], frame: "¿dónde está ___?", weld: { tags: ["place"] } },
+                      { es: "¿Dónde está la estación?", en: "Where is the station?", narr: "The last three turns were guesses", tier: 1, tags: ["core"], keywords: ["estación"], frame: "¿dónde está ___?", weld: { tags: ["place"] } },
                       { es: "¿Dónde está mi hotel?", en: "Where is my hotel?", narr: "The map died with your phone", tier: 1, tags: ["core"], keywords: ["hotel"], frame: "¿dónde está ___?", weld: { tags: ["place"] } },
                       { es: "¿Dónde está la farmacia?", en: "Where is the pharmacy?", narr: "You need the green cross", tier: 1, tags: ["emergency", "health", "directions"], keywords: ["dónde", "farmacia"], frame: "¿dónde está ___?", weld: { tags: ["place"], indef: { es: "una farmacia", en: "a pharmacy" } } },
                     ]
@@ -118,7 +118,7 @@ const CURRICULUM = {
                     items: [
                       { es: "¿Cuánto cuesta esto?", en: "How much is this?", narr: "The tag is missing", tier: 1, tags: ["core"], keywords: ["cuesta"], frame: "¿cuánto cuesta ___?", weld: { tags: ["deictic"], gloss: "this one" }, note: "Esto again. Point, ask, decide." },
                       { es: "¿Cuánto cuesta la entrada?", en: "How much is the entrance ticket?", narr: "You reach the ticket window", tier: 1, tags: ["core"], keywords: ["entrada"], frame: "¿cuánto cuesta ___?", weld: { tags: ["purchasable", "place"], def: { es: "la entrada", en: "the entrance" }, indef: { es: "una entrada", en: "a ticket" } } },
-                      { es: "¿Cuánto cuesta un billete?", en: "How much is a ticket?", narr: "At the ticket counter", tier: 1, tags: ["core"], keywords: ["billete"], frame: "¿cuánto cuesta ___?", weld: { tags: ["purchasable"], indef: { es: "un billete", en: "a ticket" } } },
+                      { es: "¿Cuánto cuesta un billete?", en: "How much is a ticket?", narr: "Nothing is posted", tier: 1, tags: ["core"], keywords: ["billete"], frame: "¿cuánto cuesta ___?", weld: { tags: ["purchasable"], indef: { es: "un billete", en: "a ticket" } } },
                       { es: "¿Cuánto cuesta la habitación?", en: "How much is the room?", narr: "The desk clerk waits", tier: 1, tags: ["core"], keywords: ["habitación"], frame: "¿cuánto cuesta ___?", weld: { tags: ["place", "purchasable"], def: { es: "la habitación", en: "the room" }, indef: { es: "una habitación", en: "a room" } } },
                     ]
                   },
@@ -141,7 +141,7 @@ const CURRICULUM = {
                       { es: "¿Me puede traer la cuenta?", en: "Could you bring me the check?", narr: "The waiter passes close", tier: 1, tags: ["core"], keywords: ["cuenta"], frame: "¿me puede traer ___?", weld: { tags: ["bringable"] }, variants: ["¿Me trae la cuenta?"], note: "Me trae...? is the shorter version of the same ask. Both are right.", anchor: "traer is to bring. You are asking them to bring it, not going to get it." },
                       { es: "¿Me puede traer agua?", en: "Could you bring me water?", narr: "The glasses are empty", tier: 1, tags: ["core"], keywords: ["agua"], frame: "¿me puede traer ___?", weld: { tags: ["bringable", "consumable"], indef: { es: "agua", en: "water" } }, variants: ["¿Me trae agua?"] },
                       { es: "¿Me puede traer el menú?", en: "Could you bring me the menu?", narr: "No menus on the table", tier: 1, tags: ["core"], keywords: ["menú"], frame: "¿me puede traer ___?", weld: { tags: ["bringable"], indef: { es: "un menú", en: "a menu" } }, variants: ["¿Me trae el menú?"] },
-                      { es: "¿Me puede traer otra caña?", en: "Could you bring me another beer?", narr: "The glass is empty", tier: 1, tags: ["core"], keywords: ["caña"], frame: "¿me puede traer ___?", weld: { tags: ["bringable", "consumable"] }, variants: ["¿Me trae otra caña?"], note: "A caña is the small draft beer Spain actually orders." },
+                      { es: "¿Me puede traer otra caña?", en: "Could you bring me another beer?", narr: "The first round is gone", tier: 1, tags: ["core"], keywords: ["caña"], frame: "¿me puede traer ___?", weld: { tags: ["bringable", "consumable"] }, variants: ["¿Me trae otra caña?"], note: "A caña is the small draft beer Spain actually orders." },
                     ]
                   },
                   {
@@ -194,7 +194,7 @@ const CURRICULUM = {
                     machine: true, frame: "necesito ___",
                     frameGloss: "Necesito = I need. For when wanting is too polite.",
                     items: [
-                      { es: "Necesito ayuda", en: "I need help", narr: "You are stuck", tier: 1, tags: ["core"], keywords: ["ayuda"], frame: "necesito ___", contextEs: "Necesito ayuda, por favor", contextEn: "I need help, please" },
+                      { es: "Necesito ayuda", en: "I need help", narr: "The suitcase won't budge", tier: 1, tags: ["core"], keywords: ["ayuda"], frame: "necesito ___", contextEs: "Necesito ayuda, por favor", contextEn: "I need help, please" },
                       { es: "Necesito un médico", en: "I need a doctor", narr: "This cannot wait", tier: 1, tags: ["emergency", "health"], keywords: ["médico"], variants: ["Necesito un doctor"], frame: "necesito ___", weld: { tags: ["person", "service"], indef: { es: "un médico", en: "a doctor" } } },
                       { es: "Necesito un taxi", en: "I need a taxi", narr: "The metro just closed", tier: 1, tags: ["core"], keywords: ["taxi"], frame: "necesito ___", weld: { tags: ["service", "purchasable"], indef: { es: "un taxi", en: "a taxi" } } },
                       { es: "Necesito un cargador", en: "I need a charger", narr: "Your phone shows 2%", tier: 1, tags: ["core"], keywords: ["cargador"], frame: "necesito ___", weld: { tags: ["bringable", "purchasable"], indef: { es: "un cargador", en: "a charger" } }, note: "The dead-phone phrase. Learn it before you need it." },
@@ -678,6 +678,30 @@ const CURRICULUM = {
       ]
     }
   ]
+  ,
+  /* THE SCENES (learning constitution first build; template data only - the engine composes
+     which due items ride which slots, never inventing Spanish). Stanzas are the POC's,
+     verbatim (scene-poc.html r15, stamped). accepts = the slot's type: frame | keywords | tags. */
+  scenes: [
+    {
+      id: "sc-bar-paloma", title: "Bar Paloma", sub: "CAFETER\u00cdA \u00b7 MORNING \u00b7 SCENE ONE",
+      img: "cafe", fieldTopic: "coffee", closeTag: "ONE MORNING",
+      door: ["The smell of roasted coffee pulls you through the doorway.", "The caf\u00e9 is reaching its rush, but you spot some open seats.", "Perfect, caffeine awaits."],
+      beats: [
+        { kind: "hear", accepts: { keywords: ["pongo"] }, sub: "Marina turns to you:" },
+        { kind: "weld", accepts: { frame: "\u00bfcu\u00e1nto cuesta ___?" }, narr: "Marina waits",
+          stanza: ["A paper slip is clipped to the menu: SOLO EFECTIVO HOY.", "You count your coins.", "The cortado is worth it."] },
+        { kind: "hear", accepts: { tags: ["numbers"] }, sub: "Your answer comes over the grinder:",
+          stanza: ["While she pulls the shot, a local asks Marina, \u201c\u00bfTocas esta noche?\u201d", "She laughs and says maybe.", "So the barista plays somewhere after dark."] },
+        { kind: "hear", accepts: { keywords: ["aproveche"] },
+          stanza: ["A woman settles onto the next stool and folds her newspaper to the crossword.", "She nods at your cup and says:"] },
+        { kind: "produce", accepts: { keywords: ["cobras", "cuenta"] }, narr: "Catch her eye",
+          stanza: ["Nothing is left but the crema ring.", "The bar is loud now, but you know the regular's move."] }
+      ],
+      close: ["You count your coins onto the marble.", "The crossword woman sends you off with \u201cque aproveche\u201d.", "Marina calls \u201chasta ma\u00f1ana\u201d like she means it."]
+    }
+  ]
+
 };
 
 /* =========================================================================

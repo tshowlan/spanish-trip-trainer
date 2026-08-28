@@ -633,6 +633,100 @@ function startLap(lesson) {
   renderQuestion();
 }
 
+/* THE SCENES (learning constitution first build, POC r15 is the reference): an authored
+   micro-story template whose beats are slots; the engine composes which due items ride
+   which slots under the authored accepts - new arrangements, never new Spanish. */
+function _scenePick(accepts, used) {
+  const cands = (ALL_ITEMS || []).filter(it => {
+    if (used.has(it.id)) return false;
+    if (exposuresOf(it) < 1) return false;                        // known content only (scene law)
+    if (accepts.frame) return norm(it.frame || "") === norm(accepts.frame) && !!_frameParts(it.frame, it.es);
+    if (accepts.keywords) return (it.keywords || []).some(k => accepts.keywords.includes(k));
+    if (accepts.tags) return (it.tags || []).some(t => accepts.tags.includes(t));
+    return false;
+  });
+  if (!cands.length) return null;
+  // due-first, then weakest: the scene is the review room
+  const now = Date.now();
+  cands.sort((a, b) => {
+    const sa = learnPeek(a), sb = learnPeek(b);
+    const oa = sa && sa.due ? (now - new Date(sa.due + "T00:00:00").getTime()) : -1;
+    const ob = sb && sb.due ? (now - new Date(sb.due + "T00:00:00").getTime()) : -1;
+    if (oa !== ob) return ob - oa;
+    return itemStrength(sa) - itemStrength(sb);
+  });
+  return cands[0];
+}
+function _scenePhoto(scene) {
+  const region = (state.active === "spain" && ES_PHOTOS.has(scene.img)) ? "es" : "mx";
+  return `./img/${region}/${scene.img}.jpg`;
+}
+function sceneList() { return (activePack().scenes || []); }
+function startScene(scene) {
+  const qs = [{ type: "scene_door", scene }];
+  const used = new Set();
+  scene.beats.forEach(b => {
+    const it = _scenePick(b.accepts, used);
+    if (!it) return;                                              // a slot with nothing rideable yields
+    used.add(it.id);
+    if (b.kind === "weld" && it.frame) {
+      const fp = _frameParts(it.frame, it.es);
+      const shell = _enShell((ALL_ITEMS || []).filter(x => x.frame === it.frame));
+      const fen = _fillerEn(shell, it.en);
+      if (fp && fen) { qs.push({ type: "weld", item: it, cue: { item: it, p: fp, fen }, arc: true, stanza: b.stanza, sceneNarr: b.narr }); return; }
+    }
+    if (b.kind === "produce") {
+      // a produce slot IS production (the cold test) - never falls back to recognition
+      const t = ["build", "phrase_fill", "type_translation"].find(m => _modeFeasible(m, it)) || "type_translation";
+      qs.push({ type: t, item: it, pool: ALL_ITEMS, stanza: b.stanza, sceneNarr: b.narr });
+      return;
+    }
+    qs.push({ type: "listen_choice", item: it, pool: ALL_ITEMS, stanza: b.stanza, sceneSub: b.sub });
+  });
+  if (qs.length < 3) { toast("This scene needs more of its phrases met first."); return; }
+  qs.push({ type: "scene_close", scene, count: qs.length - 1 });
+  state.sessionSeq = (state.sessionSeq || 0) + 1; save();
+  run = { lesson: { id: "__scene__", topic: scene.fieldTopic || "Review", items: [] }, qs, idx: 0, wrong: 0, restored: 0,
+    answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
+  renderQuestion();
+}
+/* the door: THE WINDOW - framed full photo (mitered maple + white mat), name, setting,
+   opening stanza, one CTA into the morning (POC beat 1, verbatim grammar) */
+function renderSceneDoor(q) {
+  const body = $("#qbody");
+  const sc = q.scene;
+  body.appendChild(el(`<span class="photo-frame"><img class="scene-art scene-art-lead art-full" src="${_scenePhoto(sc)}" alt=""><i class="fs ft"></i><i class="fs fr"></i><i class="fs fb"></i><i class="fs fl"></i></span>`));
+  body.appendChild(el(`<div class="scene-title">${sc.title}</div>`));
+  body.appendChild(el(`<div class="scene-sub">${sc.sub}</div>`));
+  const st = el(`<div class="scene-line"></div>`);
+  sc.door.forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
+  body.appendChild(st);
+  const grown = el(`<div class="res-grown show"><button class="btn res-cont">Step in</button></div>`);
+  grown.querySelector(".res-cont").addEventListener("click", () => { run.answered = false; next(); });
+  body.appendChild(grown);
+}
+/* the resolution: the human moment + the ledger line (POC beat 7) */
+function renderSceneClose(q) {
+  const body = $("#qbody");
+  const sc = q.scene;
+  body.appendChild(el(`<svg class="scene-art" viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+<path d="M30 96 L170 96" stroke-width="1.5" opacity="0.65"/>
+<ellipse cx="78" cy="88" rx="20" ry="7"/>
+<ellipse cx="78" cy="80" rx="20" ry="7"/>
+<path d="M58 80 L58 88 M98 80 L98 88" stroke-width="1.6"/>
+<ellipse cx="122" cy="90" rx="16" ry="6" opacity="0.85"/>
+<circle cx="146" cy="72" r="11" opacity="0.9"/>
+<path d="M142 72 Q146 68 150 72" stroke-width="1.4" opacity="0.7"/>
+</svg>`));
+  const st = el(`<div class="scene-line"></div>`);
+  sc.close.forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
+  body.appendChild(st);
+  body.appendChild(el(`<div class="qtype" style="text-align:center; margin-top:14px;">THAT'S THE SCENE \u00b7 ${q.count} PHRASE${q.count === 1 ? "" : "S"}, ${sc.closeTag || "ONE SCENE"}</div>`));
+  const grown = el(`<div class="res-grown show"><button class="btn res-cont">Done</button></div>`);
+  grown.querySelector(".res-cont").addEventListener("click", () => finishReview());
+  body.appendChild(grown);
+}
+
 /* THE RETURN DOOR r5.5 (design/return-door.html, stamped 2026-08-12): the scene (the
    lesson's introPhoto in home's atmo blend), the machine badge in the logo's faces (ladder
    lessons wear the wordmark + their title as pedestal), the frame as pedestal, the mess-up
@@ -908,6 +1002,13 @@ function renderQuestion() {
       : chooseType(q.item, { prefer: "production" });
   }
   if (q.encoreFirst) $("#qbody").appendChild(el(`<div class="retry-chip lap-chip">The lap: today's phrases, once each, fast.</div>`));
+  // THE SCENES: a beat's framing stanza rides any exercise (stanza form: one line per
+  // sentence, air between - scene law) and an optional narrative sub replaces nothing
+  if (q.stanza && q.stanza.length) {
+    const st = el(`<div class="scene-line"></div>`);
+    q.stanza.forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
+    document.getElementById("qbody").appendChild(st);
+  }
   ({ present: renderPresent, build: renderBuild, mc_es2en: renderMC,
      grasp: renderGrasp, variation: renderVariation,
      machine_drill: renderMachineDrill, exchange: renderExchange, weld: renderWeld, stretch: renderWeld,
@@ -916,6 +1017,7 @@ function renderQuestion() {
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
      word_fill: renderWordFill, phrase_fill: renderPhraseFill,
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
+     scene_door: renderSceneDoor, scene_close: renderSceneClose,
      reply: renderReplyChat }[q.type])(q);
 }
 
@@ -1426,7 +1528,7 @@ function renderMachineDrill(q) {
       ci++;
       if (ci >= q.cues.length) return doneAll();
       current = q.cues[ci]; wrongTaps = 0;
-      cueLabel.textContent = current.item && current.item.narr ? current.item.narr + " · Ask for" : "Ask for";   // narrative cue (scene law)
+      cueLabel.innerHTML = current.item && current.item.narr ? `<span class="cue-narr">${current.item.narr}</span> · Ask for` : "Ask for";   // narrative cue (scene law; sentence-case ruling)
       cueMeaning.textContent = current.fen;
       slotEl.innerHTML = `<span class="dashes">– – –</span>`;
       // THE INPUT CLIMB: a climbed filler is TYPED into the slot; tiles serve the rest
@@ -1508,7 +1610,10 @@ function renderWeld(q) {
   const outOfLesson = run && run.review;   // depth set / shop / lap: no machine established on screen
   // NARRATIVE CUE (north star scene law): one diegetic line may ride the cue - the weld
   // is the real ask, a situation waiting ("The glass is empty · Ask for")
-  const narr = !q.ves && q.item.narr ? q.item.narr + " · " : "";
+  // sentence-case ruling (2026-08-20): diegetic lines are story, not chrome - the narr span
+  // resets the label's micro-caps; the functional label keeps them
+  const narrLine = q.sceneNarr || (!q.ves && q.item.narr);
+  const narr = narrLine ? `<span class="cue-narr">${narrLine}</span> · ` : "";
   cueBlock.appendChild(el(`<div class="cue-label">${q.ves ? "Another way to ask for" : narr + (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for")}</div>`));
   cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${outOfLesson && !q.ves ? q.item.en : q.cue.fen}</div>`));
   body.appendChild(cueBlock);

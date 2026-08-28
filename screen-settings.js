@@ -91,6 +91,14 @@ function renderProfile() {
   wrap.appendChild(reset);
 
   const ver = el(`<div class="app-version" id="app-version">Tripfluent</div>`);
+    // THE SCENES (dev entry until the tilt wires the real one): play a scene with real state
+  const scRow = el(`<div class="lab-row"><div class="lab-lbl">Play a scene (uses your real due items)</div><div id="lab-scenes"></div></div>`);
+  (typeof sceneList === "function" ? sceneList() : []).forEach(sc => {
+    const b = el(`<button class="btn-quiet" style="margin:4px 6px 0 0">${sc.title}</button>`);
+    b.addEventListener("click", () => startScene(sc));
+    scRow.querySelector("#lab-scenes").appendChild(b);
+  });
+  wrap.appendChild(scRow);
   wrap.appendChild(ver);
   // build version — the SW cache name (sts-vNN) is the single source of truth, read at runtime
   if (window.caches && caches.keys) {

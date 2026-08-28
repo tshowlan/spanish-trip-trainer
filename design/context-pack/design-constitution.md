@@ -366,6 +366,9 @@ only dignify? (d) if it is funny, is the joke a real Spain outcome? Any failure 
 3. **AFFECTION IS ALLOWED**: some lines celebrate what the phrase buys, not what missing it costs
    ("what's lunch without a second round?").
 
+**Diegetic cues are sentence case** (2026-08-20): a narrative cue line renders in sentence
+case inside the micro-caps label - caps are for chrome, not story. Small size and dim color hold.
+
 **Retired vocabulary:** "filling" (euphemism, Tom 2026-08-11) — the variation label is "Swap one
 part"; the machine framing is "One frame. Many asks." The metaphor-vocabulary law's word list
 updates: machines, frames, slots, patterns, asks.

@@ -113,6 +113,15 @@
 
   // Selector registry: artifact selector -> app selector, per artifact.
   const DESIGN_PAIRS = {
+    // scene-poc.html r15 (stamped 2026-08-19): the scenes' reference - the window + stanza grammar.
+    // App state: a scene rendered (harness story under Scenes).
+    scenes: [
+      [".photo-frame", ".photo-frame"],
+      [".scene-title", ".scene-title"],
+      [".scene-sub", ".scene-sub"],
+      [".scene-line", ".scene-line"],
+      [".scene-art", ".scene-art"]
+    ],
     // return-door.html r5.5 (stamped 2026-08-12): the door surface deltas.
     // App state: a return door rendered (harness stories under Depth session).
     returnDoor: [

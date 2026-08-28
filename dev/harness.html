@@ -230,6 +230,16 @@
           seedLesson(l, "fading");
           startLesson(l);
         },
+        "Scenes — Bar Paloma (POC template, composed live)": () => {
+          clean(); seedDepthMix();
+          // the scene's slot items must be SEEN (scene law): seed them
+          ["pongo","aproveche","cobras","cuenta"].forEach(kw => {
+            ALL_ITEMS.filter(it => (it.keywords || []).includes(kw)).forEach(it => _seedWeak(it.id));
+          });
+          ALL_ITEMS.filter(it => (it.tags || []).includes("numbers")).slice(0, 4).forEach(it => _seedWeak(it.id));
+          ALL_ITEMS.filter(it => /cu[eé]sta/.test(it.frame || "")).forEach(it => _seedWeak(it.id));
+          startScene(sceneList()[0]);
+        },
         "Depth — The machine shop (one machine, full)": () => {
           clean();
           const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
@@ -451,6 +461,7 @@
       // wire the picker — grouped (the flat list outgrew itself at ~40 stories, Tom 2026-07-29).
       // Grouping is by name prefix so new stories file themselves; unknown prefixes land in "Other".
       const GROUP_OF = name =>
+        /^Scenes/.test(name) ? "Scenes (in build)" :
         /^Depth/.test(name) ? "Depth session (in build)" :
         /^Sprint 2/.test(name) ? "Sprint 2 (shipped)" :
         /^(Home|First score|Arrival|Learn|Progress|Profile)/.test(name) ? "Screens" :
@@ -459,7 +470,7 @@
         /listen|sound choice|audio cloze|ear build/.test(name) ? "Exercises: listening" :
         /^Exercise/.test(name) ? "Exercises: production + recognition" :
         /^Session end/.test(name) ? "Session end" : "Other";
-      const GROUP_ORDER = ["Depth session (in build)", "Sprint 2 (shipped)", "Screens", "Teach: present + correction",
+      const GROUP_ORDER = ["Scenes (in build)", "Depth session (in build)", "Sprint 2 (shipped)", "Screens", "Teach: present + correction",
         "Exercises: production + recognition", "Exercises: listening", "Exercises: letter rungs",
         "Session end", "Other"];
       const sel = document.getElementById("hstory");

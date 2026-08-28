@@ -1857,3 +1857,29 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .door-fade .st-fade { color: color-mix(in srgb, var(--text) 70%, var(--text-dim)); }
 .door-fade { font-size: 12.5px; color: var(--text-dim); margin: 2px 0 0; }
 .door-rec { font-size: 11.5px; color: var(--text-dim); opacity: .7; margin: 3px 0 4px; }
+
+/* diegetic cue lines are sentence case (2026-08-20): caps are for chrome, not story */
+.cue-label .cue-narr { text-transform: none; letter-spacing: 0; }
+
+/* ===== THE SCENES (scene-poc.html r15, stamped 2026-08-19) ===== */
+.scene-line { font-family: var(--font-display); font-size: 17px; font-weight: 500; line-height: 1.45;
+  color: var(--text); margin: 12px 0 16px; position: relative; }
+.scene-line .sl { display: block; margin-bottom: 8px; }
+.scene-line .sl:last-child { margin-bottom: 0; }
+.scene-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; letter-spacing: -0.01em; margin: 6px 0 2px; }
+.scene-sub { font-size: 11.5px; color: var(--text-dim); letter-spacing: 0.06em; margin-bottom: 14px; }
+.scene-art { display: block; width: 180px; height: auto; margin: 26px auto 8px; color: var(--text); opacity: 0.8; }
+.scene-art-lead { width: 262px; margin: 10px auto 6px; }
+img.scene-art { width: 286px; }
+/* THE WINDOW: framed full photo - mitered maple strips + white mat (POC CSS is the spec) */
+.photo-frame { display: block; width: fit-content; margin: 0 auto 16px; position: relative; padding: 7px;
+  filter: drop-shadow(0 8px 22px rgba(0,0,0,.30)); }
+.photo-frame .art-photo, .photo-frame .art-full { border: 14px solid #fff; margin: 0; padding: 0; background: none;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); display: block; }
+.photo-frame .fs { position: absolute; display: block; }
+.fs.ft, .fs.fb { left: 0; right: 0; height: 7px; background: linear-gradient(180deg, #e3c99e, #cda878); }
+.fs.ft { top: 0; clip-path: polygon(0 0, 100% 0, calc(100% - 7px) 100%, 7px 100%); }
+.fs.fb { bottom: 0; clip-path: polygon(7px 0, calc(100% - 7px) 0, 100% 100%, 0 100%); background: linear-gradient(0deg, #dabf92, #c9a170); }
+.fs.fl, .fs.fr { top: 0; bottom: 0; width: 7px; background: linear-gradient(90deg, #dec394, #cba272); }
+.fs.fl { left: 0; clip-path: polygon(0 0, 100% 7px, 100% calc(100% - 7px), 0 100%); }
+.fs.fr { right: 0; clip-path: polygon(0 7px, 100% 0, 100% 100%, 0 calc(100% - 7px)); }

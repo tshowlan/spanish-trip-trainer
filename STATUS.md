@@ -15,6 +15,23 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-27 — THE SCENE RUNNER (north star step 3) + cue verdicts (v250)
+- Chat's cue pass applied: 4 rewrites verbatim; SENTENCE-CASE ruling live (.cue-narr span
+  resets the label's micro-caps; ruling merged to the voice family + decisions).
+- THE SCENE RUNNER live: pack.scenes template data (Bar Paloma authored from POC r15
+  verbatim - stanzas, door, close), _scenePick composes due-first/weakest items into typed
+  slots (frame | keywords | tags; known-content only; produce slots never fall back to
+  recognition - the cold test), scene_door renders THE WINDOW (POC CSS ported as the spec),
+  stanzas ride any exercise via the renderQuestion hook, scene_close = art + human moment +
+  ledger ("THAT'S THE SCENE · N PHRASES, ONE MORNING"). Review-style bookkeeping.
+- Entry points: Test Lab "Play a scene" (dev; the real entry arrives with step 5's tilt) +
+  harness story. Verified composed run: door -> pongo listen -> cuesta weld (SOLO EFECTIVO
+  stanza + "Marina waits") -> numbers listen -> aproveche listen -> cuenta build -> close.
+- FLAG for chat (canon): the pack's coffee-shop primer casts PAU at the cafe machine;
+  the POC casts MARINA as Bar Paloma's barista, but pack canon has Marina at the tasca.
+  Needs a ruling: recast the scene to Pau, or move Marina's canon.
+- Next: step 4 scene authoring v1 (Tom + chat) · step 5 tilt wiring.
+
 ## 2026-08-27 — North star build steps 1-2 (v249)
 - Constitution merge: THE LEARNING CONSTITUTION merged verbatim as the constitution's FIRST
   family (above voice) - star, method, six tenets + tests, rulings, core/periphery/frozen,
