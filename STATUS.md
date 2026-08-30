@@ -15,6 +15,16 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-08-30 — SCENE FORMAT r24 applied (v253)
+- design/scene-poc.html r24 committed (STAMPED FINAL). The door rebuilt: silver cap ->
+  solid photo with bottom fade -> logo-face name riding the fade -> SCENE: CAFE · MORNING ->
+  two-line verse -> Step in. Scoped .scene-door so the return door keeps its own grammar;
+  dual-dark twins added for the name faces (POC had data-theme only).
+- Beats to r24: ONE context line each (Bar Paloma template rewritten to the r24 lines
+  verbatim); the finale is one line + the ledger. The framed-photo window CSS deleted;
+  graveyard + decisions entries verbatim; brevity law updated in the constitution.
+- Cortado/esto writing-night flag carried. WRITING NIGHT WRITES TO r24's SHAPE.
+
 ## 2026-08-27 — CONSOLIDATED RULINGS applied: pinned scenes + cast canon (v252)
 - RE-RULING live: the engine picks the SCENE, not the pieces. Beats pin exact phrases (es)
   or carry authored alternates (alt) only where the stanza names no content; _sceneItem

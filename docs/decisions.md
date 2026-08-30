@@ -243,3 +243,4 @@ luminous law.)
 - 2026-08-21 — Scenes re-ruled: the engine picks the SCENE (by due-mass), never the pieces; phrases pin; alternates and content-free stanzas are the only flexibility. Slot-composition graveyarded.
 - 2026-08-21 — Coverage amendment: review = chosen scene(s) + depth sets for uncovered due items.
 - 2026-08-21 — Cast canon: Marina = Bar Paloma's barista (sings after dark); Pau = her regular; Rosa = the tasca; Montse = the farmacia night shift; Nuria unchanged. POC patched r15.1 (Cantas).
+- 2026-08-22 — Scene door final: capped solid photo with bottom fade, logo-face name in the fade, two-line verse; the beat is the machine cue on a spine; the finale is one line.

@@ -709,31 +709,34 @@ function startScene(scene) {
     answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
 }
-/* the door: THE WINDOW - framed full photo (mitered maple + white mat), name, setting,
-   opening stanza, one CTA into the morning (POC beat 1, verbatim grammar) */
+/* the door r24 (stamped FINAL 2026-08-22): silver cap -> solid photo, bottom fade ->
+   the name in the logo faces riding the fade -> SCENE: [PLACE] · [TIME] -> two-line
+   verse -> one CTA. The framed-photo window is graveyarded. */
 function renderSceneDoor(q) {
   const body = $("#qbody");
   const sc = q.scene;
-  body.appendChild(el(`<span class="photo-frame"><img class="scene-art scene-art-lead art-full" src="${_scenePhoto(sc)}" alt=""><i class="fs ft"></i><i class="fs fr"></i><i class="fs fb"></i><i class="fs fl"></i></span>`));
-  body.appendChild(el(`<div class="scene-title">${sc.title}</div>`));
-  body.appendChild(el(`<div class="scene-sub">${sc.sub}</div>`));
+  const sp = sc.title.indexOf(" ");
+  const n1 = sp > 0 ? sc.title.slice(0, sp) : sc.title;
+  const n2 = sp > 0 ? sc.title.slice(sp + 1) : "";
+  const wrap = el(`<div class="scene-door"></div>`);
+  wrap.appendChild(el(`<div class="door-photo"><div class="door-name"><span class="n1">${n1}</span>${n2 ? ` <span class="n2">${n2}</span>` : ""}</div><img src="${_scenePhoto(sc)}" alt=""></div>`));
+  wrap.appendChild(el(`<div class="scene-sub" style="margin:10px 0 12px;">${sc.sub}</div>`));
   const st = el(`<div class="scene-line"></div>`);
   sc.door.forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
-  body.appendChild(st);
+  wrap.appendChild(st);
   const grown = el(`<div class="res-grown show"><button class="btn res-cont">Step in</button></div>`);
   grown.querySelector(".res-cont").addEventListener("click", () => { run.answered = false; next(); });
-  body.appendChild(grown);
+  wrap.appendChild(grown);
+  body.appendChild(wrap);
 }
-/* the resolution: the human moment + the ledger line (POC beat 7) */
+/* the finale r24: ONE line, then the ledger */
 function renderSceneClose(q) {
   const body = $("#qbody");
   const sc = q.scene;
-  // the close ships WITHOUT art: the POC's line drawing was a placeholder - the pictures
-  // session decides sourcing (Tom's catch, 2026-08-27; POC caption said so and I missed it)
-  const st = el(`<div class="scene-line" style="margin-top:34px"></div>`);
+  const st = el(`<div class="scene-line" style="margin-top:26px;"></div>`);
   sc.close.forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
   body.appendChild(st);
-  body.appendChild(el(`<div class="qtype" style="text-align:center; margin-top:14px;">THAT'S THE SCENE \u00b7 ${q.count} PHRASE${q.count === 1 ? "" : "S"}, ${sc.closeTag || "ONE SCENE"}</div>`));
+  body.appendChild(el(`<div class="qtype" style="margin-top:14px;">THAT'S THE SCENE \u00b7 ${q.count} PHRASE${q.count === 1 ? "" : "S"}, ${sc.closeTag || "ONE SCENE"}</div>`));
   const grown = el(`<div class="res-grown show"><button class="btn res-cont">Done</button></div>`);
   grown.querySelector(".res-cont").addEventListener("click", () => finishReview());
   body.appendChild(grown);

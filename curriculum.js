@@ -686,29 +686,27 @@ const CURRICULUM = {
      verbatim (scene-poc.html r15, stamped). accepts = the slot's type: frame | keywords | tags. */
   scenes: [
     {
-      id: "sc-bar-paloma", title: "Bar Paloma", sub: "CAFETER\u00cdA \u00b7 MORNING \u00b7 SCENE ONE",
+      id: "sc-bar-paloma", title: "Bar Paloma", sub: "SCENE: CAF\u00c9 \u00b7 MORNING",
       img: "cafe", fieldTopic: "coffee", closeTag: "ONE MORNING",
-      door: ["The smell of roasted coffee pulls you through the doorway.", "The caf\u00e9 is reaching its rush, but you spot some open seats.", "Perfect, caffeine awaits."],
-      /* PINNED CONTRACT (re-ruling 2026-08-21): beats pin their exact phrase (es) or carry
-         AUTHORED ALTERNATES (alt) only where the stanza names no content. The engine picks
-         the SCENE by due-mass; it never swaps pieces. */
+      door: ["The smell of roasted coffee pulls you through the doorway.", "Caffeine awaits."],
+      /* r24 FORMAT (stamped 2026-08-22): ONE context line per beat, then the ask; the door
+         carries the setting in a two-line verse; the finale is one line. PINNED CONTRACT
+         (2026-08-21): beats pin es or carry authored alternates where the line names nothing. */
       beats: [
-        { kind: "hear", es: "\u00bfQu\u00e9 le pongo?", sub: "Marina turns to you:" },
+        { kind: "hear", es: "\u00bfQu\u00e9 le pongo?", stanza: ["Marina turns to you."] },
         { kind: "weld", es: "\u00bfCu\u00e1nto cuesta esto?", narr: "Marina waits",
-          stanza: ["A paper slip is clipped to the menu: SOLO EFECTIVO HOY.", "You count your coins.", "The cortado is worth it."] },
-          /* WRITING-NIGHT FLAG: stanza names the cortado; pinned phrase says esto - one of
-             the two gets rewritten at the writing night so story and phrase match. */
+          stanza: ["SOLO EFECTIVO HOY is clipped to the menu."] },
+          /* WRITING-NIGHT FLAG: the POC asks for the cortado; the pinned phrase says esto. */
         { kind: "hear", alt: ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"],
-          sub: "Your answer comes over the grinder:",
-          stanza: ["While she pulls the shot, a local asks Marina, \u201c\u00bfCantas esta noche?\u201d", "She laughs and says maybe.", "So the barista sings somewhere after dark."] },
-        { kind: "hear", es: "Que aproveche",
-          stanza: ["A woman settles onto the next stool and folds her newspaper to the crossword.", "She nods at your cup and says:"] },
+          stanza: ["A regular asks Marina, \u201c\u00bfCantas esta noche?\u201d She says maybe."] },
+        { kind: "hear", es: "Que aproveche", stanza: ["The woman with the crossword nods at your cup and says:"] },
         { kind: "produce", es: "\u00bfMe cobra, por favor?", alt: ["\u00bfMe puede traer la cuenta?"], narr: "Catch her eye",
-          stanza: ["Nothing is left but the crema ring.", "The bar is loud now, but you know the regular's move."] }
+          stanza: ["Nothing is left but the crema ring."] }
       ],
-      close: ["You count your coins onto the marble.", "The crossword woman sends you off with \u201cque aproveche\u201d.", "Marina calls \u201chasta ma\u00f1ana\u201d like she means it."]
+      close: ["Marina calls \u201chasta ma\u00f1ana\u201d like she means it."]
     }
   ]
+
 
 
 };

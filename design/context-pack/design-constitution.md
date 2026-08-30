@@ -84,9 +84,9 @@ A session is one breath: arrive through a door that says where you are and why n
 
 **The authoring shape (the AI boundary holds).** A scene is an authored template: setting + cast + spine + ITEM SLOTS typed by category and machine + glue lines. The engine composes which due items ride which slots — new arrangements, never new Spanish. One scene serves many due-sets; 2-4 scenes per scenario category to start.
 
-**The writing bar:** **THE JEALOUSY TEST** — would someone reading this scene wish it had happened to them? Plus brevity law: max TWO framing lines per beat, visual wording (things you can see and touch: marble, the cortado sliding over), all voice laws hold.
+**The writing bar:** **THE JEALOUSY TEST** — would someone reading this scene wish it had happened to them? Plus brevity law (r16/r24): a beat is ONE context line then the ask; the door's verse is capped at two lines; the finale is one line above the ledger. Visual wording (things you can see and touch: marble, the cortado sliding over), all voice laws hold.
 
-**The door:** THE WINDOW (ruled at the POC, 2026-08-19) — a framed full photograph: skinny mitered maple frame, white mat flush inside, the whole photo in the window; below it the scene's name, the setting line, and the opening stanza; one CTA into the morning.
+**The door (r24, stamped FINAL 2026-08-22; supersedes THE WINDOW — see graveyard):** a slim silver cap line (2.25px, light center) over a SOLID full-bleed photo fading at its BOTTOM (mask solid to 58%, gone by 98%); the scene name rides the fade bottom-left in THE LOGO FACES (first word Jakarta 800, second Playfair Display Italic 500, wordmark tokens per theme); then "SCENE: [PLACE] · [TIME]" micro-caps, a TWO-LINE verse, one CTA. The POC's CSS is the spec.
 
 **The scene laws (minted at the POC, all Tom-ratified):**
 - **THE STANZA FORM**: framing prose renders one short line per sentence with air between, haiku-adjacent, never a paragraph block.
@@ -547,6 +547,8 @@ updates: machines, frames, slots, patterns, asks.
 - 2026-08-21 — Slot-composition retired: composed slots failed the jealousy test in the wild
   (v250); the POC read coherent because it was hand-matched — which was the finding, not the
   fluke.
+- 2026-08-22 — The framed-photo window retired (read as an object on the world; the blended
+  band is the world). Scene door verse capped at two lines (three broke the flow).
 - 2026-08-06 — The in-lesson machine encore (flow ruling 8/03) retires under depth ruling 2:
   lap 2 + the stretch absorbed its function; the encore FORM re-homes at the return door's
   "Run the lap." Superseded, not deleted.

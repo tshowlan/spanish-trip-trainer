@@ -1871,15 +1871,26 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .scene-art { display: block; width: 180px; height: auto; margin: 26px auto 8px; color: var(--text); opacity: 0.8; }
 .scene-art-lead { width: 262px; margin: 10px auto 6px; }
 img.scene-art { width: 286px; }
-/* THE WINDOW: framed full photo - mitered maple strips + white mat (POC CSS is the spec) */
-.photo-frame { display: block; width: fit-content; margin: 0 auto 16px; position: relative; padding: 7px;
-  filter: drop-shadow(0 8px 22px rgba(0,0,0,.30)); }
-.photo-frame .art-photo, .photo-frame .art-full { border: 14px solid #fff; margin: 0; padding: 0; background: none;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); display: block; }
-.photo-frame .fs { position: absolute; display: block; }
-.fs.ft, .fs.fb { left: 0; right: 0; height: 7px; background: linear-gradient(180deg, #e3c99e, #cda878); }
-.fs.ft { top: 0; clip-path: polygon(0 0, 100% 0, calc(100% - 7px) 100%, 7px 100%); }
-.fs.fb { bottom: 0; clip-path: polygon(7px 0, calc(100% - 7px) 0, 100% 100%, 0 100%); background: linear-gradient(0deg, #dabf92, #c9a170); }
-.fs.fl, .fs.fr { top: 0; bottom: 0; width: 7px; background: linear-gradient(90deg, #dec394, #cba272); }
-.fs.fl { left: 0; clip-path: polygon(0 0, 100% 7px, 100% calc(100% - 7px), 0 100%); }
-.fs.fr { right: 0; clip-path: polygon(0 7px, 100% 0, 100% 100%, 0 calc(100% - 7px)); }
+/* THE SCENE DOOR r24 (stamped FINAL 2026-08-22; the framed-photo window is graveyarded):
+   silver cap line -> SOLID full-bleed photo fading at its BOTTOM -> scene name bottom-left
+   in the logo faces -> SCENE: [PLACE] · [TIME] -> two-line verse -> one CTA. Scoped under
+   .scene-door: the return door keeps its own .door-photo grammar. */
+.scene-door .door-photo { position: relative; margin: 6px -18px 2px; height: 248px; }
+.scene-door .door-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 58%; display: block; filter: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 58%, rgba(0,0,0,.45) 82%, transparent 98%);
+          mask-image: linear-gradient(180deg, #000 0%, #000 58%, rgba(0,0,0,.45) 82%, transparent 98%); }
+.scene-door .door-photo::after { content: none; }
+.scene-door .door-photo::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2.25px; z-index: 2;
+  background: linear-gradient(90deg, rgba(120,126,140,.25), #d9dde6 28%, #f4f6fa 50%, #d9dde6 72%, rgba(120,126,140,.25));
+  box-shadow: 0 1px 2px rgba(0,0,0,.35); }
+.door-name { position: absolute; left: 24px; bottom: 10px; z-index: 1; font-family: var(--font-display);
+  font-size: 25px; font-weight: 800; letter-spacing: -0.01em; color: var(--text); }
+.door-name .n2 { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 500; }
+.door-name .n1 { color: #1c275e; }
+.door-name .n2 { color: #4a7fc1; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .door-name .n1 { color: #c8d2f5; }
+  :root:not([data-theme="light"]) .door-name .n2 { color: #7aa6db; }
+}
+:root[data-theme="dark"] .door-name .n1 { color: #c8d2f5; }
+:root[data-theme="dark"] .door-name .n2 { color: #7aa6db; }
