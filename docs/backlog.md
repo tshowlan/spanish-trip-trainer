@@ -350,6 +350,27 @@ app open, so the number is wrong exactly when the reminder fires (8/19-4 both ha
   mechanism ships on every weld/conveyor already (item.narr); extending = an authoring pass
   (fold into the writing night: cue lines are scene-writing at exercise scale).
 
+## Tom's Bar Paloma pass 2026-08-30 (evening) — the writing night's item zero
+
+CODE quick fix SHIPPED v254: "SOLO EFECTIVO HOY" de-capsed to “Solo efectivo hoy” with
+quotation marks (Tom's direct ruling; template + POC beat both patched, POC caption left
+as history).
+
+- [CODE owns the diagnosis · CHAT owns the fix] The number beat is broken twice over: in the
+  POC it was the PRICE ANSWER to the cuesta weld ("How much?" -> pick €2.50) with the
+  overheard as flavor; the composed version lost the "How much?" question AND plays a bare
+  number with no context, under a stanza about singing. Non sequitur squared. Tom's
+  direction: if the stanza is the Cantas overheard, the exercise could be hearing the TIME
+  ("what time did you hear"). Needs an authored beat that ties story and exercise.
+- [CHAT · writing night] The woman with the crossword "isn't anyone" - ground her (employee?
+  regular?) or cast her via the registry.
+- [CHAT · writing night] "Nothing is left but the crema ring" - Tom hates the non sequitur.
+  Direction: settle up and step into the day.
+- [CHAT · writing night + possible law tweak] Overheard placement: after you sit, before the
+  check. And Tom wants MORE overheard beats where they fit ("very much a part of the travel
+  experience") - the one-overheard-per-scene law may loosen to one-per-scene-minimum or
+  per-beat-fit.
+
 ## Standing board (corrected 2026-08-10, slots between sprints at Tom's call)
 
 Spain finalization first (voice session · return door r3 · letter-rungs reform · exercise

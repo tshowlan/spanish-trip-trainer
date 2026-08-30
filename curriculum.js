@@ -695,7 +695,7 @@ const CURRICULUM = {
       beats: [
         { kind: "hear", es: "\u00bfQu\u00e9 le pongo?", stanza: ["Marina turns to you."] },
         { kind: "weld", es: "\u00bfCu\u00e1nto cuesta esto?", narr: "Marina waits",
-          stanza: ["SOLO EFECTIVO HOY is clipped to the menu."] },
+          stanza: ["\u201cSolo efectivo hoy\u201d is clipped to the menu."] },
           /* WRITING-NIGHT FLAG: the POC asks for the cortado; the pinned phrase says esto. */
         { kind: "hear", alt: ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"],
           stanza: ["A regular asks Marina, \u201c\u00bfCantas esta noche?\u201d She says maybe."] },
