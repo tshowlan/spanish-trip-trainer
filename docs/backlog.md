@@ -328,6 +328,28 @@ app open, so the number is wrong exactly when the reminder fires (8/19-4 both ha
 - [NORTH STAR] 8/19-10 lessons bridging/forming into each other + AI-composed review
   sessions - folded into the north-star kickoff (tripfluent-northstar-kickoff.md).
 
+## Tom's notes 2026-08-30 — triaged
+
+- [CHAT · home design delta] 8/30-1 the action tile should read more as a BUTTON; and with
+  the depth/scene changes the practice row vs action tile prominence balance ("glow logic")
+  may need re-ruling. Home-action-stack artifact owns this grammar.
+- [CHAT · new feature + content workstream] 8/30-2 a per-phrase "why" button: exact
+  translation + the grammar inside a phrase ("necesito ir al aeropuerto": why "ir al").
+  Note: the anchor field already carries one-line whys for some items ("traer is to bring.
+  You are asking them to bring it, not going to get it") - this generalizes it into a
+  tappable surface + a grammar-note authoring pass (AI drafting at authoring time is legal).
+- [CHAT · SCENE FORMAT SESSION - the big one, pairs 8/30-3 + 8/30-5] The scene as built is
+  TOO LONG: each beat carries too much prose. Tom's direction: beats should work like the
+  MACHINES do - one context line, then the ask ("The flight is at nine" -> say "I need to go
+  to the airport"). The door carries most of the context; the finale card is in question.
+  This is a format re-rule on the stanza/beat laws (2-line max may become 1-line beats,
+  door-heavy context, machine-cue-sized beats) - session needed BEFORE the writing night
+  writes to the old shape.
+- [DONE mechanism · CHAT authoring] 8/30-4 Tom likes the narrative cues in the necesito
+  machine; wants that context in more exercises even where full stories don't fit. The
+  mechanism ships on every weld/conveyor already (item.narr); extending = an authoring pass
+  (fold into the writing night: cue lines are scene-writing at exercise scale).
+
 ## Standing board (corrected 2026-08-10, slots between sprints at Tom's call)
 
 Spain finalization first (voice session · return door r3 · letter-rungs reform · exercise
