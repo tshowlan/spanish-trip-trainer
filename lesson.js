@@ -690,8 +690,8 @@ function startScene(scene) {
       // known-content law: a weld that records to a pack item needs that item met; a weld
       // recording nowhere is scene-local production (flagged in the data)
       if (b.records && (!rec || exposuresOf(rec) < 1)) return;
-      qs.push({ type: "weld", item: rec || { es: b.target, en: b.cue, id: null }, target: b.target, tiles: b.tiles,
-        cueLabel: b.cueLabel, cueMeaning: b.cue, stanza: [b.context], arc: true, sceneLocal: !rec });
+      qs.push({ type: "weld", item: rec || { es: b.target, en: b.targetEn || b.cue, id: null }, target: b.target, tiles: b.tiles,
+        targetEn: b.targetEn, accept: b.accept, cueLabel: b.cueLabel, cueMeaning: b.cue, stanza: [b.context], arc: true, sceneLocal: !rec });
       return;
     }
     const it = byEs(b.heard);                                      // a heard line that IS a pack phrase records its rep
@@ -717,13 +717,21 @@ function renderSceneHear(q) {
   stage.appendChild(play);
   stage.appendChild(el(`<div class="hint">${b.hint || "Tap to hear it again"}</div>`));
   body.appendChild(stage);
-  setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
+  // no autoplay on narrative beats (Tom, 9/3-10): the context line is read first, then you tap
   body.appendChild(el(`<div class="prompt">${b.prompt}</div>`));
   const choices = el(`<div class="choices"></div>`);
   const pl = el(`<div class="played-line"></div>`);
   pl.appendChild(audioControl(() => speak(b.heard)));
   pl.appendChild(el(`<span>${b.heard}</span>`));
-  const reveal = () => { stage.replaceWith(pl); setTimeout(() => pl.classList.add("show"), 20); };
+  const glossText = b.heardEn || (q.item && q.item.en) || null;
+  const reveal = () => {
+    stage.replaceWith(pl); setTimeout(() => pl.classList.add("show"), 20);
+    if (glossText) {                                   // tap the line to see what it meant (Tom, 9/3-1/-11)
+      const tap = el(`<button class="btn-quiet gloss-tap">What did that mean?</button>`);
+      tap.addEventListener("click", () => tap.replaceWith(el(`<div class="fill-gloss">${glossText}</div>`)));
+      pl.after(tap);
+    }
+  };
   shuffle(b.choices.slice()).forEach(opt => {
     const c = el(`<button class="choice">${opt}</button>`);
     c.addEventListener("click", () => {
@@ -1680,7 +1688,9 @@ function renderWeld(q) {
     setTimeout(() => input.focus(), 50);
     const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
     input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
-    const submit = () => { if (!run.answered && input.value.trim()) gradeTyped(input.value, item); };
+    // scene welds accept authored alternates when typed ("esto" or "un cortado", Tom 9/3-5)
+    const gradeAs = q.target ? Object.assign({}, item, { es: target, variants: (q.accept || []).concat(item.variants || []) }) : item;
+    const submit = () => { if (!run.answered && input.value.trim()) gradeTyped(input.value, gradeAs); };
     input.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
     f.querySelector("#check").addEventListener("click", submit);
     return;
@@ -1721,7 +1731,7 @@ function renderWeld(q) {
     if (wrongTaps > 0) run.wrong++;
     q.esOnStage = true;
     const st = q.sceneLocal ? null : learnPeek(item);
-    const resolved = q.target ? { es: target, en: q.cueMeaning || item.en } : (q.ves ? { es: target, en: item.en } : item);
+    const resolved = q.target ? { es: target, en: q.targetEn || q.cueMeaning || item.en } : (q.ves ? { es: target, en: item.en } : item);
     setTimeout(() => resolveCorrect(resolved, q, { yoursNow: false, restored: false, strengthAfter: st ? Math.round(itemStrength(st)) : 0, miss: false }), 700);
   }
 }

@@ -700,15 +700,15 @@ const CURRICULUM = {
         { type: "exchange-understand", context: "Marina turns to you.", heard: "\u00bfQu\u00e9 le pongo?",
           prompt: "What did she ask?", choices: ["How are you?", "What'll it be?", "To go?"], answer: "What'll it be?", hint: "She asks. Tap to hear it again" },
         { type: "weld", context: "\u201cSolo efectivo hoy\u201d is clipped to the menu.", cueLabel: "Marina waits", cue: "Ask what the cortado costs",
-          tiles: ["cu\u00e1nto", "cuesta", "un", "cortado"], target: "\u00bfCu\u00e1nto cuesta un cortado?", records: "\u00bfCu\u00e1nto cuesta esto?" },
-        { type: "exchange-number", context: "Marina answers over the grinder.", heard: "Son dos con cincuenta",
+          tiles: ["cu\u00e1nto", "cuesta", "un", "cortado"], target: "\u00bfCu\u00e1nto cuesta un cortado?", targetEn: "How much is a cortado?", accept: ["\u00bfCu\u00e1nto cuesta esto?"], records: "\u00bfCu\u00e1nto cuesta esto?" },
+        { type: "exchange-number", context: "Marina answers over the grinder.", heard: "Son dos con cincuenta", heardEn: "That's two fifty",
           prompt: "How much?", choices: ["\u20ac5.20", "\u20ac2.50", "\u20ac3.50"], answer: "\u20ac2.50" },
         { type: "overheard-time", context: "You take the seat by the window. Pau leans on the counter and asks Marina, \u201c\u00bfCantas esta noche?\u201d",
-          heard: "A las diez, si vienes", prompt: "What time did you hear?", choices: ["At two", "At ten", "At twelve"], answer: "At ten", hint: "Her answer. Tap to hear it again" },
+          heard: "A las diez, si vienes", heardEn: "At ten, if you come", prompt: "What time did you hear?", choices: ["At two", "At ten", "At twelve"], answer: "At ten", hint: "Her answer. Tap to hear it again" },
         { type: "grasp-meaning", context: "The regular with the crossword nods at your cup and says:", heard: "Que aproveche",
           prompt: "What does it mean?", choices: ["Excuse me", "See you later", "Enjoy it"], answer: "Enjoy it" },
         { type: "weld", context: "Time to settle up and step into the day.", cueLabel: "Catch her eye", cue: "Ask for the check, politely",
-          tiles: ["la cuenta", "cuando", "pueda"], target: "La cuenta, cuando pueda", records: null }
+          tiles: ["la cuenta", "cuando", "pueda"], target: "La cuenta, cuando pueda", targetEn: "The check, whenever you can", records: null }
           /* FLAG (known-content law): "La cuenta, cuando pueda" is not a pack phrase yet, so this
              rep records nowhere. Chat to rule: add it to the pack (Order like a regular?) or pin
              a taught phrase. */

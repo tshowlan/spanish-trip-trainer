@@ -371,6 +371,35 @@ as history).
   experience") - the one-overheard-per-scene law may loosen to one-per-scene-minimum or
   per-beat-fit.
 
+## Tom's batch 5, 2026-09-03 — triaged (sequencing rule from Tom: review-room STRUCTURE first,
+narrative/exercise DESIGN after)
+
+CODE SHIPPED v256 (structural, no design): narrative hear-beats never autoplay - read first,
+then tap (9/3-10) · tap-to-translate on every revealed heard line ("What did that mean?" ->
+the gloss; pack phrases use their en, scene-local lines use an authored heardEn) (9/3-1, -11) ·
+scene welds resolve with a LITERAL translation (targetEn: "The check, whenever you can") and
+accept authored alternates when typed (accept: esto OR un cortado) (9/3-5, -11). Provisional
+glosses authored by Code, flagged for chat's ratification.
+
+- [CHAT · design session, AFTER structure] 9/3-2 + 9/3-6: narrative vs exercise eye-flow -
+  whisper or louder? quote-paragraph treatment (book / Claude style)? Rethink listening
+  exercises. Tom's sequencing: this follows the scenario-structure work.
+- [CHAT · constitution line] 9/3-3 essence guard: enough narrative to assist the trip
+  learning, never so much it becomes more narrative than learning (bloat test).
+- [CHAT · rationale note] 9/3-4 scenario prep validated by The Rehearsal + Smarter Faster
+  Better - cite in the learning constitution's method section.
+- [CHAT · ruling] 9/3-7 if scenes can't cover every due phrase, differently BRANDED review
+  sessions for the rest (the coverage amendment's depth sets need a door/identity; pairs
+  with 8/19-5).
+- [CHAT · scope ruling] 9/3-8 WHAT IS ENOUGH: a 3-sentence conversation with a stranger is
+  the ceiling; all the way through a meal is critical; utility + chit-chat with cabs,
+  bartenders, service workers. This is the periphery line for scene authoring.
+- [CHAT · ruling upgrade] 9/3-9 overhearing as a CORE mechanic of the review room (the
+  magic of knowing what people are saying) + vehicles: reading a sign, a menu only in
+  Spanish (eyes-overheard; new beat types read-sign / read-menu when authored).
+- [CODE · catalog delivered] the travel-stories starters mapped against the pack:
+  docs/scenes/scenario-catalog.md (coverage per scenario + gaps) - the writing night's map.
+
 ## Standing board (corrected 2026-08-10, slots between sprints at Tom's call)
 
 Spain finalization first (voice session · return door r3 · letter-rungs reform · exercise

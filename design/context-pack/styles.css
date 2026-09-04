@@ -1898,3 +1898,6 @@ img.scene-art { width: 286px; }
 /* narrative is italic, always (Tom 8/31; scene-poc r27): context lines, verse, finale.
    Cues, asks, and exercise Spanish stay upright by living outside .scene-line. */
 .scene-line .sl { font-style: italic; font-synthesis: style; }
+
+/* scene gloss tap: the revealed heard line can be asked what it meant */
+.gloss-tap { display: block; margin: 6px 0 10px; }
