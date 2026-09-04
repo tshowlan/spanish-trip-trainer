@@ -239,6 +239,25 @@
           ALL_ITEMS.filter(it => pins.some(p => norm(p) === norm(it.es))).forEach(it => _seedWeak(it.id));
           startScene(sceneList()[0]);
         },
+        "Scenes — read-sign beat (eyes channel)": () => {
+          clean();
+          run = { lesson: { id: "__harness__", topic: "Restaurant · Bathrooms", items: [] },
+            qs: [{ type: "scene_sign", beat: { type: "read-sign", sign: "Tirar", prompt: "What does it say?", choices: ["Push", "Pull", "Exit"], answer: "Pull" }, item: ALL_ITEMS.find(it => it.es === "Tirar"), stanza: ["Two unmarked doors. One has a word on it."] }],
+            idx: 0, pct: 30, wrong: 0, restored: 0, answered: false, reasks: {}, review: true, missed: new Map() };
+          renderQuestion();
+        },
+        "Scenes — role-inversion beat (they ask YOU)": () => {
+          clean();
+          const rec = ALL_ITEMS.find(it => it.es === "todo recto"); _seedWeak(rec.id);
+          run = { lesson: { id: "__harness__", topic: "Walking directions", items: [] },
+            qs: [{ type: "weld", item: rec, target: "Todo recto", tiles: ["todo", "recto"], targetEn: "Straight ahead", cueLabel: "She waits", cueMeaning: "Tell her: straight ahead",
+              stanza: ["A woman with a map stops you on the corner."], heard: "\u00bfC\u00f3mo llego a la plaza?", heardEn: "How do I get to the square?", arc: true }],
+            idx: 0, pct: 30, wrong: 0, restored: 0, answered: false, reasks: {}, review: true, missed: new Map() };
+          renderQuestion();
+        },
+        "Circuit — fading phrases (door + depth set + end)": () => {
+          clean(); seedDepthMix(); startReview(null, { circuit: true });
+        },
         "Depth — The machine shop (one machine, full)": () => {
           clean();
           const m = DECK.stages.flatMap(st => st.lessons).find(l => l.machine && /traer/.test(l.frame || ""));
@@ -460,7 +479,7 @@
       // wire the picker — grouped (the flat list outgrew itself at ~40 stories, Tom 2026-07-29).
       // Grouping is by name prefix so new stories file themselves; unknown prefixes land in "Other".
       const GROUP_OF = name =>
-        /^Scenes/.test(name) ? "Scenes (in build)" :
+        /^(Scenes|Circuit)/.test(name) ? "Scenes (in build)" :
         /^Depth/.test(name) ? "Depth session (in build)" :
         /^Sprint 2/.test(name) ? "Sprint 2 (shipped)" :
         /^(Home|First score|Arrival|Learn|Progress|Profile)/.test(name) ? "Screens" :

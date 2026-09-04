@@ -582,8 +582,17 @@ function renderPrimer(lesson, onDone) {
 }
 // startReview() → due-item session; startReview(items) → focused review of those items (e.g. mistakes)
 function startReview(items, opts) {
-  const qs = _composeDepth(items && items.length ? items : null, opts);   // depth ruling 4: 5-8 at depth, from the pool or the world
-  if (!qs.length) { toast("Nothing to review yet. Finish a lesson first."); return; }
+  opts = opts || {};
+  // ONE SESSION, ONE DOOR (structure law 5): the open Practice door serves a SCENE when a
+  // scene's due-mass clears the threshold, a CIRCUIT otherwise; pooled runs are circuits
+  if (!(items && items.length) && !opts.circuit) {
+    const sc = pickSceneForReview();
+    if (sc && sceneDueMass(sc) >= SCENE_MASS_MIN) return startScene(sc);
+  }
+  const body = _composeDepth(items && items.length ? items : null, opts);   // depth ruling 4: 5-8 at depth, from the pool or the world
+  if (!body.length) { toast("Nothing to review yet. Finish a lesson first."); return; }
+  const label = opts.label || "CIRCUIT: FADING PHRASES";
+  const qs = [{ type: "circuit_door", label, line: _circuitLine(body) }].concat(body, [{ type: "circuit_close", count: body.length }]);
   run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
 }
@@ -607,6 +616,8 @@ function startMachineShop(lesson) {
   sample(replyPool, Math.min(3, replyPool.length)).forEach(r =>
     qs.push({ type: "exchange", reply: r, frame: lesson.frame, mlesson: lesson, cue: sample(cues, 1)[0], arc: true }));
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();
+  qs.unshift({ type: "circuit_door", label: "CIRCUIT: THE MACHINES", line: `${_machineBadgeName(lesson.frame) || "One"} machine, start to finish.` });
+  qs.push({ type: "circuit_close", count: qs.length - 1 });
   run = { lesson: { id: "__shop__", topic: lesson.topic, items }, qs, idx: 0, wrong: 0, restored: 0,
     answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
@@ -694,6 +705,21 @@ function startScene(scene) {
         targetEn: b.targetEn, accept: b.accept, cueLabel: b.cueLabel, cueMeaning: b.cue, stanza: [b.context], arc: true, sceneLocal: !rec });
       return;
     }
+    if (b.type === "role-inversion") {
+      // ROLE-INVERSION (structure law 2, channel 3): their ask is heard, the learner produces
+      const rec = byEs(b.records);
+      if (b.records && (!rec || exposuresOf(rec) < 1)) return;
+      qs.push({ type: "weld", item: rec || { es: b.target, en: b.targetEn || b.cue, id: null }, target: b.target, tiles: b.tiles,
+        targetEn: b.targetEn, accept: b.accept, cueLabel: b.cueLabel, cueMeaning: b.cue, stanza: [b.context], arc: true, sceneLocal: !rec,
+        heard: b.heard, heardEn: b.heardEn, heardHint: b.hint });
+      return;
+    }
+    if (b.type === "read-sign") {
+      // READ-SIGN (channel 2, eyes): the sign card, no audio, three meanings
+      const it = byEs(b.sign);
+      qs.push({ type: "scene_sign", beat: b, item: it || null, stanza: b.context ? [b.context] : null });
+      return;
+    }
     const it = byEs(b.heard);                                      // a heard line that IS a pack phrase records its rep
     qs.push({ type: "scene_hear", beat: b, item: it || null, stanza: [b.context] });
   });
@@ -752,6 +778,59 @@ function renderSceneHear(q) {
   body.appendChild(choices);
   const f = footer(``);
   listenEscape(f, q);
+}
+
+/* READ-SIGN (structure law 2, the eyes channel): the sign as a card, no audio, three
+   meanings. A pack sign item grades through the real path; otherwise scene-local. */
+function renderSceneSign(q) {
+  const body = $("#qbody");
+  const b = q.beat;
+  body.appendChild(el(`<div class="sign-card">${b.sign}</div>`));
+  body.appendChild(el(`<div class="prompt">${b.prompt || "What does it say?"}</div>`));
+  const choices = el(`<div class="choices"></div>`);
+  shuffle(b.choices.slice()).forEach(opt => {
+    const c = el(`<button class="choice">${opt}</button>`);
+    c.addEventListener("click", () => {
+      if (run.answered) return;
+      const ok = opt === b.answer;
+      [...choices.children].forEach(ch => ch.classList.add(ch.textContent === b.answer ? "correct" : (ch === c ? "wrong" : "dim")));
+      if (!ok) setTimeout(() => { c.classList.remove("wrong"); c.classList.add("dim"); }, 900);
+      if (q.item) { grade(ok, q.item); return; }
+      run.answered = true; _recordSlotTime(q);
+      playSound(ok ? "correct" : "wrong"); haptic(ok ? "correct" : "wrong");
+      if (!ok) run.wrong++;
+      const f = footer(`<button class="btn" id="cont">Continue</button>`);
+      f.querySelector("#cont").addEventListener("click", () => next());
+    });
+    choices.appendChild(c);
+  });
+  body.appendChild(choices);
+}
+
+/* THE CIRCUIT (structure law 5): non-scene review wears the door grammar with no story
+   pretense - field ground, "CIRCUIT: ___", one honest line, END CIRCUIT. Gym register. */
+const SCENE_MASS_MIN = 6;   /* [tune] due-mass a scene needs before the room serves it over a circuit */
+function _circuitLine(qs) {
+  const items = new Set(qs.filter(q => q.item && q.item.id).map(q => q.item.id));
+  const n = items.size || qs.length;
+  const forms = Math.max(1, Math.round(qs.length / Math.max(1, n)));
+  const w = k => (_NUMWORD[k] ? _NUMWORD[k] : String(k));
+  return `${w(n)} phrase${n === 1 ? "" : "s"}, ${w(forms).toLowerCase()} form${forms === 1 ? "" : "s"} each.`;
+}
+function renderCircuitDoor(q) {
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="scene-sub" style="margin:26px 0 10px;">${q.label}</div>`));
+  body.appendChild(el(`<div class="circuit-line">${q.line}</div>`));
+  const grown = el(`<div class="res-grown show"><button class="btn res-cont">Start</button></div>`);
+  grown.querySelector(".res-cont").addEventListener("click", () => { run.answered = false; next(); });
+  body.appendChild(grown);
+}
+function renderCircuitClose(q) {
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype" style="margin-top:34px;">END CIRCUIT \u00b7 ${q.count} REP${q.count === 1 ? "" : "S"}</div>`));
+  const grown = el(`<div class="res-grown show"><button class="btn res-cont">Done</button></div>`);
+  grown.querySelector(".res-cont").addEventListener("click", () => finishReview());
+  body.appendChild(grown);
 }
 
 /* the door r24 (stamped FINAL 2026-08-22): silver cap -> solid photo, bottom fade ->
@@ -1077,7 +1156,8 @@ function renderQuestion() {
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
      word_fill: renderWordFill, phrase_fill: renderPhraseFill,
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
-     scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear,
+     scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear, scene_sign: renderSceneSign,
+     circuit_door: renderCircuitDoor, circuit_close: renderCircuitClose,
      reply: renderReplyChat }[q.type])(q);
 }
 
@@ -1677,6 +1757,13 @@ function renderWeld(q) {
   // scene welds carry their authored cue verbatim (label + meaning); everything else composes
   cueBlock.appendChild(el(`<div class="cue-label">${q.cueLabel ? `<span class="cue-narr">${q.cueLabel}</span>` : (q.ves ? "Another way to ask for" : narr + (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for"))}</div>`));
   cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${q.cueMeaning || (outOfLesson && !q.ves ? q.item.en : q.cue.fen)}</div>`));
+  if (q.heard) {                                                  // role-inversion: hear their ask first
+    const play = audioControl(slow => { slow ? speak(q.heard, 0.55) : speak(q.heard); }, { speed: true });
+    const row = el(`<div class="listen-stage inv-ask"></div>`);
+    row.appendChild(play);
+    row.appendChild(el(`<div class="hint">${q.heardHint || "They ask you. Tap to hear it again"}</div>`));
+    body.appendChild(row);                                        // the ask rides above the cue block
+  }
   body.appendChild(cueBlock);
   const stage = el(`<div class="machine-stage"></div>`);
   if (_inputClimbed(item)) {

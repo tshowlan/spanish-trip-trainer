@@ -35,6 +35,10 @@ Meet it in a scene before you meet it as words — the primer shows the moment, 
 
 A session is one breath: arrive through a door that says where you are and why now; climb — each beat slightly harder or newer than the last; the middle weaves new phrases among returning ones so nothing is learned in isolation; the lap runs today's material once more at speed; the close bows out doing the thing; the ceremony shows what actually moved. Sequence is the app's, pace is the learner's, and the session never asks for more than it said it would.
 
+### The rationale (2026-09-03)
+
+Scenario rehearsal is the strongest prep for real performance — The Rehearsal's premise played straight, and Smarter Better Faster's finding that people who build mental models of upcoming situations perform them better. The review room is the learner rehearsing their actual trip.
+
 ### How six weeks moves a person (the arc)
 
 **Week by week, the mix tilts.** Early: survival essentials first, then scenario waves in demand order — mostly MEETING new phrases. Middle: the machines arrive and multiply what a person can say (seven frames × everything they've learned); learning and composing run side by side. Late: **the tilt inverts** — the review room's share grows as the countdown falls, until the final week is mostly REHEARSAL: composed stretches of the actual trip, run end to end, everything the person owns arranged in the day-shapes they'll live. The countdown doesn't just pace the person; it changes what kind of app this is as the date approaches. Six weeks out, Tripfluent is a teacher. One week out, it's a training camp.
@@ -100,6 +104,22 @@ A session is one breath: arrive through a door that says where you are and why n
   face's true italic (Plus Jakarta Sans italic axes self-hosted); Spanish, cues, and asks stay upright.
 - **THE END LABEL mirrors the door** (2026-08-31): "END SCENE: CAFÉ · MORNING" (micro-caps) replaces
   "That's the scene"; the ledger keeps the numbers.
+- **THE SCOPE CEILING** (Tom, verbatim, 2026-09-03): a 3-sentence conversation with a stranger is the
+  limit; all the way through a meal is critical; utility plus chit-chat with cabs, bartenders, and
+  service workers. Scenes never write past the ceiling — no debates, no life stories, no fluency cosplay.
+- **OVERHEARING IS A CORE MECHANIC, three channels** (2026-09-03): EARS (the overheard beat, generalized:
+  heard line → what did you understand / what time / how much), EYES (read-sign: see the sign, pick its
+  meaning, no audio; read-menu follows after its design piece), and ROLE-INVERSION (they ask YOU: the
+  stranger needs directions and the learner is the local). Waiting moments carry them; the uncapped law holds.
+- **THE ESSENCE GUARD** (checkable, 2026-09-03): enough narrative to assist trip learning, never so much
+  that it is more narrative than learning. The test: every beat except the door and finale carries an
+  ask; context is one line; a scene never adds a narrative-only card beyond those two. If cutting a line
+  loses no learning, cut it.
+- **THE CIRCUIT** (2026-09-03): due items no scene covers run in differently branded sessions — same door
+  grammar, no story pretense: field ground (no photo), "CIRCUIT: FADING PHRASES" / "CIRCUIT: THE MACHINES"
+  as the label, one line of what it is ("Eight phrases, three forms each."), END CIRCUIT mirror. Honest
+  reps in the gym register. One session, one door: the room serves a SCENE when due-mass clears the
+  threshold [tune], a CIRCUIT otherwise; the pile stays paced.
 
 ---
 

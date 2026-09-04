@@ -15,6 +15,23 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-09-04 — REVIEW-ROOM STRUCTURE built (v257)
+- Five laws merged (scope ceiling, overhearing = core x3 channels, essence guard, rationale in the
+  method section, THE CIRCUIT). Structure doc committed to docs/scenes/.
+- Runner: `read-sign` (sign card, no audio, 3 meanings; pack sign items grade for real) ·
+  `role-inversion` (their ask heard above a weld the learner produces) · `overheard` generic
+  (any hear-type). THE CIRCUIT: startReview wears circuit_door ("CIRCUIT: FADING PHRASES" +
+  "N phrases, F forms each.") and circuit_close ("END CIRCUIT · N REPS"); the machine shop is
+  "CIRCUIT: THE MACHINES". ONE DOOR: the open Practice door serves a scene when its due-mass
+  clears SCENE_MASS_MIN [tune, 6], a circuit otherwise; pooled runs are always circuits.
+- WAVE 2 DRAFT authored by Code for Tom + chat review (pack): lesson "Three sentences with a
+  stranger" (s2-smalltalk, 8 phrases: Soy de Estados Unidos [personalized frame pending an
+  intake home field], De donde es, Salud, hace calor/frio, esta lloviendo, claro, le importa si
+  me siento aqui) · Vuelva mas tarde (Your room) · Dos canas y dos copas de vino + Ya esta,
+  gracias (Order like a regular) · Dentro o fuera? + En la terraza (First words at the table).
+  Audit clean. NOT yet stamped: review pass owed.
+- Harness: read-sign, role-inversion, and circuit stories.
+
 ## 2026-09-03 — Batch 5 structure fixes + scenario catalog (v256)
 - Scene hear-beats: no autoplay (read the line, then tap); tap-to-translate on the revealed
   heard line (pack phrases: their en; scene-local: authored heardEn); welds resolve with a

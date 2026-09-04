@@ -1901,3 +1901,11 @@ img.scene-art { width: 286px; }
 
 /* scene gloss tap: the revealed heard line can be asked what it meant */
 .gloss-tap { display: block; margin: 6px 0 10px; }
+
+/* READ-SIGN: the sign as a card (eyes channel) */
+.sign-card { font-family: var(--font-display); font-weight: 800; font-size: 26px; letter-spacing: 0.04em; text-transform: uppercase;
+  text-align: center; padding: 26px 18px; margin: 14px 0 18px; border-radius: var(--radius); background: var(--solid-card);
+  border: 1px solid var(--border); box-shadow: var(--shadow); }
+/* THE CIRCUIT door line: honest, upright, no narrative italic */
+.circuit-line { font-family: var(--font-display); font-size: 21px; font-weight: 500; line-height: 1.35; color: var(--text); margin: 4px 0 18px; }
+.inv-ask { margin-bottom: 10px; }

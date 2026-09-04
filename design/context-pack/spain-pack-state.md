@@ -163,7 +163,7 @@ tools/atlas-snapshot.json (2026-07-24).
 - primer: EXISTS (scene: "It's packed at Rosa's tasca. She wipes down a table, waves you into a chair, and sets down...") · guessItem: "Soy alérgico al marisco" · mission: "Get a table, order, and warn her about the shellfish before anything arrives."
 - reward (invert to promise): "You can get a table, order, ask for the check, and flag your shellfish allergy. Night one at the tapas bar: handled."
 - atlas (2026-07-24): 5.1 min · in band 5-8 · difficulty 2.2 · ramp 2.1
-- phrases (8; first = anchor):
+- phrases (10; first = anchor):
   1. Una mesa para dos, por favor — A table for two, please  (6 tok)  [kw: mesa]
   2. La carta, por favor — The menu, please  (4 tok)  [note: In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día. · kw: carta]
   3. Agua sin gas — Still water (no bubbles)  (3 tok)  [kw: agua]
@@ -172,7 +172,9 @@ tools/atlas-snapshot.json (2026-07-24).
   6. Sin gluten — Gluten-free  (2 tok)  [kw: gluten]
   7. Para compartir — To share  (2 tok)  [note: One plate with two forks is a completely normal tapas order. · kw: compartir]
   8. Un poco más de pan, por favor — A little more bread, please  (7 tok)  [kw: pan]
-- build-eligible (4-8 tok): 5/8
+  9. ¿Dentro o fuera? — Inside or outside?  (3 tok)  [note: What the host asks. Terraza is the answer everyone wants. · kw: dentro]
+  10. En la terraza, por favor — On the terrace, please  (5 tok)  [kw: terraza]
+- build-eligible (4-8 tok): 6/10
 
 ### Where's the loo  `s2-bathroom`
 - topic/setting: Restaurant · Bathrooms · shape: scenario
@@ -282,7 +284,7 @@ tools/atlas-snapshot.json (2026-07-24).
 - primer: EXISTS (scene: "Day two, back at Rosa's, and this time you're early. It's not even lunch and the counter c...") · guessItem: "¿Qué recomienda?" · mission: "Order like you've been coming for years: a drink, the steak, how you want it cooked."
 - reward (invert to promise): "Steak temperature, a caña, 'what do you recommend', you order like a regular now."
 - atlas (2026-07-24): 5.8 min · in band 5-8 · difficulty 1.9 · ramp 1.5
-- phrases (10; first = anchor):
+- phrases (12; first = anchor):
   1. ¿Qué recomienda? — What do you recommend?  (2 tok)  [kw: recomienda]
   2. Para mí, el filete — For me, the steak  (4 tok)  [kw: filete]
   3. Poco hecho — Rare (steak)  (2 tok)  [kw: hecho]
@@ -293,7 +295,23 @@ tools/atlas-snapshot.json (2026-07-24).
   8. Vino tinto — Red wine  (2 tok)  [kw: vino, tinto]
   9. Para llevar — To go / takeaway  (2 tok)  [kw: llevar]
   10. Está muy rico — It's delicious  (3 tok)  [kw: rico]
-- build-eligible (4-8 tok): 2/10
+  11. Dos cañas y dos copas de vino — Two beers and two glasses of wine  (7 tok)  [note: Counted orders: the number goes first, the drink follows. · kw: copas]
+  12. Ya está, gracias — That's all, thanks  (3 tok)  [note: To the person clearing the table: you are done, they can take it. · kw: ya]
+- build-eligible (4-8 tok): 3/12
+
+### Three sentences with a stranger  `s2-smalltalk`
+- topic/setting: Social · Small talk · shape: scenario
+- primer: EXISTS (scene: "The stool next to you at the counter fills up, and the man raises his glass an inch in you...") · mission: "Say where you are from, clink glasses, and talk about the weather like a local."
+- phrases (8; first = anchor):
+  1. Soy de Estados Unidos — I'm from the United States  (4 tok)  [note: Say the country; the city comes if they ask. (Personalized frame pending an intake field.) · kw: soy]
+  2. ¿De dónde es? — Where are you from?  (3 tok)  [note: What they ask you. Formal, and the answer is your country. · kw: dónde]
+  3. ¡Salud! — Cheers!  (1 tok)  [note: Glasses meet, eyes meet. Both, or it does not count. · kw: salud]
+  4. Hace calor — It's hot out  (2 tok)  [note: Weather is the safest three sentences in any language. · kw: calor]
+  5. Hace frío — It's cold out  (2 tok)  [kw: frío]
+  6. Está lloviendo — It's raining  (2 tok)  [kw: lloviendo]
+  7. Claro — Of course  (1 tok)  [note: The yes that sounds like you belong. Works for seats, photos, and favors. · kw: claro]
+  8. ¿Le importa si me siento aquí? — Do you mind if I sit here?  (6 tok)  [note: Also what they ask you on a full bus. The answer is claro. · kw: importa]
+- build-eligible (4-8 tok): 2/8
 
 ### Coffee shop  `s2-coffee`
 - topic/setting: Coffee shop · shape: scenario
@@ -444,7 +462,7 @@ tools/atlas-snapshot.json (2026-07-24).
 - primer: EXISTS (scene: "Carmen slides the key across the desk, and the room upstairs becomes yours: the AC that hu...") · guessItem: "El aire acondicionado no funciona" · mission: "Run your room: ask for what's missing, report what's broken, thank the person who fixes it."
 - reward (invert to promise): "Towels, pillows, the stubborn AC: you run your room."
 - atlas (2026-07-24): 5.5 min · in band 5-8 · difficulty 2.1 · ramp 1.9
-- phrases (9; first = anchor):
+- phrases (10; first = anchor):
   1. ¿Puede limpiar la habitación? — Can you clean the room?  (4 tok)  [kw: limpiar, habitación]
   2. Necesito más toallas — I need more towels  (3 tok)  [kw: toallas]
   3. ¿Puede traer otra almohada? — Can you bring another pillow?  (4 tok)  [kw: almohada]
@@ -454,7 +472,8 @@ tools/atlas-snapshot.json (2026-07-24).
   7. jabón — soap  (1 tok)  [kw: jabón]
   8. Muchas gracias por todo — Thank you very much for everything  (4 tok)  [note: Cleaning staff appreciate it, and a small tip. · kw: por todo]
   9. La ducha no funciona — The shower isn't working  (4 tok)  [kw: ducha]
-- build-eligible (4-8 tok): 5/9
+  10. Vuelva más tarde, por favor — Come back later, please  (5 tok)  [note: Housekeeping at the door, or the transfer that came too early: one phrase, both doors. · kw: vuelva]
+- build-eligible (4-8 tok): 6/10
 
 ### Your Airbnb  `s4-airbnb`
 - topic/setting: Airbnb / apartment · shape: scenario · gated: {"lodging":"airbnb"}

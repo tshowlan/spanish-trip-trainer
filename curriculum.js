@@ -254,6 +254,8 @@ const CURRICULUM = {
             { es: "Sin gluten", en: "Gluten-free", tier: 1, tags: ["dietary", "food"], contextEs: "¿Tienen algo sin gluten?", contextEn: "Do you have anything gluten-free?", keywords: ["gluten"] },
             { es: "Para compartir", en: "To share", note: "One plate with two forks is a completely normal tapas order.", tier: 1, tags: ["restaurant","food"], keywords: ["compartir"] },
             { es: "Un poco más de pan, por favor", en: "A little more bread, please", tier: 1, tags: ["restaurant","food"], keywords: ["pan"] },
+            { es: "\u00bfDentro o fuera?", en: "Inside or outside?", tier: 2, tags: ["restaurant"], keywords: ["dentro"], note: "What the host asks. Terraza is the answer everyone wants." },
+            { es: "En la terraza, por favor", en: "On the terrace, please", tier: 2, tags: ["restaurant"], keywords: ["terraza"], variants: ["Dentro, por favor"], narr: "The host looks up from the book" },
           ]
         },
         {
@@ -372,7 +374,29 @@ const CURRICULUM = {
             { es: "Una caña, por favor", en: "A small draft beer, please", note: "Very Spain. A 'caña' is a small draft beer.", tier: 2, tags: ["drink"], keywords: ["caña"], variants: ["Ponme una caña"] },
             { es: "Vino tinto", en: "Red wine", tier: 1, tags: ["drink"], contextEs: "Una copa de vino tinto", contextEn: "A glass of red wine", keywords: ["vino", "tinto"] },
             { es: "Para llevar", en: "To go / takeaway", latam: "Also 'para llevar'; Mexico: 'para llevar' too.", tier: 1, tags: ["restaurant", "food"], contextEs: "Es para llevar", contextEn: "It's to take away", keywords: ["llevar"] },
-            { es: "Está muy rico", en: "It's delicious", tier: 2, tags: ["food"], keywords: ["rico"], variants: ["Está buenísimo"] }
+            { es: "Está muy rico", en: "It's delicious", tier: 2, tags: ["food"], keywords: ["rico"], variants: ["Está buenísimo"] },
+            { es: "Dos ca\u00f1as y dos copas de vino", en: "Two beers and two glasses of wine", tier: 2, tags: ["restaurant", "drink"], keywords: ["copas"], note: "Counted orders: the number goes first, the drink follows.", narr: "The table wants a round" },
+            { es: "Ya est\u00e1, gracias", en: "That's all, thanks", tier: 1, tags: ["restaurant"], keywords: ["ya"], note: "To the person clearing the table: you are done, they can take it.", narr: "Someone reaches for your plate" },
+          ]
+        },
+        {
+          /* WAVE 2 DRAFT (Code, 2026-09-04; Tom + chat review before it teaches): the small-talk
+             lesson - the highest-leverage authoring gap (unlocks hotel pool/hallway + four
+             stranger scenarios). Soy de ___ is meant to become the first PERSONALIZED frame
+             (the profile's home as filler) - the intake has no home field yet, so it ships
+             literal with variants; flagged. */
+          id: "s2-smalltalk", topic: "Social · Small talk", title: "Three sentences with a stranger",
+          primer: { scene: "The stool next to you at the counter fills up, and the man raises his glass an inch in your direction. Three sentences is all anyone expects. You have them.", mission: "Say where you are from, clink glasses, and talk about the weather like a local." },
+          beat: "Where you are from, the weather, and cheers.",
+          items: [
+            { es: "Soy de Estados Unidos", en: "I'm from the United States", tier: 2, tags: ["social"], keywords: ["soy"], variants: ["Somos de Estados Unidos"], note: "Say the country; the city comes if they ask. (Personalized frame pending an intake field.)", narr: "He asks where you are from" },
+            { es: "\u00bfDe d\u00f3nde es?", en: "Where are you from?", tier: 2, tags: ["social"], keywords: ["d\u00f3nde"], note: "What they ask you. Formal, and the answer is your country." },
+            { es: "\u00a1Salud!", en: "Cheers!", tier: 1, tags: ["social", "drink"], keywords: ["salud"], note: "Glasses meet, eyes meet. Both, or it does not count." },
+            { es: "Hace calor", en: "It's hot out", tier: 2, tags: ["social", "weather"], keywords: ["calor"], note: "Weather is the safest three sentences in any language." },
+            { es: "Hace fr\u00edo", en: "It's cold out", tier: 2, tags: ["social", "weather"], keywords: ["fr\u00edo"] },
+            { es: "Est\u00e1 lloviendo", en: "It's raining", tier: 2, tags: ["social", "weather"], keywords: ["lloviendo"] },
+            { es: "Claro", en: "Of course", tier: 1, tags: ["social"], keywords: ["claro"], note: "The yes that sounds like you belong. Works for seats, photos, and favors." },
+            { es: "\u00bfLe importa si me siento aqu\u00ed?", en: "Do you mind if I sit here?", tier: 2, tags: ["social"], keywords: ["importa"], note: "Also what they ask you on a full bus. The answer is claro." }
           ]
         },
         {
@@ -528,6 +552,7 @@ const CURRICULUM = {
             { es: "jabón", en: "soap", tier: 1, tags: ["hotel", "bathroom"], contextEs: "No hay jabón", contextEn: "There's no soap", keywords: ["jabón"] },
             { es: "Muchas gracias por todo", en: "Thank you very much for everything", note: "Cleaning staff appreciate it, and a small tip.", tier: 2, tags: ["politeness"], keywords: ["por todo"] },
             { es: "La ducha no funciona", en: "The shower isn't working", tier: 2, tags: ["hotel","lodging"], keywords: ["ducha"] },
+            { es: "Vuelva m\u00e1s tarde, por favor", en: "Come back later, please", tier: 2, tags: ["hotel"], keywords: ["vuelva"], variants: ["Vuelva a las cinco, por favor"], note: "Housekeeping at the door, or the transfer that came too early: one phrase, both doors.", narr: "A knock, and it is not even nine" },
           ]
         },
         {
