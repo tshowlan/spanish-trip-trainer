@@ -15,6 +15,21 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-09-03 — BAR PALOMA v1 as data + runner contract (v255)
+- docs/scenes/scene-bar-paloma-morning.md committed as the authoring source; the pack carries
+  the same scene transcribed to data (every phrase pinned, choices + answers explicit).
+- Runner speaks the contract: beat types exchange-understand / exchange-number / overheard-time /
+  grasp-meaning (new renderSceneHear: heard line -> three choices -> played-line reveal; pack
+  phrases grade through the real path, scene-local speech grades locally) + weld (authored
+  tiles, pinned target, cue verbatim, rep recorded to the `records` pack item).
+- Three laws live: overheard uncapped (constitution), narrative italic (Plus Jakarta Sans italic
+  self-hosted, fonts.css + sw), END SCENE label mirrors the door. POC r27 committed. Shell
+  template font link carries italic axes for both display faces.
+- FLAGS for chat: (1) "La cuenta, cuando pueda" is not a pack phrase - the weld records nowhere
+  (known-content law); rule: add to the pack or pin a taught phrase. (2) "Cuanto cuesta un
+  cortado" records to the cuesta frame item (same machine); (3) r27 italicizes whole lines
+  including quoted Spanish; the block says Spanish stays upright - artifact followed, delta noted.
+
 ## 2026-08-30 — SCENE FORMAT r24 applied (v253)
 - design/scene-poc.html r24 committed (STAMPED FINAL). The door rebuilt: silver cap ->
   solid photo with bottom fade -> logo-face name riding the fade -> SCENE: CAFE · MORNING ->

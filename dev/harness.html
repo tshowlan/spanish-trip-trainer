@@ -233,11 +233,10 @@
         "Scenes — Bar Paloma (POC template, composed live)": () => {
           clean(); seedDepthMix();
           // the scene's slot items must be SEEN (scene law): seed them
-          ["pongo","aproveche","cobra","cuenta"].forEach(kw => {
-            ALL_ITEMS.filter(it => (it.keywords || []).includes(kw)).forEach(it => _seedWeak(it.id));
-          });
-          ALL_ITEMS.filter(it => (it.tags || []).includes("numbers")).slice(0, 4).forEach(it => _seedWeak(it.id));
-          ALL_ITEMS.filter(it => /cu[eé]sta/.test(it.frame || "")).forEach(it => _seedWeak(it.id));
+          // seed the scene's PINNED phrases (v1 contract: dueMass + weld records)
+          const sc0 = sceneList()[0];
+          const pins = (sc0.dueMass || []).concat(sc0.beats.map(b => b.records || b.heard).filter(Boolean));
+          ALL_ITEMS.filter(it => pins.some(p => norm(p) === norm(it.es))).forEach(it => _seedWeak(it.id));
           startScene(sceneList()[0]);
         },
         "Depth — The machine shop (one machine, full)": () => {

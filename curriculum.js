@@ -685,27 +685,38 @@ const CURRICULUM = {
      which due items ride which slots, never inventing Spanish). Stanzas are the POC's,
      verbatim (scene-poc.html r15, stamped). accepts = the slot's type: frame | keywords | tags. */
   scenes: [
+    /* SCENE DATA (authoring source: docs/scenes/*.md, Tom-stamped). Every phrase is PINNED;
+       the engine picks the scene (dueMass), never the pieces. Beat types: exchange-understand,
+       exchange-number, overheard-time, grasp-meaning (all: heard line -> choices) and weld
+       (bare tiles fuse into the target sentence). records = the pack item a weld's rep is
+       written to; heard lines are scene-local speech (like chain npc turns). */
     {
-      id: "sc-bar-paloma", title: "Bar Paloma", sub: "SCENE: CAF\u00c9 \u00b7 MORNING",
-      img: "cafe", fieldTopic: "coffee", closeTag: "ONE MORNING",
-      door: ["The smell of roasted coffee pulls you through the doorway.", "Caffeine awaits."],
-      /* r24 FORMAT (stamped 2026-08-22): ONE context line per beat, then the ask; the door
-         carries the setting in a two-line verse; the finale is one line. PINNED CONTRACT
-         (2026-08-21): beats pin es or carry authored alternates where the line names nothing. */
+      id: "cafe-morning-bar-paloma", category: "coffee-shop", title: "Bar Paloma", img: "cafe", fieldTopic: "coffee",
+      label: "SCENE: CAF\u00c9 \u00b7 MORNING", endLabel: "END SCENE: CAF\u00c9 \u00b7 MORNING",
+      cast: ["Marina", "Pau", "the regular with the crossword"],
+      dueMass: ["\u00bfQu\u00e9 le pongo?", "\u00bfCu\u00e1nto cuesta esto?", "Que aproveche", "a las diez de la noche"],
+      door: { verse: ["The smell of roasted coffee pulls you through the doorway.", "Caffeine awaits."], cta: "Step in" },
       beats: [
-        { kind: "hear", es: "\u00bfQu\u00e9 le pongo?", stanza: ["Marina turns to you."] },
-        { kind: "weld", es: "\u00bfCu\u00e1nto cuesta esto?", narr: "Marina waits",
-          stanza: ["\u201cSolo efectivo hoy\u201d is clipped to the menu."] },
-          /* WRITING-NIGHT FLAG: the POC asks for the cortado; the pinned phrase says esto. */
-        { kind: "hear", alt: ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"],
-          stanza: ["A regular asks Marina, \u201c\u00bfCantas esta noche?\u201d She says maybe."] },
-        { kind: "hear", es: "Que aproveche", stanza: ["The woman with the crossword nods at your cup and says:"] },
-        { kind: "produce", es: "\u00bfMe cobra, por favor?", alt: ["\u00bfMe puede traer la cuenta?"], narr: "Catch her eye",
-          stanza: ["Nothing is left but the crema ring."] }
+        { type: "exchange-understand", context: "Marina turns to you.", heard: "\u00bfQu\u00e9 le pongo?",
+          prompt: "What did she ask?", choices: ["How are you?", "What'll it be?", "To go?"], answer: "What'll it be?", hint: "She asks. Tap to hear it again" },
+        { type: "weld", context: "\u201cSolo efectivo hoy\u201d is clipped to the menu.", cueLabel: "Marina waits", cue: "Ask what the cortado costs",
+          tiles: ["cu\u00e1nto", "cuesta", "un", "cortado"], target: "\u00bfCu\u00e1nto cuesta un cortado?", records: "\u00bfCu\u00e1nto cuesta esto?" },
+        { type: "exchange-number", context: "Marina answers over the grinder.", heard: "Son dos con cincuenta",
+          prompt: "How much?", choices: ["\u20ac5.20", "\u20ac2.50", "\u20ac3.50"], answer: "\u20ac2.50" },
+        { type: "overheard-time", context: "You take the seat by the window. Pau leans on the counter and asks Marina, \u201c\u00bfCantas esta noche?\u201d",
+          heard: "A las diez, si vienes", prompt: "What time did you hear?", choices: ["At two", "At ten", "At twelve"], answer: "At ten", hint: "Her answer. Tap to hear it again" },
+        { type: "grasp-meaning", context: "The regular with the crossword nods at your cup and says:", heard: "Que aproveche",
+          prompt: "What does it mean?", choices: ["Excuse me", "See you later", "Enjoy it"], answer: "Enjoy it" },
+        { type: "weld", context: "Time to settle up and step into the day.", cueLabel: "Catch her eye", cue: "Ask for the check, politely",
+          tiles: ["la cuenta", "cuando", "pueda"], target: "La cuenta, cuando pueda", records: null }
+          /* FLAG (known-content law): "La cuenta, cuando pueda" is not a pack phrase yet, so this
+             rep records nowhere. Chat to rule: add it to the pack (Order like a regular?) or pin
+             a taught phrase. */
       ],
-      close: ["Marina calls \u201chasta ma\u00f1ana\u201d like she means it."]
+      finale: { line: "Marina calls \u201chasta ma\u00f1ana\u201d like she means it." }
     }
   ]
+
 
 
 

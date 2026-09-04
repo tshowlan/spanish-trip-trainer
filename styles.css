@@ -1894,3 +1894,7 @@ img.scene-art { width: 286px; }
 }
 :root[data-theme="dark"] .door-name .n1 { color: #c8d2f5; }
 :root[data-theme="dark"] .door-name .n2 { color: #7aa6db; }
+
+/* narrative is italic, always (Tom 8/31; scene-poc r27): context lines, verse, finale.
+   Cues, asks, and exercise Spanish stay upright by living outside .scene-line. */
+.scene-line .sl { font-style: italic; font-synthesis: style; }

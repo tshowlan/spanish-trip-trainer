@@ -244,3 +244,4 @@ luminous law.)
 - 2026-08-21 — Coverage amendment: review = chosen scene(s) + depth sets for uncovered due items.
 - 2026-08-21 — Cast canon: Marina = Bar Paloma's barista (sings after dark); Pau = her regular; Rosa = the tasca; Montse = the farmacia night shift; Nuria unchanged. POC patched r15.1 (Cantas).
 - 2026-08-22 — Scene door final: capped solid photo with bottom fade, logo-face name in the fade, two-line verse; the beat is the machine cue on a spine; the finale is one line.
+- 2026-08-31 — Bar Paloma v1 shipped as DATA (docs/scenes/scene-bar-paloma-morning.md is the authoring template; every phrase pinned). Three scene laws: overheard beats uncapped (1-3, waiting moments, may be the exercise); narrative is italic; the end label mirrors the door.

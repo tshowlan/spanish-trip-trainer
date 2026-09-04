@@ -94,6 +94,12 @@ A session is one breath: arrive through a door that says where you are and why n
 - **THE OVERHEARD LINE**: one heard-only line per scene may foreshadow other content and deepen the cast (the local asking Marina "¿Tocas esta noche?").
 - **NARRATIVE CUES REACH LESSONS TOO**: any exercise cue may carry one diegetic line ("Marina waits · Ask what the cortado costs") — the weld is the real ask, a named person waiting.
 - The jealousy test, the two-line brevity law, full sentences, and all voice laws hold in scene prose.
+- **OVERHEARD BEATS ARE UNCAPPED** (2026-08-31): 1-3 per scene [tune], in waiting moments (after
+  sitting, during the make, before the check); they may be the exercise.
+- **NARRATIVE IS ITALIC** (2026-08-31): every context line, verse, and finale renders in the display
+  face's true italic (Plus Jakarta Sans italic axes self-hosted); Spanish, cues, and asks stay upright.
+- **THE END LABEL mirrors the door** (2026-08-31): "END SCENE: CAFÉ · MORNING" (micro-caps) replaces
+  "That's the scene"; the ledger keeps the numbers.
 
 ---
 

@@ -659,17 +659,17 @@ function _sceneItem(beat, used) {
 /* due-mass: how much this scene's own items need review right now - the scene chooser's
    score (coverage amendment: scenes crown the room; depth sets keep the floor) */
 function sceneDueMass(scene) {
+  const byEs = es => (ALL_ITEMS || []).find(it => norm(it.es) === norm(es));
   let mass = 0, known = 0;
   const now = Date.now();
-  scene.beats.forEach(b => {
-    const it = _sceneItem(b, new Set());
-    if (!it) return;
+  (scene.dueMass || []).forEach(es => {
+    const it = byEs(es); if (!it || exposuresOf(it) < 1) return;
     known++;
     const st = learnPeek(it);
     const overdue = st && st.due ? Math.max(0, (now - new Date(st.due + "T00:00:00").getTime()) / 864e5) : 0;
     mass += (1 + Math.min(overdue, 21)) * (1.2 - itemStrength(st) / 100);
   });
-  return known >= 3 ? mass : 0;                                  // a scene missing its cast of phrases is not servable
+  return known >= 2 ? mass : 0;                                  // a scene whose phrases are unmet is not servable
 }
 function pickSceneForReview() {
   const scored = sceneList().map(sc => ({ sc, mass: sceneDueMass(sc) })).filter(x => x.mass > 0);
@@ -682,25 +682,20 @@ function _scenePhoto(scene) {
 }
 function sceneList() { return (activePack().scenes || []); }
 function startScene(scene) {
+  const byEs = es => es ? (ALL_ITEMS || []).find(it => norm(it.es) === norm(es)) : null;
   const qs = [{ type: "scene_door", scene }];
-  const used = new Set();
   scene.beats.forEach(b => {
-    const it = _sceneItem(b, used);
-    if (!it) return;                                             // an unmet pinned phrase yields its beat
-    used.add(it.id);
-    if (b.kind === "weld" && it.frame) {
-      const fp = _frameParts(it.frame, it.es);
-      const shell = _enShell((ALL_ITEMS || []).filter(x => x.frame === it.frame));
-      const fen = _fillerEn(shell, it.en);
-      if (fp && fen) { qs.push({ type: "weld", item: it, cue: { item: it, p: fp, fen }, arc: true, stanza: b.stanza, sceneNarr: b.narr }); return; }
-    }
-    if (b.kind === "produce") {
-      // a produce slot IS production (the cold test) - never falls back to recognition
-      const t = ["build", "phrase_fill", "type_translation"].find(m => _modeFeasible(m, it)) || "type_translation";
-      qs.push({ type: t, item: it, pool: ALL_ITEMS, stanza: b.stanza, sceneNarr: b.narr });
+    if (b.type === "weld") {
+      const rec = byEs(b.records);
+      // known-content law: a weld that records to a pack item needs that item met; a weld
+      // recording nowhere is scene-local production (flagged in the data)
+      if (b.records && (!rec || exposuresOf(rec) < 1)) return;
+      qs.push({ type: "weld", item: rec || { es: b.target, en: b.cue, id: null }, target: b.target, tiles: b.tiles,
+        cueLabel: b.cueLabel, cueMeaning: b.cue, stanza: [b.context], arc: true, sceneLocal: !rec });
       return;
     }
-    qs.push({ type: "listen_choice", item: it, pool: ALL_ITEMS, stanza: b.stanza, sceneSub: b.sub });
+    const it = byEs(b.heard);                                      // a heard line that IS a pack phrase records its rep
+    qs.push({ type: "scene_hear", beat: b, item: it || null, stanza: [b.context] });
   });
   if (qs.length < 3) { toast("This scene needs more of its phrases met first."); return; }
   qs.push({ type: "scene_close", scene, count: qs.length - 1 });
@@ -709,6 +704,48 @@ function startScene(scene) {
     answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
 }
+/* scene hear-beats (exchange-understand / exchange-number / overheard-time / grasp-meaning):
+   a heard line (scene-local speech, or a pack phrase when it matches one), the ask, three
+   authored choices, the played-line reveal. A pack-phrase beat grades through the normal
+   path (SRS rep); scene-local speech grades locally (heard-only content has no SRS home). */
+function renderSceneHear(q) {
+  if (run.soundOff || !("speechSynthesis" in window) || state.sound === false) { next(); return; }
+  const body = $("#qbody");
+  const b = q.beat;
+  const play = audioControl(slow => { slow ? speak(b.heard, 0.55) : speak(b.heard); }, { speed: true });
+  const stage = el(`<div class="listen-stage"></div>`);
+  stage.appendChild(play);
+  stage.appendChild(el(`<div class="hint">${b.hint || "Tap to hear it again"}</div>`));
+  body.appendChild(stage);
+  setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
+  body.appendChild(el(`<div class="prompt">${b.prompt}</div>`));
+  const choices = el(`<div class="choices"></div>`);
+  const pl = el(`<div class="played-line"></div>`);
+  pl.appendChild(audioControl(() => speak(b.heard)));
+  pl.appendChild(el(`<span>${b.heard}</span>`));
+  const reveal = () => { stage.replaceWith(pl); setTimeout(() => pl.classList.add("show"), 20); };
+  shuffle(b.choices.slice()).forEach(opt => {
+    const c = el(`<button class="choice">${opt}</button>`);
+    c.addEventListener("click", () => {
+      if (run.answered) return;
+      const ok = opt === b.answer;
+      [...choices.children].forEach(ch => ch.classList.add(ch.textContent === b.answer ? "correct" : (ch === c ? "wrong" : "dim")));
+      if (!ok) setTimeout(() => { c.classList.remove("wrong"); c.classList.add("dim"); }, 900);   // wrong-then-release
+      reveal();
+      if (q.item) { q.earReveal = true; grade(ok, q.item); return; }                       // pack phrase: the real rep
+      run.answered = true; _recordSlotTime(q);                                             // scene-local: no SRS home
+      playSound(ok ? "correct" : "wrong"); haptic(ok ? "correct" : "wrong");
+      if (!ok) run.wrong++;
+      const f = footer(`<button class="btn" id="cont">Continue</button>`);
+      f.querySelector("#cont").addEventListener("click", () => next());
+    });
+    choices.appendChild(c);
+  });
+  body.appendChild(choices);
+  const f = footer(``);
+  listenEscape(f, q);
+}
+
 /* the door r24 (stamped FINAL 2026-08-22): silver cap -> solid photo, bottom fade ->
    the name in the logo faces riding the fade -> SCENE: [PLACE] · [TIME] -> two-line
    verse -> one CTA. The framed-photo window is graveyarded. */
@@ -720,11 +757,11 @@ function renderSceneDoor(q) {
   const n2 = sp > 0 ? sc.title.slice(sp + 1) : "";
   const wrap = el(`<div class="scene-door"></div>`);
   wrap.appendChild(el(`<div class="door-photo"><div class="door-name"><span class="n1">${n1}</span>${n2 ? ` <span class="n2">${n2}</span>` : ""}</div><img src="${_scenePhoto(sc)}" alt=""></div>`));
-  wrap.appendChild(el(`<div class="scene-sub" style="margin:10px 0 12px;">${sc.sub}</div>`));
+  wrap.appendChild(el(`<div class="scene-sub" style="margin:10px 0 12px;">${sc.label || sc.sub}</div>`));
   const st = el(`<div class="scene-line"></div>`);
-  sc.door.forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
+  (sc.door.verse || sc.door).forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
   wrap.appendChild(st);
-  const grown = el(`<div class="res-grown show"><button class="btn res-cont">Step in</button></div>`);
+  const grown = el(`<div class="res-grown show"><button class="btn res-cont">${(sc.door && sc.door.cta) || "Step in"}</button></div>`);
   grown.querySelector(".res-cont").addEventListener("click", () => { run.answered = false; next(); });
   wrap.appendChild(grown);
   body.appendChild(wrap);
@@ -734,9 +771,9 @@ function renderSceneClose(q) {
   const body = $("#qbody");
   const sc = q.scene;
   const st = el(`<div class="scene-line" style="margin-top:26px;"></div>`);
-  sc.close.forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
+  (sc.finale ? [sc.finale.line] : (sc.close || [])).forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
   body.appendChild(st);
-  body.appendChild(el(`<div class="qtype" style="margin-top:14px;">THAT'S THE SCENE \u00b7 ${q.count} PHRASE${q.count === 1 ? "" : "S"}, ${sc.closeTag || "ONE SCENE"}</div>`));
+  body.appendChild(el(`<div class="qtype" style="margin-top:14px;">${sc.endLabel || "END SCENE"} \u00b7 ${q.count} PHRASE${q.count === 1 ? "" : "S"}</div>`));
   const grown = el(`<div class="res-grown show"><button class="btn res-cont">Done</button></div>`);
   grown.querySelector(".res-cont").addEventListener("click", () => finishReview());
   body.appendChild(grown);
@@ -1032,7 +1069,7 @@ function renderQuestion() {
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
      word_fill: renderWordFill, phrase_fill: renderPhraseFill,
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
-     scene_door: renderSceneDoor, scene_close: renderSceneClose,
+     scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear,
      reply: renderReplyChat }[q.type])(q);
 }
 
@@ -1618,7 +1655,7 @@ function renderMachineDrill(q) {
    are BARE lowercase words (D6); the fuse dresses them in place. A real production rep. */
 function renderWeld(q) {
   const item = q.item;
-  const target = q.ves || item.es;                     // the stretch builds an authored VARIANT (depth ruling 2)
+  const target = q.target || q.ves || item.es;         // the stretch builds an authored VARIANT (depth ruling 2); scenes pin a target
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">${q.ves ? "The stretch" : "The weld"}</div>`));
   const cueBlock = el(`<div class="conv-cuewrap"></div>`);
@@ -1629,8 +1666,9 @@ function renderWeld(q) {
   // resets the label's micro-caps; the functional label keeps them
   const narrLine = q.sceneNarr || (!q.ves && q.item.narr);
   const narr = narrLine ? `<span class="cue-narr">${narrLine}</span> · ` : "";
-  cueBlock.appendChild(el(`<div class="cue-label">${q.ves ? "Another way to ask for" : narr + (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for")}</div>`));
-  cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${outOfLesson && !q.ves ? q.item.en : q.cue.fen}</div>`));
+  // scene welds carry their authored cue verbatim (label + meaning); everything else composes
+  cueBlock.appendChild(el(`<div class="cue-label">${q.cueLabel ? `<span class="cue-narr">${q.cueLabel}</span>` : (q.ves ? "Another way to ask for" : narr + (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for"))}</div>`));
+  cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${q.cueMeaning || (outOfLesson && !q.ves ? q.item.en : q.cue.fen)}</div>`));
   body.appendChild(cueBlock);
   const stage = el(`<div class="machine-stage"></div>`);
   if (_inputClimbed(item)) {
@@ -1652,7 +1690,8 @@ function renderWeld(q) {
   stage.appendChild(ans); stage.appendChild(bank);
   body.appendChild(stage);
   const dressed = target.split(/\s+/);
-  const seq = dressed.map(w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "").toLowerCase()).filter(Boolean);
+  // authored tiles (scenes) may bind words ("la cuenta"); otherwise every word is a tile
+  const seq = q.tiles ? q.tiles.map(t => t.toLowerCase()) : dressed.map(w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "").toLowerCase()).filter(Boolean);
   let need = 0, wrongTaps = 0;
   shuffle(seq.map((t, i) => ({ t, i }))).forEach(({ t }) => {
     const tile = el(`<button class="word">${t}</button>`);
@@ -1678,11 +1717,12 @@ function renderWeld(q) {
       const sweepEl = ans.querySelector(".sweep");
       dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
     }, 550);
-    recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });
+    if (!q.sceneLocal) recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });   // scene-local welds record nowhere (flagged in data)
     if (wrongTaps > 0) run.wrong++;
     q.esOnStage = true;
-    const st = learnPeek(item);
-    setTimeout(() => resolveCorrect(q.ves ? { es: target, en: item.en } : item, q, { yoursNow: false, restored: false, strengthAfter: st ? Math.round(itemStrength(st)) : 0, miss: false }), 700);
+    const st = q.sceneLocal ? null : learnPeek(item);
+    const resolved = q.target ? { es: target, en: q.cueMeaning || item.en } : (q.ves ? { es: target, en: item.en } : item);
+    setTimeout(() => resolveCorrect(resolved, q, { yoursNow: false, restored: false, strengthAfter: st ? Math.round(itemStrength(st)) : 0, miss: false }), 700);
   }
 }
 
