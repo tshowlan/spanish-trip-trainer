@@ -230,7 +230,7 @@
           seedLesson(l, "fading");
           startLesson(l);
         },
-        "Scenes — Bar Paloma (POC template, composed live)": () => {
+        "Scenes — Café Paloma (composed live from data)": () => {
           clean(); seedDepthMix();
           // the scene's slot items must be SEEN (scene law): seed them
           // seed the scene's PINNED phrases (v1 contract: dueMass + weld records)
@@ -257,6 +257,29 @@
         },
         "Circuit — fading phrases (door + depth set + end)": () => {
           clean(); seedDepthMix(); startReview(null, { circuit: true });
+        },
+        "Scenes — Rosa's (full meal, allergy beat profile-keyed)": () => {
+          clean(); seedDepthMix();
+          state.profile = Object.assign({}, state.profile || {}, { allergies: ["shellfish"], needs: ["allergies"] });
+          rebuildDeck();
+          const sc = sceneList().find(x => x.id === "restaurant-evening-rosas");
+          const pins = (sc.dueMass || []).concat(sc.beats.map(b => b.records || b.heard).filter(Boolean)).concat(["Tengo alergia al marisco"]);
+          ALL_ITEMS.filter(it => pins.some(p => norm(p) === norm(it.es))).forEach(it => _seedWeak(it.id));
+          startScene(sc);
+        },
+        "Scenes — The Corner (role inversion)": () => {
+          clean(); seedDepthMix();
+          const sc = sceneList().find(x => x.id === "street-afternoon-the-corner");
+          const pins = (sc.dueMass || []).concat(sc.beats.map(b => b.records || b.heard).filter(Boolean));
+          ALL_ITEMS.filter(it => pins.some(p => norm(p) === norm(it.es))).forEach(it => _seedWeak(it.id));
+          startScene(sc);
+        },
+        "Scenes — Toni's Bar (early evening)": () => {
+          clean(); seedDepthMix();
+          const sc = sceneList().find(x => x.id === "bar-early-evening-tonis");
+          const pins = (sc.dueMass || []).concat(sc.beats.map(b => b.records || b.heard).filter(Boolean));
+          ALL_ITEMS.filter(it => pins.some(p => norm(p) === norm(it.es))).forEach(it => _seedWeak(it.id));
+          startScene(sc);
         },
         "Depth — The machine shop (one machine, full)": () => {
           clean();

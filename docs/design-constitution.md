@@ -115,6 +115,24 @@ Scenario rehearsal is the strongest prep for real performance — The Rehearsal'
   that it is more narrative than learning. The test: every beat except the door and finale carries an
   ask; context is one line; a scene never adds a narrative-only card beyond those two. If cutting a line
   loses no learning, cut it.
+- **PROFILE-KEYED BEATS** (2026-09-06): a beat may carry `when:` (skipped cleanly if the intake
+  condition fails; the spine never gaps) and `fill:` (phrase filled from the profile). First uses: the
+  allergy beat (only for declared dietary needs, filled with the learner's allergy) and Soy de ___
+  (home city, pending the intake fix).
+- **PLAIN-ENGLISH VENUE NAMING** (2026-09-06): scene labels and names use English venue types the
+  traveler already knows (café, restaurant, bar, street) — no Spanish trade words to decode. Café
+  Paloma · Rosa's (RESTAURANT) · Toni's Bar (BAR).
+- **NEUTRAL PRIMARY, CHOSEN VARIANT** (pack-wide, 2026-09-06): the allergy phrase's drilled form is
+  "Tengo alergia al ___" for everyone (one automatic form under stress, safety-grade); its "Also:"
+  variant wears the learner's chosen agreement (-o / -a / neutral). Same rule for every gendered
+  phrase: primary = the drilled form, variants = the chosen agreement. Prefer noun/verb phrasings
+  over adjectives where utility is equal.
+- **THE INTAKE GRAMMAR FIELD** (2026-09-06, folds into the intake fix with lodging/transport/home
+  city): framed as grammar, not identity — "Spanish adjectives change with the speaker. Which forms
+  should we teach you?" · "-o forms (alérgico, cansado)" · "-a forms (alérgica, cansada)" · "Neutral
+  where possible (tengo alergia)" · sub-line: "This only affects how a few phrases are worded. Neutral
+  forms are understood everywhere." Where no neutral form exists, the -e form rides as a variant note
+  labeled newer usage, not universal.
 - **THE CIRCUIT** (2026-09-03): due items no scene covers run in differently branded sessions — same door
   grammar, no story pretense: field ground (no photo), "CIRCUIT: FADING PHRASES" / "CIRCUIT: THE MACHINES"
   as the label, one line of what it is ("Eight phrases, three forms each."), END CIRCUIT mirror. Honest

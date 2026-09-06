@@ -27,7 +27,9 @@ function buildAllergyLesson(keys) {
   const items = [{ es: "Tengo una alergia", en: "I have an allergy" }];
   keys.forEach(k => {
     const a = ALLERGENS.find(x => x.key === k);
-    if (a) items.push({ es: `Soy alérgico ${a.frag}`, en: `I'm allergic to ${a.en}`, note: 'Women say "alérgica".' });
+    // NEUTRAL PRIMARY, CHOSEN VARIANT (2026-09-06): one automatic form under stress, safety-grade;
+    // the agreement forms ride as variants (the intake grammar field will pick which shows)
+    if (a) items.push({ es: `Tengo alergia ${a.frag}`, en: `I have an allergy to ${a.en}`, variants: [`Soy alérgico ${a.frag}`, `Soy alérgica ${a.frag}`], note: "Also: soy alérgico / alérgica, with the -o or -a that matches you." });
   });
   items.push({ es: "¿Esto lleva frutos secos?", en: "Does this contain nuts?" });
   items.push({ es: "Sin frutos secos, por favor", en: "Without nuts, please" });
@@ -41,11 +43,11 @@ function buildAllergyLesson(keys) {
 function buildDietaryLesson(needs) {
   const items = [];
   if (needs.includes("vegetarian")) items.push(
-    { es: "Soy vegetariano", en: "I'm vegetarian", note: 'Women say "vegetariana".' },
+    { es: "No como carne", en: "I don't eat meat", variants: ["Soy vegetariano", "Soy vegetariana"], note: "Also: soy vegetariano / vegetariana. The verb form needs no agreement." },
     { es: "¿Esto lleva carne?", en: "Does this have meat?" },
     { es: "¿Tienen algo sin carne?", en: "Do you have anything without meat?" });
   if (needs.includes("gluten_free")) items.push(
-    { es: "Soy celíaco", en: "I'm celiac / gluten-free", note: 'Women say "celíaca".' },
+    { es: "No puedo comer gluten", en: "I can't eat gluten", variants: ["Soy celíaco", "Soy celíaca"], note: "Also: soy celíaco / celíaca. The verb form needs no agreement." },
     { es: "¿Esto lleva gluten?", en: "Does this contain gluten?" },
     { es: "¿Tienen algo sin gluten?", en: "Do you have anything gluten-free?" });
   if (!items.length) return null;

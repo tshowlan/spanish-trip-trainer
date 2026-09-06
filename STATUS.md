@@ -15,6 +15,22 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-09-06 — WRITING NIGHT #2 applied (v258)
+- Three Wave 1 scenes shipped as data (Rosa's, The Corner, Toni's Bar) + Café Paloma renamed;
+  four rulings merged (profile-keyed beats, intake grammar field, neutral primary + chosen
+  variant, plain-English venue naming). Remaining Wave 1: Andrés' taxi. Wave 2 lessons APPROVED
+  (stamp comment updated); intake fix now carries home city + grammar field (queued).
+- Runner: when:/fill: live (_beatWhen/_beatFill; allergy beat fills from profile.allergies with
+  the most-due allergy; the frag splits into article + noun tiles); role-inversion with choices
+  runs as a hear beat (the Corner's shape). Toni's met-in line added to the caña note (Order like
+  a regular). Neutral-primary applied to the static shellfish item AND the generated allergy /
+  dietary lessons (Tengo alergia al ___ / No como carne / No puedo comer gluten, agreement forms as
+  variants) - Code's phrasings, flagged for chat's voice pass. Photos: all three scenes ride the
+  default photo until the pictures session. POC r27.1 committed.
+- Deviations flagged: Rosa's table beat builds "Una mesa para dos" (authored tiles) and records to
+  the pack's "...por favor" item with accept alternates; The Corner's "Sí, muy cerca" records to
+  "cerca". Code-authored glosses on new heard lines (filete, cerca, viene a las diez, cerramos).
+
 ## 2026-09-04 — REVIEW-ROOM STRUCTURE built (v257)
 - Five laws merged (scope ceiling, overhearing = core x3 channels, essence guard, rationale in the
   method section, THE CIRCUIT). Structure doc committed to docs/scenes/.

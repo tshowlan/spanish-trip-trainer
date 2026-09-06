@@ -12,8 +12,8 @@
 /* ---- BARCELONA CAST (§9b.2) — fictional recurring characters; food/places are real.
    Cast names live ONLY in English scene/primer text, never in a graded `es` answer.
    - Andrés  — the taxi driver who picks you up at El Prat; dry, knows every shortcut. (ex-Jordi, canon 2026-07-21)
-   - Marina  — Bar Paloma's barista; young, fast, hums over the steam. She SINGS somewhere after dark.
-   - Pau     — Marina's regular at Bar Paloma; asks the overheard questions.
+   - Marina  — Café Paloma's barista; young, fast, hums over the steam. She SINGS somewhere after dark.
+   - Pau     — Marina's regular at Café Paloma; asks the overheard questions.
    - Rosa    — runs a tiny tasca (comedor) off the Barri Gòtic; feeds you like family.
    - Toni    — the bartender at a vermutería; pours vermut and opinions in equal measure.
    - Núria   — a vendor at La Boqueria market; will let you taste before you buy.
@@ -250,7 +250,7 @@ const CURRICULUM = {
             { es: "La carta, por favor", en: "The menu, please", note: "In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día.", tier: 2, tags: ["restaurant", "food"], keywords: ["carta"], variants: ["¿Me trae la carta?"] },
             { es: "Agua sin gas", en: "Still water (no bubbles)", tier: 1, tags: ["drink", "restaurant"], contextEs: "Una botella de agua sin gas", contextEn: "A bottle of still water", keywords: ["agua"] },
             { es: "La cuenta, por favor", en: "The check, please", tier: 2, tags: ["restaurant", "money"], keywords: ["cuenta"], variants: ["¿Me trae la cuenta?"] },
-            { es: "Soy alérgico al marisco", en: "I'm allergic to shellfish", note: "Women: 'alérgica'.", tier: 2, tags: ["dietary", "health"], anchor: "'alérgico' = allergic.", keywords: ["alérgico", "marisco"] },
+            { es: "Tengo alergia al marisco", en: "I have an allergy to shellfish", variants: ["Soy alérgico al marisco", "Soy alérgica al marisco"], note: "Women: 'alérgica'.", tier: 2, tags: ["dietary", "health"], anchor: "'alérgico' = allergic.", keywords: ["alérgico", "marisco"] },
             { es: "Sin gluten", en: "Gluten-free", tier: 1, tags: ["dietary", "food"], contextEs: "¿Tienen algo sin gluten?", contextEn: "Do you have anything gluten-free?", keywords: ["gluten"] },
             { es: "Para compartir", en: "To share", note: "One plate with two forks is a completely normal tapas order.", tier: 1, tags: ["restaurant","food"], keywords: ["compartir"] },
             { es: "Un poco más de pan, por favor", en: "A little more bread, please", tier: 1, tags: ["restaurant","food"], keywords: ["pan"] },
@@ -371,7 +371,7 @@ const CURRICULUM = {
             { es: "Al punto", en: "Medium", tier: 2, tags: ["restaurant", "food"], contextEs: "Lo quiero al punto", contextEn: "I'd like it medium", keywords: ["punto"] },
             { es: "Muy hecho", en: "Well done", tier: 2, tags: ["restaurant", "food"], contextEs: "El filete muy hecho", contextEn: "The steak well done", keywords: ["hecho"] },
             { es: "Agua con gas", en: "Sparkling water", tier: 1, tags: ["drink", "restaurant"], contextEs: "Agua con gas, por favor", contextEn: "Sparkling water, please", keywords: ["agua"] },
-            { es: "Una caña, por favor", en: "A small draft beer, please", note: "Very Spain. A 'caña' is a small draft beer.", tier: 2, tags: ["drink"], keywords: ["caña"], variants: ["Ponme una caña"] },
+            { es: "Una caña, por favor", en: "A small draft beer, please", note: "Very Spain. A 'caña' is a small draft beer. Toni, behind the bar at the vermutería, pours these all night.", tier: 2, tags: ["drink"], keywords: ["caña"], variants: ["Ponme una caña"] },
             { es: "Vino tinto", en: "Red wine", tier: 1, tags: ["drink"], contextEs: "Una copa de vino tinto", contextEn: "A glass of red wine", keywords: ["vino", "tinto"] },
             { es: "Para llevar", en: "To go / takeaway", latam: "Also 'para llevar'; Mexico: 'para llevar' too.", tier: 1, tags: ["restaurant", "food"], contextEs: "Es para llevar", contextEn: "It's to take away", keywords: ["llevar"] },
             { es: "Está muy rico", en: "It's delicious", tier: 2, tags: ["food"], keywords: ["rico"], variants: ["Está buenísimo"] },
@@ -380,7 +380,7 @@ const CURRICULUM = {
           ]
         },
         {
-          /* WAVE 2 DRAFT (Code, 2026-09-04; Tom + chat review before it teaches): the small-talk
+          /* WAVE 2 - APPROVED 2026-09-06 (writing night #2): the small-talk
              lesson - the highest-leverage authoring gap (unlocks hotel pool/hallway + four
              stranger scenarios). Soy de ___ is meant to become the first PERSONALIZED frame
              (the profile's home as filler) - the intake has no home field yet, so it ships
@@ -712,35 +712,110 @@ const CURRICULUM = {
   scenes: [
     /* SCENE DATA (authoring source: docs/scenes/*.md, Tom-stamped). Every phrase is PINNED;
        the engine picks the scene (dueMass), never the pieces. Beat types: exchange-understand,
-       exchange-number, overheard-time, grasp-meaning (all: heard line -> choices) and weld
-       (bare tiles fuse into the target sentence). records = the pack item a weld's rep is
-       written to; heard lines are scene-local speech (like chain npc turns). */
+       exchange-number, overheard, overheard-time, grasp-meaning, role-inversion (all: heard line
+       -> choices), read-sign (sign card -> choices, no audio) and weld (bare tiles fuse into the
+       target sentence; records = the pack item the rep is written to). PROFILE-KEYED beats carry
+       when: (skipped cleanly if the intake condition fails) and fill: (filled from the profile). */
     {
-      id: "cafe-morning-bar-paloma", category: "coffee-shop", title: "Bar Paloma", img: "cafe", fieldTopic: "coffee",
-      label: "SCENE: CAF\u00c9 \u00b7 MORNING", endLabel: "END SCENE: CAF\u00c9 \u00b7 MORNING",
+      id: "cafe-morning-cafe-paloma", category: "coffee-shop", title: "Café Paloma", img: "cafe", fieldTopic: "coffee",
+      label: "SCENE: CAFÉ · MORNING", endLabel: "END SCENE: CAFÉ · MORNING",
       cast: ["Marina", "Pau", "the regular with the crossword"],
-      dueMass: ["\u00bfQu\u00e9 le pongo?", "\u00bfCu\u00e1nto cuesta esto?", "Que aproveche", "a las diez de la noche"],
+      dueMass: ["¿Qué le pongo?", "¿Cuánto cuesta esto?", "Que aproveche", "a las diez de la noche"],
       door: { verse: ["The smell of roasted coffee pulls you through the doorway.", "Caffeine awaits."], cta: "Step in" },
       beats: [
-        { type: "exchange-understand", context: "Marina turns to you.", heard: "\u00bfQu\u00e9 le pongo?",
+        { type: "exchange-understand", context: "Marina turns to you.", heard: "¿Qué le pongo?",
           prompt: "What did she ask?", choices: ["How are you?", "What'll it be?", "To go?"], answer: "What'll it be?", hint: "She asks. Tap to hear it again" },
-        { type: "weld", context: "\u201cSolo efectivo hoy\u201d is clipped to the menu.", cueLabel: "Marina waits", cue: "Ask what the cortado costs",
-          tiles: ["cu\u00e1nto", "cuesta", "un", "cortado"], target: "\u00bfCu\u00e1nto cuesta un cortado?", targetEn: "How much is a cortado?", accept: ["\u00bfCu\u00e1nto cuesta esto?"], records: "\u00bfCu\u00e1nto cuesta esto?" },
+        { type: "weld", context: "“Solo efectivo hoy” is clipped to the menu.", cueLabel: "Marina waits", cue: "Ask what the cortado costs",
+          tiles: ["cuánto", "cuesta", "un", "cortado"], target: "¿Cuánto cuesta un cortado?", targetEn: "How much is a cortado?", accept: ["¿Cuánto cuesta esto?"], records: "¿Cuánto cuesta esto?" },
         { type: "exchange-number", context: "Marina answers over the grinder.", heard: "Son dos con cincuenta", heardEn: "That's two fifty",
-          prompt: "How much?", choices: ["\u20ac5.20", "\u20ac2.50", "\u20ac3.50"], answer: "\u20ac2.50" },
-        { type: "overheard-time", context: "You take the seat by the window. Pau leans on the counter and asks Marina, \u201c\u00bfCantas esta noche?\u201d",
+          prompt: "How much?", choices: ["€5.20", "€2.50", "€3.50"], answer: "€2.50" },
+        { type: "overheard-time", context: "You take the seat by the window. Pau leans on the counter and asks Marina, “¿Cantas esta noche?”",
           heard: "A las diez, si vienes", heardEn: "At ten, if you come", prompt: "What time did you hear?", choices: ["At two", "At ten", "At twelve"], answer: "At ten", hint: "Her answer. Tap to hear it again" },
         { type: "grasp-meaning", context: "The regular with the crossword nods at your cup and says:", heard: "Que aproveche",
           prompt: "What does it mean?", choices: ["Excuse me", "See you later", "Enjoy it"], answer: "Enjoy it" },
         { type: "weld", context: "Time to settle up and step into the day.", cueLabel: "Catch her eye", cue: "Ask for the check, politely",
           tiles: ["la cuenta", "cuando", "pueda"], target: "La cuenta, cuando pueda", targetEn: "The check, whenever you can", records: null }
-          /* FLAG (known-content law): "La cuenta, cuando pueda" is not a pack phrase yet, so this
-             rep records nowhere. Chat to rule: add it to the pack (Order like a regular?) or pin
-             a taught phrase. */
       ],
-      finale: { line: "Marina calls \u201chasta ma\u00f1ana\u201d like she means it." }
+      finale: { line: "Marina calls “hasta mañana” like she means it." }
+    },
+    {
+      id: "restaurant-evening-rosas", category: "restaurant", title: "Rosa's", img: "default", fieldTopic: "Restaurant",
+      label: "SCENE: RESTAURANT · EVENING", endLabel: "END SCENE: RESTAURANT · EVENING",
+      cast: ["Rosa"],
+      dueMass: ["Una mesa para dos, por favor", "¿Qué recomienda?", "Para mí, el filete", "Tirar", "¿Todo bien?", "La cuenta, por favor", "Quédese con el cambio"],
+      door: { verse: ["Half the neighborhood is already here.", "Rosa runs the room without writing anything down."], cta: "Step in" },
+      beats: [
+        { type: "weld", context: "Rosa spots you at the door. Two fingers up.", cueLabel: "She waits", cue: "Ask for a table for two",
+          tiles: ["una", "mesa", "para", "dos"], target: "Una mesa para dos", targetEn: "A table for two", accept: ["Una mesa para dos, por favor", "Quiero una mesa para dos"], records: "Una mesa para dos, por favor" },
+        { type: "weld", context: "The carta is one laminated page. You close it.", cueLabel: "Rosa is back", cue: "Ask what she recommends",
+          tiles: ["qué", "recomienda"], target: "¿Qué recomienda?", targetEn: "What do you recommend?", records: "¿Qué recomienda?" },
+        { type: "exchange-understand", context: "She doesn't even glance at the kitchen.", heard: "El filete, sin duda", heardEn: "The steak, no doubt",
+          prompt: "What did she recommend?", choices: ["The fish", "The steak", "The chicken"], answer: "The steak" },
+        { type: "weld", when: "profile.dietary", fill: "profile.dietary",
+          context: "Before she leaves the table. Say it clearly.", cueLabel: "This one matters", cue: "Tell her: allergic to {dietary_en}",
+          tiles: ["tengo", "alergia", "{dietary_art}", "{dietary_es}"], target: "Tengo alergia {dietary_frag}", targetEn: "I have an allergy to {dietary_en}", records: "Tengo alergia {dietary_frag}" },
+        { type: "weld", context: "She nods once. Decision time.", cueLabel: "Order", cue: "The steak, for you",
+          tiles: ["para", "mí", "el", "filete"], target: "Para mí, el filete", targetEn: "For me, the steak", records: "Para mí, el filete" },
+        { type: "read-sign", context: "You find the bathroom door at the back.", sign: "TIRAR", prompt: "The door says:", choices: ["Push", "Pull", "Staff only"], answer: "Pull" },
+        { type: "exchange-understand", context: "Rosa swings by, one hand on your chair.", heard: "¿Todo bien?",
+          prompt: "What did she ask?", choices: ["More bread?", "All good?", "Finished?"], answer: "All good?" },
+        { type: "weld", context: "Plates cleared. The room has turned over once.", cueLabel: "Catch her eye", cue: "Ask for the check",
+          tiles: ["la", "cuenta", "por", "favor"], target: "La cuenta, por favor", targetEn: "The check, please", records: "La cuenta, por favor" },
+        { type: "weld", context: "You pay. The change lands in a small saucer.", cueLabel: "The regular's move", cue: "Tell her to keep it",
+          tiles: ["quédese", "con", "el", "cambio"], target: "Quédese con el cambio", targetEn: "Keep the change", records: "Quédese con el cambio" }
+      ],
+      finale: { line: "Rosa walks you to the door like you've been coming for years." }
+    },
+    {
+      id: "street-afternoon-the-corner", category: "directions", title: "The Corner", img: "default", fieldTopic: "Walking directions",
+      label: "SCENE: STREET · AFTERNOON", endLabel: "END SCENE: STREET · AFTERNOON",
+      cast: [],
+      dueMass: ["Hablo solo un poco de español", "todo recto", "La segunda calle a la derecha", "cerca"],
+      door: { verse: ["You step out of the bakery with a bag of bread under your arm.", "A couple with a suitcase is looking at you like you live here."], cta: "Step in" },
+      beats: [
+        { type: "role-inversion", context: "The man pulls the suitcase to a stop.", heard: "Perdone, ¿cómo llego a la plaza?", heardEn: "Excuse me, how do I get to the plaza?",
+          prompt: "What does he need?", choices: ["The station", "The plaza", "A taxi"], answer: "The plaza" },
+        { type: "weld", context: "You could pretend not to understand. You don't.", cueLabel: "Be honest first", cue: "Tell him you only speak a little Spanish",
+          tiles: ["hablo", "solo", "un", "poco", "de", "español"], target: "Hablo solo un poco de español", targetEn: "I only speak a little Spanish", records: "Hablo solo un poco de español" },
+        { type: "weld", context: "But you know exactly where it is.", cueLabel: "Point", cue: "Straight ahead",
+          tiles: ["todo", "recto"], target: "Todo recto", targetEn: "Straight ahead", records: "todo recto" },
+        { type: "weld", context: "Then the turn.", cueLabel: "Now the turn", cue: "The second street on the right",
+          tiles: ["la", "segunda", "calle", "a", "la", "derecha"], target: "La segunda calle a la derecha", targetEn: "The second street on the right", records: "La segunda calle a la derecha" },
+        { type: "exchange-understand", context: "She checks with you before they commit.", heard: "¿Está cerca?", heardEn: "Is it close?",
+          prompt: "What did she ask?", choices: ["Is it open?", "Is it close?", "Is it far?"], answer: "Is it close?" },
+        { type: "weld", context: "Five minutes, tops.", cueLabel: "Reassure her", cue: "Yes, very close",
+          tiles: ["sí", "muy", "cerca"], target: "Sí, muy cerca", targetEn: "Yes, very close", records: "cerca" }
+      ],
+      finale: { line: "For thirty seconds, you were the one who lived here." }
+    },
+    {
+      id: "bar-early-evening-tonis", category: "bar", title: "Toni's Bar", img: "default", fieldTopic: "Restaurant",
+      label: "SCENE: BAR · EARLY EVENING", endLabel: "END SCENE: BAR · EARLY EVENING",
+      cast: ["Toni", "Marina"],
+      dueMass: ["Una caña, por favor", "¡Salud!", "¿Podría recomendarme un plato típico de aquí?", "¿Me pone otra, cuando pueda?", "¿A qué hora cierra?"],
+      door: { verse: ["The place is already loud, and the crowd is a drink or two ahead of you.", "Toni is behind the bar and in no hurry about anything."], cta: "Step in" },
+      beats: [
+        { type: "weld", context: "Toni catches your eye over three heads.", cueLabel: "Order", cue: "A caña",
+          tiles: ["una", "caña", "por", "favor"], target: "Una caña, por favor", targetEn: "A small draft beer, please", records: "Una caña, por favor" },
+        { type: "exchange-understand", context: "The glass lands. Toni taps the bar twice.", heard: "¡Salud!",
+          prompt: "What did he say?", choices: ["Careful!", "Cheers!", "Cash only"], answer: "Cheers!" },
+        { type: "weld", context: "The food menu is scribbled on a mirror. Half of it you can't read.", cueLabel: "Ask", cue: "Recommend me something from here",
+          tiles: ["podría", "recomendarme", "un", "plato", "típico", "de", "aquí"], target: "¿Podría recomendarme un plato típico de aquí?", targetEn: "Could you recommend a typical local dish?", records: "¿Podría recomendarme un plato típico de aquí?" },
+        { type: "exchange-understand", context: "He doesn't hesitate.", heard: "Una de bravas. No preguntes.", heardEn: "An order of bravas. Don't ask.",
+          prompt: "What did he recommend?", choices: ["The croquettes", "The bravas", "The olives"], answer: "The bravas" },
+        { type: "overheard", context: "Two stools down, a woman asks Toni over the music if Marina is coming tonight.", heard: "Sí, viene a las diez.", heardEn: "Yes, she's coming at ten.",
+          prompt: "What did you hear?", choices: ["She's already left", "She's coming at ten", "She's coming at two"], answer: "She's coming at ten" },
+        { type: "weld", context: "You take the last sip. You are not ready to leave, and the night is only getting started.", cueLabel: "The regular's move", cue: "One more, when he can",
+          tiles: ["me", "pone", "otra", "cuando", "pueda"], target: "¿Me pone otra, cuando pueda?", targetEn: "Another one, when you get a chance?", records: "¿Me pone otra, cuando pueda?" },
+        { type: "weld", context: "It is getting late, or it isn't. Best to know.", cueLabel: "Ask", cue: "What time they close",
+          tiles: ["a", "qué", "hora", "cierra"], target: "¿A qué hora cierra?", targetEn: "What time does it close?", records: "¿A qué hora cierra?" },
+        { type: "exchange-number", context: "Toni doesn't look at the clock.", heard: "Cerramos a la una.", heardEn: "We close at one.",
+          prompt: "What time?", choices: ["At one", "At two", "At ten"], answer: "At one" }
+      ],
+      finale: { line: "You'll be back at ten. You already know where you're sitting." }
     }
   ]
+
 
 
 

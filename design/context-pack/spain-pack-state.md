@@ -1,4 +1,4 @@
-# Spain pack state (repo truth, 2026-09-04)
+# Spain pack state (repo truth, 2026-09-06)
 
 Auto-exported by tools/export-pack-state.mjs (context-pack ritual). Phrase lists are the
 taught-once law's ground truth: author against THIS, never memory. Atlas numbers merged from
@@ -168,7 +168,7 @@ tools/atlas-snapshot.json (2026-07-24).
   2. La carta, por favor — The menu, please  (4 tok)  [note: In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día. · kw: carta]
   3. Agua sin gas — Still water (no bubbles)  (3 tok)  [kw: agua]
   4. La cuenta, por favor — The check, please  (4 tok)  [kw: cuenta]
-  5. Soy alérgico al marisco — I'm allergic to shellfish  (4 tok)  [note: Women: 'alérgica'. · kw: alérgico, marisco]
+  5. Tengo alergia al marisco — I have an allergy to shellfish  (4 tok)  [note: Women: 'alérgica'. · kw: alérgico, marisco]
   6. Sin gluten — Gluten-free  (2 tok)  [kw: gluten]
   7. Para compartir — To share  (2 tok)  [note: One plate with two forks is a completely normal tapas order. · kw: compartir]
   8. Un poco más de pan, por favor — A little more bread, please  (7 tok)  [kw: pan]
@@ -291,7 +291,7 @@ tools/atlas-snapshot.json (2026-07-24).
   4. Al punto — Medium  (2 tok)  [kw: punto]
   5. Muy hecho — Well done  (2 tok)  [kw: hecho]
   6. Agua con gas — Sparkling water  (3 tok)  [kw: agua]
-  7. Una caña, por favor — A small draft beer, please  (4 tok)  [note: Very Spain. A 'caña' is a small draft beer. · kw: caña]
+  7. Una caña, por favor — A small draft beer, please  (4 tok)  [note: Very Spain. A 'caña' is a small draft beer. Toni, behind the bar at the vermutería, pours these all night. · kw: caña]
   8. Vino tinto — Red wine  (2 tok)  [kw: vino, tinto]
   9. Para llevar — To go / takeaway  (2 tok)  [kw: llevar]
   10. Está muy rico — It's delicious  (3 tok)  [kw: rico]

@@ -692,10 +692,45 @@ function _scenePhoto(scene) {
   return `./img/${region}/${scene.img}.jpg`;
 }
 function sceneList() { return (activePack().scenes || []); }
+/* PROFILE-KEYED BEATS (ruling 2026-09-06): when: skips a beat cleanly when the intake condition
+   fails (the spine never gaps); fill: substitutes the profile's value into cue/tiles/target.
+   First use: the allergy beat (profile.dietary = the learner's declared allergies). */
+function _beatWhen(cond) {
+  const p = state.profile || {};
+  if (!cond) return true;
+  if (cond === "profile.dietary") return !!(p.allergies && p.allergies.length);
+  if (cond === "profile.home") return !!p.home;
+  return true;
+}
+function _beatFill(beat) {
+  if (!beat.fill) return beat;
+  const p = state.profile || {};
+  let vars = null;
+  if (beat.fill === "profile.dietary" && p.allergies && p.allergies.length) {
+    // the allergy whose phrase is most due rides the beat; the first declared otherwise
+    const cands = p.allergies.map(k => ALLERGENS.find(a => a.key === k)).filter(Boolean);
+    const scored = cands.map(a => { const it = (ALL_ITEMS || []).find(x => norm(x.es) === norm(`Tengo alergia ${a.frag}`)); const st = it && learnPeek(it); return { a, due: st && st.due ? new Date(st.due + "T00:00:00").getTime() : Infinity }; });
+    scored.sort((x, y) => x.due - y.due);
+    const a = scored[0].a;
+    const sp = a.frag.indexOf(" ", a.frag.startsWith("a l") ? 2 : 0);
+    // frag "al marisco" -> art "al", es "marisco"; "a los frutos secos" -> art "a los", es "frutos secos"
+    const m = a.frag.match(/^(al|a la|a los|a las)\s+(.+)$/);
+    vars = { dietary_frag: a.frag, dietary_art: m ? m[1] : "", dietary_es: m ? m[2] : a.frag, dietary_en: a.en };
+  }
+  if (!vars) return beat;
+  const sub = str => typeof str === "string" ? str.replace(/\{(\w+)\}/g, (_, k) => vars[k] != null ? vars[k] : "") : str;
+  const out = Object.assign({}, beat);
+  ["cue", "cueLabel", "target", "targetEn", "records", "context"].forEach(k => { if (out[k]) out[k] = sub(out[k]); });
+  if (out.tiles) out.tiles = out.tiles.map(sub).filter(Boolean);
+  if (out.accept) out.accept = out.accept.map(sub);
+  return out;
+}
 function startScene(scene) {
   const byEs = es => es ? (ALL_ITEMS || []).find(it => norm(it.es) === norm(es)) : null;
   const qs = [{ type: "scene_door", scene }];
-  scene.beats.forEach(b => {
+  scene.beats.forEach(b0 => {
+    if (!_beatWhen(b0.when)) return;                             // profile-keyed: skipped cleanly
+    const b = _beatFill(b0);
     if (b.type === "weld") {
       const rec = byEs(b.records);
       // known-content law: a weld that records to a pack item needs that item met; a weld
@@ -703,6 +738,12 @@ function startScene(scene) {
       if (b.records && (!rec || exposuresOf(rec) < 1)) return;
       qs.push({ type: "weld", item: rec || { es: b.target, en: b.targetEn || b.cue, id: null }, target: b.target, tiles: b.tiles,
         targetEn: b.targetEn, accept: b.accept, cueLabel: b.cueLabel, cueMeaning: b.cue, stanza: [b.context], arc: true, sceneLocal: !rec });
+      return;
+    }
+    if (b.type === "role-inversion" && !b.tiles) {
+      // ROLE-INVERSION as comprehension (the Corner's shape): their ask heard, what do they need
+      const it = byEs(b.heard);
+      qs.push({ type: "scene_hear", beat: b, item: it || null, stanza: [b.context] });
       return;
     }
     if (b.type === "role-inversion") {
