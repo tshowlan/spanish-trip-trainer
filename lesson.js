@@ -1386,7 +1386,7 @@ function mcOptions(item, es2en, siblings) {
 // reps surface a natural `variant` instead of the canonical string — locals won't use our exact words.
 // Never in the first 3 exposures (canonical form stabilizes first). Grading already accepts variants.
 function presentEs(item) {
-  const vs = item.variants || [];
+  const vs = chosenVariants(item);                                 // the chosen agreement only (2026-09-06)
   if (vs.length && exposuresOf(item) >= 3 && Math.random() < 0.25) return { text: pick(vs), variant: true };
   return { text: item.es, variant: false };
 }

@@ -1909,3 +1909,10 @@ img.scene-art { width: 286px; }
 /* THE CIRCUIT door line: honest, upright, no narrative italic */
 .circuit-line { font-family: var(--font-display); font-size: 21px; font-weight: 500; line-height: 1.35; color: var(--text); margin: 4px 0 18px; }
 .inv-ask { margin-bottom: 10px; }
+
+/* THE PROFILE EDIT (intake fix) */
+.profile-edit .pe-section { margin-top: 22px; }
+.profile-edit .pe-t { font-family: var(--font-display); font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+.profile-edit .pe-s { font-size: 12.5px; color: var(--text-dim); margin-bottom: 8px; line-height: 1.4; }
+.profile-edit .chips { margin-top: 6px; }
+.chips.chips-col { flex-direction: column; align-items: stretch; }

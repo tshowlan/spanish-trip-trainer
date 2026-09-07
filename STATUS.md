@@ -15,6 +15,20 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-09-08 — SURFACE INVENTORY + THE INTAKE FIX (v261)
+- docs/surface-inventory.md: 17 screens / 30 renderers / 11 sheets, each marked CANON, LEGACY,
+  or GAP with its artifact and date; duplicates to retire listed; consolidation order proposed.
+  The finite list behind "inconsistencies throughout". Consolidation session next (Tom + chat).
+- THE INTAKE FIX: "Edit trip profile" now opens ONE screen (renderProfileEdit) showing every
+  selection - date, trip kind, lodging, transport, needs, allergies, home city, the grammar
+  field - editable in place; Save rebuilds the deck. The questionnaire is never re-run.
+  Intake gains two questions for new users: home city (fills "Soy de ___" later; skippable)
+  and THE GRAMMAR FIELD (chat's copy verbatim, three options). profile.home + profile.grammar.
+  The chosen agreement: variants with -o/-a stems surface only in the chosen form (chosenVariants,
+  AGREEMENT_FORMS in engine.js; neutral drops both); the generated allergy note names only the
+  chosen form. "Soy de ___" as a personalized frame still literal (scene fill: profile.home is
+  ready when a scene uses it).
+
 ## 2026-09-07 — Batch 6 structure fixes + chat's interim block (v260)
 - Chat's glosses ruled = the shipped ones (no change); records deviations ratified; Andrés
   met-in line added to the Taxi! lesson note (cast-met-first prereq for the taxi scene).

@@ -23,13 +23,30 @@ function meetsReq(lesson, p) {
   if (lesson.requires.transport) return (p.transport || []).includes(lesson.requires.transport);
   return true;
 }
+/* THE CHOSEN AGREEMENT (ruling 2026-09-06): variants that carry -o / -a agreement surface only
+   in the form the learner chose at intake; neutral drops both. v1 keys off the pack's known
+   gendered stems; new stems join this list as they are authored. */
+const AGREEMENT_FORMS = { o: /\b(alérgico|vegetariano|celíaco|cansado|listo|seguro)\b/i, a: /\b(alérgica|vegetariana|celíaca|cansada|lista|segura)\b/i };
+function chosenVariants(item) {
+  const vs = item.variants || [];
+  const g = (state.profile || {}).grammar || "neutral";
+  return vs.filter(v => {
+    const isO = AGREEMENT_FORMS.o.test(v), isA = AGREEMENT_FORMS.a.test(v);
+    if (!isO && !isA) return true;                                 // not a gendered form: always fine
+    return g === "o" ? isO : g === "a" ? isA : false;
+  });
+}
 function buildAllergyLesson(keys) {
   const items = [{ es: "Tengo una alergia", en: "I have an allergy" }];
   keys.forEach(k => {
     const a = ALLERGENS.find(x => x.key === k);
     // NEUTRAL PRIMARY, CHOSEN VARIANT (2026-09-06): one automatic form under stress, safety-grade;
     // the agreement forms ride as variants (the intake grammar field will pick which shows)
-    if (a) items.push({ es: `Tengo alergia ${a.frag}`, en: `I have an allergy to ${a.en}`, variants: [`Soy alérgico ${a.frag}`, `Soy alérgica ${a.frag}`], note: "Also: soy alérgico / alérgica, with the -o or -a that matches you." });
+    if (a) {
+      const g = (state.profile || {}).grammar;
+      const note = g === "o" ? `Also: soy alérgico ${a.frag}.` : g === "a" ? `Also: soy alérgica ${a.frag}.` : "Also: soy alérgico / alérgica, with the -o or -a that matches you.";
+      items.push({ es: `Tengo alergia ${a.frag}`, en: `I have an allergy to ${a.en}`, variants: [`Soy alérgico ${a.frag}`, `Soy alérgica ${a.frag}`], note });
+    }
   });
   items.push({ es: "¿Esto lleva frutos secos?", en: "Does this contain nuts?" });
   items.push({ es: "Sin frutos secos, por favor", en: "Without nuts, please" });

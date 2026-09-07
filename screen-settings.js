@@ -79,7 +79,7 @@ function renderProfile() {
   wrap.appendChild(grpRow);
 
   const editP = el(`<button class="btn grey" style="margin-top:20px">Edit trip profile</button>`);
-  editP.addEventListener("click", renderOnboarding);
+  editP.addEventListener("click", renderProfileEdit);   // one screen, every selection, never the intake again (Tom 9/7-9)
   wrap.appendChild(editP);
 
   const reset = el(`<button class="btn btn--danger" style="margin-top:12px">Reset all progress</button>`);
@@ -238,3 +238,70 @@ function labRestore() {
   localStorage.removeItem("sts_lab_backup");
   location.reload();                                    // clean boot; bootSync re-pulls the untouched vault
 }
+
+
+/* THE PROFILE EDIT (intake fix, 2026-09-08): one screen that shows every intake selection
+   and lets any one change in place - never re-runs the questionnaire. Saving rebuilds the
+   deck (gated lessons appear/disappear, the allergy lesson follows the allergies). */
+function renderProfileEdit() {
+  const app = $("#app"); clearFooter(); showTabbar("profile");
+  document.body.classList.remove("in-runner");
+  app.innerHTML = "";
+  const p = Object.assign({ needs: [], allergies: [], lodging: [], transport: [] }, state.profile || {});
+  const d = _peDraft ? (function (x) { _peDraft = null; return x; })(_peDraft) : { tripDate: p.tripDate || "", tripType: p.tripType || null, lodging: (p.lodging || []).slice(), transport: (p.transport || []).slice(),
+    needs: (p.needs || []).slice(), allergies: (p.allergies || []).slice(), home: p.home || "", grammar: p.grammar || "neutral" };
+  const wrap = el(`<div class="screen profile-edit"></div>`);
+  wrap.appendChild(el(`<h2>Your trip profile</h2>`));
+  wrap.appendChild(el(`<p class="onb-dim">Change anything here. Your lessons follow your answers.</p>`));
+  const di = destInfo(p.destination);
+  const section = (title, sub) => { const sec = el(`<div class="pe-section"><div class="pe-t">${title}</div>${sub ? `<div class="pe-s">${sub}</div>` : ""}</div>`); wrap.appendChild(sec); return sec; };
+  const chipRow = (sec, opts, arr, single) => {
+    const chips = el(`<div class="chips"></div>`);
+    opts.forEach(o => {
+      const on = single ? arr.value === o.key : arr.includes(o.key);
+      const chip = el(`<button class="chip ${on ? "on" : ""}"><span class="chip-l">${o.label}</span></button>`);
+      chip.addEventListener("click", () => {
+        if (single) arr.value = o.key; else { const i = arr.indexOf(o.key); i >= 0 ? arr.splice(i, 1) : arr.push(o.key); }
+        renderProfileEditFrom(d);
+      });
+      chips.appendChild(chip);
+    });
+    sec.appendChild(chips);
+  };
+  const destSec = section("Destination", `${di ? di.flag + " " + di.label : "Not set"} · switch destinations under Your trips`);
+  const dateSec = section("Trip date");
+  const date = el(`<input class="text-input" type="date" value="${d.tripDate}">`);
+  date.addEventListener("change", () => { d.tripDate = date.value; });
+  dateSec.appendChild(date);
+  const bind = k => ({ get value() { return d[k]; }, set value(v) { d[k] = v; } });   // single-selects live IN the draft, so re-renders keep them
+  const tt = bind("tripType");
+  chipRow(section("Kind of trip"), TRIP_TYPES.map(t => ({ key: t[0], label: t[1] })), tt, true);
+  chipRow(section("Where you're staying", "Unlocks the host and check-out phrases you'll actually need."), LODGING_OPTIONS, d.lodging);
+  chipRow(section("Getting around"), TRANSPORT_OPTIONS, d.transport);
+  chipRow(section("Anything to tailor for?"), NEEDS.map(n => ({ key: n[0], label: n[1] })), d.needs);
+  if (d.needs.includes("allergies")) chipRow(section("Which allergies?", "Your allergy lesson and the scenes' allergy beat follow this."), ALLERGENS.map(a => ({ key: a.key, label: a.en })), d.allergies);
+  const homeSec = section("Where you're from", "Fills \"Soy de ___\" the way you'd say it to a stranger.");
+  const home = el(`<input class="text-input" type="text" autocomplete="off" placeholder="New York" value="${d.home}">`);
+  home.addEventListener("input", () => { d.home = home.value; });
+  homeSec.appendChild(home);
+  const gr = bind("grammar");
+  chipRow(section("Spanish adjectives change with the speaker. Which forms should we teach you?", "This only affects how a few phrases are worded. Neutral forms are understood everywhere."), GRAMMAR_OPTIONS, gr, true);
+  const saveBtn = el(`<button class="btn" style="margin-top:22px">Save</button>`);
+  saveBtn.addEventListener("click", () => {
+    if (!d.needs.includes("allergies")) d.allergies = [];
+    state.profile = Object.assign({}, state.profile || {}, { tripDate: d.tripDate, tripType: d.tripType, lodging: d.lodging, transport: d.transport,
+      needs: d.needs, allergies: d.allergies, home: d.home.trim(), grammar: d.grammar });
+    save(); rebuildDeck(); save();
+    toast("Profile saved. Your lessons follow it.");
+    renderProfile();
+  });
+  wrap.appendChild(saveBtn);
+  const back = el(`<button class="btn-quiet" style="margin-top:10px">Back</button>`);
+  back.addEventListener("click", renderProfile);
+  wrap.appendChild(back);
+  app.appendChild(wrap);
+  window.scrollTo(0, 0);
+  // re-render in place keeps the draft (chip toggles rebuild the screen from the same draft)
+  function renderProfileEditFrom(draft) { _peDraft = draft; renderProfileEdit._from = draft; renderProfileEdit(); }
+}
+let _peDraft = null;

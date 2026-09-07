@@ -15,6 +15,11 @@ const TRIP_TYPES = [
 ];
 // every option must do something (personalization spec §2): dietary → its own lesson, chat → smalltalk
 // weight. The old solo / off-beaten / cities options informed nothing and were cut.
+const GRAMMAR_OPTIONS = [
+  { key: "o",       label: "-o forms (alérgico, cansado)" },
+  { key: "a",       label: "-a forms (alérgica, cansada)" },
+  { key: "neutral", label: "Neutral where possible (tengo alergia)" }
+];
 const NEEDS = [
   ["gluten_free", "Gluten-free"], ["vegetarian", "Vegetarian / vegan"],
   ["allergies", "Food allergies"], ["chat", "Want to chat with locals"]
@@ -33,7 +38,7 @@ function priorAccountAnswers() {
   if (state.profile) profs.push(state.profile);
   Object.values(state.trips || {}).forEach(t => { if (t && t.profile) profs.push(t.profile); });
   const p = profs.find(x => x && x.level);
-  return p ? { level: p.level, allergies: p.allergies || [], needs: p.needs || [] } : null;
+  return p ? { level: p.level, allergies: p.allergies || [], needs: p.needs || [], home: p.home || "", grammar: p.grammar || null } : null;
 }
 // §5.3 seam: the most recent completed trip + the current (decayed) mean phrase strength, for the
 // "record vs faded state" line a returning user sees. Language-scoped, DECK-independent.
@@ -45,16 +50,16 @@ function _currentLangStrength() {
 
 function renderOnboarding() {
   const app = $("#app");
-  const draft = { destination: null, date: "", tripType: null, lodging: [], transport: [], needs: [], allergies: [], pIdx: 0, pScore: 0, level: null };
+  const draft = { destination: null, date: "", tripType: null, lodging: [], transport: [], needs: [], allergies: [], home: "", grammar: null, pIdx: 0, pScore: 0, level: null };
   // §2.1: level and dietary/allergies are ACCOUNT-scoped — a returning user making a new trip
   // carries them forward and only answers the trip-scoped questions (type, lodging, transport).
   const prior = priorAccountAnswers();
   const returning = !!prior;
-  if (returning) { draft.level = prior.level; draft.allergies = prior.allergies.slice(); draft.needs = prior.needs.slice(); }
+  if (returning) { draft.level = prior.level; draft.allergies = prior.allergies.slice(); draft.needs = prior.needs.slice(); draft.home = prior.home || ""; draft.grammar = prior.grammar || null; }
   let screen = "welcome";
 
   const go = s => { screen = s; render(); };
-  const nextAfterNeeds = () => draft.needs.includes("allergies") ? "allergens" : "placement";
+  const nextAfterNeeds = () => draft.needs.includes("allergies") ? "allergens" : "home";
 
   function render() {
     clearFooter();
@@ -174,9 +179,36 @@ function renderOnboarding() {
       });
       wrap.appendChild(chips);
       const next = el(`<button class="btn" style="margin-top:18px">Continue</button>`);
-      next.addEventListener("click", () => go("placement"));
+      next.addEventListener("click", () => go("home"));
       wrap.appendChild(next);
 
+    } else if (screen === "home") {
+      // HOME CITY (intake fix, 2026-09-08): the first personalized frame ("Soy de ___") fills from it
+      wrap.appendChild(el(`<div class="onb-q">Where are you from?</div>`));
+      wrap.appendChild(el(`<div class="onb-sub">Your city or country, the way you'd say it to a stranger. It fills "Soy de ___" later.</div>`));
+      const inp = el(`<input class="text-input" type="text" autocomplete="off" placeholder="New York" value="${draft.home || ""}">`);
+      inp.addEventListener("input", () => { draft.home = inp.value; });
+      wrap.appendChild(inp);
+      const next = el(`<button class="btn" style="margin-top:18px">Continue</button>`);
+      next.addEventListener("click", () => go("grammar"));
+      wrap.appendChild(next);
+      const skip = el(`<button class="btn-quiet" style="margin-top:10px">Skip for now</button>`);
+      skip.addEventListener("click", () => go("grammar"));
+      wrap.appendChild(skip);
+    } else if (screen === "grammar") {
+      // THE INTAKE GRAMMAR FIELD (ruling 2026-09-06): framed as grammar, not identity
+      wrap.appendChild(el(`<div class="onb-q">Spanish adjectives change with the speaker. Which forms should we teach you?</div>`));
+      const chips = el(`<div class="chips chips-col"></div>`);
+      GRAMMAR_OPTIONS.forEach(g => {
+        const chip = el(`<button class="chip ${draft.grammar === g.key ? "on" : ""}"><span class="chip-l">${g.label}</span></button>`);
+        chip.addEventListener("click", () => { draft.grammar = g.key; render(); });
+        chips.appendChild(chip);
+      });
+      wrap.appendChild(chips);
+      wrap.appendChild(el(`<div class="onb-sub" style="margin-top:12px">This only affects how a few phrases are worded. Neutral forms are understood everywhere.</div>`));
+      const next = el(`<button class="btn" style="margin-top:18px" ${draft.grammar ? "" : "disabled"}>Continue</button>`);
+      next.addEventListener("click", () => go("placement"));
+      wrap.appendChild(next);
     } else if (screen === "placement") {
       const q = PLACEMENT[draft.pIdx];
       wrap.appendChild(el(`<div class="onb-sub">Quick check (${draft.pIdx + 1}/${PLACEMENT.length}), no studying, just tap.</div>`));
@@ -231,7 +263,8 @@ function renderOnboarding() {
     const newProfile = {
       destination: draft.destination, tripDate: draft.date,
       tripType: draft.tripType, needs: draft.needs, allergies: draft.allergies,
-      level: draft.level || "new", lodging: draft.lodging, transport: draft.transport
+      level: draft.level || "new", lodging: draft.lodging, transport: draft.transport,
+      home: (draft.home || "").trim(), grammar: draft.grammar || "neutral"
     };
     snapshotActive();                          // stash the trip we're leaving
     state.active = draft.destination;
