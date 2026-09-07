@@ -790,7 +790,9 @@ function renderSceneHear(q) {
   const pl = el(`<div class="played-line"></div>`);
   pl.appendChild(audioControl(() => speak(b.heard)));
   pl.appendChild(el(`<span>${b.heard}</span>`));
-  const glossText = b.heardEn || (q.item && q.item.en) || null;
+  // the tap exists only when it adds meaning the choices did not already reveal (Tom, 9/7-1a):
+  // scene-local speech with an authored gloss that is not the answer itself
+  const glossText = (b.heardEn && norm(b.heardEn).replace(/[^a-z]/g, "") !== norm(b.answer || "").replace(/[^a-z]/g, "")) ? b.heardEn : null;
   const reveal = () => {
     stage.replaceWith(pl); setTimeout(() => pl.classList.add("show"), 20);
     if (glossText) {                                   // tap the line to see what it meant (Tom, 9/3-1/-11)
@@ -2759,7 +2761,7 @@ function renderLetterFill(q, scale) {
   const clean = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "");
   let text;
   if (scale === "word") {
-    const words = item.es.split(/\s+/);
+    const words = _fillWords(item);                                // cognates never take the tray (Tom 9/7-3)
     const kws = (item.keywords || []).filter(k => /^\S+$/.test(k));
     text = kws.map(k => words.find(w => norm(clean(w)) === norm(k))).find(Boolean)
         || words.slice().sort((a, b) => clean(b).length - clean(a).length)[0] || item.es;
@@ -2789,6 +2791,7 @@ function renderLetterFill(q, scale) {
   body.appendChild(line);
   body.appendChild(el(`<div class="fill-gloss">${item.en}</div>`));   // gloss rule: the screen holds es, the line holds en
   let nextSlot = 0, wrongTaps = 0, done = false;
+  const slotWrong = new Array(slots.length).fill(0);   // three strikes on one slot: it fills itself (Tom, 9/7-5)
   const markNext = () => { slots.forEach(x => x.classList.remove("next")); if (nextSlot < slots.length) slots[nextSlot].classList.add("next"); };
   const acceptInput = (letter, tile) => {
     if (done || run.answered || nextSlot >= slots.length) return;
@@ -2811,6 +2814,10 @@ function renderLetterFill(q, scale) {
       if (tile) { tile.classList.add("shake"); setTimeout(() => tile.classList.remove("shake"), 340); }
       slot.classList.add("wrongflash");
       setTimeout(() => slot.classList.remove("wrongflash"), 340);
+      if (++slotWrong[nextSlot] >= 3) {              // the slot fills itself; the slip already counted, no letter-by-letter gate
+        const w = want;
+        setTimeout(() => { if (!done && !run.answered && slots[nextSlot] === slot) acceptInput(w, null); }, 360);
+      }
     }
   };
   if (!keysMode) {

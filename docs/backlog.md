@@ -400,6 +400,29 @@ glosses authored by Code, flagged for chat's ratification.
 - [CODE · catalog delivered] the travel-stories starters mapped against the pack:
   docs/scenes/scenario-catalog.md (coverage per scenario + gaps) - the writing night's map.
 
+## Tom's batch 6, 2026-09-07 — triaged
+
+CODE SHIPPED v260: the translate tap appears only when it adds meaning the choices did not
+already show (9/7-1a) · cognates are exposed, never drilled at the letter rungs - single-word
+near-cognates (taxi, hotel, wifi) skip word/phrase fill (9/7-3; the 8/10-4 ruling, executed) ·
+three strikes on one letter slot and it fills itself, the slip already counted (9/7-5).
+
+- [CHAT · design session, TABLED per Tom] 9/7-1b the audio control should glow when a beat
+  does not autoplay (as the Practice row does) · 9/7-1c narrative treatment: compare a
+  highlight ground vs a context label at the top vs an indent with a vertical bar (paste-to-
+  code style); Tom leans to the label · 9/7-1d the scene description is not a whisper ·
+  9/7-4 the circuit door needs design · 9/7-8 the correction sheet should mark WHICH part of
+  the phrase was wrong, not strike the whole line (Code note: a word-level diff of the attempt
+  against the target is cheap to compute; the surface is the stamped correction-sheet artifact).
+- [CHAT · pedagogy ruling] 9/7-2 function words (pronouns, prepositions, auxiliaries: en, lo,
+  al...) are never taught, only met - Tom gets lost. How to incorporate without a grammar
+  screen (the name-it-once law): the anchor field + the queued "why" button are the seed.
+- [CHAT · writing] 9/7-6 The Corner is too short (6 asks) · 9/7-7 Toni's Bar reads short (8) -
+  add beats/overheards.
+- [CODE · NEXT BUILD, scope confirmed by chat] 9/7-9 THE INTAKE FIX: one profile-edit screen
+  (see all selections, change any: lodging, transport, dietary/allergies, home city, the grammar
+  field) - never re-run the intake. Allergies are currently uneditable without redoing intake.
+
 ## Standing board (corrected 2026-08-10, slots between sprints at Tom's call)
 
 Spain finalization first (voice session · return door r3 · letter-rungs reform · exercise

@@ -1,4 +1,4 @@
-# Spain pack state (repo truth, 2026-09-06)
+# Spain pack state (repo truth, 2026-09-07)
 
 Auto-exported by tools/export-pack-state.mjs (context-pack ritual). Phrase lists are the
 taught-once law's ground truth: author against THIS, never memory. Atlas numbers merged from
@@ -168,7 +168,7 @@ tools/atlas-snapshot.json (2026-07-24).
   2. La carta, por favor — The menu, please  (4 tok)  [note: In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día. · kw: carta]
   3. Agua sin gas — Still water (no bubbles)  (3 tok)  [kw: agua]
   4. La cuenta, por favor — The check, please  (4 tok)  [kw: cuenta]
-  5. Tengo alergia al marisco — I have an allergy to shellfish  (4 tok)  [note: Women: 'alérgica'. · kw: alérgico, marisco]
+  5. Tengo alergia al marisco — I have an allergy to shellfish  (4 tok)  [note: Also: soy alérgico / alérgica, with the -o or -a that matches you. · kw: alergia, marisco]
   6. Sin gluten — Gluten-free  (2 tok)  [kw: gluten]
   7. Para compartir — To share  (2 tok)  [note: One plate with two forks is a completely normal tapas order. · kw: compartir]
   8. Un poco más de pan, por favor — A little more bread, please  (7 tok)  [kw: pan]
@@ -372,7 +372,7 @@ tools/atlas-snapshot.json (2026-07-24).
   3. ¿Cuánto cuesta hasta el centro? — How much to the center?  (5 tok)  [kw: cuánto, centro]
   4. Pare aquí, por favor — Stop here, please  (4 tok)  [kw: pare]
   5. ¿Puede esperar un momento? — Can you wait a moment?  (4 tok)  [kw: esperar]
-  6. ¿A dónde va? — Where are you going?  (3 tok)  [note: What the DRIVER asks you. · kw: dónde]
+  6. ¿A dónde va? — Where are you going?  (3 tok)  [note: What the driver asks you. Andrés, leaning on his cab at El Prat, asks it first. · kw: dónde]
   7. Tengo prisa — I'm in a hurry  (2 tok)  [kw: prisa]
   8. el maletero — the trunk (boot)  (2 tok)  [kw: maletero]
 - build-eligible (4-8 tok): 5/8

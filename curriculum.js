@@ -454,7 +454,7 @@ const CURRICULUM = {
             { es: "¿Cuánto cuesta hasta el centro?", en: "How much to the center?", tier: 2, tags: ["taxi", "money"], keywords: ["cuánto", "centro"], reply: { es: "Unos veinte euros", en: "About twenty euros" } },
             { es: "Pare aquí, por favor", en: "Stop here, please", tier: 2, tags: ["taxi"], keywords: ["pare"], variants: ["Aquí está bien, gracias"] },
             { es: "¿Puede esperar un momento?", en: "Can you wait a moment?", tier: 2, tags: ["taxi"], keywords: ["esperar"] },
-            { es: "¿A dónde va?", en: "Where are you going?", note: "What the DRIVER asks you.", tier: 1, tags: ["taxi"], keywords: ["dónde"] },
+            { es: "¿A dónde va?", en: "Where are you going?", note: "What the driver asks you. Andrés, leaning on his cab at El Prat, asks it first.", tier: 1, tags: ["taxi"], keywords: ["dónde"] },
             { es: "Tengo prisa", en: "I'm in a hurry", tier: 2, tags: ["taxi"], keywords: ["prisa"] },
             { es: "el maletero", en: "the trunk (boot)", latam: "Latin America: 'la cajuela' (Mexico) / 'el baúl'.", tier: 1, tags: ["taxi"], contextEs: "¿Puede abrir el maletero?", contextEn: "Can you open the trunk?", keywords: ["maletero"] }
           ]

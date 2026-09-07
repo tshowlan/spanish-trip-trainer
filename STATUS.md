@@ -15,6 +15,13 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-09-07 — Batch 6 structure fixes + chat's interim block (v260)
+- Chat's glosses ruled = the shipped ones (no change); records deviations ratified; Andrés
+  met-in line added to the Taxi! lesson note (cast-met-first prereq for the taxi scene).
+- Cognates never drilled at the letter rungs (_isCognate gate in _modeFeasible); translate tap
+  only when it adds meaning; three-strikes slot fill in the letter rungs.
+- Batch 6 triaged (backlog 9/7). NEXT BUILD: the intake fix as one profile-edit screen.
+
 ## 2026-09-06 — WRITING NIGHT #2 applied (v258)
 - Three Wave 1 scenes shipped as data (Rosa's, The Corner, Toni's Bar) + Café Paloma renamed;
   four rulings merged (profile-keyed beats, intake grammar field, neutral primary + chosen

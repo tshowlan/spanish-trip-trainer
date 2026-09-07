@@ -126,6 +126,24 @@ const LADDER = [
 
 function _speechSupported() { return typeof window !== "undefined" && !!(window.SpeechRecognition || window.webkitSpeechRecognition); }
 function _wordCount(item) { return item.es.trim().split(/\s+/).length; }
+/* the words a letter fill may target: 4+ letters and NOT a cognate of a word in the English
+   ("taxi", "hotel", "wifi" ride sentences and recognition, never the tray - Tom 8/10-4, 9/7-3) */
+function _fillWords(item) {
+  const clean = w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "");
+  const enWords = norm(item.en || "").split(/[^a-z]+/).filter(Boolean);
+  return item.es.split(/\s+/).filter(w => {
+    const a = norm(clean(w)).replace(/[^a-z]/g, "");
+    if (a.length < 4) return false;
+    return !enWords.some(b => b === a || (b.length >= 4 && (b.includes(a) || a.includes(b))) || (a.length >= 4 && levenshtein(a, b) <= 1));
+  });
+}
+function _isCognate(item) {
+  if (_wordCount(item) > 1) return false;
+  const a = norm(item.es).replace(/[^a-z]/g, ""), b = norm(item.en || "").replace(/[^a-z]/g, "");
+  if (!a || !b) return false;
+  if (a === b || b.includes(a) || a.includes(b)) return true;
+  return a.length >= 4 && levenshtein(a, b) <= 1;
+}
 function _modeFeasible(mode, item) {
   const n = _wordCount(item);
   if (mode === "mc_es2en") return n <= 2;          // Sprint 2 ruling 4: MC is WORD-SCALE only (phrase MC retired; scan-reading is not recognition)
@@ -136,7 +154,11 @@ function _modeFeasible(mode, item) {
   if (mode === "sound_choice") return n >= 2;      // needs a frame around the blanked word (renderer verifies a distractor exists)
   if (mode === "ear_build") return n >= 4 && n <= 8;   // same tile constraints as build
   if (mode === "reply") return !!item.replyTo;     // §7.1: dormant until replyTo is authored (Phase-3)
-  if (mode === "word_fill") return item.es.split(/\s+/).some(w => w.replace(/[^a-záéíóúüñA-ZÁÉÍÓÚÜÑ]/g, "").length >= 4);
+  // COGNATES ARE EXPOSED, NEVER DRILLED (Tom, 8/10-4 + 9/7-3): "t_axi" teaches nothing when the
+  // word is the English word - letter rungs skip single-word near-cognates; they still ride
+  // sentences and recognition
+  if ((mode === "word_fill" || mode === "phrase_fill") && _isCognate(item)) return false;
+  if (mode === "word_fill") return _fillWords(item).length > 0;
   if (mode === "phrase_fill") return n >= 2 && item.es.replace(/[^a-záéíóúüñA-ZÁÉÍÓÚÜÑ]/g, "").length >= 6;
   return true;
 }
