@@ -58,3 +58,6 @@ fi
 
 echo "context-pack refreshed:"
 ls -1 "$PACK"
+
+# the living page (process change 9/8): "The app today" rides to the Desktop with every refresh
+cp "$(dirname "$0")/../docs/app-today.md" "/Users/thomashowland/Desktop/Projects/Tripfluent/tripfluent-app-today.md" 2>/dev/null || true

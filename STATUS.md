@@ -15,6 +15,19 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-09-08 — PROCESS CHANGE: staging before live (v263)
+- Tom's rule: nothing reaches the live app before he has played it. Mechanism: STAGED flags
+  (config.js) + a Staging switch in the Test Lab; increments deploy gated; "ship" is Tom's word,
+  then the flag comes off. Ship note (<=10 plain lines) on every increment; docs/app-today.md is
+  the living page (synced to the Desktop per refresh); one surface per ship.
+- Retroactive: the "What did that mean?" tap is now STAGED (shipped 9/3 without Tom's eyes).
+- FIRST STAGED INCREMENT: the review room's door + the tilt - a ready scene names itself on the
+  Practice line and takes the hero tile when the tilt (0 at six weeks out -> 1 in the final week)
+  crosses 0.5 or no lesson remains; the tilt also lowers the scene threshold by up to half.
+- Consolidation rulings ON HOLD until Tom has read them.
+- Surfaces touched: Home hero tile + Practice sheet line (staged), Test Lab (switch), scene
+  hear beats (gate). Nothing visible changes with staging off.
+
 ## 2026-09-08 — THE FRICTION MAP + chat's interim block (v262)
 - docs/friction-map.md replaces the inventory as the consolidation document (Tom: age is not a
   verdict; Home + session end keep as-is; rank by exposure; tie to backlog). Top item: the review

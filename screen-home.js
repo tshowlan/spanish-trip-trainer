@@ -715,6 +715,12 @@ function heroState() {
   const lastDays = _lastSessionDays();
   const next = firstOpenLesson();
   const dv = scoreDivergence();                        // §7.3: the divergence steers the recommendation, not just copy
+  // THE REVIEW ROOM'S DOOR (staged "review-door"): a ready scene takes the tile when the tilt
+  // says rehearsal outranks new material (it outranks the cram line too: the final weeks ARE
+  // rehearsal); earlier in the countdown it waits in the Practice sheet
+  const scene = isStaged("review-door") ? sceneReady() : null;
+  if (scene && (tiltShare() >= 0.5 || !next))
+    return { kind: "review", scene, title: `Scene: ${scene.title} is ready`, sub: `${scene.beats.length} asks. Your phrases, in the room where you'll use them.`, run: () => startScene(scene) };
   if (days !== null && days <= 14)
     return { kind: "cram", title: `${days} day${days === 1 ? "" : "s"} out. Drill your essentials.`, run: () => startReview(backlog.length ? backlog : seenItems()) };
   // §7.3 quality problem: doing the work but earlier phrases decaying → steer today to review
@@ -798,7 +804,8 @@ function practiceChooser() {
   };
   const picked = (typeof _practicePick === "function") ? _practicePick(null) : [];
   const line = (typeof practicePickLine === "function") ? practicePickLine(picked) : null;
-  add("Practice", line || "Finish a lesson first", () => startReview(), !picked.length);
+  const sc = isStaged("review-door") ? sceneReady() : null;   // staged: the door names the scene it will serve
+  add("Practice", sc ? `Scene: ${sc.title} \u00b7 ${sc.beats.length} asks` : (line || "Finish a lesson first"), () => startReview(), !picked.length && !sc);
   add("By scenario", "Pick a category and drill it hard", scenarioChooser);
   const shops = machineShopLessons();
   add("The machine shop", shops.length ? "Drill one machine start to finish" : "Meet a machine first", machineShopChooser, !shops.length);

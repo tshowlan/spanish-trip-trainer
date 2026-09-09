@@ -92,6 +92,10 @@ function renderProfile() {
 
   const ver = el(`<div class="app-version" id="app-version">Tripfluent</div>`);
     // THE SCENES (dev entry until the tilt wires the real one): play a scene with real state
+  // STAGING (process change 9/8): unshipped increments live behind this switch until Tom's word
+  const stg = el(`<label class="lab-row" style="border:1px solid var(--accent-2);border-radius:10px;padding:8px 10px"><span>Staging: play unshipped increments<br><span class="set-d">${Object.values(STAGED).map(d => "· " + d).join("<br>")}</span></span><input type="checkbox" id="lab-staging" ${stagingOn() ? "checked" : ""}></label>`);
+  stg.querySelector("#lab-staging").addEventListener("change", e => { try { localStorage.setItem("sts_staging", e.target.checked ? "1" : "0"); } catch (_) {} toast(e.target.checked ? "Staging on: unshipped increments are live for you" : "Staging off"); });
+  wrap.appendChild(stg);
   const scRow = el(`<div class="lab-row"><div class="lab-lbl">Play a scene (uses your real due items)</div><div id="lab-scenes"></div></div>`);
   (typeof sceneList === "function" ? sceneList() : []).forEach(sc => {
     const b = el(`<button class="btn-quiet" style="margin:4px 6px 0 0">${sc.title}</button>`);

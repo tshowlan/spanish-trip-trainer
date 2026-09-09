@@ -587,7 +587,7 @@ function startReview(items, opts) {
   // scene's due-mass clears the threshold, a CIRCUIT otherwise; pooled runs are circuits
   if (!(items && items.length) && !opts.circuit) {
     const sc = pickSceneForReview();
-    if (sc && sceneDueMass(sc) >= SCENE_MASS_MIN) return startScene(sc);
+    if (sc && sceneDueMass(sc) >= sceneMassMin()) return startScene(sc);
   }
   const body = _composeDepth(items && items.length ? items : null, opts);   // depth ruling 4: 5-8 at depth, from the pool or the world
   if (!body.length) { toast("Nothing to review yet. Finish a lesson first."); return; }
@@ -795,7 +795,7 @@ function renderSceneHear(q) {
   const glossText = (b.heardEn && norm(b.heardEn).replace(/[^a-z]/g, "") !== norm(b.answer || "").replace(/[^a-z]/g, "")) ? b.heardEn : null;
   const reveal = () => {
     stage.replaceWith(pl); setTimeout(() => pl.classList.add("show"), 20);
-    if (glossText) {                                   // tap the line to see what it meant (Tom, 9/3-1/-11)
+    if (glossText && isStaged("gloss-tap")) {          // STAGED: tap the line to see what it meant (Tom, 9/3-1/-11; design pending)
       const tap = el(`<button class="btn-quiet gloss-tap">What did that mean?</button>`);
       tap.addEventListener("click", () => tap.replaceWith(el(`<div class="fill-gloss">${glossText}</div>`)));
       pl.after(tap);
@@ -853,6 +853,16 @@ function renderSceneSign(q) {
 /* THE CIRCUIT (structure law 5): non-scene review wears the door grammar with no story
    pretense - field ground, "CIRCUIT: ___", one honest line, END CIRCUIT. Gym register. */
 const SCENE_MASS_MIN = 6;   /* [tune] due-mass a scene needs before the room serves it over a circuit */
+/* THE TILT (learning constitution: the mix inverts as the countdown falls). 0 at six weeks out,
+   1 in the final week [tune]. Staged behind "review-door" until Tom ships it. */
+function tiltShare() {
+  const p = state.profile || {};
+  if (!p.tripDate) return 0;
+  const days = Math.max(0, daysUntil(p.tripDate));
+  return Math.max(0, Math.min(1, (42 - days) / 35));
+}
+function sceneMassMin() { return isStaged("review-door") ? SCENE_MASS_MIN * (1 - 0.5 * tiltShare()) : SCENE_MASS_MIN; }
+function sceneReady() { const sc = pickSceneForReview(); return sc && sceneDueMass(sc) >= sceneMassMin() ? sc : null; }
 function _circuitLine(qs) {
   const items = new Set(qs.filter(q => q.item && q.item.id).map(q => q.item.id));
   const n = items.size || qs.length;
