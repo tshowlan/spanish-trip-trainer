@@ -15,6 +15,13 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-09-09 — Test Lab: scene readiness readout + "Make ready" (v264, dev surface)
+- Tom saw cram at 8 days and the pile at 15 with staging on: no scene cleared the bar, because
+  the lab fabricates FUTURE due dates (so the due dial reads exactly) and scene phrases never
+  look due. The Test Lab now shows each scene's due-mass vs today's bar (with the tilt and the
+  staging state) and offers "Make ready" per scene (its phrases go seen, weak, overdue).
+- Surfaces touched: Test Lab only.
+
 ## 2026-09-08 — PROCESS CHANGE: staging before live (v263)
 - Tom's rule: nothing reaches the live app before he has played it. Mechanism: STAGED flags
   (config.js) + a Staging switch in the Test Lab; increments deploy gated; "ship" is Tom's word,

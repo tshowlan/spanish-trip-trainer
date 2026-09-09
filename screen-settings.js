@@ -96,11 +96,26 @@ function renderProfile() {
   const stg = el(`<label class="lab-row" style="border:1px solid var(--accent-2);border-radius:10px;padding:8px 10px"><span>Staging: play unshipped increments<br><span class="set-d">${Object.values(STAGED).map(d => "· " + d).join("<br>")}</span></span><input type="checkbox" id="lab-staging" ${stagingOn() ? "checked" : ""}></label>`);
   stg.querySelector("#lab-staging").addEventListener("change", e => { try { localStorage.setItem("sts_staging", e.target.checked ? "1" : "0"); } catch (_) {} toast(e.target.checked ? "Staging on: unshipped increments are live for you" : "Staging off"); });
   wrap.appendChild(stg);
-  const scRow = el(`<div class="lab-row"><div class="lab-lbl">Play a scene (uses your real due items)</div><div id="lab-scenes"></div></div>`);
+  // scene readiness readout (never trust self-reported success): each scene's due-mass vs the
+  // bar it must clear today, plus a "Make ready" that puts its phrases due so the door can show
+  const scRow = el(`<div class="lab-row"><div class="lab-lbl">Scenes: due-mass vs the bar (${sceneMassMin().toFixed(1)} today, tilt ${tiltShare().toFixed(2)}, staging ${stagingOn() ? "ON" : "off"})</div><div id="lab-scenes"></div></div>`);
   (typeof sceneList === "function" ? sceneList() : []).forEach(sc => {
-    const b = el(`<button class="btn-quiet" style="margin:4px 6px 0 0">${sc.title}</button>`);
-    b.addEventListener("click", () => startScene(sc));
-    scRow.querySelector("#lab-scenes").appendChild(b);
+    const mass = sceneDueMass(sc);
+    const known = (sc.dueMass || []).filter(es => { const it = (ALL_ITEMS || []).find(x => norm(x.es) === norm(es)); return it && exposuresOf(it) >= 1; }).length;
+    const line = el(`<div style="display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap"><span class="set-d" style="flex:1">${sc.title}: ${mass.toFixed(1)} ${mass >= sceneMassMin() ? "READY" : "not ready"} · ${known} of ${(sc.dueMass || []).length} phrases known</span></div>`);
+    const play = el(`<button class="btn-quiet">Play</button>`);
+    play.addEventListener("click", () => startScene(sc));
+    const ready = el(`<button class="btn-quiet">Make ready</button>`);
+    ready.addEventListener("click", () => {
+      // the scene's phrases become seen, weak, and overdue - the honest way a scene earns the tile
+      (sc.dueMass || []).forEach(es => {
+        const it = (ALL_ITEMS || []).find(x => norm(x.es) === norm(es)); if (!it) return;
+        state.learn[it.id] = Object.assign(state.learn[it.id] || { exposures: 0, streak: 0, lapses: 0 }, { exposures: Math.max(3, (state.learn[it.id] || {}).exposures || 0), interval: 2, lastSeen: daysAgoStr(7), lastCorrect: daysAgoStr(7), due: daysAgoStr(4) });
+      });
+      save(); toast(`${sc.title} is ready: its phrases are due`); renderProfile();
+    });
+    line.appendChild(play); line.appendChild(ready);
+    scRow.querySelector("#lab-scenes").appendChild(line);
   });
   wrap.appendChild(scRow);
   wrap.appendChild(ver);
