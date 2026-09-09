@@ -1,4 +1,4 @@
-# SCENE · Toni's Bar — Bar · Early Evening (v1.1 draft, 2026-09-06)
+# SCENE · Toni's Bar — Bar · Early Evening (v1.2, 2026-09-08)
 
 ```yaml
 id: bar-early-evening-tonis
@@ -10,7 +10,7 @@ end_label: "END SCENE: BAR · EARLY EVENING"
 photo: tonis-bar-early-evening.jpg      # GAP: sourcing
 name_face: logo
 cast: [Toni, Marina]                     # Toni: needs a met-in line in a bar lesson before ship (cast-met-first); Marina by reference only
-due_mass_items: [una-cana-por-favor, salud-heard, podria-recomendarme-plato-tipico, bravas-heard, viene-a-las-diez-heard, me-pone-otra-cuando-pueda, a-que-hora-cierra, cerramos-a-la-una-heard]
+due_mass_items: [una-cana-por-favor, salud-heard, podria-recomendarme-plato-tipico, bravas-heard, viene-a-las-diez-heard, otra-ronda-heard, caballeros-sign, me-pone-otra-cuando-pueda, a-que-hora-cierra, cerramos-a-la-una-heard]
 
 door:
   verse:
@@ -49,6 +49,19 @@ beats:
     heard: "Sí, viene a las diez."
     prompt: "What did you hear?"
     choices: ["She's already left", "She's coming at ten*", "She's coming at two"]
+
+  - type: overheard                        # scene-local heard
+    context: "At the far end, a table of four is losing an argument about football."
+    heard: "¡Otra ronda!"
+    heardEn: "Another round!"
+    prompt: "What did you hear?"
+    choices: ["Time to go", "Another round*", "The bill, please"]
+
+  - type: read-sign                        # pack sign item
+    context: "You slip past them toward the back."
+    sign: "CABALLEROS"
+    prompt: "The door says:"
+    choices: ["Women", "Men*", "Staff only"]
 
   - type: weld
     context: "You take the last sip. You are not ready to leave, and the night is only getting started."

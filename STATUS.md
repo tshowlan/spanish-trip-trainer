@@ -15,6 +15,18 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-09-08 — THE FRICTION MAP + chat's interim block (v262)
+- docs/friction-map.md replaces the inventory as the consolidation document (Tom: age is not a
+  verdict; Home + session end keep as-is; rank by exposure; tie to backlog). Top item: the review
+  room has no door. New process rule: "Surfaces touched" on every handoff and ship report.
+- Chat's block applied: "agreement" banned from rendered copy, four note/anchor verdicts verbatim
+  (house phrase "works for everyone"); The Corner v1.1 (+EMPUJAR read-sign, +"¿Ves? Todo recto."
+  overheard = 8 asks) and Toni's Bar v1.2 (+"¡Otra ronda!" overheard, +CABALLEROS read-sign = 10
+  asks) as data; function-word ruling recorded - glue-gloss lines drafted as pack data (12 words,
+  chat voice-passes) with the tap surface deferred to the ask-grammar ruling (one surface at a
+  time). Andrés' taxi file is on the Desktop awaiting Tom's pass.
+- Surfaces touched: none new (data + copy only).
+
 ## 2026-09-08 — SURFACE INVENTORY + THE INTAKE FIX (v261)
 - docs/surface-inventory.md: 17 screens / 30 renderers / 11 sheets, each marked CANON, LEGACY,
   or GAP with its artifact and date; duplicates to retire listed; consolidation order proposed.

@@ -250,7 +250,7 @@ const CURRICULUM = {
             { es: "La carta, por favor", en: "The menu, please", note: "In Spain 'la carta' = the menu. 'El menú' usually means the fixed menú del día.", tier: 2, tags: ["restaurant", "food"], keywords: ["carta"], variants: ["¿Me trae la carta?"] },
             { es: "Agua sin gas", en: "Still water (no bubbles)", tier: 1, tags: ["drink", "restaurant"], contextEs: "Una botella de agua sin gas", contextEn: "A bottle of still water", keywords: ["agua"] },
             { es: "La cuenta, por favor", en: "The check, please", tier: 2, tags: ["restaurant", "money"], keywords: ["cuenta"], variants: ["¿Me trae la cuenta?"] },
-            { es: "Tengo alergia al marisco", en: "I have an allergy to shellfish", variants: ["Soy alérgico al marisco", "Soy alérgica al marisco"], note: "Also: soy alérgico / alérgica, with the -o or -a that matches you.", tier: 2, tags: ["dietary", "health"], anchor: "'alergia' = allergy. Tengo alergia needs no agreement; the soy alérgico form does.", keywords: ["alergia", "marisco"] },
+            { es: "Tengo alergia al marisco", en: "I have an allergy to shellfish", variants: ["Soy alérgico al marisco", "Soy alérgica al marisco"], note: "Also: soy alérgico or alérgica, whichever matches you.", tier: 2, tags: ["dietary", "health"], anchor: "Alergia is the noun, so tengo alergia works for everyone. Soy alérgico changes with the speaker.", keywords: ["alergia", "marisco"] },
             { es: "Sin gluten", en: "Gluten-free", tier: 1, tags: ["dietary", "food"], contextEs: "¿Tienen algo sin gluten?", contextEn: "Do you have anything gluten-free?", keywords: ["gluten"] },
             { es: "Para compartir", en: "To share", note: "One plate with two forks is a completely normal tapas order.", tier: 1, tags: ["restaurant","food"], keywords: ["compartir"] },
             { es: "Un poco más de pan, por favor", en: "A little more bread, please", tier: 1, tags: ["restaurant","food"], keywords: ["pan"] },
@@ -709,6 +709,23 @@ const CURRICULUM = {
   /* THE SCENES (learning constitution first build; template data only - the engine composes
      which due items ride which slots, never inventing Spanish). Stanzas are the POC's,
      verbatim (scene-poc.html r15, stamped). accepts = the slot's type: frame | keywords | tags. */
+  /* GLUE GLOSS (function-word ruling 2026-09-08: name once, let it work). One-line job
+     descriptions for the words no lesson teaches; surfaced on demand by the tap-gloss (ships
+     with the ask-grammar ruling). CODE DRAFTS - chat voice-passes before they render. */
+  glueGloss: {
+    "en":   "en means in or on. En la mesa: on the table.",
+    "a":    "a means to. It points at where you are going or who gets it.",
+    "al":   "al is a + el squashed together: to the.",
+    "del":  "del is de + el squashed together: of the, from the.",
+    "de":   "de means of or from. Un poco de agua: a little of water.",
+    "lo":   "lo means it, when the it is a thing you already named.",
+    "la":   "la means the, for words that take an -a. El is the other the.",
+    "que":  "que means that, or which. It stitches two halves of a sentence.",
+    "con":  "con means with. Con leche: with milk.",
+    "para": "para means for, or in order to. Para dos: for two.",
+    "por":  "por means for, by, or through. Por favor: as a favor.",
+    "sin":  "sin means without. Sin gluten, sin gas."
+  },
   scenes: [
     /* SCENE DATA (authoring source: docs/scenes/*.md, Tom-stamped). Every phrase is PINNED;
        the engine picks the scene (dueMass), never the pieces. Beat types: exchange-understand,
@@ -770,9 +787,10 @@ const CURRICULUM = {
       id: "street-afternoon-the-corner", category: "directions", title: "The Corner", img: "default", fieldTopic: "Walking directions",
       label: "SCENE: STREET · AFTERNOON", endLabel: "END SCENE: STREET · AFTERNOON",
       cast: [],
-      dueMass: ["Hablo solo un poco de español", "todo recto", "La segunda calle a la derecha", "cerca"],
+      dueMass: ["Empujar", "Hablo solo un poco de español", "todo recto", "La segunda calle a la derecha", "cerca"],
       door: { verse: ["You step out of the bakery with a bag of bread under your arm.", "A couple with a suitcase is looking at you like you live here."], cta: "Step in" },
       beats: [
+        { type: "read-sign", context: "The bakery door swings shut behind you.", sign: "EMPUJAR", prompt: "The door says:", choices: ["Push", "Pull", "Closed"], answer: "Push" },
         { type: "role-inversion", context: "The man pulls the suitcase to a stop.", heard: "Perdone, ¿cómo llego a la plaza?", heardEn: "Excuse me, how do I get to the plaza?",
           prompt: "What does he need?", choices: ["The station", "The plaza", "A taxi"], answer: "The plaza" },
         { type: "weld", context: "You could pretend not to understand. You don't.", cueLabel: "Be honest first", cue: "Tell him you only speak a little Spanish",
@@ -784,7 +802,9 @@ const CURRICULUM = {
         { type: "exchange-understand", context: "She checks with you before they commit.", heard: "¿Está cerca?", heardEn: "Is it close?",
           prompt: "What did she ask?", choices: ["Is it open?", "Is it close?", "Is it far?"], answer: "Is it close?" },
         { type: "weld", context: "Five minutes, tops.", cueLabel: "Reassure her", cue: "Yes, very close",
-          tiles: ["sí", "muy", "cerca"], target: "Sí, muy cerca", targetEn: "Yes, very close", records: "cerca" }
+          tiles: ["sí", "muy", "cerca"], target: "Sí, muy cerca", targetEn: "Yes, very close", records: "cerca" },
+        { type: "overheard", context: "They set off. Half a block on, she says it to him without turning around.", heard: "¿Ves? Todo recto.", heardEn: "See? Straight ahead.",
+          prompt: "What did she say?", choices: ["Hurry up", "See? Straight ahead", "Let's ask again"], answer: "See? Straight ahead" }
       ],
       finale: { line: "For thirty seconds, you were the one who lived here." }
     },
@@ -792,7 +812,7 @@ const CURRICULUM = {
       id: "bar-early-evening-tonis", category: "bar", title: "Toni's Bar", img: "default", fieldTopic: "Restaurant",
       label: "SCENE: BAR · EARLY EVENING", endLabel: "END SCENE: BAR · EARLY EVENING",
       cast: ["Toni", "Marina"],
-      dueMass: ["Una caña, por favor", "¡Salud!", "¿Podría recomendarme un plato típico de aquí?", "¿Me pone otra, cuando pueda?", "¿A qué hora cierra?"],
+      dueMass: ["Una caña, por favor", "¡Salud!", "¿Podría recomendarme un plato típico de aquí?", "Caballeros", "¿Me pone otra, cuando pueda?", "¿A qué hora cierra?"],
       door: { verse: ["The place is already loud, and the crowd is a drink or two ahead of you.", "Toni is behind the bar and in no hurry about anything."], cta: "Step in" },
       beats: [
         { type: "weld", context: "Toni catches your eye over three heads.", cueLabel: "Order", cue: "A caña",
@@ -805,6 +825,9 @@ const CURRICULUM = {
           prompt: "What did he recommend?", choices: ["The croquettes", "The bravas", "The olives"], answer: "The bravas" },
         { type: "overheard", context: "Two stools down, a woman asks Toni over the music if Marina is coming tonight.", heard: "Sí, viene a las diez.", heardEn: "Yes, she's coming at ten.",
           prompt: "What did you hear?", choices: ["She's already left", "She's coming at ten", "She's coming at two"], answer: "She's coming at ten" },
+        { type: "overheard", context: "At the far end, a table of four is losing an argument about football.", heard: "¡Otra ronda!", heardEn: "Another round!",
+          prompt: "What did you hear?", choices: ["Time to go", "Another round", "The bill, please"], answer: "Another round" },
+        { type: "read-sign", context: "You slip past them toward the back.", sign: "CABALLEROS", prompt: "The door says:", choices: ["Women", "Men", "Staff only"], answer: "Men" },
         { type: "weld", context: "You take the last sip. You are not ready to leave, and the night is only getting started.", cueLabel: "The regular's move", cue: "One more, when he can",
           tiles: ["me", "pone", "otra", "cuando", "pueda"], target: "¿Me pone otra, cuando pueda?", targetEn: "Another one, when you get a chance?", records: "¿Me pone otra, cuando pueda?" },
         { type: "weld", context: "It is getting late, or it isn't. Best to know.", cueLabel: "Ask", cue: "What time they close",

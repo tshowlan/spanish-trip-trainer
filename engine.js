@@ -2,7 +2,7 @@
    Register a new destination = add a content_<cc>.js pack + an entry here +
    a DESTINATIONS entry. Each pack owns its scenarios, vocab, and TTS accent. */
 const CONTENT = {
-  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages, scenes: CURRICULUM.scenes || [] },
+  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages, scenes: CURRICULUM.scenes || [], glueGloss: CURRICULUM.glueGloss || {} },
   mexico: { key: "mexico", dialect: "Mexican Spanish",   tts: "es-MX", stages: (typeof MEXICO_PACK !== "undefined" ? MEXICO_PACK.stages : CURRICULUM.stages), scenes: (typeof MEXICO_PACK !== "undefined" && MEXICO_PACK.scenes) || [] }
 };
 function activePack() { return CONTENT[state.active] || CONTENT.spain; }
@@ -44,7 +44,7 @@ function buildAllergyLesson(keys) {
     // the agreement forms ride as variants (the intake grammar field will pick which shows)
     if (a) {
       const g = (state.profile || {}).grammar;
-      const note = g === "o" ? `Also: soy alérgico ${a.frag}.` : g === "a" ? `Also: soy alérgica ${a.frag}.` : "Also: soy alérgico / alérgica, with the -o or -a that matches you.";
+      const note = g === "o" ? `Also: Soy alérgico ${a.frag}.` : g === "a" ? `Also: Soy alérgica ${a.frag}.` : "Also: soy alérgico or alérgica, whichever matches you.";
       items.push({ es: `Tengo alergia ${a.frag}`, en: `I have an allergy to ${a.en}`, variants: [`Soy alérgico ${a.frag}`, `Soy alérgica ${a.frag}`], note });
     }
   });
@@ -60,11 +60,11 @@ function buildAllergyLesson(keys) {
 function buildDietaryLesson(needs) {
   const items = [];
   if (needs.includes("vegetarian")) items.push(
-    { es: "No como carne", en: "I don't eat meat", variants: ["Soy vegetariano", "Soy vegetariana"], note: "Also: soy vegetariano / vegetariana. The verb form needs no agreement." },
+    { es: "No como carne", en: "I don't eat meat", variants: ["Soy vegetariano", "Soy vegetariana"], note: "Also: soy vegetariano or vegetariana. No como carne works for everyone." },
     { es: "¿Esto lleva carne?", en: "Does this have meat?" },
     { es: "¿Tienen algo sin carne?", en: "Do you have anything without meat?" });
   if (needs.includes("gluten_free")) items.push(
-    { es: "No puedo comer gluten", en: "I can't eat gluten", variants: ["Soy celíaco", "Soy celíaca"], note: "Also: soy celíaco / celíaca. The verb form needs no agreement." },
+    { es: "No puedo comer gluten", en: "I can't eat gluten", variants: ["Soy celíaco", "Soy celíaca"], note: "Also: soy celíaco or celíaca. No puedo comer gluten works for everyone." },
     { es: "¿Esto lleva gluten?", en: "Does this contain gluten?" },
     { es: "¿Tienen algo sin gluten?", en: "Do you have anything gluten-free?" });
   if (!items.length) return null;
