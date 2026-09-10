@@ -15,6 +15,18 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-09-09 — FIX: the primer's "I'm in" button unreachable on device (v265)
+- Tom's catch (Coffee shop lesson): the tap did nothing. Cause: since the runner claims 100dvh
+  (v230), the primer's foreground layer extends under the fixed footer and stacks ABOVE it
+  (footer z-index was auto), so a real finger hit the primer text, not the button. Synthetic
+  .click() in verification bypasses hit-testing, which is why every pane check passed.
+- Fix: .footer z-index 30 (under toasts 50 and sheets 60, above runner content). Verified with
+  elementFromPoint at 375x812 + a dispatched click from the hit element: the button is on top
+  and advances to the guess step.
+- Verification lesson recorded: device-facing taps get an elementFromPoint hit-test at phone
+  size, not just .click().
+- Surfaces touched: the footer (every runner screen) - a stacking fix, no visual change.
+
 ## 2026-09-09 — Test Lab: scene readiness readout + "Make ready" (v264, dev surface)
 - Tom saw cram at 8 days and the pile at 15 with staging on: no scene cleared the bar, because
   the lab fabricates FUTURE due dates (so the due dial reads exactly) and scene phrases never
