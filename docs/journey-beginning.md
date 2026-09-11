@@ -54,7 +54,9 @@ Ten sessions: **~48 minutes** (from 59), every session in band, no two consecuti
 
 ## D. FOR THE SESSION TO RULE
 
-1. The groupings and the room names: Asking for things (Quiero, Me puede traer, Necesito) · Finding out (¿Dónde está?, ¿Hay?, ¿Cuánto cuesta?, ¿A qué hora?) — or another cut.
+**Ruled by Tom (2026-09-11):** the cut is **Asking for things** (Quiero, Me puede traer, Necesito) and **Finding out** (¿Dónde está?, ¿Hay?, ¿Cuánto cuesta?, ¿A qué hora?); the target is **~4.5 minutes** per lesson, short and punchy, not tiny. Open for chat:
+
+1. Room names as rendered (the two cuts stand; the labels are copy under the voice).
 2. The short arc's exact beats per machine inside a room (proposal: drill · weld ×3 · exchange ×2), and which beats become returns.
 3. Kit interleaving per item vs today's batching (the lesson-breath canvas owns this).
 4. The kit splits (which phrases in A, which in B) — content, Tom + chat.
