@@ -96,6 +96,9 @@ function renderProfile() {
   const stg = el(`<label class="lab-row" style="border:1px solid var(--accent-2);border-radius:10px;padding:8px 10px"><span>Staging: play unshipped increments<br><span class="set-d">${Object.values(STAGED).map(d => "· " + d).join("<br>")}</span></span><input type="checkbox" id="lab-staging" ${stagingOn() ? "checked" : ""}></label>`);
   stg.querySelector("#lab-staging").addEventListener("change", e => { try { localStorage.setItem("sts_staging", e.target.checked ? "1" : "0"); } catch (_) {} toast(e.target.checked ? "Staging on: unshipped increments are live for you" : "Staging off"); });
   wrap.appendChild(stg);
+  const fresh = el(`<button class="btn-quiet" style="margin:6px 0 10px">Start over as a fresh learner (keeps your profile)</button>`);
+  fresh.addEventListener("click", () => { state.learn = {}; state.lessons = {}; save(); rebuildDeck(); toast("Fresh learner: nothing met, nothing done"); renderProfile(); });
+  wrap.appendChild(fresh);
   // scene readiness readout (never trust self-reported success): each scene's due-mass vs the
   // bar it must clear today, plus a "Make ready" that puts its phrases due so the door can show
   const scRow = el(`<div class="lab-row"><div class="lab-lbl">Scenes: due-mass vs the bar (${sceneMassMin().toFixed(1)} today, tilt ${tiltShare().toFixed(2)}, staging ${stagingOn() ? "ON" : "off"})</div><div id="lab-scenes"></div></div>`);

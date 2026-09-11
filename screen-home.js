@@ -818,8 +818,9 @@ function practiceChooser() {
 function machineShopLessons() {
   const out = [];
   (DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
-    if (!l.frame) return;
-    if ((l.items || []).some(it => exposuresOf(it) >= 1)) out.push(l);
+    (l.machines || (l.frame ? [l] : [])).forEach(ml => {                 // rooms hold their machines
+      if ((ml.items || []).some(it => exposuresOf(it) >= 1)) out.push(ml);
+    });
   }));
   return out;
 }

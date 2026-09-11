@@ -96,12 +96,48 @@ function seedPlacement(level) {
     });
   }));
 }
+/* THE BEGINNING OF THE JOURNEY (rulings 2026-09-11, STAGED "journey-1"):
+   - RULING 1: seven machine lessons become four room lessons - Asking for things · 1 (Want +
+     Bring), Asking for things · 2 (Need, solo, full arc), Finding out · 1 (Find + There),
+     Finding out · 2 (Price + When).
+   - RULING 4: any kit over 8 phrases splits into halves of 6-7 by authored order ("· 1" / "· 2").
+   - THE FIRST TEN: kit halves and rooms alternate so no two consecutive sessions share a shape. */
+function _journeyOneDeck(deck) {
+  const byFrame = re => s0.lessons.find(l => l.machine && l.frame && re.test(l.frame));
+  const s0 = deck.stages[0]; if (!s0) return;
+  const room = (id, title, roomName, label, mls) => ({
+    id, title, room: roomName, label, machines: mls, topic: mls[0].topic, machineRoom: true,
+    items: mls.flatMap(l => l.items || []), beat: mls.map(l => l.beat).filter(Boolean).join(" "), replies: []
+  });
+  const want = byFrame(/^quiero/), bring = byFrame(/traer/), need = byFrame(/^necesito/);
+  const find = byFrame(/d[o\u00f3]nde/), there = byFrame(/^\u00bfhay/), price = byFrame(/cuesta/), when = byFrame(/hora/);
+  const rooms = [];
+  if (want && bring) rooms.push(room("room-asking-1", "Asking for things \u00b7 1", "Asking for things", "MACHINES: WANT \u00b7 BRING", [want, bring]));
+  if (find && there) rooms.push(room("room-finding-1", "Finding out \u00b7 1", "Finding out", "MACHINES: FIND \u00b7 THERE", [find, there]));
+  if (need) rooms.push(Object.assign({}, need, { id: "room-asking-2", title: "Asking for things \u00b7 2", room: "Asking for things", label: "MACHINES: NEED" }));
+  if (price && when) rooms.push(room("room-finding-2", "Finding out \u00b7 2", "Finding out", "MACHINES: PRICE \u00b7 WHEN", [price, when]));
+  // kit halves, every stage
+  const split = l => {
+    if (l.chain || l.machine || !(l.items || []).length || l.items.length <= 8) return [l];
+    const h = Math.ceil(l.items.length / 2);
+    return [Object.assign({}, l, { id: l.id + "-1", title: l.title + " \u00b7 1", items: l.items.slice(0, h) }),
+            Object.assign({}, l, { id: l.id + "-2", title: l.title + " \u00b7 2", items: l.items.slice(h), primer: null })];
+  };
+  deck.stages.forEach(st => { st.lessons = st.lessons.flatMap(split); });
+  // stage 0: interleave kit halves with rooms
+  const kits = s0.lessons.filter(l => !l.machine);
+  const out = []; let ri = 0;
+  kits.forEach((k, i) => { out.push(k); if (rooms[ri] && i % 1 === 0) out.push(rooms[ri++]); });
+  while (ri < rooms.length) out.push(rooms[ri++]);
+  s0.lessons = out;
+}
 function rebuildDeck() {
   const p = state.profile;
   DECK = { stages: [] };
   activePack().stages.forEach(st => {
     DECK.stages.push(Object.assign({}, st, { lessons: st.lessons.filter(l => meetsReq(l, p)) }));
   });
+  if (typeof isStaged === "function" && isStaged("journey-1")) _journeyOneDeck(DECK);   // STAGED: rooms + kit halves
   if (p && p.allergies && p.allergies.length && DECK.stages[0]) {
     const s0 = DECK.stages[0];                 // inject the personalized allergy lesson early
     s0.lessons.splice(Math.min(1, s0.lessons.length), 0, buildAllergyLesson(p.allergies));

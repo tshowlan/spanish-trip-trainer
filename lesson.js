@@ -193,6 +193,90 @@ function variationOf(item, lessonItems) {
 }
 
 /* ---- session composer (M2): warm-up misses + new items + trip-wide review ---- */
+/* RULING 6 - COLD PRODUCTION WAITS FOR CHAPTER TWO; RULING 7 - DIFFICULTY IS FLAT WITHIN A
+   LESSON (2026-09-11, STAGED). The chapter floor and the learner's expertise decide a lesson's
+   production form ONCE at composition; every beat and the close hold it. Chapter = the Learn
+   tab's chapter (stage index). [tune] */
+function chapterOf(lesson) {
+  const sts = (DECK && DECK.stages) || [];
+  for (let i = 0; i < sts.length; i++) if (sts[i].lessons.some(x => x.id === lesson.id)) return i;
+  return 2;                                                        // reviews, scenes, circuits: the full ladder
+}
+function chapterFloor(lesson) {
+  const ch = chapterOf(lesson);
+  if (ch === 0) return { lesson: "scaffolded", lap: "scaffolded" };
+  if (ch === 1) return { lesson: "scaffolded", lap: "cold" };
+  return { lesson: "ladder", lap: "cold" };
+}
+function lessonInputForm(lesson) {
+  // typed only when the floor allows the full ladder AND every phrase in the lesson has climbed
+  const floor = chapterFloor(lesson);
+  const items = lesson.items || [];
+  return floor.lesson === "ladder" && items.length && items.every(it => _inputClimbed(it)) ? "typed" : "tiles";
+}
+function scaffoldedFormFor(item) {
+  return ["build", "word_fill", "phrase_fill"].find(m => _modeFeasible(m, item)) || "mc_es2en";
+}
+function closeRepsFloored(lesson) {
+  const floor = chapterFloor(lesson);
+  if (floor.lap !== "scaffolded") return closeReps(lesson);
+  const items = lesson.items || []; if (!items.length) return [];
+  return [{ type: scaffoldedFormFor(items[0]), item: items[0], arc: true }];   // chapter one: the close is scaffolded too
+}
+function _applyFloor(qs, lesson) {
+  const form = lessonInputForm(lesson);
+  qs.forEach(q => { if (q.type === "weld" || q.type === "stretch" || q.type === "machine_drill") q.inputForm = form; });
+  return qs;
+}
+/* RULING 2 - THE SHORT ARC: a room of two machines. Per machine: forge-present · conveyor ×3 ·
+   weld ×2 · exchange ×1; the second forge marks the frame change; one lap across both frames
+   closes the room. Depth (lap 2, the stretch, the other exchanges and welds) lives in the returns. */
+function composeRoom(lesson) {
+  state.sessionSeq = (state.sessionSeq || 0) + 1; save();
+  const qs = [];
+  lesson.machines.forEach((ml, mi) => {
+    const items = ml.items || [];
+    const shell = _enShell(items);
+    const cues = items.map(it => ({ item: it, p: _frameParts(ml.frame, it.es), fen: _fillerEn(shell, it.en) })).filter(x => x.p && x.p.filler.trim() && x.fen);
+    if (cues.length < 2) return;
+    const lap1 = cues.slice(0, Math.min(3, cues.length));
+    qs.push({ type: "machine_drill", forge: true, frame: ml.frame, mlesson: ml, cues: lap1, all: cues, arc: true,
+      machineName: _machineBadgeName(ml.frame), firstMachine: mi === 0 && lesson.id === "room-asking-1" });
+    lap1.slice(0, 2).forEach(c => qs.push({ type: "weld", item: c.item, cue: c, arc: true }));
+    let replyPool = ml.replies || [];
+    if (!replyPool.length && /^(quiero|necesito)/.test(ml.frame)) { const donor = _machineLessonOf("\u00bfme puede traer ___?"); replyPool = (donor && donor.replies) || []; }
+    if (replyPool.length) qs.push({ type: "exchange", reply: sample(replyPool, 1)[0], frame: ml.frame, mlesson: ml, cue: sample(cues, 1)[0], arc: true });
+  });
+  // the room's close: one lap across both frames, one rep each, in the chapter's highest form
+  lesson.machines.forEach(ml => {
+    const items = ml.items || []; const shell = _enShell(items);
+    const cue = items.map(it => ({ item: it, p: _frameParts(ml.frame, it.es), fen: _fillerEn(shell, it.en) })).filter(x => x.p && x.p.filler.trim() && x.fen);
+    if (cue.length) { const c = sample(cue, 1)[0]; qs.push({ type: "weld", item: c.item, cue: c, arc: true, lap: true }); }
+  });
+  return _applyFloor(qs, lesson);
+}
+/* RULING 3 - KITS INTERLEAVE PER ITEM: present · grasp · one scaffolded rung, phrase by phrase;
+   the lap runs every phrase once in the chapter's highest allowed form; the close is floored. */
+function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
+  const qs = [];
+  const glossPool = [];
+  (lesson.items || []).forEach(it => { (it.chunks || []).forEach(ch => { if (ch[1]) glossPool.push(ch[1]); }); const fg = _graspFromFrame(it); if (fg) glossPool.push(fg.en); });
+  const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap))); let ri = 0;
+  newItems.forEach((it, i) => {
+    qs.push({ type: "present", item: it, arc: true });
+    const g = graspOf(it) || _graspFromFrame(it);
+    if (g) qs.push({ type: "grasp", item: it, word: g.word, wordEn: g.en, pool: glossPool, arc: true });
+    else if (_wordCount(it) <= 2) qs.push({ type: "mc_es2en", item: it, pool: newItems, arc: true });
+    qs.push({ type: scaffoldedFormFor(it), item: it, pool: newItems, arc: true });
+    if (i % 2 === 1 && ri < reviews.length) qs.push(reviews[ri++]);      // new among returning (the weave)
+  });
+  while (ri < reviews.length) qs.push(reviews[ri++]);
+  const floor = chapterFloor(lesson);
+  shuffle((newItems.length ? newItems : lesson.items || []).slice(0, 7)).forEach((it, i) =>
+    qs.push({ type: "encore", item: it, encoreFirst: i === 0, lapForm: floor.lap }));
+  qs.push(...closeRepsFloored(lesson));
+  return qs;
+}
 function composeSession(lesson) {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();             // §6 variety rule clock (srs.js reads it)
   const lessonItems = lesson.items || [];
@@ -228,6 +312,7 @@ function composeSession(lesson) {
   // Exchange → close. The learner BUILDS the frame itself, then operates it; fillers are
   // taught by the conveyor's cues (the filler-Grasp MC is REMOVED for machines — more
   // production, less selection). Non-machine lessons keep the five-beat ladder below. =====
+  if (lesson.machines && isStaged("journey-1")) return composeRoom(lesson);   // STAGED: a room of two machines
   if (lesson.machine && lesson.frame) {
     const shell = _enShell(lessonItems);
     const cues = lessonItems.map(it => ({ item: it, p: _frameParts(lesson.frame, it.es), fen: _fillerEn(shell, it.en) }))
@@ -262,10 +347,12 @@ function composeSession(lesson) {
       reps.forEach(r => qs.push({ type: "exchange", reply: r, frame: lesson.frame, mlesson: lesson, cue: sample(cues, 1)[0], arc: true }));
       // the in-lesson machine encore (flow ruling 2026-08-03) RETIRES under depth ruling 2:
       // lap 2 + the stretch absorbed its job; the encore FORM lives on as the return door's lap
+      if (isStaged("journey-1")) { qs.push(...closeRepsFloored(lesson)); return _applyFloor(qs, lesson); }   // Need solo: full arc under the floor
       qs.push(...closeReps(lesson));
       return qs;
     }
   }
+  if (isStaged("journey-1")) return composeKitInterleaved(lesson, newItems, reviewPool, rungCap);   // STAGED: per-item weave
 
   // SPRINT 2 RULING 3 — THE INTRO LADDER: a new item's first lesson runs a fixed mini-arc,
   // Present → Grasp (the new chunk alone, word-scale MC) → Build (tiles/letters) → Variation
@@ -1187,7 +1274,9 @@ function renderQuestion() {
   // THE ENCORE resolves its production form at RENDER time (ruling 7 + miss ruling c+):
   // a missed summit serves SCAFFOLDED - the encore catches what the summit drops; everyone
   // else takes the ladder's production pick. Post-arc: normal grading, rung-downs apply.
-  if (q.type === "encore") {
+  if (q.type === "encore" && q.lapForm) {                            // ruling 6 (staged): the lap's form is the chapter's
+    q.type = q.lapForm === "scaffolded" ? scaffoldedFormFor(q.item) : "type_translation";
+  } else if (q.type === "encore") {
     const missedSummit = run.summitMissed && run.summitMissed.has(itemId(q.item));
     q.type = missedSummit
       ? (["build", "word_fill", "phrase_fill"].find(m => _modeFeasible(m, q.item)) || "mc_es2en")
@@ -1632,7 +1721,8 @@ function renderMachineDrill(q) {
     // below is the active confirmation, sitting where the meaning check sits on cards.
     const anchorItem = q.mlesson.items.find(it => it.anchor) || q.mlesson.items.find(it => it.note);
     const frameSpeak = (parts.pre + " " + parts.post).replace(/\s+/g, " ").trim();
-    body.insertBefore(el(`<div class="present-label">NEW MACHINE</div>`), cueBlock);
+    body.insertBefore(el(`<div class="present-label">${q.machineName ? q.machineName.toUpperCase() + "MACHINE" : "NEW MACHINE"}</div>`), cueBlock);
+    if (q.firstMachine) body.insertBefore(el(`<div class="present-anchor" style="margin:2px 0 10px"><span class="lead">Your first machine:</span> one frame, many asks.</div>`), cueBlock);   // name-it-once (ruling 5)
     body.insertBefore(el(`<div class="present-card">
       <div class="present-es">${parts.pre}<span class="pm-slot">___</span>${parts.post}</div>
       <div class="present-en">${shell.pre}...${shell.post}</div>
@@ -1725,7 +1815,7 @@ function renderMachineDrill(q) {
       cueMeaning.textContent = current.fen;
       slotEl.innerHTML = `<span class="dashes">– – –</span>`;
       // THE INPUT CLIMB: a climbed filler is TYPED into the slot; tiles serve the rest
-      if (_inputClimbed(current.item)) {
+      if (q.inputForm ? q.inputForm === "typed" : _inputClimbed(current.item)) {
         tray.style.display = "none";
         const inp = el(`<input class="slot-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Type the word">`);
         inp.style.width = Math.max(6, current.p.filler.length + 2) + "ch";   // sized to the answer, sentence stays one line
@@ -1819,7 +1909,7 @@ function renderWeld(q) {
   }
   body.appendChild(cueBlock);
   const stage = el(`<div class="machine-stage"></div>`);
-  if (_inputClimbed(item)) {
+  if (q.inputForm ? q.inputForm === "typed" : _inputClimbed(item)) {   // ruling 7: the form was fixed at composition when staged
     // the climb: tiles retire, the keyboard serves (typed weld; typo/accent tolerance,
     // standard resolution + correction). The cue chrome stays - the task is unchanged.
     const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe aquí…">`);

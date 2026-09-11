@@ -239,6 +239,14 @@
           ALL_ITEMS.filter(it => pins.some(p => norm(p) === norm(it.es))).forEach(it => _seedWeak(it.id));
           startScene(sceneList()[0]);
         },
+        "Journey 1 — fresh learner: First words · 1 (staged)": () => {
+          clean(); localStorage.setItem("sts_staging", "1"); state.learn = {}; state.lessons = {}; rebuildDeck();
+          startLesson(DECK.stages[0].lessons[0]);
+        },
+        "Journey 1 — fresh learner: Asking for things · 1 (staged)": () => {
+          clean(); localStorage.setItem("sts_staging", "1"); state.learn = {}; state.lessons = {}; rebuildDeck();
+          startLesson(DECK.stages[0].lessons.find(l => l.id === "room-asking-1"));
+        },
         "Scenes — read-sign beat (eyes channel)": () => {
           clean();
           run = { lesson: { id: "__harness__", topic: "Restaurant · Bathrooms", items: [] },
@@ -502,6 +510,7 @@
       // wire the picker — grouped (the flat list outgrew itself at ~40 stories, Tom 2026-07-29).
       // Grouping is by name prefix so new stories file themselves; unknown prefixes land in "Other".
       const GROUP_OF = name =>
+        /^Journey/.test(name) ? "Journey 1 (staged)" :
         /^(Scenes|Circuit)/.test(name) ? "Scenes (in build)" :
         /^Depth/.test(name) ? "Depth session (in build)" :
         /^Sprint 2/.test(name) ? "Sprint 2 (shipped)" :
@@ -511,7 +520,7 @@
         /listen|sound choice|audio cloze|ear build/.test(name) ? "Exercises: listening" :
         /^Exercise/.test(name) ? "Exercises: production + recognition" :
         /^Session end/.test(name) ? "Session end" : "Other";
-      const GROUP_ORDER = ["Scenes (in build)", "Depth session (in build)", "Sprint 2 (shipped)", "Screens", "Teach: present + correction",
+      const GROUP_ORDER = ["Journey 1 (staged)", "Scenes (in build)", "Depth session (in build)", "Sprint 2 (shipped)", "Screens", "Teach: present + correction",
         "Exercises: production + recognition", "Exercises: listening", "Exercises: letter rungs",
         "Session end", "Other"];
       const sel = document.getElementById("hstory");

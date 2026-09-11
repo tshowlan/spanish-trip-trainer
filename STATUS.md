@@ -15,6 +15,22 @@ Running handoff log. Most recent entry at top. Terse: dates, what changed, devia
 ## 2026-07-26 — X-ray (v202): the device testifies
 - v201's device says "restored just now" yet pushes 3-of-16 — while the identical flow on identical data restores 16/16 in the harness. Stop inferring: applyPlayer now records what each restore RECEIVED vs KEPT (counts + first keys), displayed in Settings. One read from Tom's device settles whether the wire delivers 16 (merge fails on-device) or 3 (something between device and server lies).
 
+## 2026-09-11 — THE BEGINNING OF THE JOURNEY, STAGED (v266; behind the Staging switch)
+- Rulings 1-7 built behind "journey-1": the deck replaces seven machine lessons with four rooms
+  (Asking for things · 1 = Want + Bring, · 2 = Need solo; Finding out · 1 = Find + There, · 2 =
+  Price + When), splits every kit over 8 into halves ("· 1 / · 2"), and alternates kit halves
+  with rooms in chapter one. Rooms compose the short arc (forge · conveyor ×3 · weld ×2 · exchange
+  ×1 per machine, one lap across both frames); kits interleave per item (present · grasp · one
+  scaffolded rung), the lap in the chapter's highest form, the close floored. Chapter one: no
+  cold typing anywhere; chapter two: cold in the lap; chapter three+: the ladder. The
+  production form is fixed at composition (q.inputForm) and held through the lesson. Forge
+  label = the machine's name; "Your first machine: one frame, many asks." once, on the first room.
+- Test Lab: "Start over as a fresh learner (keeps your profile)". Harness: Journey 1 stories.
+- Not yet: the room's door grammar (rooms wear the ladder return-door for now); the "Cold lap"
+  named option; moving the first table scenario into chapter one (a content reorder for chat).
+- Surfaces touched (staged): the deck's lesson list, the composer, the forge label, the machine
+  shop's list. Untouched: Home, session end, resolution frame, field. Staging off = unchanged.
+
 ## 2026-09-09 — FIX: the primer's "I'm in" button unreachable on device (v265)
 - Tom's catch (Coffee shop lesson): the tap did nothing. Cause: since the runner claims 100dvh
   (v230), the primer's foreground layer extends under the fixed footer and stacks ABOVE it
