@@ -215,7 +215,23 @@ function lessonInputForm(lesson) {
   return floor.lesson === "ladder" && items.length && items.every(it => _inputClimbed(it)) ? "typed" : "tiles";
 }
 function scaffoldedFormFor(item) {
-  return ["build", "word_fill", "phrase_fill"].find(m => _modeFeasible(m, item)) || "mc_es2en";
+  // bare-letter fills never return (rung ruling 2026-09-12): word-in-sentence (phrase_fill) or tiles
+  return ["build", "phrase_fill", "fill_blank"].find(m => _modeFeasible(m, item)) || "mc_es2en";
+}
+/* CHAPTER ONE'S RUNG (rulings 2026-09-12): two forms, one per lesson. The first kit half runs
+   context_choice (finish the sentence: EN context as the ask, ES sentence with the slot, three
+   ES choices); the second half runs context_build (same ask; the ES sentence from bare tiles).
+   The lap and the close run in the lesson's form. Chapter two+: word-in-sentence before cold. */
+function kitRungFor(lesson, item, pool) {
+  const ch = chapterOf(lesson);
+  const role = /\u00bf|\?/.test(item.contextEs || "") ? "Ask" : "Say";
+  if (ch === 0 && contextChoiceFeasible(item)) {
+    const build = /-2$/.test(lesson.id);                                   // by half-order for now; by expertise later
+    if (!build) return { type: "context_choice", item, pool, arc: true };
+    const tiles = item.contextEs.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
+    return { type: "weld", item, target: item.contextEs, tiles, targetEn: item.contextEn, cueRole: role, cueMeaning: item.contextEn, arc: true, inputForm: "tiles", contextBuild: true };
+  }
+  return { type: scaffoldedFormFor(item), item, pool, arc: true };
 }
 function closeRepsFloored(lesson) {
   const floor = chapterFloor(lesson);
@@ -255,30 +271,39 @@ function composeRoom(lesson) {
   });
   return _applyFloor(qs, lesson);
 }
-/* RULING 3, AMENDED BY TOM AT PLAY (2026-09-12): a kit half introduces EVERY phrase first
-   (the cards, back to back), then the PAIRS board is the first exercise (match sound to
-   meaning across the phrases just met), then one scaffolded rung per phrase, then the lap in
-   the chapter's highest form, then the floored close. No guessing an exact word straight off
-   a card. */
+/* RULING 3 AS PLAYED (2026-09-12): a kit half = every phrase's card, then ONE words-only board,
+   then one rung per phrase in the lesson's form, then the lap in that form, then the close in
+   that form. THE WEAVE (chat's flag, staged as "journey-weave" so Tom can compare): card + rung
+   paired per phrase, the board mid-lesson as the mixing beat, then the lap. */
 function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   const qs = [];
   const pool = newItems.length ? newItems : (lesson.items || []);
-  pool.forEach(it => qs.push({ type: "present", item: it, arc: true }));           // 1. meet them all
-  // 2. the matching board(s): boards of four from the short phrases just met (the pairs
-  //    board's own caps: <=3 words, <=18 chars); a second board covers the rest with overlap
-  // 2. ONE matching board, every phrase of the half, words only (Tom 9/12: no repeats across
-  //    two boards, no listening on the first board) - the text board has no length cap
-  if (pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });
-  const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap))); let ri = 0;
-  pool.forEach((it, i) => {                                                      // 3. one rung each: finish the sentence where a context exists (prototype); spelling never right after the board
-    const t = contextChoiceFeasible(it) ? "context_choice" : (["build", "fill_blank", "mc_es2en", "word_fill", "phrase_fill"].find(m => _modeFeasible(m, it)) || "mc_es2en");
-    qs.push({ type: t, item: it, pool: pool, arc: true });
-    if (i % 2 === 1 && ri < reviews.length) qs.push(reviews[ri++]);               //    new among returning
-  });
-  while (ri < reviews.length) qs.push(reviews[ri++]);
+  const board = pool.length >= 3 ? { type: "pairs", mode: "text", items: pool.slice(), arc: true } : null;
+  const weave = isStaged("journey-weave");
+  const rungs = pool.map(it => kitRungFor(lesson, it, pool));
+  if (!weave) {
+    pool.forEach(it => qs.push({ type: "present", item: it, arc: true }));       // 1. meet them all
+    if (board) qs.push(board);                                                   // 2. the board
+    rungs.forEach(r => qs.push(r));                                              // 3. one rung each
+  } else {
+    const mid = Math.min(4, Math.max(3, Math.ceil(pool.length / 2)));
+    pool.forEach((it, i) => {
+      qs.push({ type: "present", item: it, arc: true }); qs.push(rungs[i]);       // card + rung, per phrase
+      if (board && i + 1 === mid) qs.push(board);                                // the board mid-lesson
+    });
+    if (board && pool.length < mid) qs.push(board);
+  }
+  const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap)));
+  reviews.forEach(r => qs.push(r));
+  // the lap and the close run in the lesson's form (chapter one) or the chapter's cold form
   const floor = chapterFloor(lesson);
-  shuffle(pool.slice(0, 7)).forEach((it, i) => qs.push({ type: "encore", item: it, encoreFirst: i === 0, lapForm: floor.lap }));   // 4. the lap
-  qs.push(...closeRepsFloored(lesson));                                          // 5. the close, floored
+  const lapPool = shuffle(pool.slice(0, 7));
+  lapPool.forEach((it, i) => {
+    const q = floor.lap === "scaffolded" ? kitRungFor(lesson, it, pool) : { type: "type_translation", item: it, arc: true };
+    q.encoreFirst = i === 0; q.lap = true; qs.push(q);
+  });
+  const anchor = (lesson.items || [])[0];
+  if (anchor) qs.push(floor.lap === "scaffolded" ? Object.assign(kitRungFor(lesson, anchor, pool), { close: true }) : { type: "close", item: anchor });
   return qs;
 }
 function composeSession(lesson) {
@@ -1902,7 +1927,7 @@ function renderWeld(q) {
   const narrLine = q.sceneNarr || (!q.ves && q.item.narr);
   const narr = narrLine ? `<span class="cue-narr">${narrLine}</span> · ` : "";
   // scene welds carry their authored cue verbatim (label + meaning); everything else composes
-  cueBlock.appendChild(el(`<div class="cue-label">${q.cueLabel ? `<span class="cue-narr">${q.cueLabel}</span>` : (q.ves ? "Another way to ask for" : narr + (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for"))}</div>`));
+  cueBlock.appendChild(el(`<div class="cue-label">${q.cueRole ? q.cueRole : (q.cueLabel ? `<span class="cue-narr">${q.cueLabel}</span>` : (q.ves ? "Another way to ask for" : narr + (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for")))}</div>`));
   cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${q.cueMeaning || (outOfLesson && !q.ves ? q.item.en : q.cue.fen)}</div>`));
   if (q.heard) {                                                  // role-inversion: hear their ask first
     const play = audioControl(slow => { slow ? speak(q.heard, 0.55) : speak(q.heard); }, { speed: true });
@@ -2456,8 +2481,7 @@ function contextChoiceFeasible(item) {
 }
 function renderContextChoice(q) {
   const item = q.item, body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">Finish the sentence</div>`));
-  body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">Say</div><div class="cue-meaning conv-cue">${item.contextEn}</div></div>`));
+  body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">${/\u00bf|\?/.test(item.contextEs) ? "Ask" : "Say"}</div><div class="cue-meaning conv-cue">${item.contextEn}</div></div>`));
   const i = norm(item.contextEs).indexOf(norm(item.es));
   const before = item.contextEs.slice(0, i), after = item.contextEs.slice(i + item.es.length);
   const mount = el(`<div class="frame-mount ctx-mount">${before}<span class="slot"><span class="dashes">\u2013 \u2013 \u2013</span></span>${after}</div>`);

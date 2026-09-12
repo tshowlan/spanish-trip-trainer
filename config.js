@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v269";
+const APP_BUILD = "v270";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -16,7 +16,11 @@ const APP_BUILD = "v269";
 const STAGED = {
   "gloss-tap":   "The 'What did that mean?' tap under heard lines in scenes",
   "review-door": "The review room's door: scene-ready tile + Practice line, and the six-week tilt",
-  "journey-1":   "The beginning of the journey: machine rooms, kit halves interleaved per phrase, no cold typing in chapter one, flat difficulty within a lesson"
+  "journey-1":   "The beginning of the journey: machine rooms, kit halves, no cold typing in chapter one, flat difficulty within a lesson, finish-the-sentence rungs",
+  "journey-weave": "Kit halves as THE WEAVE: card + rung per phrase, the matching board mid-lesson (compare against cards, board, rungs)"
 };
 function stagingOn() { try { return localStorage.getItem("sts_staging") === "1"; } catch (e) { return false; } }
-function isStaged(feature) { return !(feature in STAGED) || stagingOn(); }
+// per-feature switches: with staging on, every staged feature is on unless Tom turned that one off
+function stagedOff() { try { return JSON.parse(localStorage.getItem("sts_staging_off") || "[]"); } catch (e) { return []; } }
+function setStagedOff(feature, off) { const list = stagedOff().filter(f => f !== feature); if (off) list.push(feature); try { localStorage.setItem("sts_staging_off", JSON.stringify(list)); } catch (e) {} }
+function isStaged(feature) { return !(feature in STAGED) || (stagingOn() && !stagedOff().includes(feature)); }

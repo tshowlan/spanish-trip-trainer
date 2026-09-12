@@ -56,3 +56,13 @@ Code's alternation stands: no two consecutive sessions the same shape. Proposed:
 - 2026-09-11 — Difficulty flat within a lesson: production form fixed at entry; the climb steps between lessons; harder forms only as a named door option.
 - 2026-09-11 — Cold production deferred to chapter two (chapter one fully scaffolded; cold enters the lap in chapter two; full ladder from chapter three [tune]).
 - 2026-09-11 — The beginning of the journey: two rooms (Asking for things / Finding out), pairs at the short arc (forge · conveyor ×3 · weld ×2 · exchange ×1 per machine, one close across both), Need solo at the full arc, depth to the returns; kits interleave per item with the lap as the cold round; kits over 8 split into halves; the first-machine intro rides the first room once. Supersedes the 17-beat room composition for paired machines.
+
+
+## CHAPTER ONE'S RUNG — rulings (chat, 2026-09-12; built staged v270)
+
+1. TWO FORMS, ONE PER LESSON (ruling 7): `context_choice` (finish the sentence: EN context as the ask, ES sentence with the slot, 3 ES choices) is the first kit half's form; `context_build` (same ask; the ES sentence from bare tiles, fuse dresses) is the second half's. The lap runs in its lesson's form. By half-order for now, by expertise later.
+2. LABELS: the ask is the EN sentence under "Say" (or "Ask" when the context is a question); "Finish the sentence" retires; slot = dashes; 3 options.
+3. VOICE PASS on the 28 context pairs (≤6 words, one clause, literal; speech-act fragments legal).
+4. THE LETTER FILL LEAVES CHAPTER ONE ENTIRELY, including the close; returns in chapter two as the word-in-sentence rung before cold typing; bare-letter fills never return.
+5. SIMPLICITY BAR: ≤6 words, one clause per sentence; Code lists offenders.
+FLAG (Tom feels it in play): the weave — card + rung per phrase, the board mid-lesson — staged as "journey-weave".

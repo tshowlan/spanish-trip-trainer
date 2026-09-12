@@ -93,8 +93,14 @@ function renderProfile() {
   const ver = el(`<div class="app-version" id="app-version">Tripfluent</div>`);
     // THE SCENES (dev entry until the tilt wires the real one): play a scene with real state
   // STAGING (process change 9/8): unshipped increments live behind this switch until Tom's word
-  const stg = el(`<label class="lab-row" style="border:1px solid var(--accent-2);border-radius:10px;padding:8px 10px"><span>Staging: play unshipped increments<br><span class="set-d">${Object.values(STAGED).map(d => "· " + d).join("<br>")}</span></span><input type="checkbox" id="lab-staging" ${stagingOn() ? "checked" : ""}></label>`);
-  stg.querySelector("#lab-staging").addEventListener("change", e => { try { localStorage.setItem("sts_staging", e.target.checked ? "1" : "0"); } catch (_) {} toast(e.target.checked ? "Staging on: unshipped increments are live for you" : "Staging off"); });
+  const stg = el(`<div class="lab-row" style="border:1px solid var(--accent-2);border-radius:10px;padding:8px 10px;display:block"><label style="display:flex;justify-content:space-between;align-items:center"><span>Staging: play unshipped increments</span><input type="checkbox" id="lab-staging" ${stagingOn() ? "checked" : ""}></label><div id="lab-staged-list" style="margin-top:6px"></div></div>`);
+  stg.querySelector("#lab-staging").addEventListener("change", e => { try { localStorage.setItem("sts_staging", e.target.checked ? "1" : "0"); } catch (_) {} toast(e.target.checked ? "Staging on: unshipped increments are live for you" : "Staging off"); renderProfile(); });
+  // each staged feature has its own switch, so two shapes can be compared one at a time
+  Object.keys(STAGED).forEach(f => {
+    const row = el(`<label class="set-d" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px"><span>${STAGED[f]}</span><input type="checkbox" ${stagedOff().includes(f) ? "" : "checked"} ${stagingOn() ? "" : "disabled"}></label>`);
+    row.querySelector("input").addEventListener("change", e => { setStagedOff(f, !e.target.checked); toast(`${f}: ${e.target.checked ? "on" : "off"}`); });
+    stg.querySelector("#lab-staged-list").appendChild(row);
+  });
   wrap.appendChild(stg);
   const fresh = el(`<button class="btn-quiet" style="margin:6px 0 10px">Start over as a fresh learner (keeps your profile)</button>`);
   fresh.addEventListener("click", () => { state.learn = {}; state.lessons = {}; save(); rebuildDeck(); toast("Fresh learner: nothing met, nothing done"); renderProfile(); });
