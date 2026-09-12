@@ -25,6 +25,8 @@ Per machine, in order: **forge-present (1) · conveyor ×3 cues (3) · weld ×2 
 
 ## RULING 3 — KITS INTERLEAVE PER ITEM (the canvas enforced)
 
+**AMENDED BY TOM AT PLAY (2026-09-12, staging):** the intro is not per item. A kit half introduces every phrase first (cards back to back), then the PAIRS board is the first exercise, then one scaffolded rung per phrase, the lap, the close. Guessing an exact word straight off a card is out.
+
 A kit half runs item by item: **present · grasp · one scaffolded rung (fill or build)** for phrase 1, then phrase 2, and so on — new phrases arriving among ones just met (the weave). **The lap runs every phrase once, fast, in the lesson's highest allowed form** — no cold rung inside the item's climb, and (Ruling 6) no cold typing at all in chapter one: the lap is tiles or fills there. 6-7 phrases × 3 beats + the lap = 24-28 beats, ~5 minutes. Thirteen of anything in a row never happens again.
 
 ## RULING 4 — THE KIT SPLITS

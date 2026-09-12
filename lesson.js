@@ -255,26 +255,31 @@ function composeRoom(lesson) {
   });
   return _applyFloor(qs, lesson);
 }
-/* RULING 3 - KITS INTERLEAVE PER ITEM: present · grasp · one scaffolded rung, phrase by phrase;
-   the lap runs every phrase once in the chapter's highest allowed form; the close is floored. */
+/* RULING 3, AMENDED BY TOM AT PLAY (2026-09-12): a kit half introduces EVERY phrase first
+   (the cards, back to back), then the PAIRS board is the first exercise (match sound to
+   meaning across the phrases just met), then one scaffolded rung per phrase, then the lap in
+   the chapter's highest form, then the floored close. No guessing an exact word straight off
+   a card. */
 function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   const qs = [];
-  const glossPool = [];
-  (lesson.items || []).forEach(it => { (it.chunks || []).forEach(ch => { if (ch[1]) glossPool.push(ch[1]); }); const fg = _graspFromFrame(it); if (fg) glossPool.push(fg.en); });
+  const pool = newItems.length ? newItems : (lesson.items || []);
+  pool.forEach(it => qs.push({ type: "present", item: it, arc: true }));           // 1. meet them all
+  // 2. the matching board(s): boards of four from the short phrases just met (the pairs
+  //    board's own caps: <=3 words, <=18 chars); a second board covers the rest with overlap
+  const shorts = pool.filter(it => it.es.trim().split(/\s+/).length <= 3 && it.es.length <= 18);
+  if (shorts.length >= 4) {
+    qs.push({ type: "pairs", items: shorts.slice(0, 4), arc: true });
+    if (shorts.length > 4) qs.push({ type: "pairs", items: shorts.slice(Math.max(0, shorts.length - 4)), arc: true });
+  }
   const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap))); let ri = 0;
-  newItems.forEach((it, i) => {
-    qs.push({ type: "present", item: it, arc: true });
-    const g = graspOf(it) || _graspFromFrame(it);
-    if (g) qs.push({ type: "grasp", item: it, word: g.word, wordEn: g.en, pool: glossPool, arc: true });
-    else if (_wordCount(it) <= 2) qs.push({ type: "mc_es2en", item: it, pool: newItems, arc: true });
-    qs.push({ type: scaffoldedFormFor(it), item: it, pool: newItems, arc: true });
-    if (i % 2 === 1 && ri < reviews.length) qs.push(reviews[ri++]);      // new among returning (the weave)
+  pool.forEach((it, i) => {                                                      // 3. one scaffolded rung each
+    qs.push({ type: scaffoldedFormFor(it), item: it, pool: pool, arc: true });
+    if (i % 2 === 1 && ri < reviews.length) qs.push(reviews[ri++]);               //    new among returning
   });
   while (ri < reviews.length) qs.push(reviews[ri++]);
   const floor = chapterFloor(lesson);
-  shuffle((newItems.length ? newItems : lesson.items || []).slice(0, 7)).forEach((it, i) =>
-    qs.push({ type: "encore", item: it, encoreFirst: i === 0, lapForm: floor.lap }));
-  qs.push(...closeRepsFloored(lesson));
+  shuffle(pool.slice(0, 7)).forEach((it, i) => qs.push({ type: "encore", item: it, encoreFirst: i === 0, lapForm: floor.lap }));   // 4. the lap
+  qs.push(...closeRepsFloored(lesson));                                          // 5. the close, floored
   return qs;
 }
 function composeSession(lesson) {
