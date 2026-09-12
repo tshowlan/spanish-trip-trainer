@@ -1288,3 +1288,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Minor: Learn-tab search; full Profile↔Settings merge.
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
+
+## v274 (2026-09-12) — journey-1 staged: context span fix + listen-and-fill
+- Bug: `renderContextChoice` sliced the context sentence with an index from `norm()` (which drops accents and ¿), so 21 finish-the-sentence beats showed a stray letter ("por favor r", "de nada a"). New `_findSpan()` locates the phrase in the RAW sentence (accent/case-insensitive) and returns raw indices; the filled slot shows the sentence's own spelling. All 89 contexts checked: 84 rebuild exactly, 5 later-stage items whose context doesn't contain the phrase literally ("el andén" in "al andén") correctly fall out of the form.
+- Rotation form 3 is now LISTEN AND FILL (hear the context sentence, see it with the blank, choose the missing word; "You hear" + play row). The bare "You read" is gone from chapter one (Tom: every opener fit "___, señor"). Sound-off backup for both listen forms = the English-asked finish-the-sentence.
+- Verified in the pane: First words · 1 = 7 presents · words board · rungs rotating (finish / listen-build / listen-fill / build …) · listening board as the lap · no close.
+- Idea for chat: a RESPONSE exercise (someone says X, pick the reply) once reply pairs exist in chapter one.
+

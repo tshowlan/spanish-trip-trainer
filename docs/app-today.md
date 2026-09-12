@@ -1,4 +1,4 @@
-# THE APP TODAY (living page, maintained per ship · v266 · 2026-09-11)
+# THE APP TODAY (living page, maintained per ship · v274 · 2026-09-12)
 
 *One line per surface, current state, plain English. This is what Tom reads instead of holding the app in his head. Updated with every ship; the friction map was a snapshot of it. STAGED = built and deployed behind the Staging switch (Profile → Test Lab), not yet shipped; ships on Tom's word.*
 
@@ -9,7 +9,7 @@
 
 ## Learning (the Learn track)
 - **Learn tab:** chapters as a list with strength rings. Still presents chapters as the product (two-track ruling not applied yet).
-- **Ladder lessons:** present card → grasp → build → swap one part → type it cold, per phrase; the lap; the close (two cold reps); the ceremony. ~29 beats. STAGED (journey-1): kits over 8 phrases split into halves; each phrase runs present → grasp → one scaffolded rung, phrase by phrase; the lap in the chapter's highest form; chapter one has no cold typing at all.
+- **Ladder lessons:** present card → grasp → build → swap one part → type it cold, per phrase; the lap; the close (two cold reps); the ceremony. ~29 beats. STAGED (journey-1): kits over 8 phrases split into halves; a kit half runs every phrase's card → one words-only matching board → one rung per phrase rotating across four forms (finish the sentence / listen and build with a distractor tile / listen and fill / build the sentence) → the listening board as the lap; chapter one has no cold typing and no close.
 - **Machine lessons (7):** forge-present → conveyor → welds ×4 → conveyor lap 2 → the stretch ×2 → exchanges ×4 → close. ~4.4 real minutes. Narrative cues on every machine phrase. STAGED (journey-1): four ROOM lessons replace them — Asking for things · 1 (Want + Bring) and · 2 (Need, solo), Finding out · 1 (Find + There) and · 2 (Price + When); a room runs each machine's short arc (forge · conveyor ×3 · weld ×2 · exchange ×1) then one lap across both frames, ~4 minutes; the forge label is the machine's name; "Your first machine" once. Depth (lap 2, stretch, other exchanges) moves to the machine shop and the return lap.
 - **Primer:** the scene text, a guess, the reveal. Pre-star design; upgrade parked (return-door grammar, pictures).
 - **Return door:** re-entering a finished lesson: photo band, machine badge, frame pedestal, mess-up headline, "Bring them back / Run the lap / Rebuild it." Its badge/frame grammar differs from the scene door (ruling on hold).
