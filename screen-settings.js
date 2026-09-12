@@ -97,8 +97,9 @@ function renderProfile() {
   stg.querySelector("#lab-staging").addEventListener("change", e => { try { localStorage.setItem("sts_staging", e.target.checked ? "1" : "0"); } catch (_) {} toast(e.target.checked ? "Staging on: unshipped increments are live for you" : "Staging off"); renderProfile(); });
   // each staged feature has its own switch, so two shapes can be compared one at a time
   Object.keys(STAGED).forEach(f => {
-    const row = el(`<label class="set-d" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px"><span>${STAGED[f]}</span><input type="checkbox" ${stagedOff().includes(f) ? "" : "checked"} ${stagingOn() ? "" : "disabled"}></label>`);
-    row.querySelector("input").addEventListener("change", e => { setStagedOff(f, !e.target.checked); toast(`${f}: ${e.target.checked ? "on" : "off"}`); });
+    const optIn = STAGED_OPT_IN.includes(f);
+    const row = el(`<label class="set-d" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px"><span>${STAGED[f]}${optIn ? " (compare: off by default)" : ""}</span><input type="checkbox" ${isStaged(f) ? "checked" : ""} ${stagingOn() ? "" : "disabled"}></label>`);
+    row.querySelector("input").addEventListener("change", e => { if (optIn) setStagedOn(f, e.target.checked); else setStagedOff(f, !e.target.checked); toast(`${f}: ${e.target.checked ? "on" : "off"}`); });
     stg.querySelector("#lab-staged-list").appendChild(row);
   });
   wrap.appendChild(stg);

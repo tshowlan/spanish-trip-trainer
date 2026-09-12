@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v270";
+const APP_BUILD = "v271";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -23,4 +23,12 @@ function stagingOn() { try { return localStorage.getItem("sts_staging") === "1";
 // per-feature switches: with staging on, every staged feature is on unless Tom turned that one off
 function stagedOff() { try { return JSON.parse(localStorage.getItem("sts_staging_off") || "[]"); } catch (e) { return []; } }
 function setStagedOff(feature, off) { const list = stagedOff().filter(f => f !== feature); if (off) list.push(feature); try { localStorage.setItem("sts_staging_off", JSON.stringify(list)); } catch (e) {} }
-function isStaged(feature) { return !(feature in STAGED) || (stagingOn() && !stagedOff().includes(feature)); }
+// opt-in features (alternatives to compare) stay OFF until Tom turns them on; the rest are on with staging
+const STAGED_OPT_IN = ["journey-weave"];
+function stagedOn() { try { return JSON.parse(localStorage.getItem("sts_staging_on") || "[]"); } catch (e) { return []; } }
+function setStagedOn(feature, on) { const list = stagedOn().filter(f => f !== feature); if (on) list.push(feature); try { localStorage.setItem("sts_staging_on", JSON.stringify(list)); } catch (e) {} }
+function isStaged(feature) {
+  if (!(feature in STAGED)) return true;
+  if (!stagingOn()) return false;
+  return STAGED_OPT_IN.includes(feature) ? stagedOn().includes(feature) : !stagedOff().includes(feature);
+}
