@@ -68,3 +68,4 @@ Code's alternation stands: no two consecutive sessions the same shape. Proposed:
 FLAG (Tom feels it in play): the weave — card + rung per phrase, the board mid-lesson — staged as "journey-weave".
 
 **TOM AT PLAY (2026-09-12, v272):** the weave is rejected. The lap as seven reps of one form is rejected. After the intros the forms must VARY: the rungs rotate phrase to phrase across finish-the-sentence (choices) · listen-and-build (tiles + a word that isn't said) · read-and-fill (Spanish sentence, one word missing, choose it; also the sound-off backup) · build-the-sentence; the lap is the listening board (every phrase once, by ear). Ruling 7 holds at the LEVEL (all scaffolded, no cold), not at the form.
+**TOM AT PLAY (v273):** chapter one kit halves end ON the listening board; no close beat after it.

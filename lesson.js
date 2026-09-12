@@ -299,8 +299,10 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   } else {
     shuffle(pool.slice(0, 7)).forEach((it, i) => qs.push({ type: "type_translation", item: it, arc: true, encoreFirst: i === 0, lap: true }));
   }
+  // 5. the close: in chapter one the listening board IS the ending (Tom, 9/12: one beat after it
+  //    felt anticlimactic); from chapter two the cold close stands
   const anchor = (lesson.items || [])[0];
-  if (anchor) qs.push(floor.lap === "scaffolded" ? Object.assign(kitRungFor(lesson, anchor, pool, pool.length), { close: true }) : { type: "close", item: anchor });   // 5. the close
+  if (anchor && floor.lap !== "scaffolded") qs.push({ type: "close", item: anchor });
   return qs;
 }
 function composeSession(lesson) {
