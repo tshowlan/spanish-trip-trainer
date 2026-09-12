@@ -270,8 +270,9 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   //    two boards, no listening on the first board) - the text board has no length cap
   if (pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });
   const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap))); let ri = 0;
-  pool.forEach((it, i) => {                                                      // 3. one scaffolded rung each
-    qs.push({ type: scaffoldedFormFor(it), item: it, pool: pool, arc: true });
+  pool.forEach((it, i) => {                                                      // 3. one rung each: finish the sentence where a context exists (prototype); spelling never right after the board
+    const t = contextChoiceFeasible(it) ? "context_choice" : (["build", "fill_blank", "mc_es2en", "word_fill", "phrase_fill"].find(m => _modeFeasible(m, it)) || "mc_es2en");
+    qs.push({ type: t, item: it, pool: pool, arc: true });
     if (i % 2 === 1 && ri < reviews.length) qs.push(reviews[ri++]);               //    new among returning
   });
   while (ri < reviews.length) qs.push(reviews[ri++]);
@@ -1301,7 +1302,7 @@ function renderQuestion() {
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
      word_fill: renderWordFill, phrase_fill: renderPhraseFill,
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
-     scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear, scene_sign: renderSceneSign,
+     scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear, scene_sign: renderSceneSign, context_choice: renderContextChoice,
      circuit_door: renderCircuitDoor, circuit_close: renderCircuitClose,
      reply: renderReplyChat }[q.type])(q);
 }
@@ -2446,6 +2447,39 @@ function _cardPlay(card, es) {
    PRESSED-IN (discrete objects reaching done — never fusion); on the 4th match THE REUNION
    composes the board into paired rows (FLIP, one pair at a time); collective "4 stronger"
    whisper (multi-item board: no per-item ring). Mismatch dims briefly: no red, no shake. ----- */
+/* PROTOTYPE for the exercise-variants session (Tom, 9/12; STAGED journey-1): "finish the
+   sentence and pick which word is right" - the phrase's authored context sentence in English
+   above, the Spanish sentence with the phrase blanked below, three Spanish choices from the
+   lesson. Uses the pack's existing contextEs/contextEn. Chat rules the real shape. */
+function contextChoiceFeasible(item) {
+  return !!(item.contextEs && item.contextEn && norm(item.contextEs).includes(norm(item.es)));
+}
+function renderContextChoice(q) {
+  const item = q.item, body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Finish the sentence</div>`));
+  body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">Say</div><div class="cue-meaning conv-cue">${item.contextEn}</div></div>`));
+  const i = norm(item.contextEs).indexOf(norm(item.es));
+  const before = item.contextEs.slice(0, i), after = item.contextEs.slice(i + item.es.length);
+  const mount = el(`<div class="frame-mount ctx-mount">${before}<span class="slot"><span class="dashes">\u2013 \u2013 \u2013</span></span>${after}</div>`);
+  body.appendChild(mount);
+  const pool = (q.pool || []).filter(x => x !== item && norm(x.es) !== norm(item.es));
+  const opts = shuffle([item, ...sample(pool, Math.min(2, pool.length))]);
+  const choices = el(`<div class="choices"></div>`);
+  opts.forEach(opt => {
+    const c = el(`<button class="choice">${opt.es}</button>`);
+    c.addEventListener("click", () => {
+      if (run.answered) return;
+      const ok = opt === item;
+      [...choices.children].forEach(ch => ch.classList.add(ch.textContent === item.es ? "correct" : (ch === c ? "wrong" : "dim")));
+      if (!ok) setTimeout(() => { c.classList.remove("wrong"); c.classList.add("dim"); }, 900);
+      mount.querySelector(".slot").innerHTML = `<span class="filled">${item.es}</span>`;
+      q.esOnStage = true;
+      grade(ok, item);
+    });
+    choices.appendChild(c);
+  });
+  body.appendChild(choices);
+}
 function renderPairs(q) {
   const items = q.items;
   const text = q.mode === "text";                 // STAGED (Tom, 9/12): the first board matches the WORDS - phrase to meaning, no audio
