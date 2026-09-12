@@ -266,11 +266,9 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   pool.forEach(it => qs.push({ type: "present", item: it, arc: true }));           // 1. meet them all
   // 2. the matching board(s): boards of four from the short phrases just met (the pairs
   //    board's own caps: <=3 words, <=18 chars); a second board covers the rest with overlap
-  const shorts = pool.filter(it => it.es.trim().split(/\s+/).length <= 3 && it.es.length <= 18);
-  if (shorts.length >= 4) {
-    qs.push({ type: "pairs", items: shorts.slice(0, 4), arc: true });
-    if (shorts.length > 4) qs.push({ type: "pairs", items: shorts.slice(Math.max(0, shorts.length - 4)), arc: true });
-  }
+  // 2. ONE matching board, every phrase of the half, words only (Tom 9/12: no repeats across
+  //    two boards, no listening on the first board) - the text board has no length cap
+  if (pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });
   const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap))); let ri = 0;
   pool.forEach((it, i) => {                                                      // 3. one scaffolded rung each
     qs.push({ type: scaffoldedFormFor(it), item: it, pool: pool, arc: true });
@@ -2450,13 +2448,16 @@ function _cardPlay(card, es) {
    whisper (multi-item board: no per-item ring). Mismatch dims briefly: no red, no shake. ----- */
 function renderPairs(q) {
   const items = q.items;
+  const text = q.mode === "text";                 // STAGED (Tom, 9/12): the first board matches the WORDS - phrase to meaning, no audio
   const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">Match the sound to its meaning</div>`));
-  const grid = el(`<div class="pairs"></div>`);
+  body.appendChild(el(`<div class="qtype">${text ? "Match each phrase to its meaning" : "Match the sound to its meaning"}</div>`));
+  const grid = el(`<div class="pairs${text ? " pairs-text" : ""}"></div>`);
   const audioOrder = shuffle(items.map((_, i) => i));
   const enOrder = shuffle(items.map((_, i) => i));
   for (let r = 0; r < items.length; r++) {
-    const a = el(`<button class="pcard audio" data-idx="${audioOrder[r]}" data-side="audio">${_cardAudioHtml()}</button>`);
+    const a = text
+      ? el(`<button class="pcard es" data-idx="${audioOrder[r]}" data-side="audio"><span class="es-word">${items[audioOrder[r]].es}</span></button>`)
+      : el(`<button class="pcard audio" data-idx="${audioOrder[r]}" data-side="audio">${_cardAudioHtml()}</button>`);
     const e = el(`<button class="pcard en" data-idx="${enOrder[r]}" data-side="en">${items[enOrder[r]].en}</button>`);
     [a, e].forEach(c => c.addEventListener("click", () => tapCard(c)));
     grid.appendChild(a); grid.appendChild(e);
@@ -2464,15 +2465,15 @@ function renderPairs(q) {
   body.appendChild(grid);
   // the first sound tile auto-plays on entry (Tom's ruling 2026-07-24): the board opens
   // with a voice, not silence — the learner hears tile 1 and starts hunting its meaning
-  const firstAudio = grid.querySelector('.pcard.audio');
+  const firstAudio = text ? null : grid.querySelector('.pcard.audio');
   if (firstAudio) setTimeout(() => { if (!run.answered) _cardPlay(firstAudio, items[+firstAudio.dataset.idx].es); }, 350);   /* [tune] */
   let sel = null, matched = 0;
   const missed = new Set();                       // audio items involved in a mismatch → low-weight outcome
   function tapCard(c) {
     const it = items[+c.dataset.idx];
-    if (c.classList.contains("matched")) { if (c.dataset.side === "audio") _cardPlay(c, it.es); return; }
+    if (c.classList.contains("matched")) { if (c.dataset.side === "audio" && !text) _cardPlay(c, it.es); return; }
     if (run.answered) return;
-    if (c.dataset.side === "audio") _cardPlay(c, it.es);
+    if (c.dataset.side === "audio" && !text) _cardPlay(c, it.es);
     if (!sel) { sel = c; c.classList.add("sel"); return; }
     if (sel === c) return;                        // re-tap: replay handled above, stay selected
     if (sel.dataset.side === c.dataset.side) { sel.classList.remove("sel"); sel = c; c.classList.add("sel"); return; }
@@ -2481,7 +2482,7 @@ function renderPairs(q) {
     if (a.dataset.idx === e.dataset.idx) {
       [a, e].forEach(x => { x.classList.remove("sel"); x.classList.add("matched"); });
       const mi = items[+a.dataset.idx];
-      a.innerHTML = `<span class="pc-glyph">${icon('speaker', 16)}</span><span class="es-word">${mi.es}</span><span class="pbars" aria-hidden="true"><span></span><span></span><span></span></span>`;
+      if (!text) a.innerHTML = `<span class="pc-glyph">${icon('speaker', 16)}</span><span class="es-word">${mi.es}</span><span class="pbars" aria-hidden="true"><span></span><span></span><span></span></span>`;
       // no replay on a correct match (Tom's ruling 2026-07-24; the reveal shows the spelling,
       // the learner just HEARD the sound — replaying it slowed the board). Delta vs the pairs
       // artifact's "sound, meet spelling" caption: flag at next re-issue.
@@ -2533,7 +2534,7 @@ function renderPairs(q) {
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
     const grown = el(`<div class="res-grown pairs-grown">
       ${clean ? `<div class="pairs-tick">${clean} stronger</div>` : ""}
-      <div class="pairs-allset">Match the four sounds to their meanings and spellings.</div>
+      <div class="pairs-allset">${text ? "Every phrase, matched to what it means." : "Match the four sounds to their meanings and spellings."}</div>
       <button class="btn res-cont">Continue</button>
     </div>`);
     grown.querySelector(".res-cont").addEventListener("click", () => slideOut(next));
