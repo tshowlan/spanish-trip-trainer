@@ -235,7 +235,7 @@ function kitRungFor(lesson, item, pool, k) {
     const forms = [
       () => ({ type: "context_choice", item, pool, arc: true }),
       () => ({ type: "weld", item, target: item.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: item.contextEn, cueRole: "You hear", cueMeaning: "", heard: item.contextEs, heardHint: "Tap to hear it again", listenBuild: true, arc: true, inputForm: "tiles", contextBuild: true }),
-      () => ({ type: "context_choice", item, pool, arc: true, noAsk: true }),
+      () => ({ type: "context_choice", item, pool, arc: true, heard: item.contextEs }),   // listen and fill
       () => ({ type: "weld", item, target: item.contextEs, tiles, targetEn: item.contextEn, cueRole: role, cueMeaning: item.contextEn, arc: true, inputForm: "tiles", contextBuild: true })
     ];
     const offset = /-2$/.test(lesson.id) ? 3 : 0;
@@ -1914,7 +1914,7 @@ function renderMachineDrill(q) {
    are BARE lowercase words (D6); the fuse dresses them in place. A real production rep. */
 function renderWeld(q) {
   // listen-and-build without sound: the read-and-fill form is its backup (Tom 9/12)
-  if (q.heard && q.listenBuild && (run.soundOff || !("speechSynthesis" in window) || state.sound === false)) return renderContextChoice(Object.assign({}, q, { type: "context_choice", noAsk: true }));
+  if (q.heard && q.listenBuild && (run.soundOff || !("speechSynthesis" in window) || state.sound === false)) return renderContextChoice(Object.assign({}, q, { type: "context_choice" }));
   const item = q.item;
   const target = q.target || q.ves || item.es;         // the stretch builds an authored VARIANT (depth ruling 2); scenes pin a target
   const body = $("#qbody");
@@ -2478,15 +2478,38 @@ function _cardPlay(card, es) {
    sentence and pick which word is right" - the phrase's authored context sentence in English
    above, the Spanish sentence with the phrase blanked below, three Spanish choices from the
    lesson. Uses the pack's existing contextEs/contextEn. Chat rules the real shape. */
+/* find a phrase inside its context sentence, case- and accent-insensitively, and return the
+   span in the RAW string (norm() drops characters, so its indices never map back - the
+   "por favor r" bug, Tom 9/12). Letters/digits compare normalized; everything else literal. */
+function _findSpan(context, phrase) {
+  const toks = s => { const out = []; for (let i = 0; i < s.length; i++) { const ch = s[i]; const n = norm(ch); if (n.length) out.push({ n, i }); } return out; };
+  const c = toks(context), p = toks(phrase);
+  if (!p.length) return null;
+  for (let s = 0; s + p.length <= c.length; s++) {
+    let ok = true;
+    for (let k = 0; k < p.length; k++) if (c[s + k].n !== p[k].n) { ok = false; break; }
+    if (ok) return [c[s].i, c[s + p.length - 1].i + 1];
+  }
+  return null;
+}
 function contextChoiceFeasible(item) {
-  return !!(item.contextEs && item.contextEn && norm(item.contextEs).includes(norm(item.es)));
+  return !!(item.contextEs && item.contextEn && _findSpan(item.contextEs, item.es));
 }
 function renderContextChoice(q) {
   const item = q.item, body = $("#qbody");
-  if (q.noAsk) body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">You read</div></div>`));   // the missing word, Spanish only (the sound-off backup too)
-  else body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">${/\u00bf|\?/.test(item.contextEs) ? "Ask" : "Say"}</div><div class="cue-meaning conv-cue">${item.contextEn}</div></div>`));
-  const i = norm(item.contextEs).indexOf(norm(item.es));
-  const before = item.contextEs.slice(0, i), after = item.contextEs.slice(i + item.es.length);
+  const soundOff = run.soundOff || !("speechSynthesis" in window) || state.sound === false;
+  if (q.heard && !soundOff) {                                              // listen and fill: the ear is the context (Tom 9/12)
+    body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">You hear</div></div>`));
+    const play = audioControl(slow => { slow ? speak(item.contextEs, 0.55) : speak(item.contextEs); }, { speed: true });
+    const row = el(`<div class="listen-stage inv-ask"></div>`); row.appendChild(play);
+    row.appendChild(el(`<div class="hint">Tap to hear it again</div>`));
+    body.appendChild(row);
+  } else {                                                                 // the English is the context (also the sound-off backup)
+    body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">${/\u00bf|\?/.test(item.contextEs) ? "Ask" : "Say"}</div><div class="cue-meaning conv-cue">${item.contextEn}</div></div>`));
+  }
+  const span = _findSpan(item.contextEs, item.es) || [0, item.contextEs.length];
+  const before = item.contextEs.slice(0, span[0]), after = item.contextEs.slice(span[1]);
+  const filledText = item.contextEs.slice(span[0], span[1]);                   // the phrase as it appears in the sentence
   const mount = el(`<div class="frame-mount ctx-mount">${before}<span class="slot"><span class="dashes">\u2013 \u2013 \u2013</span></span>${after}</div>`);
   body.appendChild(mount);
   const pool = (q.pool || []).filter(x => x !== item && norm(x.es) !== norm(item.es));
@@ -2499,7 +2522,7 @@ function renderContextChoice(q) {
       const ok = opt === item;
       [...choices.children].forEach(ch => ch.classList.add(ch.textContent === item.es ? "correct" : (ch === c ? "wrong" : "dim")));
       if (!ok) setTimeout(() => { c.classList.remove("wrong"); c.classList.add("dim"); }, 900);
-      mount.querySelector(".slot").innerHTML = `<span class="filled">${item.es}</span>`;
+      mount.querySelector(".slot").innerHTML = `<span class="filled">${filledText}</span>`;
       q.esOnStage = true;
       grade(ok, item);
     });

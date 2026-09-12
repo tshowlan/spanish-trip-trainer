@@ -1920,3 +1920,19 @@ img.scene-art { width: 286px; }
 /* the footer is always the top of the runner (Tom, 9/9: the primer's foreground sat over the
    "I'm in" button on device once the runner claimed 100dvh; synthetic clicks never hit-test) */
 .footer { z-index: 30; }
+
+/* PAIRS (staged 9/12): the word sits at the card's true center - the glyph and bars ride the
+   edges instead of pushing the text; the text board has no glyph at all */
+.pcard.audio .pc-glyph, .pcard.audio .pbars { position: absolute; top: 50%; transform: translateY(-50%); }
+.pcard.audio .pc-glyph { left: 12px; }
+.pcard.audio .pbars { right: 12px; }
+.pcard.audio .es-word { margin: 0 22px; }
+.pcard.es { padding: 10px 12px; }
+.pairs.pairs-text { gap: 8px 12px; }
+.pairs.pairs-text .pcard { min-height: 50px; font-size: 15px; }
+
+/* PAIRS text board (staged 9/12): equal cards, more of the screen */
+.pairs.pairs-text { gap: 10px 12px; }
+.pairs.pairs-text .pcard { height: 62px; min-height: 62px; font-size: 16px; padding: 6px 10px; line-height: 1.2; }
+/* finish-the-sentence prototype: the context sentence carries the slot */
+.ctx-mount { font-size: 22px; }
