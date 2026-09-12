@@ -1289,6 +1289,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v275 (2026-09-12) — journey-1 staged: listening beats autoplay + escape + labels; 7-step pairs tune; dev skip buttons
+- Listen-and-build and listen-and-fill now autoplay on entry (350ms) and carry the "I can't listen right now" escape; the escape keeps the beat's type and re-renders it as the English-asked form (listenEscape `{keep:true}`).
+- Labels: "Listen and build the sentence" / "Listen and fill the blank" (was "You hear").
+- Pairs tune: whole tones per match up to the octave on the 7th (`2^(n/6)`); 4-tile boards sound exactly as before.
+- Test mode (staging on): caret buttons in the runner's progress row hop back/forward through the composed session without playing it; sound cancels on a hop. Not rendered when staging is off.
+- Verified at 375px: labels, autoplay (speak called with the context sentence), escape → "Ask / Good morning, how are you?" with no play row, dev buttons tappable (the harness bar had covered them in the pane; not in the app).
+
 ## v274 (2026-09-12) — journey-1 staged: context span fix + listen-and-fill
 - Bug: `renderContextChoice` sliced the context sentence with an index from `norm()` (which drops accents and ¿), so 21 finish-the-sentence beats showed a stray letter ("por favor r", "de nada a"). New `_findSpan()` locates the phrase in the RAW sentence (accent/case-insensitive) and returns raw indices; the filled slot shows the sentence's own spelling. All 89 contexts checked: 84 rebuild exactly, 5 later-stage items whose context doesn't contain the phrase literally ("el andén" in "al andén") correctly fall out of the form.
 - Rotation form 3 is now LISTEN AND FILL (hear the context sentence, see it with the blank, choose the missing word; "You hear" + play row). The bare "You read" is gone from chapter one (Tom: every opener fit "___, señor"). Sound-off backup for both listen forms = the English-asked finish-the-sentence.

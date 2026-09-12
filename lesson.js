@@ -234,7 +234,7 @@ function kitRungFor(lesson, item, pool, k) {
     const others = (pool || []).filter(x => x !== item).flatMap(x => (x.contextEs || x.es).split(/\s+/)).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(w => w && !tiles.includes(w));
     const forms = [
       () => ({ type: "context_choice", item, pool, arc: true }),
-      () => ({ type: "weld", item, target: item.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: item.contextEn, cueRole: "You hear", cueMeaning: "", heard: item.contextEs, heardHint: "Tap to hear it again", listenBuild: true, arc: true, inputForm: "tiles", contextBuild: true }),
+      () => ({ type: "weld", item, target: item.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: item.contextEn, cueRole: "Listen and build the sentence", cueMeaning: "", heard: item.contextEs, heardHint: "Tap to hear it again", listenBuild: true, arc: true, inputForm: "tiles", contextBuild: true }),
       () => ({ type: "context_choice", item, pool, arc: true, heard: item.contextEs }),   // listen and fill
       () => ({ type: "weld", item, target: item.contextEs, tiles, targetEn: item.contextEn, cueRole: role, cueMeaning: item.contextEn, arc: true, inputForm: "tiles", contextBuild: true })
     ];
@@ -1268,9 +1268,16 @@ function renderQuestion() {
         <div class="pbar"><i style="width:${run.pct}%"></i></div>
         <span class="q-sring" id="q-sring"></span>
         <div class="stick" id="q-stick">Stronger</div>
+        ${stagingOn() ? `<span class="dev-nav"><button id="dev-back" title="Previous exercise (test mode)">${icon('caret-left', 18)}</button><button id="dev-fwd" title="Next exercise (test mode)">${icon('caret-right', 18)}</button></span>` : ""}
       </div>`));
     wrap.appendChild(el(`<div id="qbody" class="qenter"></div>`));
     app.appendChild(wrap);
+    if (stagingOn()) {                                   // test mode: scrub through the composed session without playing it (Tom 9/12)
+      const hop = d => { try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (_) {} clearFooter(); run.answered = false;
+        if (d > 0) { next(); return; } if (run.idx > 0) { run.idx--; renderQuestion(); } };
+      wrap.querySelector("#dev-back").addEventListener("click", () => hop(-1));
+      wrap.querySelector("#dev-fwd").addEventListener("click", () => hop(1));
+    }
     // listeners live on the persistent shell — bound once per runner, not per question
     ["pointerdown", "click"].forEach(ev => wrap.addEventListener(ev, e => {
       if (Date.now() < run.guardT) { e.stopPropagation(); e.preventDefault(); }
@@ -1530,14 +1537,14 @@ function coldEffortNote(body) {
    to its visual sibling AND the session flips sound-off (chooseType keeps swapping the
    remaining ear members via EAR_SIBLINGS + _audioOff); the reset lives in the session
    sheet. OS-mute detection is Capacitor-only and stays dormant on the web PWA. */
-function listenEscape(f, q) {
+function listenEscape(f, q, opts) {
   const w = el(`<button class="whisper-escape">I can't listen right now</button>`);
   f.insertBefore(w, f.firstChild);
   w.addEventListener("click", () => {
     if (run.answered) return;
     run.soundOff = true;
     try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (_) {}
-    q.type = (typeof EAR_SIBLINGS !== "undefined" && EAR_SIBLINGS[q.type]) || "mc_es2en";
+    if (!(opts && opts.keep)) q.type = (typeof EAR_SIBLINGS !== "undefined" && EAR_SIBLINGS[q.type]) || "mc_es2en";   // keep: the renderer has its own sound-off form
     const body = $("#qbody");
     body.innerHTML = "";
     body.appendChild(el(`<div class="swapnote">
@@ -1934,8 +1941,12 @@ function renderWeld(q) {
     const play = audioControl(slow => { slow ? speak(q.heard, 0.55) : speak(q.heard); }, { speed: true });
     const row = el(`<div class="listen-stage inv-ask"></div>`);
     row.appendChild(play);
-    row.appendChild(el(`<div class="hint">${q.heardHint || "They ask you. Tap to hear it again"}</div>`));
+    row.appendChild(el(`<div class="hint">${q.listenBuild ? "Tap to hear it again" : (q.heardHint || "They ask you. Tap to hear it again")}</div>`));
     body.appendChild(row);                                        // the ask rides above the cue block
+    if (q.listenBuild) {                                          // listen-and-build (kit rung): autoplay + the escape (Tom 9/12)
+      setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
+      setTimeout(() => listenEscape($("#footer") || footer(``), q, { keep: true }), 0);
+    }
   }
   body.appendChild(cueBlock);
   const stage = el(`<div class="machine-stage"></div>`);
@@ -2499,11 +2510,13 @@ function renderContextChoice(q) {
   const item = q.item, body = $("#qbody");
   const soundOff = run.soundOff || !("speechSynthesis" in window) || state.sound === false;
   if (q.heard && !soundOff) {                                              // listen and fill: the ear is the context (Tom 9/12)
-    body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">You hear</div></div>`));
+    body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">Listen and fill the blank</div></div>`));
     const play = audioControl(slow => { slow ? speak(item.contextEs, 0.55) : speak(item.contextEs); }, { speed: true });
     const row = el(`<div class="listen-stage inv-ask"></div>`); row.appendChild(play);
     row.appendChild(el(`<div class="hint">Tap to hear it again</div>`));
     body.appendChild(row);
+    setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry (Tom 9/12) */
+    setTimeout(() => listenEscape($("#footer") || footer(``), q, { keep: true }), 0);   // "I can't listen right now" → the English-asked form
   } else {                                                                 // the English is the context (also the sound-off backup)
     body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">${/\u00bf|\?/.test(item.contextEs) ? "Ask" : "Say"}</div><div class="cue-meaning conv-cue">${item.contextEn}</div></div>`));
   }
@@ -2571,7 +2584,7 @@ function renderPairs(q) {
       // the learner just HEARD the sound — replaying it slowed the board). Delta vs the pairs
       // artifact's "sound, meet spelling" caption: flag at next re-issue.
       haptic("correct");
-      playSound("correct", { rate: [1, 1.12, 1.26, 1.414][matched] || 1.414 });   // the tune: each match climbs [tune] (Tom 2026-08-03)
+      playSound("correct", { rate: Math.pow(2, Math.min(matched, 6) / 6) });   // the tune: whole tones, one per match, the octave on the 7th (Tom 2026-08-03; 7 tiles 9/12)
       // a clean pair is a real review rep; a missed one records at low weight [tune]:
       // exposure only, so the slip neither advances nor resets the item (§5, artifact caption)
       const id = itemId(mi);

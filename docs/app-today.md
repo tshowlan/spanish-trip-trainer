@@ -1,4 +1,4 @@
-# THE APP TODAY (living page, maintained per ship · v274 · 2026-09-12)
+# THE APP TODAY (living page, maintained per ship · v275 · 2026-09-12)
 
 *One line per surface, current state, plain English. This is what Tom reads instead of holding the app in his head. Updated with every ship; the friction map was a snapshot of it. STAGED = built and deployed behind the Staging switch (Profile → Test Lab), not yet shipped; ships on Tom's word.*
 
@@ -29,7 +29,7 @@
 
 ## Profile
 - **Profile tab:** sync code, backup/account, appearance, sounds, reminders, trips, group, **Edit trip profile** (one screen, every selection editable in place; never re-runs the intake), reset.
-- **Test Lab (dev):** fabricate a user, reset a lesson to never-seen, measured exercise times, play any scene, **Staging switch**.
+- **Test Lab (dev):** fabricate a user, reset a lesson to never-seen, measured exercise times, play any scene, **Staging switch**. With staging on, every lesson runner shows two small skip buttons (back / forward) beside the progress bar.
 - **Progress tab:** trend charts, coverage by topic. Untouched since July.
 
 ## Staged, awaiting Tom's play

@@ -412,6 +412,8 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   now the topmost element, so it carries the safe-area inset itself — the progress row
   must clear the dynamic island / notch */
 .progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.dev-nav { display: inline-flex; gap: 2px; margin-left: auto; }
+.dev-nav button { background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--text-dim); min-width: 34px; min-height: 34px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
 .close-btn { background: none; border: none; color: var(--text-dim); font-size: 26px; cursor: pointer; padding: 0 4px; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
 .pbar { flex: 1; height: 4px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }   /* thin hairline per design/correct-feedback.html */
 .pbar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width .5s cubic-bezier(.34,1.42,.5,1); }   /* §8.3 spring overshoot; gold = progress (green stays reserved for "correct"), per design/correct-feedback.html */
