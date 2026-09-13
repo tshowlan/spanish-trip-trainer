@@ -1289,6 +1289,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v278 (2026-09-13) — THE BEGINNING OF THE JOURNEY SHIPS (journey-1 out of staging)
+- Tom's word after playing v277: "ship the journey". `journey-1` leaves the STAGED map, so every learner gets: four room lessons (Asking for things · 1/· 2, Finding out · 1/· 2) replacing seven single-machine lessons; kits over 8 phrases split into halves; chapter one with no cold typing anywhere and flat difficulty within a lesson; the kit half as cards → words board → rungs rotating across four forms (finish / listen-and-build / listen-and-fill / build) → the listening board as the lap, no close; the anchored rung layout (16% / 63% / 47-53% / 73%); plain directions; Continue as the bottom bar on every correct-answer resolution.
+- Replay gap closed while shipping: a redone chapter-one lesson (no new phrases) swapped cold types for scaffolded forms and uses the floored close, so ruling 6 holds on replays too.
+- Existing learners: phrases keep their history (item identity is the phrase), but lesson-completion marks were keyed by the old lesson ids, so the new lessons show as not done. Acceptable at today's user count; noted.
+- Still staged: gloss-tap, review-door. Test-mode skip buttons stay dev-only (staging on).
+- Open for chat: grey ghost slots for used tiles; whether "The weld / The stretch" survive inside rooms; the response exercise; the voice pass on 28 contexts + 12 glue glosses.
+
 ## v277 (2026-09-13) — journey-1 staged: listening rungs drop the reveal's small play row; "Listen and fill in the blank"
 - The listen-and-fill and listen-and-build rungs set `noAudioRow`: the reveal no longer adds the small speaker + "Tap to hear it again" (it clipped into the lines/choices under the anchored layout); the main play button above is the replay. The phrase still speaks on resolve.
 - Direction fixed: "Listen and fill in the blank".

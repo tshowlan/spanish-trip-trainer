@@ -8,16 +8,18 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v277";
+const APP_BUILD = "v278";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
    is his word - only then does the feature leave this list and reach the live app. */
 const STAGED = {
   "gloss-tap":   "The 'What did that mean?' tap under heard lines in scenes",
-  "review-door": "The review room's door: scene-ready tile + Practice line, and the six-week tilt",
-  "journey-1":   "The beginning of the journey: machine rooms, kit halves, no cold typing in chapter one, flat difficulty within a lesson, finish-the-sentence rungs"
+  "review-door": "The review room's door: scene-ready tile + Practice line, and the six-week tilt"
 };
+// SHIPPED (Tom, 2026-09-13, v278): "journey-1" - the beginning of the journey (machine rooms, kit halves, no cold
+// typing in chapter one, flat difficulty, rotating rungs, the anchored layout). isStaged("journey-1") now returns
+// true for everyone: a feature not in the map is live.
 function stagingOn() { try { return localStorage.getItem("sts_staging") === "1"; } catch (e) { return false; } }
 // per-feature switches: with staging on, every staged feature is on unless Tom turned that one off
 function stagedOff() { try { return JSON.parse(localStorage.getItem("sts_staging_off") || "[]"); } catch (e) { return []; } }

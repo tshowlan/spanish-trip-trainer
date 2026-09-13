@@ -332,6 +332,12 @@ function composeSession(lesson) {
     // anywhere in the first few slots so replays don't all begin identically
     if (board) qs.splice(Math.min(pick([0, 1, 2, 3]), qs.length), 0, board);
     const out = applyRhythm(qs.length ? qs : lessonItems.map(it => ({ type: chooseType(it), item: it })));
+    if (chapterFloor(lesson).lesson === "scaffolded") {               // ruling 6: chapter one has no cold typing, replays included
+      const COLD = ["type_translation", "listen_type", "speak_it", "audio_cloze", "word_fill"];
+      out.forEach(q => { if (q.item && COLD.includes(q.type)) q.type = scaffoldedFormFor(q.item); });
+      out.push(...closeRepsFloored(lesson));
+      return _applyFloor(out, lesson);
+    }
     out.push(...closeReps(lesson));                                   // §7.1 the close: the last reps, always
     return out;
   }
@@ -340,7 +346,7 @@ function composeSession(lesson) {
   // Exchange → close. The learner BUILDS the frame itself, then operates it; fillers are
   // taught by the conveyor's cues (the filler-Grasp MC is REMOVED for machines — more
   // production, less selection). Non-machine lessons keep the five-beat ladder below. =====
-  if (lesson.machines && isStaged("journey-1")) return composeRoom(lesson);   // STAGED: a room of two machines
+  if (lesson.machines && isStaged("journey-1")) return composeRoom(lesson);   // a room of two machines (journey-1, SHIPPED v278)
   if (lesson.machine && lesson.frame) {
     const shell = _enShell(lessonItems);
     const cues = lessonItems.map(it => ({ item: it, p: _frameParts(lesson.frame, it.es), fen: _fillerEn(shell, it.en) }))
