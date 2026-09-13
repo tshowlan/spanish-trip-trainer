@@ -1289,6 +1289,14 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v276 (2026-09-13) — journey-1 staged: the anchored layout (Duolingo-measured spacing), plain directions, Continue at the bottom
+- Tom's ruling from play (9/13), built from a mock he confirmed (dev/mock-bottom-third.html; measurements off two Duolingo screens): on the chapter-one kit rungs the exercise portion starts 16% down the screen; fill-in-the-blank centers its middle choice at 63%; build assembles on two faint baselines at 47%/53% (row one rests on line one, a long sentence continues on line two) with the tile bank centered at 73%.
+- Mechanism: `_anchor(body)` stamps `#qbody.anchored` with `--qtop` (the body's own offset); styles.css positions `.top`, `.answers.at63/.at73`, `.lines`, `.build-answer` as viewport percentages minus that offset. Fused words keep the 38px row so the sentence stays on its line.
+- Directions are plain sentences: "Fill in the blank" / "Listen and fill the blank" / "Build the sentence" / "Listen and build the sentence". No "Say"/"Ask" role label and no "The weld" brand line on kit rungs (rooms and scenes unchanged).
+- The resolution's Continue moves to the bottom footer on every exercise when journey-1 is staged; on anchored bodies the reveal grows under the stage. The plain build rung sets `noEn` (its English is already the cue).
+- Verified at 375×812: prompt 16.0%, middle choice 63.0%, lines 47.0/53.3%, bank 73.0%, fused sentence bottom at 46% (on line one), Continue footer at 90%.
+- Open for chat: grey ghost slots for used tiles (Duolingo) vs hidden-but-spaced; whether "The weld / The stretch" survive inside rooms.
+
 ## v275 (2026-09-12) — journey-1 staged: listening beats autoplay + escape + labels; 7-step pairs tune; dev skip buttons
 - Listen-and-build and listen-and-fill now autoplay on entry (350ms) and carry the "I can't listen right now" escape; the escape keeps the beat's type and re-renders it as the English-asked form (listenEscape `{keep:true}`).
 - Labels: "Listen and build the sentence" / "Listen and fill the blank" (was "You hear").

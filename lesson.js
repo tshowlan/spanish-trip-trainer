@@ -236,7 +236,7 @@ function kitRungFor(lesson, item, pool, k) {
       () => ({ type: "context_choice", item, pool, arc: true }),
       () => ({ type: "weld", item, target: item.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: item.contextEn, cueRole: "Listen and build the sentence", cueMeaning: "", heard: item.contextEs, heardHint: "Tap to hear it again", listenBuild: true, arc: true, inputForm: "tiles", contextBuild: true }),
       () => ({ type: "context_choice", item, pool, arc: true, heard: item.contextEs }),   // listen and fill
-      () => ({ type: "weld", item, target: item.contextEs, tiles, targetEn: item.contextEn, cueRole: role, cueMeaning: item.contextEn, arc: true, inputForm: "tiles", contextBuild: true })
+      () => ({ type: "weld", item, target: item.contextEs, tiles, targetEn: item.contextEn, cueRole: "Build the sentence", cueMeaning: item.contextEn, arc: true, inputForm: "tiles", contextBuild: true, noEn: true })   // the English is already the cue: no repeat in the reveal
     ];
     const offset = /-2$/.test(lesson.id) ? 3 : 0;
     return forms[((k || 0) + offset) % forms.length]();
@@ -1925,7 +1925,9 @@ function renderWeld(q) {
   const item = q.item;
   const target = q.target || q.ves || item.es;         // the stretch builds an authored VARIANT (depth ruling 2); scenes pin a target
   const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">${q.ves ? "The stretch" : "The weld"}</div>`));
+  const anchored = !!q.contextBuild && q.inputForm !== "typed";   // kit rung: the anchored layout, a plain direction, no brand line (Tom 9/13)
+  if (anchored) _anchor(body);
+  else body.appendChild(el(`<div class="qtype">${q.ves ? "The stretch" : "The weld"}</div>`));
   const cueBlock = el(`<div class="conv-cuewrap"></div>`);
   const outOfLesson = run && run.review;   // depth set / shop / lap: no machine established on screen
   // NARRATIVE CUE (north star scene law): one diegetic line may ride the cue - the weld
@@ -1935,20 +1937,23 @@ function renderWeld(q) {
   const narrLine = q.sceneNarr || (!q.ves && q.item.narr);
   const narr = narrLine ? `<span class="cue-narr">${narrLine}</span> · ` : "";
   // scene welds carry their authored cue verbatim (label + meaning); everything else composes
-  cueBlock.appendChild(el(`<div class="cue-label">${q.cueRole ? q.cueRole : (q.cueLabel ? `<span class="cue-narr">${q.cueLabel}</span>` : (q.ves ? "Another way to ask for" : narr + (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for")))}</div>`));
-  if (q.cueMeaning !== "") cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${q.cueMeaning || (outOfLesson && !q.ves ? q.item.en : q.cue.fen)}</div>`));
+  cueBlock.appendChild(el(`<div class="${anchored ? "direction" : "cue-label"}">${q.cueRole ? q.cueRole : (q.cueLabel ? `<span class="cue-narr">${q.cueLabel}</span>` : (q.ves ? "Another way to ask for" : narr + (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for")))}</div>`));
+  let heardRow = null;
   if (q.heard) {                                                  // role-inversion: hear their ask first
     const play = audioControl(slow => { slow ? speak(q.heard, 0.55) : speak(q.heard); }, { speed: true });
-    const row = el(`<div class="listen-stage inv-ask"></div>`);
-    row.appendChild(play);
-    row.appendChild(el(`<div class="hint">${q.listenBuild ? "Tap to hear it again" : (q.heardHint || "They ask you. Tap to hear it again")}</div>`));
-    body.appendChild(row);                                        // the ask rides above the cue block
+    heardRow = el(`<div class="listen-stage inv-ask"></div>`);
+    heardRow.appendChild(play);
+    heardRow.appendChild(el(`<div class="hint">${q.listenBuild ? "Tap to hear it again" : (q.heardHint || "They ask you. Tap to hear it again")}</div>`));
+    if (anchored) cueBlock.appendChild(heardRow);                 // anchored: direction, then the play row
+    else body.appendChild(heardRow);                              // scenes: the ask rides above the cue block
     if (q.listenBuild) {                                          // listen-and-build (kit rung): autoplay + the escape (Tom 9/12)
       setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
       setTimeout(() => listenEscape($("#footer") || footer(``), q, { keep: true }), 0);
     }
   }
-  body.appendChild(cueBlock);
+  if (q.cueMeaning !== "") cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${q.cueMeaning || (outOfLesson && !q.ves ? q.item.en : q.cue.fen)}</div>`));
+  if (anchored) { const top = el(`<div class="top"></div>`); top.appendChild(cueBlock); body.appendChild(top); }
+  else body.appendChild(cueBlock);
   const stage = el(`<div class="machine-stage"></div>`);
   if (q.inputForm ? q.inputForm === "typed" : _inputClimbed(item)) {   // ruling 7: the form was fixed at composition when staged
     // the climb: tiles retire, the keyboard serves (typed weld; typo/accent tolerance,
@@ -1968,8 +1973,11 @@ function renderWeld(q) {
   }
   const ans = el(`<div class="build-answer"></div>`);
   const bank = el(`<div class="bank"></div>`);
-  stage.appendChild(ans); stage.appendChild(bank);
-  body.appendChild(stage);
+  if (anchored) {                                                 // two baselines; the sentence rests on line one; the bank on the 73% line
+    body.appendChild(el(`<div class="lines"></div>`));
+    body.appendChild(ans);
+    const answers = el(`<div class="answers at73"></div>`); answers.appendChild(bank); body.appendChild(answers);
+  } else { stage.appendChild(ans); stage.appendChild(bank); body.appendChild(stage); }
   const dressed = target.split(/\s+/);
   // authored tiles (scenes) may bind words ("la cuenta"); otherwise every word is a tile
   const seq = q.tiles ? q.tiles.map(t => t.toLowerCase()) : dressed.map(w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "").toLowerCase()).filter(Boolean);
@@ -2506,25 +2514,38 @@ function _findSpan(context, phrase) {
 function contextChoiceFeasible(item) {
   return !!(item.contextEs && item.contextEn && _findSpan(item.contextEs, item.es));
 }
+/* THE ANCHORED LAYOUT (staged journey-1; Tom's ruling 9/13, measured off Duolingo): the exercise
+   portion starts 16% down the screen; the tappable things center on a line (choices 63%, tile
+   bank 73%); build assembles on two faint baselines at 47% and 53%. Percentages are of the
+   viewport, so the body learns its own offset (--qtop) and the stylesheet subtracts it. */
+function _anchor(body) {
+  body.classList.add("anchored");
+  const top = body.getBoundingClientRect().top + (window.scrollY || 0);
+  body.style.setProperty("--qtop", Math.round(top) + "px");
+}
 function renderContextChoice(q) {
   const item = q.item, body = $("#qbody");
   const soundOff = run.soundOff || !("speechSynthesis" in window) || state.sound === false;
+  _anchor(body);
+  const top = el(`<div class="top"></div>`);
   if (q.heard && !soundOff) {                                              // listen and fill: the ear is the context (Tom 9/12)
-    body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">Listen and fill the blank</div></div>`));
+    top.appendChild(el(`<div class="direction">Listen and fill the blank</div>`));
     const play = audioControl(slow => { slow ? speak(item.contextEs, 0.55) : speak(item.contextEs); }, { speed: true });
     const row = el(`<div class="listen-stage inv-ask"></div>`); row.appendChild(play);
     row.appendChild(el(`<div class="hint">Tap to hear it again</div>`));
-    body.appendChild(row);
+    top.appendChild(row);
     setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry (Tom 9/12) */
     setTimeout(() => listenEscape($("#footer") || footer(``), q, { keep: true }), 0);   // "I can't listen right now" → the English-asked form
   } else {                                                                 // the English is the context (also the sound-off backup)
-    body.appendChild(el(`<div class="conv-cuewrap"><div class="cue-label">${/\u00bf|\?/.test(item.contextEs) ? "Ask" : "Say"}</div><div class="cue-meaning conv-cue">${item.contextEn}</div></div>`));
+    top.appendChild(el(`<div class="direction">Fill in the blank</div>`));
+    top.appendChild(el(`<div class="conv-cuewrap"><div class="cue-meaning conv-cue">${item.contextEn}</div></div>`));
   }
   const span = _findSpan(item.contextEs, item.es) || [0, item.contextEs.length];
   const before = item.contextEs.slice(0, span[0]), after = item.contextEs.slice(span[1]);
   const filledText = item.contextEs.slice(span[0], span[1]);                   // the phrase as it appears in the sentence
   const mount = el(`<div class="frame-mount ctx-mount">${before}<span class="slot"><span class="dashes">\u2013 \u2013 \u2013</span></span>${after}</div>`);
-  body.appendChild(mount);
+  top.appendChild(mount);
+  body.appendChild(top);
   const pool = (q.pool || []).filter(x => x !== item && norm(x.es) !== norm(item.es));
   const opts = shuffle([item, ...sample(pool, Math.min(2, pool.length))]);
   const choices = el(`<div class="choices"></div>`);
@@ -2541,7 +2562,9 @@ function renderContextChoice(q) {
     });
     choices.appendChild(c);
   });
-  body.appendChild(choices);
+  const answers = el(`<div class="answers at63"></div>`);              // the middle choice sits on the 63% line
+  answers.appendChild(choices);
+  body.appendChild(answers);
 }
 function renderPairs(q) {
   const items = q.items;
@@ -3194,10 +3217,14 @@ function resolveCorrect(item, q, info) {
     ${(q && (q.noEn || q.esFootnote)) ? "" : `<div class="res-en">${item.en}</div>`}
     ${(q && (q.noAudio || q.noAudioRow)) ? "" : `<div class="res-audio"></div>`}
     ${note}
-    <button class="btn res-cont">Continue</button>
+    ${isStaged("journey-1") ? "" : `<button class="btn res-cont">Continue</button>`}
   </div>`);
   let advanced = false;
   const goNext = () => { if (advanced) return; advanced = true; slideOut(next); };
+  if (isStaged("journey-1")) {                                     // Continue lives at the bottom of the screen, every exercise (Tom 9/13)
+    const cf = footer(`<button class="btn" id="cont">Continue</button>`);
+    cf.querySelector("#cont").addEventListener("click", goNext);
+  }
   const playWhole = () => speak(item.es);
   if (!(q && (q.noAudio || q.noAudioRow))) {
     const arow = el(`<div class="res-audio-row"></div>`);
@@ -3205,8 +3232,8 @@ function resolveCorrect(item, q, info) {
     arow.appendChild(el(`<span class="audio-hint">Tap to hear it again</span>`));   /* D1 */
     grown.querySelector(".res-audio").appendChild(arow);
   }
-  grown.querySelector(".res-cont").addEventListener("click", goNext);
-  qb.appendChild(grown);
+  const rc = grown.querySelector(".res-cont"); if (rc) rc.addEventListener("click", goNext);
+  (qb.classList.contains("anchored") ? (qb.querySelector(".top") || qb) : qb).appendChild(grown);   // anchored: the reveal grows under the stage
   requestAnimationFrame(() => requestAnimationFrame(() => grown.classList.add("show")));
   // the exit is the learner's tap (Pacing Rule) — so the tap must be ON SCREEN: tall
   // exercises (requeued chip + choices) can push Continue past the fold on short phones

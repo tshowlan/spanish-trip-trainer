@@ -1938,3 +1938,23 @@ img.scene-art { width: 286px; }
 .pairs.pairs-text .pcard { height: 62px; min-height: 62px; font-size: 16px; padding: 6px 10px; line-height: 1.2; }
 /* finish-the-sentence prototype: the context sentence carries the slot */
 .ctx-mount { font-size: 22px; }
+
+/* ===== THE ANCHORED LAYOUT (staged journey-1; Tom 9/13, measured off Duolingo) =====
+   The body learns its own top offset (--qtop, set by _anchor); every anchor is a viewport
+   percentage minus that. 16%: the exercise portion. 63%: the middle choice. 73%: the tile
+   bank. 47% and 53%: the two baselines the built sentence rests on. */
+#qbody.anchored { position: relative; min-height: calc(100dvh - var(--qtop, 90px) - 40px); }
+#qbody.anchored .top { position: absolute; left: 0; right: 0; top: calc(16dvh - var(--qtop, 90px)); }
+#qbody.anchored .direction { color: var(--text-dim); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+#qbody.anchored .answers { position: absolute; left: 0; right: 0; translate: 0 -50%; }
+#qbody.anchored .answers.at63 { top: calc(63dvh - var(--qtop, 90px)); }
+#qbody.anchored .answers.at73 { top: calc(73dvh - var(--qtop, 90px)); }
+#qbody.anchored .answers .bank { justify-content: center; }
+#qbody.anchored .lines { position: absolute; left: 0; right: 0; top: calc(47dvh - var(--qtop, 90px)); height: 6.3dvh; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); pointer-events: none; }
+#qbody.anchored .build-answer { position: absolute; left: 0; right: 0; top: calc(47dvh - var(--qtop, 90px) - 46px); min-height: 0; border-bottom: none; margin: 0; padding: 0;
+  column-gap: 8px; row-gap: calc(6.3dvh - 38px); }                   /* row pitch = the band: row one rests on line one, row two on line two */
+#qbody.anchored .build-answer .word { height: 38px; box-sizing: border-box; display: inline-flex; align-items: center; }
+#qbody.anchored .build-answer.fused { column-gap: 5px; row-gap: calc(6.3dvh - 38px); }
+#qbody.anchored .build-answer.fused .word { height: 38px; }
+#qbody.anchored .build-answer .sweep { bottom: -4px; }
+#qbody.anchored .res-grown { margin-top: 18px; }

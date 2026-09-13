@@ -1,3 +1,10 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mock: exercise spacing</title>
+<style>
 :root {
   /* ---- color (light / cream theme) ---- */
   --bg: #fcfcf3;            /* cream */
@@ -1939,22 +1946,91 @@ img.scene-art { width: 286px; }
 /* finish-the-sentence prototype: the context sentence carries the slot */
 .ctx-mount { font-size: 22px; }
 
-/* ===== THE ANCHORED LAYOUT (staged journey-1; Tom 9/13, measured off Duolingo) =====
-   The body learns its own top offset (--qtop, set by _anchor); every anchor is a viewport
-   percentage minus that. 16%: the exercise portion. 63%: the middle choice. 73%: the tile
-   bank. 47% and 53%: the two baselines the built sentence rests on. */
-#qbody.anchored { position: relative; min-height: calc(100dvh - var(--qtop, 90px) - 40px); }
-#qbody.anchored .top { position: absolute; left: 0; right: 0; top: calc(16dvh - var(--qtop, 90px)); }
-#qbody.anchored .direction { color: var(--text-dim); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
-#qbody.anchored .answers { position: absolute; left: 0; right: 0; translate: 0 -50%; }
-#qbody.anchored .answers.at63 { top: calc(63dvh - var(--qtop, 90px)); }
-#qbody.anchored .answers.at73 { top: calc(73dvh - var(--qtop, 90px)); }
-#qbody.anchored .answers .bank { justify-content: center; }
-#qbody.anchored .lines { position: absolute; left: 0; right: 0; top: calc(47dvh - var(--qtop, 90px)); height: 6.3dvh; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); pointer-events: none; }
-#qbody.anchored .build-answer { position: absolute; left: 0; right: 0; top: calc(47dvh - var(--qtop, 90px) - 46px); min-height: 0; border-bottom: none; margin: 0; padding: 0;
-  column-gap: 8px; row-gap: calc(6.3dvh - 38px); }                   /* row pitch = the band: row one rests on line one, row two on line two */
-#qbody.anchored .build-answer .word { height: 38px; box-sizing: border-box; display: inline-flex; align-items: center; }
-#qbody.anchored .build-answer.fused { column-gap: 5px; row-gap: calc(6.3dvh - 38px); }
-#qbody.anchored .build-answer.fused .word { height: 38px; }
-#qbody.anchored .build-answer .sweep { bottom: -4px; }
-#qbody.anchored .res-grown { margin-top: 18px; }
+</style>
+<style>
+  /* ---- mock chrome (not app CSS) ---- */
+  body { max-width: none; background: #111; color: #ddd; font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 22px; }
+  h1 { font-size: 16px; font-weight: 700; margin: 0 0 4px; color: #eee; }
+  .sub { font-size: 13px; color: #999; margin: 0 0 18px; max-width: 900px; line-height: 1.5; }
+  .row { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 26px; }
+  .cell { display: flex; flex-direction: column; gap: 8px; }
+  .cap { font-size: 12px; color: #aaa; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; }
+  .cap b { color: #f2c94c; }
+  .phone { position: relative; width: 390px; height: 780px; border-radius: 34px; overflow: hidden; background: var(--bg);
+           box-shadow: 0 0 0 6px #2a2a2a, 0 18px 40px rgba(0,0,0,.6); transform: translateZ(0); }   /* transform: fixed children stay inside the frame */
+  .zoom { zoom: .72; }
+  .guide { position: absolute; left: 0; right: 0; border-top: 1px dashed rgba(242,201,76,.55); pointer-events: none; z-index: 5; }
+  .guide span { position: absolute; left: 4px; top: -8px; font-size: 9px; line-height: 14px; padding: 0 5px; border-radius: 7px; background: rgba(0,0,0,.7); color: rgba(242,201,76,.95); letter-spacing: .4px; }
+  .phone .runner { position: absolute; inset: 0; height: 100%; min-height: 0; box-sizing: border-box; }   /* the app's runner grows past the frame; the screen is the box */
+  .phone .footer { position: absolute; }                 /* the app's fixed footer, framed */
+  .phone .dev-nav { display: none; }                     /* test-mode chrome hidden in the mock */
+
+  /* ---- THE PROPOSAL (what would ship if ruled) ---- */
+  .phone .runner.proposed #qbody { position: static; }   /* the app slides #qbody as a positioned box; the parts must measure against the screen */
+  .phone .runner.proposed .direction { color: var(--text-dim); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  /* the exercise portion starts at 16% from the top (Duolingo's prompt line; the MC screenshot, no NEW WORD tag) */
+  .phone .runner.proposed .top { position: absolute; left: 18px; right: 18px; top: 16%; z-index: 1; }
+  /* the answers CENTER on a line: MC at 63% (Duolingo's choices, group center), build at 66.6% (Tom: the bottom third), or 73% (Duolingo's tile bank) */
+  .phone .runner.proposed .answers { position: absolute; left: 18px; right: 18px; z-index: 1; }
+  .phone .runner.proposed .answers .bank { justify-content: center; }
+  /* Duolingo's build: two faint BASELINES mid-screen (47% and 53%, the screenshot minus the NEW WORD shift); placed tiles sit ON
+     the first line, a second row sits on the second line (Tom 9/13, screenshot); the bank centers at 73% */
+  .phone .runner.proposed .lines { position: absolute; left: 18px; right: 18px; top: 47%; height: 6.3%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); z-index: 1; }
+  .phone .runner.proposed .lines .r1 { position: absolute; left: 0; right: 0; bottom: 100%; margin-bottom: 8px; display: flex; gap: 8px; }   /* row one rests on line one */
+  .phone .runner.proposed .lines .r2 { position: absolute; left: 0; right: 0; bottom: 0; margin-bottom: 8px; display: flex; gap: 8px; }      /* row two rests on line two */
+</style>
+</head>
+<body>
+<h1>Exercise spacing: current vs proposed (Duolingo as the reference)</h1>
+<p class="sub">Real app stylesheet, real exercise markup, phone frame 390 × 780. Measured from Tom's two Duolingo screens (the build screen's NEW WORD tag pushes its prompt and stimulus down ~5.5%, so the multiple-choice screen is the reference for the top): progress bar 11%, prompt 16%, stimulus ~30%, choices centered at 63%, tile bank centered at 73%, button at 91.5%. Proposed: the exercise portion starts at 16% from the top; the direction is a plain sentence; multiple choice centers at 63%; build follows Duolingo: two faint baselines at 47% and 53%; placed tiles sit on the first line and a long sentence continues on the second; the tile bank centers at 73%. Nothing here is shipped.</p>
+
+<div class="row zoom">
+  <div class="cell"><div class="cap">Fill in the blank · current</div><div class="phone" id="p4"></div></div>
+  <div class="cell"><div class="cap">Fill in the blank · <b>proposed</b> (top 16%, choices at 63%)</div><div class="phone" id="p5"></div></div>
+  <div class="cell"><div class="cap">Fill in the blank · <b>proposed</b>, after the answer</div><div class="phone" id="p6"></div></div>
+</div>
+<div class="row zoom">
+  <div class="cell"><div class="cap">Build · current</div><div class="phone" id="p1"></div></div>
+  <div class="cell"><div class="cap">Build · <b>proposed</b> (prompt 16%, lines 47-53%, tiles 73%)</div><div class="phone" id="p2"></div></div>
+  <div class="cell"><div class="cap">Build · <b>proposed</b>, a long sentence on both lines</div><div class="phone" id="p2b"></div></div>
+  <div class="cell"><div class="cap">Build · <b>proposed</b>, mid-build</div><div class="phone" id="p2c"></div></div>
+  <div class="cell"><div class="cap">Build · <b>proposed</b>, after the answer</div><div class="phone" id="p3"></div></div>
+</div>
+
+<script>
+const X = `<svg class="ph" viewBox="0 0 256 256" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path></svg>`;
+const chrome = `<div class="progress-row"><button class="close-btn">${X}</button><div class="pbar"><i style="width:69%"></i></div>
+  <span class="q-sring"><svg viewBox="0 0 26 26" width="26" height="26" aria-hidden="true"><circle class="sr-bg" cx="13" cy="13" r="10"></circle><circle class="sr-fg" cx="13" cy="13" r="10" stroke-dasharray="62.8" stroke-dashoffset="62.8" transform="rotate(-90 13 13)"></circle></svg></span></div>`;
+const guide = (pct, label) => `<div class="guide" style="top:${pct}%"><span>${label}</span></div>`;
+const tiles = ws => ws.map(w => `<button class="word">${w}</button>`).join("");
+const buildTop = en => `<div class="top"><div class="direction">Build the sentence</div><div class="conv-cuewrap"><div class="cue-meaning conv-cue">${en}</div></div></div>`;
+const fillTop = (en, slot) => `<div class="top"><div class="direction">Fill in the blank</div><div class="conv-cuewrap"><div class="cue-meaning conv-cue">${en}</div></div><div class="frame-mount ctx-mount"><span class="slot">${slot}</span>, buenos días</div></div>`;
+const dashes = `<span class="dashes">– – –</span>`;
+const choices = (a, b, c) => `<div class="choices"><button class="choice ${a}">Hola</button><button class="choice ${b}">De nada</button><button class="choice ${c}">Buenos días</button></div>`;
+
+const frames = {
+  p4: { cls: "", body: `<div class="conv-cuewrap"><div class="cue-label">Say</div><div class="cue-meaning conv-cue">Hi, good morning</div></div>
+        <div class="frame-mount ctx-mount"><span class="slot">${dashes}</span>, buenos días</div>${choices("", "", "")}`, guides: [[16, "prompt 16%"], [63, "choices 63%"]] },
+  p5: { cls: "proposed", body: fillTop("Hi, good morning", dashes) + `<div class="answers" data-center="63">${choices("", "", "")}</div>`, guides: [[16, "prompt 16%"], [63, "choices 63%"]] },
+  p6: { cls: "proposed", body: fillTop("Hi, good morning", `<span class="filled">Hola</span>`) + `<div class="answers" data-center="63">${choices("correct", "dim", "dim")}</div>`,
+        footer: `<div class="footer"><button class="btn">Continue</button></div>`, guides: [[16, "prompt 16%"], [63, "choices 63%"]] },
+  p1: { cls: "", body: `<div class="qtype">The weld</div><div class="conv-cuewrap"><div class="cue-label">Say</div><div class="cue-meaning conv-cue">Good night, see you tomorrow</div></div>
+        <div class="machine-stage"><div class="build-answer"></div><div class="bank">${tiles(["buenas","noches","mañana","hasta"])}</div></div>`, guides: [[16, "prompt 16%"], [66.6, "bottom third"]] },
+  p2: { cls: "proposed", body: buildTop("Good night, see you tomorrow") + `<div class="lines"></div><div class="answers" data-center="73"><div class="bank">${tiles(["buenas","noches","mañana","hasta"])}</div></div>`, guides: [[16, "prompt 16%"], [73, "tiles 73%"]] },
+  p2b: { cls: "proposed", body: buildTop("Good morning, how are you?") + `<div class="lines"><div class="r1"><span class="word locked">buenos</span><span class="word locked">días</span><span class="word locked">señora</span><span class="word locked">qué</span></div><div class="r2"><span class="word locked">tal</span><span class="word locked">está</span></div></div><div class="answers" data-center="73"><div class="bank"><button class="word used">tal</button><button class="word used">buenos</button><button class="word used">qué</button><button class="word">por</button><button class="word used">días</button><button class="word">favor</button><button class="word used">señora</button><button class="word used">está</button></div></div>`, guides: [[16, "prompt 16%"], [73, "tiles 73%"]] },
+  p2c: { cls: "proposed", body: buildTop("Good night, see you tomorrow") + `<div class="lines"><div class="r1"><span class="word locked">buenas</span><span class="word locked">noches</span></div></div><div class="answers" data-center="73"><div class="bank"><button class="word used">buenas</button><button class="word used">noches</button><button class="word">mañana</button><button class="word">hasta</button></div></div>`, guides: [[16, "prompt 16%"], [73, "tiles 73%"]] },
+  p3: { cls: "proposed", body: buildTop("Good night, see you tomorrow") + `<div class="lines"><div class="r1"><span class="word locked">buenas</span><span class="word locked">noches</span><span class="word locked">hasta</span><span class="word locked">mañana</span></div></div><div class="answers" data-center="73"><div class="bank"><button class="word used">buenas</button><button class="word used">noches</button><button class="word used">mañana</button><button class="word used">hasta</button></div></div>`,
+        footer: `<div class="footer"><button class="btn">Continue</button></div>`, guides: [[16, "prompt 16%"], [73, "tiles 73%"]] },
+};
+
+{
+  const field = `<svg viewBox="0 0 390 555" preserveAspectRatio="none"><defs><linearGradient id="g-gold-d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.42"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient><linearGradient id="g-gold-r" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.34"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient><linearGradient id="g-sky" x1="0" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.26"/><stop offset="0.55" stop-color="var(--secondary)" stop-opacity="0.10"/><stop offset="1" stop-color="var(--secondary)" stop-opacity="0"/></linearGradient><linearGradient id="g-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--secondary)" stop-opacity="0.30"/><stop offset="1" stop-color="var(--secondary)" stop-opacity="0"/></linearGradient></defs><polygon points="0,0 150,0 84,86" fill="var(--secondary)" opacity="0.16"/><polygon points="150,0 285,0 205,70" fill="var(--primary)" opacity="0.12"/><polygon points="285,0 390,0 330,96" fill="var(--secondary)" opacity="0.18"/><polygon points="0,0 84,86 0,170" fill="var(--accent)" opacity="0.12"/><polygon points="390,0 390,180 330,96" fill="var(--accent)" opacity="0.11"/><polygon points="0,170 84,86 60,260" fill="var(--primary)" opacity="0.10"/><polygon points="390,180 330,96 322,268" fill="var(--primary)" opacity="0.11"/><polygon points="0,170 60,260 0,330" fill="var(--secondary)" opacity="0.08"/><polygon points="390,180 322,268 390,340" fill="var(--secondary)" opacity="0.09"/><polygon points="0,330 60,260 96,368" fill="var(--accent)" opacity="0.055"/><polygon points="390,340 322,268 300,380" fill="var(--accent)" opacity="0.05"/><polygon points="84,86 150,0 148,74" fill="var(--accent)" opacity="0.09"/><polygon points="148,74 150,0 205,70" fill="var(--secondary)" opacity="0.07"/><polygon points="84,86 148,74 132,128" fill="var(--primary)" opacity="0.08"/><polygon points="148,74 205,70 176,120" fill="var(--accent)" opacity="0.075"/><polygon points="132,128 148,74 176,120" fill="var(--secondary)" opacity="0.10"/><polygon points="205,70 262,110 176,120" fill="var(--primary)" opacity="0.065"/><polygon points="205,70 285,0 262,110" fill="var(--secondary)" opacity="0.085"/><polygon points="262,110 285,0 330,96" fill="var(--accent)" opacity="0.07"/><polygon points="262,110 330,96 296,158" fill="var(--secondary)" opacity="0.095"/><polygon points="176,120 262,110 224,164" fill="var(--accent)" opacity="0.06"/><polygon points="132,128 176,120 158,178" fill="var(--secondary)" opacity="0.055"/><polygon points="176,120 224,164 158,178" fill="var(--primary)" opacity="0.07"/><polygon points="224,164 262,110 296,158" fill="var(--primary)" opacity="0.055"/><polygon points="224,164 296,158 258,214" fill="var(--secondary)" opacity="0.065"/><polygon points="158,178 224,164 196,228" fill="var(--accent)" opacity="0.05"/><polygon points="84,86 132,128 108,190" fill="var(--secondary)" opacity="0.06"/><polygon points="108,190 132,128 158,178" fill="var(--accent)" opacity="0.045"/><polygon points="60,260 84,86 108,190" fill="var(--primary)" opacity="0.055"/><polygon points="108,190 158,178 140,248" fill="var(--primary)" opacity="0.045"/><polygon points="140,248 158,178 196,228" fill="var(--secondary)" opacity="0.05"/><polygon points="296,158 330,96 322,268" fill="var(--secondary)" opacity="0.06"/><polygon points="258,214 296,158 322,268" fill="var(--accent)" opacity="0.045"/><polygon points="196,228 224,164 258,214" fill="var(--secondary)" opacity="0.04"/><polygon points="60,260 108,190 140,248" fill="var(--accent)" opacity="0.04"/><polygon points="140,248 196,228 172,310" fill="var(--primary)" opacity="0.035"/><polygon points="196,228 258,214 232,296" fill="var(--secondary)" opacity="0.035"/><polygon points="258,214 322,268 288,330" fill="var(--primary)" opacity="0.03"/><polygon points="96,368 60,260 140,248" fill="var(--secondary)" opacity="0.03"/><polygon points="0,330 96,368 0,430" fill="var(--secondary)" opacity="0.06"/><polygon points="0,430 96,368 70,470" fill="var(--accent)" opacity="0.05"/><polygon points="96,368 120,352 150,400" fill="var(--primary)" opacity="0.05"/><polygon points="120,352 172,310 150,400" fill="var(--secondary)" opacity="0.055"/><polygon points="140,248 172,310 120,352" fill="var(--secondary)" opacity="0.025"/><polygon points="172,310 232,296 230,390" fill="var(--accent)" opacity="0.045"/><polygon points="150,400 172,310 230,390" fill="var(--secondary)" opacity="0.04"/><polygon points="150,400 230,390 180,470" fill="var(--primary)" opacity="0.04"/><polygon points="232,296 288,330 230,390" fill="var(--accent)" opacity="0.04"/><polygon points="230,390 288,330 310,420" fill="var(--secondary)" opacity="0.05"/><polygon points="288,330 300,380 310,420" fill="var(--primary)" opacity="0.045"/><polygon points="232,296 252,372 230,390" fill="var(--primary)" opacity="0.03"/><polygon points="390,340 310,420 390,450" fill="var(--secondary)" opacity="0.06"/><polygon points="310,420 390,450 330,500" fill="var(--accent)" opacity="0.045"/><polygon points="390,450 390,540 330,500" fill="var(--primary)" opacity="0.05"/><polygon points="300,380 390,340 310,420" fill="var(--accent)" opacity="0.035"/><polygon points="0,430 70,470 0,520" fill="var(--primary)" opacity="0.045"/><polygon points="70,470 150,400 100,500" fill="var(--secondary)" opacity="0.04"/><polygon points="100,500 150,400 180,470" fill="var(--accent)" opacity="0.035"/><polygon points="180,470 230,390 260,460" fill="var(--secondary)" opacity="0.04"/><polygon points="260,460 230,390 310,420" fill="var(--accent)" opacity="0.035"/><polygon points="260,460 310,420 330,500" fill="var(--secondary)" opacity="0.035"/><polygon points="70,470 100,500 60,540" fill="var(--secondary)" opacity="0.025"/><polygon points="100,500 180,470 140,545" fill="var(--primary)" opacity="0.025"/><polygon points="180,470 260,460 220,530" fill="var(--accent)" opacity="0.025"/><polygon points="260,460 330,500 285,555" fill="var(--secondary)" opacity="0.02"/><polygon points="330,500 390,540 340,555" fill="var(--primary)" opacity="0.02"/><polygon points="352,44 390,60 368,92" fill="var(--primary)" opacity="0.09"/><polygon points="14,196 52,186 30,238" fill="var(--accent)" opacity="0.07"/><polygon points="356,220 390,240 366,276" fill="var(--secondary)" opacity="0.08"/><polygon points="18,392 54,380 38,428" fill="var(--secondary)" opacity="0.06"/><polygon points="196,12 232,8 214,44" fill="var(--accent)" opacity="0.085"/><polygon points="366,132 390,120 382,168" fill="var(--accent)" opacity="0.07"/><polygon points="158,178 258,214 196,300" fill="var(--secondary)" opacity="0.085"/><g class="lightgroup"><polygon points="148,74 150,0 205,70" fill="var(--accent)" opacity="0.22"/><polygon points="176,120 224,164 158,178" fill="var(--accent)" opacity="0.20"/><polygon points="108,190 132,128 158,178" fill="var(--accent)" opacity="0.16"/><polygon points="196,12 232,8 214,44" fill="var(--accent)" opacity="0.24"/><polygon points="366,132 390,120 382,168" fill="var(--accent)" opacity="0.18"/><polygon points="120,352 172,310 150,400" fill="var(--accent)" opacity="0.12"/><polygon points="285,0 390,0 330,96" fill="url(#g-gold-d)"/><polygon points="0,0 84,86 0,170" fill="url(#g-gold-r)"/><polygon points="262,110 330,96 296,158" fill="url(#g-gold-d)"/><polygon points="158,178 258,214 196,300" fill="url(#g-sky)"/><polygon points="0,170 84,86 60,260" fill="url(#g-blue)"/><polygon points="230,390 288,330 310,420" fill="url(#g-sky)"/><polygon points="150,0 285,0 205,70" fill="url(#g-blue)"/></g></svg><svg class="range" viewBox="0 0 390 245" preserveAspectRatio="none" aria-hidden="true"><polygon class="rf" points="0,245 0,150 62,245"/><polygon class="rf" points="0,150 38,74 84,196"/><polygon class="rfs" points="38,74 84,196 52,170"/><polygon class="rf2" points="38,74 58,44 86,110"/><polygon class="rfs" points="58,44 86,110 96,150"/><polygon class="rf2" points="20,120 34,96 44,132"/><polygon class="rf" points="62,245 108,170 150,245"/><polygon class="rfs" points="108,170 150,245 108,245"/><polygon class="rf" points="118,245 168,88 238,245"/><polygon class="rfs" points="168,88 238,245 168,245"/><polygon class="rf2" points="148,140 196,46 232,160"/><polygon class="rfs" points="196,46 232,160 214,200"/><polygon class="rf" points="196,46 214,14 240,84"/><polygon class="rfs" points="214,14 240,84 252,120"/><polygon class="rf2" points="232,160 262,120 276,190"/><polygon class="rf" points="262,245 316,150 372,245"/><polygon class="rfs" points="316,150 372,245 316,245"/><polygon class="rf2" points="316,150 342,112 368,170"/><polygon class="rf" points="352,200 390,140 390,245"/><polygon class="rf2" points="290,190 304,168 316,200"/><polygon class="rf2" points="120,60 134,44 142,72"/><polygon class="rf2" points="300,90 312,74 320,100"/><polygon class="rn" points="0,245 0,192 54,148 112,245"/><polygon class="rns" points="54,148 112,245 54,245"/><polygon class="rn2" points="84,245 128,178 170,245"/><polygon class="rn" points="150,245 216,128 292,245"/><polygon class="rns" points="216,128 292,245 216,245"/><polygon class="rn2" points="196,180 216,128 244,196"/><polygon class="rn" points="266,245 322,186 390,214 390,245"/><polygon class="rt" points="20,234 30,210 40,234"/><polygon class="rtb" points="45,228 52,213 59,228"/><polygon class="rtb" points="67,241 72,229 77,241"/><polygon class="rtb" points="82,214 88,201 94,214"/><polygon class="rt" points="109,236 118,216 127,236"/><polygon class="rt" points="128,230 134,217 140,230"/><polygon class="rtb" points="155,200 160,190 165,200"/><polygon class="rtb" points="173,212 178,201 183,212"/><polygon class="rt" points="181,228 190,206 199,228"/><polygon class="rt" points="238,238 246,220 254,238"/><polygon class="rtb" points="266,206 270,197 274,206"/><polygon class="rt" points="287,232 296,211 305,232"/><polygon class="rt" points="312,226 318,212 324,226"/><polygon class="rtb" points="337,204 342,194 347,204"/><polygon class="rt" points="359,236 366,220 373,236"/><polygon class="rtb" points="217,216 222,204 227,216"/><g class="lightgroup"><polygon points="148,140 196,46 232,160" fill="url(#g-gold-d)" opacity="0.5"/><polygon points="0,150 38,74 84,196" fill="url(#g-gold-r)" opacity="0.4"/></g></svg>`;
+  for (const [id, f] of Object.entries(frames)) {
+    document.getElementById(id).innerHTML = `<div class="runner scene-basics ${f.cls}"><div class="facet-bg" aria-hidden="true">${field}</div>${chrome}<div id="qbody">${f.body}</div>${f.footer || ""}</div>${(f.guides || []).map(g => guide(g[0], g[1])).join("")}`;
+  }
+  // center each answers box on its line by measurement (the app's stylesheet animates transforms on the body's children)
+  document.querySelectorAll('.answers').forEach(a => { a.style.top = a.dataset.center + '%'; a.style.marginTop = (-a.offsetHeight / 2) + 'px'; });
+}
+</script>
+</body>
+</html>
