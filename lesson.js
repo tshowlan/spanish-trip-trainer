@@ -234,8 +234,8 @@ function kitRungFor(lesson, item, pool, k) {
     const others = (pool || []).filter(x => x !== item).flatMap(x => (x.contextEs || x.es).split(/\s+/)).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(w => w && !tiles.includes(w));
     const forms = [
       () => ({ type: "context_choice", item, pool, arc: true }),
-      () => ({ type: "weld", item, target: item.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: item.contextEn, cueRole: "Listen and build the sentence", cueMeaning: "", heard: item.contextEs, heardHint: "Tap to hear it again", listenBuild: true, arc: true, inputForm: "tiles", contextBuild: true }),
-      () => ({ type: "context_choice", item, pool, arc: true, heard: item.contextEs }),   // listen and fill
+      () => ({ type: "weld", item, target: item.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: item.contextEn, cueRole: "Listen and build the sentence", cueMeaning: "", heard: item.contextEs, heardHint: "Tap to hear it again", listenBuild: true, arc: true, inputForm: "tiles", contextBuild: true, noAudioRow: true }),   // the main play button is the replay (Tom 9/13)
+      () => ({ type: "context_choice", item, pool, arc: true, heard: item.contextEs, noAudioRow: true }),   // listen and fill; the main play button is the replay (Tom 9/13)
       () => ({ type: "weld", item, target: item.contextEs, tiles, targetEn: item.contextEn, cueRole: "Build the sentence", cueMeaning: item.contextEn, arc: true, inputForm: "tiles", contextBuild: true, noEn: true })   // the English is already the cue: no repeat in the reveal
     ];
     const offset = /-2$/.test(lesson.id) ? 3 : 0;
@@ -2529,7 +2529,7 @@ function renderContextChoice(q) {
   _anchor(body);
   const top = el(`<div class="top"></div>`);
   if (q.heard && !soundOff) {                                              // listen and fill: the ear is the context (Tom 9/12)
-    top.appendChild(el(`<div class="direction">Listen and fill the blank</div>`));
+    top.appendChild(el(`<div class="direction">Listen and fill in the blank</div>`));
     const play = audioControl(slow => { slow ? speak(item.contextEs, 0.55) : speak(item.contextEs); }, { speed: true });
     const row = el(`<div class="listen-stage inv-ask"></div>`); row.appendChild(play);
     row.appendChild(el(`<div class="hint">Tap to hear it again</div>`));

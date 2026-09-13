@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v277 (2026-09-13) — journey-1 staged: listening rungs drop the reveal's small play row; "Listen and fill in the blank"
+- The listen-and-fill and listen-and-build rungs set `noAudioRow`: the reveal no longer adds the small speaker + "Tap to hear it again" (it clipped into the lines/choices under the anchored layout); the main play button above is the replay. The phrase still speaks on resolve.
+- Direction fixed: "Listen and fill in the blank".
+
 ## v276 (2026-09-13) — journey-1 staged: the anchored layout (Duolingo-measured spacing), plain directions, Continue at the bottom
 - Tom's ruling from play (9/13), built from a mock he confirmed (dev/mock-bottom-third.html; measurements off two Duolingo screens): on the chapter-one kit rungs the exercise portion starts 16% down the screen; fill-in-the-blank centers its middle choice at 63%; build assembles on two faint baselines at 47%/53% (row one rests on line one, a long sentence continues on line two) with the tile bank centered at 73%.
 - Mechanism: `_anchor(body)` stamps `#qbody.anchored` with `--qtop` (the body's own offset); styles.css positions `.top`, `.answers.at63/.at73`, `.lines`, `.build-answer` as viewport percentages minus that offset. Fused words keep the 38px row so the sentence stays on its line.
