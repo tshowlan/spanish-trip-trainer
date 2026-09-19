@@ -1,4 +1,4 @@
-# THE APP TODAY (living page, maintained per ship · v278 · 2026-09-13)
+# THE APP TODAY (living page, maintained per ship · v279 · 2026-09-19)
 
 *One line per surface, current state, plain English. This is what Tom reads instead of holding the app in his head. Updated with every ship; the friction map was a snapshot of it. STAGED = built and deployed behind the Staging switch (Profile → Test Lab), not yet shipped; ships on Tom's word.*
 
@@ -33,7 +33,7 @@
 - **Progress tab:** trend charts, coverage by topic. Untouched since July.
 
 ## Staged, awaiting Tom's play
-- (journey-1 shipped v278; nothing else new is staged beyond gloss-tap and the review door.)
+- THE CHAPTER FLOW (chapter-flow, v279): chapter 1 = The words (eleven word sessions, 14-15 with halves: First words, Words you'll hear, Numbers, Paying, Counter, Table, Street, Signs, Help), chapter 2 = Your first sentences (the four rooms), chapter 3 = Sentences by place, chapter 4 = Conversations. Every word plays in the shipped kit shape with chat's contexts. Test Lab → Staging on → Start over as a fresh learner. Still to come, one at a time: The asks, the hear and read emphases, primers.
 
 ## Rulings on hold (Tom reading)
 - The ask grammar (one shape for every exercise: context → ask with four role labels → stage).

@@ -203,7 +203,10 @@ function chapterOf(lesson) {
   return 2;                                                        // reviews, scenes, circuits: the full ladder
 }
 function chapterFloor(lesson) {
-  const ch = chapterOf(lesson);
+  let ch = chapterOf(lesson);
+  // chapter flow (chat's ruling 9/17): the first sentences stay on tiles, lap included; cold enters with sentences by place, lap first
+  const inDeck = !!(DECK && DECK.stages.some(st => st.lessons.some(x => x.id === lesson.id)));   // reviews, scenes, circuits keep the full ladder
+  if (inDeck && DECK.stages[1] && DECK.stages[1].id === "sp-first-sentences") ch = Math.max(0, ch - 1);
   if (ch === 0) return { lesson: "scaffolded", lap: "scaffolded" };
   if (ch === 1) return { lesson: "scaffolded", lap: "cold" };
   return { lesson: "ladder", lap: "cold" };

@@ -40,7 +40,7 @@ function _lessonRow(l, isNext) {
   const fading = lessonDone(l.id) ? lessonFadingCount(l) : 0;
   const beat = _lessonBeat(l);
   const meta = _isMachine(l) ? `Pattern · ${(l.items || []).length} fillers`
-    : l.chain ? "Conversation" : `${(l.items || []).length} phrases`;
+    : l.chain ? "Conversation" : `${(l.items || []).length} ${l.wordsSession ? "words" : "phrases"}`;
   const row = el(`<div class="lesson${isNext ? " next" : ""}">
     ${str != null ? strengthRing(str) : `<span class="caret-new">${icon("caret-right", 13)}</span>`}
     <div class="lmain">
@@ -70,7 +70,7 @@ function _journeyView(scroll) {
     const locked = i > cur && !started;
     const chap = el(`<div class="chapter${locked ? " locked" : ""}"></div>`);
     chap.appendChild(el(`<div class="chap-head">
-      <div class="chap-kicker">CHAPTER ${st.pass != null ? st.pass : i}</div>
+      <div class="chap-kicker">CHAPTER ${(stages[1] && stages[1].id === "sp-first-sentences") ? i + 1 : (st.pass != null ? st.pass : i)}</div>
       <div class="chap-row"><span class="chap-title">${st.title}</span><span class="chap-whisper">${done} of ${visible.length}</span></div>
       ${st.blurb ? `<div class="chap-blurb">${st.blurb}</div>` : ""}
     </div>`));

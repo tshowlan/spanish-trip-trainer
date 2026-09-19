@@ -2,7 +2,7 @@
    Register a new destination = add a content_<cc>.js pack + an entry here +
    a DESTINATIONS entry. Each pack owns its scenarios, vocab, and TTS accent. */
 const CONTENT = {
-  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages, scenes: CURRICULUM.scenes || [], glueGloss: CURRICULUM.glueGloss || {} },
+  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages, scenes: CURRICULUM.scenes || [], glueGloss: CURRICULUM.glueGloss || {}, flow: CURRICULUM.flow || null },
   mexico: { key: "mexico", dialect: "Mexican Spanish",   tts: "es-MX", stages: (typeof MEXICO_PACK !== "undefined" ? MEXICO_PACK.stages : CURRICULUM.stages), scenes: (typeof MEXICO_PACK !== "undefined" && MEXICO_PACK.scenes) || [] }
 };
 function activePack() { return CONTENT[state.active] || CONTENT.spain; }
@@ -116,14 +116,10 @@ function _journeyOneDeck(deck) {
   if (find && there) rooms.push(room("room-finding-1", "Finding out \u00b7 1", "Finding out", "MACHINES: FIND \u00b7 THERE", [find, there]));
   if (need) rooms.push(Object.assign({}, need, { id: "room-asking-2", title: "Asking for things \u00b7 2", room: "Asking for things", label: "MACHINES: NEED" }));
   if (price && when) rooms.push(room("room-finding-2", "Finding out \u00b7 2", "Finding out", "MACHINES: PRICE \u00b7 WHEN", [price, when]));
+  // THE CHAPTER FLOW (STAGED "chapter-flow"): the words become chapter one, the rooms chapter two
+  if (typeof isStaged === "function" && isStaged("chapter-flow") && activePack().flow && "chapter-flow" in STAGED) { _chapterFlowDeck(deck, rooms); deck.stages.forEach(st => { st.lessons = st.lessons.flatMap(_splitKit); }); return; }
   // kit halves, every stage
-  const split = l => {
-    if (l.chain || l.machine || !(l.items || []).length || l.items.length <= 8) return [l];
-    const h = Math.ceil(l.items.length / 2);
-    return [Object.assign({}, l, { id: l.id + "-1", title: l.title + " \u00b7 1", items: l.items.slice(0, h) }),
-            Object.assign({}, l, { id: l.id + "-2", title: l.title + " \u00b7 2", items: l.items.slice(h), primer: null })];
-  };
-  deck.stages.forEach(st => { st.lessons = st.lessons.flatMap(split); });
+  deck.stages.forEach(st => { st.lessons = st.lessons.flatMap(_splitKit); });
   // stage 0: interleave kit halves with rooms
   const kits = s0.lessons.filter(l => !l.machine);
   const out = []; let ri = 0;
@@ -131,20 +127,65 @@ function _journeyOneDeck(deck) {
   while (ri < rooms.length) out.push(rooms[ri++]);
   s0.lessons = out;
 }
+function _splitKit(l) {                                  // ruling 4: kits over 8 phrases run as halves
+  if (l.chain || l.machine || l.machines || !(l.items || []).length || l.items.length <= 8) return [l];
+  const h = Math.ceil(l.items.length / 2);
+  return [Object.assign({}, l, { id: l.id + "-1", title: l.title + " \u00b7 1", items: l.items.slice(0, h) }),
+          Object.assign({}, l, { id: l.id + "-2", title: l.title + " \u00b7 2", items: l.items.slice(h), primer: null })];
+}
+/* THE CHAPTER FLOW (Tom 2026-09-16/17, chat's pass 9/17; STAGED "chapter-flow"). Arranges the pack's `flow`
+   data: stage 0 = THE WORDS (the pack's word sessions; a word that already lives in the pack REUSES that
+   item, so notes, variants and SRS history carry); stage 1 = YOUR FIRST SENTENCES (the four rooms);
+   stage 2 = SENTENCES BY PLACE (today's chapters 1 and 2, in order; phrases the old kit held that are not
+   words are re-homed there, none is lost); stage 3 = CONVERSATIONS. The engine arranges; the pack holds
+   every word (content/engine separation). */
+function _chapterFlowDeck(deck, rooms) {
+  const flow = activePack().flow, p = state.profile || {};
+  const bySlug = new Map();
+  activePack().stages.forEach(st => st.lessons.forEach(l => (l.items || []).forEach(it => { const k = slug(it.es); if (!bySlug.has(k)) bySlug.set(k, it); })));
+  const made = new Map();
+  const mk = d => {
+    const k = slug(d.es); if (made.has(k)) return made.get(k);
+    const it = Object.assign({ tier: 1 }, bySlug.get(k) || {}, d); made.set(k, it); return it;
+  };
+  const fits = d => !d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : (p.needs || []).includes(d.profile.needs));
+  const words = flow.words.map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, items: w.items.filter(fits).map(mk) }));
+  const old = deck.stages;
+  // no phrase is lost: what the old kit held that is not a word re-homes into a later lesson
+  (old[0] ? old[0].lessons : []).filter(l => !l.machine).forEach(l => {
+    const later = old.slice(1).flatMap(st => st.lessons);
+    (l.items || []).filter(it => !made.has(slug(it.es))).forEach(o => {
+      const target = later.find(x => x.id === ((flow.rehomeItems || {})[o.es] || (flow.rehome || {})[l.id]));
+      if (target && !(target.items || []).some(t => slug(t.es) === slug(o.es))) target.items = (target.items || []).concat([o]);
+    });
+  });
+  // a word met in chapter one IS the same item when a later lesson carries it (one identity, one history)
+  old.slice(1).forEach(st => st.lessons.forEach(l => { l.items = (l.items || []).map(it => made.get(slug(it.es)) || it); }));
+  const order = flow.rooms || [];
+  const roomList = rooms.slice().sort((a, b) => (order.indexOf(a.id) + 1 || 99) - (order.indexOf(b.id) + 1 || 99));
+  const t = flow.chapters || [];
+  deck.stages = [
+    Object.assign({}, old[0], { pass: 0, title: t[0] || "The words", blurb: "", lessons: words }),
+    { id: "sp-first-sentences", pass: 1, title: t[1] || "Your first sentences", blurb: "", lessons: roomList },
+    Object.assign({}, old[1] || {}, { pass: 2, title: t[2] || "Sentences by place", blurb: "", lessons: (old[1] ? old[1].lessons : []).concat(old[2] ? old[2].lessons : []) }),
+  ].concat(old.slice(3).map((st, i) => Object.assign({}, st, { pass: 3 + i, title: i === 0 ? (t[3] || st.title) : st.title })));
+}
 function rebuildDeck() {
   const p = state.profile;
   DECK = { stages: [] };
   activePack().stages.forEach(st => {
-    DECK.stages.push(Object.assign({}, st, { lessons: st.lessons.filter(l => meetsReq(l, p)) }));
+    DECK.stages.push(Object.assign({}, st, { lessons: st.lessons.filter(l => meetsReq(l, p)).map(l => Object.assign({}, l)) }));
   });
   if (typeof isStaged === "function" && isStaged("journey-1")) _journeyOneDeck(DECK);   // STAGED: rooms + kit halves
   if (p && p.allergies && p.allergies.length && DECK.stages[0]) {
-    const s0 = DECK.stages[0];                 // inject the personalized allergy lesson early
-    s0.lessons.splice(Math.min(1, s0.lessons.length), 0, buildAllergyLesson(p.allergies));
+    const flowOn = DECK.stages[1] && DECK.stages[1].id === "sp-first-sentences";   // chapter flow: the safety lesson follows the rooms until The asks carries its frame
+    const s0 = flowOn ? DECK.stages[1] : DECK.stages[0];                 // inject the personalized allergy lesson early
+    s0.lessons.splice(flowOn ? s0.lessons.length : Math.min(1, s0.lessons.length), 0, buildAllergyLesson(p.allergies));
   }
   if (p && p.needs && (p.needs.includes("vegetarian") || p.needs.includes("gluten_free")) && DECK.stages[0]) {
     const dl = buildDietaryLesson(p.needs);    // veg / gluten-free safety lesson, right after allergies
-    if (dl) DECK.stages[0].lessons.splice(Math.min(2, DECK.stages[0].lessons.length), 0, dl);
+    const flowOn2 = DECK.stages[1] && DECK.stages[1].id === "sp-first-sentences";
+    if (dl) { const tgt = flowOn2 ? DECK.stages[1] : DECK.stages[0]; tgt.lessons.splice(flowOn2 ? tgt.lessons.length : Math.min(2, tgt.lessons.length), 0, dl); }
   }
   LESSON_ORDER = []; ALL_ITEMS = []; ITEM_INDEX = {};
   const packKey = activePack().key;
@@ -160,8 +201,8 @@ function rebuildDeck() {
         while (ITEM_INDEX[id] && ITEM_INDEX[id] !== it) { id = `${base}-${n++}`; console.warn("Tripfluent: duplicate item id", base); }
         it.id = id;
       }
+      if (ITEM_INDEX[it.id] !== it) ALL_ITEMS.push(it);               // one item may sit in two lessons (chapter flow): counted once
       ITEM_INDEX[it.id] = it;
-      ALL_ITEMS.push(it);
     });
   }));
 }

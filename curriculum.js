@@ -712,6 +712,129 @@ const CURRICULUM = {
   /* GLUE GLOSS (function-word ruling 2026-09-08: name once, let it work). One-line job
      descriptions for the words no lesson teaches; surfaced on demand by the tap-gloss (ships
      with the ask-grammar ruling). CODE DRAFTS - chat voice-passes before they render. */
+  /* ===== THE CHAPTER FLOW (Tom's rulings 2026-09-16/17 + chat's pass 2026-09-17; STAGED "chapter-flow") =====
+     Chapter 1 (engine stage 0) is THE WORDS: a word or two you say, hear, or read and get by with, each met
+     inside ONE two-to-four-word context built from this session's cards plus prior sessions; only the target
+     word is under test; glue (o, un/una, item articles, de) rides by tap, never an item. An entry whose `es`
+     matches an existing pack phrase REUSES that item (its notes, variants, SRS history) with the context
+     below; `hear` / `read` mark the emphasis a session's inside will get later; `profile` keys a word to the
+     learner's intake. Pure data: the deck builder arranges it. */
+  flow: {
+    chapters: ["The words", "Your first sentences", "Sentences by place", "Conversations"],
+    rooms: ["room-asking-1", "room-finding-1", "room-finding-2", "room-asking-2"],
+    rehome: { "sp0-first-words": "s1-rescue", "sp0-numbers": "sp-cash", "sp0-wrong": "sp-help" },
+    rehomeItems: { "Pase, pase": "s4-hear", "\u00bfEst\u00e1 todo bien?": "s4-hear" },
+    words: [
+      { id: "sp0-first-words-1", topic: "Core basics", title: "First words · 1", items: [
+        { es: "Hola", en: "Hello", tags: ["greetings"], contextEs: "Hola, buenos días.", contextEn: "Hi, good morning." },
+        { es: "Buenos días", en: "Good morning", tags: ["greetings"], contextEs: "Buenos días, por favor.", contextEn: "Good morning, please." },
+        { es: "Buenas tardes", en: "Good afternoon", tags: ["greetings"], contextEs: "Hola, buenas tardes.", contextEn: "Hi, good afternoon." },
+        { es: "Buenas noches", en: "Good evening / night", tags: ["greetings"], contextEs: "Hola, buenas noches.", contextEn: "Hi, good evening." },
+        { es: "Por favor", en: "Please", tags: ["politeness"], contextEs: "Por favor.", contextEn: "Please." },
+        { es: "Gracias", en: "Thank you", tags: ["politeness"], contextEs: "Por favor. Gracias.", contextEn: "Please. Thanks." },
+        { es: "De nada", en: "You're welcome", tags: ["politeness"], contextEs: "Gracias. De nada.", contextEn: "Thanks. You're welcome." } ] },
+      { id: "sp0-first-words-2", topic: "Core basics", title: "First words · 2", items: [
+        { es: "Perdón", en: "Excuse me / Sorry", tags: ["politeness"], contextEs: "Perdón, por favor.", contextEn: "Excuse me, please." },
+        { es: "Sí", en: "Yes", tags: ["basics"], contextEs: "Sí, por favor.", contextEn: "Yes, please." },
+        { es: "No", en: "No", tags: ["basics"], contextEs: "No, gracias.", contextEn: "No, thanks." },
+        { es: "Vale", en: "Okay", tags: ["basics"], contextEs: "Vale, gracias.", contextEn: "Okay, thanks." },
+        { es: "Adiós", en: "Goodbye", tags: ["greetings"], contextEs: "Adiós, buenas noches.", contextEn: "Bye, good night." },
+        { es: "Hasta luego", en: "See you later", tags: ["greetings"], contextEs: "Vale, hasta luego.", contextEn: "Okay, see you later." },
+        { es: "¿Inglés?", en: "English?", tags: ["communication"], contextEs: "Perdón, ¿inglés?", contextEn: "Excuse me, English?" } ] },
+      { id: "w-hear", topic: "Core phrases", title: "Words you'll hear", emphasis: "hear", items: [
+        { es: "Dígame", en: "Go ahead / Tell me", hear: true, tags: ["service"], contextEs: "¿Sí? Dígame.", contextEn: "Yes? Go ahead." },
+        { es: "Aquí tiene", en: "Here you go", hear: true, tags: ["service"], contextEs: "Aquí tiene. Gracias.", contextEn: "Here you go. Thanks." },
+        { es: "Un momento", en: "One moment", hear: true, tags: ["service"], contextEs: "Un momento, por favor.", contextEn: "One moment, please." },
+        { es: "¿Algo más?", en: "Anything else?", hear: true, tags: ["service"], contextEs: "¿Algo más? No, gracias.", contextEn: "Anything else? No, thanks." },
+        { es: "¿Todo bien?", en: "Everything okay?", hear: true, tags: ["service"], contextEs: "¿Todo bien? Sí, gracias.", contextEn: "All good? Yes, thanks." },
+        { es: "Ahora mismo", en: "Right away", hear: true, tags: ["service"], contextEs: "Sí, ahora mismo.", contextEn: "Yes, right away." },
+        { es: "Pase", en: "Come in", hear: true, tags: ["service"], contextEs: "Pase, por favor.", contextEn: "Come in, please." } ] },
+      { id: "sp0-numbers-1", topic: "Core numbers", title: "Numbers · 1", items: [
+        { es: "uno", en: "one", tags: ["numbers"], contextEs: "Uno, por favor.", contextEn: "One, please." },
+        { es: "dos", en: "two", tags: ["numbers"], contextEs: "Dos, gracias.", contextEn: "Two, thanks." },
+        { es: "tres", en: "three", tags: ["numbers"], contextEs: "¿Dos? No, tres.", contextEn: "Two? No, three." },
+        { es: "cuatro", en: "four", tags: ["numbers"], contextEs: "Cuatro, por favor.", contextEn: "Four, please." },
+        { es: "cinco", en: "five", tags: ["numbers"], contextEs: "¿Cuatro? No, cinco.", contextEn: "Four? No, five." },
+        { es: "seis", en: "six", tags: ["numbers"], contextEs: "Sí, seis.", contextEn: "Yes, six." } ] },
+      { id: "sp0-numbers-2", topic: "Core numbers", title: "Numbers · 2", items: [
+        { es: "siete", en: "seven", tags: ["numbers"], contextEs: "Siete, por favor.", contextEn: "Seven, please." },
+        { es: "ocho", en: "eight", tags: ["numbers"], contextEs: "¿Siete? No, ocho.", contextEn: "Seven? No, eight." },
+        { es: "nueve", en: "nine", tags: ["numbers"], contextEs: "Nueve, gracias.", contextEn: "Nine, thanks." },
+        { es: "diez", en: "ten", tags: ["numbers"], contextEs: "¿Diez? Vale.", contextEn: "Ten? Okay." },
+        { es: "veinte", en: "twenty", tags: ["numbers"], contextEs: "¿Veinte? No, diez.", contextEn: "Twenty? No, ten." },
+        { es: "cincuenta", en: "fifty", tags: ["numbers"], contextEs: "¿Cincuenta? No, veinte.", contextEn: "Fifty? No, twenty." },
+        { es: "cien", en: "one hundred", tags: ["numbers"], contextEs: "¿Cien? No, cincuenta.", contextEn: "A hundred? No, fifty." } ] },
+      { id: "w-paying", topic: "Core paying", title: "Paying words", items: [
+        { es: "la cuenta", en: "the check", tags: ["money", "restaurant"], contextEs: "La cuenta, por favor.", contextEn: "The check, please." },
+        { es: "tarjeta", en: "card", tags: ["money"], contextEs: "¿Tarjeta? Sí.", contextEn: "Card? Yes." },
+        { es: "efectivo", en: "cash", tags: ["money"], contextEs: "¿Tarjeta o efectivo?", contextEn: "Card or cash?" },
+        { es: "el cambio", en: "the change", tags: ["money"], contextEs: "El cambio, gracias.", contextEn: "The change, thanks." },
+        { es: "la propina", en: "the tip", tags: ["money"], contextEs: "Sí, la propina.", contextEn: "Yes, the tip." },
+        { es: "¿Cuánto?", en: "How much?", tags: ["money"], contextEs: "¿Cuánto? Diez.", contextEn: "How much? Ten." } ] },
+      { id: "w-counter", topic: "Core counter", title: "Counter words", items: [
+        { es: "café", en: "coffee", tags: ["drink", "coffee"], contextEs: "Un café, por favor.", contextEn: "A coffee, please." },
+        { es: "cortado", en: "cortado (espresso with a little milk)", tags: ["drink", "coffee"], contextEs: "Un cortado, gracias.", contextEn: "A cortado, thanks." },
+        { es: "con leche", en: "with milk", tags: ["drink", "coffee"], contextEs: "Café con leche.", contextEn: "Coffee with milk." },
+        { es: "caña", en: "small draft beer", tags: ["drink"], contextEs: "Una caña, por favor.", contextEn: "A caña, please." },
+        { es: "copa", en: "glass (of wine)", tags: ["drink"], contextEs: "Una copa, por favor.", contextEn: "A glass, please." },
+        { es: "vino", en: "wine", tags: ["drink"], contextEs: "Una copa de vino.", contextEn: "A glass of wine." },
+        { es: "agua", en: "water", tags: ["drink"], contextEs: "Agua, por favor.", contextEn: "Water, please." },
+        { es: "tapa", en: "tapa (small plate)", tags: ["food"], contextEs: "Una tapa, gracias.", contextEn: "A tapa, thanks." },
+        { es: "Para llevar", en: "To go / takeaway", tags: ["food"], contextEs: "Para llevar, gracias.", contextEn: "To go, thanks." },
+        { es: "¿Qué le pongo?", en: "What'll it be?", hear: true, tags: ["service"], contextEs: "¿Qué le pongo? Un café.", contextEn: "What'll it be? A coffee." },
+        { es: "Que aproveche", en: "Enjoy your meal", hear: true, tags: ["service"], contextEs: "Que aproveche. Gracias.", contextEn: "Enjoy. Thanks." } ] },
+      { id: "w-table", topic: "Core table", title: "Table words", items: [
+        { es: "mesa", en: "table", tags: ["restaurant"], contextEs: "Una mesa para dos.", contextEn: "A table for two." },
+        { es: "la carta", en: "the menu", tags: ["restaurant"], contextEs: "La carta, por favor.", contextEn: "The menu, please." },
+        { es: "pan", en: "bread", tags: ["food"], contextEs: "Pan, gracias.", contextEn: "Bread, thanks." },
+        { es: "plato", en: "plate / dish", tags: ["food"], contextEs: "Un plato, por favor.", contextEn: "A plate, please." },
+        { es: "sin gas", en: "still (no bubbles)", tags: ["drink"], contextEs: "Agua sin gas.", contextEn: "Still water." },
+        { es: "Sin gluten", en: "Gluten-free", tags: ["dietary"], contextEs: "Sin gluten, por favor.", contextEn: "Gluten-free, please." },
+        /* chat wrote "dentro / fuera" as one row ("¿Dentro o fuera? Fuera."); split by Code so each word can be the one under
+           test without the answer sitting in the sentence (flagged to chat) */
+        { es: "dentro", en: "inside", tags: ["restaurant"], contextEs: "¿Dentro o fuera?", contextEn: "Inside or outside?" },
+        { es: "fuera", en: "outside", tags: ["restaurant"], contextEs: "Fuera, por favor.", contextEn: "Outside, please." },
+        { es: "marisco", en: "shellfish", profile: { allergies: "shellfish" }, tags: ["dietary"], contextEs: "Sin marisco, por favor.", contextEn: "No shellfish, please." },
+        { es: "frutos secos", en: "nuts", profile: { allergies: "nuts" }, tags: ["dietary"], contextEs: "Sin frutos secos, por favor.", contextEn: "No nuts, please." },
+        { es: "lactosa", en: "lactose / dairy", profile: { allergies: "dairy" }, tags: ["dietary"], contextEs: "Sin lactosa, por favor.", contextEn: "No dairy, please." },
+        /* the four allergens chat's table did not list, written to chat's exact pattern (flagged to chat) */
+        { es: "cacahuetes", en: "peanuts", profile: { allergies: "peanuts" }, tags: ["dietary"], contextEs: "Sin cacahuetes, por favor.", contextEn: "No peanuts, please." },
+        { es: "huevo", en: "egg", profile: { allergies: "eggs" }, tags: ["dietary"], contextEs: "Sin huevo, por favor.", contextEn: "No egg, please." },
+        { es: "pescado", en: "fish", profile: { allergies: "fish" }, tags: ["dietary"], contextEs: "Sin pescado, por favor.", contextEn: "No fish, please." },
+        { es: "soja", en: "soy", profile: { allergies: "soy" }, tags: ["dietary"], contextEs: "Sin soja, por favor.", contextEn: "No soy, please." },
+        { es: "carne", en: "meat", profile: { needs: "vegetarian" }, tags: ["dietary"], contextEs: "Sin carne, por favor.", contextEn: "No meat, please." },
+        { es: "vegetariano", en: "vegetarian", profile: { needs: "vegetarian" }, tags: ["dietary"], contextEs: "Vegetariano, por favor.", contextEn: "Vegetarian, please." } ] },
+      { id: "w-street", topic: "Core street", title: "Street words", items: [
+        { es: "a la derecha", en: "to the right", tags: ["directions"], contextEs: "A la derecha, gracias.", contextEn: "To the right, thanks." },
+        { es: "a la izquierda", en: "to the left", tags: ["directions"], contextEs: "A la izquierda, gracias.", contextEn: "To the left, thanks." },
+        { es: "todo recto", en: "straight ahead", tags: ["directions"], contextEs: "Todo recto, gracias.", contextEn: "Straight ahead, thanks." },
+        { es: "cerca", en: "near / close", tags: ["directions"], contextEs: "Sí, cerca.", contextEn: "Yes, close." },
+        { es: "los aseos", en: "the restrooms", tags: ["bathroom"], contextEs: "¿Los aseos? A la derecha.", contextEn: "The toilets? To the right." },
+        { es: "la farmacia", en: "the pharmacy", tags: ["place", "health"], contextEs: "¿La farmacia? Cerca.", contextEn: "The pharmacy? Close." },
+        { es: "la estación", en: "the station", tags: ["place", "transport"], contextEs: "¿La estación? Todo recto.", contextEn: "The station? Straight ahead." },
+        { es: "el metro", en: "the metro", tags: ["place", "transport"], contextEs: "El metro, a la izquierda.", contextEn: "The metro, to the left." },
+        { es: "taxi", en: "taxi", tags: ["transport"], contextEs: "Un taxi, por favor.", contextEn: "A taxi, please." },
+        { es: "el hotel", en: "the hotel", tags: ["place", "lodging"], contextEs: "El hotel, cerca.", contextEn: "The hotel, close." } ] },
+      { id: "w-signs", topic: "Core signs", title: "Signs you'll read", emphasis: "read", items: [
+        { es: "Salida", en: "Exit", read: true, tags: ["signs"], contextEs: "¿La salida? A la derecha.", contextEn: "The exit? To the right." },
+        { es: "Entrada", en: "Entrance", read: true, tags: ["signs"], contextEs: "¿La entrada? Todo recto.", contextEn: "The entrance? Straight ahead." },
+        { es: "Empujar", en: "Push (sign)", read: true, tags: ["signs"], contextEs: "Empujar. Vale.", contextEn: "Push. Okay." },
+        { es: "Tirar", en: "Pull (sign)", read: true, tags: ["signs"], contextEs: "Tirar, no empujar.", contextEn: "Pull, not push." },
+        { es: "Caballeros", en: "Men (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Caballeros, a la derecha.", contextEn: "Men, to the right." },
+        { es: "Señoras", en: "Women (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Señoras, a la izquierda.", contextEn: "Women, to the left." },
+        { es: "Abierto", en: "Open (sign)", read: true, tags: ["signs"], contextEs: "Abierto. Vale.", contextEn: "Open. Okay." },
+        { es: "Cerrado", en: "Closed (sign)", read: true, tags: ["signs"], contextEs: "Cerrado. Vale.", contextEn: "Closed. Okay." },
+        { es: "Salidas", en: "Departures", read: true, tags: ["signs", "airport"], contextEs: "Salidas, todo recto.", contextEn: "Departures, straight ahead." },
+        { es: "Llegadas", en: "Arrivals", read: true, tags: ["signs", "airport"], contextEs: "Llegadas, a la izquierda.", contextEn: "Arrivals, to the left." } ] },
+      { id: "w-help", topic: "Core help", title: "Help words", items: [
+        { es: "Ayuda", en: "Help", tags: ["emergency"], contextEs: "Ayuda, por favor.", contextEn: "Help, please." },
+        { es: "médico", en: "doctor", tags: ["emergency", "health"], contextEs: "Un médico, por favor.", contextEn: "A doctor, please." },
+        { es: "hospital", en: "hospital", tags: ["emergency", "health"], contextEs: "¿El hospital? Cerca.", contextEn: "The hospital? Close." },
+        { es: "policía", en: "police", tags: ["emergency"], contextEs: "La policía, por favor.", contextEn: "The police, please." },
+        { es: "emergencia", en: "emergency", tags: ["emergency"], contextEs: "Emergencia. Ayuda.", contextEn: "Emergency. Help." },
+        { es: "urgente", en: "urgent", tags: ["emergency"], contextEs: "Urgente, por favor.", contextEn: "Urgent, please." } ] }
+    ]
+  },
   glueGloss: {
     "en":   "en means in or on. En la mesa: on the table.",
     "a":    "a means to. It points at where you are going or who gets it.",
