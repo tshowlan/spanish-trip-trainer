@@ -2595,8 +2595,18 @@ function renderPairs(q) {
   // the first sound tile auto-plays on entry (Tom's ruling 2026-07-24): the board opens
   // with a voice, not silence — the learner hears tile 1 and starts hunting its meaning
   const firstAudio = text ? null : grid.querySelector('.pcard.audio');
-  if (firstAudio) setTimeout(() => { if (!run.answered) _cardPlay(firstAudio, items[+firstAudio.dataset.idx].es); }, 350);   /* [tune] */
   let sel = null, matched = 0;
+  /* THE CHAIN (Tom 9/19, STAGED "pairs-chain"): the board hands you the sound. The tile that plays is already
+     SELECTED, so the next tap is the meaning; after a match the next unmatched sound plays and selects itself;
+     after a miss the same sound stays selected. The learner can still tap any other sound to take it instead. */
+  const chain = !text && isStaged("pairs-chain");
+  const cue = (card, silent) => {
+    if (!card || run.answered || card.classList.contains("matched")) return;
+    if (sel && sel !== card) { if (sel.dataset.side === "en") return; sel.classList.remove("sel"); }   // a meaning already in hand: leave the learner's choice alone
+    sel = card; card.classList.add("sel");
+    if (!silent) _cardPlay(card, items[+card.dataset.idx].es);
+  };
+  if (firstAudio) setTimeout(() => { if (run.answered) return; if (chain) cue(firstAudio); else _cardPlay(firstAudio, items[+firstAudio.dataset.idx].es); }, 350);   /* [tune] */
   const missed = new Set();                       // audio items involved in a mismatch → low-weight outcome
   function tapCard(c) {
     const it = items[+c.dataset.idx];
@@ -2623,12 +2633,13 @@ function renderPairs(q) {
       if (missed.has(id)) recordExposure(id); else recordAnswer(id, true, { mode: "pairs" });
       matched++;
       if (matched === items.length) { run.answered = true; setTimeout(() => reunite(), 420); }
+      else if (chain) setTimeout(() => { if (!sel) cue(grid.querySelector(".pcard.audio:not(.matched)")); }, 650);   /* [tune] after the ding */
     } else {
       missed.add(itemId(items[+a.dataset.idx]));
       run.wrong++;
       const s1 = sel, s2 = c;
       [s1, s2].forEach(x => { x.classList.remove("sel"); x.classList.add("miss"); });
-      setTimeout(() => { s1.classList.remove("miss"); s2.classList.remove("miss"); }, 450);
+      setTimeout(() => { s1.classList.remove("miss"); s2.classList.remove("miss"); if (chain && !sel) cue(a, true); }, 450);   // the same sound stays in hand, no replay
     }
     sel = null;
   }

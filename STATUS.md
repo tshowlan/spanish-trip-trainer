@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v280 (2026-09-19) — STAGED "pairs-chain": the listening board hands you the sound
+- Tom at play: the first tile autoplayed but still had to be tapped before its meaning. Now (staged) the tile that plays is already selected, so the next tap is the meaning; after a match the next unmatched sound plays and selects itself (650ms, after the ding); after a miss the same sound stays selected without replaying. Tapping any other sound still takes that one instead. Verified: a four-pair board cleared by tapping meanings only; one miss kept the sound in hand.
+- Numbers: strategy discussion open with Tom (no build).
+
 ## v279 (2026-09-19) — STAGED "chapter-flow": chapter 1 = the words, chapter 2 = the rooms, chapters render 1-4
 - Tom's rulings (9/16-17) + chat's pass (docs/chapter-flow-chat-pass.md): chapter 0 is the base layer of words you say, hear, or read, each met in ONE two-to-four-word context; chunks and welds are the next chapter; then sentences by place; then conversations.
 - DATA: `CURRICULUM.flow` holds the eleven word sessions (94 entries incl. profile-keyed allergen and diet words), the room order, the chapter titles, and the re-home map. An entry whose `es` matches an existing pack phrase REUSES that item (notes, variants, SRS history carry); `hear` / `read` / `emphasis` mark what each session's inside gets later.

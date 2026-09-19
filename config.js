@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v279";
+const APP_BUILD = "v280";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -16,6 +16,7 @@ const APP_BUILD = "v279";
 const STAGED = {
   "gloss-tap":   "The 'What did that mean?' tap under heard lines in scenes",
   "review-door": "The review room's door: scene-ready tile + Practice line, and the six-week tilt",
+  "pairs-chain": "Listening board: the sound that plays is already selected; the next sound plays itself after each match",
   "chapter-flow": "The chapter flow: chapter 1 = the words (eleven sessions), chapter 2 = the four rooms, chapters render 1-4"
 };
 // SHIPPED (Tom, 2026-09-13, v278): "journey-1" - the beginning of the journey (machine rooms, kit halves, no cold
