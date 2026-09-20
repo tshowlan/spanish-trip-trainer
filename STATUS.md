@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v290 (2026-09-20) — staged (chapter-flow): chapter-one cards carry no inherited notes; every word card shows its context
+- Tom at play: the "¿Qué le pongo?" card showed no context sentence and a blue note that made no sense there ("Counter Spanish. Pongo again: literally 'what shall I put you'."). Two causes: (1) a word that already lives in the pack reuses that item, and its `note` / `anchor` were written for its OLD seat in chapter 3 (after "¿Le pongo algo más?", hence "again"); (2) the intro card only showed a context for phrases under three words. Now `_chapterFlowDeck()` drops inherited `note` and `anchor` (chapter one shows only what its own data says; chat may add notes to the flow data deliberately), and a word session's card always shows its context. Seven cards were carrying old notes or anchors (Dígame, Aquí tiene, ¿Qué le pongo?, Que aproveche, Tirar, Gracias, cien, Entrada); three were missing their context (¿Qué le pongo?, a la derecha, a la izquierda). All 88 now show a context and no stray note.
+
 ## v289 (2026-09-20) — staged: Paying words drops the heard-price closer
 - Tom at play: the two "Tap the bill" beats after Paying words' listening board read as a random tack-on. Removed from the session (`priceCloser` off in the flow data; `_priceCloser()` stays for chapter 2, where numbers and paying words combine in a sentence). Paying words ends on its listening board again, 14 beats.
 

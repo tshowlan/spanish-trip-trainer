@@ -1396,7 +1396,7 @@ function renderPresent(q) {
   const item = q.item;
   const body = $("#qbody");
   const chunked = Array.isArray(item.chunks) && item.chunks.length;
-  const short = item.es.trim().split(/\s+/).length < 3;
+  const short = item.es.trim().split(/\s+/).length < 3 || !!(run.lesson && run.lesson.wordsSession && item.contextEs);   // a word session's card always shows its context ("¿Qué le pongo?" is three words)
   // Attention semantics (decisions 2026-07-15, per design/presentation-card.html): GOLD + a NEW tag mark
   // the one new piece; everything already-known is unmarked (green "known" outline retired app-wide). The
   // new piece is content-flagged (chunks[i][2] === "new"). Tap any pill → meaning popover + chunk audio.

@@ -148,7 +148,9 @@ function _chapterFlowDeck(deck, rooms) {
   const made = new Map();
   const mk = d => {
     const k = slug(d.es); if (made.has(k)) return made.get(k);
-    const it = Object.assign({ tier: 1 }, bySlug.get(k) || {}, d); made.set(k, it); return it;
+    const base = Object.assign({}, bySlug.get(k) || {});
+    delete base.note; delete base.anchor;                // margin notes were written for the phrase's OLD seat ("Pongo again..."); chapter one shows only what its own data says (Tom 9/20)
+    const it = Object.assign({ tier: 1 }, base, d); made.set(k, it); return it;
   };
   const fits = d => !d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : (p.needs || []).includes(d.profile.needs));
   const numbersOn = typeof isStaged === "function" && isStaged("numbers-1");
