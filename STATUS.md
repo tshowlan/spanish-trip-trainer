@@ -1289,6 +1289,18 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v281 (2026-09-20) — STAGED "numbers-1": numbers as an ear skill (the set card, the keypad, runs)
+- Tom's strategy (9/19-20) + chat's rulings (docs/numbers-rulings.md). Chapter 1's two Numbers kits become ONE session (`numbers: true` in `CURRICULUM.flow`, each item carries `num`); with the switch off the kit rule still splits it into Numbers · 1 / · 2 as before.
+- `composeNumbers()`: the set card (when any number is new) → heard singles ×3 (a neighbor pair + one) → the numeral-to-word board (7 pairs) → the reverse keypad ×3 → the bills ×2 → six of chat's "how many" contexts on the shipped rungs [tune] → runs as the lap ×3. 19 beats.
+- `renderNumSet`: ten chips (numeral + word, tap to hear) + IN YOUR HAND (20 · 50 · 100) + "You will hear these far more than you say them."; opens silent → "Numbers are an ear skill. This one is better with sound on." Records exposure for the set; no card per number.
+- `renderNumPad`: ONE keypad, dialer order, 64px keys, corners empty. "You hear · Tap the number" (multi-digit numbers take their digits in order: 20 = 2, 0) · "Say · six" with word keys (diez on the bottom key; a tapped key speaks) · "You hear · Tap the bill" as a row of five bill faces. Wrong tap = red 900ms then dim; the rep records a miss, never re-serves; the correct key washes green; the echo line resolves to "veinte → 20"; Continue in the footer.
+- `renderNumRun`: three numbers (four once two runs clear), one neighbor pair + the rest; heard = spoken in succession with the play control; silent = ONE spot, ~450ms a word, 120ms between [tune], "Show it again" = supported rep (exposure, not an answer). Taps collect without per-tap feedback; the reveal shows words over digits and dims the missed position. Pace tightens ×0.88 per clean run (floor 300ms), eases ×1.2 on a miss (cap 700ms).
+- Silent mode: heard singles run as flashed runs that still carry their number; the bills step aside; "I can't listen right now" swaps the session.
+- The keypad anchors to the bottom of the answers zone (`.answers.atpad`), not the 63% line, so the keys stay 64px on short phones; on screens under 700px tall the ask lifts to 12%. Verified at 375×812 and 375×667: no overlap before the answer.
+- Verified in the pane: set card, a heard single with one wrong tap, the reverse keypad, a bill, a heard run with a deliberate miss (position dimmed, pace eased), a flashed run (three words seen in order in one spot), the supported rep leaving streaks untouched, the silent door line.
+- Known, for play: no backspace on the keypad (a slip is a miss); a two-line reveal can touch the keypad's top edge on a 667px screen; the pixel artifact from chat is still to come, so conformance waits.
+- Not yet: Numbermachine (chapter 2), the chapter 3 forms.
+
 ## v280 (2026-09-19) — STAGED "pairs-chain": the listening board hands you the sound
 - Tom at play: the first tile autoplayed but still had to be tapped before its meaning. Now (staged) the tile that plays is already selected, so the next tap is the meaning; after a match the next unmatched sound plays and selects itself (650ms, after the ding); after a miss the same sound stays selected without replaying. Tapping any other sound still takes that one instead. Verified: a four-pair board cleared by tapping meanings only; one miss kept the sound in hand.
 - Numbers: strategy discussion open with Tom (no build).

@@ -128,6 +128,7 @@ function _journeyOneDeck(deck) {
   s0.lessons = out;
 }
 function _splitKit(l) {                                  // ruling 4: kits over 8 phrases run as halves
+  if (l.numbers && typeof isStaged === "function" && isStaged("numbers-1")) return [l];   // one session, met as a set (rulings 2026-09-20)
   if (l.chain || l.machine || l.machines || !(l.items || []).length || l.items.length <= 8) return [l];
   const h = Math.ceil(l.items.length / 2);
   return [Object.assign({}, l, { id: l.id + "-1", title: l.title + " \u00b7 1", items: l.items.slice(0, h) }),

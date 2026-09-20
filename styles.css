@@ -1958,3 +1958,44 @@ img.scene-art { width: 286px; }
 #qbody.anchored .build-answer.fused .word { height: 38px; }
 #qbody.anchored .build-answer .sweep { bottom: -4px; }
 #qbody.anchored .res-grown { margin-top: 18px; }
+
+/* ===== NUMBERS (rulings 2026-09-20; staged "numbers-1") ===== */
+.num-title { font-family: var(--font-display); font-size: 23px; font-weight: 700; line-height: 1.3; margin: 6px 0 14px; }
+.num-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.num-hand { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.num-hand-label { margin: 16px 0 8px; }
+.num-chip { display: flex; align-items: baseline; gap: 10px; padding: 10px 14px; min-height: 46px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow); cursor: pointer; font-family: var(--font-display); text-align: left; transition: transform .12s cubic-bezier(.34,1.56,.64,1), border-color 200ms; }
+.num-chip:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
+.num-chip .n { font-size: 19px; font-weight: 800; min-width: 30px; color: var(--accent); }
+.num-chip .w { font-size: 16px; font-weight: 500; }
+.num-chip.heard { border-color: var(--accent); }
+.num-hand .num-chip { flex-direction: column; gap: 2px; align-items: flex-start; }
+.num-line { color: var(--text-dim); font-size: 14px; margin-top: 16px; }
+.num-status { color: var(--text-dim); font-size: 13px; margin-top: 8px; }
+/* the keypad: one surface, dialer order, 64px keys, the shipped tile chrome */
+#qbody.anchored .answers.atpad { top: auto; bottom: 56px; translate: none; }
+.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.bills { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.nkey { height: 64px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text); border-radius: var(--radius-sm); box-shadow: var(--shadow);
+  font-family: var(--font-display); font-size: 24px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0;
+  transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s, opacity 300ms, border-color 300ms, background 300ms; }
+.nkey:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
+.nkey.wordkey { font-size: 16px; font-weight: 500; }
+.nkey.empty { visibility: hidden; box-shadow: none; }
+.nkey.vwrong { border-color: var(--red); background: color-mix(in srgb, var(--red) 15%, transparent); }
+.nkey.dim { opacity: .35; pointer-events: none; }
+.nkey.correct { border-color: var(--green); background: color-mix(in srgb, var(--green) 15%, transparent); }
+.nkey.bill { font-size: 18px; box-shadow: var(--shadow), inset 0 0 0 4px var(--bg-card), inset 0 0 0 5px var(--border); }   /* a bill face from tokens: the inner rule */
+.num-listen { margin: 6px 0 0; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 12px; min-height: 0; padding: 0; text-align: left; }
+.num-listen .hint { margin: 0; }
+@media (max-height: 700px) { #qbody.anchored:has(.atpad) .top { top: calc(12dvh - var(--qtop, 90px)); } .num-echo { min-height: 34px; margin-top: 6px; } }   /* short phones: the keypad keeps its 64px keys, the ask lifts */
+.num-echo { font-family: var(--font-display); font-size: 28px; font-weight: 600; min-height: 40px; margin-top: 10px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.num-echo .ph { color: var(--text-dim); opacity: .5; }
+.num-echo .rv { font-size: 24px; } .num-echo i { font-style: normal; color: var(--text-dim); margin: 0 6px; }
+.num-echo.revealed { display: block; }
+.num-echo .rv-words { font-size: 22px; } .num-echo .rv-digits { font-size: 18px; color: var(--text-dim); margin-top: 2px; }
+.num-echo .miss { opacity: .35; }
+.num-spot { font-family: var(--font-display); font-size: 34px; font-weight: 700; min-height: 48px; margin-top: 12px; opacity: 1; transition: opacity 120ms; }
+.num-spot.off { opacity: 0; }
+.num-again { background: none; border: none; color: var(--text-dim); text-decoration: underline; font-size: 13px; padding: 8px 0; cursor: pointer; font-family: inherit; }

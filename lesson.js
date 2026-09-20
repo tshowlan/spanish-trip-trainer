@@ -322,6 +322,7 @@ function composeSession(lesson) {
   // sanctioned cross-lesson touch (a ritual composition, not review). Lessons now reliably
   // open primer → first presentation card.
   const reviewPool = newItems.length ? [] : lessonItems.slice();      // replays drill own items only
+  if (lesson.numbers && isStaged("numbers-1")) return composeNumbers(lesson);   // numbers are an ear skill: their own session shape
 
   const qs = [];
 
@@ -1343,6 +1344,7 @@ function renderQuestion() {
      word_fill: renderWordFill, phrase_fill: renderPhraseFill,
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
      scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear, scene_sign: renderSceneSign, context_choice: renderContextChoice,
+     num_set: renderNumSet, num_pad: renderNumPad, num_run: renderNumRun,
      circuit_door: renderCircuitDoor, circuit_close: renderCircuitClose,
      reply: renderReplyChat }[q.type])(q);
 }
@@ -2575,19 +2577,212 @@ function renderContextChoice(q) {
   answers.appendChild(choices);
   body.appendChild(answers);
 }
+
+/* ===== NUMBERS (Tom's strategy 2026-09-19/20, chat's rulings 9/20; STAGED "numbers-1") =====
+   Numbers are an EAR skill: met as a set (one card), practised on ONE keypad whose digits never
+   move (dialer order), so all the difficulty is Spanish. Three stimuli: heard -> digit · the run
+   of three · the reverse keypad (the keys are the words). The heard price is a row of five bills.
+   Silent: a single flashed word is a gimmick (reading is far easier than hearing), so the silent
+   twin is THE RUN - three words in succession in ONE spot, chosen from the neighbors that really
+   trip people, adaptive and never punishing. "Show it again" records a supported rep, never a fail. */
+const NUM_NEIGHBORS = [[6, 7], [2, 10], [5, 50]];                     // seis/siete · dos/diez · cinco/cincuenta (once, sesenta/setenta join in chapter 2)
+const NUM_BILLS = [5, 10, 20, 50, 100];
+const _numSilent = () => !!(run && run.soundOff) || !("speechSynthesis" in window) || state.sound === false;
+const _numItems = () => { const seen = new Set(); return (ALL_ITEMS || []).filter(it => it.num != null && !seen.has(it.num) && seen.add(it.num)); };
+const _numBy = n => _numItems().find(it => it.num === n);
+function composeNumbers(lesson) {
+  state.sessionSeq = (state.sessionSeq || 0) + 1; save();
+  const items = lesson.items.filter(it => it.num != null), by = n => items.find(it => it.num === n);
+  const qs = [];
+  if (items.some(it => exposuresOf(it) === 0)) qs.push({ type: "num_set", items, arc: true });          // met as a set, never a card per number
+  const pair = sample(NUM_NEIGHBORS.filter(p => by(p[0]) && by(p[1])), 1)[0] || [items[0].num, items[1].num];
+  const third = sample(items.filter(it => !pair.includes(it.num)), 1)[0];
+  shuffle([by(pair[0]), by(pair[1]), third]).forEach(it => qs.push({ type: "num_pad", item: it, arc: true }));   // heard singles ×3: the introduction (silent: they run as the flashed twin)
+  qs.push({ type: "pairs", mode: "numeral", items: sample(items, Math.min(7, items.length)), arc: true });
+  sample(items.filter(it => it.num <= 10), 3).forEach(it => qs.push({ type: "num_pad", item: it, reverse: true, arc: true }));   // the saying side
+  sample(items.filter(it => NUM_BILLS.includes(it.num)), 2).forEach(it => qs.push({ type: "num_pad", item: it, bills: true, arc: true }));   // a price heard, as a bare number
+  shuffle(items.filter(contextChoiceFeasible)).slice(0, 6).forEach((it, k) => qs.push(kitRungFor(lesson, it, items, k)));   // how many: chat's contexts on the shipped rungs [tune: 6]
+  for (let k = 0; k < 3; k++) qs.push({ type: "num_run", lap: true, arc: true });                       // runs as the lap
+  return _applyFloor(qs, lesson);
+}
+function _numDone(q, goStrength) {                                     // the rep's exit: the bar advances, Continue waits at the bottom (Pacing Rule: the learner's tap)
+  const barEl = document.querySelector(".pbar > i");
+  if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
+  if (goStrength) goStrength();
+  let gone = false;
+  const f = footer(`<button class="btn" id="cont">Continue</button>`);
+  f.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
+}
+function renderNumSet(q) {
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Numbers</div>`));
+  body.appendChild(el(`<div class="num-title">One to ten, and the bills.</div>`));
+  const chip = it => {
+    const c = el(`<button class="num-chip"><span class="n">${it.num}</span><span class="w">${it.es}</span></button>`);
+    c.addEventListener("click", () => { c.classList.add("heard"); if (!_numSilent()) speak(it.es); });
+    return c;
+  };
+  const grid = el(`<div class="num-grid"></div>`);
+  q.items.filter(it => it.num <= 10).sort((a, b) => a.num - b.num).forEach(it => grid.appendChild(chip(it)));
+  body.appendChild(grid);
+  const hand = q.items.filter(it => it.num > 10).sort((a, b) => a.num - b.num);
+  if (hand.length) {
+    body.appendChild(el(`<div class="cue-label num-hand-label">In your hand</div>`));
+    const row = el(`<div class="num-hand"></div>`); hand.forEach(it => row.appendChild(chip(it))); body.appendChild(row);
+  }
+  body.appendChild(el(`<div class="num-line">You will hear these far more than you say them.</div>`));
+  if (_numSilent()) body.appendChild(el(`<div class="num-status">Numbers are an ear skill. This one is better with sound on.</div>`));   // the door line: silent opens only
+  run.exposed = run.exposed || new Set();
+  q.items.forEach(it => { const id = itemId(it); if (!run.exposed.has(id)) { run.exposed.add(id); recordExposure(id); } });
+  const f = footer(`<button class="btn" id="cont">Continue</button>`);
+  f.querySelector("#cont").addEventListener("click", () => next());
+}
+function _numKeypad(kind, onTap) {                                     // ONE surface: the digits never move (1-2-3 / 4-5-6 / 7-8-9 / 0)
+  if (kind === "bills") {
+    const row = el(`<div class="bills"></div>`);
+    NUM_BILLS.forEach(v => { const b = el(`<button class="nkey bill" data-v="${v}"><span>${v}</span></button>`); b.addEventListener("click", () => onTap(b, String(v))); row.appendChild(b); });
+    return row;
+  }
+  const pad = el(`<div class="numpad"></div>`);
+  [1, 2, 3, 4, 5, 6, 7, 8, 9, null, 0, null].forEach(d => {
+    if (d === null) { pad.appendChild(el(`<span class="nkey empty"></span>`)); return; }
+    const word = kind === "words" ? ((_numBy(d === 0 ? 10 : d) || {}).es || "") : null;   // the reverse keypad: the keys are the words; diez takes the bottom key
+    if (kind === "words" && !word) { pad.appendChild(el(`<span class="nkey empty"></span>`)); return; }
+    const k = el(`<button class="nkey${word ? " wordkey" : ""}" data-v="${word || d}">${word || d}</button>`);
+    k.addEventListener("click", () => onTap(k, String(word || d)));
+    pad.appendChild(k);
+  });
+  return pad;
+}
+function renderNumPad(q) {
+  const silent = _numSilent();
+  if (!q.reverse && silent) { if (q.bills) return next(); q.type = "num_run"; return renderNumRun(q); }   // silent skips the singles and runs the flashed twin
+  const item = q.item, body = $("#qbody"); _anchor(body);
+  const top = el(`<div class="top"></div>`);
+  if (q.reverse) {
+    top.appendChild(el(`<div class="direction">Say</div>`));
+    top.appendChild(el(`<div class="conv-cuewrap"><div class="cue-meaning conv-cue">${item.en}</div></div>`));
+  } else {
+    top.appendChild(el(`<div class="direction">You hear</div>`));
+    top.appendChild(el(`<div class="conv-cuewrap"><div class="cue-meaning conv-cue">${q.bills ? "Tap the bill" : "Tap the number"}</div></div>`));
+    const play = audioControl(slow => { if (slow) q.slow = true; slow ? speak(item.es, 0.55) : speak(item.es); }, { speed: true });
+    const row = el(`<div class="listen-stage inv-ask num-listen"></div>`); row.appendChild(play);
+    row.appendChild(el(`<div class="hint">Tap to hear it again</div>`));
+    top.appendChild(row);
+    setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
+    setTimeout(() => listenEscape($("#footer") || footer(``), q, { keep: true }), 0);
+  }
+  const echo = el(`<div class="num-echo"></div>`); top.appendChild(echo);
+  body.appendChild(top);
+  const expected = q.reverse ? [item.es] : q.bills ? [String(item.num)] : String(item.num).split("");
+  let pos = 0, wrong = 0;
+  const paint = () => { echo.innerHTML = q.reverse || q.bills ? "" : expected.map((d, i) => `<span class="${i < pos ? "in" : "ph"}">${i < pos ? d : "–"}</span>`).join(""); };
+  paint();
+  const pad = _numKeypad(q.reverse ? "words" : q.bills ? "bills" : "digits", (key, val) => {
+    if (run.answered) return;
+    if (q.reverse && !silent) speak(val);                              // a tapped word key speaks
+    if (val === expected[pos]) {
+      pos++; paint();
+      if (pos < expected.length) return;
+      run.answered = true; _recordSlotTime(q);
+      const ok = wrong === 0, id = itemId(item);
+      recordAnswer(id, ok, { mode: q.reverse ? "num_say" : "num_hear", scaffolded: !!q.slow });
+      if (!ok) run.wrong++;                                            // a miss informs; it never re-serves in the session
+      if (ok) playSound("correct"); haptic(ok ? "correct" : "wrong");
+      key.classList.add("correct");                                    // the correct key washes green
+      echo.innerHTML = q.reverse ? `<span class="rv">${item.num} <i>→</i> ${item.es}</span>` : `<span class="rv">${item.es} <i>→</i> ${item.num}</span>`;
+      const st = state.learn && state.learn[id];
+      _numDone(q, () => _setQStrength(st ? Math.round(itemStrength(st)) : 0, ok));
+    } else {
+      wrong++; haptic("wrong"); key.classList.add("vwrong");            // wrong-then-release: 900ms, then dim
+      setTimeout(() => { key.classList.remove("vwrong"); if (expected.length === 1) key.classList.add("dim"); }, 900);
+    }
+  });
+  const answers = el(`<div class="answers atpad"></div>`); answers.appendChild(pad); body.appendChild(answers);
+}
+function renderNumRun(q) {
+  const silent = _numSilent(), body = $("#qbody"); _anchor(body);
+  const pace = run.numPace = run.numPace || { ms: 450, len: 3, clears: 0 };   /* [tune] ~450ms a word (chat); tightens as runs clear */
+  if (!q.seq) {                                                        // neighbors, never random: the pair that trips people + the rest
+    const all = _numItems();
+    const pair = sample(NUM_NEIGHBORS.filter(p => _numBy(p[0]) && _numBy(p[1])), 1)[0] || [];
+    const rest = sample(all.filter(it => !pair.includes(it.num) && it.num <= 10), Math.max(0, pace.len - pair.length));
+    q.seq = shuffle(pair.map(_numBy).concat(rest)).slice(0, pace.len);
+    if (q.item && !q.seq.includes(q.item)) q.seq[0] = q.item;          // a silent single becomes a run that still carries its number
+  }
+  const seq = q.seq, n = seq.length;
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">${silent ? "You read" : "You hear"}</div>`));
+  top.appendChild(el(`<div class="conv-cuewrap"><div class="cue-meaning conv-cue">Tap all ${n === 4 ? "four" : "three"}, in order</div></div>`));
+  let supported = false, playing = false;
+  const spot = el(`<div class="num-spot off"></div>`);
+  const flash = () => {                                                // ONE spot: each word replaces the last; the light turns on, never travels
+    if (playing || run.answered) return; playing = true; let i = 0;
+    const step = () => {
+      if (run.answered) { playing = false; return; }
+      if (i >= n) { spot.classList.add("off"); playing = false; return; }
+      spot.textContent = seq[i].es; spot.classList.remove("off");
+      setTimeout(() => { spot.classList.add("off"); i++; setTimeout(step, 120); }, pace.ms);
+    };
+    step();
+  };
+  if (silent) {
+    top.appendChild(spot);
+    const again = el(`<button class="num-again">Show it again</button>`);
+    again.addEventListener("click", () => { if (playing || run.answered) return; supported = true; flash(); });   // a supported rep, never a fail
+    top.appendChild(again);
+    setTimeout(flash, 500);
+  } else {
+    const say = slow => speak(seq.map(it => it.es).join(", "), slow ? 0.55 : undefined);
+    const play = audioControl(slow => { if (slow) supported = true; say(slow); }, { speed: true });
+    const row = el(`<div class="listen-stage inv-ask num-listen"></div>`); row.appendChild(play);
+    row.appendChild(el(`<div class="hint">Tap to hear it again</div>`));
+    top.appendChild(row);
+    setTimeout(() => { if (!run.answered) play._fire(); }, 350);
+    setTimeout(() => listenEscape($("#footer") || footer(``), q, { keep: true }), 0);
+  }
+  const echo = el(`<div class="num-echo"></div>`); top.appendChild(echo);
+  body.appendChild(top);
+  const want = seq.map(it => String(it.num)), total = want.join("").length;
+  let taps = "";
+  const paint = () => { echo.innerHTML = Array.from({ length: total }, (_, i) => `<span class="${i < taps.length ? "in" : "ph"}">${i < taps.length ? taps[i] : "–"}</span>`).join(""); };
+  paint();
+  const pad = _numKeypad("digits", (key, val) => {
+    if (run.answered || playing) return;
+    taps += val; paint();
+    if (taps.length < total) return;
+    run.answered = true; _recordSlotTime(q);
+    let at = 0; const okAt = want.map(w => { const got = taps.slice(at, at + w.length); at += w.length; return got === w; });
+    const okAll = okAt.every(Boolean);
+    seq.forEach((it, i) => { const id = itemId(it); if (supported && okAt[i]) recordExposure(id); else recordAnswer(id, okAt[i], { mode: "num_run" }); });
+    if (!okAll) run.wrong++;
+    playSound(okAll ? "correct" : "wrong"); haptic(okAll ? "correct" : "wrong");
+    // the reveal: the words with their digits; a missed position dims, the rest hold
+    spot.remove(); const ag = top.querySelector(".num-again"); if (ag) ag.remove();
+    echo.innerHTML = `<div class="rv-words">${seq.map((it, i) => `<span class="${okAt[i] ? "" : "miss"}">${it.es}</span>`).join(`<i>·</i>`)}</div>
+      <div class="rv-digits">${seq.map((it, i) => `<span class="${okAt[i] ? "" : "miss"}">${it.num}</span>`).join(`<i>·</i>`)}</div>`;
+    echo.classList.add("revealed");
+    // adaptive, never punishing: tighter and longer as runs clear, easier after a miss
+    if (okAll && !supported) { pace.clears++; pace.ms = Math.max(300, Math.round(pace.ms * 0.88)); if (pace.clears >= 2) pace.len = 4; }
+    else if (!okAll) { pace.clears = 0; pace.ms = Math.min(700, Math.round(pace.ms * 1.2)); pace.len = 3; }
+    _numDone(q);
+  });
+  const answers = el(`<div class="answers atpad"></div>`); answers.appendChild(pad); body.appendChild(answers);
+}
 function renderPairs(q) {
   const items = q.items;
-  const text = q.mode === "text";                 // STAGED (Tom, 9/12): the first board matches the WORDS - phrase to meaning, no audio
+  const numeral = q.mode === "numeral";            // numbers (rulings 2026-09-20): the numeral to its word, 7 to siete
+  const text = q.mode === "text" || numeral;      // (Tom, 9/12): the first board matches the WORDS - phrase to meaning, no audio
   const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">${text ? "Match each phrase to its meaning" : "Match the sound to its meaning"}</div>`));
+  body.appendChild(el(`<div class="qtype">${numeral ? "Match each number to its word" : text ? "Match each phrase to its meaning" : "Match the sound to its meaning"}</div>`));
   const grid = el(`<div class="pairs${text ? " pairs-text" : ""}"></div>`);
   const audioOrder = shuffle(items.map((_, i) => i));
   const enOrder = shuffle(items.map((_, i) => i));
   for (let r = 0; r < items.length; r++) {
     const a = text
-      ? el(`<button class="pcard es" data-idx="${audioOrder[r]}" data-side="audio"><span class="es-word">${items[audioOrder[r]].es}</span></button>`)
+      ? el(`<button class="pcard es" data-idx="${audioOrder[r]}" data-side="audio"><span class="es-word">${numeral ? items[audioOrder[r]].num : items[audioOrder[r]].es}</span></button>`)
       : el(`<button class="pcard audio" data-idx="${audioOrder[r]}" data-side="audio">${_cardAudioHtml()}</button>`);
-    const e = el(`<button class="pcard en" data-idx="${enOrder[r]}" data-side="en">${items[enOrder[r]].en}</button>`);
+    const e = el(`<button class="pcard en" data-idx="${enOrder[r]}" data-side="en">${numeral ? items[enOrder[r]].es : items[enOrder[r]].en}</button>`);
     [a, e].forEach(c => c.addEventListener("click", () => tapCard(c)));
     grid.appendChild(a); grid.appendChild(e);
   }
@@ -2674,7 +2869,7 @@ function renderPairs(q) {
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
     const grown = el(`<div class="res-grown pairs-grown">
       ${clean ? `<div class="pairs-tick">${clean} stronger</div>` : ""}
-      <div class="pairs-allset">${text ? "Every phrase, matched to what it means." : "Match the four sounds to their meanings and spellings."}</div>
+      <div class="pairs-allset">${numeral ? "Every number, matched to its word." : text ? "Every phrase, matched to what it means." : "Match the four sounds to their meanings and spellings."}</div>
       <button class="btn res-cont">Continue</button>
     </div>`);
     grown.querySelector(".res-cont").addEventListener("click", () => slideOut(next));

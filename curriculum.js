@@ -749,21 +749,22 @@ const CURRICULUM = {
         { es: "¿Todo bien?", en: "Everything okay?", hear: true, tags: ["service"], contextEs: "¿Todo bien? Sí, gracias.", contextEn: "All good? Yes, thanks." },
         { es: "Ahora mismo", en: "Right away", hear: true, tags: ["service"], contextEs: "Sí, ahora mismo.", contextEn: "Yes, right away." },
         { es: "Pase", en: "Come in", hear: true, tags: ["service"], contextEs: "Pase, por favor.", contextEn: "Come in, please." } ] },
-      { id: "sp0-numbers-1", topic: "Core numbers", title: "Numbers · 1", items: [
-        { es: "uno", en: "one", tags: ["numbers"], contextEs: "Uno, por favor.", contextEn: "One, please." },
-        { es: "dos", en: "two", tags: ["numbers"], contextEs: "Dos, gracias.", contextEn: "Two, thanks." },
-        { es: "tres", en: "three", tags: ["numbers"], contextEs: "¿Dos? No, tres.", contextEn: "Two? No, three." },
-        { es: "cuatro", en: "four", tags: ["numbers"], contextEs: "Cuatro, por favor.", contextEn: "Four, please." },
-        { es: "cinco", en: "five", tags: ["numbers"], contextEs: "¿Cuatro? No, cinco.", contextEn: "Four? No, five." },
-        { es: "seis", en: "six", tags: ["numbers"], contextEs: "Sí, seis.", contextEn: "Yes, six." } ] },
-      { id: "sp0-numbers-2", topic: "Core numbers", title: "Numbers · 2", items: [
-        { es: "siete", en: "seven", tags: ["numbers"], contextEs: "Siete, por favor.", contextEn: "Seven, please." },
-        { es: "ocho", en: "eight", tags: ["numbers"], contextEs: "¿Siete? No, ocho.", contextEn: "Seven? No, eight." },
-        { es: "nueve", en: "nine", tags: ["numbers"], contextEs: "Nueve, gracias.", contextEn: "Nine, thanks." },
-        { es: "diez", en: "ten", tags: ["numbers"], contextEs: "¿Diez? Vale.", contextEn: "Ten? Okay." },
-        { es: "veinte", en: "twenty", tags: ["numbers"], contextEs: "¿Veinte? No, diez.", contextEn: "Twenty? No, ten." },
-        { es: "cincuenta", en: "fifty", tags: ["numbers"], contextEs: "¿Cincuenta? No, veinte.", contextEn: "Fifty? No, twenty." },
-        { es: "cien", en: "one hundred", tags: ["numbers"], contextEs: "¿Cien? No, cincuenta.", contextEn: "A hundred? No, fifty." } ] },
+      /* ONE numbers session (chat's rulings 2026-09-20): met as a SET, practised by ear on the keypad. `num` is the numeral.
+         With "numbers-1" staged the numbers composer runs it whole; otherwise the kit rule splits it into halves as before. */
+      { id: "sp0-numbers", topic: "Core numbers", title: "Numbers", numbers: true, items: [
+        { es: "uno", num: 1, en: "one", tags: ["numbers"], contextEs: "Uno, por favor.", contextEn: "One, please." },
+        { es: "dos", num: 2, en: "two", tags: ["numbers"], contextEs: "Dos, gracias.", contextEn: "Two, thanks." },
+        { es: "tres", num: 3, en: "three", tags: ["numbers"], contextEs: "¿Dos? No, tres.", contextEn: "Two? No, three." },
+        { es: "cuatro", num: 4, en: "four", tags: ["numbers"], contextEs: "Cuatro, por favor.", contextEn: "Four, please." },
+        { es: "cinco", num: 5, en: "five", tags: ["numbers"], contextEs: "¿Cuatro? No, cinco.", contextEn: "Four? No, five." },
+        { es: "seis", num: 6, en: "six", tags: ["numbers"], contextEs: "Sí, seis.", contextEn: "Yes, six." },
+        { es: "siete", num: 7, en: "seven", tags: ["numbers"], contextEs: "Siete, por favor.", contextEn: "Seven, please." },
+        { es: "ocho", num: 8, en: "eight", tags: ["numbers"], contextEs: "¿Siete? No, ocho.", contextEn: "Seven? No, eight." },
+        { es: "nueve", num: 9, en: "nine", tags: ["numbers"], contextEs: "Nueve, gracias.", contextEn: "Nine, thanks." },
+        { es: "diez", num: 10, en: "ten", tags: ["numbers"], contextEs: "¿Diez? Vale.", contextEn: "Ten? Okay." },
+        { es: "veinte", num: 20, en: "twenty", tags: ["numbers"], contextEs: "¿Veinte? No, diez.", contextEn: "Twenty? No, ten." },
+        { es: "cincuenta", num: 50, en: "fifty", tags: ["numbers"], contextEs: "¿Cincuenta? No, veinte.", contextEn: "Fifty? No, twenty." },
+        { es: "cien", num: 100, en: "one hundred", tags: ["numbers"], contextEs: "¿Cien? No, cincuenta.", contextEn: "A hundred? No, fifty." } ] },
       { id: "w-paying", topic: "Core paying", title: "Paying words", items: [
         { es: "la cuenta", en: "the check", tags: ["money", "restaurant"], contextEs: "La cuenta, por favor.", contextEn: "The check, please." },
         { es: "tarjeta", en: "card", tags: ["money"], contextEs: "¿Tarjeta? Sí.", contextEn: "Card? Yes." },
