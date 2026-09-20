@@ -724,6 +724,9 @@ const CURRICULUM = {
     rooms: ["room-asking-1", "room-finding-1", "room-finding-2", "room-asking-2"],
     rehome: { "sp0-first-words": "s1-rescue", "sp0-numbers": "sp-cash", "sp0-wrong": "sp-help" },
     rehomeItems: { "Pase, pase": "s4-hear", "\u00bfEst\u00e1 todo bien?": "s4-hear" },
+    /* CASING (Tom 9/20): a session is all one case. Sessions of whole turns (First words, Words you'll hear) and signs as printed are
+       capitalized; vocabulary sessions are lowercase in both languages. Bathroom words mixes on purpose: el baño is said, the four door
+       words are printed. The context sentences keep normal sentence case. */
     words: [
       { id: "sp0-first-words-1", topic: "Core basics", title: "First words · 1", items: [
         { es: "Hola", en: "Hello", tags: ["greetings"], contextEs: "Hola, buenos días.", contextEn: "Hi, good morning." },
@@ -775,7 +778,7 @@ const CURRICULUM = {
         { es: "efectivo", en: "cash", tags: ["money"], contextEs: "¿Tarjeta o efectivo?", contextEn: "Card or cash?" },
         { es: "el cambio", en: "the change", tags: ["money"], contextEs: "El cambio, gracias.", contextEn: "The change, thanks." },
         { es: "la propina", en: "the tip", tags: ["money"], contextEs: "Sí, la propina.", contextEn: "Yes, the tip." },
-        { es: "¿Cuánto?", en: "How much?", tags: ["money"], contextEs: "¿Cuánto? Diez.", contextEn: "How much? Ten." } ] },
+        { es: "¿cuánto?", en: "how much?", tags: ["money"], contextEs: "¿Cuánto? Diez.", contextEn: "How much? Ten." } ] },
       { id: "w-counter", topic: "Core counter", title: "Counter words", items: [
         { es: "café", en: "coffee", tags: ["drink", "coffee"], contextEs: "Un café, por favor.", contextEn: "A coffee, please." },
         { es: "cortado", en: "cortado (espresso with a little milk)", tags: ["drink", "coffee"], contextEs: "Un cortado, gracias.", contextEn: "A cortado, thanks." },
@@ -785,16 +788,16 @@ const CURRICULUM = {
         { es: "vino", en: "wine", tags: ["drink"], contextEs: "Una copa de vino.", contextEn: "A glass of wine." },
         { es: "agua", en: "water", tags: ["drink"], contextEs: "Agua, por favor.", contextEn: "Water, please." },
         { es: "tapa", en: "tapa (small plate)", tags: ["food"], contextEs: "Una tapa, gracias.", contextEn: "A tapa, thanks." },
-        { es: "Para llevar", en: "To go / takeaway", tags: ["food"], contextEs: "Para llevar, gracias.", contextEn: "To go, thanks." },
-        { es: "¿Qué le pongo?", en: "What'll it be?", hear: true, tags: ["service"], contextEs: "¿Qué le pongo? Un café.", contextEn: "What'll it be? A coffee." },
-        { es: "Que aproveche", en: "Enjoy your meal", hear: true, tags: ["service"], contextEs: "Que aproveche. Gracias.", contextEn: "Enjoy. Thanks." } ] },
+        { es: "para llevar", en: "to go / takeaway", tags: ["food"], contextEs: "Para llevar, gracias.", contextEn: "To go, thanks." },
+        { es: "¿qué le pongo?", en: "what'll it be?", hear: true, tags: ["service"], contextEs: "¿Qué le pongo? Un café.", contextEn: "What'll it be? A coffee." },
+        { es: "que aproveche", en: "enjoy your meal", hear: true, tags: ["service"], contextEs: "Que aproveche. Gracias.", contextEn: "Enjoy. Thanks." } ] },
       { id: "w-table", topic: "Core table", title: "Table words", items: [
         { es: "mesa", en: "table", tags: ["restaurant"], contextEs: "Una mesa para dos.", contextEn: "A table for two." },
         { es: "la carta", en: "the menu", tags: ["restaurant"], contextEs: "La carta, por favor.", contextEn: "The menu, please." },
         { es: "pan", en: "bread", tags: ["food"], contextEs: "Pan, gracias.", contextEn: "Bread, thanks." },
         { es: "plato", en: "plate / dish", tags: ["food"], contextEs: "Un plato, por favor.", contextEn: "A plate, please." },
         { es: "sin gas", en: "still (no bubbles)", tags: ["drink"], contextEs: "Agua sin gas.", contextEn: "Still water." },
-        { es: "Sin gluten", en: "Gluten-free", tags: ["dietary"], contextEs: "Sin gluten, por favor.", contextEn: "Gluten-free, please." },
+        { es: "sin gluten", en: "gluten-free", tags: ["dietary"], contextEs: "Sin gluten, por favor.", contextEn: "Gluten-free, please." },
         /* chat wrote "dentro / fuera" as one row ("¿Dentro o fuera? Fuera."); split by Code so each word can be the one under
            test without the answer sitting in the sentence (flagged to chat) */
         { es: "dentro", en: "inside", tags: ["restaurant"], contextEs: "¿Dentro o fuera?", contextEn: "Inside or outside?" },
@@ -824,7 +827,7 @@ const CURRICULUM = {
          its own way. After Street words, so the directions in these contexts are already met. Flagged to chat. */
       { id: "w-bathroom", topic: "Core bathroom", title: "Bathroom words", items: [
         { es: "el baño", en: "the bathroom", tags: ["bathroom"], contextEs: "¿El baño, por favor?", contextEn: "The bathroom, please?" },
-        { es: "Aseos", en: "Restrooms (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los aseos? A la derecha.", contextEn: "The restrooms? To the right." },
+        { es: "Aseos", en: "Toilets (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los aseos? A la derecha.", contextEn: "The toilets? To the right." },
         { es: "Servicios", en: "Restrooms (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los servicios? A la izquierda.", contextEn: "The restrooms? To the left." },
         { es: "Caballeros", en: "Men (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Caballeros, a la derecha.", contextEn: "Men, to the right." },
         { es: "Señoras", en: "Women (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Señoras, a la izquierda.", contextEn: "Women, to the left." } ] },
@@ -841,7 +844,7 @@ const CURRICULUM = {
         { es: "Libre", en: "Free / vacant (sign)", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
         { es: "Ocupado", en: "Occupied / taken (sign)", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
       { id: "w-help", topic: "Core help", title: "Help words", items: [
-        { es: "Ayuda", en: "Help", tags: ["emergency"], contextEs: "Ayuda, por favor.", contextEn: "Help, please." },
+        { es: "ayuda", en: "help", tags: ["emergency"], contextEs: "Ayuda, por favor.", contextEn: "Help, please." },
         { es: "médico", en: "doctor", tags: ["emergency", "health"], contextEs: "Un médico, por favor.", contextEn: "A doctor, please." },
         { es: "hospital", en: "hospital", tags: ["emergency", "health"], contextEs: "¿El hospital? Cerca.", contextEn: "The hospital? Close." },
         { es: "policía", en: "police", tags: ["emergency"], contextEs: "La policía, por favor.", contextEn: "The police, please." },

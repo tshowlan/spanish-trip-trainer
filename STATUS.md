@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v295 (2026-09-20) — staged (chapter-flow): one case per session; twin meanings can't be marked wrong
+- Found in the casing audit: Aseos and Servicios both read "Restrooms (sign)", so a correct match could be scored a miss depending on which identical card was tapped. Aseos now reads "Toilets (sign)" (its context EN returns to chat's "The toilets? To the right."); and `renderPairs` treats two meaning cards that READ the same as the same answer (the cards swap their pairing so the reunion still lines up). No other duplicate meanings in chapter 1.
+- Tom: why are "Ayuda" and "Help" the only capitalized choices in Help words? Code's entry error: chat's list was all lowercase; words that already existed in the pack as standalone phrases kept their capitals. Rule now in the flow data: sessions of whole turns (First words, Words you'll hear) and signs as printed are capitalized; vocabulary sessions are lowercase in both languages. Fixed: ayuda / help · ¿cuánto? / how much? · para llevar · ¿qué le pongo? · que aproveche · sin gluten / gluten-free. Bathroom words mixes on purpose (el baño is said; Aseos, Servicios, Caballeros, Señoras are printed). Item ids are unchanged (the slug ignores case), so progress carries.
+
 ## v294 (2026-09-20) — staged (pairs-chain): the lap chip leaves the closing listening board
 - Tom: "The lap: today's phrases, once each, fast." read as legacy. It described the old typed lap; on a chapter-1 word session the final pass is a listening board and needs no name. With the switch on the chip no longer rides that board (the final pass itself stays). The rooms never showed it. It stays where its words are still true: the typed lap from Sentences by place onward, and "Run the lap" on the return door.
 

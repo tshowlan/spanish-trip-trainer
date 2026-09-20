@@ -2851,7 +2851,9 @@ function renderPairs(q) {
     if (sel.dataset.side === c.dataset.side) { sel.classList.remove("sel"); sel = c; c.classList.add("sel"); return; }
     const a = sel.dataset.side === "audio" ? sel : c;
     const e = sel.dataset.side === "en" ? sel : c;
-    if (a.dataset.idx === e.dataset.idx) {
+    const shown = i => norm(String(numeral ? items[i].es : items[i].en));
+    if (a.dataset.idx === e.dataset.idx || shown(+a.dataset.idx) === shown(+e.dataset.idx)) {   // two cards that READ the same are the same answer (never mark a right match wrong)
+      if (a.dataset.idx !== e.dataset.idx) { const twin = grid.querySelector(`.pcard[data-side="en"][data-idx="${a.dataset.idx}"]`); if (twin && !twin.classList.contains("matched")) { const t = twin.dataset.idx; twin.dataset.idx = e.dataset.idx; e.dataset.idx = t; } }
       [a, e].forEach(x => { x.classList.remove("sel"); x.classList.add("matched"); });
       const mi = items[+a.dataset.idx];
       if (!text) a.innerHTML = `<span class="pc-glyph">${icon('speaker', 16)}</span><span class="es-word">${mi.es}</span><span class="pbars" aria-hidden="true"><span></span><span></span><span></span></span>`;
