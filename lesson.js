@@ -2807,7 +2807,7 @@ function renderPairs(q) {
   const text = q.mode === "text" || numeral;      // (Tom, 9/12): the first board matches the WORDS - phrase to meaning, no audio
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">${numeral ? "Match each number to its word" : text ? "Match each phrase to its meaning" : "Match the sound to its meaning"}</div>`));
-  const grid = el(`<div class="pairs${text ? " pairs-text" : ""}"></div>`);
+  const grid = el(`<div class="pairs${text ? " pairs-text" : ""}${items.length > 6 ? " pairs-fit" : ""}" style="--rows:${items.length}"></div>`);   // boards over six rows fit ONE screen (Tom 9/20: Signs scrolled, Continue clipped)
   const audioOrder = shuffle(items.map((_, i) => i));
   const enOrder = shuffle(items.map((_, i) => i));
   for (let r = 0; r < items.length; r++) {
@@ -2853,7 +2853,7 @@ function renderPairs(q) {
       // the learner just HEARD the sound — replaying it slowed the board). Delta vs the pairs
       // artifact's "sound, meet spelling" caption: flag at next re-issue.
       haptic("correct");
-      playSound("correct", { rate: Math.pow(2, Math.min(matched, 6) / 6) });   // the tune: whole tones, one per match, the octave on the 7th (Tom 2026-08-03; 7 tiles 9/12)
+      playSound("correct", { rate: isStaged("pairs-chain") ? Math.pow(2, (Math.min(matched, 7) - 1) / 6) : Math.pow(2, Math.min(matched, 6) / 6) });   // the tune: whole tones, one per match. Staged (Tom 9/20): EIGHT notes, starting a tone lower, the octave on the 8th; boards past eight hold the octave
       // a clean pair is a real review rep; a missed one records at low weight [tune]:
       // exposure only, so the slip neither advances nor resets the item (§5, artifact caption)
       const id = itemId(mi);
@@ -2902,9 +2902,11 @@ function renderPairs(q) {
     const grown = el(`<div class="res-grown pairs-grown">
       ${clean ? `<div class="pairs-tick">${clean} stronger</div>` : ""}
       <div class="pairs-allset">${numeral ? "Every number, matched to its word." : text ? "Every phrase, matched to what it means." : "Match the four sounds to their meanings and spellings."}</div>
-      <button class="btn res-cont">Continue</button>
+      ${isStaged("pairs-chain") ? "" : `<button class="btn res-cont">Continue</button>`}
     </div>`);
-    grown.querySelector(".res-cont").addEventListener("click", () => slideOut(next));
+    let gone = false; const go = () => { if (gone) return; gone = true; slideOut(next); };
+    const rc = grown.querySelector(".res-cont"); if (rc) rc.addEventListener("click", go);
+    else { const cf = footer(`<button class="btn" id="cont">Continue</button>`); cf.querySelector("#cont").addEventListener("click", go); }   // the bottom bar, never clipped under a tall board
     body.appendChild(grown);
     setTimeout(() => grown.classList.add("show"), reduced ? 0 : 1050);
   }

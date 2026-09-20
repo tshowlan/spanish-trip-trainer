@@ -1289,6 +1289,11 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v291 (2026-09-20) — staged (pairs-chain): big boards fit one screen; eight-note tune from a tone lower; Continue in the bar
+- Tom at play: the Signs board (8 pairs) scrolled and its Continue was clipped. Boards over six rows now size their cards to the screen (`.pairs-fit`, `--rows`: clamp 38-62px, 6px gaps): 59px cards for 8 rows and 46px for Street words' 10 at 375×812, nothing scrolls. The board's Continue moves from under the grid to the bottom bar (the rule every other exercise follows).
+- The tune: eight notes, one per match, starting a whole tone LOWER (rates 0.891 → 2.0, the octave on the 8th); boards past eight hold the octave. Four-pair boards now start a tone lower too (Tom: all boards). Shipped behaviour unchanged with the switch off.
+- Open with Tom: whether Salidas / Llegadas earn a seat among eight signs (airports and big stations in Spain post them with English); Code's suggestion is Libre / Ocupado, keeping the airport pair in chapter 3's Reading the airport.
+
 ## v290 (2026-09-20) — staged (chapter-flow): chapter-one cards carry no inherited notes; every word card shows its context
 - Tom at play: the "¿Qué le pongo?" card showed no context sentence and a blue note that made no sense there ("Counter Spanish. Pongo again: literally 'what shall I put you'."). Two causes: (1) a word that already lives in the pack reuses that item, and its `note` / `anchor` were written for its OLD seat in chapter 3 (after "¿Le pongo algo más?", hence "again"); (2) the intro card only showed a context for phrases under three words. Now `_chapterFlowDeck()` drops inherited `note` and `anchor` (chapter one shows only what its own data says; chat may add notes to the flow data deliberately), and a word session's card always shows its context. Seven cards were carrying old notes or anchors (Dígame, Aquí tiene, ¿Qué le pongo?, Que aproveche, Tirar, Gracias, cien, Entrada); three were missing their context (¿Qué le pongo?, a la derecha, a la izquierda). All 88 now show a context and no stray note.
 
