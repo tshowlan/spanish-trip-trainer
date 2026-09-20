@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v285 (2026-09-20) — chapter-flow (staged): Signs split by theme; el baño said, Aseos read
+- Tom at play: Caballeros and Señoras were cut across Signs · 1 / · 2 (halves by position). The pack may now name the cut (`splitAt`, read by `_splitKit`); Signs splits 6 / 5 by theme: · 1 the door signs (Salida, Entrada, Empujar, Tirar, Abierto, Cerrado), · 2 the restroom and airport signs (Aseos, Caballeros, Señoras, Salidas, Llegadas). No pair is cut in any chapter-1 session.
+- Tom: "isn't baño used more?" Yes: "el baño" is what you SAY (and the Find room welds ¿Dónde está el baño?); "Aseos" is what the door READS. Street words now teaches el baño ("¿El baño? A la derecha."); Signs · 2 gains Aseos with chat's old street context ("¿Los aseos? A la derecha."). Code's content edits, flagged to chat; "los aseos" in Where's the loo (chapter 3) is a separate, later item.
+
 ## v284 (2026-09-20) — numbers-1 (staged): delete as a full key; the set card says its chips speak
 - Tom: the delete glyph was too small. It is now a key with the digits' own tile chrome (106×64) and a 40×30 glyph. The set card gains one callout under its title, a small speaker + "Tap a number to hear it." (Code's copy, flagged to chat), instead of an icon on every chip; hidden when the session opens silent (the better-with-sound line shows there).
 

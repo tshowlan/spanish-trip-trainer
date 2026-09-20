@@ -810,21 +810,25 @@ const CURRICULUM = {
         { es: "a la izquierda", en: "to the left", tags: ["directions"], contextEs: "A la izquierda, gracias.", contextEn: "To the left, thanks." },
         { es: "todo recto", en: "straight ahead", tags: ["directions"], contextEs: "Todo recto, gracias.", contextEn: "Straight ahead, thanks." },
         { es: "cerca", en: "near / close", tags: ["directions"], contextEs: "Sí, cerca.", contextEn: "Yes, close." },
-        { es: "los aseos", en: "the restrooms", tags: ["bathroom"], contextEs: "¿Los aseos? A la derecha.", contextEn: "The toilets? To the right." },
+        /* "el baño" is what you SAY (understood everywhere; the Find room welds ¿Dónde está el baño?); "Aseos" is what the door
+           READS and lives in Signs (Tom 9/20; flagged to chat) */
+        { es: "el baño", en: "the bathroom", tags: ["bathroom"], contextEs: "¿El baño? A la derecha.", contextEn: "The bathroom? To the right." },
         { es: "la farmacia", en: "the pharmacy", tags: ["place", "health"], contextEs: "¿La farmacia? Cerca.", contextEn: "The pharmacy? Close." },
         { es: "la estación", en: "the station", tags: ["place", "transport"], contextEs: "¿La estación? Todo recto.", contextEn: "The station? Straight ahead." },
         { es: "el metro", en: "the metro", tags: ["place", "transport"], contextEs: "El metro, a la izquierda.", contextEn: "The metro, to the left." },
         { es: "taxi", en: "taxi", tags: ["transport"], contextEs: "Un taxi, por favor.", contextEn: "A taxi, please." },
         { es: "el hotel", en: "the hotel", tags: ["place", "lodging"], contextEs: "El hotel, cerca.", contextEn: "The hotel, close." } ] },
-      { id: "w-signs", topic: "Core signs", title: "Signs you'll read", emphasis: "read", items: [
+      /* split by THEME, never through a pair (Tom 9/20): · 1 the door signs (six), · 2 the restroom and airport signs (five) */
+      { id: "w-signs", topic: "Core signs", title: "Signs you'll read", emphasis: "read", splitAt: 6, items: [
         { es: "Salida", en: "Exit", read: true, tags: ["signs"], contextEs: "¿La salida? A la derecha.", contextEn: "The exit? To the right." },
         { es: "Entrada", en: "Entrance", read: true, tags: ["signs"], contextEs: "¿La entrada? Todo recto.", contextEn: "The entrance? Straight ahead." },
         { es: "Empujar", en: "Push (sign)", read: true, tags: ["signs"], contextEs: "Empujar. Vale.", contextEn: "Push. Okay." },
         { es: "Tirar", en: "Pull (sign)", read: true, tags: ["signs"], contextEs: "Tirar, no empujar.", contextEn: "Pull, not push." },
-        { es: "Caballeros", en: "Men (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Caballeros, a la derecha.", contextEn: "Men, to the right." },
-        { es: "Señoras", en: "Women (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Señoras, a la izquierda.", contextEn: "Women, to the left." },
         { es: "Abierto", en: "Open (sign)", read: true, tags: ["signs"], contextEs: "Abierto. Vale.", contextEn: "Open. Okay." },
         { es: "Cerrado", en: "Closed (sign)", read: true, tags: ["signs"], contextEs: "Cerrado. Vale.", contextEn: "Closed. Okay." },
+        { es: "Aseos", en: "Restrooms (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los aseos? A la derecha.", contextEn: "The restrooms? To the right." },
+        { es: "Caballeros", en: "Men (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Caballeros, a la derecha.", contextEn: "Men, to the right." },
+        { es: "Señoras", en: "Women (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Señoras, a la izquierda.", contextEn: "Women, to the left." },
         { es: "Salidas", en: "Departures", read: true, tags: ["signs", "airport"], contextEs: "Salidas, todo recto.", contextEn: "Departures, straight ahead." },
         { es: "Llegadas", en: "Arrivals", read: true, tags: ["signs", "airport"], contextEs: "Llegadas, a la izquierda.", contextEn: "Arrivals, to the left." } ] },
       { id: "w-help", topic: "Core help", title: "Help words", items: [

@@ -1974,7 +1974,8 @@ img.scene-art { width: 286px; }
 .num-line { color: var(--text-dim); font-size: 14px; margin-top: 16px; }
 .num-status { color: var(--text-dim); font-size: 13px; margin-top: 8px; }
 /* the keypad: one surface, dialer order, 64px keys, the shipped tile chrome */
-#qbody.anchored .answers.atpad { top: auto; bottom: 56px; translate: none; }
+#qbody.anchored .answers.atpad { top: auto; bottom: calc(76px + env(safe-area-inset-bottom)); translate: none; }   /* clear of the Continue bar, home indicator included (Tom 9/20) */
+#qbody.anchored .answers.atbill { top: calc(66.6dvh - var(--qtop, 90px)); translate: 0 -50%; }                        /* the bills center on the bottom-third line (Tom 9/20) */
 .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .bills { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
 .nkey { height: 64px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text); border-radius: var(--radius-sm); box-shadow: var(--shadow);
@@ -1985,11 +1986,14 @@ img.scene-art { width: 286px; }
 .nkey.empty { visibility: hidden; box-shadow: none; }
 .nkey.vwrong { border-color: var(--red); background: color-mix(in srgb, var(--red) 15%, transparent); }
 .nkey.dim { opacity: .35; pointer-events: none; }
+.nkey.delkey { color: var(--text); }   /* the calculator's delete: a key like the digits, a large glyph (Tom 9/20) */
+.num-tap-hint { display: flex; align-items: center; gap: 7px; color: var(--text-dim); font-size: 13px; margin: -6px 0 12px; }
+.num-tap-hint .ph { color: var(--accent-2, var(--accent)); flex: none; }
 .nkey.correct { border-color: var(--green); background: color-mix(in srgb, var(--green) 15%, transparent); }
 .nkey.bill { font-size: 18px; box-shadow: var(--shadow), inset 0 0 0 4px var(--bg-card), inset 0 0 0 5px var(--border); }   /* a bill face from tokens: the inner rule */
 .num-listen { margin: 6px 0 0; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 12px; min-height: 0; padding: 0; text-align: left; }
 .num-listen .hint { margin: 0; }
-@media (max-height: 700px) { #qbody.anchored:has(.atpad) .top { top: calc(12dvh - var(--qtop, 90px)); } .num-echo { min-height: 34px; margin-top: 6px; } }   /* short phones: the keypad keeps its 64px keys, the ask lifts */
+@media (max-height: 700px) { #qbody.anchored:has(.atpad) .top { top: calc(12dvh - var(--qtop, 90px)); } #qbody.anchored .answers.atpad { bottom: calc(62px + env(safe-area-inset-bottom)); } .numpad { gap: 8px; } .num-echo { min-height: 34px; margin-top: 6px; } }   /* short phones: the keypad keeps its 64px keys, the ask lifts */
 .num-echo { font-family: var(--font-display); font-size: 28px; font-weight: 600; min-height: 40px; margin-top: 10px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
 .num-echo .ph { color: var(--text-dim); opacity: .5; }
 .num-echo .rv { font-size: 24px; } .num-echo i { font-style: normal; color: var(--text-dim); margin: 0 6px; }
