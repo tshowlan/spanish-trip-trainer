@@ -1511,10 +1511,21 @@ function mcOptions(item, es2en, siblings) {
   const tags = item.tags || [];
   const sameTag = x => tags.length && (x.tags || []).some(t => tags.includes(t));
   const sameShape = x => shape(wc(val(x))) === tb;
-  const cand = [];
-  const add = arr => { for (const x of arr) if (val(x) !== answer && !cand.includes(x)) cand.push(x); };
   const sibs = (siblings && siblings.length ? siblings : []);
   const all = ALL_ITEMS || [];
+  if (isStaged("chapter-flow")) {
+    // SHAPE OUTRANKS TOPIC (Tom 9/20: "card" sat beside "Excuse me, I think there's a mistake on the bill"). The rungs are taken
+    // IN ORDER, best first, never sampled across: a word is only ever compared with words until every word in the pack is used up.
+    const short = n => n <= 3 ? 0 : 1;                                // a word and a two- or three-word phrase are one class ("card" beside "the check"); a sentence is another
+    const tbs = short(wc(answer)), sameShape = x => short(wc(val(x))) === tbs;
+    const picked = [];
+    const take = arr => { for (const x of shuffle(arr)) { const v = val(x); if (picked.length < 2 && v !== answer && !picked.includes(v)) picked.push(v); } };
+    [sibs.filter(x => sameTag(x) && sameShape(x)), sibs.filter(sameShape), all.filter(x => sameTag(x) && sameShape(x)), all.filter(sameShape),
+     all.filter(sameTag), sibs, all].forEach(tier => { if (picked.length < 2) take(tier); });
+    return { answer, options: shuffle([answer, ...picked]) };
+  }
+  const cand = [];
+  const add = arr => { for (const x of arr) if (val(x) !== answer && !cand.includes(x)) cand.push(x); };
   add(sibs.filter(x => sameTag(x) && sameShape(x)));                 // same lesson · same category · same shape
   if (cand.length < 3) add(all.filter(x => sameTag(x) && sameShape(x)));  // any lesson · same category · same shape
   if (cand.length < 3) add(all.filter(sameTag));                    // any lesson · same category · any shape
