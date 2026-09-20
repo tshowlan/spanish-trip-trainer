@@ -24,6 +24,7 @@
 - **"euros" stays glue**, never an item.
 - **Matching boards:** the sound that plays is already selected and chains to the next; eight-note tune starting a tone lower; boards over six rows fit one screen; Continue in the bottom bar.
 - **Wrong answers match the word's size:** size outranks topic; up to three words is one class; rungs run in strict order.
+- **The lap chip is gone from the closing listening board** (v294; the final pass stays, unnamed). It remains on the typed lap from Sentences by place onward and on the return door's "Run the lap".
 - **Chapter-one cards carry no inherited notes or anchors;** every word card shows its context.
 - **The anchored rung layout** (shipped v278): exercise at 16%, choices centered at 63%, build on two baselines at 47% / 53% with the bank at 73%; plain directions; Continue in the bottom bar.
 - **Re-homed phrases** (no phrase lost): ¿Habla inglés? and the two polite greetings → I only speak a little; the two number phrases → Euros & paying cash; the emergencies → If something's wrong; Pase, pase and ¿Está todo bien? → What locals say to you.
@@ -41,4 +42,3 @@
 - Do "The weld" / "The stretch" survive inside the machine rooms?
 - Grey ghost slots for used tiles (Duolingo) vs our hidden-but-spaced tiles.
 - The response exercise (someone says a line, pick the reply), parked.
-- The lap chip ("The lap: today's phrases, once each, fast.") above the chapter-1 listening board: Tom reads it as legacy; Code recommends dropping the label and keeping the final pass. Under discussion with Tom.

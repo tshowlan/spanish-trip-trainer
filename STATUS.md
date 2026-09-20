@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v294 (2026-09-20) — staged (pairs-chain): the lap chip leaves the closing listening board
+- Tom: "The lap: today's phrases, once each, fast." read as legacy. It described the old typed lap; on a chapter-1 word session the final pass is a listening board and needs no name. With the switch on the chip no longer rides that board (the final pass itself stays). The rooms never showed it. It stays where its words are still true: the typed lap from Sentences by place onward, and "Run the lap" on the return door.
+
 ## v293 (2026-09-20) — staged: big boards measure their own room; the chat ledger begins
 - Tom at play: on the closing listening board the "8 stronger" line and the all-set line sat behind the Continue bar. v291 sized cards from a fixed budget that ignored the lap chip above the grid and a phone's top inset. The grid now MEASURES at render (its own top, the Continue bar + bottom inset, the all-set lines) and sets `--pc-h`; verified with the chip at 375×812: 58px cards, the all-set block ends 31px above the bar. All-set copy for boards over four pairs no longer says "the four sounds".
 - PROCESS (Tom): the per-ship "For chat" block is retired; `docs/chat-ledger.md` collects draft copy, changed rulings, writing jobs and open questions, sent at milestones. CLAUDE.md's ship-report rule updated.

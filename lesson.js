@@ -298,7 +298,7 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   reviews.forEach(r => qs.push(r));
   const floor = chapterFloor(lesson);
   if (floor.lap === "scaffolded") {
-    if (pool.length >= 3) qs.push({ type: "pairs", items: pool.slice(), arc: true, encoreFirst: true, lap: true });   // 4. the lap: hear them all
+    if (pool.length >= 3) qs.push({ type: "pairs", items: pool.slice(), arc: true, encoreFirst: !isStaged("pairs-chain"), lap: true });   // 4. the final pass: hear them all. No lap chip (Tom 9/20: its words described the old typed lap, not a listening board)
   } else {
     shuffle(pool.slice(0, 7)).forEach((it, i) => qs.push({ type: "type_translation", item: it, arc: true, encoreFirst: i === 0, lap: true }));
   }
