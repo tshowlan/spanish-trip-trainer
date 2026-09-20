@@ -73,10 +73,13 @@ Momentum, Retention), deliberately anti-Duolingo.
   race and lose. Make operations idempotent and merge-based instead.
 
 ## Conventions (do these every time)
-- **Ship-report format (Tom's standing rule):** every work-completing reply ends with four labeled
+- **Ship-report format (Tom's standing rule):** every work-completing reply ends with labeled
   sections, in order: **TL;DR** (a few sentences, everything Tom needs) → **What I did** (full
-  bullets) → **For chat** (context + next steps to relay; paste-ready block when it's a handoff) →
-  **What you need to do** (Tom's concrete pass/review/save actions — never omit this one).
+  bullets) → **What you need to do** (Tom's concrete pass/review/save actions — never omit this one).
+  **For chat** is NO LONGER per ship (Tom, 2026-09-20): everything that wants chat's eye goes into
+  `docs/chat-ledger.md` (draft copy, changed rulings, writing jobs, open questions); Tom sends the
+  ledger at milestones. Add a **For chat** block to a reply only when a ruling is blocking work or
+  it is a deliberate handoff.
 - **Deploy = commit → push to `main` → GitHub Pages.** No build.
 - **Bump `sw.js` `CACHE` (`sts-vNN`) on every deploy** or clients serve stale scripts. Currently `sts-v107`.
 - **A new module needs BOTH** an `index.html` `<script>` (correct load order) **and** an `sw.js` `ASSETS` entry.

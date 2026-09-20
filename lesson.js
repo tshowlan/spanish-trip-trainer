@@ -2819,6 +2819,12 @@ function renderPairs(q) {
     grid.appendChild(a); grid.appendChild(e);
   }
   body.appendChild(grid);
+  if (items.length > 6) requestAnimationFrame(() => {               // ONE screen, measured (Tom 9/20): the phone's top inset and any chip above the grid change the room, so the grid asks the screen
+    const probe = el(`<div style="position:fixed;left:0;bottom:0;width:0;height:env(safe-area-inset-bottom);visibility:hidden"></div>`); document.body.appendChild(probe);
+    const inset = probe.getBoundingClientRect().height || 0; probe.remove();
+    const room = window.innerHeight - (grid.getBoundingClientRect().top + (window.scrollY || 0)) - (84 + inset) - 64;   // the Continue bar, then the all-set lines
+    grid.style.setProperty("--pc-h", Math.max(36, Math.min(62, Math.floor(room / items.length - 6))) + "px");
+  });
   // the first sound tile auto-plays on entry (Tom's ruling 2026-07-24): the board opens
   // with a voice, not silence — the learner hears tile 1 and starts hunting its meaning
   const firstAudio = text ? null : grid.querySelector('.pcard.audio');
@@ -2901,7 +2907,7 @@ function renderPairs(q) {
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
     const grown = el(`<div class="res-grown pairs-grown">
       ${clean ? `<div class="pairs-tick">${clean} stronger</div>` : ""}
-      <div class="pairs-allset">${numeral ? "Every number, matched to its word." : text ? "Every phrase, matched to what it means." : "Match the four sounds to their meanings and spellings."}</div>
+      <div class="pairs-allset">${numeral ? "Every number, matched to its word." : text ? "Every phrase, matched to what it means." : (items.length === 4 ? "Match the four sounds to their meanings and spellings." : "Every sound, matched to its meaning and its spelling.")}</div>
       ${isStaged("pairs-chain") ? "" : `<button class="btn res-cont">Continue</button>`}
     </div>`);
     let gone = false; const go = () => { if (gone) return; gone = true; slideOut(next); };

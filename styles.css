@@ -2007,5 +2007,5 @@ img.scene-art { width: 286px; }
 /* PAIRS, one screen (Tom 9/20): a board over six rows sizes its cards to the screen, so nothing scrolls and the Continue bar stays in view.
    290px = the chrome above (progress row, direction) + the all-set line + the Continue bar. */
 .pairs.pairs-fit { gap: 6px 12px; margin-top: 10px; }
-.pairs.pairs-fit .pcard, .pairs.pairs-text.pairs-fit .pcard { height: clamp(38px, calc((100dvh - 290px - env(safe-area-inset-bottom)) / var(--rows) - 6px), 62px); min-height: 0; padding: 4px 10px; line-height: 1.15; }
+.pairs.pairs-fit .pcard, .pairs.pairs-text.pairs-fit .pcard { height: var(--pc-h, clamp(36px, calc((100dvh - 300px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / var(--rows) - 6px), 62px)); min-height: 0; padding: 4px 10px; line-height: 1.15; }
 .pairs.pairs-fit + .pairs-grown { margin-top: 10px; }

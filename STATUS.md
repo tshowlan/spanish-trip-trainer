@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v293 (2026-09-20) — staged: big boards measure their own room; the chat ledger begins
+- Tom at play: on the closing listening board the "8 stronger" line and the all-set line sat behind the Continue bar. v291 sized cards from a fixed budget that ignored the lap chip above the grid and a phone's top inset. The grid now MEASURES at render (its own top, the Continue bar + bottom inset, the all-set lines) and sets `--pc-h`; verified with the chip at 375×812: 58px cards, the all-set block ends 31px above the bar. All-set copy for boards over four pairs no longer says "the four sounds".
+- PROCESS (Tom): the per-ship "For chat" block is retired; `docs/chat-ledger.md` collects draft copy, changed rulings, writing jobs and open questions, sent at milestones. CLAUDE.md's ship-report rule updated.
+
 ## v292 (2026-09-20) — staged (chapter-flow): Libre / Ocupado replace Salidas / Llegadas in Signs
 - Tom's call after the audit question: the airport pair is posted with English in Spain, so it gave up its two seats to Libre ("¿El taxi? Libre.") and Ocupado ("¿El baño? Ocupado."), signs that are never translated. Salidas / Llegadas stay in chapter 3's Reading the airport. Contexts are Code's drafts to chat's rule. Signs you'll read: Salida, Entrada, Empujar, Tirar, Abierto, Cerrado, Libre, Ocupado.
 
