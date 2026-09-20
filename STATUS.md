@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v283 (2026-09-20) — numbers-1 (staged): a delete key on the run keypad
+- Tom: a delete to the right of 0, looking like the iOS calculator's. `_numKeypad(kind, onTap, onDelete)`: the bottom-right corner becomes a glyph key (a left-pointing tag with an x, no tile chrome) on RUNS, where taps collect; it takes back the last digit, sits dim with nothing entered and after the answer; the last tap still submits. Not on the heard single (every wrong tap is rejected there, so nothing wrong is ever entered), the reverse keypad, or the bills. Verified: 2, 9, delete → "2 – –", then a clean run; tappable at 375×812. Flag for chat: their ruling kept the corners for Show it again / Continue; delete now holds the right one.
+
 ## v282 (2026-09-20) — numbers-1 (staged): bills on the bottom-third line; keypad clear of Continue
 - Tom, from the gallery: the bills row sat far too low and the 0 key met the Continue bar. The bills now center on the 66.6% line (`.answers.atbill`); the keypad's bottom offset is 76px plus the home-indicator inset (62px and 8px gaps under 700px tall). Measured: 36px between the 0 key and Continue at 375×812, 22px at 375×667; bills center at 66.6%. Gallery (dev/numbers-gallery.html) refreshed.
 

@@ -2637,14 +2637,16 @@ function renderNumSet(q) {
   const f = footer(`<button class="btn" id="cont">Continue</button>`);
   f.querySelector("#cont").addEventListener("click", () => next());
 }
-function _numKeypad(kind, onTap) {                                     // ONE surface: the digits never move (1-2-3 / 4-5-6 / 7-8-9 / 0)
+const NUM_DELETE_SVG = `<svg viewBox="0 0 32 24" width="30" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.2 2.5h15.3a3 3 0 0 1 3 3v13a3 3 0 0 1-3 3H11.2a3 3 0 0 1-2.2-1L2.6 13.3a2 2 0 0 1 0-2.6L9 3.5a3 3 0 0 1 2.2-1Z"/><path d="m15.2 8.2 7.6 7.6m0-7.6-7.6 7.6"/></svg>`;   // the calculator's backspace: a tag pointing left with an x (Tom 9/20)
+function _numKeypad(kind, onTap, onDelete) {                                     // ONE surface: the digits never move (1-2-3 / 4-5-6 / 7-8-9 / 0)
   if (kind === "bills") {
     const row = el(`<div class="bills"></div>`);
     NUM_BILLS.forEach(v => { const b = el(`<button class="nkey bill" data-v="${v}"><span>${v}</span></button>`); b.addEventListener("click", () => onTap(b, String(v))); row.appendChild(b); });
     return row;
   }
   const pad = el(`<div class="numpad"></div>`);
-  [1, 2, 3, 4, 5, 6, 7, 8, 9, null, 0, null].forEach(d => {
+  [1, 2, 3, 4, 5, 6, 7, 8, 9, null, 0, onDelete ? "del" : null].forEach(d => {
+    if (d === "del") { const k = el(`<button class="nkey delkey dim" aria-label="Delete">${NUM_DELETE_SVG}</button>`); k.addEventListener("click", () => onDelete(k)); pad.appendChild(k); return; }
     if (d === null) { pad.appendChild(el(`<span class="nkey empty"></span>`)); return; }
     const word = kind === "words" ? ((_numBy(d === 0 ? 10 : d) || {}).es || "") : null;   // the reverse keypad: the keys are the words; diez takes the bottom key
     if (kind === "words" && !word) { pad.appendChild(el(`<span class="nkey empty"></span>`)); return; }
@@ -2745,9 +2747,10 @@ function renderNumRun(q) {
   body.appendChild(top);
   const want = seq.map(it => String(it.num)), total = want.join("").length;
   let taps = "";
-  const paint = () => { echo.innerHTML = Array.from({ length: total }, (_, i) => `<span class="${i < taps.length ? "in" : "ph"}">${i < taps.length ? taps[i] : "–"}</span>`).join(""); };
-  paint();
-  const pad = _numKeypad("digits", (key, val) => {
+  const paint = () => { echo.innerHTML = Array.from({ length: total }, (_, i) => `<span class="${i < taps.length ? "in" : "ph"}">${i < taps.length ? taps[i] : "–"}</span>`).join("");
+    const dk = pad && pad.querySelector(".delkey"); if (dk) dk.classList.toggle("dim", !taps.length || !!run.answered); };
+  let pad = null;
+  pad = _numKeypad("digits", (key, val) => {
     if (run.answered || playing) return;
     taps += val; paint();
     if (taps.length < total) return;
@@ -2765,8 +2768,10 @@ function renderNumRun(q) {
     // adaptive, never punishing: tighter and longer as runs clear, easier after a miss
     if (okAll && !supported) { pace.clears++; pace.ms = Math.max(300, Math.round(pace.ms * 0.88)); if (pace.clears >= 2) pace.len = 4; }
     else if (!okAll) { pace.clears = 0; pace.ms = Math.min(700, Math.round(pace.ms * 1.2)); pace.len = 3; }
+    pad.querySelector(".delkey").classList.add("dim");
     _numDone(q);
-  });
+  }, () => { if (run.answered || playing || !taps.length) return; taps = taps.slice(0, -1); haptic("press"); paint(); });   // take back the last digit; the last tap still submits
+  paint();
   const answers = el(`<div class="answers atpad"></div>`); answers.appendChild(pad); body.appendChild(answers);
 }
 function renderPairs(q) {

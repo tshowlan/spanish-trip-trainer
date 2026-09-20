@@ -1986,6 +1986,8 @@ img.scene-art { width: 286px; }
 .nkey.empty { visibility: hidden; box-shadow: none; }
 .nkey.vwrong { border-color: var(--red); background: color-mix(in srgb, var(--red) 15%, transparent); }
 .nkey.dim { opacity: .35; pointer-events: none; }
+.nkey.delkey { background: transparent; border-color: transparent; box-shadow: none; color: var(--text); }   /* the calculator's delete: a glyph, not a tile */
+.nkey.delkey:active { transform: scale(.94); box-shadow: none; }
 .nkey.correct { border-color: var(--green); background: color-mix(in srgb, var(--green) 15%, transparent); }
 .nkey.bill { font-size: 18px; box-shadow: var(--shadow), inset 0 0 0 4px var(--bg-card), inset 0 0 0 5px var(--border); }   /* a bill face from tokens: the inner rule */
 .num-listen { margin: 6px 0 0; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 12px; min-height: 0; padding: 0; text-align: left; }
