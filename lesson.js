@@ -2617,6 +2617,7 @@ function renderNumSet(q) {
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Numbers</div>`));
   body.appendChild(el(`<div class="num-title">One to ten, and the bills.</div>`));
+  if (!_numSilent()) body.appendChild(el(`<div class="num-tap-hint">${icon("speaker", 15)}<span>Tap a number to hear it.</span></div>`));   // one callout, not an icon per tile (Tom 9/20)
   const chip = it => {
     const c = el(`<button class="num-chip"><span class="n">${it.num}</span><span class="w">${it.es}</span></button>`);
     c.addEventListener("click", () => { c.classList.add("heard"); if (!_numSilent()) speak(it.es); });
@@ -2637,7 +2638,7 @@ function renderNumSet(q) {
   const f = footer(`<button class="btn" id="cont">Continue</button>`);
   f.querySelector("#cont").addEventListener("click", () => next());
 }
-const NUM_DELETE_SVG = `<svg viewBox="0 0 32 24" width="30" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.2 2.5h15.3a3 3 0 0 1 3 3v13a3 3 0 0 1-3 3H11.2a3 3 0 0 1-2.2-1L2.6 13.3a2 2 0 0 1 0-2.6L9 3.5a3 3 0 0 1 2.2-1Z"/><path d="m15.2 8.2 7.6 7.6m0-7.6-7.6 7.6"/></svg>`;   // the calculator's backspace: a tag pointing left with an x (Tom 9/20)
+const NUM_DELETE_SVG = `<svg viewBox="0 0 32 24" width="40" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.2 2.5h15.3a3 3 0 0 1 3 3v13a3 3 0 0 1-3 3H11.2a3 3 0 0 1-2.2-1L2.6 13.3a2 2 0 0 1 0-2.6L9 3.5a3 3 0 0 1 2.2-1Z"/><path d="m15.2 8.2 7.6 7.6m0-7.6-7.6 7.6"/></svg>`;   // the calculator's backspace: a tag pointing left with an x (Tom 9/20)
 function _numKeypad(kind, onTap, onDelete) {                                     // ONE surface: the digits never move (1-2-3 / 4-5-6 / 7-8-9 / 0)
   if (kind === "bills") {
     const row = el(`<div class="bills"></div>`);

@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v284 (2026-09-20) — numbers-1 (staged): delete as a full key; the set card says its chips speak
+- Tom: the delete glyph was too small. It is now a key with the digits' own tile chrome (106×64) and a 40×30 glyph. The set card gains one callout under its title, a small speaker + "Tap a number to hear it." (Code's copy, flagged to chat), instead of an icon on every chip; hidden when the session opens silent (the better-with-sound line shows there).
+
 ## v283 (2026-09-20) — numbers-1 (staged): a delete key on the run keypad
 - Tom: a delete to the right of 0, looking like the iOS calculator's. `_numKeypad(kind, onTap, onDelete)`: the bottom-right corner becomes a glyph key (a left-pointing tag with an x, no tile chrome) on RUNS, where taps collect; it takes back the last digit, sits dim with nothing entered and after the answer; the last tap still submits. Not on the heard single (every wrong tap is rejected there, so nothing wrong is ever entered), the reverse keypad, or the bills. Verified: 2, 9, delete → "2 – –", then a clean run; tappable at 375×812. Flag for chat: their ruling kept the corners for Show it again / Continue; delete now holds the right one.
 
