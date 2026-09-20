@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v286 (2026-09-20) — chapter-flow (staged): Bathroom words; Signs as eight; lejos
+- Tom: "el baño" beside taxi and metro reads wrong, and restaurants label the door many ways, so teach several. New session **Bathroom words** after Street words (its contexts use the directions): el baño (said, "¿El baño, por favor?") + Aseos, Servicios, Caballeros, Señoras (read). Signs you'll read is now the eight door and airport signs, one session, no split. Street words gains lejos as cerca's pair ("¿Cerca? No, lejos."), so its halves are directions | places. Code's content edits, flagged to chat.
+- Chapter 1 audit (composed fresh, medians): 13 sessions, 88 words, ~43 min; sessions run 2.8-3.9 min; the five-word sessions sit under 3 min. Numbers: 13 numbers in 19 beats with 3 runs. Discussion with Tom open on a second numbers session.
+
 ## v285 (2026-09-20) — chapter-flow (staged): Signs split by theme; el baño said, Aseos read
 - Tom at play: Caballeros and Señoras were cut across Signs · 1 / · 2 (halves by position). The pack may now name the cut (`splitAt`, read by `_splitKit`); Signs splits 6 / 5 by theme: · 1 the door signs (Salida, Entrada, Empujar, Tirar, Abierto, Cerrado), · 2 the restroom and airport signs (Aseos, Caballeros, Señoras, Salidas, Llegadas). No pair is cut in any chapter-1 session.
 - Tom: "isn't baño used more?" Yes: "el baño" is what you SAY (and the Find room welds ¿Dónde está el baño?); "Aseos" is what the door READS. Street words now teaches el baño ("¿El baño? A la derecha."); Signs · 2 gains Aseos with chat's old street context ("¿Los aseos? A la derecha."). Code's content edits, flagged to chat; "los aseos" in Where's the loo (chapter 3) is a separate, later item.
