@@ -1289,6 +1289,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v287 (2026-09-20) — staged: Numbers as two sessions, the price closer, Street words whole
+- Tom took Code's recommendations from the chapter-1 audit. **Numbers · 1 (meet them):** the set card, five heard singles (a neighbor pair + three), the numeral board, five on the say keypad, two bills, three how-many rungs (17 beats). **Numbers · 2 (by ear):** no new words; runs ×2, rungs ×3, bills ×3, runs ×3, rungs ×3, runs ×3 as the lap (17 beats, eight runs, growing to four). Same thirteen item objects in both (`numbers: "meet" | "ear"` in the flow data); · 2 is `noDerivedDone` (done only by being played). With numbers-1 off, · 2 drops and the kit rule halves · 1 as before.
+- **Paying words closes on two heard prices** (`priceCloser: 2` → `_priceCloser()`): the bills row, only numbers already met, only with numbers-1 on.
+- **Street words is one ten-word session** (`noSplit`): directions, then places; ~4.7 min. Counter stays in halves; Bathroom words stays short.
+- "euros" stays glue (Tom): it shows up, it is never taught.
+- Chapter 1 now: 13 sessions, 88 words.
+
 ## v286 (2026-09-20) — chapter-flow (staged): Bathroom words; Signs as eight; lejos
 - Tom: "el baño" beside taxi and metro reads wrong, and restaurants label the door many ways, so teach several. New session **Bathroom words** after Street words (its contexts use the directions): el baño (said, "¿El baño, por favor?") + Aseos, Servicios, Caballeros, Señoras (read). Signs you'll read is now the eight door and airport signs, one session, no split. Street words gains lejos as cerca's pair ("¿Cerca? No, lejos."), so its halves are directions | places. Code's content edits, flagged to chat.
 - Chapter 1 audit (composed fresh, medians): 13 sessions, 88 words, ~43 min; sessions run 2.8-3.9 min; the five-word sessions sit under 3 min. Numbers: 13 numbers in 19 beats with 3 runs. Discussion with Tom open on a second numbers session.

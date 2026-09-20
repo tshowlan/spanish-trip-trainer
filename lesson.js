@@ -390,7 +390,7 @@ function composeSession(lesson) {
       return qs;
     }
   }
-  if (isStaged("journey-1")) return composeKitInterleaved(lesson, newItems, reviewPool, rungCap);   // STAGED: per-item weave
+  if (isStaged("journey-1")) return _priceCloser(lesson, composeKitInterleaved(lesson, newItems, reviewPool, rungCap));   // STAGED: per-item weave
 
   // SPRINT 2 RULING 3 — THE INTRO LADDER: a new item's first lesson runs a fixed mini-arc,
   // Present → Grasp (the new chunk alone, word-scale MC) → Build (tiles/letters) → Variation
@@ -2593,17 +2593,32 @@ const _numBy = n => _numItems().find(it => it.num === n);
 function composeNumbers(lesson) {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();
   const items = lesson.items.filter(it => it.num != null), by = n => items.find(it => it.num === n);
-  const qs = [];
+  const qs = [], pad = (it, extra) => Object.assign({ type: "num_pad", item: it, arc: true }, extra || {});
   if (items.some(it => exposuresOf(it) === 0)) qs.push({ type: "num_set", items, arc: true });          // met as a set, never a card per number
+  const ctx = shuffle(items.filter(contextChoiceFeasible));
+  const rungs = (from, n) => ctx.slice(from, from + n).map((it, k) => kitRungFor(lesson, it, items, from + k));   // how many: chat's contexts on the shipped rungs
+  const bills = n => sample(items.filter(it => NUM_BILLS.includes(it.num)), n).map(it => pad(it, { bills: true }));
+  const runs = n => Array.from({ length: n }, () => ({ type: "num_run", arc: true }));
+  if (lesson.numbers === "ear") {
+    // NUMBERS · 2, BY EAR (Tom 9/20): no new words, the ear's workout; runs lean on the neighbor pairs and grow to four
+    qs.push(...runs(2), ...rungs(0, 3), ...bills(3), ...runs(3), ...rungs(3, 3), ...runs(3).map(q => Object.assign(q, { lap: true })));
+    return _applyFloor(qs, lesson);
+  }
+  // NUMBERS · 1, MEET THEM: heard singles (a neighbor pair + three), the numeral board, the say keypad, two bills, three rungs
   const pair = sample(NUM_NEIGHBORS.filter(p => by(p[0]) && by(p[1])), 1)[0] || [items[0].num, items[1].num];
-  const third = sample(items.filter(it => !pair.includes(it.num)), 1)[0];
-  shuffle([by(pair[0]), by(pair[1]), third]).forEach(it => qs.push({ type: "num_pad", item: it, arc: true }));   // heard singles ×3: the introduction (silent: they run as the flashed twin)
+  shuffle([by(pair[0]), by(pair[1])].concat(sample(items.filter(it => !pair.includes(it.num)), 3))).forEach(it => qs.push(pad(it)));   // silent: they run as the flashed twin
   qs.push({ type: "pairs", mode: "numeral", items: sample(items, Math.min(7, items.length)), arc: true });
-  sample(items.filter(it => it.num <= 10), 3).forEach(it => qs.push({ type: "num_pad", item: it, reverse: true, arc: true }));   // the saying side
-  sample(items.filter(it => NUM_BILLS.includes(it.num)), 2).forEach(it => qs.push({ type: "num_pad", item: it, bills: true, arc: true }));   // a price heard, as a bare number
-  shuffle(items.filter(contextChoiceFeasible)).slice(0, 6).forEach((it, k) => qs.push(kitRungFor(lesson, it, items, k)));   // how many: chat's contexts on the shipped rungs [tune: 6]
-  for (let k = 0; k < 3; k++) qs.push({ type: "num_run", lap: true, arc: true });                       // runs as the lap
+  sample(items.filter(it => it.num <= 10), 5).forEach(it => qs.push(pad(it, { reverse: true })));          // the saying side
+  qs.push(...bills(2), ...rungs(0, 3));
+  if (lesson.numbers === true) qs.push(...runs(3).map(q => Object.assign(q, { lap: true })));              // a pack with one numbers session keeps runs as its lap
   return _applyFloor(qs, lesson);
+}
+/* a session may CLOSE on heard prices (pack: `priceCloser: n`): the bills row, where numbers get used. Only numbers already met. */
+function _priceCloser(lesson, qs) {
+  if (!lesson.priceCloser || !isStaged("numbers-1")) return qs;
+  const met = _numItems().filter(it => NUM_BILLS.includes(it.num) && exposuresOf(it) > 0);
+  sample(met, lesson.priceCloser).forEach(it => qs.push({ type: "num_pad", item: it, bills: true, arc: true }));
+  return qs;
 }
 function _numDone(q, goStrength) {                                     // the rep's exit: the bar advances, Continue waits at the bottom (Pacing Rule: the learner's tap)
   const barEl = document.querySelector(".pbar > i");

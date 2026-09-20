@@ -749,9 +749,11 @@ const CURRICULUM = {
         { es: "¿Todo bien?", en: "Everything okay?", hear: true, tags: ["service"], contextEs: "¿Todo bien? Sí, gracias.", contextEn: "All good? Yes, thanks." },
         { es: "Ahora mismo", en: "Right away", hear: true, tags: ["service"], contextEs: "Sí, ahora mismo.", contextEn: "Yes, right away." },
         { es: "Pase", en: "Come in", hear: true, tags: ["service"], contextEs: "Pase, por favor.", contextEn: "Come in, please." } ] },
-      /* ONE numbers session (chat's rulings 2026-09-20): met as a SET, practised by ear on the keypad. `num` is the numeral.
-         With "numbers-1" staged the numbers composer runs it whole; otherwise the kit rule splits it into halves as before. */
-      { id: "sp0-numbers", topic: "Core numbers", title: "Numbers", numbers: true, items: [
+      /* NUMBERS, two sessions, the same thirteen (Tom 9/20: one session was the densest load in the chapter with the least ear work):
+         · 1 MEETS them (the set card, heard singles, the numeral board, the say keypad, two bills, three how-many rungs);
+         · 2 is BY EAR (runs that lean on the neighbor pairs, the bills, the how-many rungs; no new words). `num` is the numeral.
+         With "numbers-1" off, · 2 drops out and the kit rule splits · 1 into halves as before. */
+      { id: "sp0-numbers", topic: "Core numbers", title: "Numbers · 1", numbers: "meet", items: [
         { es: "uno", num: 1, en: "one", tags: ["numbers"], contextEs: "Uno, por favor.", contextEn: "One, please." },
         { es: "dos", num: 2, en: "two", tags: ["numbers"], contextEs: "Dos, gracias.", contextEn: "Two, thanks." },
         { es: "tres", num: 3, en: "three", tags: ["numbers"], contextEs: "¿Dos? No, tres.", contextEn: "Two? No, three." },
@@ -765,7 +767,9 @@ const CURRICULUM = {
         { es: "veinte", num: 20, en: "twenty", tags: ["numbers"], contextEs: "¿Veinte? No, diez.", contextEn: "Twenty? No, ten." },
         { es: "cincuenta", num: 50, en: "fifty", tags: ["numbers"], contextEs: "¿Cincuenta? No, veinte.", contextEn: "Fifty? No, twenty." },
         { es: "cien", num: 100, en: "one hundred", tags: ["numbers"], contextEs: "¿Cien? No, cincuenta.", contextEn: "A hundred? No, fifty." } ] },
-      { id: "w-paying", topic: "Core paying", title: "Paying words", items: [
+      { id: "sp0-numbers-ear", topic: "Core numbers", title: "Numbers · 2", numbers: "ear", noDerivedDone: true, items: [
+        { es: "uno" }, { es: "dos" }, { es: "tres" }, { es: "cuatro" }, { es: "cinco" }, { es: "seis" }, { es: "siete" }, { es: "ocho" }, { es: "nueve" }, { es: "diez" }, { es: "veinte" }, { es: "cincuenta" }, { es: "cien" } ] },
+      { id: "w-paying", topic: "Core paying", title: "Paying words", priceCloser: 2, items: [   // closes on two heard prices (the bills row): where numbers get used
         { es: "la cuenta", en: "the check", tags: ["money", "restaurant"], contextEs: "La cuenta, por favor.", contextEn: "The check, please." },
         { es: "tarjeta", en: "card", tags: ["money"], contextEs: "¿Tarjeta? Sí.", contextEn: "Card? Yes." },
         { es: "efectivo", en: "cash", tags: ["money"], contextEs: "¿Tarjeta o efectivo?", contextEn: "Card or cash?" },
@@ -805,7 +809,7 @@ const CURRICULUM = {
         { es: "soja", en: "soy", profile: { allergies: "soy" }, tags: ["dietary"], contextEs: "Sin soja, por favor.", contextEn: "No soy, please." },
         { es: "carne", en: "meat", profile: { needs: "vegetarian" }, tags: ["dietary"], contextEs: "Sin carne, por favor.", contextEn: "No meat, please." },
         { es: "vegetariano", en: "vegetarian", profile: { needs: "vegetarian" }, tags: ["dietary"], contextEs: "Vegetariano, por favor.", contextEn: "Vegetarian, please." } ] },
-      { id: "w-street", topic: "Core street", title: "Street words", items: [
+      { id: "w-street", topic: "Core street", title: "Street words", noSplit: true, items: [   // one ten-word session: directions, then places (Tom 9/20; two fives ran under three minutes)
         { es: "a la derecha", en: "to the right", tags: ["directions"], contextEs: "A la derecha, gracias.", contextEn: "To the right, thanks." },
         { es: "a la izquierda", en: "to the left", tags: ["directions"], contextEs: "A la izquierda, gracias.", contextEn: "To the left, thanks." },
         { es: "todo recto", en: "straight ahead", tags: ["directions"], contextEs: "Todo recto, gracias.", contextEn: "Straight ahead, thanks." },

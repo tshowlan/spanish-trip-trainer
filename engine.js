@@ -128,11 +128,12 @@ function _journeyOneDeck(deck) {
   s0.lessons = out;
 }
 function _splitKit(l) {                                  // ruling 4: kits over 8 phrases run as halves
-  if (l.numbers && typeof isStaged === "function" && isStaged("numbers-1")) return [l];   // one session, met as a set (rulings 2026-09-20)
+  if (l.noSplit || (l.numbers && typeof isStaged === "function" && isStaged("numbers-1"))) return [l];   // the pack may keep a session whole; numbers are met as a set
   if (l.chain || l.machine || l.machines || !(l.items || []).length || l.items.length <= 8) return [l];
   const h = l.splitAt || Math.ceil(l.items.length / 2);      // the pack may name the cut, so a pair is never split
-  return [Object.assign({}, l, { id: l.id + "-1", title: l.title + " \u00b7 1", items: l.items.slice(0, h) }),
-          Object.assign({}, l, { id: l.id + "-2", title: l.title + " \u00b7 2", items: l.items.slice(h), primer: null })];
+  const t = l.title.replace(/ \u00b7 \d$/, "");          // a titled half never reads "· 1 · 1"
+  return [Object.assign({}, l, { id: l.id + "-1", title: t + " \u00b7 1", items: l.items.slice(0, h) }),
+          Object.assign({}, l, { id: l.id + "-2", title: t + " \u00b7 2", items: l.items.slice(h), primer: null })];
 }
 /* THE CHAPTER FLOW (Tom 2026-09-16/17, chat's pass 9/17; STAGED "chapter-flow"). Arranges the pack's `flow`
    data: stage 0 = THE WORDS (the pack's word sessions; a word that already lives in the pack REUSES that
@@ -150,7 +151,8 @@ function _chapterFlowDeck(deck, rooms) {
     const it = Object.assign({ tier: 1 }, bySlug.get(k) || {}, d); made.set(k, it); return it;
   };
   const fits = d => !d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : (p.needs || []).includes(d.profile.needs));
-  const words = flow.words.map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, items: w.items.filter(fits).map(mk) }));
+  const numbersOn = typeof isStaged === "function" && isStaged("numbers-1");
+  const words = flow.words.filter(w => numbersOn || w.numbers !== "ear").map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, items: w.items.filter(fits).map(mk) }));
   const old = deck.stages;
   // no phrase is lost: what the old kit held that is not a word re-homes into a later lesson
   (old[0] ? old[0].lessons : []).filter(l => !l.machine).forEach(l => {
@@ -216,6 +218,7 @@ function lessonDone(id) { return !!state.lessons[id] || lessonMastered(id); }
 function lessonMastered(id) {
   for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) {
     if (l.id !== id) continue;
+    if (l.noDerivedDone) return false;                  // a practice session over words met elsewhere is done only by being played
     return l.items.length > 0 && l.items.every(it => { const s = state.learn && state.learn[it.id]; return s && s.lastCorrect; });
   }
   return false;
