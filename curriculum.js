@@ -835,8 +835,11 @@ const CURRICULUM = {
         { es: "Tirar", en: "Pull (sign)", read: true, tags: ["signs"], contextEs: "Tirar, no empujar.", contextEn: "Pull, not push." },
         { es: "Abierto", en: "Open (sign)", read: true, tags: ["signs"], contextEs: "Abierto. Vale.", contextEn: "Open. Okay." },
         { es: "Cerrado", en: "Closed (sign)", read: true, tags: ["signs"], contextEs: "Cerrado. Vale.", contextEn: "Closed. Okay." },
-        { es: "Salidas", en: "Departures", read: true, tags: ["signs", "airport"], contextEs: "Salidas, todo recto.", contextEn: "Departures, straight ahead." },
-        { es: "Llegadas", en: "Arrivals", read: true, tags: ["signs", "airport"], contextEs: "Llegadas, a la izquierda.", contextEn: "Arrivals, to the left." } ] },
+        /* Libre / Ocupado take the airport pair's seats (Tom 9/20): Salidas / Llegadas are posted with English at Spanish airports and big
+           stations and stay in chapter 3's Reading the airport; these two are never translated (a taxi's light, a bathroom lock, a table).
+           Contexts are Code's drafts to chat's rule (taxi and el baño are already met), flagged for the voice pass. */
+        { es: "Libre", en: "Free / vacant (sign)", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
+        { es: "Ocupado", en: "Occupied / taken (sign)", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
       { id: "w-help", topic: "Core help", title: "Help words", items: [
         { es: "Ayuda", en: "Help", tags: ["emergency"], contextEs: "Ayuda, por favor.", contextEn: "Help, please." },
         { es: "médico", en: "doctor", tags: ["emergency", "health"], contextEs: "Un médico, por favor.", contextEn: "A doctor, please." },

@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v292 (2026-09-20) — staged (chapter-flow): Libre / Ocupado replace Salidas / Llegadas in Signs
+- Tom's call after the audit question: the airport pair is posted with English in Spain, so it gave up its two seats to Libre ("¿El taxi? Libre.") and Ocupado ("¿El baño? Ocupado."), signs that are never translated. Salidas / Llegadas stay in chapter 3's Reading the airport. Contexts are Code's drafts to chat's rule. Signs you'll read: Salida, Entrada, Empujar, Tirar, Abierto, Cerrado, Libre, Ocupado.
+
 ## v291 (2026-09-20) — staged (pairs-chain): big boards fit one screen; eight-note tune from a tone lower; Continue in the bar
 - Tom at play: the Signs board (8 pairs) scrolled and its Continue was clipped. Boards over six rows now size their cards to the screen (`.pairs-fit`, `--rows`: clamp 38-62px, 6px gaps): 59px cards for 8 rows and 46px for Street words' 10 at 375×812, nothing scrolls. The board's Continue moves from under the grid to the bottom bar (the rule every other exercise follows).
 - The tune: eight notes, one per match, starting a whole tone LOWER (rates 0.891 → 2.0, the octave on the 8th); boards past eight hold the octave. Four-pair boards now start a tone lower too (Tom: all boards). Shipped behaviour unchanged with the switch off.
