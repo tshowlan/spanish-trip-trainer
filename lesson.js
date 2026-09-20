@@ -2698,7 +2698,7 @@ function renderNumPad(q) {
       setTimeout(() => { key.classList.remove("vwrong"); if (expected.length === 1) key.classList.add("dim"); }, 900);
     }
   });
-  const answers = el(`<div class="answers atpad"></div>`); answers.appendChild(pad); body.appendChild(answers);
+  const answers = el(`<div class="answers ${q.bills ? "atbill" : "atpad"}"></div>`); answers.appendChild(pad); body.appendChild(answers);
 }
 function renderNumRun(q) {
   const silent = _numSilent(), body = $("#qbody"); _anchor(body);

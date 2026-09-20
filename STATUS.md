@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v282 (2026-09-20) — numbers-1 (staged): bills on the bottom-third line; keypad clear of Continue
+- Tom, from the gallery: the bills row sat far too low and the 0 key met the Continue bar. The bills now center on the 66.6% line (`.answers.atbill`); the keypad's bottom offset is 76px plus the home-indicator inset (62px and 8px gaps under 700px tall). Measured: 36px between the 0 key and Continue at 375×812, 22px at 375×667; bills center at 66.6%. Gallery (dev/numbers-gallery.html) refreshed.
+
 ## v281 (2026-09-20) — STAGED "numbers-1": numbers as an ear skill (the set card, the keypad, runs)
 - Tom's strategy (9/19-20) + chat's rulings (docs/numbers-rulings.md). Chapter 1's two Numbers kits become ONE session (`numbers: true` in `CURRICULUM.flow`, each item carries `num`); with the switch off the kit rule still splits it into Numbers · 1 / · 2 as before.
 - `composeNumbers()`: the set card (when any number is new) → heard singles ×3 (a neighbor pair + one) → the numeral-to-word board (7 pairs) → the reverse keypad ×3 → the bills ×2 → six of chat's "how many" contexts on the shipped rungs [tune] → runs as the lap ×3. 19 beats.
