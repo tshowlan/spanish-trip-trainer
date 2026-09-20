@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v289 (2026-09-20) — staged: Paying words drops the heard-price closer
+- Tom at play: the two "Tap the bill" beats after Paying words' listening board read as a random tack-on. Removed from the session (`priceCloser` off in the flow data; `_priceCloser()` stays for chapter 2, where numbers and paying words combine in a sentence). Paying words ends on its listening board again, 14 beats.
+
 ## v288 (2026-09-20) — staged (chapter-flow): wrong answers match the word's size
 - Tom at play: Paying words offered "Excuse me, I think there's a mistake on the bill" beside "card". Cause: `mcOptions()` ranked "same topic, any length" above "same length", then sampled across every rung it had opened. With chapter-flow staged the ladder now runs in strict order, best rung first, never sampled across: same session + topic + size → same session + size → any session + topic + size → any session + size → (only then) topic, session, anything. Size has two classes: up to three words, or a sentence, so "card" sits beside "the check", never beside a sentence.
 - Measured over 4,040 intro-card checks across chapter 1: zero sentences beside a word; 95% of wrong answers come from the session's own words. The shipped ladder is untouched with the switch off.

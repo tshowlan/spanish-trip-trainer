@@ -769,7 +769,7 @@ const CURRICULUM = {
         { es: "cien", num: 100, en: "one hundred", tags: ["numbers"], contextEs: "¿Cien? No, cincuenta.", contextEn: "A hundred? No, fifty." } ] },
       { id: "sp0-numbers-ear", topic: "Core numbers", title: "Numbers · 2", numbers: "ear", noDerivedDone: true, items: [
         { es: "uno" }, { es: "dos" }, { es: "tres" }, { es: "cuatro" }, { es: "cinco" }, { es: "seis" }, { es: "siete" }, { es: "ocho" }, { es: "nueve" }, { es: "diez" }, { es: "veinte" }, { es: "cincuenta" }, { es: "cien" } ] },
-      { id: "w-paying", topic: "Core paying", title: "Paying words", priceCloser: 2, items: [   // closes on two heard prices (the bills row): where numbers get used
+      { id: "w-paying", topic: "Core paying", title: "Paying words", items: [   // no heard-price closer here (Tom 9/20: it read as a tack-on after the lap); numbers and paying combine in chapter 2
         { es: "la cuenta", en: "the check", tags: ["money", "restaurant"], contextEs: "La cuenta, por favor.", contextEn: "The check, please." },
         { es: "tarjeta", en: "card", tags: ["money"], contextEs: "¿Tarjeta? Sí.", contextEn: "Card? Yes." },
         { es: "efectivo", en: "cash", tags: ["money"], contextEs: "¿Tarjeta o efectivo?", contextEn: "Card or cash?" },
