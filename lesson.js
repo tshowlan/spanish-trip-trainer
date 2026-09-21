@@ -1591,7 +1591,7 @@ function sessionSheet() {
   wrap.querySelector("#cs-cancel").addEventListener("click", close);
   const sb = wrap.querySelector("#cs-sound");
   if (sb) sb.addEventListener("click", () => { run.soundOff = false; close(); toast("Sound is back on"); });
-  wrap.querySelector("#cs-ok").addEventListener("click", () => { close(); renderHome(); });
+  wrap.querySelector("#cs-ok").addEventListener("click", () => { close(); (isStaged("learn-peek") && window._lessonFrom === "learn") ? renderLearn() : renderHome(); });   // leave to where you came from (Tom 9/21)
 }
 
 function renderMC(q) {

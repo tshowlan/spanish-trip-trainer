@@ -131,9 +131,10 @@ function _splitKit(l) {                                  // ruling 4: kits over 
   if (l.noSplit || (l.numbers && typeof isStaged === "function" && isStaged("numbers-1"))) return [l];   // the pack may keep a session whole; numbers are met as a set
   if (l.chain || l.machine || l.machines || !(l.items || []).length || l.items.length <= 8) return [l];
   const h = l.splitAt || Math.ceil(l.items.length / 2);      // the pack may name the cut, so a pair is never split
-  const t = l.title.replace(/ \u00b7 \d$/, "");          // a titled half never reads "· 1 · 1"
-  return [Object.assign({}, l, { id: l.id + "-1", title: t + " \u00b7 1", items: l.items.slice(0, h) }),
-          Object.assign({}, l, { id: l.id + "-2", title: t + " \u00b7 2", items: l.items.slice(h), primer: null })];
+  const t = l.title.replace(/ [\u00b7·] (Part )?\d$/, "");   // a titled half never reads "· 1 · 1"
+  const P = (typeof isStaged === "function" && isStaged("learn-peek")) ? "Part " : "";   // "First words · Part 1" (Tom 9/21: the bare digit said too little)
+  return [Object.assign({}, l, { id: l.id + "-1", title: t + " \u00b7 " + P + "1", items: l.items.slice(0, h) }),
+          Object.assign({}, l, { id: l.id + "-2", title: t + " \u00b7 " + P + "2", items: l.items.slice(h), primer: null })];
 }
 /* THE CHAPTER FLOW (Tom 2026-09-16/17, chat's pass 9/17; STAGED "chapter-flow"). Arranges the pack's `flow`
    data: stage 0 = THE WORDS (the pack's word sessions; a word that already lives in the pack REUSES that
@@ -154,7 +155,8 @@ function _chapterFlowDeck(deck, rooms) {
   };
   const fits = d => !d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : (p.needs || []).includes(d.profile.needs));
   const numbersOn = typeof isStaged === "function" && isStaged("numbers-1");
-  const words = flow.words.filter(w => numbersOn || w.numbers !== "ear").map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, items: w.items.filter(fits).map(mk) }));
+  const partWord = t => (typeof isStaged === "function" && isStaged("learn-peek")) ? t.replace(/ ([\u00b7·]) (\d)$/, " $1 Part $2") : t;
+  const words = flow.words.filter(w => numbersOn || w.numbers !== "ear").map(w => Object.assign({}, w, { title: partWord(w.title) })).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, items: w.items.filter(fits).map(mk) }));
   const old = deck.stages;
   // no phrase is lost: what the old kit held that is not a word re-homes into a later lesson
   (old[0] ? old[0].lessons : []).filter(l => !l.machine).forEach(l => {

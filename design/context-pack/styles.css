@@ -2009,3 +2009,17 @@ img.scene-art { width: 286px; }
 .pairs.pairs-fit { gap: 6px 12px; margin-top: 10px; }
 .pairs.pairs-fit .pcard, .pairs.pairs-text.pairs-fit .pcard { height: var(--pc-h, clamp(36px, calc((100dvh - 300px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / var(--rows) - 6px), 62px)); min-height: 0; padding: 4px 10px; line-height: 1.15; }
 .pairs.pairs-fit + .pairs-grown { margin-top: 10px; }
+
+/* THE PEEK (staged "learn-peek"): what a lesson holds, under its row */
+.lesson .chev { transition: transform 200ms cubic-bezier(.2,.7,.3,1); }
+.lesson.open .chev { transform: rotate(90deg); }
+.lesson-peek { margin: -2px 0 10px; padding: 4px 16px 14px 56px; opacity: 0; transform: translateY(-4px); transition: opacity 220ms cubic-bezier(.2,.7,.3,1), transform 220ms cubic-bezier(.2,.7,.3,1); }
+.lesson-peek.show { opacity: 1; transform: none; }
+.peek-list { display: grid; grid-template-columns: 1fr; gap: 0; margin-bottom: 12px; }
+.peek-item { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.peek-item:last-child { border-bottom: none; }
+.peek-item .es { font-family: var(--font-display); font-weight: 600; color: var(--text); }
+.peek-item .en { color: var(--text-dim); text-align: right; }
+.peek-frame { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--accent-2, var(--accent)); margin: 10px 0 2px; }
+.peek-frame:first-child { margin-top: 2px; }
+.lesson-peek .peek-start { width: 100%; }

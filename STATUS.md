@@ -1289,6 +1289,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v297 (2026-09-21) — STAGED "learn-peek": tap a lesson to see what's inside; "Part 1"; quit returns to Learn
+- Tom: a lesson's title shouldn't have to say everything; the Learn tab should let you open a lesson and see what it holds. With the switch on, tapping a Learn row opens a DRAWER under it (one at a time, caret turns down): every word with its meaning (rooms list each frame, then its fillers) and a Start button ("Practice again" on a finished lesson, which then goes through the return door). Tapping the row again closes it. The row stays in sight under the top bar when the drawer opens. With the switch off a tap starts the lesson, as shipped.
+- Parts read "First words · Part 1" (was "· 1"), for authored parts and for the automatic halves in every chapter. No dash (the no-em-dash rule); the middle dot stays the label separator.
+- Quitting a lesson started from the Learn drawer returns to Learn; one started from Home returns to Home (`window._lessonFrom`). The return door already exited to Learn. Finishing a lesson still ends on the session end and Home.
+- Verified at 375×812: drawer contents for a word session and a room, one drawer at a time, Start tappable, both quit paths.
+- Code's copy for the ledger: "Start" / "Practice again".
+
 ## v296 (2026-09-21) — staged: one case per session, no exceptions
 - Tom spotted "the bathroom" as the only lowercase choice in Bathroom words. Code had left that mix as deliberate (el baño said, the door words printed); to a player it read as an error. Rule tightened in the flow data: whole turns and signs capitalized, vocabulary lowercase, ONE case per session, majority wins where the kinds meet. Bathroom words: El baño / The bathroom. Every chapter-1 session now audits clean in both languages.
 

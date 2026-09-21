@@ -35,6 +35,7 @@
 ## Staged, awaiting Tom's play
 - THE CHAPTER FLOW (chapter-flow, v279): chapter 1 = The words (eleven word sessions, 14-15 with halves: First words, Words you'll hear, Numbers, Paying, Counter, Table, Street, Signs, Help), chapter 2 = Your first sentences (the four rooms), chapter 3 = Sentences by place, chapter 4 = Conversations. Every word plays in the shipped kit shape with chat's contexts. Test Lab → Staging on → Start over as a fresh learner. Still to come, one at a time: The asks, the hear and read emphases, primers.
 - NUMBERS (numbers-1, v287): two sessions over the same thirteen numbers: · 1 meets them, · 2 is by ear (eight runs); Paying words closes on two heard prices. First built as one session in v281: the set card (ten chips + the bills), the keypad (hear it and tap the number, say it on word keys, tap the bill), the numeral-to-word board, six how-many rungs, runs of three as the lap. Sound off: runs flash in one spot.
+- THE LEARN DRAWER (learn-peek, v297): tap a lesson to see its words, then Start; parts read "· Part 1"; quitting a lesson returns to Learn when it was started there.
 - THE LISTENING BOARD CHAIN (pairs-chain, v280): the sound that plays is already selected; the next plays itself after a match.
 
 ## Rulings on hold (Tom reading)

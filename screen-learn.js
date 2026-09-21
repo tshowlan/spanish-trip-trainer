@@ -35,6 +35,32 @@ function _lessonBeat(l) {
 // pattern machines read by their NAME (frame-shaped title) — no glyph (decisions 2026-07-18)
 function _isMachine(l) { return !!l.machine; }
 
+/* THE PEEK (Tom 9/21, STAGED "learn-peek"): tapping a lesson opens a drawer with what it holds, so a title never has to say
+   everything. One drawer open at a time; the drawer's button starts the lesson (a finished one goes through its return door). */
+const _capFrame = f => (f || "").replace(/[a-zñáéíóú]/i, c => c.toUpperCase());   // the first LETTER, past any ¿
+function _togglePeek(row, l) {
+  const open = row.classList.contains("open");
+  document.querySelectorAll(".lesson-peek").forEach(n => n.remove());
+  document.querySelectorAll(".lesson.open").forEach(n => n.classList.remove("open"));
+  if (open) return;
+  row.classList.add("open");
+  const line = it => `<div class="peek-item"><span class="es">${it.es}</span><span class="en">${it.en}</span></div>`;
+  const groups = l.machines
+    ? l.machines.map(m => `<div class="peek-frame">${_capFrame(m.frame)}</div>${(m.items || []).map(line).join("")}`).join("")
+    : (l.machine && l.frame ? `<div class="peek-frame">${_capFrame(l.frame)}</div>` : "") + (l.items || []).map(line).join("");
+  const peek = el(`<div class="lesson-peek"><div class="peek-list">${groups}</div><button class="btn peek-start">${lessonDone(l.id) ? "Practice again" : "Start"}</button></div>`);
+  peek.querySelector(".peek-start").addEventListener("click", () => { window._lessonFrom = "learn"; startLesson(l); });
+  row.after(peek);
+  requestAnimationFrame(() => {
+    peek.classList.add("show");
+    // keep the ROW in sight under the top bar, and bring as much of the drawer above the tab bar as fits
+    const rb = row.getBoundingClientRect(), pb = peek.getBoundingClientRect(), TOP = 72, BOTTOM = window.innerHeight - 110;
+    let dy = 0;
+    if (rb.top < TOP) dy = rb.top - TOP;
+    else if (pb.bottom > BOTTOM) dy = Math.min(pb.bottom - BOTTOM, rb.top - TOP);
+    if (dy) try { window.scrollBy({ top: dy, behavior: "smooth" }); } catch (_) { window.scrollBy(0, dy); }
+  });
+}
 function _lessonRow(l, isNext) {
   const str = lessonStrength(l);
   const fading = lessonDone(l.id) ? lessonFadingCount(l) : 0;
@@ -50,7 +76,10 @@ function _lessonRow(l, isNext) {
     </div>
     <span class="chev">${icon("caret-right", 15)}</span>
   </div>`);
-  row.addEventListener("click", () => startLesson(l));
+  row.addEventListener("click", () => {
+    if (!isStaged("learn-peek")) return startLesson(l);
+    _togglePeek(row, l);                                  // STAGED (Tom 9/21): a tap opens what's inside; the button starts it
+  });
   return row;
 }
 

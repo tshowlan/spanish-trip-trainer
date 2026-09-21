@@ -114,6 +114,7 @@ function clearHomeAtmo() {
 }
 
 function renderHome(opts) {
+  window._lessonFrom = null;                            // a lesson started from Home exits to Home (learn-peek, staged)
   const cer = opts && opts.ceremony;                    // §6b: ceremony overlays this render
   const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (cer) document.body.classList.add("in-ceremony");  // before anything paints: no first-frame flash

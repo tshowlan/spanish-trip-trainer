@@ -14,13 +14,15 @@
 | Street words | lejos: "¿Cerca? No, lejos." / "Close? No, far." | v286 |
 | Bathroom words | el baño: "¿El baño, por favor?" / "The bathroom, please?" · Servicios: "¿Los servicios? A la izquierda." / "The restrooms? To the left." · Aseos keeps chat's old street context | v286 |
 | Signs you'll read | Libre: "¿El taxi? Libre." / "The taxi? Free." · Ocupado: "¿El baño? Ocupado." / "The bathroom? Occupied." | v292 |
-| Session titles | "Bathroom words" · "Numbers · 1" / "Numbers · 2" | v286-287 |
+| Session titles | "Bathroom words" · parts now read "· Part 1" / "· Part 2" (First words, Numbers, Counter words, and every automatic half) | v286-297 |
+| Learn tab drawer | the button: "Start" / "Practice again" | v297 |
 
 ## B. RULINGS CHANGED AT TOM'S DIRECTION (for chat to note and merge into the constitution)
 
 - **Numbers is two sessions** over the same thirteen (· 1 meets them, · 2 by ear, eight runs), revising chat's "one chapter-1 numbers session". No heard-price closer on Paying words; numbers and paying combine in chapter 2.
 - **The keypad:** anchored above the Continue bar, not centered on the 63% line (the 64px keys do not fit a short phone otherwise); multi-digit numbers are tapped digit by digit; a calculator-style DELETE key holds the bottom-right corner on runs (chat's ruling kept the corners empty); the bills row centers on the 66.6% line.
 - **Chapter 1's sessions:** Bathroom words is new (el baño said; Aseos, Servicios, Caballeros, Señoras read), after Street words; Signs you'll read is eight signs (Salida, Entrada, Empujar, Tirar, Abierto, Cerrado, Libre, Ocupado), one session; Salidas / Llegadas stay in chapter 3; Street words is one ten-word session; the pack may name a session's cut (`splitAt`) or keep it whole (`noSplit`) so a pair is never split. Thirteen sessions, 88 words.
+- **The Learn tab's drawer** (v297): tapping a lesson opens what it holds (words with meanings; rooms by frame) with a Start button; quitting a lesson returns to the tab it was started from. A Learn tab change, made at Tom's direction.
 - **"euros" stays glue**, never an item.
 - **Casing:** whole turns (First words, Words you'll hear) and signs are capitalized; vocabulary sessions are lowercase in both languages; one case per session, majority wins where the kinds meet (Bathroom words: El baño).
 - **Matching boards:** the sound that plays is already selected and chains to the next; eight-note tune starting a tone lower; boards over six rows fit one screen; Continue in the bottom bar.
