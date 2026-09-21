@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v296 (2026-09-21) — staged: one case per session, no exceptions
+- Tom spotted "the bathroom" as the only lowercase choice in Bathroom words. Code had left that mix as deliberate (el baño said, the door words printed); to a player it read as an error. Rule tightened in the flow data: whole turns and signs capitalized, vocabulary lowercase, ONE case per session, majority wins where the kinds meet. Bathroom words: El baño / The bathroom. Every chapter-1 session now audits clean in both languages.
+
 ## v295 (2026-09-20) — staged (chapter-flow): one case per session; twin meanings can't be marked wrong
 - Found in the casing audit: Aseos and Servicios both read "Restrooms (sign)", so a correct match could be scored a miss depending on which identical card was tapped. Aseos now reads "Toilets (sign)" (its context EN returns to chat's "The toilets? To the right."); and `renderPairs` treats two meaning cards that READ the same as the same answer (the cards swap their pairing so the reunion still lines up). No other duplicate meanings in chapter 1.
 - Tom: why are "Ayuda" and "Help" the only capitalized choices in Help words? Code's entry error: chat's list was all lowercase; words that already existed in the pack as standalone phrases kept their capitals. Rule now in the flow data: sessions of whole turns (First words, Words you'll hear) and signs as printed are capitalized; vocabulary sessions are lowercase in both languages. Fixed: ayuda / help · ¿cuánto? / how much? · para llevar · ¿qué le pongo? · que aproveche · sin gluten / gluten-free. Bathroom words mixes on purpose (el baño is said; Aseos, Servicios, Caballeros, Señoras are printed). Item ids are unchanged (the slug ignores case), so progress carries.

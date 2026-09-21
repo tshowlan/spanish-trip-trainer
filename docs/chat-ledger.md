@@ -22,6 +22,7 @@
 - **The keypad:** anchored above the Continue bar, not centered on the 63% line (the 64px keys do not fit a short phone otherwise); multi-digit numbers are tapped digit by digit; a calculator-style DELETE key holds the bottom-right corner on runs (chat's ruling kept the corners empty); the bills row centers on the 66.6% line.
 - **Chapter 1's sessions:** Bathroom words is new (el baño said; Aseos, Servicios, Caballeros, Señoras read), after Street words; Signs you'll read is eight signs (Salida, Entrada, Empujar, Tirar, Abierto, Cerrado, Libre, Ocupado), one session; Salidas / Llegadas stay in chapter 3; Street words is one ten-word session; the pack may name a session's cut (`splitAt`) or keep it whole (`noSplit`) so a pair is never split. Thirteen sessions, 88 words.
 - **"euros" stays glue**, never an item.
+- **Casing:** whole turns (First words, Words you'll hear) and signs are capitalized; vocabulary sessions are lowercase in both languages; one case per session, majority wins where the kinds meet (Bathroom words: El baño).
 - **Matching boards:** the sound that plays is already selected and chains to the next; eight-note tune starting a tone lower; boards over six rows fit one screen; Continue in the bottom bar.
 - **Wrong answers match the word's size:** size outranks topic; up to three words is one class; rungs run in strict order.
 - **The lap chip is gone from the closing listening board** (v294; the final pass stays, unnamed). It remains on the typed lap from Sentences by place onward and on the return door's "Run the lap".

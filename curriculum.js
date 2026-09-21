@@ -725,8 +725,8 @@ const CURRICULUM = {
     rehome: { "sp0-first-words": "s1-rescue", "sp0-numbers": "sp-cash", "sp0-wrong": "sp-help" },
     rehomeItems: { "Pase, pase": "s4-hear", "\u00bfEst\u00e1 todo bien?": "s4-hear" },
     /* CASING (Tom 9/20): a session is all one case. Sessions of whole turns (First words, Words you'll hear) and signs as printed are
-       capitalized; vocabulary sessions are lowercase in both languages. Bathroom words mixes on purpose: el baño is said, the four door
-       words are printed. The context sentences keep normal sentence case. */
+       capitalized; vocabulary sessions are lowercase in both languages. ONE CASE PER SESSION, no exceptions: where the kinds meet the majority wins
+       (Bathroom words is four signs and one said word, so El baño is capitalized). The context sentences keep normal sentence case. */
     words: [
       { id: "sp0-first-words-1", topic: "Core basics", title: "First words · 1", items: [
         { es: "Hola", en: "Hello", tags: ["greetings"], contextEs: "Hola, buenos días.", contextEn: "Hi, good morning." },
@@ -826,7 +826,7 @@ const CURRICULUM = {
       /* THE BATHROOM (Tom 9/20): "el baño" is what you SAY; the door READS one of four things, because every restaurant labels it
          its own way. After Street words, so the directions in these contexts are already met. Flagged to chat. */
       { id: "w-bathroom", topic: "Core bathroom", title: "Bathroom words", items: [
-        { es: "el baño", en: "the bathroom", tags: ["bathroom"], contextEs: "¿El baño, por favor?", contextEn: "The bathroom, please?" },
+        { es: "El baño", en: "The bathroom", tags: ["bathroom"], contextEs: "¿El baño, por favor?", contextEn: "The bathroom, please?" },
         { es: "Aseos", en: "Toilets (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los aseos? A la derecha.", contextEn: "The toilets? To the right." },
         { es: "Servicios", en: "Restrooms (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los servicios? A la izquierda.", contextEn: "The restrooms? To the left." },
         { es: "Caballeros", en: "Men (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Caballeros, a la derecha.", contextEn: "Men, to the right." },
