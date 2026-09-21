@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v298 (2026-09-21) — staged (learn-peek): option A, one tap starts, the right arrow opens
+- Tom chose option A from the four-way mock (dev/learn-row-options.html): he wants one tap to start a lesson. The row starts the lesson from anywhere on its body; the arrow on the right sits in its own 52px zone behind a hairline, points down, and toggles the drawer (up when open). The drawer is just the word list now: no Start button, since the row is the start. One drawer at a time. Replaces v297's tap-to-open. Verified at 375×812: the arrow zone is tappable and only opens; a tap on the row body starts "First words · Part 2"; quitting lands on Learn.
+
 ## v297 (2026-09-21) — STAGED "learn-peek": tap a lesson to see what's inside; "Part 1"; quit returns to Learn
 - Tom: a lesson's title shouldn't have to say everything; the Learn tab should let you open a lesson and see what it holds. With the switch on, tapping a Learn row opens a DRAWER under it (one at a time, caret turns down): every word with its meaning (rooms list each frame, then its fillers) and a Start button ("Practice again" on a finished lesson, which then goes through the return door). Tapping the row again closes it. The row stays in sight under the top bar when the drawer opens. With the switch off a tap starts the lesson, as shipped.
 - Parts read "First words · Part 1" (was "· 1"), for authored parts and for the automatic halves in every chapter. No dash (the no-em-dash rule); the middle dot stays the label separator.

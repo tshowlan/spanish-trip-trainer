@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v297";
+const APP_BUILD = "v298";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -16,7 +16,7 @@ const APP_BUILD = "v297";
 const STAGED = {
   "gloss-tap":   "The 'What did that mean?' tap under heard lines in scenes",
   "review-door": "The review room's door: scene-ready tile + Practice line, and the six-week tilt",
-  "learn-peek": "Learn tab: tap a lesson to see what's inside, then Start; parts read 'Part 1'; quitting a lesson returns to Learn",
+  "learn-peek": "Learn tab: one tap starts a lesson, the arrow on the right opens what's inside; parts read 'Part 1'; quitting returns to Learn",
   "numbers-1": "Numbers as an ear skill: the set card, the keypad (hear it / say it / the bills), runs of three as the lap",
   "pairs-chain": "Matching boards: the sound that plays is already selected and chains to the next; eight-note tune from a tone lower; Continue in the bottom bar",
   "chapter-flow": "The chapter flow: chapter 1 = the words (eleven sessions), chapter 2 = the four rooms, chapters render 1-4"

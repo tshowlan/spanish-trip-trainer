@@ -48,8 +48,7 @@ function _togglePeek(row, l) {
   const groups = l.machines
     ? l.machines.map(m => `<div class="peek-frame">${_capFrame(m.frame)}</div>${(m.items || []).map(line).join("")}`).join("")
     : (l.machine && l.frame ? `<div class="peek-frame">${_capFrame(l.frame)}</div>` : "") + (l.items || []).map(line).join("");
-  const peek = el(`<div class="lesson-peek"><div class="peek-list">${groups}</div><button class="btn peek-start">${lessonDone(l.id) ? "Practice again" : "Start"}</button></div>`);
-  peek.querySelector(".peek-start").addEventListener("click", () => { window._lessonFrom = "learn"; startLesson(l); });
+  const peek = el(`<div class="lesson-peek"><div class="peek-list">${groups}</div></div>`);   // no button: the row itself starts the lesson (option A, Tom 9/21)
   row.after(peek);
   requestAnimationFrame(() => {
     peek.classList.add("show");
@@ -74,12 +73,13 @@ function _lessonRow(l, isNext) {
       ${beat ? `<div class="lbeat">${beat}</div>` : ""}
       <div class="lmeta">${meta}${fading ? ` · <span class="fading">${fading} to review</span>` : ""}</div>
     </div>
-    <span class="chev">${icon("caret-right", 15)}</span>
+    ${isStaged("learn-peek") ? `<button class="pk-zone" aria-label="See what's inside">${icon("caret-right", 15)}</button>` : `<span class="chev">${icon("caret-right", 15)}</span>`}
   </div>`);
-  row.addEventListener("click", () => {
-    if (!isStaged("learn-peek")) return startLesson(l);
-    _togglePeek(row, l);                                  // STAGED (Tom 9/21): a tap opens what's inside; the button starts it
-  });
+  // OPTION A (Tom 9/21, staged): ONE tap anywhere on the row starts the lesson; the arrow on the right, in its own zone behind a
+  // hairline, opens what's inside. A miss lands on "start", the commoner intent.
+  row.addEventListener("click", () => { window._lessonFrom = "learn"; startLesson(l); });
+  const pk = row.querySelector(".pk-zone");
+  if (pk) { row.classList.add("has-peek"); pk.addEventListener("click", e => { e.stopPropagation(); _togglePeek(row, l); }); }
   return row;
 }
 
