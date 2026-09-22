@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v320 (2026-09-22) — the splash lighthouse no longer snaps when the flood starts
+- Tom: the lighthouse shifts down for a split second as the bloom starts. Diagnosis: nothing in the choreography moves it at 1450ms; the flood's layer being promoted (scale ×85) forced the stack to re-rasterize, and its fractional position (34% down, centered by a half-height translate) rounded differently for one frame. Fix: the stack, the lighthouse and the flood get their own compositor layers from the first frame (translateZ(0) / will-change / backface-visibility), so nothing re-rasterizes when the flood appears. Not a design change; live for everyone (the splash is not staged). Unverifiable in the pane; Tom's device is the check.
+
 ## v319 (2026-09-22) — staged (bloom-white): the gold blooms first, then the white takes over
 - Tom: the white variant must keep the original gold illumination and bloom, and only then let the white take over, as the loading page goes lantern → daybreak. With the compare switch on, the gold light now grows exactly as in the gold version; at 360ms (the bloom nearly full) a white daybreak layer rises over it in 240ms and holds; the clear fades both to the lesson.
 

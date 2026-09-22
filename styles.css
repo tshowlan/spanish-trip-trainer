@@ -113,11 +113,12 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
   opacity: 0.05; }
 #splash .daybreak { position: absolute; inset: 0; background: var(--bg); opacity: 0;
   animation: arr-fade 450ms ease 2200ms both; }
-#splash .splash-stack { position: absolute; left: 50%; top: 34%; transform: translate(-50%,-50%);
+#splash .splash-stack { position: absolute; left: 50%; top: 34%; transform: translate(-50%,-50%) translateZ(0);
   display: flex; flex-direction: column; align-items: center; gap: 18px; z-index: 2;
+  will-change: transform, opacity; backface-visibility: hidden;   /* its own layer from the first frame: the flood's layer appearing at 1450ms re-rasterized it and snapped it a pixel (Tom 9/22) */
   animation: arr-consume 400ms ease 1950ms both; }
 @keyframes arr-consume { from { opacity: 1; } to { opacity: 0; } }
-.splash-lh { animation: arr-rise 900ms cubic-bezier(.2,.7,.3,1) both; position: relative; }
+.splash-lh { animation: arr-rise 900ms cubic-bezier(.2,.7,.3,1) both; position: relative; will-change: transform; backface-visibility: hidden; }
 .splash-lh .lighthouse { height: 110px; width: auto; position: relative; z-index: 1; }
 /* the aura is its own radial LAYER, never a filter: iOS Safari clips the filter's
    paint region at a straight edge (the line above the lighthouse, Tom's device catch) */
@@ -135,7 +136,7 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 /* the eclipse: the flood swells FROM BEHIND THE LANTERN (z1, under the stack) —
    the mark silhouettes against its own light before it is consumed */
 .splash-flood { position: absolute; left: 50%; top: calc(34% - 55px); width: 34px; height: 34px; z-index: 1;
-  border-radius: 50%; transform: translate(-50%,-50%) scale(1); opacity: 0; pointer-events: none;
+  border-radius: 50%; transform: translate(-50%,-50%) scale(1); opacity: 0; pointer-events: none; will-change: transform, opacity;
   background: radial-gradient(circle, #fffdf0 0%, rgba(255,250,214,.92) 38%, rgba(216,183,19,.55) 68%, rgba(216,183,19,0) 100%);
   animation: arr-flood 800ms cubic-bezier(.5,.05,.3,1) 1450ms both, arr-flood-out 650ms ease 2300ms forwards; }
 @keyframes arr-flood { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(85); opacity: 1; } }
