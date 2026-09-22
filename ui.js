@@ -285,11 +285,15 @@ function enterWith(fromEl, go) {
     cover.classList.add("breathe");                                    // 1. the tile breathes; the aura lights behind it
     setTimeout(() => {                                                 // 2. the tile grows to the screen; the aura grows with it; the page fades
       cover.classList.remove("breathe"); cover.classList.add("fill");
-      cover.style.left = "0px"; cover.style.top = "0px"; cover.style.width = innerWidth + "px"; cover.style.height = innerHeight + "px"; cover.style.borderRadius = "0px";
+      // the tile comes TOWARD you: a uniform scale about its own center, never a reshape (Tom 9/22). Big enough that every
+      // edge leaves the screen, whichever corner the tile sits nearest.
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      const s = Math.max((2 * Math.max(cx, innerWidth - cx)) / r.width, (2 * Math.max(cy, innerHeight - cy)) / r.height) * 1.12;
+      cover.style.transform = `scale(${s.toFixed(2)})`;
       if (app) app.classList.add("bloom-fade"); if (sheet) sheet.classList.add("bloom-fade");
     }, 190);
-    setTimeout(paint, 400);                                            // 3. the hold: the next screen paints under the cover
-    setTimeout(() => { if (app) app.classList.remove("bloom-fade"); cover.classList.add("clear"); }, 500);   // 4. the cover fades away
-    setTimeout(() => { cover.remove(); fromEl.style.visibility = ""; }, 860);
+    setTimeout(paint, 450);                                            // 3. the hold: the next screen paints under the cover (it covers by ~420ms)
+    setTimeout(() => { if (app) app.classList.remove("bloom-fade"); cover.classList.add("clear"); }, 540);   // 4. the cover fades away
+    setTimeout(() => { cover.remove(); fromEl.style.visibility = ""; }, 900);
   }));
 }

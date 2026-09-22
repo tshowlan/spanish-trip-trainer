@@ -2037,8 +2037,9 @@ img.scene-art { width: 286px; }
 .chapter-count { margin: 0; font-style: normal; font-weight: 600; }
 
 /* THE BLOOM (staged "enter-bloom"): the tapped tile, cloned, breathes with the lantern's aura behind it, grows to the screen, then clears */
-.bloom-cover { position: fixed; z-index: 400; pointer-events: none; overflow: visible; background: var(--bg-elevated);
-  transition: transform 190ms cubic-bezier(.2,.7,.3,1), left 170ms cubic-bezier(.4,0,.6,1), top 170ms cubic-bezier(.4,0,.6,1), width 170ms cubic-bezier(.4,0,.6,1), height 170ms cubic-bezier(.4,0,.6,1), border-radius 170ms ease, opacity 320ms ease; }
+.bloom-cover { position: fixed; z-index: 400; pointer-events: none; overflow: visible; background: var(--bg-elevated); transform-origin: center; will-change: transform;
+  transition: transform 190ms cubic-bezier(.2,.7,.3,1), opacity 320ms ease; }
+.bloom-cover.fill { transition: transform 200ms cubic-bezier(.4,0,.7,1), opacity 320ms ease; }   /* the fill accelerates: the tile comes toward you */
 .bloom-cover .bloom-tile { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; transition: opacity 170ms ease; }
 .bloom-cover.fill .bloom-tile { opacity: 0; }                                        /* the tile's contents let go as it becomes the screen */
 /* the aura: the splash lantern's recipe, a radial LAYER behind the tile (never a filter), soft, no line */
@@ -2047,7 +2048,6 @@ img.scene-art { width: 286px; }
   transition: opacity 190ms ease, inset 170ms cubic-bezier(.4,0,.6,1); }
 .bloom-cover.breathe { transform: scale(1.06); }
 .bloom-cover.breathe .bloom-aura { opacity: 1; }
-.bloom-cover.fill { transform: none; }
-.bloom-cover.fill .bloom-aura { opacity: 1; inset: -30% -30%; }
+.bloom-cover.fill .bloom-aura { opacity: 1; }                                       /* the aura rides the scale, keeping its shape */
 .bloom-cover.clear { opacity: 0; }
 #app.bloom-fade, .sheet-wrap.bloom-fade { transition: opacity 170ms ease; opacity: 0.12; }

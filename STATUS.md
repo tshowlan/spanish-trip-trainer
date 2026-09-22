@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v309 (2026-09-22) — staged (enter-bloom): the tile comes toward you
+- Tom: the rectangle was stretching up and down. The fill is now a uniform scale about the tile's own center (the factor computed so every edge leaves the screen from wherever the tile sits), so the tile keeps its shape and grows toward you; the aura rides the scale. Paint at 450ms (it covers by ~420), clear at 540, gone by 900. Measured: the width-to-height ratio held at 2.42 from tile to full cover.
+
 ## v308 (2026-09-22) — staged (enter-bloom): the tile itself grows; the lantern's aura, not a line
 - Tom: the light read as a line, and the tile didn't visibly grow. The cover is now a CLONE of the tapped tile (contents and all; the original steps aside), so what breathes and grows is the thing tapped; its contents let go as it becomes the screen. The light is the splash lantern's recipe: a soft radial LAYER behind the tile (never a filter, never a box-shadow), lit during the breathe and growing with the fill. Breathe 190ms → fill 170ms → paint at 400ms → clear 320ms. Measured at 375×812: aura 469×257 behind a 345px-wide breathing tile; the tile's contents at 0 opacity by 320ms as it reaches 374×745; runner on screen, cover gone by ~900ms.
 
