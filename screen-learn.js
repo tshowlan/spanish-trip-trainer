@@ -77,7 +77,7 @@ function _lessonRow(l, isNext) {
   </div>`);
   // OPTION A (Tom 9/21, staged): ONE tap anywhere on the row starts the lesson; the arrow on the right, in its own zone behind a
   // hairline, opens what's inside. A miss lands on "start", the commoner intent.
-  row.addEventListener("click", () => { window._lessonFrom = "learn"; startLesson(l); });
+  row.addEventListener("click", () => { window._lessonFrom = "learn"; enterWith(row, () => startLesson(l)); });
   const pk = row.querySelector(".pk-zone");
   if (pk) { row.classList.add("has-peek"); pk.addEventListener("click", e => { e.stopPropagation(); _togglePeek(row, l); }); }
   return row;

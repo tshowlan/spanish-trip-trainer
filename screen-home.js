@@ -752,7 +752,7 @@ function heroTile() {
       <div class="hero-title">${h.title}</div>
       ${h.sub ? `<div class="hero-sub">${h.sub}</div>` : ""}
     </div></button>`);
-  t.addEventListener("click", h.run);
+  t.addEventListener("click", () => enterWith(t, h.run));   // the bloom (staged): the tile lights up and the light carries you in
   return t;
 }
 
@@ -800,7 +800,7 @@ function practiceChooser() {
   const opts = wrap.querySelector(".practice-opts");
   const add = (title, sub, run, disabled) => {
     const b = el(`<button class="practice-opt" ${disabled ? "disabled" : ""}><div class="po-t">${title}</div><div class="po-s">${sub}</div></button>`);
-    if (!disabled) b.addEventListener("click", () => { closeSheet(); run(); });
+    if (!disabled) b.addEventListener("click", () => { if (isStaged("enter-bloom")) { enterWith(b, () => { closeSheet(); run(); }); } else { closeSheet(); run(); } });
     opts.appendChild(b);
   };
   const picked = (typeof _practicePick === "function") ? _practicePick(null) : [];

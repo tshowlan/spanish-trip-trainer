@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v306 (2026-09-22) — STAGED "enter-bloom": the light carries you into a session
+- Tom: entering a lesson needs a transition; the Home tile should light up from behind and the light expand quickly, like the splash's daybreak. `enterWith(fromEl, go)` (ui.js): the tapped thing gets a gold rim, a radial light grows from its center to the farthest corner (380ms), Home dims to 35%, the next screen paints under the light at 300ms, the light clears over 260ms. ONE mechanic, three doors: the Home action tile, a Practice option (the sheet closes under the light), a Learn row (option A's start). Reduced motion: no light, straight in. Measured: light at scale 3 by 160ms, the runner on screen by 320ms, the layer gone by 760ms.
+
 ## v305 (2026-09-22) — staged: the chapter door's numeral in the title face; grey subtitle
 - Tom's pick from the mock: the 1 in Plus Jakarta Sans 800 at the word's size, keeping the logo's blue (the italic serif retires on this door); the subtitle in the whisper's grey (`--text-dim`).
 
