@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v321 (2026-09-22) — the splash: clip instead of a scroll container; the stack pinned to the screen
+- v320's layer pinning did not stop the lighthouse's one-frame drop. Second theory: `#splash` was `overflow: hidden`, which is a scroll container; the flood scaled ×85 gives it a scrollable overflow, and any programmatic scroll at that moment (home building underneath) could move it a pixel. Now `overflow: clip` (never scrollable) and the stack is `position: fixed` to the screen. If it persists, Tom's recording is the next step.
+
 ## v320 (2026-09-22) — the splash lighthouse no longer snaps when the flood starts
 - Tom: the lighthouse shifts down for a split second as the bloom starts. Diagnosis: nothing in the choreography moves it at 1450ms; the flood's layer being promoted (scale ×85) forced the stack to re-rasterize, and its fractional position (34% down, centered by a half-height translate) rounded differently for one frame. Fix: the stack, the lighthouse and the flood get their own compositor layers from the first frame (translateZ(0) / will-change / backface-visibility), so nothing re-rasterizes when the flood appears. Not a design change; live for everyone (the splash is not staged). Unverifiable in the pane; Tom's device is the check.
 

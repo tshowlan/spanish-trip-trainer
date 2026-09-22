@@ -98,7 +98,7 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
    grammar) -> the candle (home's corner glow, 1.8s, one curve). Tap-to-skip snaps
    to the finished home. Tint + relight ARE the design (stamped). */
 #splash {
-  position: fixed; inset: 0; z-index: 2000; overflow: hidden;
+  position: fixed; inset: 0; z-index: 2000; overflow: clip;   /* clip, never a scroll container: the flood at ×85 gave it scrollable overflow, and a stray scroll dropped the lighthouse a pixel (Tom 9/22) */
   background:
     radial-gradient(130% 100% at 50% 27%,
       rgba(201,106,43,0.14) 0%, rgba(206,142,34,0.10) 18%, rgba(216,183,19,0.065) 32%,
@@ -113,7 +113,7 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
   opacity: 0.05; }
 #splash .daybreak { position: absolute; inset: 0; background: var(--bg); opacity: 0;
   animation: arr-fade 450ms ease 2200ms both; }
-#splash .splash-stack { position: absolute; left: 50%; top: 34%; transform: translate(-50%,-50%) translateZ(0);
+#splash .splash-stack { position: fixed; left: 50%; top: 34%; transform: translate(-50%,-50%) translateZ(0);   /* pinned to the screen, not to the splash box */
   display: flex; flex-direction: column; align-items: center; gap: 18px; z-index: 2;
   will-change: transform, opacity; backface-visibility: hidden;   /* its own layer from the first frame: the flood's layer appearing at 1450ms re-rasterized it and snapped it a pixel (Tom 9/22) */
   animation: arr-consume 400ms ease 1950ms both; }
