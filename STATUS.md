@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v317 (2026-09-22) — staged (enter-bloom): the blue lets go as the growth starts
+- Tom: the blue tile expanding took away from the light. The tile still breathes (words and picture fading) but its surface now fades out in the first 90ms of the growth, so the growth reads as the light swelling from behind the tile, not the blue filling the screen. The light and the grey-out are unchanged.
+
 ## v316 (2026-09-22) — staged (enter-bloom): the light grows from behind the tile into the oblong; the page greys to a blank ground
 - Tom: the old light grew as an oblong in the middle with dark outside (the circle clipped by the phone); he wants the light to grow from BEHIND the tile into that, and the page (Home, Learn) to grey out fully, so the exercise comes in on a blank screen as in Duolingo. The light is now sized before the breathe (160px behind the tile) and present from the first beat, riding the cover's scale to ~1090px; the page, the bars and the home photo fade to 0 over 260ms as it grows; the exercise paints on the bare ground under the light, which then clears. Measured: light 160px at 120ms, 458px at 300ms, 1086px at 420ms, always centered on the tile; page at 0.02 by 420ms.
 
