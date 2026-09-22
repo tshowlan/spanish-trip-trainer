@@ -172,6 +172,15 @@ function initSplash() {
   // the formation's hidden states must be on BEFORE home paints beneath the splash
   if (SPLASH_STYLE === "arrival") document.body.classList.add("arriving");
   s.innerHTML = splashMarkup();
+  // THE LAUNCH SETTLE (Tom's recording, 2026-09-22): on iOS a home-screen app's web view starts a little SHORT and grows to the
+  // full screen ~0.5s in; a splash sized to the viewport then drops everything placed by percentage or from the bottom (the stack,
+  // the version) by ~58pt in one frame. So the splash takes the PHYSICAL screen's height at birth and holds it.
+  try {
+    const standalone = (navigator.standalone === true) || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    const H = standalone ? screen.height : window.innerHeight;
+    if (H > 0) { s.style.height = H + "px"; s.style.bottom = "auto"; }
+    if (standalone) document.body.classList.add("standalone-launch");
+  } catch (_) {}
   // small build marker — the SW cache name (sts-vNN) is the source of truth; also handy for spotting stale caches
   const ver = el(`<div class="splash-ver" id="splash-ver"></div>`);
   s.appendChild(ver);

@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v322 (2026-09-22) — the splash holds the screen's height from birth (the launch settle)
+- Frames from Tom's recording, measured: the lighthouse does not move at the flood, but at ~0.5s the whole splash layout drops ~58pt in one frame (the version stamp from row 2181 to 2355 of a 2532-row capture) while the lighthouse is still fading in and the aura lighting, which reads as "the lighthouse shifts down as the bloom starts". Cause: on iOS a home-screen app's web view starts short and grows to the full screen shortly after launch; the splash was sized to the viewport, so its percentage- and bottom-placed children moved with it. Fix: `initSplash()` sizes the splash to `screen.height` in standalone mode (innerHeight otherwise) and holds it; the stack is back to absolute inside that box. v320/v321's layer and clip changes stay (harmless).
+
 ## v321 (2026-09-22) — the splash: clip instead of a scroll container; the stack pinned to the screen
 - v320's layer pinning did not stop the lighthouse's one-frame drop. Second theory: `#splash` was `overflow: hidden`, which is a scroll container; the flood scaled ×85 gives it a scrollable overflow, and any programmatic scroll at that moment (home building underneath) could move it a pixel. Now `overflow: clip` (never scrollable) and the stack is `position: fixed` to the screen. If it persists, Tom's recording is the next step.
 
