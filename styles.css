@@ -2036,11 +2036,11 @@ img.scene-art { width: 286px; }
 .chapter-door .scene-line .sl { color: var(--text-dim); }                                   /* the subtitle in the whisper's grey (Tom 9/22) */
 .chapter-count { margin: 0; font-style: normal; font-weight: 600; }
 
-/* THE BLOOM (staged "enter-bloom"): a light grows from the tapped thing to fill the screen, the next screen paints under it, the light clears */
-.bloom-layer { position: fixed; inset: 0; z-index: 400; pointer-events: none; overflow: hidden; opacity: 1; }
-.bloom-layer.clear { transition: opacity 260ms cubic-bezier(.2,.7,.3,1); opacity: 0; }
-.bloom-light { position: absolute; border-radius: 50%; transform: translate(-50%, -50%) scale(1); transform-origin: center;
-  background: radial-gradient(closest-side, rgba(216,183,19,0.55) 0%, rgba(216,183,19,0.32) 42%, rgba(216,183,19,0.14) 70%, rgba(216,183,19,0) 100%);
-  transition: transform 380ms cubic-bezier(.2,.7,.3,1); will-change: transform; }
-.bloom-src { box-shadow: 0 0 0 2px rgba(216,183,19,.55), 0 0 28px 6px rgba(216,183,19,.35) !important; transition: box-shadow 160ms; }
-#app.bloom-fade { transition: opacity 260ms ease; opacity: 0.35; }
+/* THE BLOOM (staged "enter-bloom"): a cover the size of the tapped tile breathes, then grows to the whole screen with its light, then clears */
+.bloom-cover { position: fixed; z-index: 400; pointer-events: none; background: var(--bg-elevated);
+  box-shadow: 0 0 0 0 rgba(216,183,19,0), 0 0 0 0 rgba(216,183,19,0);
+  transition: transform 170ms cubic-bezier(.2,.7,.3,1), box-shadow 170ms ease, left 160ms cubic-bezier(.4,0,.6,1), top 160ms cubic-bezier(.4,0,.6,1), width 160ms cubic-bezier(.4,0,.6,1), height 160ms cubic-bezier(.4,0,.6,1), border-radius 160ms ease, opacity 300ms ease; }
+.bloom-cover.breathe { transform: scale(1.06); box-shadow: 0 0 0 2px rgba(216,183,19,.7), 0 0 26px 8px rgba(216,183,19,.45); }   /* the light, tight around the edge */
+.bloom-cover.fill { transform: none; box-shadow: 0 0 0 2px rgba(216,183,19,.35), 0 0 160px 80px rgba(216,183,19,.35); }         /* the light grows with the tile */
+.bloom-cover.clear { opacity: 0; box-shadow: none; }
+#app.bloom-fade, .sheet-wrap.bloom-fade { transition: opacity 160ms ease; opacity: 0.12; }

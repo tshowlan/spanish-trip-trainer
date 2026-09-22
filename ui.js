@@ -260,31 +260,33 @@ function wordmark(h = 30) {
 }
 
 
-/* THE BLOOM (Tom 2026-09-22, STAGED "enter-bloom"): entering a session from a tile or a row. The tapped thing
-   lights up from behind, the light expands to fill the screen (the splash's daybreak, fast), the next screen
-   is painted underneath, and the light clears. One mechanic, three doors: the Home tile, a Practice option,
-   a Learn row. Reduced motion: just go. 380ms out, 260ms clear [tune]. */
+/* THE BLOOM, second cut (Tom 2026-09-22, from his Duolingo recording; STAGED "enter-bloom"): the TILE is what grows.
+   On the tap it breathes up a little with a light tight around its edge (170ms); then the tile itself expands to fill the
+   screen, the light growing with it, while the page behind fades (160ms); a short dark hold (150ms) during which the next
+   screen paints underneath; then the cover fades away (300ms). One mechanic, three doors: the Home tile, a Practice option,
+   a Learn row. Reduced motion: straight in. [tune] every duration. */
 function enterWith(fromEl, go) {
   const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!(typeof isStaged === "function" && isStaged("enter-bloom")) || reduced || !fromEl) return go();
   const r = fromEl.getBoundingClientRect();
-  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-  const reach = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy));   // to the farthest corner
-  const layer = el(`<div class="bloom-layer" aria-hidden="true"><div class="bloom-light"></div></div>`);
-  const light = layer.firstChild;
-  const d0 = Math.max(r.width, r.height) * 0.9;
-  light.style.left = cx + "px"; light.style.top = cy + "px"; light.style.width = light.style.height = d0 + "px";
-  document.body.appendChild(layer);
-  fromEl.classList.add("bloom-src");
+  const cover = el(`<div class="bloom-cover" aria-hidden="true"></div>`);
+  const cs = getComputedStyle(fromEl);
+  cover.style.left = r.left + "px"; cover.style.top = r.top + "px"; cover.style.width = r.width + "px"; cover.style.height = r.height + "px";
+  cover.style.borderRadius = cs.borderRadius;
+  document.body.appendChild(cover);
   const app = document.getElementById("app");
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    layer.classList.add("on");
-    light.style.transform = `translate(-50%, -50%) scale(${(reach * 2.3) / d0})`;
-    if (app) app.classList.add("bloom-fade");
-  }));
+  const sheet = document.querySelector(".sheet-wrap");
   let went = false;
-  const paint = () => { if (went) return; went = true; if (app) app.classList.remove("bloom-fade"); try { go(); } catch (e) { console.error(e); } };
-  setTimeout(paint, 300);                                     // the next screen paints under the light
-  setTimeout(() => layer.classList.add("clear"), 380);
-  setTimeout(() => { layer.remove(); fromEl.classList.remove("bloom-src"); }, 680);
+  const paint = () => { if (went) return; went = true; try { go(); } catch (e) { console.error(e); } };
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    cover.classList.add("breathe");                                    // 1. the tile breathes, the light tight around its edge
+    setTimeout(() => {                                                 // 2. the tile fills the screen; the light grows with it; the page fades
+      cover.classList.remove("breathe"); cover.classList.add("fill");
+      cover.style.left = "0px"; cover.style.top = "0px"; cover.style.width = innerWidth + "px"; cover.style.height = innerHeight + "px"; cover.style.borderRadius = "0px";
+      if (app) app.classList.add("bloom-fade"); if (sheet) sheet.classList.add("bloom-fade");
+    }, 170);
+    setTimeout(paint, 380);                                            // 3. the hold: the next screen paints under the cover
+    setTimeout(() => { if (app) app.classList.remove("bloom-fade"); cover.classList.add("clear"); }, 480);   // 4. the cover fades away
+    setTimeout(() => cover.remove(), 820);
+  }));
 }
