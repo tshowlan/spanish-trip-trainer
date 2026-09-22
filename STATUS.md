@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v304 (2026-09-22) — staged: the chapter door, Tom's alignment pass
+- "Chapter 1" left-justified with the title (both at 18px from the edge); the numeral a quarter larger again (1.68em, 56px tall beside a 32px cap); a full line of air (36px) between the title and the subtitle. Verified at 375×812.
+
 ## v303 (2026-09-21) — staged: the fresh-learner reset forgets the chapter doors
 - Tom: the door wasn't showing after "Start over as a fresh learner". The reset cleared what was learned but not `state.chapterDoors`, so the door counted as seen. Now cleared with the rest. Verified: door seen → reset → Home's next lesson → the door shows.
 
