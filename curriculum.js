@@ -720,7 +720,8 @@ const CURRICULUM = {
      below; `hear` / `read` mark the emphasis a session's inside will get later; `profile` keys a word to the
      learner's intake. Pure data: the deck builder arranges it. */
   flow: {
-    chapters: ["The words", "Your first sentences", "Sentences by place", "Conversations"],
+    chapters: ["The words that get you by", "Your first sentences", "Sentences by place", "Conversations"],   // chapter 1's name and line: Tom, 2026-09-21
+    blurbs: ["Simple words that maximize every day of your trip.", "", "", ""],                                    // the line under a chapter heading (wraps); 2-4 await copy
     rooms: ["room-asking-1", "room-finding-1", "room-finding-2", "room-asking-2"],
     rehome: { "sp0-first-words": "s1-rescue", "sp0-numbers": "sp-cash", "sp0-wrong": "sp-help" },
     rehomeItems: { "Pase, pase": "s4-hear", "\u00bfEst\u00e1 todo bien?": "s4-hear" },

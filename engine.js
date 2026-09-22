@@ -170,12 +170,12 @@ function _chapterFlowDeck(deck, rooms) {
   old.slice(1).forEach(st => st.lessons.forEach(l => { l.items = (l.items || []).map(it => made.get(slug(it.es)) || it); }));
   const order = flow.rooms || [];
   const roomList = rooms.slice().sort((a, b) => (order.indexOf(a.id) + 1 || 99) - (order.indexOf(b.id) + 1 || 99));
-  const t = flow.chapters || [];
+  const t = flow.chapters || [], b = flow.blurbs || [];
   deck.stages = [
-    Object.assign({}, old[0], { pass: 0, title: t[0] || "The words", blurb: "", lessons: words }),
-    { id: "sp-first-sentences", pass: 1, title: t[1] || "Your first sentences", blurb: "", lessons: roomList },
-    Object.assign({}, old[1] || {}, { pass: 2, title: t[2] || "Sentences by place", blurb: "", lessons: (old[1] ? old[1].lessons : []).concat(old[2] ? old[2].lessons : []) }),
-  ].concat(old.slice(3).map((st, i) => Object.assign({}, st, { pass: 3 + i, title: i === 0 ? (t[3] || st.title) : st.title })));
+    Object.assign({}, old[0], { pass: 0, title: t[0] || "The words", blurb: b[0] || "", lessons: words }),
+    { id: "sp-first-sentences", pass: 1, title: t[1] || "Your first sentences", blurb: b[1] || "", lessons: roomList },
+    Object.assign({}, old[1] || {}, { pass: 2, title: t[2] || "Sentences by place", blurb: b[2] || "", lessons: (old[1] ? old[1].lessons : []).concat(old[2] ? old[2].lessons : []) }),
+  ].concat(old.slice(3).map((st, i) => Object.assign({}, st, { pass: 3 + i, title: i === 0 ? (t[3] || st.title) : st.title, blurb: i === 0 ? (b[3] || "") : st.blurb })));
 }
 function rebuildDeck() {
   const p = state.profile;

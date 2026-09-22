@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v299 (2026-09-21) — staged (chapter-flow): chapter 1 is "The words that get you by"
+- Tom's title and line: **The words that get you by** · "Simple words that maximize every day of your trip." Both live in the flow data (`chapters`, `blurbs`); the line renders under the chapter heading on the Learn tab (it wraps; the lesson-row line was the one that truncated and stays retired). Chapters 2-4 have no line yet.
+- The chapter DOOR (Tom: Home-path learners never see the heading) is mocked, not built: dev/chapter-door-options.html, three versions on the scene door's frame.
+
 ## v298 (2026-09-21) — staged (learn-peek): option A, one tap starts, the right arrow opens
 - Tom chose option A from the four-way mock (dev/learn-row-options.html): he wants one tap to start a lesson. The row starts the lesson from anywhere on its body; the arrow on the right sits in its own 52px zone behind a hairline, points down, and toggles the drawer (up when open). The drawer is just the word list now: no Start button, since the row is the start. One drawer at a time. Replaces v297's tap-to-open. Verified at 375×812: the arrow zone is tappable and only opens; a tap on the row body starts "First words · Part 2"; quitting lands on Learn.
 

@@ -33,6 +33,8 @@
 
 ## C. WANTED FROM CHAT (writing jobs and artifacts)
 
+0. Chapter names and lines: chapter 1 is **The words that get you by** / "Simple words that maximize every day of your trip." (Tom's, final). Lines for chapters 2-4 are wanted (Code's drafts: "Eight ways to ask. You already own the words that go in them." · "The café, the taxi, the hotel desk. What gets said there." · "Longer exchanges, and the scenes that put it all together."). A CHAPTER DOOR (first entry to a chapter, once, on the scene door's frame) is under discussion with Tom; its copy and its place in the door grammar ruling want chat's eye.
+
 1. The keypad's pixel artifact (promised "when Tom drags the pack in"); Code checks the build against it.
 2. A primer scene and a one-line beat for each chapter-1 session (thirteen).
 3. Numbermachine: conveyor cues beyond the forge line, when its build starts.
