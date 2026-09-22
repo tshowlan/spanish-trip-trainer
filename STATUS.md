@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v318 (2026-09-22) — staged: a compare switch for a WHITE light
+- Tom: keep the gold version, add a toggle to see the same transition with a white light like the loading page's daybreak. Test Lab row "Entering a session, compare: a WHITE light", off by default (STAGED_OPT_IN). With it on, the breathe still lights gold from behind the tile; the light that takes over is a warm white (255,250,236 at 0.78 falling to 0). Everything else identical.
+
 ## v317 (2026-09-22) — staged (enter-bloom): the blue lets go as the growth starts
 - Tom: the blue tile expanding took away from the light. The tile still breathes (words and picture fading) but its surface now fades out in the first 90ms of the growth, so the growth reads as the light swelling from behind the tile, not the blue filling the screen. The light and the grey-out are unchanged.
 

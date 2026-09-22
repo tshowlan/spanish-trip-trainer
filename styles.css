@@ -2060,3 +2060,7 @@ img.scene-art { width: 286px; }
 .bloom-cover.fill .bloom-tile { opacity: 0; transition: opacity 90ms ease; }         /* the tile lets go as soon as the growth starts: the LIGHT is the effect, not the blue (Tom 9/22) */
 .bloom-cover.clear { opacity: 0; }
 #app.bloom-fade, .sheet-wrap.bloom-fade, #tabbar.bloom-fade, .topbar.bloom-fade, .home-atmo.bloom-fade { transition: opacity 260ms ease; opacity: 0; }   /* the page greys out to the bare ground as the light grows; the exercise then comes in on a blank screen (Tom 9/22, Duolingo) */
+
+/* THE BLOOM, white (compare switch "bloom-white"): the loading page's daybreak rather than the lantern's gold. The aura stays gold
+   during the breathe (it starts from behind the tile), then the light that takes over is white. */
+.bloom-cover.white .bloom-light { background: radial-gradient(closest-side, rgba(255,250,236,0.78) 0%, rgba(255,250,236,0.46) 42%, rgba(255,250,236,0.18) 70%, rgba(255,250,236,0) 100%); }

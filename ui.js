@@ -271,7 +271,7 @@ function enterWith(fromEl, go) {
   const r = fromEl.getBoundingClientRect();
   // the cover IS the tile: a clone, contents and all, so what grows is the thing you tapped (Tom 9/22)
   const clone = fromEl.cloneNode(true); clone.removeAttribute("id"); clone.classList.add("bloom-tile");
-  const cover = el(`<div class="bloom-cover" aria-hidden="true"><div class="bloom-aura"></div><div class="bloom-light"></div></div>`);   // the aura (soft, the breathe) and the light (bright, takes over as the tile grows)
+  const cover = el(`<div class="bloom-cover${isStaged("bloom-white") ? " white" : ""}" aria-hidden="true"><div class="bloom-aura"></div><div class="bloom-light"></div></div>`);   // "bloom-white" (compare switch): the daybreak's white light instead of the gold   // the aura (soft, the breathe) and the light (bright, takes over as the tile grows)
   cover.appendChild(clone);
   cover.style.left = r.left + "px"; cover.style.top = r.top + "px"; cover.style.width = r.width + "px"; cover.style.height = r.height + "px";
   cover.style.borderRadius = getComputedStyle(fromEl).borderRadius;
