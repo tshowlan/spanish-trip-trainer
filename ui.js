@@ -281,6 +281,11 @@ function enterWith(fromEl, go) {
   const sheet = document.querySelector(".sheet-wrap");
   let went = false;
   const paint = () => { if (went) return; went = true; try { go(); } catch (e) { console.error(e); } };
+  const cx0 = r.left + r.width / 2, cy0 = r.top + r.height / 2;
+  const s0 = Math.max((2 * Math.max(cx0, innerWidth - cx0)) / r.width, (2 * Math.max(cy0, innerHeight - cy0)) / r.height) * 1.12;
+  const reach0 = Math.hypot(Math.max(cx0, innerWidth - cx0), Math.max(cy0, innerHeight - cy0));
+  const lightEl = cover.querySelector(".bloom-light"); const d0 = (reach0 * 2.3) / s0;
+  lightEl.style.width = lightEl.style.height = d0 + "px";               // small behind the tile now; the cover's scale grows it into the oblong
   requestAnimationFrame(() => requestAnimationFrame(() => {
     cover.classList.add("breathe");                                    // 1. the tile breathes; the aura lights behind it
     setTimeout(() => {                                                 // 2. the tile grows to the screen; the aura grows with it; the page fades
@@ -292,11 +297,9 @@ function enterWith(fromEl, go) {
       cover.style.transform = `scale(${s.toFixed(2)})`;
       // the light is the first cut's (v306, Tom's recording): a circle from the tile's center that reaches the farthest corner and
       // no further, so the edges stay grey. It rides the cover's scale, so its resting size is the reach divided by that scale.
-      const reach = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy));
-      const light = cover.querySelector(".bloom-light"); const d = (reach * 2.3) / s;
-      light.style.width = light.style.height = d + "px";                 // centered by the stylesheet (50%/50% + translate), never by left/top: Safari dropped those (Tom's screenshot)
+      // the light was sized before the breathe; it rides this scale (centered by the stylesheet, never by left/top: Safari dropped those)
       if (app) app.classList.add("bloom-fade"); if (sheet) sheet.classList.add("bloom-fade");
-      document.querySelectorAll("#tabbar, .topbar").forEach(n => n.classList.add("bloom-fade"));   // the bars go too: the tile becomes the whole screen
+      document.querySelectorAll("#tabbar, .topbar, .home-atmo").forEach(n => n.classList.add("bloom-fade"));   // the bars and the home photo go too: the screen greys to the bare ground
     }, 190);
     setTimeout(paint, 450);                                            // 3. the hold: the next screen paints under the cover (it covers by ~420ms)
     setTimeout(() => { if (app) app.classList.remove("bloom-fade"); document.querySelectorAll(".bloom-fade").forEach(n => n.classList.remove("bloom-fade")); cover.classList.add("clear"); }, 540);   // 4. the cover fades away
