@@ -2040,7 +2040,7 @@ img.scene-art { width: 286px; }
 .bloom-cover { position: fixed; z-index: 2600; pointer-events: none; overflow: visible; background: transparent; transform-origin: center; will-change: transform;   /* the clone's OWN surface is what grows (the Home tile's blue, a row's card) */
   transition: transform 190ms cubic-bezier(.2,.7,.3,1), opacity 320ms ease; }
 .bloom-cover.fill { transition: transform 200ms cubic-bezier(.4,0,.7,1), opacity 320ms ease; }   /* the fill accelerates: the tile comes toward you */
-.bloom-cover .bloom-tile { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; transform: none !important; box-shadow: none; }
+.bloom-cover .bloom-tile { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; transform: none !important; box-shadow: none; z-index: 0; }
 .bloom-cover .bloom-tile > * { transition: opacity 120ms ease 70ms; }
 .bloom-cover.breathe .bloom-tile > *, .bloom-cover.fill .bloom-tile > * { opacity: 0; }   /* the words and the picture let go during the breathe; the tile's surface stays and grows (Tom 9/22) */
 /* the aura: the splash lantern's recipe, a radial LAYER behind the tile (never a filter), soft, no line */
@@ -2049,6 +2049,13 @@ img.scene-art { width: 286px; }
   transition: opacity 190ms ease, inset 170ms cubic-bezier(.4,0,.6,1); }
 .bloom-cover.breathe { transform: scale(1.06); }
 .bloom-cover.breathe .bloom-aura { opacity: 1; }
-.bloom-cover.fill .bloom-aura { opacity: 1; }                                       /* the aura rides the scale, keeping its shape */
+/* as the tile grows it DISSIPATES and the light takes over (Tom 9/22, against Duolingo's dark hold): the surface fades out over the
+   growth while a brighter light, riding the same scale, comes up to fill the screen; the clear then fades the light to the new screen */
+.bloom-cover .bloom-light { position: absolute; inset: -60% -40%; z-index: 1; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(closest-side at 50% 50%, rgba(232,204,72,0.92) 0%, rgba(226,196,52,0.78) 30%, rgba(216,183,19,0.55) 58%, rgba(216,183,19,0.22) 82%, rgba(216,183,19,0) 100%);
+  transition: opacity 200ms cubic-bezier(.4,0,.7,1); }
+.bloom-cover.fill .bloom-aura { opacity: 1; }
+.bloom-cover.fill .bloom-light { opacity: 1; }
+.bloom-cover.fill .bloom-tile { opacity: 0; transition: opacity 200ms cubic-bezier(.4,0,.7,1); }
 .bloom-cover.clear { opacity: 0; }
 #app.bloom-fade, .sheet-wrap.bloom-fade, #tabbar.bloom-fade, .topbar.bloom-fade { transition: opacity 170ms ease; opacity: 0.12; }

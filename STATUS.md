@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v312 (2026-09-22) — staged (enter-bloom): the light takes over as the tile grows
+- Tom, against Duolingo's dark hold: as the tile expands it should dissipate while the light grows brighter. A second, brighter radial layer (`.bloom-light`) rides the same scale: over the 200ms growth the tile's surface fades to 0 while the light comes up to 1; the hold is now gold, not dark; the clear fades the light to the new screen. Measured: at 260ms tile 0.87 / light 0.12; at 340ms tile 0.30 / light 0.69; at 420ms tile 0 / light 1 with the screen covered.
+
 ## v311 (2026-09-22) — staged (enter-bloom): the tile's surface grows; the light only on session-starting taps
 - Tom: the action tile "just disappears". Cause: v310 faded the whole clone, surface included, so a dark cover grew over a dark page. Now only the tile's CONTENTS fade (words, picture); its own surface (the Home tile's blue, a row's card) is what grows to fill the screen, above the sheets and both bars, which fade with the page.
 - Tom: the light flashed on "By scenario", which only opens another chooser. The light now rides only the tap that takes you into a session: Practice (the smart default), a scenario pick, a machine in the shop, a Learn row, the Home tile. "By scenario" and "The machine shop" are plain taps.
