@@ -2026,3 +2026,7 @@ img.scene-art { width: 286px; }
 .peek-item .en { color: var(--text-dim); text-align: right; }
 .peek-frame { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--accent-2, var(--accent)); margin: 10px 0 2px; }
 .peek-frame:first-child { margin-top: 2px; }
+
+/* THE CHAPTER DOOR (chapter-flow): "Chapter one" in the logo faces; the chapter's name as the title line under the label */
+.chapter-door-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; line-height: 1.25; margin: 0 0 10px; }
+.chapter-door .scene-line { margin-bottom: 4px; }

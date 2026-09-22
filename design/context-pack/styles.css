@@ -2011,15 +2011,22 @@ img.scene-art { width: 286px; }
 .pairs.pairs-fit + .pairs-grown { margin-top: 10px; }
 
 /* THE PEEK (staged "learn-peek"): what a lesson holds, under its row */
-.lesson .chev { transition: transform 200ms cubic-bezier(.2,.7,.3,1); }
-.lesson.open .chev { transform: rotate(90deg); }
+.lesson.has-peek { padding-right: 0; }
+.lesson .pk-zone { align-self: stretch; width: 52px; margin: -14px 0; flex: none; display: flex; align-items: center; justify-content: center; background: none; border: none;
+  border-left: 1px solid var(--border); color: var(--text-dim); cursor: pointer; padding: 0; border-radius: 0 var(--radius) var(--radius) 0; }
+.lesson .pk-zone .ph { transform: rotate(90deg); transition: transform 200ms cubic-bezier(.2,.7,.3,1); }      /* points down: there is more under here */
+.lesson.open .pk-zone .ph { transform: rotate(-90deg); }
+.lesson .pk-zone:active { background: color-mix(in srgb, var(--text) 6%, transparent); }
 .lesson-peek { margin: -2px 0 10px; padding: 4px 16px 14px 56px; opacity: 0; transform: translateY(-4px); transition: opacity 220ms cubic-bezier(.2,.7,.3,1), transform 220ms cubic-bezier(.2,.7,.3,1); }
 .lesson-peek.show { opacity: 1; transform: none; }
-.peek-list { display: grid; grid-template-columns: 1fr; gap: 0; margin-bottom: 12px; }
+.peek-list { display: grid; grid-template-columns: 1fr; gap: 0; }
 .peek-item { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
 .peek-item:last-child { border-bottom: none; }
 .peek-item .es { font-family: var(--font-display); font-weight: 600; color: var(--text); }
 .peek-item .en { color: var(--text-dim); text-align: right; }
 .peek-frame { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--accent-2, var(--accent)); margin: 10px 0 2px; }
 .peek-frame:first-child { margin-top: 2px; }
-.lesson-peek .peek-start { width: 100%; }
+
+/* THE CHAPTER DOOR (chapter-flow): "Chapter one" in the logo faces; the chapter's name as the title line under the label */
+.chapter-door-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; line-height: 1.25; margin: 0 0 10px; }
+.chapter-door .scene-line { margin-bottom: 4px; }

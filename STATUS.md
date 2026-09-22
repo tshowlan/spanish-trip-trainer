@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v300 (2026-09-21) — staged (chapter-flow): THE CHAPTER DOOR
+- Tom's design from the mock: "Chapter one" in the logo faces over the photo (not the title), the label "13 SESSIONS", the chapter's name as the title line, the one line in the scene voice, Begin. Two lines only ("a third needs a fourth"). Shown the first time a learner starts ANY lesson of a chapter, from Home or Learn, before the lesson's primer; once per chapter (`state.chapterDoors`, synced with state); tapping a chapter heading on the Learn tab reopens it with "Back to the list". Rides the chapter-flow switch. Photos are stand-ins from the pack (market, café, hero) until chapter photos are chosen. Chapters 2-4 show their door with no line until the lines are written.
+- Verified at 375×812: the door before First words · Part 1, Begin goes into the lesson, no door on the second lesson, chapter 2's own door, the heading reopens and returns to Learn.
+
 ## v299 (2026-09-21) — staged (chapter-flow): chapter 1 is "The words that get you by"
 - Tom's title and line: **The words that get you by** · "Simple words that maximize every day of your trip." Both live in the flow data (`chapters`, `blurbs`); the line renders under the chapter heading on the Learn tab (it wraps; the lesson-row line was the one that truncated and stays retired). Chapters 2-4 have no line yet.
 - The chapter DOOR (Tom: Home-path learners never see the heading) is mocked, not built: dev/chapter-door-options.html, three versions on the scene door's frame.

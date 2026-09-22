@@ -103,6 +103,10 @@ function _journeyView(scroll) {
       <div class="chap-row"><span class="chap-title">${st.title}</span><span class="chap-whisper">${done} of ${visible.length}</span></div>
       ${st.blurb ? `<div class="chap-blurb">${st.blurb}</div>` : ""}
     </div>`));
+    if (isStaged("chapter-flow") && typeof renderChapterDoor === "function" && stages[1] && stages[1].id === "sp-first-sentences") {   // the heading reopens the chapter's door (Tom 9/21)
+      const head = chap.querySelector(".chap-head"); head.style.cursor = "pointer";
+      head.addEventListener("click", () => renderChapterDoor(i, () => renderLearn(), { cta: "Back to the list", back: () => renderLearn() }));
+    }
     st.lessons.forEach(l => chap.appendChild(_lessonRow(l, l.id === recId)));
     if (locked && stages[cur]) {
       chap.appendChild(el(`<div class="lock-hint">${icon("lock-simple", 12)}<span>Best after ${stages[cur].title}. You can peek anytime.</span></div>`));

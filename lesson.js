@@ -551,7 +551,40 @@ function startLesson(lesson) {
   if (lessonDone(lesson.id)) return renderReturnDoor(lesson);
   return _startLessonProper(lesson);
 }
+/* THE CHAPTER DOOR (Tom 2026-09-21; rides the chapter-flow switch): the first time a learner starts ANY lesson of a chapter, from
+   Home or Learn, the chapter introduces itself before the lesson's primer: "Chapter 1" in the logo faces over the photo, the
+   chapter's name, its one line, Begin. Once per chapter (state.chapterDoors); the Learn tab's chapter heading reopens it. */
+function chapterDoorDue(lesson) {
+  if (!isStaged("chapter-flow") || !(DECK && DECK.stages[1] && DECK.stages[1].id === "sp-first-sentences")) return null;
+  const i = DECK.stages.findIndex(st => st.lessons.some(x => x.id === lesson.id));
+  if (i < 0) return null;
+  const seen = (state.chapterDoors || []);
+  return seen.includes(DECK.stages[i].id || String(i)) ? null : i;
+}
+function renderChapterDoor(i, onDone, opts) {
+  const st = DECK.stages[i]; if (!st) return onDone();
+  const app = $("#app"); clearFooter(); hideTabbar(); app.innerHTML = "";
+  document.body.classList.add("in-runner");
+  const wrap = el(`<div class="runner scene-basics"></div>`);
+  wrap.appendChild(facetField());
+  wrap.appendChild(el(`<div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button></div>`));
+  const door = el(`<div class="scene-door chapter-door"></div>`);
+  const photo = `./img/es/${["market", "cafe", "hero", "default"][i] || "default"}.jpg`;   // stand-ins from the pack until chapter photos are chosen
+  door.appendChild(el(`<div class="door-photo"><div class="door-name"><span class="n1">Chapter</span> <span class="n2">${["one", "two", "three", "four", "five"][i] || i + 1}</span></div><img src="${photo}" alt=""></div>`));
+  door.appendChild(el(`<div class="scene-sub" style="margin:10px 0 12px;">${st.lessons.filter(x => !x.bonus).length} SESSIONS</div>`));
+  door.appendChild(el(`<div class="chapter-door-title">${st.title}</div>`));
+  if (st.blurb) door.appendChild(el(`<div class="scene-line"><span class="sl">${st.blurb}</span></div>`));
+  const grown = el(`<div class="res-grown show"><button class="btn res-cont">${(opts && opts.cta) || "Begin"}</button></div>`);
+  grown.querySelector(".res-cont").addEventListener("click", () => {
+    state.chapterDoors = Array.from(new Set((state.chapterDoors || []).concat([st.id || String(i)]))); save();
+    onDone();
+  });
+  door.appendChild(grown); wrap.appendChild(door); app.appendChild(wrap);
+  wrap.querySelector("#quit").addEventListener("click", () => (opts && opts.back) ? opts.back() : renderLearn());
+}
 function _startLessonProper(lesson) {
+  const ci = chapterDoorDue(lesson);
+  if (ci != null) return renderChapterDoor(ci, () => _startLessonProper(lesson));
   // Compose FIRST (so the primer's guess item is still "new" here and stays in the session),
   // then run the primer on a first pass before the lesson proper. Replays/reviews skip straight in.
   run = { lesson, qs: composeSession(lesson), idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
