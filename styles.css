@@ -2051,8 +2051,8 @@ img.scene-art { width: 286px; }
 .bloom-cover.breathe .bloom-aura { opacity: 1; }
 /* as the tile grows it DISSIPATES and the light takes over (Tom 9/22, against Duolingo's dark hold): the surface fades out over the
    growth while a brighter light, riding the same scale, comes up to fill the screen; the clear then fades the light to the new screen */
-.bloom-cover .bloom-light { position: absolute; inset: -60% -40%; z-index: 1; border-radius: 50%; opacity: 0; pointer-events: none;
-  background: radial-gradient(closest-side at 50% 50%, rgba(216,183,19,0.42) 0%, rgba(216,183,19,0.28) 35%, rgba(216,183,19,0.14) 58%, rgba(216,183,19,0.05) 78%, rgba(216,183,19,0) 100%);   /* the lantern's own recipe (v308): a glow at the center, grey at the edges, never a wash (Tom 9/22) */
+.bloom-cover .bloom-light { position: absolute; z-index: 1; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(216,183,19,0.55) 0%, rgba(216,183,19,0.32) 42%, rgba(216,183,19,0.14) 70%, rgba(216,183,19,0) 100%);   /* the first cut's light (v306): a glow at the center reaching the corners, grey outside (Tom's recording, 9/22) */
   transition: opacity 200ms cubic-bezier(.4,0,.7,1); }
 .bloom-cover.fill .bloom-aura { opacity: 1; }
 .bloom-cover.fill .bloom-light { opacity: 1; }

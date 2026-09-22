@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v314 (2026-09-22) — staged (enter-bloom): the first cut's light, with the growing tile
+- Tom's second recording was v306's light: a circle from the tile's center reaching the corners, the page dimming around it, grey outside. He wants that light with the tile growth that came later. The takeover light is now sized as v306's (diameter 2.3 × the reach to the farthest corner, riding the cover's scale) with v306's gradient (0.55 at the center falling to 0 at the rim). Measured: light centered on the tile (188,433), diameter 1080 against a 472px reach.
+
 ## v313 (2026-09-22) — staged (enter-bloom): the light back to the lantern's strength
 - Tom: v312's light was far too bright. The takeover light now uses the lantern's own recipe (v308's aura: 0.42 at the center falling to nothing), so the tile dissipates into a soft center glow with the grey ground showing at the edges, not a gold wash.
 

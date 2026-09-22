@@ -290,6 +290,11 @@ function enterWith(fromEl, go) {
       const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
       const s = Math.max((2 * Math.max(cx, innerWidth - cx)) / r.width, (2 * Math.max(cy, innerHeight - cy)) / r.height) * 1.12;
       cover.style.transform = `scale(${s.toFixed(2)})`;
+      // the light is the first cut's (v306, Tom's recording): a circle from the tile's center that reaches the farthest corner and
+      // no further, so the edges stay grey. It rides the cover's scale, so its resting size is the reach divided by that scale.
+      const reach = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy));
+      const light = cover.querySelector(".bloom-light"); const d = (reach * 2.3) / s;
+      light.style.inset = "auto"; light.style.width = light.style.height = d + "px"; light.style.left = (r.width / 2 - d / 2) + "px"; light.style.top = (r.height / 2 - d / 2) + "px";
       if (app) app.classList.add("bloom-fade"); if (sheet) sheet.classList.add("bloom-fade");
       document.querySelectorAll("#tabbar, .topbar").forEach(n => n.classList.add("bloom-fade"));   // the bars go too: the tile becomes the whole screen
     }, 190);
