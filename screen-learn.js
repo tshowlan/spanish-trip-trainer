@@ -77,7 +77,7 @@ function _lessonRow(l, isNext) {
   </div>`);
   // OPTION A (Tom 9/21, staged): ONE tap anywhere on the row starts the lesson; the arrow on the right, in its own zone behind a
   // hairline, opens what's inside. A miss lands on "start", the commoner intent.
-  row.addEventListener("click", () => { window._lessonFrom = "learn"; enterWith(row, () => startLesson(l)); });
+  row.addEventListener("click", () => { window._lessonFrom = "learn"; window._learnScroll = window.scrollY || 0; enterWith(row, () => startLesson(l)); });   // remember where the list was, so the row is back in its place on return
   const pk = row.querySelector(".pk-zone");
   if (pk) { row.classList.add("has-peek"); pk.addEventListener("click", e => { e.stopPropagation(); _togglePeek(row, l); }); }
   return row;
@@ -160,6 +160,7 @@ function renderLearn() {
   else if (_learnView === "topics") _topicsView(scroll);
   else _journeyView(scroll);
   wrap.appendChild(scroll);
+  if (window._learnScroll != null && isStaged("learn-peek")) { const y = window._learnScroll; window._learnScroll = null; requestAnimationFrame(() => window.scrollTo(0, y)); }   // back to the same spot (Tom 9/22)
   app.appendChild(wrap);
 }
 // phrases fading in a category (seen but below the review threshold)

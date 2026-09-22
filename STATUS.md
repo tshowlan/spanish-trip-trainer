@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v310 (2026-09-22) — staged: the tile's contents let go during the breathe; the Learn row returns to its place
+- Tom: the words and picture were getting big before they faded. They now fade during the breathe (120ms after a 70ms beat), so the tile is empty by the time it grows. Measured: contents at 12% opacity at 150ms while the tile is still at 1.06.
+- Tom: the Learn row "shifted away". Quitting a lesson started from Learn re-rendered the list scrolled to the top, so the row was somewhere else. The list now remembers its scroll position on the tap and returns to it (the row back in its place). Measured: row top 142px before, 142px after the round trip.
+
 ## v309 (2026-09-22) — staged (enter-bloom): the tile comes toward you
 - Tom: the rectangle was stretching up and down. The fill is now a uniform scale about the tile's own center (the factor computed so every edge leaves the screen from wherever the tile sits), so the tile keeps its shape and grows toward you; the aura rides the scale. Paint at 450ms (it covers by ~420), clear at 540, gone by 900. Measured: the width-to-height ratio held at 2.42 from tile to full cover.
 
