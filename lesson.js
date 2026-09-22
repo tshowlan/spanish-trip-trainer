@@ -570,17 +570,17 @@ function renderChapterDoor(i, onDone, opts) {
   wrap.appendChild(el(`<div class="progress-row"><button class="close-btn" id="quit">${icon('x', 24)}</button></div>`));
   const door = el(`<div class="scene-door chapter-door"></div>`);
   const photo = `./img/es/${["market", "cafe", "hero", "default"][i] || "default"}.jpg`;   // stand-ins from the pack until chapter photos are chosen
-  door.appendChild(el(`<div class="door-photo"><div class="door-name"><span class="n1">Chapter</span> <span class="n2">${["one", "two", "three", "four", "five"][i] || i + 1}</span></div><img src="${photo}" alt=""></div>`));
-  door.appendChild(el(`<div class="scene-sub" style="margin:10px 0 12px;">${st.lessons.filter(x => !x.bonus).length} SESSIONS</div>`));
-  door.appendChild(el(`<div class="chapter-door-title">${st.title}</div>`));
+  // "Chapter 1" in the logo faces, the session count whispered to its right (Tom 9/21)
+  door.appendChild(el(`<div class="door-photo"><div class="door-name chapter-name"><span><span class="n1">Chapter</span> <span class="n2">${i + 1}</span></span><span class="scene-sub chapter-count">${st.lessons.filter(x => !x.bonus).length} SESSIONS</span></div><img src="${photo}" alt=""></div>`));
+  door.appendChild(el(`<div class="chapter-door-title">${st.title}</div>`));   // the name IS the title: bold, balanced so no word sits alone on a line
   if (st.blurb) door.appendChild(el(`<div class="scene-line"><span class="sl">${st.blurb}</span></div>`));
-  const grown = el(`<div class="res-grown show"><button class="btn res-cont">${(opts && opts.cta) || "Begin"}</button></div>`);
-  grown.querySelector(".res-cont").addEventListener("click", () => {
+  wrap.appendChild(door); app.appendChild(wrap);
+  const f = footer(`<button class="btn" id="cont">${(opts && opts.cta) || "Begin"}</button>`);   // the button at the bottom of the screen, like every exercise
+  f.querySelector("#cont").addEventListener("click", () => {
     state.chapterDoors = Array.from(new Set((state.chapterDoors || []).concat([st.id || String(i)]))); save();
-    onDone();
+    clearFooter(); onDone();
   });
-  door.appendChild(grown); wrap.appendChild(door); app.appendChild(wrap);
-  wrap.querySelector("#quit").addEventListener("click", () => (opts && opts.back) ? opts.back() : renderLearn());
+  wrap.querySelector("#quit").addEventListener("click", () => { clearFooter(); (opts && opts.back) ? opts.back() : renderLearn(); });
 }
 function _startLessonProper(lesson) {
   const ci = chapterDoorDue(lesson);

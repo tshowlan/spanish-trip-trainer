@@ -2028,5 +2028,7 @@ img.scene-art { width: 286px; }
 .peek-frame:first-child { margin-top: 2px; }
 
 /* THE CHAPTER DOOR (chapter-flow): "Chapter one" in the logo faces; the chapter's name as the title line under the label */
-.chapter-door-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; line-height: 1.25; margin: 0 0 10px; }
+.chapter-door-title { font-family: var(--font-display); font-size: 30px; font-weight: 800; line-height: 1.15; letter-spacing: -.01em; margin: 16px 0 10px; text-wrap: balance; }
 .chapter-door .scene-line { margin-bottom: 4px; }
+.door-name.chapter-name { display: flex; align-items: baseline; gap: 12px; }
+.chapter-count { margin: 0; font-style: normal; font-weight: 600; }
