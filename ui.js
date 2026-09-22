@@ -269,24 +269,27 @@ function enterWith(fromEl, go) {
   const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!(typeof isStaged === "function" && isStaged("enter-bloom")) || reduced || !fromEl) return go();
   const r = fromEl.getBoundingClientRect();
-  const cover = el(`<div class="bloom-cover" aria-hidden="true"></div>`);
-  const cs = getComputedStyle(fromEl);
+  // the cover IS the tile: a clone, contents and all, so what grows is the thing you tapped (Tom 9/22)
+  const clone = fromEl.cloneNode(true); clone.removeAttribute("id"); clone.classList.add("bloom-tile");
+  const cover = el(`<div class="bloom-cover" aria-hidden="true"><div class="bloom-aura"></div></div>`);
+  cover.appendChild(clone);
   cover.style.left = r.left + "px"; cover.style.top = r.top + "px"; cover.style.width = r.width + "px"; cover.style.height = r.height + "px";
-  cover.style.borderRadius = cs.borderRadius;
+  cover.style.borderRadius = getComputedStyle(fromEl).borderRadius;
   document.body.appendChild(cover);
+  fromEl.style.visibility = "hidden";                                  // the original steps aside; the clone stands in its place
   const app = document.getElementById("app");
   const sheet = document.querySelector(".sheet-wrap");
   let went = false;
   const paint = () => { if (went) return; went = true; try { go(); } catch (e) { console.error(e); } };
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    cover.classList.add("breathe");                                    // 1. the tile breathes, the light tight around its edge
-    setTimeout(() => {                                                 // 2. the tile fills the screen; the light grows with it; the page fades
+    cover.classList.add("breathe");                                    // 1. the tile breathes; the aura lights behind it
+    setTimeout(() => {                                                 // 2. the tile grows to the screen; the aura grows with it; the page fades
       cover.classList.remove("breathe"); cover.classList.add("fill");
       cover.style.left = "0px"; cover.style.top = "0px"; cover.style.width = innerWidth + "px"; cover.style.height = innerHeight + "px"; cover.style.borderRadius = "0px";
       if (app) app.classList.add("bloom-fade"); if (sheet) sheet.classList.add("bloom-fade");
-    }, 170);
-    setTimeout(paint, 380);                                            // 3. the hold: the next screen paints under the cover
-    setTimeout(() => { if (app) app.classList.remove("bloom-fade"); cover.classList.add("clear"); }, 480);   // 4. the cover fades away
-    setTimeout(() => cover.remove(), 820);
+    }, 190);
+    setTimeout(paint, 400);                                            // 3. the hold: the next screen paints under the cover
+    setTimeout(() => { if (app) app.classList.remove("bloom-fade"); cover.classList.add("clear"); }, 500);   // 4. the cover fades away
+    setTimeout(() => { cover.remove(); fromEl.style.visibility = ""; }, 860);
   }));
 }

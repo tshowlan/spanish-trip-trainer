@@ -2036,11 +2036,18 @@ img.scene-art { width: 286px; }
 .chapter-door .scene-line .sl { color: var(--text-dim); }                                   /* the subtitle in the whisper's grey (Tom 9/22) */
 .chapter-count { margin: 0; font-style: normal; font-weight: 600; }
 
-/* THE BLOOM (staged "enter-bloom"): a cover the size of the tapped tile breathes, then grows to the whole screen with its light, then clears */
-.bloom-cover { position: fixed; z-index: 400; pointer-events: none; background: var(--bg-elevated);
-  box-shadow: 0 0 0 0 rgba(216,183,19,0), 0 0 0 0 rgba(216,183,19,0);
-  transition: transform 170ms cubic-bezier(.2,.7,.3,1), box-shadow 170ms ease, left 160ms cubic-bezier(.4,0,.6,1), top 160ms cubic-bezier(.4,0,.6,1), width 160ms cubic-bezier(.4,0,.6,1), height 160ms cubic-bezier(.4,0,.6,1), border-radius 160ms ease, opacity 300ms ease; }
-.bloom-cover.breathe { transform: scale(1.06); box-shadow: 0 0 0 2px rgba(216,183,19,.7), 0 0 26px 8px rgba(216,183,19,.45); }   /* the light, tight around the edge */
-.bloom-cover.fill { transform: none; box-shadow: 0 0 0 2px rgba(216,183,19,.35), 0 0 160px 80px rgba(216,183,19,.35); }         /* the light grows with the tile */
-.bloom-cover.clear { opacity: 0; box-shadow: none; }
-#app.bloom-fade, .sheet-wrap.bloom-fade { transition: opacity 160ms ease; opacity: 0.12; }
+/* THE BLOOM (staged "enter-bloom"): the tapped tile, cloned, breathes with the lantern's aura behind it, grows to the screen, then clears */
+.bloom-cover { position: fixed; z-index: 400; pointer-events: none; overflow: visible; background: var(--bg-elevated);
+  transition: transform 190ms cubic-bezier(.2,.7,.3,1), left 170ms cubic-bezier(.4,0,.6,1), top 170ms cubic-bezier(.4,0,.6,1), width 170ms cubic-bezier(.4,0,.6,1), height 170ms cubic-bezier(.4,0,.6,1), border-radius 170ms ease, opacity 320ms ease; }
+.bloom-cover .bloom-tile { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; transition: opacity 170ms ease; }
+.bloom-cover.fill .bloom-tile { opacity: 0; }                                        /* the tile's contents let go as it becomes the screen */
+/* the aura: the splash lantern's recipe, a radial LAYER behind the tile (never a filter), soft, no line */
+.bloom-cover .bloom-aura { position: absolute; inset: -40% -18%; z-index: -1; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(closest-side at 50% 50%, rgba(216,183,19,0.42) 0%, rgba(216,183,19,0.28) 35%, rgba(216,183,19,0.14) 58%, rgba(216,183,19,0.05) 78%, rgba(216,183,19,0) 100%);
+  transition: opacity 190ms ease, inset 170ms cubic-bezier(.4,0,.6,1); }
+.bloom-cover.breathe { transform: scale(1.06); }
+.bloom-cover.breathe .bloom-aura { opacity: 1; }
+.bloom-cover.fill { transform: none; }
+.bloom-cover.fill .bloom-aura { opacity: 1; inset: -30% -30%; }
+.bloom-cover.clear { opacity: 0; }
+#app.bloom-fade, .sheet-wrap.bloom-fade { transition: opacity 170ms ease; opacity: 0.12; }
