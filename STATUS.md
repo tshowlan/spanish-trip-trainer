@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v313 (2026-09-22) — staged (enter-bloom): the light back to the lantern's strength
+- Tom: v312's light was far too bright. The takeover light now uses the lantern's own recipe (v308's aura: 0.42 at the center falling to nothing), so the tile dissipates into a soft center glow with the grey ground showing at the edges, not a gold wash.
+
 ## v312 (2026-09-22) — staged (enter-bloom): the light takes over as the tile grows
 - Tom, against Duolingo's dark hold: as the tile expands it should dissipate while the light grows brighter. A second, brighter radial layer (`.bloom-light`) rides the same scale: over the 200ms growth the tile's surface fades to 0 while the light comes up to 1; the hold is now gold, not dark; the clear fades the light to the new screen. Measured: at 260ms tile 0.87 / light 0.12; at 340ms tile 0.30 / light 0.69; at 420ms tile 0 / light 1 with the screen covered.
 
