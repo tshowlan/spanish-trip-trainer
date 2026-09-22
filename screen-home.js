@@ -798,15 +798,16 @@ function practiceChooser() {
     <div class="sheet"><div class="sheet-grab"></div><div class="sheet-title">Practice</div>
       <div class="practice-opts"></div></div></div>`);
   const opts = wrap.querySelector(".practice-opts");
-  const add = (title, sub, run, disabled) => {
+  const add = (title, sub, run, disabled, starts) => {
     const b = el(`<button class="practice-opt" ${disabled ? "disabled" : ""}><div class="po-t">${title}</div><div class="po-s">${sub}</div></button>`);
-    if (!disabled) b.addEventListener("click", () => { if (isStaged("enter-bloom")) { enterWith(b, () => { closeSheet(); run(); }); } else { closeSheet(); run(); } });
+    // the light only on the tap that takes you INTO a session; a tap that opens another chooser is just a tap (Tom 9/22)
+    if (!disabled) b.addEventListener("click", () => { if (starts && isStaged("enter-bloom")) { enterWith(b, () => { closeSheet(); run(); }); } else { closeSheet(); run(); } });
     opts.appendChild(b);
   };
   const picked = (typeof _practicePick === "function") ? _practicePick(null) : [];
   const line = (typeof practicePickLine === "function") ? practicePickLine(picked) : null;
   const sc = isStaged("review-door") ? sceneReady() : null;   // staged: the door names the scene it will serve
-  add("Practice", sc ? `Scene: ${sc.title} \u00b7 ${sc.beats.length} asks` : (line || "Finish a lesson first"), () => startReview(), !picked.length && !sc);
+  add("Practice", sc ? `Scene: ${sc.title} \u00b7 ${sc.beats.length} asks` : (line || "Finish a lesson first"), () => startReview(), !picked.length && !sc, true);
   add("By scenario", "Pick a category and drill it hard", scenarioChooser);
   const shops = machineShopLessons();
   add("The machine shop", shops.length ? "Drill one machine start to finish" : "Meet a machine first", machineShopChooser, !shops.length);
@@ -836,7 +837,7 @@ function machineShopChooser() {
     const learned = (l.items || []).filter(it => exposuresOf(it) >= 1);
     const avg = learned.length ? Math.round(learned.reduce((a, it) => a + itemStrength(state.learn[it.id] || {}), 0) / learned.length) : 0;
     const b = el(`<button class="practice-opt"><div class="po-t">${l.frame}</div><div class="po-s">${l.title} · ${avg}% strong</div></button>`);
-    b.addEventListener("click", () => { closeSheet(); startMachineShop(l); });
+    b.addEventListener("click", () => enterWith(b, () => { closeSheet(); startMachineShop(l); }));
     opts.appendChild(b);
   });
   document.body.appendChild(wrap);
@@ -854,7 +855,7 @@ function scenarioChooser() {
   keys.forEach(c => {
     const strong = Math.round((cats[c].credit / cats[c].total) * 100);
     const b = el(`<button class="practice-opt"><div class="po-t">${c}</div><div class="po-s">${strong}% strong</div></button>`);
-    b.addEventListener("click", () => { closeSheet(); const its = itemsInCategory(c); if (its.length) startReview(its); });
+    b.addEventListener("click", () => { const its = itemsInCategory(c); if (!its.length) return closeSheet(); enterWith(b, () => { closeSheet(); startReview(its); }); });
     opts.appendChild(b);
   });
   if (!keys.length) opts.appendChild(el(`<p class="onb-dim">Finish a lesson first.</p>`));

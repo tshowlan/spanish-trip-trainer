@@ -291,9 +291,10 @@ function enterWith(fromEl, go) {
       const s = Math.max((2 * Math.max(cx, innerWidth - cx)) / r.width, (2 * Math.max(cy, innerHeight - cy)) / r.height) * 1.12;
       cover.style.transform = `scale(${s.toFixed(2)})`;
       if (app) app.classList.add("bloom-fade"); if (sheet) sheet.classList.add("bloom-fade");
+      document.querySelectorAll("#tabbar, .topbar").forEach(n => n.classList.add("bloom-fade"));   // the bars go too: the tile becomes the whole screen
     }, 190);
     setTimeout(paint, 450);                                            // 3. the hold: the next screen paints under the cover (it covers by ~420ms)
-    setTimeout(() => { if (app) app.classList.remove("bloom-fade"); cover.classList.add("clear"); }, 540);   // 4. the cover fades away
+    setTimeout(() => { if (app) app.classList.remove("bloom-fade"); document.querySelectorAll(".bloom-fade").forEach(n => n.classList.remove("bloom-fade")); cover.classList.add("clear"); }, 540);   // 4. the cover fades away
     setTimeout(() => { cover.remove(); fromEl.style.visibility = ""; }, 900);
   }));
 }

@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v311 (2026-09-22) — staged (enter-bloom): the tile's surface grows; the light only on session-starting taps
+- Tom: the action tile "just disappears". Cause: v310 faded the whole clone, surface included, so a dark cover grew over a dark page. Now only the tile's CONTENTS fade (words, picture); its own surface (the Home tile's blue, a row's card) is what grows to fill the screen, above the sheets and both bars, which fade with the page.
+- Tom: the light flashed on "By scenario", which only opens another chooser. The light now rides only the tap that takes you into a session: Practice (the smart default), a scenario pick, a machine in the shop, a Learn row, the Home tile. "By scenario" and "The machine shop" are plain taps.
+
 ## v310 (2026-09-22) — staged: the tile's contents let go during the breathe; the Learn row returns to its place
 - Tom: the words and picture were getting big before they faded. They now fade during the breathe (120ms after a 70ms beat), so the tile is empty by the time it grows. Measured: contents at 12% opacity at 150ms while the tile is still at 1.06.
 - Tom: the Learn row "shifted away". Quitting a lesson started from Learn re-rendered the list scrolled to the top, so the row was somewhere else. The list now remembers its scroll position on the tap and returns to it (the row back in its place). Measured: row top 142px before, 142px after the round trip.
