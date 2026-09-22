@@ -104,7 +104,7 @@ function renderProfile() {
   });
   wrap.appendChild(stg);
   const fresh = el(`<button class="btn-quiet" style="margin:6px 0 10px">Start over as a fresh learner (keeps your profile)</button>`);
-  fresh.addEventListener("click", () => { state.learn = {}; state.lessons = {}; save(); rebuildDeck(); toast("Fresh learner: nothing met, nothing done"); renderProfile(); });
+  fresh.addEventListener("click", () => { state.learn = {}; state.lessons = {}; state.chapterDoors = []; save(); rebuildDeck(); toast("Fresh learner: nothing met, nothing done"); renderProfile(); });
   wrap.appendChild(fresh);
   // scene readiness readout (never trust self-reported success): each scene's due-mass vs the
   // bar it must clear today, plus a "Make ready" that puts its phrases due so the door can show

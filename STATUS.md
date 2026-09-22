@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v303 (2026-09-21) — staged: the fresh-learner reset forgets the chapter doors
+- Tom: the door wasn't showing after "Start over as a fresh learner". The reset cleared what was learned but not `state.chapterDoors`, so the door counted as seen. Now cleared with the rest. Verified: door seen → reset → Home's next lesson → the door shows.
+
 ## v302 (2026-09-21) — staged: the chapter door's numeral, one-line title, air under it
 - Tom: the 1 as tall as the C; the title on one line; more space before the next line. The italic numeral is 1.34em (Playfair's figures sit short of its capitals); the title is 27px on one line at 375px (24px under 360px) with 18px under it. Verified at 375×812: one line, fits with margin, numeral 45px tall beside a 32px cap height.
 
