@@ -271,7 +271,8 @@ function enterWith(fromEl, go) {
   const r = fromEl.getBoundingClientRect();
   // the cover IS the tile: a clone, contents and all, so what grows is the thing you tapped (Tom 9/22)
   const clone = fromEl.cloneNode(true); clone.removeAttribute("id"); clone.classList.add("bloom-tile");
-  const cover = el(`<div class="bloom-cover${isStaged("bloom-white") ? " white" : ""}" aria-hidden="true"><div class="bloom-aura"></div><div class="bloom-light"></div></div>`);   // "bloom-white" (compare switch): the daybreak's white light instead of the gold   // the aura (soft, the breathe) and the light (bright, takes over as the tile grows)
+  const white = isStaged("bloom-white");
+  const cover = el(`<div class="bloom-cover${white ? " white" : ""}" aria-hidden="true"><div class="bloom-aura"></div><div class="bloom-light"></div>${white ? `<div class="bloom-day"></div>` : ""}</div>`);   // "bloom-white" (compare): the gold blooms first, THEN the daybreak's white takes over, as the loading page does   // the aura (soft, the breathe) and the light (bright, takes over as the tile grows)
   cover.appendChild(clone);
   cover.style.left = r.left + "px"; cover.style.top = r.top + "px"; cover.style.width = r.width + "px"; cover.style.height = r.height + "px";
   cover.style.borderRadius = getComputedStyle(fromEl).borderRadius;
@@ -301,6 +302,7 @@ function enterWith(fromEl, go) {
       if (app) app.classList.add("bloom-fade"); if (sheet) sheet.classList.add("bloom-fade");
       document.querySelectorAll("#tabbar, .topbar, .home-atmo").forEach(n => n.classList.add("bloom-fade"));   // the bars and the home photo go too: the screen greys to the bare ground
     }, 190);
+    if (white) setTimeout(() => cover.classList.add("day"), 360);      // white: once the gold has bloomed, the daybreak comes up over it (as the splash: lantern, then day)
     setTimeout(paint, 450);                                            // 3. the hold: the next screen paints under the cover (it covers by ~420ms)
     setTimeout(() => { if (app) app.classList.remove("bloom-fade"); document.querySelectorAll(".bloom-fade").forEach(n => n.classList.remove("bloom-fade")); cover.classList.add("clear"); }, 540);   // 4. the cover fades away
     setTimeout(() => { cover.remove(); fromEl.style.visibility = ""; }, 900);

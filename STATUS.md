@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v319 (2026-09-22) — staged (bloom-white): the gold blooms first, then the white takes over
+- Tom: the white variant must keep the original gold illumination and bloom, and only then let the white take over, as the loading page goes lantern → daybreak. With the compare switch on, the gold light now grows exactly as in the gold version; at 360ms (the bloom nearly full) a white daybreak layer rises over it in 240ms and holds; the clear fades both to the lesson.
+
 ## v318 (2026-09-22) — staged: a compare switch for a WHITE light
 - Tom: keep the gold version, add a toggle to see the same transition with a white light like the loading page's daybreak. Test Lab row "Entering a session, compare: a WHITE light", off by default (STAGED_OPT_IN). With it on, the breathe still lights gold from behind the tile; the light that takes over is a warm white (255,250,236 at 0.78 falling to 0). Everything else identical.
 

@@ -2063,4 +2063,6 @@ img.scene-art { width: 286px; }
 
 /* THE BLOOM, white (compare switch "bloom-white"): the loading page's daybreak rather than the lantern's gold. The aura stays gold
    during the breathe (it starts from behind the tile), then the light that takes over is white. */
-.bloom-cover.white .bloom-light { background: radial-gradient(closest-side, rgba(255,250,236,0.78) 0%, rgba(255,250,236,0.46) 42%, rgba(255,250,236,0.18) 70%, rgba(255,250,236,0) 100%); }
+.bloom-cover .bloom-day { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; z-index: 0; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255,250,236,0.82) 0%, rgba(255,250,236,0.5) 40%, rgba(255,250,236,0.2) 68%, rgba(255,250,236,0) 100%); transition: opacity 240ms ease; }
+.bloom-cover.white.day .bloom-day { opacity: 1; }                                    /* the gold light stays underneath; the white rises over it */
