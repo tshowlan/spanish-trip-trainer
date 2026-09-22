@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v302 (2026-09-21) — staged: the chapter door's numeral, one-line title, air under it
+- Tom: the 1 as tall as the C; the title on one line; more space before the next line. The italic numeral is 1.34em (Playfair's figures sit short of its capitals); the title is 27px on one line at 375px (24px under 360px) with 18px under it. Verified at 375×812: one line, fits with margin, numeral 45px tall beside a 32px cap height.
+
 ## v301 (2026-09-21) — staged (chapter-flow): the chapter door, round two
 - Tom's calls from the mock: "Chapter 1" (numeral) in the logo faces with "13 SESSIONS" whispered to its right on the same line; the chapter's name as the TITLE (30px, 800, balanced wrap so no word sits alone: "The words that / get you by"); no gold; Begin in the bottom bar like every exercise. The scene-voice line stays. Verified at 375×812.
 

@@ -2028,7 +2028,9 @@ img.scene-art { width: 286px; }
 .peek-frame:first-child { margin-top: 2px; }
 
 /* THE CHAPTER DOOR (chapter-flow): "Chapter one" in the logo faces; the chapter's name as the title line under the label */
-.chapter-door-title { font-family: var(--font-display); font-size: 30px; font-weight: 800; line-height: 1.15; letter-spacing: -.01em; margin: 16px 0 10px; text-wrap: balance; }
+.chapter-door-title { font-family: var(--font-display); font-size: 27px; font-weight: 800; line-height: 1.15; letter-spacing: -.015em; margin: 18px 0 18px; white-space: nowrap; }   /* one line at 375px; the gap under it lets it read as the title (Tom 9/21) */
+@media (max-width: 359px) { .chapter-door-title { font-size: 24px; } }
 .chapter-door .scene-line { margin-bottom: 4px; }
 .door-name.chapter-name { display: flex; align-items: baseline; gap: 12px; }
+.chapter-name .n2 { font-size: 1.34em; line-height: 1; }                                     /* the numeral stands as tall as the capital C (Playfair's figures sit short) */
 .chapter-count { margin: 0; font-style: normal; font-weight: 600; }
