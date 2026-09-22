@@ -745,12 +745,19 @@ function heroTile() {
   // photo double-duty; other actions get a warm destination default). Kicker replaces the old color-coding.
   const kicker = { cram: "Countdown", review: "Review", momentum: "Keep it going", lesson: "Next session", caught: "You're ahead" }[h.kind] || "Next up";
   const photo = (typeof introPhoto === "function") ? introPhoto(h.lesson || {}) : "";
-  const t = el(`<button class="hero-tile hero-${h.kind}">
+  // THE START PILL (Tom 9/22, option A of four mocked; STAGED "hero-start"): the card informs, the pill is the button. With the pill,
+  // the title drops its "Start:" prefix (the pill says it) and the sub carries the count.
+  const pill = isStaged("hero-start");
+  const title = pill ? h.title.replace(/^Start: /, "") : h.title;
+  const sub = pill && h.kind === "lesson" && h.lesson ? `${h.lesson.topic}${h.lesson.items ? ` \u00b7 ${h.lesson.items.length} ${h.lesson.wordsSession ? "words" : "phrases"}` : ""}` : h.sub;
+  const verb = { lesson: "Start", review: "Practice", cram: "Drill", momentum: "Go", caught: "Go" }[h.kind] || "Start";
+  const t = el(`<button class="hero-tile hero-${h.kind}${pill ? " with-pill" : ""}">
     ${photo ? `<div class="hero-img" style="background-image:url('${photo}')" aria-hidden="true"></div>` : ""}
     <div class="hero-inner">
       <div class="hero-k">${kicker}</div>
-      <div class="hero-title">${h.title}</div>
-      ${h.sub ? `<div class="hero-sub">${h.sub}</div>` : ""}
+      <div class="hero-title">${title}</div>
+      ${sub ? `<div class="hero-sub">${sub}</div>` : ""}
+      ${pill ? `<span class="hero-pill">${verb.toUpperCase()}</span>` : ""}
     </div></button>`);
   t.addEventListener("click", () => enterWith(t, h.run));   // the bloom (staged): the tile lights up and the light carries you in
   return t;

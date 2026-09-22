@@ -2067,3 +2067,11 @@ img.scene-art { width: 286px; }
 .bloom-cover .bloom-day { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; z-index: 0; border-radius: 50%; opacity: 0; pointer-events: none;
   background: radial-gradient(closest-side, rgba(255,250,236,0.82) 0%, rgba(255,250,236,0.5) 40%, rgba(255,250,236,0.2) 68%, rgba(255,250,236,0) 100%); transition: opacity 240ms ease; }
 .bloom-cover.white.day .bloom-day { opacity: 1; }                                    /* the gold light stays underneath; the white rises over it */
+
+/* THE START PILL (staged "hero-start"): the action tile reads as a button. The card keeps its photo and kicker; a solid white pill
+   in the bottom corner says the verb. Both are one tap target (the pill is decoration inside the button). */
+.hero-tile.with-pill { min-height: 150px; }
+.hero-tile.with-pill .hero-inner { width: 70%; gap: 9px; }
+.hero-pill { align-self: flex-start; margin-top: 6px; background: #fff; color: var(--primary); font-family: var(--font-display); font-weight: 800; font-size: 13px; letter-spacing: .04em;
+  padding: 9px 18px; border-radius: 999px; box-shadow: 0 2px 0 rgba(0,0,0,.25); transition: transform var(--transition), box-shadow var(--transition); }
+.hero-tile.with-pill:active .hero-pill { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,.25); }

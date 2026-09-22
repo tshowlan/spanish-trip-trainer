@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v323 (2026-09-22) — STAGED "hero-start": the action tile carries a Start pill
+- Feedback to Tom: the action tile didn't read as a button next to the Practice row. Option A of four mocked (dev/action-tile-options.html): the card keeps its photo and kicker; a solid white pill in the bottom corner says the verb (START for a lesson; PRACTICE / DRILL / GO for the review, cram and momentum kinds). With the pill the title drops its "Start:" prefix and the sub reads topic · count ("Core basics · 7 words"). The pill is decoration inside the one tap target. Verified at 375×812.
+
 ## v322 (2026-09-22) — the splash holds the screen's height from birth (the launch settle)
 - Frames from Tom's recording, measured: the lighthouse does not move at the flood, but at ~0.5s the whole splash layout drops ~58pt in one frame (the version stamp from row 2181 to 2355 of a 2532-row capture) while the lighthouse is still fading in and the aura lighting, which reads as "the lighthouse shifts down as the bloom starts". Cause: on iOS a home-screen app's web view starts short and grows to the full screen shortly after launch; the splash was sized to the viewport, so its percentage- and bottom-placed children moved with it. Fix: `initSplash()` sizes the splash to `screen.height` in standalone mode (innerHeight otherwise) and holds it; the stack is back to absolute inside that box. v320/v321's layer and clip changes stay (harmless).
 
