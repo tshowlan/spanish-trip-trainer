@@ -2032,5 +2032,6 @@ img.scene-art { width: 286px; }
 @media (max-width: 359px) { .chapter-door-title { font-size: 24px; } }
 .chapter-door .scene-line { margin-bottom: 4px; }
 .door-name.chapter-name { display: flex; align-items: baseline; gap: 12px; left: 18px; }   /* left-justified with the title below (Tom 9/22) */
-.chapter-name .n2 { font-size: 1.68em; line-height: 1; }                                     /* the numeral: a quarter larger again (Tom 9/22) */
+.chapter-name .n2 { font-family: var(--font-display); font-style: normal; font-weight: 800; font-size: 1em; line-height: 1; }   /* the numeral in the title face, the logo's blue, the word's size (Tom 9/22) */
+.chapter-door .scene-line .sl { color: var(--text-dim); }                                   /* the subtitle in the whisper's grey (Tom 9/22) */
 .chapter-count { margin: 0; font-style: normal; font-weight: 600; }

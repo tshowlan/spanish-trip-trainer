@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v305 (2026-09-22) — staged: the chapter door's numeral in the title face; grey subtitle
+- Tom's pick from the mock: the 1 in Plus Jakarta Sans 800 at the word's size, keeping the logo's blue (the italic serif retires on this door); the subtitle in the whisper's grey (`--text-dim`).
+
 ## v304 (2026-09-22) — staged: the chapter door, Tom's alignment pass
 - "Chapter 1" left-justified with the title (both at 18px from the edge); the numeral a quarter larger again (1.68em, 56px tall beside a 32px cap); a full line of air (36px) between the title and the subtitle. Verified at 375×812.
 
