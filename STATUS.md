@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v315 (2026-09-22) — staged (enter-bloom): the light centered by construction, one light, the first cut's dim
+- Tom's screenshots: the light stemmed from the bottom-left and was far brighter than v306. Causes: (1) the light's left/top were set inline after an `inset` reset, which Safari dropped, so the circle anchored to the tile's corner; it is now centered with 50%/50% + translate in the stylesheet and only sized inline; (2) two lights stacked during the growth (the aura + the takeover light) over a page dimmed to 12%; the aura now fades out as the growth begins and the page dims to v306's 35%. Measured in Chrome at 375×812: light center = tile center (188,433), diameter 1003, aura 0 and light 0.91 mid-growth, page at 0.35.
+
 ## v314 (2026-09-22) — staged (enter-bloom): the first cut's light, with the growing tile
 - Tom's second recording was v306's light: a circle from the tile's center reaching the corners, the page dimming around it, grey outside. He wants that light with the tile growth that came later. The takeover light is now sized as v306's (diameter 2.3 × the reach to the farthest corner, riding the cover's scale) with v306's gradient (0.55 at the center falling to 0 at the rim). Measured: light centered on the tile (188,433), diameter 1080 against a 472px reach.
 

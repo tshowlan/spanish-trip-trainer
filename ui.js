@@ -294,7 +294,7 @@ function enterWith(fromEl, go) {
       // no further, so the edges stay grey. It rides the cover's scale, so its resting size is the reach divided by that scale.
       const reach = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy));
       const light = cover.querySelector(".bloom-light"); const d = (reach * 2.3) / s;
-      light.style.inset = "auto"; light.style.width = light.style.height = d + "px"; light.style.left = (r.width / 2 - d / 2) + "px"; light.style.top = (r.height / 2 - d / 2) + "px";
+      light.style.width = light.style.height = d + "px";                 // centered by the stylesheet (50%/50% + translate), never by left/top: Safari dropped those (Tom's screenshot)
       if (app) app.classList.add("bloom-fade"); if (sheet) sheet.classList.add("bloom-fade");
       document.querySelectorAll("#tabbar, .topbar").forEach(n => n.classList.add("bloom-fade"));   // the bars go too: the tile becomes the whole screen
     }, 190);

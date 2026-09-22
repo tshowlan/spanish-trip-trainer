@@ -2051,11 +2051,11 @@ img.scene-art { width: 286px; }
 .bloom-cover.breathe .bloom-aura { opacity: 1; }
 /* as the tile grows it DISSIPATES and the light takes over (Tom 9/22, against Duolingo's dark hold): the surface fades out over the
    growth while a brighter light, riding the same scale, comes up to fill the screen; the clear then fades the light to the new screen */
-.bloom-cover .bloom-light { position: absolute; z-index: 1; border-radius: 50%; opacity: 0; pointer-events: none;
+.bloom-cover .bloom-light { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 1; border-radius: 50%; opacity: 0; pointer-events: none;
   background: radial-gradient(closest-side, rgba(216,183,19,0.55) 0%, rgba(216,183,19,0.32) 42%, rgba(216,183,19,0.14) 70%, rgba(216,183,19,0) 100%);   /* the first cut's light (v306): a glow at the center reaching the corners, grey outside (Tom's recording, 9/22) */
   transition: opacity 200ms cubic-bezier(.4,0,.7,1); }
-.bloom-cover.fill .bloom-aura { opacity: 1; }
+.bloom-cover.fill .bloom-aura { opacity: 0; }                                       /* one light during the growth, not two stacked (Tom 9/22: too bright) */
 .bloom-cover.fill .bloom-light { opacity: 1; }
 .bloom-cover.fill .bloom-tile { opacity: 0; transition: opacity 200ms cubic-bezier(.4,0,.7,1); }
 .bloom-cover.clear { opacity: 0; }
-#app.bloom-fade, .sheet-wrap.bloom-fade, #tabbar.bloom-fade, .topbar.bloom-fade { transition: opacity 170ms ease; opacity: 0.12; }
+#app.bloom-fade, .sheet-wrap.bloom-fade, #tabbar.bloom-fade, .topbar.bloom-fade { transition: opacity 170ms ease; opacity: 0.35; }   /* the first cut's dim (v306), so the light reads as a lantern on the page, not a wash */
