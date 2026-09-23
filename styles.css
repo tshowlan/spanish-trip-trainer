@@ -1313,6 +1313,7 @@ body.in-runner .footer { background: transparent; border-top: none; }
 /* §3.3 confirm sheet body + quiet destructive ghost button */
 .confirm-body { font-size: 15px; color: var(--text-dim); line-height: 1.5; margin: -4px 0 16px; }
 .confirm-ghost { width: 100%; background: none; border: none; box-shadow: none; color: var(--text-dim); font-weight: 800; font-size: 15px; padding: 13px; margin-top: 4px; cursor: pointer; }
+.sheet .btn + .btn { margin-top: 10px; }   /* stacked buttons in a sheet never touch (the quit sheet's "Turn sound back on" sat on "Keep going", Tom 9/22) */
 .confirm-ghost.danger { color: var(--red); }
 .sheet-sub { font-size: 13px; font-weight: 700; color: var(--secondary); text-transform: capitalize; margin: -8px 0 12px; }
 .drivers { display: flex; flex-direction: column; gap: 8px; }

@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v327 (2026-09-22) — the quit sheet's stacked buttons get a gap
+- Tom's screenshot: with sound off, "Turn sound back on" sat flush against "Keep going" in the quit sheet. Stacked buttons inside any sheet now get 10px between them. Live for everyone (a layout bug).
+
 ## v326 (2026-09-22) — numbers (staged): the ear-skill line where sound goes off
 - Tom: numbers should tell you sound matters when you turn it off. Chat's line rode only the set card on a silent open, so Numbers · 2 (no set card) and the mid-session escape said nothing. Now: tapping "I can't listen right now" in a numbers session shows "Numbers are an ear skill." with "This one is better with sound on. Sound stays off for this session; turn it back on any time from the session menu."; a session that opens silent says the line once on its first beat. Verified: the escape note, then the flashed run; the silent open's first beat carries the line and the second does not.
 
