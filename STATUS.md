@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v325 (2026-09-22) — numbers (staged): three choices in the silent fallback; cien takes its turn in the runs
+- Tom, Numbers · 2 with sound off: one exercise offered a single option. Cause: the listen-and-build rung's silent fallback (finish the sentence) had no choice pool on its question. The rung now carries the pool, and the finish-the-sentence renderer falls back to the lesson's items if a pool is ever missing. Every kit session's silent path had the same gap; fixed everywhere.
+- Tom: cincuenta came up a lot, cien hardly. Runs always carried one neighbor pair, cincuenta was in a pair and cien was in none, and the rest were drawn from one to ten only. Now cien has pairs (cinco/cien, cincuenta/cien), the rest can be any number, and both the pair and the rest are chosen least-used-first within the session. Over six silent sessions every number appeared 6-16 times, cien 15.
+
 ## v324 (2026-09-22) — portrait only
 - Tom: don't let the app rotate. The manifest already asks for portrait (Android honors it); `initPortraitOnly()` also requests `screen.orientation.lock("portrait")` where the API exists. iOS ignores both for home-screen web apps and has no API, so on a phone held sideways (landscape, height ≤ 500px, touch) a full-screen card shows the lighthouse and "Tripfluent works upright. Turn your phone back." and lifts when the phone turns back. Never on tablets or desktops. Not staged: a system behaviour, not a design surface. Pane check: the card exists and stays hidden upright; the sideways case needs the phone (the pane is not a touch device at that size).
 

@@ -237,7 +237,7 @@ function kitRungFor(lesson, item, pool, k) {
     const others = (pool || []).filter(x => x !== item).flatMap(x => (x.contextEs || x.es).split(/\s+/)).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(w => w && !tiles.includes(w));
     const forms = [
       () => ({ type: "context_choice", item, pool, arc: true }),
-      () => ({ type: "weld", item, target: item.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: item.contextEn, cueRole: "Listen and build the sentence", cueMeaning: "", heard: item.contextEs, heardHint: "Tap to hear it again", listenBuild: true, arc: true, inputForm: "tiles", contextBuild: true, noAudioRow: true }),   // the main play button is the replay (Tom 9/13)
+      () => ({ type: "weld", item, pool, target: item.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: item.contextEn, cueRole: "Listen and build the sentence", cueMeaning: "", heard: item.contextEs, heardHint: "Tap to hear it again", listenBuild: true, arc: true, inputForm: "tiles", contextBuild: true, noAudioRow: true }),   // pool: the silent fallback (finish the sentence) needs its three choices (Tom 9/22: one option)   // the main play button is the replay (Tom 9/13)
       () => ({ type: "context_choice", item, pool, arc: true, heard: item.contextEs, noAudioRow: true }),   // listen and fill; the main play button is the replay (Tom 9/13)
       () => ({ type: "weld", item, target: item.contextEs, tiles, targetEn: item.contextEn, cueRole: "Build the sentence", cueMeaning: item.contextEn, arc: true, inputForm: "tiles", contextBuild: true, noEn: true })   // the English is already the cue: no repeat in the reveal
     ];
@@ -2601,7 +2601,7 @@ function renderContextChoice(q) {
   const mount = el(`<div class="frame-mount ctx-mount">${before}<span class="slot"><span class="dashes">\u2013 \u2013 \u2013</span></span>${after}</div>`);
   top.appendChild(mount);
   body.appendChild(top);
-  const pool = (q.pool || []).filter(x => x !== item && norm(x.es) !== norm(item.es));
+  const pool = (q.pool && q.pool.length ? q.pool : (run.lesson && run.lesson.items) || []).filter(x => x !== item && norm(x.es) !== norm(item.es));   // never fewer than three choices
   const opts = shuffle([item, ...sample(pool, Math.min(2, pool.length))]);
   const choices = el(`<div class="choices"></div>`);
   opts.forEach(opt => {
@@ -2629,7 +2629,7 @@ function renderContextChoice(q) {
    Silent: a single flashed word is a gimmick (reading is far easier than hearing), so the silent
    twin is THE RUN - three words in succession in ONE spot, chosen from the neighbors that really
    trip people, adaptive and never punishing. "Show it again" records a supported rep, never a fail. */
-const NUM_NEIGHBORS = [[6, 7], [2, 10], [5, 50]];                     // seis/siete · dos/diez · cinco/cincuenta (once, sesenta/setenta join in chapter 2)
+const NUM_NEIGHBORS = [[6, 7], [2, 10], [5, 50], [5, 100], [50, 100]];   // seis/siete · dos/diez · cinco/cincuenta · cinco/cien · cincuenta/cien (once, sesenta/setenta join in chapter 2)
 const NUM_BILLS = [5, 10, 20, 50, 100];
 const _numSilent = () => !!(run && run.soundOff) || !("speechSynthesis" in window) || state.sound === false;
 const _numItems = () => { const seen = new Set(); return (ALL_ITEMS || []).filter(it => it.num != null && !seen.has(it.num) && seen.add(it.num)); };
@@ -2765,12 +2765,15 @@ function renderNumPad(q) {
 function renderNumRun(q) {
   const silent = _numSilent(), body = $("#qbody"); _anchor(body);
   const pace = run.numPace = run.numPace || { ms: 450, len: 3, clears: 0 };   /* [tune] ~450ms a word (chat); tightens as runs clear */
-  if (!q.seq) {                                                        // neighbors, never random: the pair that trips people + the rest
-    const all = _numItems();
-    const pair = sample(NUM_NEIGHBORS.filter(p => _numBy(p[0]) && _numBy(p[1])), 1)[0] || [];
-    const rest = sample(all.filter(it => !pair.includes(it.num) && it.num <= 10), Math.max(0, pace.len - pair.length));
+  if (!q.seq) {                                                        // neighbors, never random: the pair that trips people + the rest; every number gets its turn
+    const all = _numItems(), used = run.numUsed = run.numUsed || {};
+    const use = it => (used[it.num] || 0);
+    const pairs = shuffle(NUM_NEIGHBORS.filter(p => _numBy(p[0]) && _numBy(p[1]))).sort((a, b) => (use(_numBy(a[0])) + use(_numBy(a[1]))) - (use(_numBy(b[0])) + use(_numBy(b[1]))));
+    const pair = pairs[0] || [];                                       // the least-used pair (cien was never in one, Tom 9/22)
+    const rest = shuffle(all.filter(it => !pair.includes(it.num))).sort((a, b) => use(a) - use(b)).slice(0, Math.max(0, pace.len - pair.length));
     q.seq = shuffle(pair.map(_numBy).concat(rest)).slice(0, pace.len);
     if (q.item && !q.seq.includes(q.item)) q.seq[0] = q.item;          // a silent single becomes a run that still carries its number
+    q.seq.forEach(it => { used[it.num] = use(it) + 1; });
   }
   const seq = q.seq, n = seq.length;
   const top = el(`<div class="top"></div>`);
