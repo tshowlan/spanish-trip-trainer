@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v326 (2026-09-22) — numbers (staged): the ear-skill line where sound goes off
+- Tom: numbers should tell you sound matters when you turn it off. Chat's line rode only the set card on a silent open, so Numbers · 2 (no set card) and the mid-session escape said nothing. Now: tapping "I can't listen right now" in a numbers session shows "Numbers are an ear skill." with "This one is better with sound on. Sound stays off for this session; turn it back on any time from the session menu."; a session that opens silent says the line once on its first beat. Verified: the escape note, then the flashed run; the silent open's first beat carries the line and the second does not.
+
 ## v325 (2026-09-22) — numbers (staged): three choices in the silent fallback; cien takes its turn in the runs
 - Tom, Numbers · 2 with sound off: one exercise offered a single option. Cause: the listen-and-build rung's silent fallback (finish the sentence) had no choice pool on its question. The rung now carries the pool, and the finish-the-sentence renderer falls back to the lesson's items if a pool is ever missing. Every kit session's silent path had the same gap; fixed everywhere.
 - Tom: cincuenta came up a lot, cien hardly. Runs always carried one neighbor pair, cincuenta was in a pair and cien was in none, and the rest were drawn from one to ten only. Now cien has pairs (cinco/cien, cincuenta/cien), the rest can be any number, and both the pair and the rest are chosen least-used-first within the session. Over six silent sessions every number appeared 6-16 times, cien 15.

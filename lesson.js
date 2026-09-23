@@ -1602,9 +1602,10 @@ function listenEscape(f, q, opts) {
     if (!(opts && opts.keep)) q.type = (typeof EAR_SIBLINGS !== "undefined" && EAR_SIBLINGS[q.type]) || "mc_es2en";   // keep: the renderer has its own sound-off form
     const body = $("#qbody");
     body.innerHTML = "";
+    const numbers = !!(run.lesson && run.lesson.numbers);           // numbers are an ear skill: the escape says so (chat's door line, Tom 9/22)
     body.appendChild(el(`<div class="swapnote">
-      <span class="big">Switched to reading and typing</span>
-      <span>Sound stays off for this session. Turn it back on any time from the session menu.</span></div>`));
+      <span class="big">${numbers ? "Numbers are an ear skill." : "Switched to reading and typing"}</span>
+      <span>${numbers ? "This one is better with sound on. Sound stays off for this session; turn it back on any time from the session menu." : "Sound stays off for this session. Turn it back on any time from the session menu."}</span></div>`));
     const cf = footer(`<button class="btn" id="swapcont">Continue</button>`);
     cf.querySelector("#swapcont").addEventListener("click", () => renderQuestion());
   });
@@ -2691,7 +2692,7 @@ function renderNumSet(q) {
     const row = el(`<div class="num-hand"></div>`); hand.forEach(it => row.appendChild(chip(it))); body.appendChild(row);
   }
   body.appendChild(el(`<div class="num-line">You will hear these far more than you say them.</div>`));
-  if (_numSilent()) body.appendChild(el(`<div class="num-status">Numbers are an ear skill. This one is better with sound on.</div>`));   // the door line: silent opens only
+  if (_numSilent()) { body.appendChild(el(`<div class="num-status">Numbers are an ear skill. This one is better with sound on.</div>`)); run.numSilentNoted = true; }   // the door line: silent opens only
   run.exposed = run.exposed || new Set();
   q.items.forEach(it => { const id = itemId(it); if (!run.exposed.has(id)) { run.exposed.add(id); recordExposure(id); } });
   const f = footer(`<button class="btn" id="cont">Continue</button>`);
@@ -2762,6 +2763,11 @@ function renderNumPad(q) {
   });
   const answers = el(`<div class="answers ${q.bills ? "atbill" : "atpad"}"></div>`); answers.appendChild(pad); body.appendChild(answers);
 }
+function _numSilentNote(top) {                                       // said once per session when it opens with sound off (chat: the door line, silent opens only)
+  if (!_numSilent() || run.numSilentNoted) return;
+  run.numSilentNoted = true;
+  top.appendChild(el(`<div class="num-status">Numbers are an ear skill. This one is better with sound on.</div>`));
+}
 function renderNumRun(q) {
   const silent = _numSilent(), body = $("#qbody"); _anchor(body);
   const pace = run.numPace = run.numPace || { ms: 450, len: 3, clears: 0 };   /* [tune] ~450ms a word (chat); tightens as runs clear */
@@ -2807,6 +2813,7 @@ function renderNumRun(q) {
     setTimeout(() => listenEscape($("#footer") || footer(``), q, { keep: true }), 0);
   }
   const echo = el(`<div class="num-echo"></div>`); top.appendChild(echo);
+  _numSilentNote(top);
   body.appendChild(top);
   const want = seq.map(it => String(it.num)), total = want.join("").length;
   let taps = "";
