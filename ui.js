@@ -317,3 +317,13 @@ function enterWith(fromEl, go) {
     setTimeout(() => { cover.remove(); fromEl.style.visibility = ""; }, 900);
   }));
 }
+
+
+/* PORTRAIT ONLY (Tom 2026-09-22). The manifest asks for portrait; Android honors it and the lock below makes sure. iOS ignores
+   both for home-screen web apps and offers no API, so on a phone turned sideways we show a small upright card over the app
+   (the layout beneath is left alone) and lift it the moment the phone turns back. Tablets and desktops are untouched. */
+function initPortraitOnly() {
+  try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock("portrait").catch(() => {}); } catch (_) {}
+  const card = el(`<div class="turn-upright" aria-hidden="true"><div class="tu-mark">${lighthouse(64)}</div><div class="tu-line">Tripfluent works upright.</div><div class="tu-sub">Turn your phone back.</div></div>`);
+  document.body.appendChild(card);
+}

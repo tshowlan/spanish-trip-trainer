@@ -4,6 +4,7 @@
 /* ============================== boot ============================== */
 applyTheme();
 initSplash();
+if (typeof initPortraitOnly === "function") initPortraitOnly();   // portrait only (Tom 9/22)
 migrateTrips();
 migrateScoring();
 migrateItemIds();     // remap SRS keys to lesson-independent ids (pack:slug) — before deck/scores read them

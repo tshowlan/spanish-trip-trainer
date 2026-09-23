@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v324 (2026-09-22) — portrait only
+- Tom: don't let the app rotate. The manifest already asks for portrait (Android honors it); `initPortraitOnly()` also requests `screen.orientation.lock("portrait")` where the API exists. iOS ignores both for home-screen web apps and has no API, so on a phone held sideways (landscape, height ≤ 500px, touch) a full-screen card shows the lighthouse and "Tripfluent works upright. Turn your phone back." and lifts when the phone turns back. Never on tablets or desktops. Not staged: a system behaviour, not a design surface. Pane check: the card exists and stays hidden upright; the sideways case needs the phone (the pane is not a touch device at that size).
+
 ## v323 (2026-09-22) — STAGED "hero-start": the action tile carries a Start pill
 - Feedback to Tom: the action tile didn't read as a button next to the Practice row. Option A of four mocked (dev/action-tile-options.html): the card keeps its photo and kicker; a solid white pill in the bottom corner says the verb (START for a lesson; PRACTICE / DRILL / GO for the review, cram and momentum kinds). With the pill the title drops its "Start:" prefix and the sub reads topic · count ("Core basics · 7 words"). The pill is decoration inside the one tap target. Verified at 375×812.
 
