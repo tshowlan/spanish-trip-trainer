@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v330 (2026-09-24) — photos paint instantly; small words never dangle at a line's end
+- Tom's recording: leaving a lesson, Home's pictures load in late. Cause: the service worker is network-first for everything with revalidation, and the photos weren't precached, so every return to Home re-requested the 400KB hero photo before painting it. Photos are now precached on install and served CACHE-FIRST (they never change under a name). Live for everyone.
+- Tom: the tile's line broke as "...you will say a / hundred times a day." `tidyBreaks()` ties a, an, the, of, to, and, or, in, on, at to the word after them, so the break falls before the small word. Applied to the Home tile's line and the drawer's line.
+
 ## v329 (2026-09-24) — staged: the session line leaves the Learn row; lives in the drawer and on the Home tile
 - Tom: Learn rows should show just the title; the line only when a lesson is expanded, and not as a whisper. Rows are title + count again; the drawer opens with the line in the text color at 14.5px. No session door (a screen before every four-minute session would be clunky on top of the chapter door and the bloom); instead the Home action tile's second line carries the session's line, so the Home path sees it too.
 

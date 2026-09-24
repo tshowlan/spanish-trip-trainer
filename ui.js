@@ -327,3 +327,10 @@ function initPortraitOnly() {
   const card = el(`<div class="turn-upright" aria-hidden="true"><div class="tu-mark">${lighthouse(64)}</div><div class="tu-line">Tripfluent works upright.</div><div class="tu-sub">Turn your phone back.</div></div>`);
   document.body.appendChild(card);
 }
+
+
+/* small words never dangle at a line's end (Tom 9/24: "...you will say a / hundred times a day"): an article or a short
+   joiner is tied to the word after it with a no-break space, so the break falls before it */
+function tidyBreaks(s) {
+  return String(s || "").replace(/(^|\s)(a|an|the|of|to|and|or|in|on|at)\s(?=\S)/gi, (m, pre, w) => `${pre}${w}\u00a0`);
+}

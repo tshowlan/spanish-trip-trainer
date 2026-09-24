@@ -2,7 +2,7 @@
    Online → always fetch the latest (so updates land without reinstalling).
    Offline → fall back to the cache (works on the plane / no signal).
    Cross-origin requests (e.g. Supabase) are left untouched. */
-const CACHE = "sts-v329";
+const CACHE = "sts-v330";
 const ASSETS = [
   "./", "./index.html", "./styles.css", "./fonts.css",
   "./fonts/plus-jakarta-sans.woff2", "./fonts/inter.woff2", "./fonts/playfair-italic-500.woff2", "./fonts/plus-jakarta-sans-italic.woff2",
@@ -11,8 +11,10 @@ const ASSETS = [
   "./screen-onboarding.js", "./screen-home.js", "./screen-quests.js", "./screen-phrasebook.js",
   "./screen-progress.js", "./screen-settings.js", "./screen-learn.js",
   "./lesson.js", "./cloud.js", "./accounts.js", "./push.js", "./trips.js", "./app.js",
-  "./manifest.webmanifest", "./icon.svg"
+  "./manifest.webmanifest", "./icon.svg",
+  "./img/es/hero.jpg", "./img/es/cafe.jpg", "./img/es/market.jpg", "./img/es/default.jpg"   // the photos: precached, served cache-first (Tom 9/24: pictures loading late after a lesson)
 ];
+const IMAGE = /\.(jpe?g|png|webp|gif|svg)$/i;
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
@@ -30,6 +32,10 @@ self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
   const url = new URL(e.request.url);
   if (url.origin !== self.location.origin) return;          // don't intercept Supabase etc.
+  if (IMAGE.test(url.pathname)) {                             // photos never change under a name: cache-first, so Home paints them instantly
+    e.respondWith(caches.match(e.request).then(hit => hit || fetch(e.request).then(res => { const copy = res.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {}); return res; })));
+    return;
+  }
   e.respondWith(
     // cache:"no-cache" bypasses the HTTP cache's TTL (GitHub Pages serves max-age=600 —
     // for 10 minutes after a deploy a plain fetch returns STALE files; ETag revalidation

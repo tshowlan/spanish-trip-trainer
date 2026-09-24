@@ -756,7 +756,7 @@ function heroTile() {
     <div class="hero-inner">
       <div class="hero-k">${kicker}</div>
       <div class="hero-title">${title}</div>
-      ${sub ? `<div class="hero-sub">${sub}</div>` : ""}
+      ${sub ? `<div class="hero-sub">${pill ? tidyBreaks(sub) : sub}</div>` : ""}
       ${pill ? `<span class="hero-pill">${verb.toUpperCase()}</span>` : ""}
     </div></button>`);
   t.addEventListener("click", () => enterWith(t, h.run));   // the bloom (staged): the tile lights up and the light carries you in
