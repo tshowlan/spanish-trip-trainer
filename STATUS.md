@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v335 (2026-09-24) — staged (hero-start): no "Start:" in the title; the taller tile
+- Tom: the word Start isn't needed (the edge and the arrow say it), and keep the pill version's height. The staged tile drops the "Start:" prefix and holds at 150px.
+
 ## v334 (2026-09-24) — staged (hero-start): the tile title never strands "1"
 - The pane caught "Start: First words · Part / 1". The dot now stays with the name and "Part 1" stays together, so the title breaks as "Start: First words ·" / "Part 1".
 
