@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v329 (2026-09-24) — staged: the session line leaves the Learn row; lives in the drawer and on the Home tile
+- Tom: Learn rows should show just the title; the line only when a lesson is expanded, and not as a whisper. Rows are title + count again; the drawer opens with the line in the text color at 14.5px. No session door (a screen before every four-minute session would be clunky on top of the chapter door and the bloom); instead the Home action tile's second line carries the session's line, so the Home path sees it too.
+
 ## v328 (2026-09-24) — staged (chapter-flow): chat's thirteen session lines; no primer in chapter 1
 - Chat's ruling (Tom-passed): a chapter-1 word session carries ONE line, what's in it and what it does for you, on the lesson row and wherever the session introduces itself; no narrative primer (narrative escalates by chapter: line → forge line → setting line → verse). The thirteen lines are in the flow data (`line`; `lines` for Counter's halves; `lineProfile` for Table words: "...the words that keep you safe." with an allergen, "...the bread, and the water." without). The lesson row's line now WRAPS in full (the old single-line truncation is what Tom disliked); the Learn drawer opens with the line above the words; chapter-1 sessions have no primer slot. Verified: all thirteen render, Street's long line wraps to two, the profile switch works. Chat's ship-blocker for chapter 1 is cleared.
 

@@ -749,7 +749,7 @@ function heroTile() {
   // the title drops its "Start:" prefix (the pill says it) and the sub carries the count.
   const pill = isStaged("hero-start");
   const title = pill ? h.title.replace(/^Start: /, "") : h.title;
-  const sub = pill && h.kind === "lesson" && h.lesson ? `${h.lesson.topic}${h.lesson.items ? ` \u00b7 ${h.lesson.items.length} ${h.lesson.wordsSession ? "words" : "phrases"}` : ""}` : h.sub;
+  const sub = pill && h.kind === "lesson" && h.lesson ? (h.lesson.line || `${h.lesson.topic}${h.lesson.items ? ` \u00b7 ${h.lesson.items.length} ${h.lesson.wordsSession ? "words" : "phrases"}` : ""}`) : h.sub;   // the session's line rides the tile: the Home path sees it without a door (Tom 9/24)
   const verb = { lesson: "Start", review: "Practice", cram: "Drill", momentum: "Go", caught: "Go" }[h.kind] || "Start";
   const t = el(`<button class="hero-tile hero-${h.kind}${pill ? " with-pill" : ""}">
     ${photo ? `<div class="hero-img" style="background-image:url('${photo}')" aria-hidden="true"></div>` : ""}

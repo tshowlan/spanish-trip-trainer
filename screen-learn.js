@@ -71,7 +71,7 @@ function _lessonRow(l, isNext) {
     ${str != null ? strengthRing(str) : `<span class="caret-new">${icon("caret-right", 13)}</span>`}
     <div class="lmain">
       <div class="lname-row"><span class="lname">${l.title}</span>${isNext ? `<span class="next-tag">NEXT</span>` : ""}${l.bonus ? `<span class="bonus-tag">BONUS</span>` : ""}</div>
-      ${beat ? `<div class="lbeat${l.line ? " wrap" : ""}">${beat}</div>` : ""}
+      ${beat && !l.line ? `<div class="lbeat">${beat}</div>` : ""}
       <div class="lmeta">${meta}${fading ? ` · <span class="fading">${fading} to review</span>` : ""}</div>
     </div>
     ${isStaged("learn-peek") ? `<button class="pk-zone" aria-label="See what's inside">${icon("caret-right", 15)}</button>` : `<span class="chev">${icon("caret-right", 15)}</span>`}
