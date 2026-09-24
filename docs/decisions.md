@@ -260,3 +260,5 @@ luminous law.)
 
 - 2026-09-20 — Numbers are an ear skill (Tom): met as a set, practised on one keypad; one to ten + the bills in chapter 1, the number machine (tens + "___ y ___") in chapter 2, numbers in the wild and the hundreds in chapter 3; say to 100, understand to 999; the silent twin is the run in succession from neighbor pairs, adaptive and never punishing; the single flash and the scattered field are out; the play-test is the gimmick check.
 - 2026-09-20 — Numbers, chat's rulings: the keypad (dialer order, 64px, three stimuli, the bills row), the set card, the run (one spot, reveal with digits, supported replays), the sound-off door line, Numbermachine ("two words and a y"), once-quince as five words, fused forms by ear only, one chapter-1 numbers session, chapter-3 forms as ordered taps.
+
+- 2026-09-24 — Word sessions carry one line, not a primer; narrative escalates by chapter (line → forge line → setting line → verse); descriptions persist, introductions happen once; purpose lines only where contents wouldn't explain the session.

@@ -98,7 +98,7 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
    grammar) -> the candle (home's corner glow, 1.8s, one curve). Tap-to-skip snaps
    to the finished home. Tint + relight ARE the design (stamped). */
 #splash {
-  position: fixed; inset: 0; z-index: 2000; overflow: hidden;
+  position: fixed; inset: 0; z-index: 2000; overflow: clip;   /* clip, never a scroll container: the flood at ×85 gave it scrollable overflow, and a stray scroll dropped the lighthouse a pixel (Tom 9/22) */
   background:
     radial-gradient(130% 100% at 50% 27%,
       rgba(201,106,43,0.14) 0%, rgba(206,142,34,0.10) 18%, rgba(216,183,19,0.065) 32%,
@@ -113,11 +113,12 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
   opacity: 0.05; }
 #splash .daybreak { position: absolute; inset: 0; background: var(--bg); opacity: 0;
   animation: arr-fade 450ms ease 2200ms both; }
-#splash .splash-stack { position: absolute; left: 50%; top: 34%; transform: translate(-50%,-50%);
+#splash .splash-stack { position: absolute; left: 50%; top: 34%; transform: translate(-50%,-50%) translateZ(0);   /* placed in the splash box, which holds the screen's height from birth (the launch settle) */
   display: flex; flex-direction: column; align-items: center; gap: 18px; z-index: 2;
+  will-change: transform, opacity; backface-visibility: hidden;   /* its own layer from the first frame: the flood's layer appearing at 1450ms re-rasterized it and snapped it a pixel (Tom 9/22) */
   animation: arr-consume 400ms ease 1950ms both; }
 @keyframes arr-consume { from { opacity: 1; } to { opacity: 0; } }
-.splash-lh { animation: arr-rise 900ms cubic-bezier(.2,.7,.3,1) both; position: relative; }
+.splash-lh { animation: arr-rise 900ms cubic-bezier(.2,.7,.3,1) both; position: relative; will-change: transform; backface-visibility: hidden; }
 .splash-lh .lighthouse { height: 110px; width: auto; position: relative; z-index: 1; }
 /* the aura is its own radial LAYER, never a filter: iOS Safari clips the filter's
    paint region at a straight edge (the line above the lighthouse, Tom's device catch) */
@@ -135,7 +136,7 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 /* the eclipse: the flood swells FROM BEHIND THE LANTERN (z1, under the stack) —
    the mark silhouettes against its own light before it is consumed */
 .splash-flood { position: absolute; left: 50%; top: calc(34% - 55px); width: 34px; height: 34px; z-index: 1;
-  border-radius: 50%; transform: translate(-50%,-50%) scale(1); opacity: 0; pointer-events: none;
+  border-radius: 50%; transform: translate(-50%,-50%) scale(1); opacity: 0; pointer-events: none; will-change: transform, opacity;
   background: radial-gradient(circle, #fffdf0 0%, rgba(255,250,214,.92) 38%, rgba(216,183,19,.55) 68%, rgba(216,183,19,0) 100%);
   animation: arr-flood 800ms cubic-bezier(.5,.05,.3,1) 1450ms both, arr-flood-out 650ms ease 2300ms forwards; }
 @keyframes arr-flood { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(85); opacity: 1; } }
@@ -1312,6 +1313,7 @@ body.in-runner .footer { background: transparent; border-top: none; }
 /* §3.3 confirm sheet body + quiet destructive ghost button */
 .confirm-body { font-size: 15px; color: var(--text-dim); line-height: 1.5; margin: -4px 0 16px; }
 .confirm-ghost { width: 100%; background: none; border: none; box-shadow: none; color: var(--text-dim); font-weight: 800; font-size: 15px; padding: 13px; margin-top: 4px; cursor: pointer; }
+.sheet .btn + .btn { margin-top: 10px; }   /* stacked buttons in a sheet never touch (the quit sheet's "Turn sound back on" sat on "Keep going", Tom 9/22) */
 .confirm-ghost.danger { color: var(--red); }
 .sheet-sub { font-size: 13px; font-weight: 700; color: var(--secondary); text-transform: capitalize; margin: -8px 0 12px; }
 .drivers { display: flex; flex-direction: column; gap: 8px; }
@@ -1395,6 +1397,8 @@ body.in-runner .footer { background: transparent; border-top: none; }
 .bonus-tag { font-family: var(--font-display); font-size: 9.5px; font-weight: 600; letter-spacing: .05em; color: var(--text-dim);
   border: 1px solid var(--border); border-radius: 9px; padding: 1.5px 7px; white-space: nowrap; }
 .lbeat { font-size: 12px; color: var(--text-dim); margin-top: 2px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lbeat.wrap { white-space: normal; overflow: visible; text-overflow: clip; }   /* the session's one line wraps in full (the old truncation is what Tom disliked) */
+.peek-line { font-size: 13px; color: var(--text-dim); line-height: 1.45; margin: 2px 0 10px; }
 .lmeta { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
 .lmeta .fading { color: var(--accent-2); font-weight: 500; }
 .learn .chev { color: var(--text-dim); display: flex; }
@@ -2028,5 +2032,59 @@ img.scene-art { width: 286px; }
 .peek-frame:first-child { margin-top: 2px; }
 
 /* THE CHAPTER DOOR (chapter-flow): "Chapter one" in the logo faces; the chapter's name as the title line under the label */
-.chapter-door-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; line-height: 1.25; margin: 0 0 10px; }
+.chapter-door-title { font-family: var(--font-display); font-size: 27px; font-weight: 800; line-height: 1.15; letter-spacing: -.015em; margin: 18px 0 36px; white-space: nowrap; }   /* a full line of air before the subtitle (Tom 9/22) */   /* one line at 375px; the gap under it lets it read as the title (Tom 9/21) */
+@media (max-width: 359px) { .chapter-door-title { font-size: 24px; } }
 .chapter-door .scene-line { margin-bottom: 4px; }
+.door-name.chapter-name { display: flex; align-items: baseline; gap: 12px; left: 18px; }   /* left-justified with the title below (Tom 9/22) */
+.chapter-name .n2 { font-family: var(--font-display); font-style: normal; font-weight: 800; font-size: 1em; line-height: 1; }   /* the numeral in the title face, the logo's blue, the word's size (Tom 9/22) */
+.chapter-door .scene-line .sl { color: var(--text-dim); }                                   /* the subtitle in the whisper's grey (Tom 9/22) */
+.chapter-count { margin: 0; font-style: normal; font-weight: 600; }
+
+/* THE BLOOM (staged "enter-bloom"): the tapped tile, cloned, breathes with the lantern's aura behind it, grows to the screen, then clears */
+.bloom-cover { position: fixed; z-index: 2600; pointer-events: none; overflow: visible; background: transparent; transform-origin: center; will-change: transform;   /* the clone's OWN surface is what grows (the Home tile's blue, a row's card) */
+  transition: transform 190ms cubic-bezier(.2,.7,.3,1), opacity 320ms ease; }
+.bloom-cover.fill { transition: transform 200ms cubic-bezier(.4,0,.7,1), opacity 320ms ease; }   /* the fill accelerates: the tile comes toward you */
+.bloom-cover .bloom-tile { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; transform: none !important; box-shadow: none; z-index: 0; }
+.bloom-cover .bloom-tile > * { transition: opacity 120ms ease 70ms; }
+.bloom-cover.breathe .bloom-tile > *, .bloom-cover.fill .bloom-tile > * { opacity: 0; }   /* the words and the picture let go during the breathe */
+/* the aura: the splash lantern's recipe, a radial LAYER behind the tile (never a filter), soft, no line */
+.bloom-cover .bloom-aura { position: absolute; inset: -40% -18%; z-index: -1; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(closest-side at 50% 50%, rgba(216,183,19,0.42) 0%, rgba(216,183,19,0.28) 35%, rgba(216,183,19,0.14) 58%, rgba(216,183,19,0.05) 78%, rgba(216,183,19,0) 100%);
+  transition: opacity 190ms ease, inset 170ms cubic-bezier(.4,0,.6,1); }
+.bloom-cover.breathe { transform: scale(1.06); }
+.bloom-cover.breathe .bloom-aura { opacity: 1; }
+.bloom-cover.breathe .bloom-light { opacity: 1; }                                    /* the light is there from the first beat, small behind the tile, and grows with it into the oblong (Tom 9/22) */
+/* as the tile grows it DISSIPATES and the light takes over (Tom 9/22, against Duolingo's dark hold): the surface fades out over the
+   growth while a brighter light, riding the same scale, comes up to fill the screen; the clear then fades the light to the new screen */
+.bloom-cover .bloom-light { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: -1; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(216,183,19,0.55) 0%, rgba(216,183,19,0.32) 42%, rgba(216,183,19,0.14) 70%, rgba(216,183,19,0) 100%);   /* the first cut's light (v306): a glow at the center reaching the corners, grey outside (Tom's recording, 9/22) */
+  transition: opacity 200ms cubic-bezier(.4,0,.7,1); }
+.bloom-cover.fill .bloom-aura { opacity: 0; }                                       /* one light during the growth, not two stacked (Tom 9/22: too bright) */
+.bloom-cover.fill .bloom-light { opacity: 1; }
+.bloom-cover.fill .bloom-tile { opacity: 0; transition: opacity 90ms ease; }         /* the tile lets go as soon as the growth starts: the LIGHT is the effect, not the blue (Tom 9/22) */
+.bloom-cover.clear { opacity: 0; }
+#app.bloom-fade, .sheet-wrap.bloom-fade, #tabbar.bloom-fade, .topbar.bloom-fade, .home-atmo.bloom-fade { transition: opacity 260ms ease; opacity: 0; }   /* the page greys out to the bare ground as the light grows; the exercise then comes in on a blank screen (Tom 9/22, Duolingo) */
+
+/* THE BLOOM, white (compare switch "bloom-white"): the loading page's daybreak rather than the lantern's gold. The aura stays gold
+   during the breathe (it starts from behind the tile), then the light that takes over is white. */
+.bloom-cover .bloom-day { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; z-index: 0; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255,250,236,0.82) 0%, rgba(255,250,236,0.5) 40%, rgba(255,250,236,0.2) 68%, rgba(255,250,236,0) 100%); transition: opacity 240ms ease; }
+.bloom-cover.white.day .bloom-day { opacity: 1; }                                    /* the gold light stays underneath; the white rises over it */
+
+/* THE START PILL (staged "hero-start"): the action tile reads as a button. The card keeps its photo and kicker; a solid white pill
+   in the bottom corner says the verb. Both are one tap target (the pill is decoration inside the button). */
+.hero-tile.with-pill { min-height: 150px; }
+.hero-tile.with-pill .hero-inner { width: 70%; gap: 9px; }
+.hero-pill { align-self: flex-start; margin-top: 6px; background: #fff; color: var(--primary); font-family: var(--font-display); font-weight: 800; font-size: 13px; letter-spacing: .04em;
+  padding: 9px 18px; border-radius: 999px; box-shadow: 0 2px 0 rgba(0,0,0,.25); transition: transform var(--transition), box-shadow var(--transition); }
+.hero-tile.with-pill:active .hero-pill { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,.25); }
+
+/* PORTRAIT ONLY: the upright card shows only on a phone held sideways (a short, wide viewport); never on tablets or desktops */
+.turn-upright { display: none; }
+@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+  .turn-upright { display: flex; position: fixed; inset: 0; z-index: 5000; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    background: var(--bg); color: var(--text); text-align: center; padding: 24px; }
+  .turn-upright .tu-mark { margin-bottom: 6px; }
+  .turn-upright .tu-line { font-family: var(--font-display); font-size: 18px; font-weight: 700; }
+  .turn-upright .tu-sub { color: var(--text-dim); font-size: 14px; }
+}

@@ -25,6 +25,7 @@ let _learnView = "journey";
 
 // one-line narrative beat for a lesson row, sourced from primer data (first sentence of the scene)
 function _lessonBeat(l) {
+  if (l.line) return l.line;                                        // the session's one line (chat 9/24): row and door, every time
   if (l.beat) return l.beat;
   const sc = l.primer && l.primer.scene;
   if (!sc) return "";
@@ -48,7 +49,7 @@ function _togglePeek(row, l) {
   const groups = l.machines
     ? l.machines.map(m => `<div class="peek-frame">${_capFrame(m.frame)}</div>${(m.items || []).map(line).join("")}`).join("")
     : (l.machine && l.frame ? `<div class="peek-frame">${_capFrame(l.frame)}</div>` : "") + (l.items || []).map(line).join("");
-  const peek = el(`<div class="lesson-peek"><div class="peek-list">${groups}</div></div>`);   // no button: the row itself starts the lesson (option A, Tom 9/21)
+  const peek = el(`<div class="lesson-peek">${l.line ? `<div class="peek-line">${l.line}</div>` : ""}<div class="peek-list">${groups}</div></div>`);   // no button: the row itself starts the lesson (option A, Tom 9/21)
   row.after(peek);
   requestAnimationFrame(() => {
     peek.classList.add("show");
@@ -70,7 +71,7 @@ function _lessonRow(l, isNext) {
     ${str != null ? strengthRing(str) : `<span class="caret-new">${icon("caret-right", 13)}</span>`}
     <div class="lmain">
       <div class="lname-row"><span class="lname">${l.title}</span>${isNext ? `<span class="next-tag">NEXT</span>` : ""}${l.bonus ? `<span class="bonus-tag">BONUS</span>` : ""}</div>
-      ${beat ? `<div class="lbeat">${beat}</div>` : ""}
+      ${beat ? `<div class="lbeat${l.line ? " wrap" : ""}">${beat}</div>` : ""}
       <div class="lmeta">${meta}${fading ? ` · <span class="fading">${fading} to review</span>` : ""}</div>
     </div>
     ${isStaged("learn-peek") ? `<button class="pk-zone" aria-label="See what's inside">${icon("caret-right", 15)}</button>` : `<span class="chev">${icon("caret-right", 15)}</span>`}

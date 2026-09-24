@@ -728,8 +728,12 @@ const CURRICULUM = {
     /* CASING (Tom 9/20): a session is all one case. Sessions of whole turns (First words, Words you'll hear) and signs as printed are
        capitalized; vocabulary sessions are lowercase in both languages. ONE CASE PER SESSION, no exceptions: where the kinds meet the majority wins
        (Bathroom words is four signs and one said word, so El baño is capitalized). The context sentences keep normal sentence case. */
+    /* THE LINE (chat's ruling 2026-09-24, Tom-passed): a chapter-1 word session carries ONE line, what's in it and what it does for
+       you, serving the lesson row and the session door every time. No narrative primer in chapter 1 (narrative escalates by chapter:
+       line → the forge line → a setting line → the door verse). `lines` = one per half when the session splits; `lineProfile` = the
+       line when the intake adds words. */
     words: [
-      { id: "sp0-first-words-1", topic: "Core basics", title: "First words · 1", items: [
+      { id: "sp0-first-words-1", topic: "Core basics", title: "First words · 1", line: "The seven words you will say a hundred times a day.", items: [
         { es: "Hola", en: "Hello", tags: ["greetings"], contextEs: "Hola, buenos días.", contextEn: "Hi, good morning." },
         { es: "Buenos días", en: "Good morning", tags: ["greetings"], contextEs: "Buenos días, por favor.", contextEn: "Good morning, please." },
         { es: "Buenas tardes", en: "Good afternoon", tags: ["greetings"], contextEs: "Hola, buenas tardes.", contextEn: "Hi, good afternoon." },
@@ -737,7 +741,7 @@ const CURRICULUM = {
         { es: "Por favor", en: "Please", tags: ["politeness"], contextEs: "Por favor.", contextEn: "Please." },
         { es: "Gracias", en: "Thank you", tags: ["politeness"], contextEs: "Por favor. Gracias.", contextEn: "Please. Thanks." },
         { es: "De nada", en: "You're welcome", tags: ["politeness"], contextEs: "Gracias. De nada.", contextEn: "Thanks. You're welcome." } ] },
-      { id: "sp0-first-words-2", topic: "Core basics", title: "First words · 2", items: [
+      { id: "sp0-first-words-2", topic: "Core basics", title: "First words · 2", line: "Yes, no, okay, and the kind way out of any conversation.", items: [
         { es: "Perdón", en: "Excuse me / Sorry", tags: ["politeness"], contextEs: "Perdón, por favor.", contextEn: "Excuse me, please." },
         { es: "Sí", en: "Yes", tags: ["basics"], contextEs: "Sí, por favor.", contextEn: "Yes, please." },
         { es: "No", en: "No", tags: ["basics"], contextEs: "No, gracias.", contextEn: "No, thanks." },
@@ -745,7 +749,7 @@ const CURRICULUM = {
         { es: "Adiós", en: "Goodbye", tags: ["greetings"], contextEs: "Adiós, buenas noches.", contextEn: "Bye, good night." },
         { es: "Hasta luego", en: "See you later", tags: ["greetings"], contextEs: "Vale, hasta luego.", contextEn: "Okay, see you later." },
         { es: "¿Inglés?", en: "English?", tags: ["communication"], contextEs: "Perdón, ¿inglés?", contextEn: "Excuse me, English?" } ] },
-      { id: "w-hear", topic: "Core phrases", title: "Words you'll hear", emphasis: "hear", items: [
+      { id: "w-hear", topic: "Core phrases", title: "Words you'll hear", emphasis: "hear", line: "What they say to you before you say anything.", items: [
         { es: "Dígame", en: "Go ahead / Tell me", hear: true, tags: ["service"], contextEs: "¿Sí? Dígame.", contextEn: "Yes? Go ahead." },
         { es: "Aquí tiene", en: "Here you go", hear: true, tags: ["service"], contextEs: "Aquí tiene. Gracias.", contextEn: "Here you go. Thanks." },
         { es: "Un momento", en: "One moment", hear: true, tags: ["service"], contextEs: "Un momento, por favor.", contextEn: "One moment, please." },
@@ -757,7 +761,7 @@ const CURRICULUM = {
          · 1 MEETS them (the set card, heard singles, the numeral board, the say keypad, two bills, three how-many rungs);
          · 2 is BY EAR (runs that lean on the neighbor pairs, the bills, the how-many rungs; no new words). `num` is the numeral.
          With "numbers-1" off, · 2 drops out and the kit rule splits · 1 into halves as before. */
-      { id: "sp0-numbers", topic: "Core numbers", title: "Numbers · 1", numbers: "meet", items: [
+      { id: "sp0-numbers", topic: "Core numbers", title: "Numbers · 1", numbers: "meet", line: "One to ten, and the three bills in your hand.", items: [
         { es: "uno", num: 1, en: "one", tags: ["numbers"], contextEs: "Uno, por favor.", contextEn: "One, please." },
         { es: "dos", num: 2, en: "two", tags: ["numbers"], contextEs: "Dos, gracias.", contextEn: "Two, thanks." },
         { es: "tres", num: 3, en: "three", tags: ["numbers"], contextEs: "¿Dos? No, tres.", contextEn: "Two? No, three." },
@@ -771,16 +775,16 @@ const CURRICULUM = {
         { es: "veinte", num: 20, en: "twenty", tags: ["numbers"], contextEs: "¿Veinte? No, diez.", contextEn: "Twenty? No, ten." },
         { es: "cincuenta", num: 50, en: "fifty", tags: ["numbers"], contextEs: "¿Cincuenta? No, veinte.", contextEn: "Fifty? No, twenty." },
         { es: "cien", num: 100, en: "one hundred", tags: ["numbers"], contextEs: "¿Cien? No, cincuenta.", contextEn: "A hundred? No, fifty." } ] },
-      { id: "sp0-numbers-ear", topic: "Core numbers", title: "Numbers · 2", numbers: "ear", noDerivedDone: true, items: [
+      { id: "sp0-numbers-ear", topic: "Core numbers", title: "Numbers · 2", numbers: "ear", noDerivedDone: true, line: "A price is said once and then it's gone. This will help you catch it fast.", items: [
         { es: "uno" }, { es: "dos" }, { es: "tres" }, { es: "cuatro" }, { es: "cinco" }, { es: "seis" }, { es: "siete" }, { es: "ocho" }, { es: "nueve" }, { es: "diez" }, { es: "veinte" }, { es: "cincuenta" }, { es: "cien" } ] },
-      { id: "w-paying", topic: "Core paying", title: "Paying words", items: [   // no heard-price closer here (Tom 9/20: it read as a tack-on after the lap); numbers and paying combine in chapter 2
+      { id: "w-paying", topic: "Core paying", title: "Paying words", line: "Card or cash, the check, the change, the tip.", items: [   // no heard-price closer here (Tom 9/20: it read as a tack-on after the lap); numbers and paying combine in chapter 2
         { es: "la cuenta", en: "the check", tags: ["money", "restaurant"], contextEs: "La cuenta, por favor.", contextEn: "The check, please." },
         { es: "tarjeta", en: "card", tags: ["money"], contextEs: "¿Tarjeta? Sí.", contextEn: "Card? Yes." },
         { es: "efectivo", en: "cash", tags: ["money"], contextEs: "¿Tarjeta o efectivo?", contextEn: "Card or cash?" },
         { es: "el cambio", en: "the change", tags: ["money"], contextEs: "El cambio, gracias.", contextEn: "The change, thanks." },
         { es: "la propina", en: "the tip", tags: ["money"], contextEs: "Sí, la propina.", contextEn: "Yes, the tip." },
         { es: "¿cuánto?", en: "how much?", tags: ["money"], contextEs: "¿Cuánto? Diez.", contextEn: "How much? Ten." } ] },
-      { id: "w-counter", topic: "Core counter", title: "Counter words", items: [
+      { id: "w-counter", topic: "Core counter", title: "Counter words", lines: ["Coffee, beer, wine, and how to order at a counter.", "What the barista asks, and the words you answer with."], items: [
         { es: "café", en: "coffee", tags: ["drink", "coffee"], contextEs: "Un café, por favor.", contextEn: "A coffee, please." },
         { es: "cortado", en: "cortado (espresso with a little milk)", tags: ["drink", "coffee"], contextEs: "Un cortado, gracias.", contextEn: "A cortado, thanks." },
         { es: "con leche", en: "with milk", tags: ["drink", "coffee"], contextEs: "Café con leche.", contextEn: "Coffee with milk." },
@@ -792,7 +796,7 @@ const CURRICULUM = {
         { es: "para llevar", en: "to go / takeaway", tags: ["food"], contextEs: "Para llevar, gracias.", contextEn: "To go, thanks." },
         { es: "¿qué le pongo?", en: "what'll it be?", hear: true, tags: ["service"], contextEs: "¿Qué le pongo? Un café.", contextEn: "What'll it be? A coffee." },
         { es: "que aproveche", en: "enjoy your meal", hear: true, tags: ["service"], contextEs: "Que aproveche. Gracias.", contextEn: "Enjoy. Thanks." } ] },
-      { id: "w-table", topic: "Core table", title: "Table words", items: [
+      { id: "w-table", topic: "Core table", title: "Table words", line: "The table, the menu, the bread, and the water.", lineProfile: { allergies: "The table, the menu, and the words that keep you safe." }, items: [
         { es: "mesa", en: "table", tags: ["restaurant"], contextEs: "Una mesa para dos.", contextEn: "A table for two." },
         { es: "la carta", en: "the menu", tags: ["restaurant"], contextEs: "La carta, por favor.", contextEn: "The menu, please." },
         { es: "pan", en: "bread", tags: ["food"], contextEs: "Pan, gracias.", contextEn: "Bread, thanks." },
@@ -813,7 +817,7 @@ const CURRICULUM = {
         { es: "soja", en: "soy", profile: { allergies: "soy" }, tags: ["dietary"], contextEs: "Sin soja, por favor.", contextEn: "No soy, please." },
         { es: "carne", en: "meat", profile: { needs: "vegetarian" }, tags: ["dietary"], contextEs: "Sin carne, por favor.", contextEn: "No meat, please." },
         { es: "vegetariano", en: "vegetarian", profile: { needs: "vegetarian" }, tags: ["dietary"], contextEs: "Vegetariano, por favor.", contextEn: "Vegetarian, please." } ] },
-      { id: "w-street", topic: "Core street", title: "Street words", noSplit: true, items: [   // one ten-word session: directions, then places (Tom 9/20; two fives ran under three minutes)
+      { id: "w-street", topic: "Core street", title: "Street words", noSplit: true, line: "Right, left, straight, close, far. Enough to get you back on the right street.", items: [   // one ten-word session: directions, then places (Tom 9/20; two fives ran under three minutes)
         { es: "a la derecha", en: "to the right", tags: ["directions"], contextEs: "A la derecha, gracias.", contextEn: "To the right, thanks." },
         { es: "a la izquierda", en: "to the left", tags: ["directions"], contextEs: "A la izquierda, gracias.", contextEn: "To the left, thanks." },
         { es: "todo recto", en: "straight ahead", tags: ["directions"], contextEs: "Todo recto, gracias.", contextEn: "Straight ahead, thanks." },
@@ -826,13 +830,13 @@ const CURRICULUM = {
         { es: "el hotel", en: "the hotel", tags: ["place", "lodging"], contextEs: "El hotel, cerca.", contextEn: "The hotel, close." } ] },
       /* THE BATHROOM (Tom 9/20): "el baño" is what you SAY; the door READS one of four things, because every restaurant labels it
          its own way. After Street words, so the directions in these contexts are already met. Flagged to chat. */
-      { id: "w-bathroom", topic: "Core bathroom", title: "Bathroom words", items: [
+      { id: "w-bathroom", topic: "Core bathroom", title: "Bathroom words", line: "Where it is, and which door.", items: [
         { es: "El baño", en: "The bathroom", tags: ["bathroom"], contextEs: "¿El baño, por favor?", contextEn: "The bathroom, please?" },
         { es: "Aseos", en: "Toilets (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los aseos? A la derecha.", contextEn: "The toilets? To the right." },
         { es: "Servicios", en: "Restrooms (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los servicios? A la izquierda.", contextEn: "The restrooms? To the left." },
         { es: "Caballeros", en: "Men (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Caballeros, a la derecha.", contextEn: "Men, to the right." },
         { es: "Señoras", en: "Women (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Señoras, a la izquierda.", contextEn: "Women, to the left." } ] },
-      { id: "w-signs", topic: "Core signs", title: "Signs you'll read", emphasis: "read", items: [
+      { id: "w-signs", topic: "Core signs", title: "Signs you'll read", emphasis: "read", line: "Eight signs you read, not say. So you stop pushing the pull door.", items: [
         { es: "Salida", en: "Exit", read: true, tags: ["signs"], contextEs: "¿La salida? A la derecha.", contextEn: "The exit? To the right." },
         { es: "Entrada", en: "Entrance", read: true, tags: ["signs"], contextEs: "¿La entrada? Todo recto.", contextEn: "The entrance? Straight ahead." },
         { es: "Empujar", en: "Push (sign)", read: true, tags: ["signs"], contextEs: "Empujar. Vale.", contextEn: "Push. Okay." },
@@ -844,7 +848,7 @@ const CURRICULUM = {
            Contexts are Code's drafts to chat's rule (taxi and el baño are already met), flagged for the voice pass. */
         { es: "Libre", en: "Free / vacant (sign)", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
         { es: "Ocupado", en: "Occupied / taken (sign)", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
-      { id: "w-help", topic: "Core help", title: "Help words", items: [
+      { id: "w-help", topic: "Core help", title: "Help words", line: "The words for the day you hope never comes.", items: [
         { es: "ayuda", en: "help", tags: ["emergency"], contextEs: "Ayuda, por favor.", contextEn: "Help, please." },
         { es: "médico", en: "doctor", tags: ["emergency", "health"], contextEs: "Un médico, por favor.", contextEn: "A doctor, please." },
         { es: "hospital", en: "hospital", tags: ["emergency", "health"], contextEs: "¿El hospital? Cerca.", contextEn: "The hospital? Close." },

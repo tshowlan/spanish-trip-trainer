@@ -43,7 +43,7 @@
 0. Chapter names and lines (the lines for chapters 2-4 show on their doors and headings; the doors currently show the name alone): chapter 1 is **The words that get you by** / "Simple words that maximize every day of your trip." (Tom's, final). Lines for chapters 2-4 are wanted (Code's drafts: "Eight ways to ask. You already own the words that go in them." · "The café, the taxi, the hotel desk. What gets said there." · "Longer exchanges, and the scenes that put it all together."). The CHAPTER DOOR is built (v300, staged): "Chapter one" in the logo faces, the label "13 SESSIONS", the chapter's name, its line, Begin; first entry to a chapter, once; the Learn heading reopens it. Wanted: its place in the one-door-grammar ruling, chapter photos (stand-ins now), and the lines for chapters 2-4.
 
 1. The keypad's pixel artifact (promised "when Tom drags the pack in"); Code checks the build against it.
-2. A primer scene and a one-line beat for each chapter-1 session (thirteen: First words 1 and 2, Words you'll hear, Numbers 1 and 2, Paying, Counter 1 and 2, Table, Street, Bathroom, Signs, Help). The primer is the scene text before the first card; the beat is the lesson row's one line. Blocking the chapter-1 ship: sessions currently open with no primer.
+2. DONE (chat 9/24): the thirteen session lines, wired in v328.
 3. Numbermachine: conveyor cues beyond the forge line, when its build starts.
 4. The asks: nine situations are written; confirm they cover all eight chunks evenly.
 5. Older, still open: the voice pass on the 12 glue glosses; Andrés' taxi awaits Tom's pass.
