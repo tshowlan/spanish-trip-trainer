@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v332 (2026-09-24) — staged (hero-start): the pill's word in the logo's navy
+- Tom: black isn't used anywhere else. The word on the gold pill is now the wordmark's navy (#1c275e), fixed in both themes (option A of the four mocked).
+
 ## v331 (2026-09-24) — staged (hero-start): the Start pill in gold with an arrow
 - Tom's pick from six (dev/start-pill-options.html): option B, the app's accent gold with dark text and the Practice row's right arrow. Replaces the white pill.
 

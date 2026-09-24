@@ -2075,7 +2075,7 @@ img.scene-art { width: 286px; }
    in the bottom corner says the verb. Both are one tap target (the pill is decoration inside the button). */
 .hero-tile.with-pill { min-height: 150px; }
 .hero-tile.with-pill .hero-inner { width: 70%; gap: 9px; }
-.hero-pill { align-self: flex-start; margin-top: 6px; background: var(--accent); color: #231e05; font-family: var(--font-display); font-weight: 800; font-size: 13px; letter-spacing: .04em;
+.hero-pill { align-self: flex-start; margin-top: 6px; background: var(--accent); color: #1c275e;   /* the word in the logo's navy, both themes (Tom 9/24) */ font-family: var(--font-display); font-weight: 800; font-size: 13px; letter-spacing: .04em;
   padding: 9px 14px 9px 18px; border-radius: 999px; box-shadow: 0 2px 0 rgba(0,0,0,.3); display: inline-flex; align-items: center; gap: 6px;   /* option B (Tom 9/24): the app's gold, with the arrow the Practice row uses */
   transition: transform var(--transition), box-shadow var(--transition); }
 .hero-tile.with-pill:active .hero-pill { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,.3); }
