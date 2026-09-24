@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v339 (2026-09-24) — staged (hero-start): D3, the tall thin glowing chevron at 135px
+- Tom's pick from the arrow mock: a tall gold chevron (stroke 4, three quarters of the tile's height, narrow) over the photo's fade with the lantern's glow, replacing the arrow circle; the tile at 135px with the B2 row spacing.
+
 ## v338 (2026-09-24) — staged (learn-peek): the drawer's line in the narrative italic
 - Tom's pick from four (dev/drawer-options.html): option 2, the session's line in the app's italic voice (the chapter door's subtitle face), no labels; the type separates it from the word list.
 

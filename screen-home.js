@@ -757,7 +757,7 @@ function heroTile() {
       <div class="hero-title">${button ? h.title.replace(/^Start: /, "").replace(/ ([\u00b7·]) (Part) (\d)/, "\u00a0$1 $2\u00a0$3") : h.title}</div>
       ${sub ? `<div class="hero-sub">${button ? tidyBreaks(sub) : sub}</div>` : ""}
     </div>
-    ${button ? `<span class="hero-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>` : ""}
+    ${button ? `<svg class="hero-go" viewBox="0 0 24 60" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 6 18 30 6 54"></polyline></svg>` : ""}
   </button>`);
   t.addEventListener("click", () => enterWith(t, h.run));   // the bloom (staged): the tile lights up and the light carries you in
   return t;
