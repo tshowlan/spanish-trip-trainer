@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v338 (2026-09-24) — staged (learn-peek): the drawer's line in the narrative italic
+- Tom's pick from four (dev/drawer-options.html): option 2, the session's line in the app's italic voice (the chapter door's subtitle face), no labels; the type separates it from the word list.
+
 ## v337 (2026-09-24) — staged (hero-start): spacing B2
 - Tom's pick from six spacings (dev/action-tile-options.html): the original 125px height, kicker and title together at the top (6px apart), the line at the bottom, 14px padding top and bottom.
 
