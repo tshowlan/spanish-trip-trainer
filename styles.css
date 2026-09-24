@@ -2071,22 +2071,25 @@ img.scene-art { width: 286px; }
   background: radial-gradient(closest-side, rgba(255,250,236,0.82) 0%, rgba(255,250,236,0.5) 40%, rgba(255,250,236,0.2) 68%, rgba(255,250,236,0) 100%); transition: opacity 240ms ease; }
 .bloom-cover.white.day .bloom-day { opacity: 1; }                                    /* the gold light stays underneath; the white rises over it */
 
-/* THE TILE IS THE BUTTON (staged "hero-start", option A): a pressed edge, a gold arrow bottom-right, the whole card sinks on press */
+/* THE TILE IS THE BUTTON (staged "hero-start", option A): a pressed edge, the whole card sinks on press; the chevron went 9/24 */
 .hero-tile.as-button { min-height: 135px; border-bottom: 4px solid #222c66; box-shadow: 0 6px 16px rgba(0,0,0,.35); }   /* 135px (Tom 9/24) */
 .hero-tile.as-button .hero-inner { width: 70%; padding: 16px 16px 14px; gap: 0; justify-content: flex-start; }   /* the rows stack from the top: kicker, title, the line right under it (Tom 9/24) */
 .hero-tile.as-button .hero-title { margin: 4px 0 8px; }
 .hero-tile.as-button:active { transform: translateY(3px); border-bottom-width: 1px; box-shadow: 0 2px 8px rgba(0,0,0,.35); }   /* the key goes down onto its edge */
-  display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
 
 /* PORTRAIT ONLY: the upright card shows only on a phone held sideways (a short, wide viewport); never on tablets or desktops */
-.turn-upright { display: none !important; }
-body.sideways .turn-upright { display: flex !important; position: fixed; inset: 0; z-index: 5000; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  background: var(--bg); color: var(--text); text-align: center; padding: 24px; }   /* shown only when the app has measured a settled sideways phone (never by a media query alone: it leaked onto Home, Tom 9/24) */
+.turn-upright { flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: var(--bg); color: var(--text); text-align: center; padding: 24px; }   /* placed and shown by ui.js only while the phone is sideways; never by a rule here */
 .turn-upright .tu-mark { margin-bottom: 6px; }
 .turn-upright .tu-line { font-family: var(--font-display); font-size: 18px; font-weight: 700; }
 .turn-upright .tu-sub { color: var(--text-dim); font-size: 14px; }
 
 /* THE PRACTICE ROW AS A BUTTON (staged "hero-start", Tom 9/24): the Learn row's build (card, radius, 14px/16px padding) with the action
    tile's pressed edge, and the same press: the key goes down onto its edge */
-.practice.as-button { border-radius: var(--radius); padding: 14px 16px; min-height: 60px; border-bottom: 4px solid color-mix(in srgb, var(--border) 60%, #000); box-shadow: 0 4px 12px rgba(0,0,0,.3); }
-.practice.as-button:active { transform: translateY(3px); border-bottom-width: 1px; box-shadow: 0 1px 6px rgba(0,0,0,.3); }
+.practice.as-button { border-radius: var(--radius); padding: 14px 16px; min-height: 60px; margin-bottom: 4px;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--border) 60%, #000), 0 6px 14px rgba(0,0,0,.3); }   /* the outline stays all the way round; the pressed edge sits beneath it (Tom 9/24) */
+.practice.as-button:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--border) 60%, #000), 0 2px 6px rgba(0,0,0,.3); }
+/* THE PULSE (Tom 9/24, Duolingo's cue for "this one"): a slow gold glow breathing behind the action tile, drawn as a shadow so iPhone renders it */
+@keyframes hero-pulse { 0%, 100% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 18px 2px rgba(216,183,19,.18); } 50% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 2px rgba(216,183,19,.28), 0 0 34px 10px rgba(216,183,19,.42); } }
+.hero-tile.as-button { animation: hero-pulse 2600ms ease-in-out infinite; }
+.hero-tile.as-button:active { animation: none; }
+@media (prefers-reduced-motion: reduce) { .hero-tile.as-button { animation: none; } }

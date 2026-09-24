@@ -1289,6 +1289,11 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v342 (2026-09-24) — the upright card exists only while sideways; Practice's outline whole; the pulse
+- The leak's real cause: a stray line of leftover declarations (from removing the chevron, v341) sat at the top level of styles.css right before the upright card's rules, so the browser swallowed the card's whole rule block, including the one that hid it. Removed. And the card is not on the page at all unless the app has measured a settled sideways phone (400ms, touch, wider than tall, not typing), with its position set inline; it is removed when the phone turns back. Live.
+- Practice (staged): the 1px outline runs all the way round again; the pressed edge is a 4px shadow beneath it, not a replaced border.
+- The action tile (staged): a slow gold glow breathes behind it (2.6s, a box-shadow animation so iPhone renders it); still on press; off under reduced motion.
+
 ## v341 (2026-09-24) — staged: no chevron; the Practice row as a button. Live: the upright card can't leak
 - Tom: drop the chevron, the pressed edge says button. Gone; the tile keeps its edge, the 135px height and the stacked rows.
 - Tom: make Practice more of a button, like the Learn rows. With hero-start on, the Practice row takes the Learn row's build (radius, 14/16 padding, 60px) plus the tile's pressed edge and press.

@@ -324,17 +324,20 @@ function enterWith(fromEl, go) {
    (the layout beneath is left alone) and lift it the moment the phone turns back. Tablets and desktops are untouched. */
 function initPortraitOnly() {
   try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock("portrait").catch(() => {}); } catch (_) {}
-  const card = el(`<div class="turn-upright" aria-hidden="true"><div class="tu-mark">${lighthouse(64)}</div><div class="tu-line">Tripfluent works upright.</div><div class="tu-sub">Turn your phone back.</div></div>`);
-  document.body.appendChild(card);
-  // the decision is measured, not styled: a phone-sized touch screen, wider than tall, and settled for 400ms (the launch settle and
-  // the keyboard both change the viewport for a moment and must never show the card)
-  let t = null;
+  // the card exists on the page ONLY while the app has measured a settled sideways phone (a phone-sized touch screen, wider than
+  // tall, held for 400ms, not while typing); it is removed the moment the phone turns back. Nothing about its visibility depends
+  // on a stylesheet rule: on Tom's iPhone a dropped rule left it sitting at the foot of Home (9/24).
+  let t = null, card = null;
   const check = () => {
     clearTimeout(t);
     t = setTimeout(() => {
       const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
-      const sideways = coarse && window.innerWidth > window.innerHeight && window.innerHeight <= 500 && !document.activeElement?.matches?.("input, textarea");
-      document.body.classList.toggle("sideways", !!sideways);
+      const typing = document.activeElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
+      const sideways = coarse && window.innerWidth > window.innerHeight && window.innerHeight <= 500 && !typing;
+      if (sideways && !card) {
+        card = el(`<div class="turn-upright" aria-hidden="true" style="display:flex;position:fixed;top:0;left:0;right:0;bottom:0;z-index:5000"><div class="tu-mark">${lighthouse(64)}</div><div class="tu-line">Tripfluent works upright.</div><div class="tu-sub">Turn your phone back.</div></div>`);
+        document.body.appendChild(card);
+      } else if (!sideways && card) { card.remove(); card = null; }
     }, 400);
   };
   window.addEventListener("resize", check); window.addEventListener("orientationchange", check); check();
