@@ -757,7 +757,7 @@ function heroTile() {
       <div class="hero-title">${button ? h.title.replace(/^Start: /, "").replace(/ ([\u00b7·]) (Part) (\d)/, "\u00a0$1 $2\u00a0$3") : h.title}</div>
       ${sub ? `<div class="hero-sub">${button ? tidyBreaks(sub) : sub}</div>` : ""}
     </div>
-    ${button ? `<svg class="hero-go" viewBox="0 0 24 60" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 6 18 30 6 54" stroke="#1c275e" stroke-width="7"></polyline><polyline points="6 6 18 30 6 54" stroke="var(--accent)" stroke-width="4"></polyline></svg>` : ""}
+
   </button>`);
   t.addEventListener("click", () => enterWith(t, h.run));   // the bloom (staged): the tile lights up and the light carries you in
   return t;
@@ -781,7 +781,7 @@ function practiceButton() {
   // artifact copy: the due badge counts the queue ("8 due"); the urgent badge names the
   // urgency ("12 fading") — falls back to the due count if nothing is technically fading
   const badgeText = urgent && fading > 0 ? fading + " fading" : due + " due";
-  const b = el(`<button class="practice${urgent ? " urgent" : ""}" role="button">
+  const b = el(`<button class="practice${urgent ? " urgent" : ""}${isStaged("hero-start") ? " as-button" : ""}" role="button">
     <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
     <span class="lbl">Practice</span>
     ${badge ? `<span class="pbadge">${badgeText}</span>` : ""}

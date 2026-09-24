@@ -326,6 +326,18 @@ function initPortraitOnly() {
   try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock("portrait").catch(() => {}); } catch (_) {}
   const card = el(`<div class="turn-upright" aria-hidden="true"><div class="tu-mark">${lighthouse(64)}</div><div class="tu-line">Tripfluent works upright.</div><div class="tu-sub">Turn your phone back.</div></div>`);
   document.body.appendChild(card);
+  // the decision is measured, not styled: a phone-sized touch screen, wider than tall, and settled for 400ms (the launch settle and
+  // the keyboard both change the viewport for a moment and must never show the card)
+  let t = null;
+  const check = () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+      const sideways = coarse && window.innerWidth > window.innerHeight && window.innerHeight <= 500 && !document.activeElement?.matches?.("input, textarea");
+      document.body.classList.toggle("sideways", !!sideways);
+    }, 400);
+  };
+  window.addEventListener("resize", check); window.addEventListener("orientationchange", check); check();
 }
 
 

@@ -1289,6 +1289,11 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v341 (2026-09-24) — staged: no chevron; the Practice row as a button. Live: the upright card can't leak
+- Tom: drop the chevron, the pressed edge says button. Gone; the tile keeps its edge, the 135px height and the stacked rows.
+- Tom: make Practice more of a button, like the Learn rows. With hero-start on, the Practice row takes the Learn row's build (radius, 14/16 padding, 60px) plus the tile's pressed edge and press.
+- Tom: the upright card leaked onto Home. It was shown by a media query alone (landscape, short, touch), which a transient viewport can match. Now it is hidden with !important and only shown when the app measures a settled sideways phone (400ms debounce, not while typing). Live for everyone.
+
 ## v340 (2026-09-24) — staged (hero-start): option A chevron; rows stacked from the top
 - Tom: the glow didn't render (iPhone Safari drops CSS drop-shadow on that SVG), the gold faded into the photo, the chevron was too tall, and the line shouldn't pin to the bottom. Now: a gold chevron (stroke 4) over a thin navy rim (stroke 7), 37% of the tile's height, no CSS glow; the rows stack from the top with the line right under the title. Tile 135px.
 
