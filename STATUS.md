@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v333 (2026-09-24) — staged (hero-start): the whole tile is the button (option A); the pill retires
+- Tom: a pill that looks like a button inside a card that presses is a mismatch; keep the whole tile clickable and make IT read as the button. Option A of four mocked (dev/action-tile-options.html): a 4px darker edge along the bottom (the key's depth), a gold arrow circle bottom-right over the photo's fade, the verb back in the title ("Start: First words · Part 1"), the session's line as the sub. On press the whole card sinks 3px onto its edge. The pill and its verbs are gone.
+
 ## v332 (2026-09-24) — staged (hero-start): the pill's word in the logo's navy
 - Tom: black isn't used anywhere else. The word on the gold pill is now the wordmark's navy (#1c275e), fixed in both themes (option A of the four mocked).
 

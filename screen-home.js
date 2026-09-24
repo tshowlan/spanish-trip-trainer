@@ -745,20 +745,20 @@ function heroTile() {
   // photo double-duty; other actions get a warm destination default). Kicker replaces the old color-coding.
   const kicker = { cram: "Countdown", review: "Review", momentum: "Keep it going", lesson: "Next session", caught: "You're ahead" }[h.kind] || "Next up";
   const photo = (typeof introPhoto === "function") ? introPhoto(h.lesson || {}) : "";
-  // THE START PILL (Tom 9/22, option A of four mocked; STAGED "hero-start"): the card informs, the pill is the button. With the pill,
-  // the title drops its "Start:" prefix (the pill says it) and the sub carries the count.
-  const pill = isStaged("hero-start");
-  const title = pill ? h.title.replace(/^Start: /, "") : h.title;
-  const sub = pill && h.kind === "lesson" && h.lesson ? (h.lesson.line || `${h.lesson.topic}${h.lesson.items ? ` \u00b7 ${h.lesson.items.length} ${h.lesson.wordsSession ? "words" : "phrases"}` : ""}`) : h.sub;   // the session's line rides the tile: the Home path sees it without a door (Tom 9/24)
-  const verb = { lesson: "Start", review: "Practice", cram: "Drill", momentum: "Go", caught: "Go" }[h.kind] || "Start";
-  const t = el(`<button class="hero-tile hero-${h.kind}${pill ? " with-pill" : ""}">
+  // THE TILE IS THE BUTTON (Tom 9/24, option A of four; STAGED "hero-start", replacing the pill): a pressed edge along the bottom
+  // gives the card the depth of a key, a gold arrow circle sits bottom-right over the photo's fade, the verb stays in the title,
+  // and the sub carries the session's line. The whole card sinks on press.
+  const button = isStaged("hero-start");
+  const sub = button && h.kind === "lesson" && h.lesson ? (h.lesson.line || `${h.lesson.topic}${h.lesson.items ? ` \u00b7 ${h.lesson.items.length} ${h.lesson.wordsSession ? "words" : "phrases"}` : ""}`) : h.sub;
+  const t = el(`<button class="hero-tile hero-${h.kind}${button ? " as-button" : ""}">
     ${photo ? `<div class="hero-img" style="background-image:url('${photo}')" aria-hidden="true"></div>` : ""}
     <div class="hero-inner">
       <div class="hero-k">${kicker}</div>
-      <div class="hero-title">${title}</div>
-      ${sub ? `<div class="hero-sub">${pill ? tidyBreaks(sub) : sub}</div>` : ""}
-      ${pill ? `<span class="hero-pill">${verb.toUpperCase()} <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></span>` : ""}
-    </div></button>`);
+      <div class="hero-title">${h.title}</div>
+      ${sub ? `<div class="hero-sub">${button ? tidyBreaks(sub) : sub}</div>` : ""}
+    </div>
+    ${button ? `<span class="hero-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>` : ""}
+  </button>`);
   t.addEventListener("click", () => enterWith(t, h.run));   // the bloom (staged): the tile lights up and the light carries you in
   return t;
 }
