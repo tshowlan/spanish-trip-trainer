@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v343 (2026-09-24) — the strip (staged "hero-start")
+- Tom's pick from three mock rounds (F2): a 33px deeper-navy strip down the action tile's right edge with a hairline and a 22px gold chevron; the photo stops short of the strip, fading over its last sixth. dev/action-tile-strip-options.html.
+
 ## v342 (2026-09-24) — the upright card exists only while sideways; Practice's outline whole; the pulse
 - The leak's real cause: a stray line of leftover declarations (from removing the chevron, v341) sat at the top level of styles.css right before the upright card's rules, so the browser swallowed the card's whole rule block, including the one that hid it. Removed. And the card is not on the page at all unless the app has measured a settled sideways phone (400ms, touch, wider than tall, not typing), with its position set inline; it is removed when the phone turns back. Live.
 - Practice (staged): the 1px outline runs all the way round again; the pressed edge is a 4px shadow beneath it, not a replaced border.

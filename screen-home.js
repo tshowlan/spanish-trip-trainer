@@ -757,7 +757,7 @@ function heroTile() {
       <div class="hero-title">${button ? h.title.replace(/^Start: /, "").replace(/ ([\u00b7·]) (Part) (\d)/, "\u00a0$1 $2\u00a0$3") : h.title}</div>
       ${sub ? `<div class="hero-sub">${button ? tidyBreaks(sub) : sub}</div>` : ""}
     </div>
-
+    ${button ? `<div class="hero-strip" aria-hidden="true">${icon("caret-right", 22)}</div>` : ""}
   </button>`);
   t.addEventListener("click", () => enterWith(t, h.run));   // the bloom (staged): the tile lights up and the light carries you in
   return t;
