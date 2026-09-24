@@ -754,7 +754,7 @@ function heroTile() {
     ${photo ? `<div class="hero-img" style="background-image:url('${photo}')" aria-hidden="true"></div>` : ""}
     <div class="hero-inner">
       <div class="hero-k">${kicker}</div>
-      <div class="hero-title">${h.title}</div>
+      <div class="hero-title">${button ? h.title.replace(/ ([\u00b7·]) (Part) (\d)/, "\u00a0$1 $2\u00a0$3") : h.title}</div>
       ${sub ? `<div class="hero-sub">${button ? tidyBreaks(sub) : sub}</div>` : ""}
     </div>
     ${button ? `<span class="hero-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>` : ""}

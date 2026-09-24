@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v334 (2026-09-24) — staged (hero-start): the tile title never strands "1"
+- The pane caught "Start: First words · Part / 1". The dot now stays with the name and "Part 1" stays together, so the title breaks as "Start: First words ·" / "Part 1".
+
 ## v333 (2026-09-24) — staged (hero-start): the whole tile is the button (option A); the pill retires
 - Tom: a pill that looks like a button inside a card that presses is a mismatch; keep the whole tile clickable and make IT read as the button. Option A of four mocked (dev/action-tile-options.html): a 4px darker edge along the bottom (the key's depth), a gold arrow circle bottom-right over the photo's fade, the verb back in the title ("Start: First words · Part 1"), the session's line as the sub. On press the whole card sinks 3px onto its edge. The pill and its verbs are gone.
 
