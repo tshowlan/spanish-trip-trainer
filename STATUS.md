@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v337 (2026-09-24) — staged (hero-start): spacing B2
+- Tom's pick from six spacings (dev/action-tile-options.html): the original 125px height, kicker and title together at the top (6px apart), the line at the bottom, 14px padding top and bottom.
+
 ## v336 (2026-09-24) — staged (hero-start): the tile's rows spread top to bottom
 - Tom: the kicker should sit where it did in the pill version and the line the same distance from the bottom as the pill was. The inner column now fills the 150px tile and spreads its three rows (kicker top, title middle, line bottom) with the same 18px padding as before.
 
