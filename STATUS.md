@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v331 (2026-09-24) — staged (hero-start): the Start pill in gold with an arrow
+- Tom's pick from six (dev/start-pill-options.html): option B, the app's accent gold with dark text and the Practice row's right arrow. Replaces the white pill.
+
 ## v330 (2026-09-24) — photos paint instantly; small words never dangle at a line's end
 - Tom's recording: leaving a lesson, Home's pictures load in late. Cause: the service worker is network-first for everything with revalidation, and the photos weren't precached, so every return to Home re-requested the 400KB hero photo before painting it. Photos are now precached on install and served CACHE-FIRST (they never change under a name). Live for everyone.
 - Tom: the tile's line broke as "...you will say a / hundred times a day." `tidyBreaks()` ties a, an, the, of, to, and, or, in, on, at to the word after them, so the break falls before the small word. Applied to the Home tile's line and the drawer's line.

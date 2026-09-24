@@ -757,7 +757,7 @@ function heroTile() {
       <div class="hero-k">${kicker}</div>
       <div class="hero-title">${title}</div>
       ${sub ? `<div class="hero-sub">${pill ? tidyBreaks(sub) : sub}</div>` : ""}
-      ${pill ? `<span class="hero-pill">${verb.toUpperCase()}</span>` : ""}
+      ${pill ? `<span class="hero-pill">${verb.toUpperCase()} <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></span>` : ""}
     </div></button>`);
   t.addEventListener("click", () => enterWith(t, h.run));   // the bloom (staged): the tile lights up and the light carries you in
   return t;
