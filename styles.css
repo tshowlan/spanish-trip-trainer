@@ -2073,7 +2073,7 @@ img.scene-art { width: 286px; }
 
 /* THE TILE IS THE BUTTON (staged "hero-start", option A): a pressed edge, a gold arrow bottom-right, the whole card sinks on press */
 .hero-tile.as-button { min-height: 150px; border-bottom: 4px solid #222c66; box-shadow: 0 6px 16px rgba(0,0,0,.35); }   /* the pill version's height, kept (Tom 9/24) */
-.hero-tile.as-button .hero-inner { gap: 8px; width: 70%; }
+.hero-tile.as-button .hero-inner { width: 70%; min-height: 150px; box-sizing: border-box; justify-content: space-between; gap: 0; }   /* the rows spread: the kicker at the top and the line at the bottom sit where the pill version's did (Tom 9/24) */
 .hero-tile.as-button:active { transform: translateY(3px); border-bottom-width: 1px; box-shadow: 0 2px 8px rgba(0,0,0,.35); }   /* the key goes down onto its edge */
 .hero-go { position: absolute; right: 14px; bottom: 14px; width: 38px; height: 38px; border-radius: 50%; background: var(--accent); color: #1c275e;
   display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.35); }

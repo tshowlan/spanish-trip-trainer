@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v336 (2026-09-24) — staged (hero-start): the tile's rows spread top to bottom
+- Tom: the kicker should sit where it did in the pill version and the line the same distance from the bottom as the pill was. The inner column now fills the 150px tile and spreads its three rows (kicker top, title middle, line bottom) with the same 18px padding as before.
+
 ## v335 (2026-09-24) — staged (hero-start): no "Start:" in the title; the taller tile
 - Tom: the word Start isn't needed (the edge and the arrow say it), and keep the pill version's height. The staged tile drops the "Start:" prefix and holds at 150px.
 
