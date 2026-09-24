@@ -116,8 +116,8 @@ function _journeyOneDeck(deck) {
   if (find && there) rooms.push(room("room-finding-1", "Finding out \u00b7 1", "Finding out", "MACHINES: FIND \u00b7 THERE", [find, there]));
   if (need) rooms.push(Object.assign({}, need, { id: "room-asking-2", title: "Asking for things \u00b7 2", room: "Asking for things", label: "MACHINES: NEED" }));
   if (price && when) rooms.push(room("room-finding-2", "Finding out \u00b7 2", "Finding out", "MACHINES: PRICE \u00b7 WHEN", [price, when]));
-  // THE CHAPTER FLOW (STAGED "chapter-flow"): the words become chapter one, the rooms chapter two
-  if (typeof isStaged === "function" && isStaged("chapter-flow") && activePack().flow && "chapter-flow" in STAGED) { _chapterFlowDeck(deck, rooms); deck.stages.forEach(st => { st.lessons = st.lessons.flatMap(_splitKit); }); return; }
+  // THE CHAPTER FLOW (SHIPPED v344): the words become chapter one, the rooms chapter two
+  if (typeof isStaged === "function" && isStaged("chapter-flow") && activePack().flow) { _chapterFlowDeck(deck, rooms); deck.stages.forEach(st => { st.lessons = st.lessons.flatMap(_splitKit); }); return; }
   // kit halves, every stage
   deck.stages.forEach(st => { st.lessons = st.lessons.flatMap(_splitKit); });
   // stage 0: interleave kit halves with rooms
