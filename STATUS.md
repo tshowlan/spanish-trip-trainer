@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v340 (2026-09-24) — staged (hero-start): option A chevron; rows stacked from the top
+- Tom: the glow didn't render (iPhone Safari drops CSS drop-shadow on that SVG), the gold faded into the photo, the chevron was too tall, and the line shouldn't pin to the bottom. Now: a gold chevron (stroke 4) over a thin navy rim (stroke 7), 37% of the tile's height, no CSS glow; the rows stack from the top with the line right under the title. Tile 135px.
+
 ## v339 (2026-09-24) — staged (hero-start): D3, the tall thin glowing chevron at 135px
 - Tom's pick from the arrow mock: a tall gold chevron (stroke 4, three quarters of the tile's height, narrow) over the photo's fade with the lantern's glow, replacing the arrow circle; the tile at 135px with the B2 row spacing.
 
