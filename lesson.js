@@ -2860,7 +2860,10 @@ function renderPairs(q) {
   body.appendChild(el(`<div class="qtype">${numeral ? "Match each number to its word" : text ? "Match each phrase to its meaning" : "Match the sound to its meaning"}</div>`));
   const grid = el(`<div class="pairs${text ? " pairs-text" : ""}${items.length > 6 ? " pairs-fit" : ""}" style="--rows:${items.length}"></div>`);   // boards over six rows fit ONE screen (Tom 9/20: Signs scrolled, Continue clipped)
   const audioOrder = shuffle(items.map((_, i) => i));
-  const enOrder = shuffle(items.map((_, i) => i));
+  let enOrder = shuffle(items.map((_, i) => i));
+  // at most ONE pair sits straight across (Tom 9/25): two columns shuffled apart average one across per board whatever its size, but a
+  // quarter of boards land two or three and read as lazy; a cap of one keeps it honest without becoming a tell ("never across" would be one)
+  for (let tries = 0; tries < 60 && enOrder.filter((v, i) => v === audioOrder[i]).length > 1; tries++) enOrder = shuffle(items.map((_, i) => i));
   for (let r = 0; r < items.length; r++) {
     const a = text
       ? el(`<button class="pcard es" data-idx="${audioOrder[r]}" data-side="audio"><span class="es-word">${numeral ? items[audioOrder[r]].num : items[audioOrder[r]].es}</span></button>`)

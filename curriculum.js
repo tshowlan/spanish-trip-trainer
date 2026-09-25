@@ -852,14 +852,14 @@ const CURRICULUM = {
         { es: "Ocupado", en: "Occupied / taken (sign)", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
       { id: "w-days", topic: "Core signs", title: "Days you'll read", emphasis: "read", staged: "chapter-1-adds", line: "Seven words on every shop door and timetable.", items: [
         /* DAYS (chat 9/25: a chapter-1 READ session after Signs, base-layer by the chapter-0 rule; "los lunes" uses wait for chapter 3).
-           Contexts are Code's drafts to the rule (cerrado / abierto met in Signs; el / los as glue), flagged for the voice pass. Lowercase, as posted. */
-        { es: "lunes", en: "Monday", read: true, tags: ["days"], contextEs: "Cerrado los lunes.", contextEn: "Closed on Mondays." },
-        { es: "martes", en: "Tuesday", read: true, tags: ["days"], contextEs: "Abierto el martes.", contextEn: "Open on Tuesday." },
-        { es: "mi\u00e9rcoles", en: "Wednesday", read: true, tags: ["days"], contextEs: "\u00bfEl mi\u00e9rcoles? Cerrado.", contextEn: "Wednesday? Closed." },
-        { es: "jueves", en: "Thursday", read: true, tags: ["days"], contextEs: "Abierto el jueves.", contextEn: "Open on Thursday." },
-        { es: "viernes", en: "Friday", read: true, tags: ["days"], contextEs: "\u00bfEl viernes? S\u00ed.", contextEn: "Friday? Yes." },
-        { es: "s\u00e1bado", en: "Saturday", read: true, tags: ["days"], contextEs: "Abierto el s\u00e1bado.", contextEn: "Open on Saturday." },
-        { es: "domingo", en: "Sunday", read: true, tags: ["days"], contextEs: "Cerrado el domingo.", contextEn: "Closed on Sunday." } ] },
+           Contexts are Code's drafts to the rule (cerrado / abierto met in Signs; el / los as glue), flagged for the voice pass. The cards capitalized as Signs are (read as posted; one case per session); the sentence keeps the lowercase day. */
+        { es: "Lunes", en: "Monday", read: true, tags: ["days"], contextEs: "Cerrado los lunes.", contextEn: "Closed on Mondays." },
+        { es: "Martes", en: "Tuesday", read: true, tags: ["days"], contextEs: "Abierto el martes.", contextEn: "Open on Tuesday." },
+        { es: "Mi\u00e9rcoles", en: "Wednesday", read: true, tags: ["days"], contextEs: "\u00bfEl mi\u00e9rcoles? Cerrado.", contextEn: "Wednesday? Closed." },
+        { es: "Jueves", en: "Thursday", read: true, tags: ["days"], contextEs: "Abierto el jueves.", contextEn: "Open on Thursday." },
+        { es: "Viernes", en: "Friday", read: true, tags: ["days"], contextEs: "\u00bfEl viernes? S\u00ed.", contextEn: "Friday? Yes." },
+        { es: "S\u00e1bado", en: "Saturday", read: true, tags: ["days"], contextEs: "Abierto el s\u00e1bado.", contextEn: "Open on Saturday." },
+        { es: "Domingo", en: "Sunday", read: true, tags: ["days"], contextEs: "Cerrado el domingo.", contextEn: "Closed on Sunday." } ] },
       { id: "w-help", topic: "Core help", title: "Help words", line: "The words for the day you hope never comes.", items: [
         { es: "ayuda", en: "help", tags: ["emergency"], contextEs: "Ayuda, por favor.", contextEn: "Help, please." },
         { es: "médico", en: "doctor", tags: ["emergency", "health"], contextEs: "Un médico, por favor.", contextEn: "A doctor, please." },
