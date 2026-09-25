@@ -2111,7 +2111,7 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .chapter-door.swash .door-name.chapter-name { left: 0; right: 0; bottom: 8px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
 .chapter-door.swash .chapter-count { font-family: var(--font-text); }
 .chapter-door.swash .chapter-name .n1, .chapter-door.swash .chapter-name .n2 { color: #c8d2f5; }   /* Chapter 1 all in the pale light blue, one piece in the Trip face (Tom 9/25) */
-.chapter-door.swash .chapter-door-title { color: #7aa6db; white-space: normal; margin: 18px 0 34px; }   /* the title in the app's face, in the darker blue the numeral wore; 34px under it so the lantern's glow clears the title (Tom 9/25) */
+.chapter-door.swash .chapter-door-title { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 500; font-size: 30px; letter-spacing: 0; color: #7aa6db; white-space: normal; margin: 18px 0 34px; }   /* the title in the logo's "fluent" face after all (Tom 9/25), in the darker blue */   /* the title in the app's face, in the darker blue the numeral wore; 34px under it so the lantern's glow clears the title (Tom 9/25) */
 .chapter-door.swash .door-mark-row { display: flex; justify-content: center; margin: 0 0 18px; }
 .chapter-door.swash .door-mark { position: relative; display: inline-block; }
 .chapter-door.swash .door-mark .lighthouse { position: relative; }

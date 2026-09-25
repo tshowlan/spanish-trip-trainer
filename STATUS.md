@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v357 (2026-09-25) — door-swash (staged): the title back in the "fluent" face
+- Tom: keep the title in the logo's italic serif (Playfair, 30px), now in the darker blue; everything else as v356.
+
 ## v356 (2026-09-25) — door-swash (staged): one face, two blues; the lighthouse clears the title
 - Tom: the serif title didn't work and he is wary of a third face. Now: Chapter 1 all in the pale light blue (the Trip face), the title in the app's face in the darker blue the numeral wore, the subtitle upright (Inter, white). The lighthouse sits 34px under the title (was 12) so its glow no longer overlaps the title; the mark-to-subtitle spacing is unchanged.
 
