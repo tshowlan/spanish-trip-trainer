@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v348 (2026-09-24) — the drawer's labels, the step halved (option C2)
+- Labels 28px in, the line and the words 40px in: a 12px step instead of 24. Tom's pick. Live.
+
 ## v347 (2026-09-24) — the drawer's labels at the card's edge (option C)
 - ABOUT THIS SESSION and THE WORDS sit at the card's edge (16px); the line and the words 40px in (were 56). Tom's pick from dev/drawer-options.html. Live.
 

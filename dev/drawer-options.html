@@ -7,7 +7,7 @@
   .frame { width: 300px; height: 380px; border-radius: 14px; overflow: hidden; box-shadow: 0 0 0 4px #2a2a2a; background: #000; }
   .frame iframe { width: 375px; height: 475px; border: 0; transform: scale(.8); transform-origin: 0 0; pointer-events: none; }
 </style></head><body>
-<h1>The drawer's labels, less indented than the words (options, nothing live)</h1>
+<h1>C, with the labels closer to the words (options, nothing live)</h1>
 <p class="sub">The Learn row expanded. Same line, same words. What changes is how the line is framed against the list.</p>
 <div class="row" id="rows"></div>
 <script>
@@ -19,10 +19,9 @@ const row = `<div class="lesson has-peek open next"><span class="caret-new">${ca
 const LINE = "The seven words you will say a&nbsp;hundred times a&nbsp;day.";
 const label = t => `<div class="cue-label" style="margin:0 0 6px">${t}</div>`;
 const V = [
-  { cap: "Current (v346)", note: "Labels and words share one left edge, 56px in.", body: `${row}<div class="lesson-peek show" style="padding-left:56px"><div class="cue-label" style="margin:0 0 6px 0px">About this session</div><div class="peek-line" style="margin-bottom:12px">${LINE}</div><div class="cue-label" style="margin:0 0 6px 0px">The words</div><div class="peek-list">${list}</div></div>` },
-  { cap: "A · Labels at the card's edge", note: "Labels sit 16px in, where the row's arrow circle starts; the line and the words stay at 56px. Two clear levels.", body: `${row}<div class="lesson-peek show" style="padding-left:56px"><div class="cue-label" style="margin:0 0 6px -40px">About this session</div><div class="peek-line" style="margin-bottom:12px">${LINE}</div><div class="cue-label" style="margin:0 0 6px -40px">The words</div><div class="peek-list">${list}</div></div>` },
-  { cap: "B · Labels half a step out", note: "Labels at 36px, the line and the words at 56px. A gentler step.", body: `${row}<div class="lesson-peek show" style="padding-left:56px"><div class="cue-label" style="margin:0 0 6px -20px">About this session</div><div class="peek-line" style="margin-bottom:12px">${LINE}</div><div class="cue-label" style="margin:0 0 6px -20px">The words</div><div class="peek-list">${list}</div></div>` },
-  { cap: "C · Labels at the edge, words pulled in a little", note: "Labels at 16px, the line and the words at 40px, so the drawer as a whole sits closer to the card's edge.", body: `${row}<div class="lesson-peek show" style="padding-left:40px"><div class="cue-label" style="margin:0 0 6px -24px">About this session</div><div class="peek-line" style="margin-bottom:12px">${LINE}</div><div class="cue-label" style="margin:0 0 6px -24px">The words</div><div class="peek-list">${list}</div></div>` },
+  { cap: "C · Current (v347)", note: "Labels 16px in, the line and the words 40px in. A 24px step.", body: `${row}<div class="lesson-peek show" style="padding-left:40px"><div class="cue-label" style="margin:0 0 6px -24px">About this session</div><div class="peek-line" style="margin-bottom:12px">${LINE}</div><div class="cue-label" style="margin:0 0 6px -24px">The words</div><div class="peek-list">${list}</div></div>` },
+  { cap: "C1 · Labels at half the words' indent", note: "Labels 20px in, the words 40px. A 20px step.", body: `${row}<div class="lesson-peek show" style="padding-left:40px"><div class="cue-label" style="margin:0 0 6px -20px">About this session</div><div class="peek-line" style="margin-bottom:12px">${LINE}</div><div class="cue-label" style="margin:0 0 6px -20px">The words</div><div class="peek-list">${list}</div></div>` },
+  { cap: "C2 · The step halved", note: "Labels 28px in, the words 40px. A 12px step, half of today's.", body: `${row}<div class="lesson-peek show" style="padding-left:40px"><div class="cue-label" style="margin:0 0 6px -12px">About this session</div><div class="peek-line" style="margin-bottom:12px">${LINE}</div><div class="cue-label" style="margin:0 0 6px -12px">The words</div><div class="peek-list">${list}</div></div>` },
 ];
 const rows = document.getElementById("rows");
 V.forEach(v => {
