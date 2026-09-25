@@ -561,6 +561,8 @@ function chapterDoorDue(lesson) {
   const seen = (state.chapterDoors || []);
   return seen.includes(DECK.stages[i].id || String(i)) ? null : i;
 }
+/* the doubled swash from the book page (Tom 9/24): one line at each end, parting into two through the middle; drawn, so every phone renders it alike */
+const DOOR_SWASH = `<svg style="display:block" width="68" height="27" viewBox="0 0 56 22" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.0 13.2 L3.8 12.7 L4.7 12.1 L5.5 11.6 L6.3 11.1 L7.2 10.5 L8.0 10.0 L8.8 9.5 L9.9 9.3 L10.8 9.1 L11.7 8.8 L12.6 8.6 L13.4 8.3 L14.2 8.1 L15.1 8.0 L15.9 7.8 L16.6 7.8 L17.4 7.7 L18.1 7.7 L18.9 7.7 L19.6 7.8 L20.3 7.9 L21.0 8.0 L21.8 8.2 L22.5 8.4 L23.2 8.7 L24.0 9.0 L24.7 9.3 L25.5 9.6 L26.3 9.9 L27.1 10.3 L27.9 10.7 L28.7 11.1 L29.6 11.5 L30.4 11.9 L31.3 12.3 L32.1 12.7 L33.0 13.1 L33.9 13.5 L34.8 13.8 L35.7 14.1 L36.6 14.4 L37.5 14.6 L38.5 14.7 L39.4 14.9 L40.3 14.9 L41.2 14.9 L42.1 14.8 L43.0 14.7 L43.9 14.5 L44.8 14.2 L45.6 13.9 L46.4 13.4 L47.2 12.8 L48.0 12.5 L48.8 12.2 L49.7 11.8 L50.5 11.4 L51.3 10.9 L52.2 10.5 L53.0 10.0"/><path d="M3.0 13.2 L3.8 12.7 L4.7 12.1 L5.5 11.6 L6.3 11.1 L7.2 10.5 L8.0 10.0 L8.8 9.5 L9.5 8.7 L10.2 8.0 L11.0 7.4 L11.8 6.9 L12.6 6.4 L13.4 5.9 L14.3 5.5 L15.1 5.1 L16.0 4.8 L16.9 4.6 L17.9 4.4 L18.8 4.3 L19.7 4.2 L20.7 4.2 L21.6 4.3 L22.6 4.4 L23.5 4.6 L24.4 4.8 L25.3 5.1 L26.3 5.4 L27.2 5.7 L28.0 6.1 L28.9 6.5 L29.8 7.0 L30.6 7.4 L31.4 7.8 L32.3 8.3 L33.1 8.7 L33.9 9.2 L34.7 9.6 L35.4 10.0 L36.2 10.4 L37.0 10.7 L37.7 11.1 L38.5 11.4 L39.2 11.7 L39.9 11.9 L40.7 12.1 L41.4 12.3 L42.2 12.5 L43.0 12.6 L43.7 12.6 L44.5 12.7 L45.4 12.7 L46.2 12.7 L47.2 12.8 L48.0 12.5 L48.8 12.2 L49.7 11.8 L50.5 11.4 L51.3 10.9 L52.2 10.5 L53.0 10.0"/></svg>`;
 function renderChapterDoor(i, onDone, opts) {
   const st = DECK.stages[i]; if (!st) return onDone();
   const app = $("#app"); clearFooter(); hideTabbar(); app.innerHTML = "";
@@ -571,8 +573,11 @@ function renderChapterDoor(i, onDone, opts) {
   const door = el(`<div class="scene-door chapter-door"></div>`);
   const photo = `./img/es/${["market", "cafe", "hero", "default"][i] || "default"}.jpg`;   // stand-ins from the pack until chapter photos are chosen
   // "Chapter 1" in the logo faces, the session count whispered to its right (Tom 9/21)
+  const swash = isStaged("door-swash");   // STAGED (Tom 9/24, mock E-wide): everything centered, the count under Chapter 1, the title in the logo's italic, a gold swash, the subtitle upright
+  if (swash) door.classList.add("swash");
   door.appendChild(el(`<div class="door-photo"><div class="door-name chapter-name"><span><span class="n1">Chapter</span> <span class="n2">${i + 1}</span></span><span class="scene-sub chapter-count">${st.lessons.filter(x => !x.bonus).length} SESSIONS</span></div><img src="${photo}" alt=""></div>`));
   door.appendChild(el(`<div class="chapter-door-title">${st.title}</div>`));   // the name IS the title: bold, balanced so no word sits alone on a line
+  if (swash) door.appendChild(el(`<div class="door-swash" aria-hidden="true">${DOOR_SWASH}</div>`));
   if (st.blurb) door.appendChild(el(`<div class="scene-line"><span class="sl">${st.blurb}</span></div>`));
   wrap.appendChild(door); app.appendChild(wrap);
   const f = footer(`<button class="btn" id="cont">${(opts && opts.cta) || "Begin"}</button>`);   // the button at the bottom of the screen, like every exercise

@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v349 (2026-09-24) — STAGED "door-swash": the chapter door upleveled (mock E-wide)
+- Tom's pick after five mock rounds (dev/chapter-door-options.html): everything centered, 13 SESSIONS on its own line under Chapter 1, the title in Playfair Display Italic (28px, wraps), the doubled swash from the book page in gold (68px; one line at each end parting into two through the middle, drawn as an SVG), the subtitle upright in grey. Behind the Test Lab switch; the Learn tab's "Chapter 1" heading reopens the door for review.
+
 ## v348 (2026-09-24) — the drawer's labels, the step halved (option C2)
 - Labels 28px in, the line and the words 40px in: a 12px step instead of 24. Tom's pick. Live.
 
