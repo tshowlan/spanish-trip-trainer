@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v353 (2026-09-24) — door-swash (staged): the numeral back to the word's face; the title in the logo's "fluent" face
+- Tom: the 1 should match "Chapter" (as shipped), and the title should wear the logo's "fluent" face: Playfair Display Italic, 30px. Subtitle stays Inter italic, white.
+
 ## v352 (2026-09-24) — door-swash (staged): Chapter 1 in the logo's faces; the title and subtitle in the body face
 - Tom: the door read as a different font from the exercises (it was all in the display face). Now: "Chapter" in the bold sans + the numeral in Playfair italic (the logo's pairing, light blue), the count, the title (Inter 700, 26px) and the subtitle (Inter italic, white) in the exercises' body face.
 
