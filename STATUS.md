@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v358 (2026-09-25) — door-swash (staged): Source Serif 4 on the door (mock T3)
+- Source Serif 4 joins the app (fonts.css: 400 from the file already in fonts/, 600 added as fonts/source-serif-4-600.woff2, latin subset). The staged door: the 1 in the darker blue, the title white Source Serif 600 at 28px, the line Source Serif 400 at 18px in a light grey (#b9bfcc). Playfair stays only in the logo.
+
 ## v357 (2026-09-25) — door-swash (staged): the title back in the "fluent" face
 - Tom: keep the title in the logo's italic serif (Playfair, 30px), now in the darker blue; everything else as v356.
 
