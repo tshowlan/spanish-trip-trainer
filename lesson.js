@@ -576,9 +576,13 @@ function renderChapterDoor(i, onDone, opts) {
   if (st.blurb) door.appendChild(el(`<div class="scene-line"><span class="sl">${st.blurb}</span></div>`));
   wrap.appendChild(door); app.appendChild(wrap);
   const f = footer(`<button class="btn" id="cont">${(opts && opts.cta) || "Begin"}</button>`);   // the button at the bottom of the screen, like every exercise
+  let gone = false;
   f.querySelector("#cont").addEventListener("click", () => {
+    if (gone) return; gone = true;
     state.chapterDoors = Array.from(new Set((state.chapterDoors || []).concat([st.id || String(i)]))); save();
-    clearFooter(); onDone();
+    // the door leaves on the slide every exercise leaves on (350ms out, then the next screen's 350ms in; Tom 9/24)
+    void door.offsetWidth; door.classList.add("leaving");
+    setTimeout(() => { clearFooter(); onDone(); }, 350);
   });
   wrap.querySelector("#quit").addEventListener("click", () => { clearFooter(); (opts && opts.back) ? opts.back() : renderLearn(); });
 }
@@ -1060,7 +1064,8 @@ function renderSceneDoor(q) {
   (sc.door.verse || sc.door).forEach(l => st.appendChild(el(`<span class="sl">${l}</span>`)));
   wrap.appendChild(st);
   const grown = el(`<div class="res-grown show"><button class="btn res-cont">${(sc.door && sc.door.cta) || "Step in"}</button></div>`);
-  grown.querySelector(".res-cont").addEventListener("click", () => { run.answered = false; next(); });
+  let gone = false;
+  grown.querySelector(".res-cont").addEventListener("click", () => { if (gone) return; gone = true; run.answered = false; slideOut(next); });   // the scene door leaves on the slide too (Tom 9/24)
   wrap.appendChild(grown);
   body.appendChild(wrap);
 }

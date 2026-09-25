@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v345 (2026-09-24) — the doors leave on the slide
+- Tom: the chapter door "disappears very fast". It had no exit: Begin wiped it and the first card slid in. Now the chapter door (Begin) and the scene door (Step in) leave on the same 350ms slide left every exercise uses, then the next screen slides in (the July equal-halves ruling, 350 since 8/3). Double taps guarded. Reduced motion: a 200ms fade. Live on Tom's word.
+
 ## v344 (2026-09-24) — CHAPTER ONE SHIPS: every staged switch flips on
 - Tom's word after his Numbers · 2 play and the bloom pick (white). The STAGED map is empty; isStaged() now returns true for all of: chapter-flow (thirteen word sessions, the four rooms as chapter 2, the chapter door), numbers-1, pairs-chain, learn-peek, hero-start (button tile with the pulse and the strip, Practice as a button), enter-bloom with bloom-white (the white bloom is THE bloom; the gold-only path stays in code, unselected), gloss-tap, review-door. STAGED_OPT_IN emptied. Test Lab reads "Nothing staged right now."
 - Existing learners: their deck rebuilds into the chapter flow at next boot (items keep their history by phrase); the chapter door shows once on their first chapter-1 session.

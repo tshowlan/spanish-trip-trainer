@@ -2098,3 +2098,6 @@ img.scene-art { width: 286px; }
 .hero-tile.as-button { animation: hero-pulse 2600ms ease-in-out infinite; }
 .hero-tile.as-button:active { animation: none; }
 @media (prefers-reduced-motion: reduce) { .hero-tile.as-button { animation: none; } }
+/* THE DOORS LEAVE ON THE SLIDE (Tom 9/24): the chapter door travels out like #qbody.leaving; the scene door lives in #qbody and uses it */
+.chapter-door.leaving { transform: translateX(-110%); transition: transform 350ms cubic-bezier(.4,.05,.7,.5); }
+@media (prefers-reduced-motion: reduce) { .chapter-door.leaving { transform: none; opacity: 0; transition: opacity 200ms ease; } }
