@@ -30,3 +30,11 @@ Welds stay bare numbers until chapter 3's words are met.
 
 ## Chapter photos
 Join the scene sourcing pass (counter / table / street / bar at night). Stand-ins from the pack until then.
+
+## Chat's rulings, 2026-09-25 (docs/ledger-answers-0925.md), the build-relevant parts
+- **¿Tiene ___? is the ninth ask** (The asks · 2, beside ¿Hay?): tiene = you have (the polite you). Situations: "You are at the pharmacy counter." · "It might be in the back." Asks · 2 runs five: Necesito, ¿Hay?, ¿Tiene?, ¿A qué hora?, Tengo alergia a. Asks · 1 stays four: Quiero, ¿Me puede traer?, ¿Dónde está?, ¿Cuánto cuesta?.
+- **Fillers:** cards for esto · otra · el cargador · el aeropuerto · el billete · la habitación · abre · cierra · el tren (Tom may trim); gloss for ir · mi · wifi · sale · empieza; una farmacia cerca and algo sin gluten are met; el menú → la carta.
+- **Reply sets** (the exchange beat = hear the reply, pick what it meant; met words, bare numbers):
+  Quiero → Ahora mismo · Marchando · No hay | ¿Me puede traer? → Claro · Ahora mismo · Un momento | Necesito → Vale · Aquí tiene · Un momento | Tengo alergia a → Vale, sin marisco · Sin problema · Un momento | ¿Dónde está? → A la derecha · Todo recto · Al final | ¿Hay? → Sí, hay · No hay · Fuera, sí | ¿Tiene? → Sí, tengo · No, no tengo · Un momento | ¿Cuánto cuesta? → Son doce · Cinco · Veinte | ¿A qué hora? → A las ocho · A las diez · Ahora.
+- **Chapter 1 additions (awaiting Tom's call, then staged):** "Days you'll read" (lunes … domingo, a READ session after Signs; contexts "Cerrado los lunes." · "Abierto el sábado."); zumo and té join Counter words · 1.
+- **Small frames wait for chapter 3.** Weld stays in rooms; stretch leaves rooms.

@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v361 (2026-09-25) — glue glosses after chat's voice pass
+- de, lo, que rewritten; la tweaked (docs/ledger-answers-0925.md). Chapter-2 rulings recorded in docs/chapter2-cues.md and decisions.md; three calls with Tom (¿Tiene? in, filler cards, days session).
+
 ## v360 (2026-09-25) — chat's milestone answers folded in
 - Voice pass: the boards' closing lines "Match every number to its word." / "Match each sound to its meaning and its spelling."; the direction line leaves when the board completes (one of the two, not both).
 - Chapter lines 2-4 in flow.blurbs (the door and the Learn heading). Chat's asks situations, Numbermachine cues, and D positions saved to docs/chapter2-cues.md. Ledger updated (glue glosses sent as strings; the shipped door recorded as a B change).

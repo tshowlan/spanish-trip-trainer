@@ -22,6 +22,8 @@
 
 **B addition, the chapter door as shipped (v359) differs from chat's door grammar (C0):** centered, not the cap-and-slot layout; "Chapter 1" with the numeral (not "Chapter one") and 13 SESSIONS beneath; the lighthouse with its lantern's glow between the title and the line; the title and the line in Source Serif 4, a fourth face added for the door only. Tom's rulings across 9/24-25; for the constitution's door family.
 
+**2026-09-25, later: LEDGER CLEARED by chat (docs/ledger-answers-0925.md).** Glue glosses applied (v361). Chapter-2 rulings in docs/chapter2-cues.md. Open with chat once the pack's design folder lands (design/home-action-stack.html now in the Desktop pack): the bloom motion ruling, the action-tile artifact. Open with Tom: Andrés' taxi; the three calls (¿Tiene? in, how many filler cards, days as a fourteenth chapter-1 session).
+
 ## A. CODE'S DRAFT COPY, awaiting the voice pass (all staged, none shipped)
 
 | Where | Copy | Since |
