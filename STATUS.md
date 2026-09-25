@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v351 (2026-09-24) — door-swash (staged): the lighthouse in place of the swash (mock L1-c2)
+- The logo's lighthouse at 60px between the title and the subtitle, the splash's gold aura behind it centered on the lantern (a radial layer, inset -46/-60), the title upright, the subtitle white italic. The swash is retired.
+
 ## v350 (2026-09-24) — door-swash (staged): the title in the app's own face set italic; the swash at 56px
 - Tom: the serif read as a weird font; the title is now Plus Jakarta Sans 800 italic at its usual 27px. The swash back to the E size (56px).
 

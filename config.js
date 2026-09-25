@@ -8,13 +8,13 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v350";
+const APP_BUILD = "v351";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
    is his word - only then does the feature leave this list and reach the live app. */
 const STAGED = {
-  "door-swash": "The chapter door, upleveled: everything centered, 13 sessions under Chapter 1, the title in the logo's italic, a gold swash, the subtitle upright"
+  "door-swash": "The chapter door, upleveled: everything centered, 13 sessions under Chapter 1, the lighthouse with its lantern's glow between the title and the subtitle"
 };
 // SHIPPED (Tom, 2026-09-24, v344), chapter one and its surfaces: "chapter-flow" (chapter 1 = the words that get you by, thirteen
 // sessions, chapter 2 = the four rooms, chapters render 1-4, the chapter door), "numbers-1" (numbers as an ear skill: the set card,
