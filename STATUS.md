@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v352 (2026-09-24) — door-swash (staged): Chapter 1 in the logo's faces; the title and subtitle in the body face
+- Tom: the door read as a different font from the exercises (it was all in the display face). Now: "Chapter" in the bold sans + the numeral in Playfair italic (the logo's pairing, light blue), the count, the title (Inter 700, 26px) and the subtitle (Inter italic, white) in the exercises' body face.
+
 ## v351 (2026-09-24) — door-swash (staged): the lighthouse in place of the swash (mock L1-c2)
 - The logo's lighthouse at 60px between the title and the subtitle, the splash's gold aura behind it centered on the lantern (a radial layer, inset -46/-60), the title upright, the subtitle white italic. The swash is retired.
 

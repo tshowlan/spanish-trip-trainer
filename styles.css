@@ -2106,7 +2106,9 @@ img.scene-art { width: 286px; }
    italic serif; the gold doubled swash between title and subtitle; the subtitle upright in the whisper's grey */
 .chapter-door.swash { text-align: center; }
 .chapter-door.swash .door-name.chapter-name { left: 0; right: 0; bottom: 8px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
-.chapter-door.swash .chapter-door-title { white-space: normal; margin: 18px 0 12px; }   /* upright (Tom 9/24) */
+.chapter-door.swash .chapter-name .n2 { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 500; font-size: 1.3em; line-height: 1; }   /* Chapter 1 in the logo's two faces: the word in the bold sans, the numeral in the italic serif (Tom 9/24) */
+.chapter-door.swash .chapter-count { font-family: var(--font-text); }
+.chapter-door.swash .chapter-door-title { font-family: var(--font-text); font-weight: 700; font-size: 26px; letter-spacing: -.01em; white-space: normal; margin: 18px 0 12px; }   /* the title and the subtitle in the exercises' body face (Tom 9/24) */
 .chapter-door.swash .door-mark-row { display: flex; justify-content: center; margin: 0 0 18px; }
 .chapter-door.swash .door-mark { position: relative; display: inline-block; }
 .chapter-door.swash .door-mark .lighthouse { position: relative; }
@@ -2114,4 +2116,4 @@ img.scene-art { width: 286px; }
 .chapter-door.swash .door-mark-glow { position: absolute; inset: -46px -60px; pointer-events: none;
   background: radial-gradient(closest-side at 50% 40%, rgba(216,183,19,0.30) 0%, rgba(216,183,19,0.18) 35%, rgba(216,183,19,0.09) 60%, rgba(216,183,19,0.03) 80%, rgba(216,183,19,0) 100%); }
 .chapter-door.swash .scene-line { margin: 0; }
-.chapter-door.swash .scene-line .sl { font-style: italic; color: var(--text); }   /* the subtitle in the app's italic voice, white (the base of the mocks Tom picked from) */
+.chapter-door.swash .scene-line .sl { font-family: var(--font-text); font-weight: 400; font-style: italic; color: var(--text); }   /* the subtitle in the app's italic voice, white (the base of the mocks Tom picked from) */
