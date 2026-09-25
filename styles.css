@@ -2106,7 +2106,7 @@ img.scene-art { width: 286px; }
    italic serif; the gold doubled swash between title and subtitle; the subtitle upright in the whisper's grey */
 .chapter-door.swash { text-align: center; }
 .chapter-door.swash .door-name.chapter-name { left: 0; right: 0; bottom: 8px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
-.chapter-door.swash .chapter-door-title { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 500; font-size: 28px; letter-spacing: 0; white-space: normal; margin: 18px 0 12px; }
+.chapter-door.swash .chapter-door-title { font-style: italic; white-space: normal; margin: 18px 0 12px; }   /* the app's own title face, set italic (Tom 9/24: a standard font, in italics) */
 .chapter-door.swash .door-swash { display: flex; justify-content: center; margin: 0 0 18px; }
 .chapter-door.swash .scene-line { margin: 0; }
 .chapter-door.swash .scene-line .sl { font-style: normal; }
