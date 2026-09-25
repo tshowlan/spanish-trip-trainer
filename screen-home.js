@@ -216,7 +216,7 @@ function renderHome(opts) {
   // (optionally) one line of divergence narration. The content library lives in the Learn tab.
   if (started) {
     home.appendChild(heroTile());
-    home.appendChild(practiceButton());
+    if (Object.keys(state.learn || {}).length) home.appendChild(practiceButton());   // nothing met yet = nothing to practice: the row stays away so the tile is the only door (Tom 9/25)
     const dv = divergenceLine(); if (dv) home.appendChild(dv);
     const ins = insightLine(); if (ins) home.appendChild(ins);   // §3.2 gold-spark insight, in rhythm under Practice
     const pr = presenceLine(); if (pr) home.appendChild(pr);     // §3.2 destination presence (local time; temp later)

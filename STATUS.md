@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v354 (2026-09-25) — Home: the pulse waits for the arrival; no Practice row until there is something to practice
+- The action tile's pulse is off while body.arriving is set, so it begins as the candle finishes (3.75s after the formation starts). Live.
+- The Practice row is not rendered while nothing has been met (state.learn empty): a new learner sees only the tile. Live.
+
 ## v353 (2026-09-24) — door-swash (staged): the numeral back to the word's face; the title in the logo's "fluent" face
 - Tom: the 1 should match "Chapter" (as shipped), and the title should wear the logo's "fluent" face: Playfair Display Italic, 30px. Subtitle stays Inter italic, white.
 
