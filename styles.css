@@ -2096,7 +2096,9 @@ img.scene-art { width: 286px; }
 .practice.as-button:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--border) 60%, #000), 0 2px 6px rgba(0,0,0,.3); }
 /* THE PULSE (Tom 9/24, Duolingo's cue for "this one"): a slow gold glow breathing behind the action tile, drawn as a shadow so iPhone renders it */
 @keyframes hero-pulse { 0%, 100% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 18px 2px rgba(216,183,19,.18); } 50% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 2px rgba(216,183,19,.28), 0 0 34px 10px rgba(216,183,19,.42); } }
-.hero-tile.as-button { animation: hero-pulse 2600ms ease-in-out infinite; }
+@keyframes hero-pulse-in { from { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 0 0 rgba(216,183,19,0); } to { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 18px 2px rgba(216,183,19,.18); } }
+/* the first breath rises from nothing over 700ms, then the loop takes over at exactly that level (Tom's recording 9/25: the glow used to jump in at its resting level) */
+.hero-tile.as-button { animation: hero-pulse-in 700ms ease-out both, hero-pulse 2600ms ease-in-out 700ms infinite; }
 body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for the arrival: it begins as the candle finishes igniting (Tom 9/25) */
 .hero-tile.as-button:active { animation: none; }
 @media (prefers-reduced-motion: reduce) { .hero-tile.as-button { animation: none; } }

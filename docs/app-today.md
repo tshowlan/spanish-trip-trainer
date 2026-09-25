@@ -5,7 +5,7 @@
 ## Doors into the app
 - **Arrival (splash):** the lighthouse, the daybreak, the dials forming. Unchanged since July; loved.
 - **Onboarding:** destination and date, trip kind, lodging, transport, needs and allergies, home city, the grammar question, the level check. New users only.
-- **Home:** three dials, the action tile (one action: next session / review / cram) built as a button: a pressed edge, the card sinks on press, a slow gold pulse behind it, the session's one line under its title, the photo fading into a slim strip on the right that holds the chevron. The Practice row is a button the same way. The insight whisper. When a scene is ready and the trip is near, the tile reads "Scene: Café Paloma is ready." (v344)
+- **Home:** three dials, the action tile (one action: next session / review / cram) built as a button: a pressed edge, the card sinks on press, a slow gold pulse behind it, the session's one line under its title, the photo fading into a slim strip on the right that holds the chevron. The Review row (named Practice until v355) is a button the same way, and does not appear until something has been met. The insight whisper. When a scene is ready and the trip is near, the tile reads "Scene: Café Paloma is ready." (v344)
 - **Entering a session (the bloom):** the tapped tile or row breathes, a gold light rises behind it, the tile grows and lets go, the white daybreak takes over, and the session comes in on a blank screen. From the Home tile, Practice picks, and Learn rows. (v344)
 
 ## Learning (the Learn track)
@@ -20,7 +20,7 @@
 - **Session end:** the ceremony and its facts. Loved; untouched.
 
 ## Review (the Scenes track)
-- **Practice sheet:** three doors: Practice (smart default, one line saying what it picked; names a ready scene when there is one), By scenario, The machine shop. Picks bloom into the session. (v344)
+- **Review sheet (was Practice):** three doors: Review (smart default, one line saying what it picked; names a ready scene when there is one), By scenario, The machine shop. Picks bloom into the session. (v344)
 - **Circuits:** every non-scene review: "CIRCUIT: FADING PHRASES" door → 8 phrases × ~3 climbing forms (~23 reps) → "END CIRCUIT." Door is a placeholder design.
 - **Scenes (4 live):** Café Paloma (6 asks), Rosa's (9, allergy beat fills from your profile), The Corner (8, you're the local), Toni's Bar (10). Door: capped photo, name in the logo faces, two-line verse. Beats: one italic context line then the ask. The door onto the learner's path and the six-week tilt shipped v344.
 - **Andrés' taxi:** written by chat, on Tom's Desktop awaiting his pass.

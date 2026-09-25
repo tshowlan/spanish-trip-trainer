@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v355 (2026-09-25) — Review (was Practice); the pulse's first breath rises from nothing
+- The Home row and its sheet are named Review (Tom, after discussion: the row works only on what has been met; "Practice" read as the lesson). Doors inside unchanged.
+- Tom's recording: the glow appeared already at its resting level. A 700ms one-shot animation now rises from no glow to the resting level, and the loop starts at that level after the 700ms. Both wait for the arrival to end.
+
 ## v354 (2026-09-25) — Home: the pulse waits for the arrival; no Practice row until there is something to practice
 - The action tile's pulse is off while body.arriving is set, so it begins as the candle finishes (3.75s after the formation starts). Live.
 - The Practice row is not rendered while nothing has been met (state.learn empty): a new learner sees only the tile. Live.

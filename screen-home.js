@@ -783,7 +783,7 @@ function practiceButton() {
   const badgeText = urgent && fading > 0 ? fading + " fading" : due + " due";
   const b = el(`<button class="practice${urgent ? " urgent" : ""}${isStaged("hero-start") ? " as-button" : ""}" role="button">
     <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
-    <span class="lbl">Practice</span>
+    <span class="lbl">Review</span>
     ${badge ? `<span class="pbadge">${badgeText}</span>` : ""}
     <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
   </button>`);
@@ -802,7 +802,7 @@ function practiceButton() {
 function practiceChooser() {
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
   const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div>
-    <div class="sheet"><div class="sheet-grab"></div><div class="sheet-title">Practice</div>
+    <div class="sheet"><div class="sheet-grab"></div><div class="sheet-title">Review</div>
       <div class="practice-opts"></div></div></div>`);
   const opts = wrap.querySelector(".practice-opts");
   const add = (title, sub, run, disabled, starts) => {
@@ -814,7 +814,7 @@ function practiceChooser() {
   const picked = (typeof _practicePick === "function") ? _practicePick(null) : [];
   const line = (typeof practicePickLine === "function") ? practicePickLine(picked) : null;
   const sc = isStaged("review-door") ? sceneReady() : null;   // staged: the door names the scene it will serve
-  add("Practice", sc ? `Scene: ${sc.title} \u00b7 ${sc.beats.length} asks` : (line || "Finish a lesson first"), () => startReview(), !picked.length && !sc, true);
+  add("Recommended", sc ? `Scene: ${sc.title} \u00b7 ${sc.beats.length} asks` : (line || "Finish a lesson first"), () => startReview(), !picked.length && !sc, true);
   add("By scenario", "Pick a category and drill it hard", scenarioChooser);
   const shops = machineShopLessons();
   add("The machine shop", shops.length ? "Drill one machine start to finish" : "Meet a machine first", machineShopChooser, !shops.length);

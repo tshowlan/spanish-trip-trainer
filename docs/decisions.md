@@ -263,3 +263,4 @@ luminous law.)
 
 - 2026-09-24 — Word sessions carry one line, not a primer; narrative escalates by chapter (line → forge line → setting line → verse); descriptions persist, introductions happen once; purpose lines only where contents wouldn't explain the session.
 - 2026-09-24 — Chapter one SHIPPED (v344) on Tom's word: the chapter flow, numbers as an ear skill, the listening board chain, the Learn drawer, the button tile with the pulse and the strip, the white bloom (gold retired as the entry light), the gloss tap, the scene door. The staged map is empty; the next increment stages alone.
+- 2026-09-25 — The Home row is REVIEW, not Practice (Tom): it works only on what has been met; "Practice" read as the lesson itself. The row does not render until something has been met.
