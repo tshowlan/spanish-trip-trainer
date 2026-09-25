@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v360 (2026-09-25) — chat's milestone answers folded in
+- Voice pass: the boards' closing lines "Match every number to its word." / "Match each sound to its meaning and its spelling."; the direction line leaves when the board completes (one of the two, not both).
+- Chapter lines 2-4 in flow.blurbs (the door and the Learn heading). Chat's asks situations, Numbermachine cues, and D positions saved to docs/chapter2-cues.md. Ledger updated (glue glosses sent as strings; the shipped door recorded as a B change).
+
 ## v359 (2026-09-25) — the chapter door SHIPS; chapter one is done
 - door-swash leaves the staged map: every learner gets the upleveled door (centered; 13 SESSIONS under Chapter 1 with the 1 in the darker blue; the title in Source Serif 4 semibold, white; the lighthouse at 60px with its lantern's glow; the line in Source Serif 4 regular, light grey; Begin slides out like an exercise). Tom: "we are done with chapter 1."
 

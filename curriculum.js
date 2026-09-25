@@ -721,7 +721,7 @@ const CURRICULUM = {
      learner's intake. Pure data: the deck builder arranges it. */
   flow: {
     chapters: ["The words that get you by", "Your first sentences", "Sentences by place", "Conversations"],   // chapter 1's name and line: Tom, 2026-09-21
-    blurbs: ["Simple words that maximize every day of your trip.", "", "", ""],                                    // the line under a chapter heading (wraps); 2-4 await copy
+    blurbs: ["Simple words that maximize every day of your trip.", "Eight ways to ask. The words you already own go in them.", "The caf\u00e9, the taxi, the hotel desk. What actually gets said there.", "Longer exchanges, and the scenes that put all of it together."],   // the line under a chapter heading and on its door (chat, C0, 9/25)
     rooms: ["room-asking-1", "room-finding-1", "room-finding-2", "room-asking-2"],
     rehome: { "sp0-first-words": "s1-rescue", "sp0-numbers": "sp-cash", "sp0-wrong": "sp-help" },
     rehomeItems: { "Pase, pase": "s4-hear", "\u00bfEst\u00e1 todo bien?": "s4-hear" },

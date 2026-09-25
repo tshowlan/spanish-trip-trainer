@@ -2960,12 +2960,13 @@ function renderPairs(q) {
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
     const grown = el(`<div class="res-grown pairs-grown">
       ${clean ? `<div class="pairs-tick">${clean} stronger</div>` : ""}
-      <div class="pairs-allset">${numeral ? "Every number, matched to its word." : text ? "Every phrase, matched to what it means." : (items.length === 4 ? "Match the four sounds to their meanings and spellings." : "Every sound, matched to its meaning and its spelling.")}</div>
+      <div class="pairs-allset">${numeral ? "Match every number to its word." : text ? "Every phrase, matched to what it means." : (items.length === 4 ? "Match the four sounds to their meanings and spellings." : "Match each sound to its meaning and its spelling.")}</div>
       ${isStaged("pairs-chain") ? "" : `<button class="btn res-cont">Continue</button>`}
     </div>`);
     let gone = false; const go = () => { if (gone) return; gone = true; slideOut(next); };
     const rc = grown.querySelector(".res-cont"); if (rc) rc.addEventListener("click", go);
     else { const cf = footer(`<button class="btn" id="cont">Continue</button>`); cf.querySelector("#cont").addEventListener("click", go); }   // the bottom bar, never clipped under a tall board
+    const dir = body.querySelector(".qtype"); if (dir) dir.remove();   // the direction has done its job; the closing line says it once (chat 9/25: one of the two, not both)
     body.appendChild(grown);
     setTimeout(() => grown.classList.add("show"), reduced ? 0 : 1050);
   }

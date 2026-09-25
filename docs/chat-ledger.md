@@ -4,6 +4,24 @@
 
 **Milestone 2026-09-24, v344: CHAPTER ONE SHIPPED.** Everything below that was "staged" is now live for every learner: the chapter flow, numbers, the listening board chain, the Learn drawer, the button tile, the white bloom, the gloss tap, the scene door. The A items are live copy awaiting the voice pass, not staged copy.
 
+**2026-09-25: chat's answers received (the 9/22 milestone answers, restated).** A: the two board lines rewritten (v360); all else kept. C0 chapter lines 2-4 are in (v360). C3 and C4 saved to docs/chapter2-cues.md. D positions accepted. Still with chat once the pack lands: the keypad artifact, the bloom motion ruling, the action-tile artifact. With Tom: Andrés' taxi.
+
+**For chat's voice pass, the twelve glue glosses (live strings, the tap under a heard line):**
+- en: "en means in or on. En la mesa: on the table."
+- a: "a means to. It points at where you are going or who gets it."
+- al: "al is a + el squashed together: to the."
+- del: "del is de + el squashed together: of the, from the."
+- de: "de means of or from. Un poco de agua: a little of water."
+- lo: "lo means it, when the it is a thing you already named."
+- la: "la means the, for words that take an -a. El is the other the."
+- que: "que means that, or which. It stitches two halves of a sentence."
+- con: "con means with. Con leche: with milk."
+- para: "para means for, or in order to. Para dos: for two."
+- por: "por means for, by, or through. Por favor: as a favor."
+- sin: "sin means without. Sin gluten, sin gas."
+
+**B addition, the chapter door as shipped (v359) differs from chat's door grammar (C0):** centered, not the cap-and-slot layout; "Chapter 1" with the numeral (not "Chapter one") and 13 SESSIONS beneath; the lighthouse with its lantern's glow between the title and the line; the title and the line in Source Serif 4, a fourth face added for the door only. Tom's rulings across 9/24-25; for the constitution's door family.
+
 ## A. CODE'S DRAFT COPY, awaiting the voice pass (all staged, none shipped)
 
 | Where | Copy | Since |
@@ -56,3 +74,12 @@
 - Do "The weld" / "The stretch" survive inside the machine rooms?
 - Grey ghost slots for used tiles (Duolingo) vs our hidden-but-spaced tiles.
 - The response exercise (someone says a line, pick the reply), parked.
+
+### Chapter 2 kickoff (2026-09-25, Tom + Code, before any session is built)
+- **The role of chapter 2, restated:** a frame plus a slot. The eight asks are met FIRST, four at a time in order of importance (The asks · 1: Quiero, ¿Me puede traer?, ¿Dónde está?, ¿Cuánto cuesta?; The asks · 2: Necesito, ¿Hay?, ¿A qué hora?, Tengo alergia a), each session closing on "Which one do you say?" situations, so a learner knows which ask to reach for when it is their turn. The rooms then become practice at filling the slot with chapter-1 words, plus hearing the reply. Tiles through chapter 2; cold typing enters with chapter 3 (ruling 9/17 stands).
+- **Fillers (Tom's ruling):** important new words may enter a room WITH a card; words the context carries ride the underline gloss instead; everything else is a chapter-1 word. Code's audit: 18 of 30 room fillers are unmet today (esto, el menú, otra caña, un cargador, ir al aeropuerto, mi hotel, wifi, una farmacia cerca, algo sin gluten, un billete, la habitación; abre, cierra, sale el tren, empieza). Chat: which of these earn a card?
+- **¿Tiene ___? (Do you have ___?):** Tom wants it as a ninth ask. Chat to rule: in, and if so its glosses, its situation line, and which session of the two it joins.
+- **Days of the week:** where do they live? Code's lean: a short words session late in chapter 1 beside Numbers (read on signs, heard in "cerrado los lunes"), with "los lunes" style uses waiting for chapter 3. Alternative: they ride the time machine in chapter 2.
+- **Juice and tea:** do zumo and té join Counter words? Code's lean: yes, near-cognates, ordered daily.
+- **The replies as chapter 2's hear emphasis:** each ask gets the two or three things you hear back (Ahora mismo · Marchando · No hay · Son doce · A las ocho), and the exchange beat becomes "hear the reply, pick what it meant". Chat to write the reply sets.
+- **Small frames from chapter 1's pairs:** con ___ / sin ___, para ___, and Somos ___ / A las ___ once the number machine lands. Chat to rule whether these are chapter 2 or chapter 3.
