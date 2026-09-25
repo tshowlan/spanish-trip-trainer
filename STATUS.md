@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v347 (2026-09-24) — the drawer's labels at the card's edge (option C)
+- ABOUT THIS SESSION and THE WORDS sit at the card's edge (16px); the line and the words 40px in (were 56). Tom's pick from dev/drawer-options.html. Live.
+
 ## v346 (2026-09-24) — the Learn drawer: two labels, whisper face (option 1)
 - Tom's pick from dev/drawer-options.html: ABOUT THIS SESSION over the session's line (now plain, 14.5px, not the italic) and THE WORDS over the list, both in the whisper face (.cue-label). Live on Tom's word.
 
