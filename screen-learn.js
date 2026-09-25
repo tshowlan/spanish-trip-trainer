@@ -49,7 +49,8 @@ function _togglePeek(row, l) {
   const groups = l.machines
     ? l.machines.map(m => `<div class="peek-frame">${_capFrame(m.frame)}</div>${(m.items || []).map(line).join("")}`).join("")
     : (l.machine && l.frame ? `<div class="peek-frame">${_capFrame(l.frame)}</div>` : "") + (l.items || []).map(line).join("");
-  const peek = el(`<div class="lesson-peek">${l.line ? `<div class="scene-line peek-line-it"><span class="sl">${tidyBreaks(l.line)}</span></div>` : ""}<div class="peek-list">${groups}</div></div>`);   // no button: the row itself starts the lesson (option A, Tom 9/21)
+  // drawer option 1 (Tom 9/24): two labels in the whisper face, ABOUT THIS SESSION over the line (plain, not italic), THE WORDS over the list
+  const peek = el(`<div class="lesson-peek">${l.line ? `<div class="cue-label peek-label">About this session</div><div class="peek-line">${tidyBreaks(l.line)}</div>` : ""}<div class="cue-label peek-label">The words</div><div class="peek-list">${groups}</div></div>`);   // no button: the row itself starts the lesson (option A, Tom 9/21)
   row.after(peek);
   requestAnimationFrame(() => {
     peek.classList.add("show");

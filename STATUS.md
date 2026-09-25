@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v346 (2026-09-24) — the Learn drawer: two labels, whisper face (option 1)
+- Tom's pick from dev/drawer-options.html: ABOUT THIS SESSION over the session's line (now plain, 14.5px, not the italic) and THE WORDS over the list, both in the whisper face (.cue-label). Live on Tom's word.
+
 ## v345 (2026-09-24) — the doors leave on the slide
 - Tom: the chapter door "disappears very fast". It had no exit: Begin wiped it and the first card slid in. Now the chapter door (Begin) and the scene door (Step in) leave on the same 350ms slide left every exercise uses, then the next screen slides in (the July equal-halves ruling, 350 since 8/3). Double taps guarded. Reduced motion: a 200ms fade. Live on Tom's word.
 
