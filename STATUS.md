@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v362 (2026-09-25) — STAGED "chapter-1-adds": Days you'll read; zumo and té
+- Chat's rulings (9/25), Tom's placement: "Days you'll read" (lunes … domingo, a READ session, lowercase as posted) sits after Signs and before Help, forced by the context rule (cerrado / abierto come from Signs). zumo and té join Counter words after agua (Part 1). Both behind the switch; the deck builder now honors a `staged` flag on a flow session or a word. Day contexts and the session line are Code's drafts (ledger A).
+- design/keypad.html (chat's artifact r1) is in the repo; the conformance check against the shipped keypad is queued.
+
 ## v361 (2026-09-25) — glue glosses after chat's voice pass
 - de, lo, que rewritten; la tweaked (docs/ledger-answers-0925.md). Chapter-2 rulings recorded in docs/chapter2-cues.md and decisions.md; three calls with Tom (¿Tiene? in, filler cards, days session).
 

@@ -8,13 +8,13 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v361";
+const APP_BUILD = "v362";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
    is his word - only then does the feature leave this list and reach the live app. */
 const STAGED = {
-  // (empty: nothing staged right now; the next increment goes here)
+  "chapter-1-adds": "Chapter 1: a fourteenth session, Days you'll read, after Signs; zumo and t\u00e9 in Counter words (chat 9/25)"
 };
 // SHIPPED (Tom, 2026-09-25, v359): "door-swash", the upleveled chapter door (centered, the count under Chapter 1, the lighthouse with its
 // lantern's glow, Source Serif 4 title and line).

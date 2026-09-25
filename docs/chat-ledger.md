@@ -26,6 +26,8 @@
 
 ## A. CODE'S DRAFT COPY, awaiting the voice pass (all staged, none shipped)
 
+**Days you'll read (staged v362), Code's drafts to the rule, for the voice pass:** line "Seven words on every shop door and timetable." · lunes "Cerrado los lunes." (Closed on Mondays.) · martes "Abierto el martes." (Open on Tuesday.) · miércoles "¿El miércoles? Cerrado." (Wednesday? Closed.) · jueves "Abierto el jueves." (Open on Thursday.) · viernes "¿El viernes? Sí." (Friday? Yes.) · sábado "Abierto el sábado." (Open on Saturday.) · domingo "Cerrado el domingo." (Closed on Sunday.) Counter: zumo "Un zumo, por favor." · té "Un té, por favor."
+
 | Where | Copy | Since |
 |---|---|---|
 | Numbers set card | "Tap a number to hear it." (with a small speaker) | v284 |

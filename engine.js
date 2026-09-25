@@ -158,7 +158,8 @@ function _chapterFlowDeck(deck, rooms) {
   const numbersOn = typeof isStaged === "function" && isStaged("numbers-1");
   const partWord = t => (typeof isStaged === "function" && isStaged("learn-peek")) ? t.replace(/ ([\u00b7·]) (\d)$/, " $1 Part $2") : t;
   const lineFor = w => (w.lineProfile && w.lineProfile.allergies && (p.allergies || []).length) ? w.lineProfile.allergies : w.line;   // profile-keyed lines (Table words)
-  const words = flow.words.filter(w => numbersOn || w.numbers !== "ear").map(w => Object.assign({}, w, { title: partWord(w.title), line: lineFor(w), primer: null })).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, items: w.items.filter(fits).map(mk) }));
+  const live = d => !d.staged || (typeof isStaged === "function" && isStaged(d.staged));   // a session or a word may wait behind a switch (chapter-1-adds)
+  const words = flow.words.filter(w => (numbersOn || w.numbers !== "ear") && live(w)).map(w => Object.assign({}, w, { title: partWord(w.title), line: lineFor(w), primer: null })).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, items: w.items.filter(fits).filter(live).map(mk) }));
   const old = deck.stages;
   // no phrase is lost: what the old kit held that is not a word re-homes into a later lesson
   (old[0] ? old[0].lessons : []).filter(l => !l.machine).forEach(l => {

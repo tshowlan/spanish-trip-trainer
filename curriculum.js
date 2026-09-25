@@ -788,6 +788,8 @@ const CURRICULUM = {
         { es: "café", en: "coffee", tags: ["drink", "coffee"], contextEs: "Un café, por favor.", contextEn: "A coffee, please." },
         { es: "cortado", en: "cortado (espresso with a little milk)", tags: ["drink", "coffee"], contextEs: "Un cortado, gracias.", contextEn: "A cortado, thanks." },
         { es: "con leche", en: "with milk", tags: ["drink", "coffee"], contextEs: "Café con leche.", contextEn: "Coffee with milk." },
+        { es: "zumo", en: "juice", staged: "chapter-1-adds", tags: ["drink"], contextEs: "Un zumo, por favor.", contextEn: "A juice, please." },   /* chat 9/25: zumo and t\u00e9 join the counter; placed with the coffee words so the 7/6 split keeps them in Part 1 */
+        { es: "t\u00e9", en: "tea", staged: "chapter-1-adds", tags: ["drink"], contextEs: "Un t\u00e9, por favor.", contextEn: "A tea, please." },
         { es: "caña", en: "small draft beer", tags: ["drink"], contextEs: "Una caña, por favor.", contextEn: "A caña, please." },
         { es: "copa", en: "glass (of wine)", tags: ["drink"], contextEs: "Una copa, por favor.", contextEn: "A glass, please." },
         { es: "vino", en: "wine", tags: ["drink"], contextEs: "Una copa de vino.", contextEn: "A glass of wine." },
@@ -848,6 +850,16 @@ const CURRICULUM = {
            Contexts are Code's drafts to chat's rule (taxi and el baño are already met), flagged for the voice pass. */
         { es: "Libre", en: "Free / vacant (sign)", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
         { es: "Ocupado", en: "Occupied / taken (sign)", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
+      { id: "w-days", topic: "Core signs", title: "Days you'll read", emphasis: "read", staged: "chapter-1-adds", line: "Seven words on every shop door and timetable.", items: [
+        /* DAYS (chat 9/25: a chapter-1 READ session after Signs, base-layer by the chapter-0 rule; "los lunes" uses wait for chapter 3).
+           Contexts are Code's drafts to the rule (cerrado / abierto met in Signs; el / los as glue), flagged for the voice pass. Lowercase, as posted. */
+        { es: "lunes", en: "Monday", read: true, tags: ["days"], contextEs: "Cerrado los lunes.", contextEn: "Closed on Mondays." },
+        { es: "martes", en: "Tuesday", read: true, tags: ["days"], contextEs: "Abierto el martes.", contextEn: "Open on Tuesday." },
+        { es: "mi\u00e9rcoles", en: "Wednesday", read: true, tags: ["days"], contextEs: "\u00bfEl mi\u00e9rcoles? Cerrado.", contextEn: "Wednesday? Closed." },
+        { es: "jueves", en: "Thursday", read: true, tags: ["days"], contextEs: "Abierto el jueves.", contextEn: "Open on Thursday." },
+        { es: "viernes", en: "Friday", read: true, tags: ["days"], contextEs: "\u00bfEl viernes? S\u00ed.", contextEn: "Friday? Yes." },
+        { es: "s\u00e1bado", en: "Saturday", read: true, tags: ["days"], contextEs: "Abierto el s\u00e1bado.", contextEn: "Open on Saturday." },
+        { es: "domingo", en: "Sunday", read: true, tags: ["days"], contextEs: "Cerrado el domingo.", contextEn: "Closed on Sunday." } ] },
       { id: "w-help", topic: "Core help", title: "Help words", line: "The words for the day you hope never comes.", items: [
         { es: "ayuda", en: "help", tags: ["emergency"], contextEs: "Ayuda, por favor.", contextEn: "Help, please." },
         { es: "médico", en: "doctor", tags: ["emergency", "health"], contextEs: "Un médico, por favor.", contextEn: "A doctor, please." },
