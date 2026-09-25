@@ -571,7 +571,7 @@ function renderChapterDoor(i, onDone, opts) {
   const door = el(`<div class="scene-door chapter-door"></div>`);
   const photo = `./img/es/${["market", "cafe", "hero", "default"][i] || "default"}.jpg`;   // stand-ins from the pack until chapter photos are chosen
   // "Chapter 1" in the logo faces, the session count whispered to its right (Tom 9/21)
-  const swash = isStaged("door-swash");   // STAGED (Tom 9/24, mock E-wide): everything centered, the count under Chapter 1, the title in the logo's italic, a gold swash, the subtitle upright
+  const swash = isStaged("door-swash");   // SHIPPED v359: the upleveled door (centered, the count under Chapter 1, the lighthouse with its lantern's glow, Source Serif 4)
   if (swash) door.classList.add("swash");
   door.appendChild(el(`<div class="door-photo"><div class="door-name chapter-name"><span><span class="n1">Chapter</span> <span class="n2">${i + 1}</span></span><span class="scene-sub chapter-count">${st.lessons.filter(x => !x.bonus).length} SESSIONS</span></div><img src="${photo}" alt=""></div>`));
   door.appendChild(el(`<div class="chapter-door-title">${st.title}</div>`));   // the name IS the title: bold, balanced so no word sits alone on a line

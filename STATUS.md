@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v359 (2026-09-25) — the chapter door SHIPS; chapter one is done
+- door-swash leaves the staged map: every learner gets the upleveled door (centered; 13 SESSIONS under Chapter 1 with the 1 in the darker blue; the title in Source Serif 4 semibold, white; the lighthouse at 60px with its lantern's glow; the line in Source Serif 4 regular, light grey; Begin slides out like an exercise). Tom: "we are done with chapter 1."
+
 ## v358 (2026-09-25) — door-swash (staged): Source Serif 4 on the door (mock T3)
 - Source Serif 4 joins the app (fonts.css: 400 from the file already in fonts/, 600 added as fonts/source-serif-4-600.woff2, latin subset). The staged door: the 1 in the darker blue, the title white Source Serif 600 at 28px, the line Source Serif 400 at 18px in a light grey (#b9bfcc). Playfair stays only in the logo.
 
