@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v356 (2026-09-25) — door-swash (staged): one face, two blues; the lighthouse clears the title
+- Tom: the serif title didn't work and he is wary of a third face. Now: Chapter 1 all in the pale light blue (the Trip face), the title in the app's face in the darker blue the numeral wore, the subtitle upright (Inter, white). The lighthouse sits 34px under the title (was 12) so its glow no longer overlaps the title; the mark-to-subtitle spacing is unchanged.
+
 ## v355 (2026-09-25) — Review (was Practice); the pulse's first breath rises from nothing
 - The Home row and its sheet are named Review (Tom, after discussion: the row works only on what has been met; "Practice" read as the lesson). Doors inside unchanged.
 - Tom's recording: the glow appeared already at its resting level. A 700ms one-shot animation now rises from no glow to the resting level, and the loop starts at that level after the 700ms. Both wait for the arrival to end.
