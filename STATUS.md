@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v367 (2026-09-26) — the read-and-pick rung resolves in place
+- Tom: the reveal repeated the word, its meaning, and the speaker. Now the word at the top takes the green sweep, the chosen option confirms the meaning, and "Tap to hear it again" joins the speaker already on screen; the reveal keeps only its kicker (RESTORED / YOURS NOW) and note. Rides ear-sessions.
+
 ## v366 (2026-09-26) — Days you'll read: the line
 - "Seven words on every shop door." (Tom). Staged with chapter-1-adds.
 

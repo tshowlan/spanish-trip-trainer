@@ -2127,4 +2127,8 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .lmeta .ear-tag { font-family: var(--font-display); font-size: 9.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent-2); white-space: nowrap; }
 .present-card.hear-first .present-es, .present-card.hear-first .present-en, .present-card.hear-first .present-ctx { visibility: hidden; }
 .footer .btn + .btn.grey { margin-top: 10px; }
+/* the read-and-pick rung's confirmation (Tom 9/26): the word at the top takes the reveal's green sweep in place */
+.prompt.mc-word { position: relative; display: inline-block; }
+.prompt.mc-word .sweep2 { position: absolute; left: 0; right: 0; bottom: -6px; height: 2.5px; background: var(--green); border-radius: 2px; transform-origin: left; animation: sweep-in 420ms cubic-bezier(.2,.7,.3,1) both; }
+@keyframes sweep-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 

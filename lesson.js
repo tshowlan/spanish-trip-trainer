@@ -1665,9 +1665,16 @@ function renderMC(q) {
     const top = el(`<div class="top"></div>`);
     top.appendChild(el(`<div class="direction">What does this mean?</div>`));
     const pe = presentEs(item);
-    top.appendChild(el(`<div class="prompt es-phrase">${pe.text}</div>`));
-    top.appendChild(audioControl(() => speak(pe.text)));
+    const prompt = el(`<div class="prompt es-phrase mc-word">${pe.text}</div>`);
+    top.appendChild(prompt);
+    const arow = el(`<div class="res-audio-row"></div>`);
+    arow.appendChild(audioControl(() => speak(pe.text)));
+    top.appendChild(arow);
     body.appendChild(top);
+    // one progression, not two (Tom 9/26): the word at the top takes the green underline, the chosen option confirms the meaning, and the
+    // hint joins the speaker already on screen; the reveal frame keeps only its kicker and note
+    q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
+    q.onResolve = () => { prompt.appendChild(el(`<span class="sweep2"></span>`)); prompt.classList.add("confirmed"); arow.appendChild(el(`<span class="audio-hint">Tap to hear it again</span>`)); };
     const answers = el(`<div class="answers at63"></div>`);
     answers.appendChild(mcChoices(options, answer, item));
     body.appendChild(answers);
