@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v364 (2026-09-26) — STAGED "ear-sessions": Best with sound, the way back, the hear and read emphases
+- docs/ear-sessions.md. Ear = emphasis "hear" or numbers "ear". The tile's pill (T1) and the Learn row's bare tag (R2); the ear escape's two buttons (keep going without sound / come back when I can listen: parks); the X in an ear session parks quietly; next new day the tile offers the parked session first (SAVED FOR SOUND); starting it clears the park. Hear sessions: the card hides its words 1.9s while the line plays; rungs listen-and-fill / listen-and-build / listen-and-pick. Read sessions (Signs, Days): rungs finish-the-sentence / read-and-pick (mc_es2en) / build; the lap board reversed (meaning → word).
+
 ## v363 (2026-09-25) — boards: at most one pair straight across; the days capitalized as Signs are
 - Pairs boards reshuffle the right column until at most one pair sits directly across (Tom 9/25). Live.
 - Days you'll read (staged): cards Lunes … Domingo, capitalized like the Signs cards (read as posted; one case per session); the contexts keep the lowercase day inside the sentence, as Signs do.

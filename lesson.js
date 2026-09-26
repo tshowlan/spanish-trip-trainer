@@ -242,7 +242,13 @@ function kitRungFor(lesson, item, pool, k) {
       () => ({ type: "weld", item, target: item.contextEs, tiles, targetEn: item.contextEn, cueRole: "Build the sentence", cueMeaning: item.contextEn, arc: true, inputForm: "tiles", contextBuild: true, noEn: true })   // the English is already the cue: no repeat in the reveal
     ];
     const offset = /-2$/.test(lesson.id) ? 3 : 0;
-    return forms[((k || 0) + offset) % forms.length]();
+    // the emphases (Tom 9/26): a READ session rotates reading forms only (finish the sentence · read the sign, pick its meaning · build the
+    // sentence); a HEAR session rotates listening forms only (listen and fill · listen and build · listen and pick the meaning)
+    const emph = earOn() ? lesson.emphasis : null;
+    const set = emph === "read" ? [forms[0], () => ({ type: "mc_es2en", item, pool, arc: true }), forms[3]]
+              : emph === "hear" ? [forms[2], forms[1], () => ({ type: "listen_choice", item, pool, arc: true })]
+              : forms;
+    return set[((k || 0) + offset) % set.length]();
   }
   return { type: scaffoldedFormFor(item), item, pool, arc: true };
 }
@@ -298,7 +304,7 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   reviews.forEach(r => qs.push(r));
   const floor = chapterFloor(lesson);
   if (floor.lap === "scaffolded") {
-    if (pool.length >= 3) qs.push({ type: "pairs", items: pool.slice(), arc: true, encoreFirst: !isStaged("pairs-chain"), lap: true });   // 4. the final pass: hear them all. No lap chip (Tom 9/20: its words described the old typed lap, not a listening board)
+    if (pool.length >= 3) qs.push(Object.assign({ type: "pairs", items: pool.slice(), arc: true, encoreFirst: !isStaged("pairs-chain"), lap: true }, (earOn() && lesson.emphasis === "read") ? { mode: "reverse" } : {}));   // 4. the final pass: hear them all (a read session: the board turned around, meaning to word). No lap chip (Tom 9/20: its words described the old typed lap, not a listening board)
   } else {
     shuffle(pool.slice(0, 7)).forEach((it, i) => qs.push({ type: "type_translation", item: it, arc: true, encoreFirst: i === 0, lap: true }));
   }
@@ -590,6 +596,7 @@ function renderChapterDoor(i, onDone, opts) {
   wrap.querySelector("#quit").addEventListener("click", () => { clearFooter(); (opts && opts.back) ? opts.back() : renderLearn(); });
 }
 function _startLessonProper(lesson) {
+  if (state.parkedEar && state.parkedEar.id === lesson.id) { delete state.parkedEar; save(); }   // the saved session, taken up again
   const ci = chapterDoorDue(lesson);
   if (ci != null) return renderChapterDoor(ci, () => _startLessonProper(lesson));
   // Compose FIRST (so the primer's guess item is still "new" here and stays in the session),
@@ -1487,6 +1494,9 @@ function renderPresent(q) {
     });
   }
   body.appendChild(card);
+  if (earOn() && run.lesson && run.lesson.emphasis === "hear" && !q.requeued) {   // the hear emphasis (Tom 9/26): you hear the line before you read it
+    card.classList.add("hear-first"); setTimeout(() => card.classList.remove("hear-first"), 1900);
+  }
   // audio row: 44px speaker + inline hint, matching the artifact's AudioControl composition
   const replay = audioControl(() => speak(item.es));
   const hint = chunked ? "Tap any part to hear it alone" : "Tap the sentence to hear it in context";
@@ -1611,13 +1621,23 @@ function listenEscape(f, q, opts) {
     const body = $("#qbody");
     body.innerHTML = "";
     const numbers = !!(run.lesson && run.lesson.numbers);           // numbers are an ear skill: the escape says so (chat's door line, Tom 9/22)
+    const ear = earOn() && isEarLesson(run.lesson);                 // an ear session's escape offers the way back (Tom 9/26); copy is Code's draft for chat
     body.appendChild(el(`<div class="swapnote">
-      <span class="big">${numbers ? "Numbers are an ear skill." : "Switched to reading and typing"}</span>
-      <span>${numbers ? "This one is better with sound on. Sound stays off for this session; turn it back on any time from the session menu." : "Sound stays off for this session. Turn it back on any time from the session menu."}</span></div>`));
-    const cf = footer(`<button class="btn" id="swapcont">Continue</button>`);
-    cf.querySelector("#swapcont").addEventListener("click", () => renderQuestion());
+      <span class="big">${numbers ? "Numbers are an ear skill." : ear ? "This one is built for your ears." : "Switched to reading and typing"}</span>
+      <span>${ear ? "Keep going without sound, or come back to it when you can listen. It will be waiting on Home." : numbers ? "This one is better with sound on. Sound stays off for this session; turn it back on any time from the session menu." : "Sound stays off for this session. Turn it back on any time from the session menu."}</span></div>`));
+    if (ear) {
+      const cf = footer(`<button class="btn" id="swapcont">Keep going without sound</button><button class="btn grey" id="swappark">Come back when I can listen</button>`);
+      cf.querySelector("#swapcont").addEventListener("click", () => renderQuestion());
+      cf.querySelector("#swappark").addEventListener("click", () => { parkEarSession(); leaveSession(); });
+    } else {
+      const cf = footer(`<button class="btn" id="swapcont">Continue</button>`);
+      cf.querySelector("#swapcont").addEventListener("click", () => renderQuestion());
+    }
   });
 }
+/* parking an ear session (Tom 9/26): leaving one before it is done saves it; the tile offers it first next new day */
+function parkEarSession() { if (!run || !run.lesson || lessonDone(run.lesson.id)) return; state.parkedEar = { id: run.lesson.id, day: dayKey() }; save(); }
+function leaveSession() { clearFooter(); (isStaged("learn-peek") && window._lessonFrom === "learn") ? renderLearn() : renderHome(); }
 /* The session sheet: quit + (when the escape fired) the sound-off reset point */
 function sessionSheet() {
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
@@ -1633,7 +1653,7 @@ function sessionSheet() {
   wrap.querySelector("#cs-cancel").addEventListener("click", close);
   const sb = wrap.querySelector("#cs-sound");
   if (sb) sb.addEventListener("click", () => { run.soundOff = false; close(); toast("Sound is back on"); });
-  wrap.querySelector("#cs-ok").addEventListener("click", () => { close(); (isStaged("learn-peek") && window._lessonFrom === "learn") ? renderLearn() : renderHome(); });   // leave to where you came from (Tom 9/21)
+  wrap.querySelector("#cs-ok").addEventListener("click", () => { close(); if (earOn() && run && isEarLesson(run.lesson)) parkEarSession(); leaveSession(); });   // leave to where you came from (Tom 9/21); an ear session left early is saved for sound (Tom 9/26)   // leave to where you came from (Tom 9/21)
 }
 
 function renderMC(q) {
@@ -2855,9 +2875,10 @@ function renderNumRun(q) {
 function renderPairs(q) {
   const items = q.items;
   const numeral = q.mode === "numeral";            // numbers (rulings 2026-09-20): the numeral to its word, 7 to siete
-  const text = q.mode === "text" || numeral;      // (Tom, 9/12): the first board matches the WORDS - phrase to meaning, no audio
+  const reverse = q.mode === "reverse";            // a read session's lap (Tom 9/26): the meaning on the left, find the word
+  const text = q.mode === "text" || numeral || reverse;      // (Tom, 9/12): the first board matches the WORDS - phrase to meaning, no audio
   const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">${numeral ? "Match each number to its word" : text ? "Match each phrase to its meaning" : "Match the sound to its meaning"}</div>`));
+  body.appendChild(el(`<div class="qtype">${numeral ? "Match each number to its word" : reverse ? "Match each meaning to its word" : text ? "Match each phrase to its meaning" : "Match the sound to its meaning"}</div>`));
   const grid = el(`<div class="pairs${text ? " pairs-text" : ""}${items.length > 6 ? " pairs-fit" : ""}" style="--rows:${items.length}"></div>`);   // boards over six rows fit ONE screen (Tom 9/20: Signs scrolled, Continue clipped)
   const audioOrder = shuffle(items.map((_, i) => i));
   let enOrder = shuffle(items.map((_, i) => i));
@@ -2866,9 +2887,9 @@ function renderPairs(q) {
   for (let tries = 0; tries < 60 && enOrder.filter((v, i) => v === audioOrder[i]).length > 1; tries++) enOrder = shuffle(items.map((_, i) => i));
   for (let r = 0; r < items.length; r++) {
     const a = text
-      ? el(`<button class="pcard es" data-idx="${audioOrder[r]}" data-side="audio"><span class="es-word">${numeral ? items[audioOrder[r]].num : items[audioOrder[r]].es}</span></button>`)
+      ? el(`<button class="pcard es" data-idx="${audioOrder[r]}" data-side="audio"><span class="es-word">${numeral ? items[audioOrder[r]].num : reverse ? items[audioOrder[r]].en : items[audioOrder[r]].es}</span></button>`)
       : el(`<button class="pcard audio" data-idx="${audioOrder[r]}" data-side="audio">${_cardAudioHtml()}</button>`);
-    const e = el(`<button class="pcard en" data-idx="${enOrder[r]}" data-side="en">${numeral ? items[enOrder[r]].es : items[enOrder[r]].en}</button>`);
+    const e = el(`<button class="pcard en" data-idx="${enOrder[r]}" data-side="en">${(numeral || reverse) ? items[enOrder[r]].es : items[enOrder[r]].en}</button>`);
     [a, e].forEach(c => c.addEventListener("click", () => tapCard(c)));
     grid.appendChild(a); grid.appendChild(e);
   }
@@ -2963,7 +2984,7 @@ function renderPairs(q) {
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
     const grown = el(`<div class="res-grown pairs-grown">
       ${clean ? `<div class="pairs-tick">${clean} stronger</div>` : ""}
-      <div class="pairs-allset">${numeral ? "Match every number to its word." : text ? "Every phrase, matched to what it means." : (items.length === 4 ? "Match the four sounds to their meanings and spellings." : "Match each sound to its meaning and its spelling.")}</div>
+      <div class="pairs-allset">${numeral ? "Match every number to its word." : reverse ? "Match each meaning to its word." : text ? "Every phrase, matched to what it means." : (items.length === 4 ? "Match the four sounds to their meanings and spellings." : "Match each sound to its meaning and its spelling.")}</div>
       ${isStaged("pairs-chain") ? "" : `<button class="btn res-cont">Continue</button>`}
     </div>`);
     let gone = false; const go = () => { if (gone) return; gone = true; slideOut(next); };

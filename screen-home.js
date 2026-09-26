@@ -685,9 +685,11 @@ function closeSheet() {
 /* ============================== HOME ACTION REGION (§8b) ============================== */
 function seenItems() { return (ALL_ITEMS || []).filter(it => exposuresOf(it) > 0); }
 function firstOpenLesson() {
+  const parkedToday = (typeof earOn === "function" && earOn() && state.parkedEar && state.parkedEar.day === dayKey()) ? state.parkedEar.id : null;   // a session saved for sound today: the tile moves on (Tom 9/26)
+  let skipped = null;
   for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons)
-    if (!l.bonus && !lessonDone(l.id)) return l;
-  return null;
+    if (!l.bonus && !lessonDone(l.id)) { if (l.id === parkedToday) { skipped = l; continue; } return l; }
+  return skipped;   // nothing else open: the saved one is the only door
 }
 // how many of a lesson's phrases are due/fading — powers the review-due badge on completed tiles
 function lessonFadingCount(l) {
@@ -714,7 +716,7 @@ function heroState() {
   const mistakes = mistakesPool(), due = dueForReview();
   const backlog = [...new Set([...mistakes, ...due])];
   const lastDays = _lastSessionDays();
-  const next = firstOpenLesson();
+  const next = (typeof parkedEarLesson === "function" && parkedEarLesson()) || firstOpenLesson();   // a session saved for sound comes back first, next new day (Tom 9/26)
   const dv = scoreDivergence();                        // §7.3: the divergence steers the recommendation, not just copy
   // THE REVIEW ROOM'S DOOR (staged "review-door"): a ready scene takes the tile when the tilt
   // says rehearsal outranks new material (it outranks the cram line too: the final weeks ARE
@@ -750,12 +752,16 @@ function heroTile() {
   // and the sub carries the session's line. The whole card sinks on press.
   const button = isStaged("hero-start");
   const sub = button && h.kind === "lesson" && h.lesson ? (h.lesson.line || `${h.lesson.topic}${h.lesson.items ? ` \u00b7 ${h.lesson.items.length} ${h.lesson.wordsSession ? "words" : "phrases"}` : ""}`) : h.sub;
+  // "Best with sound" (Tom 9/26, mock T1): an ear session says so under its line; a parked one says it came back
+  const ear = earOn() && h.kind === "lesson" && h.lesson && isEarLesson(h.lesson);
+  const earPill = ear ? `<div class="ear-pill">${state.parkedEar && state.parkedEar.id === h.lesson.id ? "Saved for sound" : "Best with sound"}</div>` : "";
   const t = el(`<button class="hero-tile hero-${h.kind}${button ? " as-button" : ""}">
     ${photo ? `<div class="hero-img" style="background-image:url('${photo}')" aria-hidden="true"></div>` : ""}
     <div class="hero-inner">
       <div class="hero-k">${kicker}</div>
       <div class="hero-title">${button ? h.title.replace(/^Start: /, "").replace(/ ([\u00b7·]) (Part) (\d)/, "\u00a0$1 $2\u00a0$3") : h.title}</div>
       ${sub ? `<div class="hero-sub">${button ? tidyBreaks(sub) : sub}</div>` : ""}
+      ${earPill}
     </div>
     ${button ? `<div class="hero-strip" aria-hidden="true">${icon("caret-right", 22)}</div>` : ""}
   </button>`);

@@ -256,3 +256,18 @@ function registerActivity() {
   state.streak = state.lastActive === yest ? state.streak + 1 : 1;
   state.lastActive = t;
 }
+
+/* EAR SESSIONS (Tom 9/26): a few sessions are built for listening (Words you'll hear, Numbers · 2, later the Numbermachine and
+   the rooms' replies). They wear "Best with sound" on the tile and the Learn row; their escape offers a way back; a read session
+   (Signs, Days) runs reading forms only. Rides the "ear-sessions" switch. */
+function isEarLesson(l) { return !!l && (l.emphasis === "hear" || l.numbers === "ear"); }
+function isReadLesson(l) { return !!l && l.emphasis === "read"; }
+function earOn() { return typeof isStaged === "function" && isStaged("ear-sessions"); }
+function dayKey() { return new Date().toDateString(); }
+function parkedEarLesson() {   // the session saved for sound comes back first, next new day, once
+  if (!earOn() || !state.parkedEar || state.parkedEar.day === dayKey()) return null;
+  const l = (DECK.stages || []).flatMap(st => st.lessons).find(x => x.id === state.parkedEar.id);
+  if (!l || lessonDone(l.id)) { delete state.parkedEar; save(); return null; }
+  return l;
+}
+

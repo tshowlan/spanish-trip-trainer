@@ -2121,3 +2121,10 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
   background: radial-gradient(closest-side at 50% 40%, rgba(216,183,19,0.30) 0%, rgba(216,183,19,0.18) 35%, rgba(216,183,19,0.09) 60%, rgba(216,183,19,0.03) 80%, rgba(216,183,19,0) 100%); }
 .chapter-door.swash .scene-line { margin: 0; }
 .chapter-door.swash .scene-line .sl { font-family: 'Source Serif 4', Georgia, serif; font-weight: 400; font-style: normal; font-size: 18px; color: #b9bfcc; }   /* the line in the same serif, a light grey between the whisper and white (T3) */   /* the subtitle in the app's italic voice, white (the base of the mocks Tom picked from) */
+/* EAR SESSIONS (Tom 9/26, mocks T1 + R2): "Best with sound" as a small gold pill under the tile's line; bare gold words beside the Learn row's count;
+   the hear-first card hides its words until the line has played; the ear escape's two full buttons stack in the footer */
+.hero-tile .ear-pill { display: inline-flex; align-self: flex-start; align-items: center; margin-top: 8px; font-family: var(--font-display); font-size: 9.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(216,183,19,.55); border-radius: 999px; padding: 2px 7px; white-space: nowrap; }
+.lmeta .ear-tag { font-family: var(--font-display); font-size: 9.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent-2); white-space: nowrap; }
+.present-card.hear-first .present-es, .present-card.hear-first .present-en, .present-card.hear-first .present-ctx { visibility: hidden; }
+.footer .btn + .btn.grey { margin-top: 10px; }
+
