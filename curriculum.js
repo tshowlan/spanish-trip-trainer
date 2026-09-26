@@ -850,7 +850,7 @@ const CURRICULUM = {
            Contexts are Code's drafts to chat's rule (taxi and el baño are already met), flagged for the voice pass. */
         { es: "Libre", en: "Free / vacant", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
         { es: "Ocupado", en: "Occupied / taken", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
-      { id: "w-days", topic: "Core signs", title: "Days you'll read", emphasis: "read", staged: "chapter-1-adds", line: "Seven words on every shop door and timetable.", items: [
+      { id: "w-days", topic: "Core signs", title: "Days you'll read", emphasis: "read", staged: "chapter-1-adds", line: "Seven words on every shop door.", items: [
         /* DAYS (chat 9/25: a chapter-1 READ session after Signs, base-layer by the chapter-0 rule; "los lunes" uses wait for chapter 3).
            Contexts are Code's drafts to the rule (cerrado / abierto met in Signs; el / los as glue), flagged for the voice pass. The cards capitalized as Signs are (read as posted; one case per session); the sentence keeps the lowercase day. */
         { es: "Lunes", en: "Monday", read: true, tags: ["days"], contextEs: "Cerrado los lunes.", contextEn: "Closed on Mondays." },

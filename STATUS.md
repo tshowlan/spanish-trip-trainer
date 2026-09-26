@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v366 (2026-09-26) — Days you'll read: the line
+- "Seven words on every shop door." (Tom). Staged with chapter-1-adds.
+
 ## v365 (2026-09-26) — "(sign)" gone from every gloss; the read-and-pick rung on the anchored layout
 - Tom: the choices needn't say they are signs. The suffix is stripped pack-wide (Signs, Bathroom words, the old loo/airport/hotel items). Live.
 - The multiple-choice rung inside chapter 1's word sessions now uses the anchored layout (direction and word at the top, the choices on the 63% line); elsewhere the older layout stands for now. Rides ear-sessions.
