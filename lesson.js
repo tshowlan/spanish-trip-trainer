@@ -1660,6 +1660,19 @@ function renderMC(q) {
   const item = q.item;
   const { answer, options } = mcOptions(item, true, q.pool && q.pool.length ? q.pool : run.lesson.items);
   const body = $("#qbody");
+  if (earOn() && run.lesson && run.lesson.wordsSession) {   // chapter 1's word sessions: the anchored layout, choices on the 63% line (Tom 9/26: the old template showed on the read rung)
+    _anchor(body);
+    const top = el(`<div class="top"></div>`);
+    top.appendChild(el(`<div class="direction">What does this mean?</div>`));
+    const pe = presentEs(item);
+    top.appendChild(el(`<div class="prompt es-phrase">${pe.text}</div>`));
+    top.appendChild(audioControl(() => speak(pe.text)));
+    body.appendChild(top);
+    const answers = el(`<div class="answers at63"></div>`);
+    answers.appendChild(mcChoices(options, answer, item));
+    body.appendChild(answers);
+    return;
+  }
   body.appendChild(el(`<div class="qtype">What does this mean?</div>`));
   const pe = presentEs(item);
   body.appendChild(el(`<div class="prompt es-phrase">${pe.text}</div>`));

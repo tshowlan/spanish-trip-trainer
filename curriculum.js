@@ -264,13 +264,13 @@ const CURRICULUM = {
           primer: { scene: "Two unmarked doors at the back of Rosa's place, and a waiter squeezing past with a tray of vermut. The signs, when you find them, might not even be in Spanish. This is Catalonia. Pick the right door before you push.", mission: "Ask where the loo is, and go in the right door every time.", guessItem: "Entrada" },
           items: [
             { es: "¿Dónde está el servicio?", en: "Where is the bathroom?", note: "Spain says 'el servicio / los servicios'. Signs read 'Aseos'.", latam: "Latin America: '¿Dónde está el baño?'", tier: 1, tags: ["bathroom", "directions"], keywords: ["dónde", "servicio"], reply: { es: "Al fondo a la derecha", en: "At the back on the right" } },
-            { es: "los aseos", en: "the restrooms (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "Los aseos están al fondo", contextEn: "The restrooms are at the back", keywords: ["aseos"] },
-            { es: "Caballeros", en: "Men (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "El aseo de caballeros", contextEn: "The men's room", keywords: ["caballeros"] },
-            { es: "Señoras", en: "Women (sign)", tier: 1, tags: ["bathroom", "signs"], contextEs: "El aseo de señoras", contextEn: "The women's room", keywords: ["señoras"] },
+            { es: "los aseos", en: "the restrooms", tier: 1, tags: ["bathroom", "signs"], contextEs: "Los aseos están al fondo", contextEn: "The restrooms are at the back", keywords: ["aseos"] },
+            { es: "Caballeros", en: "Men", tier: 1, tags: ["bathroom", "signs"], contextEs: "El aseo de caballeros", contextEn: "The men's room", keywords: ["caballeros"] },
+            { es: "Señoras", en: "Women", tier: 1, tags: ["bathroom", "signs"], contextEs: "El aseo de señoras", contextEn: "The women's room", keywords: ["señoras"] },
             { es: "Salida", en: "Exit", cat: "Catalan sign: 'Sortida'.", tier: 1, tags: ["signs"], contextEs: "La salida está por allí", contextEn: "The exit is over there", keywords: ["salida"] },
             { es: "Entrada", en: "Entrance", cat: "Catalan sign: 'Entrada'.", tier: 1, tags: ["signs"], contextEs: "La entrada principal", contextEn: "The main entrance", anchor: "'entrada' = entrance (to enter).", keywords: ["entrada"] },
-            { es: "Empujar", en: "Push (sign)", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'empujar'", contextEn: "The door says 'push'", keywords: ["empujar"] },
-            { es: "Tirar", en: "Pull (sign)", note: "On doors 'Tirar' = pull. Confusingly it also means 'to throw'.", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'tirar'", contextEn: "The door says 'pull'", keywords: ["tirar"] },
+            { es: "Empujar", en: "Push", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'empujar'", contextEn: "The door says 'push'", keywords: ["empujar"] },
+            { es: "Tirar", en: "Pull", note: "On doors 'Tirar' = pull. Confusingly it also means 'to throw'.", tier: 1, tags: ["signs"], contextEs: "La puerta dice 'tirar'", contextEn: "The door says 'pull'", keywords: ["tirar"] },
             { es: "¿Me da la llave del servicio?", en: "Can I have the bathroom key?", note: "Cafés often keep the loo locked. The key lives behind the counter.", tier: 1, tags: ["restaurant"], keywords: ["llave","servicio"] },
           ]
         },
@@ -546,7 +546,7 @@ const CURRICULUM = {
             { es: "¿Puede limpiar la habitación?", en: "Can you clean the room?", tier: 2, tags: ["hotel", "lodging"], keywords: ["limpiar", "habitación"] },
             { es: "Necesito más toallas", en: "I need more towels", tier: 2, tags: ["hotel", "lodging"], keywords: ["toallas"] },
             { es: "¿Puede traer otra almohada?", en: "Can you bring another pillow?", tier: 2, tags: ["hotel", "lodging"], keywords: ["almohada"] },
-            { es: "No molestar", en: "Do not disturb (sign)", tier: 1, tags: ["hotel", "signs"], contextEs: "El cartel de 'no molestar'", contextEn: "The 'do not disturb' sign", keywords: ["molestar"] },
+            { es: "No molestar", en: "Do not disturb", tier: 1, tags: ["hotel", "signs"], contextEs: "El cartel de 'no molestar'", contextEn: "The 'do not disturb' sign", keywords: ["molestar"] },
             { es: "El aire acondicionado no funciona", en: "The AC isn't working", tier: 2, tags: ["hotel", "lodging"], keywords: ["aire"] },
             { es: "el papel higiénico", en: "toilet paper", note: "Spain: 'papel higiénico'.", tier: 1, tags: ["hotel", "bathroom"], contextEs: "No hay papel higiénico", contextEn: "There's no toilet paper", keywords: ["papel"] },
             { es: "jabón", en: "soap", tier: 1, tags: ["hotel", "bathroom"], contextEs: "No hay jabón", contextEn: "There's no soap", keywords: ["jabón"] },
@@ -834,22 +834,22 @@ const CURRICULUM = {
          its own way. After Street words, so the directions in these contexts are already met. Flagged to chat. */
       { id: "w-bathroom", topic: "Core bathroom", title: "Bathroom words", line: "Where it is, and which door.", items: [
         { es: "El baño", en: "The bathroom", tags: ["bathroom"], contextEs: "¿El baño, por favor?", contextEn: "The bathroom, please?" },
-        { es: "Aseos", en: "Toilets (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los aseos? A la derecha.", contextEn: "The toilets? To the right." },
-        { es: "Servicios", en: "Restrooms (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los servicios? A la izquierda.", contextEn: "The restrooms? To the left." },
-        { es: "Caballeros", en: "Men (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Caballeros, a la derecha.", contextEn: "Men, to the right." },
-        { es: "Señoras", en: "Women (sign)", read: true, tags: ["signs", "bathroom"], contextEs: "Señoras, a la izquierda.", contextEn: "Women, to the left." } ] },
+        { es: "Aseos", en: "Toilets", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los aseos? A la derecha.", contextEn: "The toilets? To the right." },
+        { es: "Servicios", en: "Restrooms", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los servicios? A la izquierda.", contextEn: "The restrooms? To the left." },
+        { es: "Caballeros", en: "Men", read: true, tags: ["signs", "bathroom"], contextEs: "Caballeros, a la derecha.", contextEn: "Men, to the right." },
+        { es: "Señoras", en: "Women", read: true, tags: ["signs", "bathroom"], contextEs: "Señoras, a la izquierda.", contextEn: "Women, to the left." } ] },
       { id: "w-signs", topic: "Core signs", title: "Signs you'll read", emphasis: "read", line: "Eight signs you read, not say. So you stop pushing the pull door.", items: [
         { es: "Salida", en: "Exit", read: true, tags: ["signs"], contextEs: "¿La salida? A la derecha.", contextEn: "The exit? To the right." },
         { es: "Entrada", en: "Entrance", read: true, tags: ["signs"], contextEs: "¿La entrada? Todo recto.", contextEn: "The entrance? Straight ahead." },
-        { es: "Empujar", en: "Push (sign)", read: true, tags: ["signs"], contextEs: "Empujar. Vale.", contextEn: "Push. Okay." },
-        { es: "Tirar", en: "Pull (sign)", read: true, tags: ["signs"], contextEs: "Tirar, no empujar.", contextEn: "Pull, not push." },
-        { es: "Abierto", en: "Open (sign)", read: true, tags: ["signs"], contextEs: "Abierto. Vale.", contextEn: "Open. Okay." },
-        { es: "Cerrado", en: "Closed (sign)", read: true, tags: ["signs"], contextEs: "Cerrado. Vale.", contextEn: "Closed. Okay." },
+        { es: "Empujar", en: "Push", read: true, tags: ["signs"], contextEs: "Empujar. Vale.", contextEn: "Push. Okay." },
+        { es: "Tirar", en: "Pull", read: true, tags: ["signs"], contextEs: "Tirar, no empujar.", contextEn: "Pull, not push." },
+        { es: "Abierto", en: "Open", read: true, tags: ["signs"], contextEs: "Abierto. Vale.", contextEn: "Open. Okay." },
+        { es: "Cerrado", en: "Closed", read: true, tags: ["signs"], contextEs: "Cerrado. Vale.", contextEn: "Closed. Okay." },
         /* Libre / Ocupado take the airport pair's seats (Tom 9/20): Salidas / Llegadas are posted with English at Spanish airports and big
            stations and stay in chapter 3's Reading the airport; these two are never translated (a taxi's light, a bathroom lock, a table).
            Contexts are Code's drafts to chat's rule (taxi and el baño are already met), flagged for the voice pass. */
-        { es: "Libre", en: "Free / vacant (sign)", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
-        { es: "Ocupado", en: "Occupied / taken (sign)", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
+        { es: "Libre", en: "Free / vacant", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
+        { es: "Ocupado", en: "Occupied / taken", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
       { id: "w-days", topic: "Core signs", title: "Days you'll read", emphasis: "read", staged: "chapter-1-adds", line: "Seven words on every shop door and timetable.", items: [
         /* DAYS (chat 9/25: a chapter-1 READ session after Signs, base-layer by the chapter-0 rule; "los lunes" uses wait for chapter 3).
            Contexts are Code's drafts to the rule (cerrado / abierto met in Signs; el / los as glue), flagged for the voice pass. The cards capitalized as Signs are (read as posted; one case per session); the sentence keeps the lowercase day. */
