@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v369 (2026-09-26) — STAGED "sign-plates": signs as signs
+- docs/sign-sessions.md. The plate (door on dark, enamel on light); the sign card (plate, meaning, where you'd see it); rungs sign_act / sign_which / mc_es2en with the plate; the days as seven plate cards then seven timetable situations on three Horario plates with three fixed answers; the reversed board as the lap. Data: place / act / need on the eight signs; tables on w-days. Code's copy drafts on the ledger.
+
 ## v368 (2026-09-26) — the sweep clears the speaker
 - The read-and-pick word keeps 16px under it, so its green sweep no longer runs into the speaker (Tom's screenshot).
 

@@ -2131,4 +2131,27 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .prompt.mc-word { position: relative; display: inline-block; margin-bottom: 16px; }   /* room under the word for the sweep, so the speaker clears it (Tom 9/26) */
 .prompt.mc-word .sweep2 { position: absolute; left: 0; right: 0; bottom: -6px; height: 2.5px; background: var(--green); border-radius: 2px; transform-origin: left; animation: sweep-in 420ms cubic-bezier(.2,.7,.3,1) both; }
 @keyframes sweep-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+/* THE PLATE (Tom 9/26, STAGED "sign-plates"): a sign drawn as a sign. Light theme: enamel, a deeper cream than the page with a navy
+   edge. Dark theme: the door plate, dark with cream letters. One plate, two shades, picked by the theme. */
+.plate { display: inline-block; padding: 14px 22px; border-radius: 8px; font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+  background: #ebe4cf; color: #1c275e; box-shadow: inset 0 0 0 2px #1c275e, inset 0 0 0 5px #ebe4cf, inset 0 0 0 6px rgba(28,39,94,.4), 0 0 0 1.5px #1c275e, 0 8px 18px rgba(28,39,94,.22);
+  transition: box-shadow 200ms ease, opacity 200ms ease; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .plate { background: #141a33; color: #f3efe2; box-shadow: inset 0 0 0 2px rgba(243,239,226,.85), inset 0 0 0 5px #141a33, inset 0 0 0 6px rgba(243,239,226,.35), 0 6px 14px rgba(0,0,0,.35); } }
+:root[data-theme="dark"] .plate { background: #141a33; color: #f3efe2; box-shadow: inset 0 0 0 2px rgba(243,239,226,.85), inset 0 0 0 5px #141a33, inset 0 0 0 6px rgba(243,239,226,.35), 0 6px 14px rgba(0,0,0,.35); }
+.plate.sm { font-size: 18px; padding: 10px 14px; letter-spacing: .06em; }
+.plate.confirmed { box-shadow: inset 0 0 0 2px var(--green), inset 0 0 0 5px transparent, 0 0 0 2px var(--green), 0 6px 14px rgba(0,0,0,.3) !important; }
+.plate.wrong { opacity: .55; } .plate.dim { opacity: .35; }
+.plate-stage { text-align: center; margin-top: 14px; }
+.plate.tt { text-align: left; padding: 12px 16px 10px; font-size: 14px; letter-spacing: .02em; text-transform: none; font-weight: 600; min-width: 260px; white-space: normal; }
+.tt-head { font-weight: 800; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; text-align: center; border-bottom: 1.5px solid currentColor; padding-bottom: 6px; margin-bottom: 8px; opacity: .9; }
+.tt-row { display: flex; justify-content: space-between; gap: 14px; padding: 3px 0; }
+.tt-day { font-weight: 700; } .tt-hrs { font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.act-sit { font-family: var(--font-display); font-size: 18px; font-weight: 600; line-height: 1.35; margin-top: 18px; }
+.act-sit.need { margin-top: 6px; }
+.choices.plates { flex-direction: row; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.choices.plates .choice, .choices.plates .choice.correct, .choices.plates .choice.wrong, .choices.plates .choice.dim { width: auto; padding: 0; background: none; border: none; box-shadow: none; }
+.present-card.sign-card { text-align: center; }
+.present-card.sign-card .plate-stage { margin-top: 4px; }
+.present-card.sign-card .present-en { margin-top: 16px; font-size: 18px; }
+.plate-place { font-size: 13px; color: var(--text-dim); margin-top: 10px; }
 

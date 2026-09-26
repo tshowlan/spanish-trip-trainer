@@ -838,28 +838,39 @@ const CURRICULUM = {
         { es: "Servicios", en: "Restrooms", read: true, tags: ["signs", "bathroom"], contextEs: "¿Los servicios? A la izquierda.", contextEn: "The restrooms? To the left." },
         { es: "Caballeros", en: "Men", read: true, tags: ["signs", "bathroom"], contextEs: "Caballeros, a la derecha.", contextEn: "Men, to the right." },
         { es: "Señoras", en: "Women", read: true, tags: ["signs", "bathroom"], contextEs: "Señoras, a la izquierda.", contextEn: "Women, to the left." } ] },
-      { id: "w-signs", topic: "Core signs", title: "Signs you'll read", emphasis: "read", line: "Eight signs you read, not say. So you stop pushing the pull door.", items: [
-        { es: "Salida", en: "Exit", read: true, tags: ["signs"], contextEs: "¿La salida? A la derecha.", contextEn: "The exit? To the right." },
-        { es: "Entrada", en: "Entrance", read: true, tags: ["signs"], contextEs: "¿La entrada? Todo recto.", contextEn: "The entrance? Straight ahead." },
-        { es: "Empujar", en: "Push", read: true, tags: ["signs"], contextEs: "Empujar. Vale.", contextEn: "Push. Okay." },
-        { es: "Tirar", en: "Pull", read: true, tags: ["signs"], contextEs: "Tirar, no empujar.", contextEn: "Pull, not push." },
-        { es: "Abierto", en: "Open", read: true, tags: ["signs"], contextEs: "Abierto. Vale.", contextEn: "Open. Okay." },
-        { es: "Cerrado", en: "Closed", read: true, tags: ["signs"], contextEs: "Cerrado. Vale.", contextEn: "Closed. Okay." },
+      { id: "w-signs", topic: "Core signs", title: "Signs you'll read", emphasis: "read", plates: true, line: "Eight signs you read, not say. So you stop pushing the pull door.", items: [
+        { es: "Salida", place: "Over the door you leave by.", act: { sit: "You want to leave. This door:", opts: ["Take it", "Not this one"], ok: 0 }, need: "You want out.", en: "Exit", read: true, tags: ["signs"], contextEs: "¿La salida? A la derecha.", contextEn: "The exit? To the right." },
+        { es: "Entrada", place: "Over the door you come in by.", act: { sit: "You want in. This door:", opts: ["Take it", "Not this one"], ok: 0 }, need: "You want in.", en: "Entrance", read: true, tags: ["signs"], contextEs: "¿La entrada? Todo recto.", contextEn: "The entrance? Straight ahead." },
+        { es: "Empujar", place: "On the door, at hand height.", act: { sit: "You're at the door. You:", opts: ["Push it", "Pull it"], ok: 0 }, en: "Push", read: true, tags: ["signs"], contextEs: "Empujar. Vale.", contextEn: "Push. Okay." },
+        { es: "Tirar", place: "On the door, at hand height.", act: { sit: "You're at the door. You:", opts: ["Pull it", "Push it"], ok: 0 }, en: "Pull", read: true, tags: ["signs"], contextEs: "Tirar, no empujar.", contextEn: "Pull, not push." },
+        { es: "Abierto", place: "In the shop window.", act: { sit: "The shop you wanted. You:", opts: ["Go in", "Come back later"], ok: 0 }, need: "You want a shop you can walk into.", en: "Open", read: true, tags: ["signs"], contextEs: "Abierto. Vale.", contextEn: "Open. Okay." },
+        { es: "Cerrado", place: "In the shop window.", act: { sit: "The shop you wanted. You:", opts: ["Go in", "Come back later"], ok: 1 }, en: "Closed", read: true, tags: ["signs"], contextEs: "Cerrado. Vale.", contextEn: "Closed. Okay." },
         /* Libre / Ocupado take the airport pair's seats (Tom 9/20): Salidas / Llegadas are posted with English at Spanish airports and big
            stations and stay in chapter 3's Reading the airport; these two are never translated (a taxi's light, a bathroom lock, a table).
            Contexts are Code's drafts to chat's rule (taxi and el baño are already met), flagged for the voice pass. */
-        { es: "Libre", en: "Free / vacant", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
-        { es: "Ocupado", en: "Occupied / taken", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
-      { id: "w-days", topic: "Core signs", title: "Days you'll read", emphasis: "read", staged: "chapter-1-adds", line: "Seven words on every shop door.", items: [
+        { es: "Libre", place: "On a taxi's roof light, and on a toilet lock.", act: { sit: "The taxi's light says this. You:", opts: ["Flag it", "Let it pass"], ok: 0 }, need: "You want a taxi that will stop.", en: "Free / vacant", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
+        { es: "Ocupado", place: "On a toilet lock, and on a taxi's light.", act: { sit: "The toilet door says this. You:", opts: ["Wait", "Go in"], ok: 0 }, en: "Occupied / taken", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
+      { id: "w-days", topic: "Core signs", title: "Days you'll read", emphasis: "read", staged: "chapter-1-adds", plates: true,
+        /* THE TIMETABLES (Tom 9/26): the days are met one by one as plates, then read on real Horario plates in the 24-hour clock, with
+           three fixed answers (Go in / Come back later / Closed today) that never quote the plate. Plates vary so a day's calendar slot is
+           not a shortcut. Code's drafts for chat's pass. Each situation records against its day. */
+        tables: [
+          { rows: [["Lunes", "Cerrado"], ["Martes \u2013 Viernes", "9:00 \u2013 14:00 \u00b7 17:00 \u2013 20:00"], ["S\u00e1bado", "9:00 \u2013 14:00"], ["Domingo", "Cerrado"]],
+            sits: [{ sit: "Saturday, 11:00. You:", ok: 0, day: "s\u00e1bado" }, { sit: "Tuesday, 15:30. You:", ok: 1, day: "martes" }, { sit: "Monday, 10:00. You:", ok: 2, day: "lunes" }] },
+          { rows: [["Lunes", "Cerrado"], ["Martes \u2013 Domingo", "10:00 \u2013 19:00"]],
+            sits: [{ sit: "Sunday, 12:00. You:", ok: 0, day: "domingo" }, { sit: "Monday, 12:00. You:", ok: 2, day: "lunes" }] },
+          { rows: [["Lunes \u2013 S\u00e1bado", "7:00 \u2013 20:00"], ["Domingo", "8:00 \u2013 14:00"]],
+            sits: [{ sit: "Sunday, 16:00. You:", ok: 2, day: "domingo" }, { sit: "Thursday, 19:30. You:", ok: 0, day: "jueves" }] } ],
+        line: "Seven words on every shop door.", items: [
         /* DAYS (chat 9/25: a chapter-1 READ session after Signs, base-layer by the chapter-0 rule; "los lunes" uses wait for chapter 3).
            Contexts are Code's drafts to the rule (cerrado / abierto met in Signs; el / los as glue), flagged for the voice pass. The cards capitalized as Signs are (read as posted; one case per session); the sentence keeps the lowercase day. */
-        { es: "Lunes", en: "Monday", read: true, tags: ["days"], contextEs: "Cerrado los lunes.", contextEn: "Closed on Mondays." },
-        { es: "Martes", en: "Tuesday", read: true, tags: ["days"], contextEs: "Abierto el martes.", contextEn: "Open on Tuesday." },
-        { es: "Mi\u00e9rcoles", en: "Wednesday", read: true, tags: ["days"], contextEs: "\u00bfEl mi\u00e9rcoles? Cerrado.", contextEn: "Wednesday? Closed." },
-        { es: "Jueves", en: "Thursday", read: true, tags: ["days"], contextEs: "Abierto el jueves.", contextEn: "Open on Thursday." },
-        { es: "Viernes", en: "Friday", read: true, tags: ["days"], contextEs: "\u00bfEl viernes? S\u00ed.", contextEn: "Friday? Yes." },
-        { es: "S\u00e1bado", en: "Saturday", read: true, tags: ["days"], contextEs: "Abierto el s\u00e1bado.", contextEn: "Open on Saturday." },
-        { es: "Domingo", en: "Sunday", read: true, tags: ["days"], contextEs: "Cerrado el domingo.", contextEn: "Closed on Sunday." } ] },
+        { es: "Lunes", place: "On the shop's timetable, by the door.", en: "Monday", read: true, tags: ["days"], contextEs: "Cerrado los lunes.", contextEn: "Closed on Mondays." },
+        { es: "Martes", place: "On the shop's timetable, by the door.", en: "Tuesday", read: true, tags: ["days"], contextEs: "Abierto el martes.", contextEn: "Open on Tuesday." },
+        { es: "Mi\u00e9rcoles", place: "On the shop's timetable, by the door.", en: "Wednesday", read: true, tags: ["days"], contextEs: "\u00bfEl mi\u00e9rcoles? Cerrado.", contextEn: "Wednesday? Closed." },
+        { es: "Jueves", place: "On the shop's timetable, by the door.", en: "Thursday", read: true, tags: ["days"], contextEs: "Abierto el jueves.", contextEn: "Open on Thursday." },
+        { es: "Viernes", place: "On the shop's timetable, by the door.", en: "Friday", read: true, tags: ["days"], contextEs: "\u00bfEl viernes? S\u00ed.", contextEn: "Friday? Yes." },
+        { es: "S\u00e1bado", place: "On the shop's timetable, by the door.", en: "Saturday", read: true, tags: ["days"], contextEs: "Abierto el s\u00e1bado.", contextEn: "Open on Saturday." },
+        { es: "Domingo", place: "On the shop's timetable, by the door.", en: "Sunday", read: true, tags: ["days"], contextEs: "Cerrado el domingo.", contextEn: "Closed on Sunday." } ] },
       { id: "w-help", topic: "Core help", title: "Help words", line: "The words for the day you hope never comes.", items: [
         { es: "ayuda", en: "help", tags: ["emergency"], contextEs: "Ayuda, por favor.", contextEn: "Help, please." },
         { es: "médico", en: "doctor", tags: ["emergency", "health"], contextEs: "Un médico, por favor.", contextEn: "A doctor, please." },

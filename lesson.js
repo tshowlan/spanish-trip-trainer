@@ -245,6 +245,13 @@ function kitRungFor(lesson, item, pool, k) {
     // the emphases (Tom 9/26): a READ session rotates reading forms only (finish the sentence · read the sign, pick its meaning · build the
     // sentence); a HEAR session rotates listening forms only (listen and fill · listen and build · listen and pick the meaning)
     const emph = earOn() ? lesson.emphasis : null;
+    if (emph === "read" && platesOn(lesson)) {   // signs as signs: act (if the sign has a situation) · which sign (if it answers a need) · pick its meaning
+      const pf = [];
+      if (item.act) pf.push(() => ({ type: "sign_act", item, pool, arc: true }));
+      if (item.need) pf.push(() => ({ type: "sign_which", item, pool, arc: true }));
+      pf.push(() => ({ type: "mc_es2en", item, pool, arc: true }));
+      return pf[(k || 0) % pf.length]();
+    }
     const set = emph === "read" ? [forms[0], () => ({ type: "mc_es2en", item, pool, arc: true }), forms[3]]
               : emph === "hear" ? [forms[2], forms[1], () => ({ type: "listen_choice", item, pool, arc: true })]
               : forms;
@@ -299,7 +306,8 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   const pool = newItems.length ? newItems : (lesson.items || []);
   pool.forEach(it => qs.push({ type: "present", item: it, arc: true }));           // 1. meet them all
   if (pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });   // 2. the words board
-  pool.forEach((it, i) => qs.push(kitRungFor(lesson, it, pool, i)));                // 3. one rung each, forms rotating
+  if (platesOn(lesson) && lesson.tables) tableSituations(lesson).forEach(s => qs.push(s));   // 3. days: the timetables, one situation each (Tom 9/26)
+  else pool.forEach((it, i) => qs.push(kitRungFor(lesson, it, pool, i)));                // 3. one rung each, forms rotating
   const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap)));
   reviews.forEach(r => qs.push(r));
   const floor = chapterFloor(lesson);
@@ -1393,6 +1401,7 @@ function renderQuestion() {
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
      scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear, scene_sign: renderSceneSign, context_choice: renderContextChoice,
      num_set: renderNumSet, num_pad: renderNumPad, num_run: renderNumRun,
+     sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable,
      circuit_door: renderCircuitDoor, circuit_close: renderCircuitClose,
      reply: renderReplyChat }[q.type])(q);
 }
@@ -1451,7 +1460,7 @@ function renderPresent(q) {
   // no "New phrase" label on a re-teach — the "Second chance" chip already frames it
   if (!q.requeued) {
     const newCount = chunked ? item.chunks.filter(c => c[2] === "new").length : 0;
-    const label = short && !chunked ? "NEW WORD"
+    const label = platesOn(run.lesson) ? "NEW SIGN" : short && !chunked ? "NEW WORD"
       : "NEW PHRASE" + (newCount === 1 ? " · ONE NEW PIECE" : "");
     body.appendChild(el(`<div class="present-label">${label}</div>`));
   }
@@ -1480,7 +1489,12 @@ function renderPresent(q) {
     const ctx = short && item.contextEs
       ? `<div class="present-ctx"><span class="es" data-es="${item.contextEs.replace(/"/g, "&quot;")}">${item.contextEs}</span>${item.contextEn ? ` <span class="ctx-en">(${item.contextEn})</span>` : ""}</div>`
       : "";
-    card = el(`<div class="present-card">
+    const plated = platesOn(run.lesson);
+    card = plated ? el(`<div class="present-card sign-card">
+      <div class="plate-stage">${plateHtml(item.es)}</div>
+      <div class="present-en">${item.en}</div>
+      ${item.place ? `<div class="plate-place">${item.place}</div>` : ""}
+    </div>`) : el(`<div class="present-card">
       <div class="present-es">${item.es}</div>
       <div class="present-en">${item.en}</div>
       ${ctx}
@@ -1499,7 +1513,7 @@ function renderPresent(q) {
   }
   // audio row: 44px speaker + inline hint, matching the artifact's AudioControl composition
   const replay = audioControl(() => speak(item.es));
-  const hint = chunked ? "Tap any part to hear it alone" : "Tap the sentence to hear it in context";
+  const hint = platesOn(run.lesson) ? "Tap to hear it said" : chunked ? "Tap any part to hear it alone" : "Tap the sentence to hear it in context";
   const audioRow = el(`<div class="present-audio"></div>`);
   audioRow.appendChild(replay);
   audioRow.appendChild(el(`<span class="audio-hint">${hint}</span>`));
@@ -1665,7 +1679,8 @@ function renderMC(q) {
     const top = el(`<div class="top"></div>`);
     top.appendChild(el(`<div class="direction">What does this mean?</div>`));
     const pe = presentEs(item);
-    const prompt = el(`<div class="prompt es-phrase mc-word">${pe.text}</div>`);
+    const plated = platesOn(run.lesson);
+    const prompt = plated ? el(`<div class="plate-stage">${plateHtml(pe.text)}</div>`) : el(`<div class="prompt es-phrase mc-word">${pe.text}</div>`);
     top.appendChild(prompt);
     const arow = el(`<div class="res-audio-row"></div>`);
     arow.appendChild(audioControl(() => speak(pe.text)));
@@ -1674,7 +1689,7 @@ function renderMC(q) {
     // one progression, not two (Tom 9/26): the word at the top takes the green underline, the chosen option confirms the meaning, and the
     // hint joins the speaker already on screen; the reveal frame keeps only its kicker and note
     q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
-    q.onResolve = () => { prompt.appendChild(el(`<span class="sweep2"></span>`)); prompt.classList.add("confirmed"); arow.appendChild(el(`<span class="audio-hint">Tap to hear it again</span>`)); };
+    q.onResolve = () => { if (plated) prompt.querySelector(".plate").classList.add("confirmed"); else { prompt.appendChild(el(`<span class="sweep2"></span>`)); prompt.classList.add("confirmed"); } arow.appendChild(el(`<span class="audio-hint">Tap to hear it again</span>`)); };
     const answers = el(`<div class="answers at63"></div>`);
     answers.appendChild(mcChoices(options, answer, item));
     body.appendChild(answers);
@@ -2626,6 +2641,87 @@ function _anchor(body) {
   body.classList.add("anchored");
   const top = body.getBoundingClientRect().top + (window.scrollY || 0);
   body.style.setProperty("--qtop", Math.round(top) + "px");
+}
+/* SIGNS AS SIGNS (Tom 9/26; STAGED "sign-plates"): a read session shows its word as a PLATE (door plate on the dark theme, enamel on the
+   light one). The card: plate, meaning, where you'd see it. The rungs: read the sign then act (a situation, two actions) · which sign do
+   you follow (a need, three plates) · read the sign, pick its meaning. Days: the plates are timetables in the 24-hour clock with three
+   fixed answers. The Spanish on screen is only the sign; nothing depends on sound. */
+function platesOn(lesson) { return !!(lesson && lesson.plates && isStaged("sign-plates")); }
+function plateHtml(text, cls) { return `<span class="plate${cls ? " " + cls : ""}">${text}</span>`; }
+function tableHtml(tb) { return `<div class="plate tt"><div class="tt-head">Horario</div>${tb.rows.map(r => `<div class="tt-row"><span class="tt-day">${r[0]}</span><span class="tt-hrs">${r[1]}</span></div>`).join("")}</div>`; }
+function _signChoices(labels, okIndex, item, onPick) {
+  const choices = el(`<div class="choices"></div>`);
+  labels.forEach((lab, i) => {
+    const c = el(`<button class="choice">${lab}</button>`);
+    c.addEventListener("click", () => {
+      if (run.answered) return;
+      const ok = i === okIndex;
+      [...choices.children].forEach((ch, j) => ch.classList.add(j === okIndex ? "correct" : (ch === c ? "wrong" : "dim")));
+      if (!ok) setTimeout(() => { c.classList.remove("wrong"); c.classList.add("dim"); }, 900);
+      if (onPick) onPick(ok);
+      grade(ok, item);
+    });
+    choices.appendChild(c);
+  });
+  return choices;
+}
+function renderSignAct(q) {
+  const item = q.item, body = $("#qbody"), a = item.act;
+  _anchor(body);
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">Read the sign</div>`));
+  const plate = el(`<div class="plate-stage">${plateHtml(item.es)}</div>`);
+  top.appendChild(plate);
+  top.appendChild(el(`<div class="act-sit">${a.sit}</div>`));
+  body.appendChild(top);
+  q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
+  const answers = el(`<div class="answers at63"></div>`);
+  answers.appendChild(_signChoices(a.opts, a.ok, item, ok => { if (ok) plate.querySelector(".plate").classList.add("confirmed"); }));
+  body.appendChild(answers);
+}
+function renderSignWhich(q) {
+  const item = q.item, body = $("#qbody");
+  _anchor(body);
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">Which sign?</div>`));
+  top.appendChild(el(`<div class="act-sit need">${item.need}</div>`));
+  body.appendChild(top);
+  q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
+  const pool = (q.pool && q.pool.length ? q.pool : run.lesson.items).filter(x => x !== item && norm(x.es) !== norm(item.es));
+  const opts = shuffle([item, ...sample(pool, Math.min(2, pool.length))]);
+  const choices = el(`<div class="choices plates"></div>`);
+  opts.forEach(opt => {
+    const c = el(`<button class="choice">${plateHtml(opt.es, "sm")}</button>`);
+    c.addEventListener("click", () => {
+      if (run.answered) return;
+      const ok = opt === item;
+      [...choices.children].forEach(ch => ch.querySelector(".plate").classList.add(ch.textContent.trim() === item.es ? "confirmed" : (ch === c ? "wrong" : "dim")));
+      grade(ok, item);
+    });
+    choices.appendChild(c);
+  });
+  const answers = el(`<div class="answers at63"></div>`); answers.appendChild(choices); body.appendChild(answers);
+}
+const TABLE_ANSWERS = ["Go in", "Come back later", "Closed today"];   // the same three every time, never quoting the plate (Tom 9/26)
+function renderSignTable(q) {
+  const item = q.item, body = $("#qbody");
+  _anchor(body);
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">Read the sign</div>`));
+  const plate = el(`<div class="plate-stage">${tableHtml(q.table)}</div>`);
+  top.appendChild(plate);
+  top.appendChild(el(`<div class="act-sit">${q.sit.sit}</div>`));
+  body.appendChild(top);
+  q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
+  const answers = el(`<div class="answers at63"></div>`);
+  answers.appendChild(_signChoices(TABLE_ANSWERS, q.sit.ok, item, ok => { if (ok) plate.querySelector(".plate").classList.add("confirmed"); }));
+  body.appendChild(answers);
+}
+function tableSituations(lesson) {
+  const byDay = d => (lesson.items || []).find(it => norm(it.es) === norm(d)) || lesson.items[0];
+  const out = [];
+  (lesson.tables || []).forEach(tb => (tb.sits || []).forEach(s => out.push({ type: "sign_table", item: byDay(s.day), table: tb, sit: s, arc: true })));
+  return out;
 }
 function renderContextChoice(q) {
   const item = q.item, body = $("#qbody");
