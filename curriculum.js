@@ -859,18 +859,18 @@ const CURRICULUM = {
             sits: [{ sit: "Saturday, 11:00. You:", ok: 0, day: "s\u00e1bado" }, { sit: "Tuesday, 15:30. You:", ok: 1, day: "martes" }, { sit: "Monday, 10:00. You:", ok: 2, day: "lunes" }] },
           { rows: [["Lunes", "Cerrado"], ["Martes \u2013 Domingo", "10:00 \u2013 19:00"]],
             sits: [{ sit: "Sunday, 12:00. You:", ok: 0, day: "domingo" }, { sit: "Monday, 12:00. You:", ok: 2, day: "lunes" }] },
-          { rows: [["Lunes \u2013 S\u00e1bado", "7:00 \u2013 20:00"], ["Domingo", "8:00 \u2013 14:00"]],
+          { rows: [["L \u2013 S", "7:00 \u2013 20:00"], ["D", "8:00 \u2013 14:00"]],   /* the bakery posts the letters, as many shops do (Tom 9/28) */
             sits: [{ sit: "Sunday, 16:00. You:", ok: 2, day: "domingo" }, { sit: "Thursday, 19:30. You:", ok: 0, day: "jueves" }] } ],
         line: "Seven words on every shop door.", items: [
         /* DAYS (chat 9/25: a chapter-1 READ session after Signs, base-layer by the chapter-0 rule; "los lunes" uses wait for chapter 3).
            Contexts are Code's drafts to the rule (cerrado / abierto met in Signs; el / los as glue), flagged for the voice pass. The cards capitalized as Signs are (read as posted; one case per session); the sentence keeps the lowercase day. */
-        { es: "Lunes", place: "On the shop's timetable, by the door.", en: "Monday", read: true, tags: ["days"], contextEs: "Cerrado los lunes.", contextEn: "Closed on Mondays." },
-        { es: "Martes", place: "On the shop's timetable, by the door.", en: "Tuesday", read: true, tags: ["days"], contextEs: "Abierto el martes.", contextEn: "Open on Tuesday." },
-        { es: "Mi\u00e9rcoles", place: "On the shop's timetable, by the door.", en: "Wednesday", read: true, tags: ["days"], contextEs: "\u00bfEl mi\u00e9rcoles? Cerrado.", contextEn: "Wednesday? Closed." },
-        { es: "Jueves", place: "On the shop's timetable, by the door.", en: "Thursday", read: true, tags: ["days"], contextEs: "Abierto el jueves.", contextEn: "Open on Thursday." },
-        { es: "Viernes", place: "On the shop's timetable, by the door.", en: "Friday", read: true, tags: ["days"], contextEs: "\u00bfEl viernes? S\u00ed.", contextEn: "Friday? Yes." },
-        { es: "S\u00e1bado", place: "On the shop's timetable, by the door.", en: "Saturday", read: true, tags: ["days"], contextEs: "Abierto el s\u00e1bado.", contextEn: "Open on Saturday." },
-        { es: "Domingo", place: "On the shop's timetable, by the door.", en: "Sunday", read: true, tags: ["days"], contextEs: "Cerrado el domingo.", contextEn: "Closed on Sunday." } ] },
+        { es: "Lunes", abbr: "L", place: "On the shop's timetable, by the door.", en: "Monday", read: true, tags: ["days"], contextEs: "Cerrado los lunes.", contextEn: "Closed on Mondays." },
+        { es: "Martes", abbr: "M", place: "On the shop's timetable, by the door.", en: "Tuesday", read: true, tags: ["days"], contextEs: "Abierto el martes.", contextEn: "Open on Tuesday." },
+        { es: "Mi\u00e9rcoles", abbr: "X", place: "On the shop's timetable, by the door.", en: "Wednesday", read: true, tags: ["days"], contextEs: "\u00bfEl mi\u00e9rcoles? Cerrado.", contextEn: "Wednesday? Closed." },
+        { es: "Jueves", abbr: "J", place: "On the shop's timetable, by the door.", en: "Thursday", read: true, tags: ["days"], contextEs: "Abierto el jueves.", contextEn: "Open on Thursday." },
+        { es: "Viernes", abbr: "V", place: "On the shop's timetable, by the door.", en: "Friday", read: true, tags: ["days"], contextEs: "\u00bfEl viernes? S\u00ed.", contextEn: "Friday? Yes." },
+        { es: "S\u00e1bado", abbr: "S", place: "On the shop's timetable, by the door.", en: "Saturday", read: true, tags: ["days"], contextEs: "Abierto el s\u00e1bado.", contextEn: "Open on Saturday." },
+        { es: "Domingo", abbr: "D", place: "On the shop's timetable, by the door.", en: "Sunday", read: true, tags: ["days"], contextEs: "Cerrado el domingo.", contextEn: "Closed on Sunday." } ] },
       { id: "w-help", topic: "Core help", title: "Help words", line: "The words for the day you hope never comes.", items: [
         { es: "ayuda", en: "help", tags: ["emergency"], contextEs: "Ayuda, por favor.", contextEn: "Help, please." },
         { es: "médico", en: "doctor", tags: ["emergency", "health"], contextEs: "Un médico, por favor.", contextEn: "A doctor, please." },

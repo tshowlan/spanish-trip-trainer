@@ -2729,11 +2729,12 @@ function renderDaysSet(q) {
   body.appendChild(el(`<div class="num-tap-hint">${icon("speaker", 15)}<span>Tap a day to hear it.</span></div>`));
   const grid = el(`<div class="num-grid days-grid"></div>`);
   q.items.forEach(it => {
-    const c = el(`<button class="num-chip day-chip"><span class="w">${it.es}</span><span class="en">${it.en}</span></button>`);
+    const c = el(`<button class="num-chip day-chip"><span class="n">${it.abbr || it.es[0]}</span><span class="w">${it.es}</span><span class="en">${it.en}</span></button>`);   // the posted letter in gold (mock S1-letter, Tom 9/28)
     c.addEventListener("click", () => { c.classList.add("heard"); speak(it.es); });
     grid.appendChild(c);
   });
   body.appendChild(grid);
+  body.appendChild(el(`<div class="num-line">On a timetable they shrink to the letter. X is mi\u00e9rcoles.</div>`));   // Code's draft for chat
   run.exposed = run.exposed || new Set();
   q.items.forEach(it => { const id = itemId(it); if (!run.exposed.has(id)) { run.exposed.add(id); recordExposure(id); } });
   const f = footer(`<button class="btn" id="cont">Continue</button>`);

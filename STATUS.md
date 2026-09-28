@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v373 (2026-09-28) — sign-plates (staged): the posted letter on the days card
+- Mock S1-letter (Tom): each day's chip leads with its timetable letter in gold (L M X J V S D; item.abbr), then the word, the English at the right; a line under the grid says what the letter is. The bakery's Horario plate posts the letters ("L – S", "D") so the learner meets them on a plate too.
+
 ## v372 (2026-09-28) — sign-plates (staged): the days set card, the wall, the week in order
 - Days you'll read opens on one card (the week as chips, tap to hear; mock S1) instead of seven cards and a board, then the timetables, then "Put the week in order" (tap Monday first; each plate moves into the row). Signs you'll read closes on "the wall": every plate on screen, eight short needs one after another, tap the right plate and it dims. Both record per item. Short wall needs are Code's drafts (item.wall).
 

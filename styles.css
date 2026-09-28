@@ -2156,9 +2156,10 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .plate-place { font-size: 13px; color: var(--text-dim); margin-top: 10px; }
 /* the days set card (mock S1), the wall (G1), the week in order (D1); Tom 9/28 */
 .days-grid { grid-template-columns: 1fr; }
-.day-chip { justify-content: space-between; }
+.day-chip { justify-content: flex-start; }
+.day-chip .n { min-width: 26px; }
 .day-chip .w { font-weight: 700; }
-.day-chip .en { font-size: 13px; color: var(--text-dim); }
+.day-chip .en { margin-left: auto; font-size: 13px; color: var(--text-dim); }
 .choices.plates.wall { gap: 10px 12px; }
 .choices.plates.wall .plate.sm { font-size: 14px; padding: 8px 10px; }
 .choices.plates .choice.found { pointer-events: none; }
