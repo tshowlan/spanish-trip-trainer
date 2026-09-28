@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v374 (2026-09-28) — sign-plates (staged): Libre / Ocupado, where you see them
+- Tom: the toilet lock first, and a Spanish taxi's LIBRE is a lit card in the windscreen, not on the roof (the roof lamp is a plain green light). Places and the taxi need corrected.
+
 ## v373 (2026-09-28) — sign-plates (staged): the posted letter on the days card
 - Mock S1-letter (Tom): each day's chip leads with its timetable letter in gold (L M X J V S D; item.abbr), then the word, the English at the right; a line under the grid says what the letter is. The bakery's Horario plate posts the letters ("L – S", "D") so the learner meets them on a plate too.
 
