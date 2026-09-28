@@ -2748,7 +2748,7 @@ function renderSignWall(q) {
   const asks = shuffle(q.items.filter(it => it.wall));
   const plates = shuffle(q.items.slice());
   const top = el(`<div class="top"></div>`);
-  top.appendChild(el(`<div class="direction">Find the sign</div>`));
+  top.appendChild(el(`<div class="direction">Find the sign for each one</div>`));   // Tom 9/28
   const need = el(`<div class="act-sit need"></div>`); top.appendChild(need);
   body.appendChild(top);
   const wall = el(`<div class="choices plates wall"></div>`);
@@ -2761,16 +2761,16 @@ function renderSignWall(q) {
     playSound("correct");
     const barEl = document.querySelector(".pbar > i");
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
-    need.textContent = `${asks.length - missed.size} of ${asks.length} found first time.`;
+    need.textContent = missed.size ? `You found every sign. ${missed.size === 1 ? "One" : missed.size === 2 ? "Two" : missed.size === 3 ? "Three" : missed.size} took a second look.` : "You found every sign.";   // a sentence, not a stat (Tom 9/28)
     const cf = footer(`<button class="btn" id="cont">Continue</button>`);
     let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
   };
   plates.forEach(it => btns.get(it).addEventListener("click", () => {
     const b = btns.get(it); if (b.classList.contains("found") || i >= asks.length) return;
     if (it === asks[i]) {
-      b.classList.add("found"); b.querySelector(".plate").classList.add("dim");
+      b.classList.add("found"); b.querySelector(".plate").classList.add("confirmed");   // the green edge and the ding, like every right answer; the plate then settles to a faded green (Tom 9/28)
       recordAnswer(itemId(it), !wrongThis, { mode: "wall" }); if (wrongThis) missed.add(it);
-      playSound("tap"); i++;
+      playSound("correct"); i++;
       if (i >= asks.length) finish(); else show();
     } else {
       wrongThis = true; b.classList.add("shake-x"); setTimeout(() => b.classList.remove("shake-x"), 400); playSound("wrong");
@@ -2799,7 +2799,7 @@ function renderDaysOrder(q) {
       const b = btns.get(it); b.remove();
       const p = el(plateHtml(it.es, "sm confirmed")); row.appendChild(p);
       recordAnswer(itemId(it), !wrongThis, { mode: "order" }); if (wrongThis) missed.add(it);
-      playSound("tap"); i++; wrongThis = false;
+      playSound("correct"); i++; wrongThis = false;
       if (i >= order.length) {
         playSound("correct");
         const barEl = document.querySelector(".pbar > i");

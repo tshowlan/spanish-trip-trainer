@@ -2163,6 +2163,7 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .choices.plates.wall { gap: 10px 12px; }
 .choices.plates.wall .plate.sm { font-size: 14px; padding: 8px 10px; }
 .choices.plates .choice.found { pointer-events: none; }
+.choices.plates .choice.found .plate.confirmed { opacity: .55; transition: opacity 600ms ease 500ms; }   /* the found sign keeps its green edge and settles back, so the wall thins but stays collected */
 .order-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; min-height: 46px; padding: 8px; border: 1px dashed var(--border); border-radius: 12px; }
 .order-row .plate.sm { font-size: 14px; padding: 8px 10px; }
 

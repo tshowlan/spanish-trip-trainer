@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v375 (2026-09-28) — sign-plates (staged): the wall's feedback and words
+- Direction "Find the sign for each one"; a right tap gives the green edge and the correct ding, then the plate settles to a faded green; the close reads "You found every sign." with "Two took a second look." only when it applies; "You want out." → "You want to leave." The week-in-order closer dings the same way.
+
 ## v374 (2026-09-28) — sign-plates (staged): Libre / Ocupado, where you see them
 - Tom: the toilet lock first, and a Spanish taxi's LIBRE is a lit card in the windscreen, not on the roof (the roof lamp is a plain green light). Places and the taxi need corrected.
 
