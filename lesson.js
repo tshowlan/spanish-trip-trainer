@@ -304,15 +304,19 @@ function composeRoom(lesson) {
 function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   const qs = [];
   const pool = newItems.length ? newItems : (lesson.items || []);
-  pool.forEach(it => qs.push({ type: "present", item: it, arc: true }));           // 1. meet them all
-  if (pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });   // 2. the words board
+  const daysSet = platesOn(lesson) && lesson.tables;                                 // days: met as a set (Tom 9/28), no board
+  if (daysSet) qs.push({ type: "days_set", items: pool.slice(), arc: true });
+  else pool.forEach(it => qs.push({ type: "present", item: it, arc: true }));           // 1. meet them all
+  if (!daysSet && pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });   // 2. the words board
   if (platesOn(lesson) && lesson.tables) tableSituations(lesson).forEach(s => qs.push(s));   // 3. days: the timetables, one situation each (Tom 9/26)
   else pool.forEach((it, i) => qs.push(kitRungFor(lesson, it, pool, i)));                // 3. one rung each, forms rotating
   const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap)));
   reviews.forEach(r => qs.push(r));
   const floor = chapterFloor(lesson);
   if (floor.lap === "scaffolded") {
-    if (pool.length >= 3) qs.push(Object.assign({ type: "pairs", items: pool.slice(), arc: true, encoreFirst: !isStaged("pairs-chain"), lap: true }, (earOn() && lesson.emphasis === "read") ? { mode: "reverse" } : {}));   // 4. the final pass: hear them all (a read session: the board turned around, meaning to word). No lap chip (Tom 9/20: its words described the old typed lap, not a listening board)
+    if (platesOn(lesson) && lesson.tables) qs.push({ type: "days_order", items: pool.slice(), arc: true, lap: true });           // days: put the week in order (Tom 9/28)
+    else if (platesOn(lesson) && pool.some(it => it.wall)) qs.push({ type: "sign_wall", items: pool.slice(), arc: true, lap: true });   // signs: the wall (Tom 9/28)
+    else if (pool.length >= 3) qs.push(Object.assign({ type: "pairs", items: pool.slice(), arc: true, encoreFirst: !isStaged("pairs-chain"), lap: true }, (earOn() && lesson.emphasis === "read") ? { mode: "reverse" } : {}));   // 4. the final pass: hear them all (a read session: the board turned around, meaning to word). No lap chip (Tom 9/20: its words described the old typed lap, not a listening board)
   } else {
     shuffle(pool.slice(0, 7)).forEach((it, i) => qs.push({ type: "type_translation", item: it, arc: true, encoreFirst: i === 0, lap: true }));
   }
@@ -1401,7 +1405,7 @@ function renderQuestion() {
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
      scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear, scene_sign: renderSceneSign, context_choice: renderContextChoice,
      num_set: renderNumSet, num_pad: renderNumPad, num_run: renderNumRun,
-     sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable,
+     sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable, days_set: renderDaysSet, sign_wall: renderSignWall, days_order: renderDaysOrder,
      circuit_door: renderCircuitDoor, circuit_close: renderCircuitClose,
      reply: renderReplyChat }[q.type])(q);
 }
@@ -2716,6 +2720,97 @@ function renderSignTable(q) {
   const answers = el(`<div class="answers at63"></div>`);
   answers.appendChild(_signChoices(TABLE_ANSWERS, q.sit.ok, item, ok => { if (ok) plate.querySelector(".plate").classList.add("confirmed"); }));
   body.appendChild(answers);
+}
+/* THE DAYS SET CARD (Tom 9/28, mock S1): the week on one card, tap a day to hear it, like the numbers set card */
+function renderDaysSet(q) {
+  const body = $("#qbody");
+  body.appendChild(el(`<div class="qtype">Days</div>`));
+  body.appendChild(el(`<div class="num-title">The seven days, as you'll read them on a door.</div>`));
+  body.appendChild(el(`<div class="num-tap-hint">${icon("speaker", 15)}<span>Tap a day to hear it.</span></div>`));
+  const grid = el(`<div class="num-grid days-grid"></div>`);
+  q.items.forEach(it => {
+    const c = el(`<button class="num-chip day-chip"><span class="w">${it.es}</span><span class="en">${it.en}</span></button>`);
+    c.addEventListener("click", () => { c.classList.add("heard"); speak(it.es); });
+    grid.appendChild(c);
+  });
+  body.appendChild(grid);
+  run.exposed = run.exposed || new Set();
+  q.items.forEach(it => { const id = itemId(it); if (!run.exposed.has(id)) { run.exposed.add(id); recordExposure(id); } });
+  const f = footer(`<button class="btn" id="cont">Continue</button>`);
+  f.querySelector("#cont").addEventListener("click", () => next());
+}
+/* THE WALL (Tom 9/28, mock G1): the closer for Signs. Every plate stays on screen, a station wall; the needs come one after another;
+   tap the right plate, it dims; the wall thins as you go. One screen, no reshuffle: the skill is scanning. */
+function renderSignWall(q) {
+  const body = $("#qbody");
+  _anchor(body);
+  const asks = shuffle(q.items.filter(it => it.wall));
+  const plates = shuffle(q.items.slice());
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">Find the sign</div>`));
+  const need = el(`<div class="act-sit need"></div>`); top.appendChild(need);
+  body.appendChild(top);
+  const wall = el(`<div class="choices plates wall"></div>`);
+  const btns = new Map();
+  plates.forEach(it => { const b = el(`<button class="choice">${plateHtml(it.es, "sm")}</button>`); btns.set(it, b); wall.appendChild(b); });
+  const answers = el(`<div class="answers at63"></div>`); answers.appendChild(wall); body.appendChild(answers);
+  let i = 0, wrongThis = false; const missed = new Set();
+  const show = () => { need.textContent = asks[i].wall; wrongThis = false; };
+  const finish = () => {
+    playSound("correct");
+    const barEl = document.querySelector(".pbar > i");
+    if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
+    need.textContent = `${asks.length - missed.size} of ${asks.length} found first time.`;
+    const cf = footer(`<button class="btn" id="cont">Continue</button>`);
+    let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
+  };
+  plates.forEach(it => btns.get(it).addEventListener("click", () => {
+    const b = btns.get(it); if (b.classList.contains("found") || i >= asks.length) return;
+    if (it === asks[i]) {
+      b.classList.add("found"); b.querySelector(".plate").classList.add("dim");
+      recordAnswer(itemId(it), !wrongThis, { mode: "wall" }); if (wrongThis) missed.add(it);
+      playSound("tap"); i++;
+      if (i >= asks.length) finish(); else show();
+    } else {
+      wrongThis = true; b.classList.add("shake-x"); setTimeout(() => b.classList.remove("shake-x"), 400); playSound("wrong");
+    }
+  }));
+  show();
+}
+/* PUT THE WEEK IN ORDER (Tom 9/28, mock D1): the closer for Days. The seven plates scattered; tap them Monday first; each moves up into the row. */
+function renderDaysOrder(q) {
+  const body = $("#qbody");
+  _anchor(body);
+  const order = q.items.slice();            // the data holds the week in order
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">Put the week in order</div>`));
+  top.appendChild(el(`<div class="act-sit need">Tap the days, Monday first.</div>`));
+  const row = el(`<div class="order-row"></div>`); top.appendChild(row);
+  body.appendChild(top);
+  const pool = el(`<div class="choices plates"></div>`);
+  const btns = new Map();
+  shuffle(order).forEach(it => { const b = el(`<button class="choice">${plateHtml(it.es, "sm")}</button>`); btns.set(it, b); pool.appendChild(b); });
+  const answers = el(`<div class="answers at63"></div>`); answers.appendChild(pool); body.appendChild(answers);
+  let i = 0, wrongThis = false; const missed = new Set();
+  order.forEach(it => btns.get(it).addEventListener("click", () => {
+    if (i >= order.length) return;
+    if (it === order[i]) {
+      const b = btns.get(it); b.remove();
+      const p = el(plateHtml(it.es, "sm confirmed")); row.appendChild(p);
+      recordAnswer(itemId(it), !wrongThis, { mode: "order" }); if (wrongThis) missed.add(it);
+      playSound("tap"); i++; wrongThis = false;
+      if (i >= order.length) {
+        playSound("correct");
+        const barEl = document.querySelector(".pbar > i");
+        if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
+        top.querySelector(".act-sit").textContent = missed.size ? `The week, in order. ${missed.size} took a second try.` : "The week, in order.";
+        const cf = footer(`<button class="btn" id="cont">Continue</button>`);
+        let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
+      }
+    } else {
+      wrongThis = true; const b = btns.get(it); b.classList.add("shake-x"); setTimeout(() => b.classList.remove("shake-x"), 400); playSound("wrong");
+    }
+  }));
 }
 function tableSituations(lesson) {
   const byDay = d => (lesson.items || []).find(it => norm(it.es) === norm(d)) || lesson.items[0];

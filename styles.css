@@ -2154,4 +2154,14 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .present-card.sign-card .plate-stage { margin-top: 4px; }
 .present-card.sign-card .present-en { margin-top: 16px; font-size: 18px; }
 .plate-place { font-size: 13px; color: var(--text-dim); margin-top: 10px; }
+/* the days set card (mock S1), the wall (G1), the week in order (D1); Tom 9/28 */
+.days-grid { grid-template-columns: 1fr; }
+.day-chip { justify-content: space-between; }
+.day-chip .w { font-weight: 700; }
+.day-chip .en { font-size: 13px; color: var(--text-dim); }
+.choices.plates.wall { gap: 10px 12px; }
+.choices.plates.wall .plate.sm { font-size: 14px; padding: 8px 10px; }
+.choices.plates .choice.found { pointer-events: none; }
+.order-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; min-height: 46px; padding: 8px; border: 1px dashed var(--border); border-radius: 12px; }
+.order-row .plate.sm { font-size: 14px; padding: 8px 10px; }
 

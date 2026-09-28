@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v372 (2026-09-28) — sign-plates (staged): the days set card, the wall, the week in order
+- Days you'll read opens on one card (the week as chips, tap to hear; mock S1) instead of seven cards and a board, then the timetables, then "Put the week in order" (tap Monday first; each plate moves into the row). Signs you'll read closes on "the wall": every plate on screen, eight short needs one after another, tap the right plate and it dims. Both record per item. Short wall needs are Code's drafts (item.wall).
+
 ## v371 (2026-09-28) — sign-plates (staged): the act situations as questions
 - Tom: "This door:" was odd. Every act situation is now a full question with Yes / No or Push / Pull ("You want to leave. Do you take this door?").
 
