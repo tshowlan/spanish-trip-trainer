@@ -855,12 +855,19 @@ const CURRICULUM = {
            three fixed answers (Go in / Come back later / Closed today) that never quote the plate. Plates vary so a day's calendar slot is
            not a shortcut. Code's drafts for chat's pass. Each situation records against its day. */
         tables: [
-          { rows: [["Lunes", "Cerrado"], ["Martes \u2013 Viernes", "9:00 \u2013 14:00 \u00b7 17:00 \u2013 20:00"], ["S\u00e1bado", "9:00 \u2013 14:00"], ["Domingo", "Cerrado"]],
-            sits: [{ sit: "Saturday, 11:00. You get to the electronics store for a charger and see this schedule. You:", ok: 0, day: "s\u00e1bado" }, { sit: "Tuesday, 15:30. You get to the electronics store door and see this schedule. You:", ok: 1, day: "martes" }, { sit: "Monday, 10:00. You get to the electronics store door and see this schedule. You:", ok: 2, day: "lunes" }] },
-          { rows: [["Lunes", "Cerrado"], ["Martes \u2013 Domingo", "10:00 \u2013 19:00"]],
-            sits: [{ sit: "Sunday, 12:00. You reach the museum entrance and see this schedule. You:", ok: 0, day: "domingo" }, { sit: "Monday, 12:00. You reach the museum entrance and see this schedule. You:", ok: 2, day: "lunes" }] },
-          { rows: [["L \u2013 S", "7:00 \u2013 20:00"], ["D", "8:00 \u2013 14:00"]],   /* the bakery posts the letters, as many shops do (Tom 9/28) */
-            sits: [{ sit: "Sunday, 16:00. You get to the caf\u00e9 door and see this schedule. You:", ok: 2, day: "domingo" }, { sit: "Thursday, 19:30. You get to the caf\u00e9 door and see this schedule. You:", ok: 0, day: "jueves" }] } ],
+          /* THREE STORIES, two or three beats each (Tom 9/28): the first beat is what you do (Go in / Come back later / Come back
+             tomorrow, each right exactly once across the session); the second, a friend asks and you read the plate to answer. The
+             stories play in a shuffled order; the beats inside keep their order. Code's drafts for chat's pass. */
+          { place: "the electronics store", rows: [["Lunes", "Cerrado"], ["Martes \u2013 Viernes", "9:00 \u2013 14:00 \u00b7 17:00 \u2013 20:00"], ["S\u00e1bado", "9:00 \u2013 14:00"], ["Domingo", "Cerrado"]],
+            sits: [{ sit: "Tuesday, 15:30. You need a charger and get to the electronics store. The door says this. You:", ok: 1, day: "martes" },
+                   { sit: "What time do you come back?", opts: ["14:00", "17:00", "20:00"], ok: 1, day: "martes" },
+                   { sit: "Saturday, 14:30. Back at the electronics store, and the door says this. You:", opts: ["Come back later", "Come back tomorrow", "Come back Monday"], ok: 2, day: "s\u00e1bado" }] },
+          { place: "the museum", rows: [["Lunes", "Cerrado"], ["Martes \u2013 Domingo", "10:00 \u2013 19:00"]],
+            sits: [{ sit: "Monday, 12:00. You reach the museum entrance and see this. You:", ok: 2, day: "lunes" },
+                   { sit: "Your friend asks what time it opens tomorrow. You say:", opts: ["9:00", "10:00", "12:00"], ok: 1, day: "martes" }] },
+          { place: "the caf\u00e9", rows: [["L \u2013 S", "7:00 \u2013 20:00"], ["D", "8:00 \u2013 14:00"]],   /* the caf\u00e9 posts the letters, as many shops do */
+            sits: [{ sit: "Saturday, 15:00. You get to the caf\u00e9 and see this. You:", ok: 0, day: "s\u00e1bado" },
+                   { sit: "Sunday morning. Your friend asks what time they open. You say:", opts: ["7:00", "8:00", "14:00"], ok: 1, day: "domingo" }] } ],
         line: "Seven words on every shop door.", items: [
         /* DAYS (chat 9/25: a chapter-1 READ session after Signs, base-layer by the chapter-0 rule; "los lunes" uses wait for chapter 3).
            Contexts are Code's drafts to the rule (cerrado / abierto met in Signs; el / los as glue), flagged for the voice pass. The cards capitalized as Signs are (read as posted; one case per session); the sentence keeps the lowercase day. */

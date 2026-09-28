@@ -307,7 +307,7 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   const daysSet = platesOn(lesson) && lesson.tables;                                 // days: met as a set (Tom 9/28), no board
   if (daysSet) qs.push({ type: "days_set", items: pool.slice(), arc: true });
   else pool.forEach(it => qs.push({ type: "present", item: it, arc: true }));           // 1. meet them all
-  if (!daysSet && pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });   // 2. the words board
+  if (pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });   // 2. the words board (the days keep it too, Tom 9/28)
   if (platesOn(lesson) && lesson.tables) tableSituations(lesson).forEach(s => qs.push(s));   // 3. days: the timetables, one situation each (Tom 9/26)
   else pool.forEach((it, i) => qs.push(kitRungFor(lesson, it, pool, i)));                // 3. one rung each, forms rotating
   const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap)));
@@ -1344,7 +1344,8 @@ function renderQuestion() {
     app.appendChild(wrap);
     if (stagingOn()) {                                   // test mode: scrub through the composed session without playing it (Tom 9/12)
       const hop = d => { try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (_) {} clearFooter(); run.answered = false;
-        if (d > 0) { next(); return; } if (run.idx > 0) { run.idx--; renderQuestion(); } };
+        if (d > 0) { if (run.idx + 1 < run.qs.length) { run.idx++; run.pct = Math.round(run.idx / run.qs.length * 100); renderQuestion(); } else next(); return; }
+        if (run.idx > 0) { run.idx--; run.pct = Math.round(run.idx / run.qs.length * 100); renderQuestion(); } };   // test mode: the bar follows the hop both ways (Tom 9/28)
       wrap.querySelector("#dev-back").addEventListener("click", () => hop(-1));
       wrap.querySelector("#dev-fwd").addEventListener("click", () => hop(1));
     }
@@ -2718,7 +2719,7 @@ function renderSignTable(q) {
   body.appendChild(top);
   q.grownBelow = true; q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
   const answers = el(`<div class="answers at63"></div>`);
-  answers.appendChild(_signChoices(TABLE_ANSWERS, q.sit.ok, item, ok => { if (ok) plate.querySelector(".plate").classList.add("confirmed"); }));
+  answers.appendChild(_signChoices(q.sit.opts || TABLE_ANSWERS, q.sit.ok, item, ok => { if (ok) plate.querySelector(".plate").classList.add("confirmed"); }));   // a friend's question carries its own answers
   body.appendChild(answers);
 }
 /* THE DAYS SET CARD (Tom 9/28, mock S1): the week on one card, tap a day to hear it, like the numbers set card */
@@ -2816,7 +2817,7 @@ function renderDaysOrder(q) {
 function tableSituations(lesson) {
   const byDay = d => (lesson.items || []).find(it => norm(it.es) === norm(d)) || lesson.items[0];
   const out = [];
-  (lesson.tables || []).forEach(tb => (tb.sits || []).forEach(s => out.push({ type: "sign_table", item: byDay(s.day), table: tb, sit: s, arc: true })));
+  shuffle((lesson.tables || []).slice()).forEach(tb => (tb.sits || []).forEach(s => out.push({ type: "sign_table", item: byDay(s.day), table: tb, sit: s, arc: true })));   // stories shuffled, beats in order (Tom 9/28)
   return out;
 }
 function renderContextChoice(q) {

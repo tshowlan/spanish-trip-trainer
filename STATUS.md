@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v378 (2026-09-28) — sign-plates (staged): the days session as three stories; the dev bar follows the hop
+- Days you'll read: the set card, the words board (back in), three stories in a shuffled order (the electronics store: the afternoon close, what time you come back, the Saturday trap where "Come back Monday" is right; the museum: closed Monday, what time tomorrow; the café with the letters: Saturday afternoon go in, Sunday morning what time), then the week in order. Each "what you do" answer is right exactly once; the follow-ups carry their own answers (times).
+- Test Lab: the progress bar now moves back and forth with the dev back/forward buttons (it only ever advanced before, by the requeue rule).
+
 ## v377 (2026-09-28) — sign-plates (staged): the reveal under the answers on tall sign rungs; the week's row centered
 - On the act, which-sign, and timetable rungs the RESTORED / YOURS NOW kicker and note now sit under the answers (79% line) instead of under the stage, where they clipped the first answer (Tom's screenshot). The week-in-order row centers its plates.
 
