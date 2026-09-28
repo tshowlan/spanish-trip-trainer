@@ -26,7 +26,7 @@
 
 ## A. CODE'S DRAFT COPY, awaiting the voice pass (all staged, none shipped)
 
-**Signs as signs (staged v369, docs/sign-sessions.md), Code's drafts:** the places ("Over the door you leave by." …), the act situations and actions ("You're at the door. You:" Push it / Pull it …), the needs ("You want out." …), the three timetable answers (Go in · Come back later · Closed today), three Horario plates and seven situations, the card hint "Tap to hear it said", the directions "Read the sign" / "Which sign?". All in curriculum.js (w-signs, w-days).
+**Signs as signs (staged v369, docs/sign-sessions.md), Code's drafts:** the places ("Over the door you leave by." …), the act situations and actions ("You're at the door. You:" Push it / Pull it …), the needs ("The museum is done. You're looking for the way out." · "The supermarket has two doors. You want the one that goes in." · "It's 8 in the morning and half the cafés are still shut. You want one you can walk into." · "You need a taxi. Only one roof light means it will stop for you."), the three timetable answers (Go in · Come back later · Closed today), three Horario plates and seven situations, the card hint "Tap to hear it said", the directions "Read the sign" / "Which sign?". All in curriculum.js (w-signs, w-days).
 
 **Ear sessions (staged v364, docs/ear-sessions.md), Code's drafts:** the pill BEST WITH SOUND / SAVED FOR SOUND · the ear escape: "This one is built for your ears." / "Keep going without sound, or come back to it when you can listen. It will be waiting on Home." / buttons "Keep going without sound", "Come back when I can listen" · the reversed board: "Match each meaning to its word" (direction and closing line).
 

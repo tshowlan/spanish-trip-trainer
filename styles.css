@@ -2146,7 +2146,7 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .tt-head { font-weight: 800; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; text-align: center; border-bottom: 1.5px solid currentColor; padding-bottom: 6px; margin-bottom: 8px; opacity: .9; }
 .tt-row { display: flex; justify-content: space-between; gap: 14px; padding: 3px 0; }
 .tt-day { font-weight: 700; } .tt-hrs { font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.act-sit { font-family: var(--font-display); font-size: 18px; font-weight: 600; line-height: 1.35; margin-top: 18px; }
+.act-sit { font-family: var(--font-display); font-size: 23px; font-weight: 700; line-height: 1.3; margin-top: 18px; }   /* the same size as every other rung's English cue (Tom 9/28) */
 .act-sit.need { margin-top: 6px; }
 .choices.plates { flex-direction: row; flex-wrap: wrap; gap: 12px; justify-content: center; }
 .choices.plates .choice, .choices.plates .choice.correct, .choices.plates .choice.wrong, .choices.plates .choice.dim { width: auto; padding: 0; background: none; border: none; box-shadow: none; }
