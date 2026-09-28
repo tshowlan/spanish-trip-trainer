@@ -2706,7 +2706,7 @@ function renderSignWhich(q) {
   });
   const answers = el(`<div class="answers at63"></div>`); answers.appendChild(choices); body.appendChild(answers);
 }
-const TABLE_ANSWERS = ["Go in", "Come back later", "Closed today"];   // the same three every time, never quoting the plate (Tom 9/26)
+const TABLE_ANSWERS = ["Go in", "Come back later", "Come back tomorrow"];   // what YOU do (Tom 9/28: "closed today" is not an action)   // the same three every time, never quoting the plate (Tom 9/26)
 function renderSignTable(q) {
   const item = q.item, body = $("#qbody");
   _anchor(body);
@@ -2714,7 +2714,7 @@ function renderSignTable(q) {
   top.appendChild(el(`<div class="direction">Read the sign</div>`));
   const plate = el(`<div class="plate-stage">${tableHtml(q.table)}</div>`);
   top.appendChild(plate);
-  top.appendChild(el(`<div class="act-sit">${q.sit.sit}</div>`));
+  top.appendChild(el(`<div class="act-sit long">${q.sit.sit}</div>`));
   body.appendChild(top);
   q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
   const answers = el(`<div class="answers at63"></div>`);
@@ -2804,7 +2804,7 @@ function renderDaysOrder(q) {
         playSound("correct");
         const barEl = document.querySelector(".pbar > i");
         if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
-        top.querySelector(".act-sit").textContent = missed.size ? `The week, in order. ${missed.size} took a second try.` : "The week, in order.";
+        top.querySelector(".act-sit").textContent = `The whole week, in order. Every shop door in Spain just got easier to read.${missed.size ? ` ${missed.size === 1 ? "One" : missed.size === 2 ? "Two" : missed.size === 3 ? "Three" : missed.size} took a second try.` : ""}`;   // the close should sound like something done (Tom 9/28); Code's draft
         const cf = footer(`<button class="btn" id="cont">Continue</button>`);
         let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
       }

@@ -848,19 +848,19 @@ const CURRICULUM = {
         /* Libre / Ocupado take the airport pair's seats (Tom 9/20): Salidas / Llegadas are posted with English at Spanish airports and big
            stations and stay in chapter 3's Reading the airport; these two are never translated (a taxi's light, a bathroom lock, a table).
            Contexts are Code's drafts to chat's rule (taxi and el baño are already met), flagged for the voice pass. */
-        { es: "Libre", wall: "The taxi that will stop.", place: "On a toilet lock, and in a taxi's windscreen.", act: { sit: "You need a taxi. Do you flag this one?", opts: ["Yes", "No"], ok: 0 }, need: "You need a taxi. The card in the windscreen says which one will stop.", en: "Free / vacant", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
-        { es: "Ocupado", wall: "The toilet in use.", place: "On a toilet lock, and in a taxi's windscreen.", act: { sit: "You need the toilet. Do you go in?", opts: ["Yes", "No"], ok: 1 }, en: "Occupied / taken", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
+        { es: "Libre", wall: "The taxi that will stop.", place: "On a toilet lock, and in a taxi's window.", act: { sit: "You need a taxi. Do you flag this one?", opts: ["Yes", "No"], ok: 0 }, need: "You need a taxi. The card in the window says which one will stop.", en: "Free / vacant", read: true, tags: ["signs"], contextEs: "¿El taxi? Libre.", contextEn: "The taxi? Free." },
+        { es: "Ocupado", wall: "The toilet in use.", place: "On a toilet lock, and in a taxi's window.", act: { sit: "You need the toilet. Do you go in?", opts: ["Yes", "No"], ok: 1 }, en: "Occupied / taken", read: true, tags: ["signs"], contextEs: "¿El baño? Ocupado.", contextEn: "The bathroom? Occupied." } ] },
       { id: "w-days", topic: "Core signs", title: "Days you'll read", emphasis: "read", staged: "chapter-1-adds", plates: true,
         /* THE TIMETABLES (Tom 9/26): the days are met one by one as plates, then read on real Horario plates in the 24-hour clock, with
            three fixed answers (Go in / Come back later / Closed today) that never quote the plate. Plates vary so a day's calendar slot is
            not a shortcut. Code's drafts for chat's pass. Each situation records against its day. */
         tables: [
           { rows: [["Lunes", "Cerrado"], ["Martes \u2013 Viernes", "9:00 \u2013 14:00 \u00b7 17:00 \u2013 20:00"], ["S\u00e1bado", "9:00 \u2013 14:00"], ["Domingo", "Cerrado"]],
-            sits: [{ sit: "Saturday, 11:00. You:", ok: 0, day: "s\u00e1bado" }, { sit: "Tuesday, 15:30. You:", ok: 1, day: "martes" }, { sit: "Monday, 10:00. You:", ok: 2, day: "lunes" }] },
+            sits: [{ sit: "Saturday, 11:00. You get to the electronics store for a charger and see this schedule. You:", ok: 0, day: "s\u00e1bado" }, { sit: "Tuesday, 15:30. You get to the electronics store door and see this schedule. You:", ok: 1, day: "martes" }, { sit: "Monday, 10:00. You get to the electronics store door and see this schedule. You:", ok: 2, day: "lunes" }] },
           { rows: [["Lunes", "Cerrado"], ["Martes \u2013 Domingo", "10:00 \u2013 19:00"]],
-            sits: [{ sit: "Sunday, 12:00. You:", ok: 0, day: "domingo" }, { sit: "Monday, 12:00. You:", ok: 2, day: "lunes" }] },
+            sits: [{ sit: "Sunday, 12:00. You reach the museum entrance and see this schedule. You:", ok: 0, day: "domingo" }, { sit: "Monday, 12:00. You reach the museum entrance and see this schedule. You:", ok: 2, day: "lunes" }] },
           { rows: [["L \u2013 S", "7:00 \u2013 20:00"], ["D", "8:00 \u2013 14:00"]],   /* the bakery posts the letters, as many shops do (Tom 9/28) */
-            sits: [{ sit: "Sunday, 16:00. You:", ok: 2, day: "domingo" }, { sit: "Thursday, 19:30. You:", ok: 0, day: "jueves" }] } ],
+            sits: [{ sit: "Sunday, 16:00. You get to the caf\u00e9 door and see this schedule. You:", ok: 2, day: "domingo" }, { sit: "Thursday, 19:30. You get to the caf\u00e9 door and see this schedule. You:", ok: 0, day: "jueves" }] } ],
         line: "Seven words on every shop door.", items: [
         /* DAYS (chat 9/25: a chapter-1 READ session after Signs, base-layer by the chapter-0 rule; "los lunes" uses wait for chapter 3).
            Contexts are Code's drafts to the rule (cerrado / abierto met in Signs; el / los as glue), flagged for the voice pass. The cards capitalized as Signs are (read as posted; one case per session); the sentence keeps the lowercase day. */

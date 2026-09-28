@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v376 (2026-09-28) — sign-plates (staged): the timetable situations as scenes; the week's close
+- "window" not "windscreen". Each timetable situation now says where you are ("Tuesday, 15:30. You get to the electronics store door and see this schedule. You:"; the museum entrance; the café door). The third answer is "Come back tomorrow" (an action, not a state). The week-in-order close: "The whole week, in order. Every shop door in Spain just got easier to read." The situation line steps down to 19px so three lines clear the answers.
+
 ## v375 (2026-09-28) — sign-plates (staged): the wall's feedback and words
 - Direction "Find the sign for each one"; a right tap gives the green edge and the correct ding, then the plate settles to a faded green; the close reads "You found every sign." with "Two took a second look." only when it applies; "You want out." → "You want to leave." The week-in-order closer dings the same way.
 
