@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v371 (2026-09-28) — sign-plates (staged): the act situations as questions
+- Tom: "This door:" was odd. Every act situation is now a full question with Yes / No or Push / Pull ("You want to leave. Do you take this door?").
+
 ## v370 (2026-09-28) — sign-plates (staged): the needs as scenes; the situation line at cue size
 - Tom: "You want in" was odd and "a shop you can walk into" lacked context. The four needs now set the scene (the museum's way out; the supermarket's two doors; 8am and half the cafés shut; the taxi's roof light). The situation line is 23px/700, the size of every other rung's English cue.
 
