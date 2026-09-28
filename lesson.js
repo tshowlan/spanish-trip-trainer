@@ -2678,7 +2678,7 @@ function renderSignAct(q) {
   top.appendChild(plate);
   top.appendChild(el(`<div class="act-sit">${a.sit}</div>`));
   body.appendChild(top);
-  q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
+  q.grownBelow = true; q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
   const answers = el(`<div class="answers at63"></div>`);
   answers.appendChild(_signChoices(a.opts, a.ok, item, ok => { if (ok) plate.querySelector(".plate").classList.add("confirmed"); }));
   body.appendChild(answers);
@@ -2690,7 +2690,7 @@ function renderSignWhich(q) {
   top.appendChild(el(`<div class="direction">Which sign?</div>`));
   top.appendChild(el(`<div class="act-sit need">${item.need}</div>`));
   body.appendChild(top);
-  q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
+  q.grownBelow = true; q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
   const pool = (q.pool && q.pool.length ? q.pool : run.lesson.items).filter(x => x !== item && norm(x.es) !== norm(item.es));
   const opts = shuffle([item, ...sample(pool, Math.min(2, pool.length))]);
   const choices = el(`<div class="choices plates"></div>`);
@@ -2716,7 +2716,7 @@ function renderSignTable(q) {
   top.appendChild(plate);
   top.appendChild(el(`<div class="act-sit long">${q.sit.sit}</div>`));
   body.appendChild(top);
-  q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
+  q.grownBelow = true; q.esOnStage = true; q.noEn = true; q.noAudioRow = true;
   const answers = el(`<div class="answers at63"></div>`);
   answers.appendChild(_signChoices(TABLE_ANSWERS, q.sit.ok, item, ok => { if (ok) plate.querySelector(".plate").classList.add("confirmed"); }));
   body.appendChild(answers);
@@ -3778,7 +3778,8 @@ function resolveCorrect(item, q, info) {
     grown.querySelector(".res-audio").appendChild(arow);
   }
   const rc = grown.querySelector(".res-cont"); if (rc) rc.addEventListener("click", goNext);
-  (qb.classList.contains("anchored") ? (qb.querySelector(".top") || qb) : qb).appendChild(grown);   // anchored: the reveal grows under the stage
+  if (q && q.grownBelow && qb.classList.contains("anchored")) { grown.classList.add("grown-below"); qb.appendChild(grown); }   // tall stages (a plate and a scene): the reveal sits under the answers (Tom 9/28: it clipped the first answer)
+  else (qb.classList.contains("anchored") ? (qb.querySelector(".top") || qb) : qb).appendChild(grown);   // anchored: the reveal grows under the stage
   requestAnimationFrame(() => requestAnimationFrame(() => grown.classList.add("show")));
   // the exit is the learner's tap (Pacing Rule) — so the tap must be ON SCREEN: tall
   // exercises (requeued chip + choices) can push Continue past the fold on short phones

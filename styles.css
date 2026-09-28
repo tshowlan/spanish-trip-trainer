@@ -2165,6 +2165,7 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .choices.plates.wall .plate.sm { font-size: 14px; padding: 8px 10px; }
 .choices.plates .choice.found { pointer-events: none; }
 .choices.plates .choice.found .plate.confirmed { opacity: .55; transition: opacity 600ms ease 500ms; }   /* the found sign keeps its green edge and settles back, so the wall thins but stays collected */
-.order-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; min-height: 46px; padding: 8px; border: 1px dashed var(--border); border-radius: 12px; }
+.order-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; min-height: 46px; padding: 8px; border: 1px dashed var(--border); border-radius: 12px; }   /* centered (Tom 9/28) */
 .order-row .plate.sm { font-size: 14px; padding: 8px 10px; }
+#qbody.anchored .res-grown.grown-below { position: absolute; left: 0; right: 0; top: calc(79dvh - var(--qtop, 90px)); text-align: center; }   /* under the three answers, above the footer */
 
