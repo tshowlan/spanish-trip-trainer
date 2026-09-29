@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v383 (2026-09-29) — sign-plates (staged): the reveal by the prompt when it fits; the timetable beats ding only
+- The RESTORED / YOURS NOW reveal on the sign rungs measures the room between the scene and the answers and sits under the stage unless there is less than 64px, in which case it drops below the answers (the timetable beats, usually). The timetable beats no longer speak the day after a right answer: the ding only.
+
 ## v382 (2026-09-28) — sign-plates (staged): equal-width plates; the endings back at the top
 - The wall and the week's pool are 3-column grids of equal-width plates (a last row of one or two centered); the row above the week uses the same grid. The endings return to the top line ("You found every sign." / "The whole week, in order." + the second-try count); the small line at the bottom is gone. Ghost slots stay.
 
