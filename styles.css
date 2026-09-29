@@ -2186,4 +2186,5 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .plates-grid.last-one > .choice:last-child { grid-column: 2; }   /* a last row of one, centered */
 .order-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .order-grid .plate { display: block; width: 100%; box-sizing: border-box; text-align: center; font-size: 13px; padding: 9px 4px; letter-spacing: .05em; }
+.order-grid > .plate:nth-child(3n+1):last-child { grid-column: 2; }   /* a lone plate on the last row sits in the middle (Domingo; Tom 9/28) */
 
