@@ -2174,4 +2174,16 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .act-sit.fade { opacity: 0; transition: opacity 400ms ease; }
 .res-grown.closer-line { text-align: center; padding: 0 8px; }
 .res-grown.closer-line .pairs-allset { font-size: 15px; color: var(--text); line-height: 1.4; }
+/* equal-width plates (Tom 9/28, mocks W1 / K1): the wall and the week on a 3-column grid; the row above the week uses the same grid */
+.plates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; justify-items: stretch; transition: opacity 500ms ease; }
+.plates-grid .choice, .plates-grid .choice.correct, .plates-grid .choice.wrong, .plates-grid .choice.dim { width: auto; padding: 0; background: none; border: none; box-shadow: none; }
+.plates-grid .plate { display: block; width: 100%; box-sizing: border-box; text-align: center; font-size: 13px; padding: 10px 4px; letter-spacing: .05em; }
+.plates-grid .choice.ghost { visibility: hidden; pointer-events: none; }
+.plates-grid .choice.found { pointer-events: none; }
+.plates-grid .choice.found .plate.confirmed { opacity: .55; transition: opacity 600ms ease 500ms; }
+.plates-grid.recede { opacity: 0; }
+.plates-grid.last-two > .choice:nth-last-child(2) { grid-column: 1; margin-left: 50%; width: calc(100% + 5px); } .plates-grid.last-two > .choice:last-child { grid-column: 2; margin-left: 50%; width: calc(100% + 5px); }   /* a last row of two, centered */
+.plates-grid.last-one > .choice:last-child { grid-column: 2; }   /* a last row of one, centered */
+.order-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.order-grid .plate { display: block; width: 100%; box-sizing: border-box; text-align: center; font-size: 13px; padding: 9px 4px; letter-spacing: .05em; }
 

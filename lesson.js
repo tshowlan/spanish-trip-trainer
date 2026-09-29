@@ -2752,7 +2752,7 @@ function renderSignWall(q) {
   top.appendChild(el(`<div class="direction">Find the sign for each one</div>`));   // Tom 9/28
   const need = el(`<div class="act-sit need"></div>`); top.appendChild(need);
   body.appendChild(top);
-  const wall = el(`<div class="choices plates wall"></div>`);
+  const wall = el(`<div class="plates-grid wall${plates.length % 3 === 2 ? " last-two" : plates.length % 3 === 1 ? " last-one" : ""}"></div>`);   // equal-width plates on a 3-column grid (Tom 9/28, mock W1)
   const btns = new Map();
   plates.forEach(it => { const b = el(`<button class="choice">${plateHtml(it.es, "sm")}</button>`); btns.set(it, b); wall.appendChild(b); });
   const answers = el(`<div class="answers at63"></div>`); answers.appendChild(wall); body.appendChild(answers);
@@ -2762,11 +2762,7 @@ function renderSignWall(q) {
     playSound("correct");
     const barEl = document.querySelector(".pbar > i");
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
-    need.classList.add("fade");                                        // the need has done its job; the top holds still (Tom 9/28)
-    const line = missed.size ? `You found every sign. ${missed.size === 1 ? "One" : missed.size === 2 ? "Two" : missed.size === 3 ? "Three" : missed.size} took a second look.` : "You found every sign.";
-    const grown = el(`<div class="res-grown closer-line grown-below"><div class="pairs-allset">${line}</div></div>`);   // the closing sentence fades in under the wall on its own line (79%), so the wall itself never moves
-    body.appendChild(grown);
-    setTimeout(() => grown.classList.add("show"), 40);
+    need.textContent = missed.size ? `You found every sign. ${missed.size === 1 ? "One" : missed.size === 2 ? "Two" : missed.size === 3 ? "Three" : missed.size} took a second look.` : "You found every sign.";   // the ending lives in the need line at the top (Tom 9/28); the wall holds still
     const cf = footer(`<button class="btn" id="cont">Continue</button>`);
     let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
   };
@@ -2791,9 +2787,9 @@ function renderDaysOrder(q) {
   const top = el(`<div class="top"></div>`);
   top.appendChild(el(`<div class="direction">Put the week in order</div>`));
   top.appendChild(el(`<div class="act-sit need">Tap the days, Monday first.</div>`));
-  const row = el(`<div class="order-row"></div>`); top.appendChild(row);
+  const row = el(`<div class="order-row order-grid"></div>`); top.appendChild(row);
   body.appendChild(top);
-  const pool = el(`<div class="choices plates"></div>`);
+  const pool = el(`<div class="plates-grid${order.length % 3 === 1 ? " last-one" : order.length % 3 === 2 ? " last-two" : ""}"></div>`);   // the pool and the row share one 3-column grid (Tom 9/28, mock K1)
   const btns = new Map();
   shuffle(order).forEach(it => { const b = el(`<button class="choice">${plateHtml(it.es, "sm")}</button>`); btns.set(it, b); pool.appendChild(b); });
   const answers = el(`<div class="answers at63"></div>`); answers.appendChild(pool); body.appendChild(answers);
@@ -2809,11 +2805,8 @@ function renderDaysOrder(q) {
         playSound("correct");
         const barEl = document.querySelector(".pbar > i");
         if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
-        pool.classList.add("recede");                                 // the empty pool fades as the closing line arrives
-        const line = `The whole week, in order. Every shop door in Spain just got easier to read.${missed.size ? ` ${missed.size === 1 ? "One" : missed.size === 2 ? "Two" : missed.size === 3 ? "Three" : missed.size} took a second try.` : ""}`;   // Code's draft
-        const grown = el(`<div class="res-grown closer-line grown-below"><div class="pairs-allset">${line}</div></div>`);   // fades in under the plates on its own line (79%); nothing above it moves
-        body.appendChild(grown);
-        setTimeout(() => grown.classList.add("show"), 40);
+        pool.classList.add("recede");                                 // the empty pool fades
+        top.querySelector(".act-sit").textContent = `The whole week, in order.${missed.size ? ` ${missed.size === 1 ? "One" : missed.size === 2 ? "Two" : missed.size === 3 ? "Three" : missed.size} took a second try.` : ""}`;   // one short line at the top (Tom 9/28)
         const cf = footer(`<button class="btn" id="cont">Continue</button>`);
         let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
       }

@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v382 (2026-09-28) — sign-plates (staged): equal-width plates; the endings back at the top
+- The wall and the week's pool are 3-column grids of equal-width plates (a last row of one or two centered); the row above the week uses the same grid. The endings return to the top line ("You found every sign." / "The whole week, in order." + the second-try count); the small line at the bottom is gone. Ghost slots stay.
+
 ## v381 (2026-09-28) — sign-plates (staged): the closers hold still
 - The week in order: a taken plate leaves a ghost slot (the supply rule), so the pool never reflows; at the end the empty pool fades and the closing sentence fades in below, the direction line untouched. The wall: the need line fades and the closing sentence fades in under the wall. No more jump cut at the end (Tom).
 
