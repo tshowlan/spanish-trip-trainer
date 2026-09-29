@@ -5,7 +5,7 @@
 ## Doors into the app
 - **Arrival (splash):** the lighthouse, the daybreak, the dials forming. Unchanged since July; loved.
 - **Onboarding:** destination and date, trip kind, lodging, transport, needs and allergies, home city, the grammar question, the level check. New users only.
-- **Home:** three dials, the action tile (one action: next session / review / cram) built as a button: a pressed edge, the card sinks on press, a slow gold pulse behind it, the session's one line under its title, the photo fading into a slim strip on the right that holds the chevron. The Review row (named Practice until v355) is a button the same way, and does not appear until something has been met. The insight whisper. When a scene is ready and the trip is near, the tile reads "Scene: Café Paloma is ready." (v344)
+- **Home:** three dials, the action tile (one action: next session / review / cram) built as a button: a pressed edge, the card sinks on press, a slow gold pulse behind it, the session's one line under its title, the photo fading into a slim strip on the right that holds the chevron. The Review row (named Practice until v355) is a button the same way, and does not appear until something has been met. The insight whisper (the divergence line is parked until chapter 3, v380). When a scene is ready and the trip is near, the tile reads "Scene: Café Paloma is ready." (v344)
 - **Entering a session (the bloom):** the tapped tile or row breathes, a gold light rises behind it, the tile grows and lets go, the white daybreak takes over, and the session comes in on a blank screen. From the Home tile, Practice picks, and Learn rows. (v344)
 
 ## Learning (the Learn track)

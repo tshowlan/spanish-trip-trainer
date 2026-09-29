@@ -217,7 +217,7 @@ function renderHome(opts) {
   if (started) {
     home.appendChild(heroTile());
     if (Object.keys(state.learn || {}).length) home.appendChild(practiceButton());   // nothing met yet = nothing to practice: the row stays away so the tile is the only door (Tom 9/25)
-    const dv = divergenceLine(); if (dv) home.appendChild(dv);
+    // the divergence line (§7.3) is PARKED (Tom 9/28): its coverage message nags every chapter-1 learner (the categories are chapter 3's places) and its review message is not the right nudge yet; revisit with chapter 3. divergenceLine() stays for then.
     const ins = insightLine(); if (ins) home.appendChild(ins);   // §3.2 gold-spark insight, in rhythm under Practice
     const pr = presenceLine(); if (pr) home.appendChild(pr);     // §3.2 destination presence (local time; temp later)
   }

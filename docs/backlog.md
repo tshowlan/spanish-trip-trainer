@@ -429,3 +429,4 @@ Spain finalization first (voice session · return door r3 · letter-rungs reform
 chrome) · Progress tab depth · session-end stamp cut · Progress/Profile tabtitle deltas ·
 optional Supabase server-merge hardening. Mexico: catch-up only on significant structural
 change, not a scheduled session.
+- 2026-09-28 — Home's review nudge (the parked divergence line): revisit with chapter 3, when coverage by place means something; the need (telling a learner when to review) stands, the design does not.

@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v380 (2026-09-28) — the Home divergence line parked
+- Removed from Home (both messages); the function stays for chapter 3. docs/backlog.md holds the need. Live.
+
 ## v379 (2026-09-28) — sign-plates (staged): places reworded
 - "Over the door you leave through." / "Over the door you enter through." / "Near the door handle." (push, pull) / "business hours sign" for timetable on the day cards and the set card's line (Tom).
 
