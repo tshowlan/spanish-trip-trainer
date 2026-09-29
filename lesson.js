@@ -2735,7 +2735,7 @@ function renderDaysSet(q) {
     grid.appendChild(c);
   });
   body.appendChild(grid);
-  body.appendChild(el(`<div class="num-line">On a timetable they shrink to the letter. X is mi\u00e9rcoles.</div>`));   // Code's draft for chat
+  body.appendChild(el(`<div class="num-line">On a business hours sign they shrink to a letter. X is mi\u00e9rcoles.</div>`));   // Code's draft for chat
   run.exposed = run.exposed || new Set();
   q.items.forEach(it => { const id = itemId(it); if (!run.exposed.has(id)) { run.exposed.add(id); recordExposure(id); } });
   const f = footer(`<button class="btn" id="cont">Continue</button>`);
