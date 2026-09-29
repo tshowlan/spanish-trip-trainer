@@ -2168,4 +2168,10 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .order-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; min-height: 46px; padding: 8px; border: 1px dashed var(--border); border-radius: 12px; }   /* centered (Tom 9/28) */
 .order-row .plate.sm { font-size: 14px; padding: 8px 10px; }
 #qbody.anchored .res-grown.grown-below { position: absolute; left: 0; right: 0; top: calc(79dvh - var(--qtop, 90px)); text-align: center; }   /* under the three answers, above the footer */
+/* the closers hold still (Tom 9/28): a taken plate leaves a ghost slot; the pool recedes at the end; the closing sentence fades in below */
+.choices.plates .choice.ghost { visibility: hidden; pointer-events: none; }
+.choices.plates.recede { opacity: 0; transition: opacity 500ms ease; }
+.act-sit.fade { opacity: 0; transition: opacity 400ms ease; }
+.res-grown.closer-line { text-align: center; padding: 0 8px; }
+.res-grown.closer-line .pairs-allset { font-size: 15px; color: var(--text); line-height: 1.4; }
 

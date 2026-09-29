@@ -2762,7 +2762,11 @@ function renderSignWall(q) {
     playSound("correct");
     const barEl = document.querySelector(".pbar > i");
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
-    need.textContent = missed.size ? `You found every sign. ${missed.size === 1 ? "One" : missed.size === 2 ? "Two" : missed.size === 3 ? "Three" : missed.size} took a second look.` : "You found every sign.";   // a sentence, not a stat (Tom 9/28)
+    need.classList.add("fade");                                        // the need has done its job; the top holds still (Tom 9/28)
+    const line = missed.size ? `You found every sign. ${missed.size === 1 ? "One" : missed.size === 2 ? "Two" : missed.size === 3 ? "Three" : missed.size} took a second look.` : "You found every sign.";
+    const grown = el(`<div class="res-grown closer-line grown-below"><div class="pairs-allset">${line}</div></div>`);   // the closing sentence fades in under the wall on its own line (79%), so the wall itself never moves
+    body.appendChild(grown);
+    setTimeout(() => grown.classList.add("show"), 40);
     const cf = footer(`<button class="btn" id="cont">Continue</button>`);
     let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
   };
@@ -2797,7 +2801,7 @@ function renderDaysOrder(q) {
   order.forEach(it => btns.get(it).addEventListener("click", () => {
     if (i >= order.length) return;
     if (it === order[i]) {
-      const b = btns.get(it); b.remove();
+      const b = btns.get(it); b.classList.add("ghost");               // the supply rule: a taken plate leaves its slot behind, the pool holds still (Tom 9/28)
       const p = el(plateHtml(it.es, "sm confirmed")); row.appendChild(p);
       recordAnswer(itemId(it), !wrongThis, { mode: "order" }); if (wrongThis) missed.add(it);
       playSound("correct"); i++; wrongThis = false;
@@ -2805,7 +2809,11 @@ function renderDaysOrder(q) {
         playSound("correct");
         const barEl = document.querySelector(".pbar > i");
         if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
-        top.querySelector(".act-sit").textContent = `The whole week, in order. Every shop door in Spain just got easier to read.${missed.size ? ` ${missed.size === 1 ? "One" : missed.size === 2 ? "Two" : missed.size === 3 ? "Three" : missed.size} took a second try.` : ""}`;   // the close should sound like something done (Tom 9/28); Code's draft
+        pool.classList.add("recede");                                 // the empty pool fades as the closing line arrives
+        const line = `The whole week, in order. Every shop door in Spain just got easier to read.${missed.size ? ` ${missed.size === 1 ? "One" : missed.size === 2 ? "Two" : missed.size === 3 ? "Three" : missed.size} took a second try.` : ""}`;   // Code's draft
+        const grown = el(`<div class="res-grown closer-line grown-below"><div class="pairs-allset">${line}</div></div>`);   // fades in under the plates on its own line (79%); nothing above it moves
+        body.appendChild(grown);
+        setTimeout(() => grown.classList.add("show"), 40);
         const cf = footer(`<button class="btn" id="cont">Continue</button>`);
         let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
       }
