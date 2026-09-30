@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v384 (2026-09-29) — Test Lab: the arrival replayed, with two candidates
+- Three buttons in the Test Lab replay the whole arrival (splash, then Home's formation): as shipped; "from darkness" (Home is whole under a black veil and the candle's light spreads from the bottom-left corner over 2.2s to reveal it); "twilight" (everything materializes together over 1.4s as the candle comes on). The shipped arrival is untouched; the candidates exist only through the buttons (body classes arr-dark / arr-twilight).
+
 ## v383 (2026-09-29) — sign-plates (staged): the reveal by the prompt when it fits; the timetable beats ding only
 - The RESTORED / YOURS NOW reveal on the sign rungs measures the room between the scene and the answers and sits under the stage unless there is less than 64px, in which case it drops below the answers (the timetable beats, usually). The timetable beats no longer speak the day after a right answer: the ding only.
 

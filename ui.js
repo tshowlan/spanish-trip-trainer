@@ -194,6 +194,20 @@ function initSplash() {
     caches.keys().then(keys => showVer(keys.find(k => /^sts-v\d+/.test(k)))).catch(() => {});
   }
 }
+/* TEST LAB (Tom 9/29): replay the whole arrival, the splash and then Home's formation, in the shipped form or one of two
+   candidates: "dark" (the candle's light spreads from the corner and reveals a finished Home) and "twilight" (everything
+   materializes together as the candle comes on). Nothing here touches the shipped arrival. */
+function devReplayArrival(variant) {
+  document.querySelectorAll("#splash, .arr-veil").forEach(n => n.remove());
+  document.body.classList.remove("arriving", "arr-dark", "arr-twilight");
+  const s = el(`<div id="splash" class="arrival"></div>`);
+  document.body.appendChild(s);
+  document.body.classList.add("arriving"); if (variant) document.body.classList.add("arr-" + variant);
+  s.innerHTML = splashMarkup();
+  if (typeof showTabbar === "function") showTabbar("home");
+  renderHome();
+  runSplashArrival(s, Promise.resolve());
+}
 function runSplash() {
   const splash = document.getElementById("splash");
   if (!splash) return;
@@ -218,13 +232,30 @@ function runSplashArrival(splash, ready) {
     [[".whisper", ".presence"], 1550]                    // whisper last
   ];
   let timers = [];
+  const variant = document.body.classList.contains("arr-dark") ? "dark" : document.body.classList.contains("arr-twilight") ? "twilight" : null;   // Test Lab replays only (Tom 9/29)
   const buildup = instant => {
     timers.forEach(clearTimeout); timers = [];
+    const done = () => document.body.classList.remove("arriving", "arr-dark", "arr-twilight");
+    const applyAll = () => ORDER.forEach(step => step[0].forEach(sel => document.querySelectorAll(sel).forEach(n => n.classList.add("arr-in"))));
+    if (variant === "dark" && !instant && !reduced) {
+      // FROM DARKNESS: home is already whole under a black veil; the candle's light spreads from the bottom-left corner and reveals it
+      applyAll();
+      const veil = el(`<div class="arr-veil"></div>`); document.body.appendChild(veil);
+      const t0 = performance.now(), D = 2200, R = 1.7 * Math.max(window.innerWidth, window.innerHeight);
+      const tick = now => { const k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 2.2); veil.style.setProperty("--r", Math.round(R * e) + "px"); if (k < 1) requestAnimationFrame(tick); else { veil.remove(); done(); } };
+      requestAnimationFrame(tick);
+      return;
+    }
+    if (variant === "twilight" && !instant && !reduced) {
+      // TWILIGHT: everything materializes together as the candle comes on; one long breath, no order
+      timers.push(setTimeout(applyAll, 60));
+      timers.push(setTimeout(done, 2100));
+      return;
+    }
     ORDER.forEach(step => {
       const apply = () => step[0].forEach(sel => document.querySelectorAll(sel).forEach(n => n.classList.add("arr-in")));
       if (instant || reduced) apply(); else timers.push(setTimeout(apply, step[1]));
     });
-    const done = () => document.body.classList.remove("arriving");
     if (instant || reduced) done(); else timers.push(setTimeout(done, 3750));
   };
   let finished = false;
