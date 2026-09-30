@@ -2187,13 +2187,9 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
 .order-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .order-grid .plate { display: block; width: 100%; box-sizing: border-box; text-align: center; font-size: 13px; padding: 9px 4px; letter-spacing: .05em; }
 .order-grid > .plate:nth-child(3n+1):last-child { grid-column: 2; }   /* a lone plate on the last row sits in the middle (Domingo; Tom 9/28) */
-/* TEST LAB ARRIVAL CANDIDATES (Tom 9/29; dev replays only, the shipped formation is untouched) */
-body.arr-dark .arr-in:not(.atmo-ground) { transition: none !important; }                       /* from darkness: home is whole at once; the veil does the revealing */
-body.arr-dark .home-atmo .atmo-ground.arr-in { animation-duration: 2200ms; }                      /* the candle ignites over the same span as the reveal */
-.arr-veil { position: fixed; inset: 0; z-index: 2500; pointer-events: none; --r: 0px;
-  background: radial-gradient(circle at 10% 100%, transparent 0, transparent var(--r), rgba(0,0,0,.6) calc(var(--r) + 90px), rgba(3,4,10,.97) calc(var(--r) + 260px)); }
-body.arr-twilight .home-atmo .atmo-photo, body.arr-twilight .topbar, body.arr-twilight .trip, body.arr-twilight .scores, body.arr-twilight .empty-hero,
+/* TEST LAB ARRIVAL CANDIDATES (Tom 9/29; dev replays only, the shipped formation is untouched). "From darkness" retired 9/29. */
+body.arr-twilight .home-atmo .atmo-photo, body.arr-twilight2 .home-atmo .atmo-photo, body.arr-twilight2 .topbar, body.arr-twilight2 .trip, body.arr-twilight2 .scores, body.arr-twilight2 .empty-hero, body.arr-twilight2 .hero-tile, body.arr-twilight2 .practice, body.arr-twilight2 .home-diverge, body.arr-twilight2 .whisper, body.arr-twilight2 .presence, body.arr-twilight2 #tabbar, body.arr-twilight .topbar, body.arr-twilight .trip, body.arr-twilight .scores, body.arr-twilight .empty-hero,
 body.arr-twilight .hero-tile, body.arr-twilight .practice, body.arr-twilight .home-diverge, body.arr-twilight .whisper, body.arr-twilight .presence, body.arr-twilight #tabbar {
   transition-duration: 1400ms !important; transition-timing-function: cubic-bezier(.3,.05,.2,1) !important; }   /* twilight: one long breath together */
 body.arr-twilight .home-atmo .atmo-ground.arr-in { animation-duration: 1400ms; }
-
+body.arr-twilight2 .home-atmo .atmo-ground.arr-in { animation-duration: 1800ms; }   /* twilight 2: the candle at its shipped pace */

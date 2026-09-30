@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v385 (2026-09-29) — Test Lab: "from darkness" retired; a second twilight with the candle at the shipped pace
+- Tom likes twilight. New button "Twilight, slow candle": everything rises together as before, but the candle ignites as shipped (1.8s in, over 1.8s), so the light arrives last. The veil variant and its CSS are gone.
+
 ## v384 (2026-09-29) — Test Lab: the arrival replayed, with two candidates
 - Three buttons in the Test Lab replay the whole arrival (splash, then Home's formation): as shipped; "from darkness" (Home is whole under a black veil and the candle's light spreads from the bottom-left corner over 2.2s to reveal it); "twilight" (everything materializes together over 1.4s as the candle comes on). The shipped arrival is untouched; the candidates exist only through the buttons (body classes arr-dark / arr-twilight).
 
