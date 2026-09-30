@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v392 (2026-09-29) — one candle for the whole app
+- Tom: the corner light "turned on" arriving at Learn or Profile. Cause: each tab built its own candle, and Home's was another. Now ONE candle is made once, sits under every tab (Home included), and is never rebuilt, so it travels with the nav light. Home's own ground exists only during the arrival and hands off to the one candle in the same frame at the end of the breath (both at rest). The candle hides under runners and fades with the bloom; its flame pauses while hidden so it resumes at rest. Full strength everywhere (the quieter tab variant is gone).
+
 ## v391 (2026-09-29) — the breathing arrival ships; the tab candle behind the content
 - THE LAUNCH is now "twilight, breathing": everything rises together over 1.4s, the candle with it, growing to 12% past rest at 1.6s and settling by 3s; the tile's pulse begins at 1.66s as the light turns back. The old formation (the ordered beats, the candle last) is kept under the Test Lab's "The old formation"; plain twilight too.
 - The tab candle sits at z-index -1, behind the Learn rows and the Profile buttons it was washing out (Home's content already sat above its light).

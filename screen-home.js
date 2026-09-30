@@ -104,7 +104,8 @@ function findLesson(id) {
 function destHero() { return (state.active === "spain") ? "./img/es/hero.jpg" : "./img/mx/sights.jpg"; }
 function setHomeAtmo() {
   clearHomeAtmo();
-  const a = el(`<div class="home-atmo" aria-hidden="true"><div class="atmo-ground"></div><div class="atmo-photo"><img src="${destHero()}" alt=""></div></div>`);
+  const arriving = document.body.classList.contains("arriving");   // Home's own ground breathes only during the arrival; afterwards the app's one candle is the light (Tom 9/29)
+  const a = el(`<div class="home-atmo" aria-hidden="true">${arriving ? `<div class="atmo-ground"></div>` : ""}<div class="atmo-photo"><img src="${destHero()}" alt=""></div></div>`);
   document.body.insertBefore(a, document.body.firstChild);
   document.body.classList.add("home-lit");                 // photo-on: transparent topbar, wordmark halo, white header text
 }

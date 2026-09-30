@@ -55,7 +55,7 @@ function showTabbar(active) {
   document.body.classList.remove("in-runner");   // every tab surface restores the rail
   const bar = document.getElementById("tabbar");
   if (active !== "home" && typeof clearHomeAtmo === "function") clearHomeAtmo();   // tear down the home photo/glow off-home
-  setTabCandle(active !== "home");                                                 // the corner light, with its flame, on every tab (Tom 9/29); Home carries its own
+  ensureCandle();                                                                  // ONE corner light under every tab, made once, never restarted (Tom 9/29)
   if (!bar) return;
   bar.classList.add("show");
   bar.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === active));
@@ -63,17 +63,16 @@ function showTabbar(active) {
   // which anchored the bloom to garbage x on first paint (light landing off-column)
   requestAnimationFrame(() => _setBloom(active, _positionNavLight(active)));
 }
-/* THE CANDLE ON EVERY TAB (Tom 9/29): Learn, Progress and Profile get the same corner light Home has, quieter, and it keeps the
-   flame (the slow drift and the faint flicker) like Home's. Runners have no candle. */
-function setTabCandle(on) {
-  document.querySelectorAll(".tab-candle").forEach(n => n.remove());
-  if (!on) return;
+/* THE CANDLE (Tom 9/29): one corner light for the whole app, made once and never rebuilt, so it travels with you from tab to tab
+   like the nav light does. It hides under a runner (body.in-runner) and during the arrival (Home's own light does the breathing,
+   then hands off); its flame is paused while hidden so it resumes at rest. */
+function ensureCandle() {
+  if (document.querySelector(".tab-candle")) return;
   const c = document.createElement("div"); c.className = "tab-candle"; c.setAttribute("aria-hidden", "true");
   c.innerHTML = '<div class="atmo-ground"></div>';
   document.body.insertBefore(c, document.body.firstChild);
 }
 function hideTabbar() {
-  setTabCandle(false);
   if (typeof clearHomeAtmo === "function") clearHomeAtmo();
   const bloom = document.querySelector(".bloom"); if (bloom) bloom.remove();
   const bar = document.getElementById("tabbar"); if (bar) bar.classList.remove("show");

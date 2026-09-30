@@ -236,7 +236,14 @@ function runSplashArrival(splash, ready) {
   const variant = document.body.classList.contains("arr-classic") ? "classic" : document.body.classList.contains("arr-twilight") ? "twilight" : "twilight3";   // Test Lab replays only (Tom 9/29); "from darkness" and the slow candle retired 9/29
   const buildup = instant => {
     timers.forEach(clearTimeout); timers = [];
-    const done = () => document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "arr-classic", "pulse-go");
+    const done = () => {
+      // the hand-off (Tom 9/29): Home's breathing ground gives way to the app's one candle in the same frame; both at rest, so nothing visibly changes
+      if (typeof ensureCandle === "function") ensureCandle();
+      const c = document.querySelector(".tab-candle"); if (c) c.style.transition = "none";
+      document.querySelectorAll(".home-atmo .atmo-ground").forEach(n => n.remove());
+      document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "arr-classic", "pulse-go");
+      if (c) requestAnimationFrame(() => requestAnimationFrame(() => { c.style.transition = ""; }));
+    };
     const applyAll = exceptCandle => ORDER.forEach(step => step[0].forEach(sel => { if (exceptCandle && sel === ".home-atmo .atmo-ground") return; document.querySelectorAll(sel).forEach(n => n.classList.add("arr-in")); }));
     if (variant === "twilight" && !instant && !reduced) {
       // TWILIGHT: everything materializes together as the candle comes on; one long breath, no order
@@ -340,7 +347,7 @@ function enterWith(fromEl, go) {
       // no further, so the edges stay grey. It rides the cover's scale, so its resting size is the reach divided by that scale.
       // the light was sized before the breathe; it rides this scale (centered by the stylesheet, never by left/top: Safari dropped those)
       if (app) app.classList.add("bloom-fade"); if (sheet) sheet.classList.add("bloom-fade");
-      document.querySelectorAll("#tabbar, .topbar, .home-atmo").forEach(n => n.classList.add("bloom-fade"));   // the bars and the home photo go too: the screen greys to the bare ground
+      document.querySelectorAll("#tabbar, .topbar, .home-atmo, .tab-candle").forEach(n => n.classList.add("bloom-fade"));   // the bars and the home photo go too: the screen greys to the bare ground
     }, 190);
     if (white) setTimeout(() => cover.classList.add("day"), 360);      // white: once the gold has bloomed, the daybreak comes up over it (as the splash: lantern, then day)
     setTimeout(paint, 450);                                            // 3. the hold: the next screen paints under the cover (it covers by ~420ms)
