@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v389 (2026-09-29) — the tile's first pulse in one motion (live); the tile at the candle's apex and a flame (Test Lab)
+- LIVE: the action tile's glow used to rise to its resting level in 0.7s and then climb again on the loop, a hitch in Tom's recording. The first cycle is now one motion: nothing → peak → rest over 2.6s, then the loop.
+- Test Lab: in the breathing arrival the pulse begins at 1.66s, as the corner light leaves its apex. A fourth button, "with flame": after the arrival the corner light drifts slowly (5.3s and 7.9s motions, alternating) with a faint 1.7s flicker.
+
 ## v388 (2026-09-29) — Test Lab: the breath, bigger and longer
 - Peak at 1.6s, 12% past rest and a fifth brighter; the settle takes 1.4s; 3.0s in all (was 2.3s, 7%, 12%).
 

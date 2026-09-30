@@ -2096,10 +2096,11 @@ img.scene-art { width: 286px; }
 .practice.as-button:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--border) 60%, #000), 0 2px 6px rgba(0,0,0,.3); }
 /* THE PULSE (Tom 9/24, Duolingo's cue for "this one"): a slow gold glow breathing behind the action tile, drawn as a shadow so iPhone renders it */
 @keyframes hero-pulse { 0%, 100% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 18px 2px rgba(216,183,19,.18); } 50% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 2px rgba(216,183,19,.28), 0 0 34px 10px rgba(216,183,19,.42); } }
-@keyframes hero-pulse-in { from { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 0 0 rgba(216,183,19,0); } to { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 18px 2px rgba(216,183,19,.18); } }
-/* the first breath rises from nothing over 700ms, then the loop takes over at exactly that level (Tom's recording 9/25: the glow used to jump in at its resting level) */
-.hero-tile.as-button { animation: hero-pulse-in 700ms ease-out both, hero-pulse 2600ms ease-in-out 700ms infinite; }
+@keyframes hero-pulse-first { 0% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 0 0 rgba(216,183,19,0); } 50% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 2px rgba(216,183,19,.28), 0 0 34px 10px rgba(216,183,19,.42); } 100% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 18px 2px rgba(216,183,19,.18); } }
+/* the first cycle is ONE motion: from nothing up to the peak and down to rest, then the loop takes over at rest (Tom's recording 9/29: a separate rise-in read as a hitch) */
+.hero-tile.as-button { animation: hero-pulse-first 2600ms ease-in-out both, hero-pulse 2600ms ease-in-out 2600ms infinite; }
 body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for the arrival: it begins as the candle finishes igniting (Tom 9/25) */
+body.arriving.pulse-go .hero-tile.as-button { animation: hero-pulse-first 2600ms ease-in-out both, hero-pulse 2600ms ease-in-out 2600ms infinite; }   /* Test Lab (Tom 9/29): the tile begins as the corner light leaves its apex */
 .hero-tile.as-button:active { animation: none; }
 @media (prefers-reduced-motion: reduce) { .hero-tile.as-button { animation: none; } }
 /* THE DOORS LEAVE ON THE SLIDE (Tom 9/24): the chapter door travels out like #qbody.leaving; the scene door lives in #qbody and uses it */
@@ -2198,3 +2199,11 @@ body.arr-twilight3 .home-atmo .atmo-ground.arr-in { animation: ground-breathe 30
   0%   { opacity: 0; transform: scale(.86); animation-timing-function: cubic-bezier(.3,.05,.2,1); }
   53%  { opacity: 1; transform: scale(1.12); filter: brightness(1.2); animation-timing-function: cubic-bezier(.4,0,.3,1); }   /* 1.6s: the peak, 12% past rest and a fifth brighter */
   100% { opacity: 1; transform: scale(1); filter: brightness(1); } }
+/* TEST LAB (Tom 9/29): the candle as a flame. After the arrival the corner light keeps a slow organic drift (two motions of different
+   lengths, so it never visibly repeats) and a faint quick flicker. Only on the "with flame" replay. */
+body.candle-flame:not(.arriving) .home-atmo .atmo-ground { transform-origin: 0% 100%;
+  animation: candle-drift 5300ms ease-in-out infinite alternate, candle-glow 7900ms ease-in-out infinite alternate, candle-flicker 1700ms ease-in-out infinite alternate; }
+@keyframes candle-drift { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.035) translate(5px, -4px); } }
+@keyframes candle-glow { from { filter: brightness(1); } to { filter: brightness(1.09); } }
+@keyframes candle-flicker { from { opacity: 1; } to { opacity: .94; } }
+

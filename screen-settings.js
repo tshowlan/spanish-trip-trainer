@@ -105,7 +105,7 @@ function renderProfile() {
   });
   wrap.appendChild(stg);
   // the arrival, replayed (Tom 9/29): the shipped form and two candidates, nothing shipped changes
-  const arr = el(`<div class="lab-row"><div class="lab-lbl">The arrival, replayed (splash, then Home)</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn-quiet" data-v="">As shipped</button><button class="btn-quiet" data-v="twilight">Twilight</button><button class="btn-quiet" data-v="twilight3">Twilight, breathing</button></div></div>`);
+  const arr = el(`<div class="lab-row"><div class="lab-lbl">The arrival, replayed (splash, then Home)</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn-quiet" data-v="">As shipped</button><button class="btn-quiet" data-v="twilight">Twilight</button><button class="btn-quiet" data-v="twilight3">Twilight, breathing</button><button class="btn-quiet" data-v="flame">Twilight, breathing, with flame</button></div></div>`);
   arr.querySelectorAll("button").forEach(b => b.addEventListener("click", () => devReplayArrival(b.dataset.v || null)));
   wrap.appendChild(arr);
   const fresh = el(`<button class="btn-quiet" style="margin:6px 0 10px">Start over as a fresh learner (keeps your profile)</button>`);
