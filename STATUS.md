@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v393 (2026-09-29) — the candle shows on Home after the hand-off
+- Tom: the light died on Home when the breath ended. The one candle (z -1) sat behind Home's photo layer, whose fade to the page color covers the corner. On Home the candle now takes the atmosphere's layer (z 0), placed just beneath the atmosphere in the DOM, so it shows through the photo's fade exactly as Home's own ground did.
+
 ## v392 (2026-09-29) — one candle for the whole app
 - Tom: the corner light "turned on" arriving at Learn or Profile. Cause: each tab built its own candle, and Home's was another. Now ONE candle is made once, sits under every tab (Home included), and is never rebuilt, so it travels with the nav light. Home's own ground exists only during the arrival and hands off to the one candle in the same frame at the end of the breath (both at rest). The candle hides under runners and fades with the bloom; its flame pauses while hidden so it resumes at rest. Full strength everywhere (the quieter tab variant is gone).
 

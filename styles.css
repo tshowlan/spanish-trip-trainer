@@ -2213,6 +2213,7 @@ body.arr-twilight3 .home-atmo .atmo-ground.arr-in, body.arriving:not(.arr-classi
   background: radial-gradient(190% 170% at -14% 116%, color-mix(in srgb, #c96a2b 40%, transparent) 0%, color-mix(in srgb, #e0952b 24%, transparent) 30%, color-mix(in srgb, var(--accent) 14%, transparent) 55%, color-mix(in srgb, var(--accent) 6%, transparent) 76%, transparent 94%); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tab-candle .atmo-ground { background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); } }
 :root[data-theme="dark"] .tab-candle .atmo-ground { background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); }
+body.home-lit .tab-candle { z-index: 0; }   /* on Home the candle rises to the atmosphere's layer, under the photo's fade and under the content (.home is z 1); elsewhere it stays behind everything */
 body.arriving .tab-candle, body.in-runner .tab-candle, .tab-candle.bloom-fade { opacity: 0; }   /* Home's own light does the arrival; runners have no candle; the bloom takes it with the bars */
 body.arriving .tab-candle .atmo-ground, body.in-runner .tab-candle .atmo-ground { animation-play-state: paused; }   /* the flame resumes at rest, where the arrival left the light */
 

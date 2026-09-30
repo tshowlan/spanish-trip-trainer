@@ -106,7 +106,8 @@ function setHomeAtmo() {
   clearHomeAtmo();
   const arriving = document.body.classList.contains("arriving");   // Home's own ground breathes only during the arrival; afterwards the app's one candle is the light (Tom 9/29)
   const a = el(`<div class="home-atmo" aria-hidden="true">${arriving ? `<div class="atmo-ground"></div>` : ""}<div class="atmo-photo"><img src="${destHero()}" alt=""></div></div>`);
-  document.body.insertBefore(a, document.body.firstChild);
+  const candle = document.querySelector(".tab-candle");
+  document.body.insertBefore(a, candle ? candle.nextSibling : document.body.firstChild);   // the atmosphere sits just ABOVE the app's one candle, so the light shows through the photo's fade as Home's own ground did (Tom 9/29)
   document.body.classList.add("home-lit");                 // photo-on: transparent topbar, wordmark halo, white header text
 }
 function clearHomeAtmo() {
