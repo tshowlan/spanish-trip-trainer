@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v390 (2026-09-29) — the flame, shipped: Home and every tab
+- Tom: "i love it". The corner light's flame (the 5.3s and 7.9s drifts, the 1.7s flicker) is live on Home once its arrival is done, and Learn, Progress and Profile now carry the same corner light, a little quieter, with the flame. Runners have none. Off under reduced motion. The Test Lab's "with flame" button is gone (it is the baseline now); "Twilight, breathing" stays as the arrival candidate.
+
 ## v389 (2026-09-29) — the tile's first pulse in one motion (live); the tile at the candle's apex and a flame (Test Lab)
 - LIVE: the action tile's glow used to rise to its resting level in 0.7s and then climb again on the loop, a hitch in Tom's recording. The first cycle is now one motion: nothing → peak → rest over 2.6s, then the loop.
 - Test Lab: in the breathing arrival the pulse begins at 1.66s, as the corner light leaves its apex. A fourth button, "with flame": after the arrival the corner light drifts slowly (5.3s and 7.9s motions, alternating) with a faint 1.7s flicker.

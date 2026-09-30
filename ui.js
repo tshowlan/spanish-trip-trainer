@@ -199,11 +199,10 @@ function initSplash() {
    materializes together as the candle comes on). Nothing here touches the shipped arrival. */
 function devReplayArrival(variant) {
   document.querySelectorAll("#splash").forEach(n => n.remove());
-  document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "pulse-go", "candle-flame");
-  const flame = variant === "flame"; if (flame) variant = "twilight3";
+  document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "pulse-go");
   const s = el(`<div id="splash" class="arrival"></div>`);
   document.body.appendChild(s);
-  document.body.classList.add("arriving"); if (variant) document.body.classList.add("arr-" + variant); if (flame) document.body.classList.add("candle-flame");
+  document.body.classList.add("arriving"); if (variant) document.body.classList.add("arr-" + variant);
   s.innerHTML = splashMarkup();
   if (typeof showTabbar === "function") showTabbar("home");
   renderHome();
@@ -233,7 +232,7 @@ function runSplashArrival(splash, ready) {
     [[".whisper", ".presence"], 1550]                    // whisper last
   ];
   let timers = [];
-  const variant = document.body.classList.contains("arr-twilight3") ? "twilight3" : document.body.classList.contains("arr-twilight") ? "twilight" : null;   // "with flame" = twilight3 + body.candle-flame   // Test Lab replays only (Tom 9/29); "from darkness" and the slow candle retired 9/29
+  const variant = document.body.classList.contains("arr-twilight3") ? "twilight3" : document.body.classList.contains("arr-twilight") ? "twilight" : null;   // Test Lab replays only (Tom 9/29); "from darkness" and the slow candle retired 9/29
   const buildup = instant => {
     timers.forEach(clearTimeout); timers = [];
     const done = () => document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "pulse-go");

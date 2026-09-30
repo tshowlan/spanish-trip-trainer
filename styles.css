@@ -2199,11 +2199,20 @@ body.arr-twilight3 .home-atmo .atmo-ground.arr-in { animation: ground-breathe 30
   0%   { opacity: 0; transform: scale(.86); animation-timing-function: cubic-bezier(.3,.05,.2,1); }
   53%  { opacity: 1; transform: scale(1.12); filter: brightness(1.2); animation-timing-function: cubic-bezier(.4,0,.3,1); }   /* 1.6s: the peak, 12% past rest and a fifth brighter */
   100% { opacity: 1; transform: scale(1); filter: brightness(1); } }
-/* TEST LAB (Tom 9/29): the candle as a flame. After the arrival the corner light keeps a slow organic drift (two motions of different
-   lengths, so it never visibly repeats) and a faint quick flicker. Only on the "with flame" replay. */
-body.candle-flame:not(.arriving) .home-atmo .atmo-ground { transform-origin: 0% 100%;
+/* THE FLAME (Tom 9/29, shipped): the corner light keeps a slow organic drift (two motions of different lengths, so it never visibly
+   repeats) and a faint quick flicker. On Home once its arrival is done, and on every tab's candle. Off under reduced motion. */
+body:not(.arriving) .home-atmo .atmo-ground, .tab-candle .atmo-ground { transform-origin: 0% 100%;
   animation: candle-drift 5300ms ease-in-out infinite alternate, candle-glow 7900ms ease-in-out infinite alternate, candle-flicker 1700ms ease-in-out infinite alternate; }
 @keyframes candle-drift { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.035) translate(5px, -4px); } }
 @keyframes candle-glow { from { filter: brightness(1); } to { filter: brightness(1.09); } }
 @keyframes candle-flicker { from { opacity: 1; } to { opacity: .94; } }
+@media (prefers-reduced-motion: reduce) { body:not(.arriving) .home-atmo .atmo-ground, .tab-candle .atmo-ground { animation: none; } }
+/* the candle on every tab: Home's corner light, a little quieter, under the content */
+.tab-candle { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; z-index: 0; pointer-events: none; }
+.tab-candle .atmo-ground { position: absolute; inset: 0; opacity: .85;
+  background: radial-gradient(190% 170% at -14% 116%, color-mix(in srgb, #c96a2b 34%, transparent) 0%, color-mix(in srgb, #e0952b 20%, transparent) 30%, color-mix(in srgb, var(--accent) 12%, transparent) 55%, color-mix(in srgb, var(--accent) 5%, transparent) 76%, transparent 94%); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tab-candle .atmo-ground { background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.27) 0%, rgba(230,198,42,.10) 40%, rgba(230,198,42,.04) 68%, transparent 94%); } }
+:root[data-theme="dark"] .tab-candle .atmo-ground { background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.27) 0%, rgba(230,198,42,.10) 40%, rgba(230,198,42,.04) 68%, transparent 94%); }
+.tab-candle .atmo-ground { animation-name: candle-drift, candle-glow, candle-flicker-tab; }
+@keyframes candle-flicker-tab { from { opacity: .85; } to { opacity: .80; } }
 
