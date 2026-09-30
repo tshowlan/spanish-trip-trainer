@@ -199,7 +199,7 @@ function initSplash() {
    materializes together as the candle comes on). Nothing here touches the shipped arrival. */
 function devReplayArrival(variant) {
   document.querySelectorAll("#splash").forEach(n => n.remove());
-  document.body.classList.remove("arriving", "arr-twilight", "arr-twilight2");
+  document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3");
   const s = el(`<div id="splash" class="arrival"></div>`);
   document.body.appendChild(s);
   document.body.classList.add("arriving"); if (variant) document.body.classList.add("arr-" + variant);
@@ -232,10 +232,10 @@ function runSplashArrival(splash, ready) {
     [[".whisper", ".presence"], 1550]                    // whisper last
   ];
   let timers = [];
-  const variant = document.body.classList.contains("arr-twilight2") ? "twilight2" : document.body.classList.contains("arr-twilight") ? "twilight" : null;   // Test Lab replays only (Tom 9/29); "from darkness" retired 9/29
+  const variant = document.body.classList.contains("arr-twilight3") ? "twilight3" : document.body.classList.contains("arr-twilight") ? "twilight" : null;   // Test Lab replays only (Tom 9/29); "from darkness" and the slow candle retired 9/29
   const buildup = instant => {
     timers.forEach(clearTimeout); timers = [];
-    const done = () => document.body.classList.remove("arriving", "arr-twilight", "arr-twilight2");
+    const done = () => document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3");
     const applyAll = exceptCandle => ORDER.forEach(step => step[0].forEach(sel => { if (exceptCandle && sel === ".home-atmo .atmo-ground") return; document.querySelectorAll(sel).forEach(n => n.classList.add("arr-in")); }));
     if (variant === "twilight" && !instant && !reduced) {
       // TWILIGHT: everything materializes together as the candle comes on; one long breath, no order
@@ -243,11 +243,12 @@ function runSplashArrival(splash, ready) {
       timers.push(setTimeout(done, 2100));
       return;
     }
-    if (variant === "twilight2" && !instant && !reduced) {
-      // TWILIGHT, THE CANDLE AT ITS SHIPPED PACE: everything else rises together; the candle ignites last, as shipped (1.8s in, over 1.8s)
+    if (variant === "twilight3" && !instant && !reduced) {
+      // TWILIGHT, BREATHING: everything rises together; the candle starts a beat later and BREATHES into the corner: it grows out of
+      // the corner as it brightens, catches fast, settles slow, with a small swell before it rests (2.2s from 0.4s in)
       timers.push(setTimeout(() => applyAll(true), 60));
-      timers.push(setTimeout(() => document.querySelectorAll(".home-atmo .atmo-ground").forEach(n => n.classList.add("arr-in")), 1800));
-      timers.push(setTimeout(done, 3750));
+      timers.push(setTimeout(() => document.querySelectorAll(".home-atmo .atmo-ground").forEach(n => n.classList.add("arr-in")), 400));
+      timers.push(setTimeout(done, 2800));
       return;
     }
     ORDER.forEach(step => {

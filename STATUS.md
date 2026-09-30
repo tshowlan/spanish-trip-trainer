@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v386 (2026-09-29) — Test Lab: "Twilight, breathing" replaces the slow candle
+- The candle grows out of the corner as it brightens (scale .55 to 1 from the bottom-left, a small swell at 80%), catching fast and settling slow over 2.2s, starting 0.4s after everything else begins to rise. The shipped candle stays opacity-only.
+
 ## v385 (2026-09-29) — Test Lab: "from darkness" retired; a second twilight with the candle at the shipped pace
 - Tom likes twilight. New button "Twilight, slow candle": everything rises together as before, but the candle ignites as shipped (1.8s in, over 1.8s), so the light arrives last. The veil variant and its CSS are gone.
 
