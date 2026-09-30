@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v394 (2026-09-29) — the candle shows on every tab; the flame twice as visible
+- Tom's recording, measured: on the tabs the candle was invisible (a negative depth put it under the body's own background, which paints as an ordinary layer because html carries a color); on Home the flame wavered by one luma unit. Now the candle sits at depth 0 and #app at depth 1 on every tab (the bars are 10/40/60, unchanged), so the light is above the page and below the content everywhere; and the drift, the glow, and the flicker are doubled.
+
 ## v393 (2026-09-29) — the candle shows on Home after the hand-off
 - Tom: the light died on Home when the breath ended. The one candle (z -1) sat behind Home's photo layer, whose fade to the page color covers the corner. On Home the candle now takes the atmosphere's layer (z 0), placed just beneath the atmosphere in the DOM, so it shows through the photo's fade exactly as Home's own ground did.
 

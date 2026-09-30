@@ -2203,17 +2203,17 @@ body.arr-twilight3 .home-atmo .atmo-ground.arr-in, body.arriving:not(.arr-classi
    repeats) and a faint quick flicker. On Home once its arrival is done, and on every tab's candle. Off under reduced motion. */
 .tab-candle .atmo-ground { transform-origin: 0% 100%;
   animation: candle-drift 5300ms ease-in-out infinite alternate, candle-glow 7900ms ease-in-out infinite alternate, candle-flicker 1700ms ease-in-out infinite alternate; }
-@keyframes candle-drift { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.035) translate(5px, -4px); } }
-@keyframes candle-glow { from { filter: brightness(1); } to { filter: brightness(1.09); } }
-@keyframes candle-flicker { from { opacity: 1; } to { opacity: .94; } }
+@keyframes candle-drift { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.08) translate(10px, -8px); } }   /* Tom's recording 9/29 measured a one-unit waver: doubled */
+@keyframes candle-glow { from { filter: brightness(1); } to { filter: brightness(1.18); } }
+@keyframes candle-flicker { from { opacity: 1; } to { opacity: .88; } }
 @media (prefers-reduced-motion: reduce) { .tab-candle .atmo-ground { animation: none; } }
 /* the candle on every tab: Home's corner light, a little quieter, under the content */
-.tab-candle { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; z-index: -1; pointer-events: none; transition: opacity 400ms ease; }   /* BEHIND the content (Tom 9/29); one for the whole app */
+.tab-candle { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; z-index: 0; pointer-events: none; transition: opacity 400ms ease; }   /* one for the whole app: above the page's background, below the content (Tom 9/29) */
+#app { position: relative; z-index: 1; }   /* the content sits above the candle on every tab (the bars are 10, 40, 60 and stay above the content); a negative depth had put the candle UNDER the body's own background, which paints as an ordinary layer because html carries a color */
 .tab-candle .atmo-ground { position: absolute; inset: 0;
   background: radial-gradient(190% 170% at -14% 116%, color-mix(in srgb, #c96a2b 40%, transparent) 0%, color-mix(in srgb, #e0952b 24%, transparent) 30%, color-mix(in srgb, var(--accent) 14%, transparent) 55%, color-mix(in srgb, var(--accent) 6%, transparent) 76%, transparent 94%); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tab-candle .atmo-ground { background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); } }
 :root[data-theme="dark"] .tab-candle .atmo-ground { background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); }
-body.home-lit .tab-candle { z-index: 0; }   /* on Home the candle rises to the atmosphere's layer, under the photo's fade and under the content (.home is z 1); elsewhere it stays behind everything */
 body.arriving .tab-candle, body.in-runner .tab-candle, .tab-candle.bloom-fade { opacity: 0; }   /* Home's own light does the arrival; runners have no candle; the bloom takes it with the bars */
 body.arriving .tab-candle .atmo-ground, body.in-runner .tab-candle .atmo-ground { animation-play-state: paused; }   /* the flame resumes at rest, where the arrival left the light */
 
