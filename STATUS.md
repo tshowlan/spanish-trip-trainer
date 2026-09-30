@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v387 (2026-09-29) — Test Lab: twilight, breathing, reshaped
+- Tom: the stop-start read as odd. Now the candle rises with everything at twilight's pace in one smooth motion, to 7% larger and 12% brighter than rest at 1.4s, then breathes back down to twilight's resting state over 0.9s. Starts with the rest, not after.
+
 ## v386 (2026-09-29) — Test Lab: "Twilight, breathing" replaces the slow candle
 - The candle grows out of the corner as it brightens (scale .55 to 1 from the bottom-left, a small swell at 80%), catching fast and settling slow over 2.2s, starting 0.4s after everything else begins to rise. The shipped candle stays opacity-only.
 

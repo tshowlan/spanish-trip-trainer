@@ -244,11 +244,10 @@ function runSplashArrival(splash, ready) {
       return;
     }
     if (variant === "twilight3" && !instant && !reduced) {
-      // TWILIGHT, BREATHING: everything rises together; the candle starts a beat later and BREATHES into the corner: it grows out of
-      // the corner as it brightens, catches fast, settles slow, with a small swell before it rests (2.2s from 0.4s in)
-      timers.push(setTimeout(() => applyAll(true), 60));
-      timers.push(setTimeout(() => document.querySelectorAll(".home-atmo .atmo-ground").forEach(n => n.classList.add("arr-in")), 400));
-      timers.push(setTimeout(done, 2800));
+      // TWILIGHT, BREATHING (Tom 9/29): everything rises together at twilight's pace, the candle with it; the candle grows in one smooth
+      // motion to a touch past its resting size and brightness (1.4s), then breathes back down to where twilight leaves it (0.9s)
+      timers.push(setTimeout(() => applyAll(false), 60));
+      timers.push(setTimeout(done, 2500));
       return;
     }
     ORDER.forEach(step => {

@@ -2193,5 +2193,8 @@ body.arr-twilight .hero-tile, body.arr-twilight .practice, body.arr-twilight .ho
   transition-duration: 1400ms !important; transition-timing-function: cubic-bezier(.3,.05,.2,1) !important; }   /* twilight: one long breath together */
 body.arr-twilight .home-atmo .atmo-ground.arr-in { animation-duration: 1400ms; }
 body.arr-twilight3 .home-atmo .atmo-ground { transform-origin: 0% 100%; }
-body.arr-twilight3 .home-atmo .atmo-ground.arr-in { animation: ground-breathe 2200ms cubic-bezier(.25,.6,.3,1) both; }   /* twilight, breathing: the glow grows out of the corner as it brightens */
-@keyframes ground-breathe { 0% { opacity: 0; transform: scale(.55); } 45% { opacity: .78; transform: scale(.93); } 80% { opacity: .97; transform: scale(1.03); } 100% { opacity: 1; transform: scale(1); } }
+body.arr-twilight3 .home-atmo .atmo-ground.arr-in { animation: ground-breathe 2300ms both; }   /* twilight, breathing: up in one motion with everything else, a touch past rest, then back down */
+@keyframes ground-breathe {
+  0%   { opacity: 0; transform: scale(.86); animation-timing-function: cubic-bezier(.3,.05,.2,1); }
+  61%  { opacity: 1; transform: scale(1.07); filter: brightness(1.12); animation-timing-function: cubic-bezier(.4,0,.35,1); }   /* 1.4s: the peak, a little past where it will rest */
+  100% { opacity: 1; transform: scale(1); filter: brightness(1); } }
