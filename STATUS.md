@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v391 (2026-09-29) — the breathing arrival ships; the tab candle behind the content
+- THE LAUNCH is now "twilight, breathing": everything rises together over 1.4s, the candle with it, growing to 12% past rest at 1.6s and settling by 3s; the tile's pulse begins at 1.66s as the light turns back. The old formation (the ordered beats, the candle last) is kept under the Test Lab's "The old formation"; plain twilight too.
+- The tab candle sits at z-index -1, behind the Learn rows and the Profile buttons it was washing out (Home's content already sat above its light).
+
 ## v390 (2026-09-29) — the flame, shipped: Home and every tab
 - Tom: "i love it". The corner light's flame (the 5.3s and 7.9s drifts, the 1.7s flicker) is live on Home once its arrival is done, and Learn, Progress and Profile now carry the same corner light, a little quieter, with the flame. Runners have none. Off under reduced motion. The Test Lab's "with flame" button is gone (it is the baseline now); "Twilight, breathing" stays as the arrival candidate.
 

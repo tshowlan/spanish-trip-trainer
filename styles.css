@@ -2189,12 +2189,12 @@ body.arriving.pulse-go .hero-tile.as-button { animation: hero-pulse-first 2600ms
 .order-grid .plate { display: block; width: 100%; box-sizing: border-box; text-align: center; font-size: 13px; padding: 9px 4px; letter-spacing: .05em; }
 .order-grid > .plate:nth-child(3n+1):last-child { grid-column: 2; }   /* a lone plate on the last row sits in the middle (Domingo; Tom 9/28) */
 /* TEST LAB ARRIVAL CANDIDATES (Tom 9/29; dev replays only, the shipped formation is untouched). "From darkness" retired 9/29. */
-body.arr-twilight .home-atmo .atmo-photo, body.arr-twilight3 .home-atmo .atmo-photo, body.arr-twilight3 .topbar, body.arr-twilight3 .trip, body.arr-twilight3 .scores, body.arr-twilight3 .empty-hero, body.arr-twilight3 .hero-tile, body.arr-twilight3 .practice, body.arr-twilight3 .home-diverge, body.arr-twilight3 .whisper, body.arr-twilight3 .presence, body.arr-twilight3 #tabbar, body.arr-twilight .topbar, body.arr-twilight .trip, body.arr-twilight .scores, body.arr-twilight .empty-hero,
+body.arr-twilight .home-atmo .atmo-photo, body.arriving:not(.arr-classic) .home-atmo .atmo-photo, body.arriving:not(.arr-classic) .topbar, body.arriving:not(.arr-classic) .trip, body.arriving:not(.arr-classic) .scores, body.arriving:not(.arr-classic) .empty-hero, body.arriving:not(.arr-classic) .hero-tile, body.arriving:not(.arr-classic) .practice, body.arriving:not(.arr-classic) .home-diverge, body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .presence, body.arriving:not(.arr-classic) #tabbar, body.arr-twilight3 .home-atmo .atmo-photo, body.arr-twilight3 .topbar, body.arr-twilight3 .trip, body.arr-twilight3 .scores, body.arr-twilight3 .empty-hero, body.arr-twilight3 .hero-tile, body.arr-twilight3 .practice, body.arr-twilight3 .home-diverge, body.arr-twilight3 .whisper, body.arr-twilight3 .presence, body.arr-twilight3 #tabbar, body.arr-twilight .topbar, body.arr-twilight .trip, body.arr-twilight .scores, body.arr-twilight .empty-hero,
 body.arr-twilight .hero-tile, body.arr-twilight .practice, body.arr-twilight .home-diverge, body.arr-twilight .whisper, body.arr-twilight .presence, body.arr-twilight #tabbar {
   transition-duration: 1400ms !important; transition-timing-function: cubic-bezier(.3,.05,.2,1) !important; }   /* twilight: one long breath together */
 body.arr-twilight .home-atmo .atmo-ground.arr-in { animation-duration: 1400ms; }
-body.arr-twilight3 .home-atmo .atmo-ground { transform-origin: 0% 100%; }
-body.arr-twilight3 .home-atmo .atmo-ground.arr-in { animation: ground-breathe 3000ms both; }   /* twilight, breathing: up in one motion with everything else, past rest, then back down (bigger and longer, Tom 9/29) */
+body.arr-twilight3 .home-atmo .atmo-ground, body.arriving:not(.arr-classic):not(.arr-twilight) .home-atmo .atmo-ground { transform-origin: 0% 100%; }
+body.arr-twilight3 .home-atmo .atmo-ground.arr-in, body.arriving:not(.arr-classic):not(.arr-twilight) .home-atmo .atmo-ground.arr-in { animation: ground-breathe 3000ms both; }   /* twilight, breathing: up in one motion with everything else, past rest, then back down (bigger and longer, Tom 9/29) */
 @keyframes ground-breathe {
   0%   { opacity: 0; transform: scale(.86); animation-timing-function: cubic-bezier(.3,.05,.2,1); }
   53%  { opacity: 1; transform: scale(1.12); filter: brightness(1.2); animation-timing-function: cubic-bezier(.4,0,.3,1); }   /* 1.6s: the peak, 12% past rest and a fifth brighter */
@@ -2208,7 +2208,7 @@ body:not(.arriving) .home-atmo .atmo-ground, .tab-candle .atmo-ground { transfor
 @keyframes candle-flicker { from { opacity: 1; } to { opacity: .94; } }
 @media (prefers-reduced-motion: reduce) { body:not(.arriving) .home-atmo .atmo-ground, .tab-candle .atmo-ground { animation: none; } }
 /* the candle on every tab: Home's corner light, a little quieter, under the content */
-.tab-candle { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; z-index: 0; pointer-events: none; }
+.tab-candle { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; z-index: -1; pointer-events: none; }   /* BEHIND the content (Tom 9/29: it washed out the Learn rows and the Profile buttons); Home's content sits above its own light already */
 .tab-candle .atmo-ground { position: absolute; inset: 0; opacity: .85;
   background: radial-gradient(190% 170% at -14% 116%, color-mix(in srgb, #c96a2b 34%, transparent) 0%, color-mix(in srgb, #e0952b 20%, transparent) 30%, color-mix(in srgb, var(--accent) 12%, transparent) 55%, color-mix(in srgb, var(--accent) 5%, transparent) 76%, transparent 94%); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tab-candle .atmo-ground { background: radial-gradient(185% 165% at -14% 116%, rgba(201,106,43,.27) 0%, rgba(230,198,42,.10) 40%, rgba(230,198,42,.04) 68%, transparent 94%); } }

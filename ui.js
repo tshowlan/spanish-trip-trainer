@@ -199,7 +199,7 @@ function initSplash() {
    materializes together as the candle comes on). Nothing here touches the shipped arrival. */
 function devReplayArrival(variant) {
   document.querySelectorAll("#splash").forEach(n => n.remove());
-  document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "pulse-go");
+  document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "arr-classic", "pulse-go");
   const s = el(`<div id="splash" class="arrival"></div>`);
   document.body.appendChild(s);
   document.body.classList.add("arriving"); if (variant) document.body.classList.add("arr-" + variant);
@@ -232,10 +232,11 @@ function runSplashArrival(splash, ready) {
     [[".whisper", ".presence"], 1550]                    // whisper last
   ];
   let timers = [];
-  const variant = document.body.classList.contains("arr-twilight3") ? "twilight3" : document.body.classList.contains("arr-twilight") ? "twilight" : null;   // Test Lab replays only (Tom 9/29); "from darkness" and the slow candle retired 9/29
+  // THE LAUNCH (Tom 9/29): twilight, breathing, is the arrival. The old formation lives on under body.arr-classic (Test Lab); plain twilight too.
+  const variant = document.body.classList.contains("arr-classic") ? "classic" : document.body.classList.contains("arr-twilight") ? "twilight" : "twilight3";   // Test Lab replays only (Tom 9/29); "from darkness" and the slow candle retired 9/29
   const buildup = instant => {
     timers.forEach(clearTimeout); timers = [];
-    const done = () => document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "pulse-go");
+    const done = () => document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "arr-classic", "pulse-go");
     const applyAll = exceptCandle => ORDER.forEach(step => step[0].forEach(sel => { if (exceptCandle && sel === ".home-atmo .atmo-ground") return; document.querySelectorAll(sel).forEach(n => n.classList.add("arr-in")); }));
     if (variant === "twilight" && !instant && !reduced) {
       // TWILIGHT: everything materializes together as the candle comes on; one long breath, no order

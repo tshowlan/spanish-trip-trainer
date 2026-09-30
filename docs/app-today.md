@@ -3,7 +3,7 @@
 *One line per surface, current state, plain English. This is what Tom reads instead of holding the app in his head. Updated with every ship; the friction map was a snapshot of it. STAGED = built and deployed behind the Staging switch (Profile → Test Lab), not yet shipped; ships on Tom's word.*
 
 ## Doors into the app
-- **Arrival (splash):** the lighthouse, the daybreak, the dials forming. Unchanged since July; loved.
+- **Arrival (splash):** the lighthouse, the daybreak, then Home materializes together in one breath while the corner light grows a little past rest and settles (twilight, breathing, v391); the tile's pulse begins as the light turns back.
 - **Onboarding:** destination and date, trip kind, lodging, transport, needs and allergies, home city, the grammar question, the level check. New users only.
 - **Home:** three dials, the action tile (one action: next session / review / cram) built as a button: a pressed edge, the card sinks on press, a slow gold pulse behind it, the session's one line under its title, the photo fading into a slim strip on the right that holds the chevron. The Review row (named Practice until v355) is a button the same way, and does not appear until something has been met. The insight whisper (the divergence line is parked until chapter 3, v380). When a scene is ready and the trip is near, the tile reads "Scene: Café Paloma is ready." (v344)
 - **The candle:** the corner light on Home and on every tab (Learn, Progress, Profile) is alive: a slow drift and a faint flicker, the flame (v390).
