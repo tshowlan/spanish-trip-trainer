@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v388 (2026-09-29) — Test Lab: the breath, bigger and longer
+- Peak at 1.6s, 12% past rest and a fifth brighter; the settle takes 1.4s; 3.0s in all (was 2.3s, 7%, 12%).
+
 ## v387 (2026-09-29) — Test Lab: twilight, breathing, reshaped
 - Tom: the stop-start read as odd. Now the candle rises with everything at twilight's pace in one smooth motion, to 7% larger and 12% brighter than rest at 1.4s, then breathes back down to twilight's resting state over 0.9s. Starts with the rest, not after.
 

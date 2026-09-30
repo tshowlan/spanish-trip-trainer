@@ -2193,8 +2193,8 @@ body.arr-twilight .hero-tile, body.arr-twilight .practice, body.arr-twilight .ho
   transition-duration: 1400ms !important; transition-timing-function: cubic-bezier(.3,.05,.2,1) !important; }   /* twilight: one long breath together */
 body.arr-twilight .home-atmo .atmo-ground.arr-in { animation-duration: 1400ms; }
 body.arr-twilight3 .home-atmo .atmo-ground { transform-origin: 0% 100%; }
-body.arr-twilight3 .home-atmo .atmo-ground.arr-in { animation: ground-breathe 2300ms both; }   /* twilight, breathing: up in one motion with everything else, a touch past rest, then back down */
+body.arr-twilight3 .home-atmo .atmo-ground.arr-in { animation: ground-breathe 3000ms both; }   /* twilight, breathing: up in one motion with everything else, past rest, then back down (bigger and longer, Tom 9/29) */
 @keyframes ground-breathe {
   0%   { opacity: 0; transform: scale(.86); animation-timing-function: cubic-bezier(.3,.05,.2,1); }
-  61%  { opacity: 1; transform: scale(1.07); filter: brightness(1.12); animation-timing-function: cubic-bezier(.4,0,.35,1); }   /* 1.4s: the peak, a little past where it will rest */
+  53%  { opacity: 1; transform: scale(1.12); filter: brightness(1.2); animation-timing-function: cubic-bezier(.4,0,.3,1); }   /* 1.6s: the peak, 12% past rest and a fifth brighter */
   100% { opacity: 1; transform: scale(1); filter: brightness(1); } }

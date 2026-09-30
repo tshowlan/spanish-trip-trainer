@@ -247,7 +247,7 @@ function runSplashArrival(splash, ready) {
       // TWILIGHT, BREATHING (Tom 9/29): everything rises together at twilight's pace, the candle with it; the candle grows in one smooth
       // motion to a touch past its resting size and brightness (1.4s), then breathes back down to where twilight leaves it (0.9s)
       timers.push(setTimeout(() => applyAll(false), 60));
-      timers.push(setTimeout(done, 2500));
+      timers.push(setTimeout(done, 3200));
       return;
     }
     ORDER.forEach(step => {
