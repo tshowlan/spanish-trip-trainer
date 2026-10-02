@@ -1289,6 +1289,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v396 (2026-10-02) — the core small and quiet
+- Tom's recording, measured at the corner band (left minus right luma): rest 15.3 (was 13.8 before the rebuild), swinging to 17.8 every 4.7s, launch peak 30 (the old breath peaked near 15). The core was 0.72W by 0.44H, so its breath read as the background pulsing from the bottom. Now: core 0.39W by 0.24H at about half the strength; the slow breath scale 1.05 / brightness 1.12; flicker to .9; the launch breath scale 1.3 / brightness 1.35. The wash (the old ground) is untouched, so the resting look returns to what shipped.
+
 ## v395 (2026-10-02) — the one light travels with the nav line; the flame lives at the source
 - Tom's recording: the tabs' background oscillated (the flame's drift slid a full-screen gradient) and Home "shifted" at 6s (the breath's settle shrank the same full-screen gradient). And the ask: the light should move with the nav line, a beat behind, like a flame following a candle.
 - ONE LIGHT now: .tab-candle > .candle-pos (three screens wide, the source at its middle; translateX places the source; glides 620ms with a 70ms lag) > .candle-wash (Home's old ground, still) + .candle-core (small, at the source; carries the flame and, at launch, the breath). Home: the source in the bottom-left corner as always; other tabs: under the active tab. July's .bloom and Home's own .atmo-ground are retired; the arrival animates the candle itself (no hand-off).
