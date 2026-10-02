@@ -1289,6 +1289,11 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v397 (2026-10-02) — the light back to what it was; the real shift fixed
+- MISDIAGNOSIS CORRECTED: the launch "shift" was never the light. Frame differences (5.2s vs 5.75s) show every Home element moving together: twilight kept the old formation's 4px rise and stretched it over 1.4s, so its tail landed after everything was visible. Twilight is now a fade only.
+- The light is restored to Home's ground exactly as in Tom's 15-36 recording: one glow (no core), the same breath at launch (ground-breathe, from the corner), the same flame on Home. Kept from 10/2, because Tom asked for it: the light travels with the nav line (620ms, 70ms behind). Off Home the flame is brightness only (nothing slides).
+- Lesson recorded: do not change what was not asked; diff frames before blaming a cause.
+
 ## v396 (2026-10-02) — the core small and quiet
 - Tom's recording, measured at the corner band (left minus right luma): rest 15.3 (was 13.8 before the rebuild), swinging to 17.8 every 4.7s, launch peak 30 (the old breath peaked near 15). The core was 0.72W by 0.44H, so its breath read as the background pulsing from the bottom. Now: core 0.39W by 0.24H at about half the strength; the slow breath scale 1.05 / brightness 1.12; flicker to .9; the launch breath scale 1.3 / brightness 1.35. The wash (the old ground) is untouched, so the resting look returns to what shipped.
 

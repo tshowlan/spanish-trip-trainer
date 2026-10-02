@@ -68,7 +68,7 @@ function showTabbar(active) {
 function ensureCandle() {
   if (document.querySelector(".tab-candle")) return;
   const c = document.createElement("div"); c.className = "tab-candle"; c.setAttribute("aria-hidden", "true");
-  c.innerHTML = '<div class="candle-pos"><div class="candle-wash"></div><div class="candle-core"></div></div>';
+  c.innerHTML = '<div class="candle-pos"><div class="candle-wash"></div></div>';   // one glow, Home's ground as it always was (the 10/2 "core" is gone: Tom did not ask for a different light)
   document.body.insertBefore(c, document.body.firstChild);
 }
 function hideTabbar() {
