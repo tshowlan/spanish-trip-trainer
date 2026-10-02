@@ -2211,10 +2211,12 @@ body.arr-twilight3 .home-atmo .atmo-ground.arr-in, body.arriving:not(.arr-classi
   animation: candle-glow-tab 7900ms ease-in-out infinite alternate, candle-flicker-tab 1700ms ease-in-out infinite alternate; }   /* off Home: brightness only, nothing slides */
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .candle-wash { background: radial-gradient(61.667% 165% at 50% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); } }
 :root[data-theme="dark"] .candle-wash { background: radial-gradient(61.667% 165% at 50% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); }
-body.home-lit .candle-wash { animation: candle-drift 5300ms ease-in-out infinite alternate, candle-glow 7900ms ease-in-out infinite alternate, candle-flicker 1700ms ease-in-out infinite alternate; }   /* on Home: the flame as in the 15-36 recording */
-@keyframes candle-drift { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.08) translate(10px, -8px); } }
-@keyframes candle-glow { from { filter: brightness(1); } to { filter: brightness(1.18); } }
-@keyframes candle-flicker { from { opacity: 1; } to { opacity: .88; } }
+body.home-lit .candle-wash { animation: candle-drift 5300ms ease-in-out infinite alternate, candle-glow 7900ms ease-in-out infinite alternate, candle-flicker 1700ms ease-in-out infinite alternate; }   /* on Home: the drifting flame */
+/* the flame at the strength Tom approved in the Test Lab on 9/29 (v389). It was doubled on 10/2 and read as the background moving (recordings 15-50, 16-06) */
+@keyframes candle-drift { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.035) translate(5px, -4px); } }
+@keyframes candle-glow { from { filter: brightness(1); } to { filter: brightness(1.09); } }
+@keyframes candle-flicker { from { opacity: 1; } to { opacity: .94; } }
+body.flame-still .candle-wash { animation: none !important; }   /* Test Lab: the light held still, to tell the flame apart from anything else that moves */
 @keyframes candle-glow-tab { from { filter: brightness(1); } to { filter: brightness(1.07); } }
 @keyframes candle-flicker-tab { from { opacity: 1; } to { opacity: .95; } }
 body.in-runner .tab-candle, .tab-candle.bloom-fade { opacity: 0; }                                  /* runners have no candle; the bloom takes it with the bars */
@@ -2231,4 +2233,9 @@ body.arriving.arr-classic .tab-candle.arr-in .candle-wash { animation-duration: 
 body.arriving:not(.arr-classic) .home-atmo .atmo-photo, body.arriving:not(.arr-classic) .topbar, body.arriving:not(.arr-classic) .trip, body.arriving:not(.arr-classic) .scores,
 body.arriving:not(.arr-classic) .empty-hero, body.arriving:not(.arr-classic) .hero-tile, body.arriving:not(.arr-classic) .practice, body.arriving:not(.arr-classic) .home-diverge,
 body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .presence { transform: none; }
+/* THE JUMP AT THE END OF THE FADE (recording 10/2 16-06, measured element by element): on the exact frame the 1.4s fade finishes, the dials and
+   the tile drop 3 device pixels, the presence line 2, while the Review row, the header bar and the tab bar stay put. The ones that stay are the ones
+   iPhone always draws on a layer of their own (blurred backdrop, sticky, fixed); the ones that jump only get a layer for the length of the fade and
+   are redrawn into the page when it ends. So they keep their layer, like the Review row: nothing is handed over, nothing lands anywhere new. */
+.home .trip, .home .scores, .home .empty-hero, .home .hero-tile, .home .home-diverge, .home .whisper, .home .presence { will-change: transform, opacity; }
 

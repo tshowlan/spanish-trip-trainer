@@ -108,6 +108,11 @@ function renderProfile() {
   const arr = el(`<div class="lab-row"><div class="lab-lbl">The arrival, replayed (splash, then Home)</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn-quiet" data-v="">As shipped (twilight, breathing)</button><button class="btn-quiet" data-v="classic">The old formation</button><button class="btn-quiet" data-v="twilight">Twilight, no breath</button></div></div>`);
   arr.querySelectorAll("button").forEach(b => b.addEventListener("click", () => devReplayArrival(b.dataset.v || null)));
   wrap.appendChild(arr);
+  // the light held still (Tom 10/2): this visit only; tells the flame apart from anything else that moves on Home
+  const still = document.body.classList.contains("flame-still");
+  const fl = el(`<div class="lab-row"><div class="lab-lbl">The light on Home</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn-quiet">${still ? "Bring the flame back" : "Hold the light still"}</button></div></div>`);
+  fl.querySelector("button").addEventListener("click", () => { const on = document.body.classList.toggle("flame-still"); toast(on ? "The light is still until you close the app" : "The flame is back"); renderProfile(); });
+  wrap.appendChild(fl);
   const fresh = el(`<button class="btn-quiet" style="margin:6px 0 10px">Start over as a fresh learner (keeps your profile)</button>`);
   fresh.addEventListener("click", () => { state.learn = {}; state.lessons = {}; state.chapterDoors = []; save(); rebuildDeck(); toast("Fresh learner: nothing met, nothing done"); renderProfile(); });
   wrap.appendChild(fresh);

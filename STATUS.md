@@ -1736,3 +1736,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Verified in the pane: First words · 1 = 7 presents · words board · rungs rotating (finish / listen-build / listen-fill / build …) · listening board as the lap · no close.
 - Idea for chat: a RESPONSE exercise (someone says X, pick the reply) once reply pairs exist in chapter one.
 
+
+## v398 (2026-10-02) — the jump at the end of the launch fade; the flame back to its approved strength
+- **Measured first (recording 16-06, v397):** the jump is one frame, on the exact frame the 1.4s fade ends (same in all four 10/2 recordings; absent in the 9/29 twilight tests). Per element: dials +3 device px, tile +3, presence +2, trip text -1; the Review row, header bar, tab bar and photo do not move. The ones that stay are always on a layer of their own (backdrop blur, sticky, fixed); the ones that jump hold a layer only for the fade.
+- **Fix:** `.home .trip/.scores/.hero-tile/.whisper/.presence` (+ empty-hero, home-diverge) carry `will-change: transform, opacity`, so they keep their layer like the Review row. NOT verified in motion here (the preview pane does not animate); needs Tom's recording. v397's "no rise" rule stays (it was real, but not the jump Tom sees).
+- **Flame:** Home's flame returned to the v389 values Tom approved on 9/29 (scale 1.035, 5px/-4px, brightness 1.09, flicker .94). The 10/2 doubling measured as a full-screen swing (corner 35.5 to 43.9, far side 23.6 to 28.7) and read as the background moving.
+- **Test Lab:** "The light on Home" → Hold the light still (this visit only), to tell the flame apart from anything else that moves.
