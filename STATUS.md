@@ -1289,6 +1289,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Backfill: existing users have empty `profile.lodging/transport` → add a Settings editor or re-onboard
   path so their gated lessons unlock.
 
+## v395 (2026-10-02) — the one light travels with the nav line; the flame lives at the source
+- Tom's recording: the tabs' background oscillated (the flame's drift slid a full-screen gradient) and Home "shifted" at 6s (the breath's settle shrank the same full-screen gradient). And the ask: the light should move with the nav line, a beat behind, like a flame following a candle.
+- ONE LIGHT now: .tab-candle > .candle-pos (three screens wide, the source at its middle; translateX places the source; glides 620ms with a 70ms lag) > .candle-wash (Home's old ground, still) + .candle-core (small, at the source; carries the flame and, at launch, the breath). Home: the source in the bottom-left corner as always; other tabs: under the active tab. July's .bloom and Home's own .atmo-ground are retired; the arrival animates the candle itself (no hand-off).
+
 ## v394 (2026-09-29) — the candle shows on every tab; the flame twice as visible
 - Tom's recording, measured: on the tabs the candle was invisible (a negative depth put it under the body's own background, which paints as an ordinary layer because html carries a color); on Home the flame wavered by one luma unit. Now the candle sits at depth 0 and #app at depth 1 on every tab (the bars are 10/40/60, unchanged), so the light is above the page and below the content everywhere; and the drift, the glow, and the flicker are doubled.
 

@@ -30,19 +30,20 @@ function _positionNavLight(active) {
   light.style.transform = `translateX(${(centre - originX - light.offsetWidth / 2).toFixed(1)}px)`;
   return centre;
 }
-/* The screen atmosphere is the nav light scaled up, blooming from the active tab's x at the bottom edge.
-   Home keeps its own designed ground glow + photo for now; its anchor adopts this shared one at home's
-   next revision (flagged 2026-07-17), so home is the one tab that opts out here. */
+/* THE ONE LIGHT (Tom 2026-10-02): the app has a single candle. Its source sits in the bottom-left corner on Home and under the active
+   tab everywhere else, and when the tab changes it GLIDES to its new place a beat behind the nav line, the flame following the candle
+   as someone walks with it. It is two layers: a broad WASH that never moves on its own, and a small CORE at the source that breathes
+   and flickers, so the flame lives at the source and the page's background holds still. (It replaces July's .bloom and the 9/29
+   stationary corner candle.) */
 function _setBloom(active, anchorX) {
-  let bloom = document.querySelector(".bloom");
-  if (active === "home") { if (bloom) bloom.remove(); return; }
-  if (!bloom) {
-    bloom = document.createElement("div"); bloom.className = "bloom";
-    document.body.insertBefore(bloom, document.body.firstChild);
-    if (anchorX != null) bloom.style.transform = `translateX(${(anchorX - 620).toFixed(1)}px)`;   // no glide on first paint
-    return;
-  }
-  if (anchorX != null) bloom.style.transform = `translateX(${(anchorX - 620).toFixed(1)}px)`;
+  const old = document.querySelector(".bloom"); if (old) old.remove();
+  ensureCandle();
+  const c = document.querySelector(".tab-candle"), pos = c && c.querySelector(".candle-pos"); if (!pos) return;
+  const r = c.getBoundingClientRect(); if (!r.width) return;
+  const a = active === "home" ? -0.14 * r.width : (anchorX != null ? anchorX - r.left : r.width / 2);   // Home: the corner, as its ground always was
+  const tx = (a - r.width / 2).toFixed(1) + "px";
+  if (!c.dataset.placed) { pos.style.transition = "none"; pos.style.setProperty("--tx", tx); void pos.offsetWidth; pos.style.transition = ""; c.dataset.placed = "1"; }   // no glide on first paint
+  else pos.style.setProperty("--tx", tx);
 }
 function navTo(tabId) {
   const tab = TABS.find(t => t.id === tabId) || TABS[0];
@@ -61,19 +62,16 @@ function showTabbar(active) {
   bar.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === active));
   // measure a frame later: rects taken in the same tick the bar becomes visible are stale,
   // which anchored the bloom to garbage x on first paint (light landing off-column)
-  requestAnimationFrame(() => _setBloom(active, _positionNavLight(active)));
+  const place = () => _setBloom(active, _positionNavLight(active));   // the nav line and the one light take their places
+  requestAnimationFrame(place); setTimeout(place, 80);                  // the timer is the fallback when frames are not running (a backgrounded tab); placing twice is harmless
 }
-/* THE CANDLE (Tom 9/29): one corner light for the whole app, made once and never rebuilt, so it travels with you from tab to tab
-   like the nav light does. It hides under a runner (body.in-runner) and during the arrival (Home's own light does the breathing,
-   then hands off); its flame is paused while hidden so it resumes at rest. */
 function ensureCandle() {
   if (document.querySelector(".tab-candle")) return;
   const c = document.createElement("div"); c.className = "tab-candle"; c.setAttribute("aria-hidden", "true");
-  c.innerHTML = '<div class="atmo-ground"></div>';
+  c.innerHTML = '<div class="candle-pos"><div class="candle-wash"></div><div class="candle-core"></div></div>';
   document.body.insertBefore(c, document.body.firstChild);
 }
 function hideTabbar() {
   if (typeof clearHomeAtmo === "function") clearHomeAtmo();
-  const bloom = document.querySelector(".bloom"); if (bloom) bloom.remove();
   const bar = document.getElementById("tabbar"); if (bar) bar.classList.remove("show");
 }

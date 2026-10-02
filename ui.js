@@ -200,6 +200,7 @@ function initSplash() {
 function devReplayArrival(variant) {
   document.querySelectorAll("#splash").forEach(n => n.remove());
   document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "arr-classic", "pulse-go");
+  document.querySelectorAll(".tab-candle.arr-in").forEach(n => n.classList.remove("arr-in"));   // the one candle persists across replays
   const s = el(`<div id="splash" class="arrival"></div>`);
   document.body.appendChild(s);
   document.body.classList.add("arriving"); if (variant) document.body.classList.add("arr-" + variant);
@@ -223,7 +224,7 @@ function runSplashArrival(splash, ready) {
   const homeBelow = !!document.querySelector(".home");
   const ORDER = [                                        // [selector list, delay from formation t0]
     [[".home-atmo .atmo-photo"], 0],                     // the photo: 600ms fade, the establishing beat
-    [[".home-atmo .atmo-ground"], 1800],                 // THE CANDLE [tune]: last thing that moves is the gentlest
+    [[".tab-candle"], 1800],                             // THE CANDLE [tune]: last thing that moves is the gentlest (the app's one light, 10/2)
     [[".scores", ".empty-hero"], 650],                   // the anchor arrives at the photo's completion
     [[".hero-tile"], 800],
     [[".practice"], 950],
@@ -236,15 +237,8 @@ function runSplashArrival(splash, ready) {
   const variant = document.body.classList.contains("arr-classic") ? "classic" : document.body.classList.contains("arr-twilight") ? "twilight" : "twilight3";   // Test Lab replays only (Tom 9/29); "from darkness" and the slow candle retired 9/29
   const buildup = instant => {
     timers.forEach(clearTimeout); timers = [];
-    const done = () => {
-      // the hand-off (Tom 9/29): Home's breathing ground gives way to the app's one candle in the same frame; both at rest, so nothing visibly changes
-      if (typeof ensureCandle === "function") ensureCandle();
-      const c = document.querySelector(".tab-candle"); if (c) c.style.transition = "none";
-      document.querySelectorAll(".home-atmo .atmo-ground").forEach(n => n.remove());
-      document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "arr-classic", "pulse-go");
-      if (c) requestAnimationFrame(() => requestAnimationFrame(() => { c.style.transition = ""; }));
-    };
-    const applyAll = exceptCandle => ORDER.forEach(step => step[0].forEach(sel => { if (exceptCandle && sel === ".home-atmo .atmo-ground") return; document.querySelectorAll(sel).forEach(n => n.classList.add("arr-in")); }));
+    const done = () => document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "arr-classic", "pulse-go");   // the candle breathed in itself: nothing to hand off (10/2)
+    const applyAll = exceptCandle => ORDER.forEach(step => step[0].forEach(sel => { if (exceptCandle && sel === ".tab-candle") return; document.querySelectorAll(sel).forEach(n => n.classList.add("arr-in")); }));
     if (variant === "twilight" && !instant && !reduced) {
       // TWILIGHT: everything materializes together as the candle comes on; one long breath, no order
       timers.push(setTimeout(() => applyAll(false), 60));
