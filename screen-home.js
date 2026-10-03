@@ -216,6 +216,7 @@ function renderHome(opts) {
   // §3.2 Home = state + action only: the smart action tile, a quiet Practice chooser, and
   // (optionally) one line of divergence narration. The content library lives in the Learn tab.
   if (started) {
+    document.body.classList.toggle("tile-no-ring", isStaged("tile-no-ring"));   // STAGED compare switch: the pulse without the ring
     home.appendChild(heroTile());
     if (Object.keys(state.learn || {}).length) home.appendChild(practiceButton());   // nothing met yet = nothing to practice: the row stays away so the tile is the only door (Tom 9/25)
     // the divergence line (§7.3) is PARKED (Tom 9/28): its coverage message nags every chapter-1 learner (the categories are chapter 3's places) and its review message is not the right nudge yet; revisit with chapter 3. divergenceLine() stays for then.

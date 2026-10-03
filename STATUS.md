@@ -1742,3 +1742,8 @@ clean on both packs. **No live browser check this session** — worth a device p
 - **Fix:** `.home .trip/.scores/.hero-tile/.whisper/.presence` (+ empty-hero, home-diverge) carry `will-change: transform, opacity`, so they keep their layer like the Review row. NOT verified in motion here (the preview pane does not animate); needs Tom's recording. v397's "no rise" rule stays (it was real, but not the jump Tom sees).
 - **Flame:** Home's flame returned to the v389 values Tom approved on 9/29 (scale 1.035, 5px/-4px, brightness 1.09, flicker .94). The 10/2 doubling measured as a full-screen swing (corner 35.5 to 43.9, far side 23.6 to 28.7) and read as the background moving.
 - **Test Lab:** "The light on Home" → Hold the light still (this visit only), to tell the flame apart from anything else that moves.
+
+## v399 (2026-10-03) — the tile's vibration; the no-ring compare switch
+- **Tom's recording 10-03 09-28:** the dials hold still through the whole launch (the v398 layer fix works). The tile holds still until the pulse begins (6.1s), then steps between two places 1pt apart every few frames: its glow grows and shrinks, so the box it is drawn in changes size every frame, and now that the tile sits on its own layer that box is re-placed each time.
+- **Fix:** an invisible fourth shadow at the glow's full reach (34px blur, 10px spread, alpha 0) in every pulse frame and in the resting shadow, so the drawn box never changes size. NOT verified in motion here; needs Tom's recording.
+- **STAGED `tile-no-ring` (compare switch, off by default):** the pulse without the solid gold ring, glow only (`hero-pulse-soft`, `hero-pulse-first-soft`; body class `tile-no-ring` set when Home renders).
