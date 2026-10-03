@@ -1753,3 +1753,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v401 (2026-10-03) — the gold edge as mock E1
 - `tile-gold-edge` redrawn: a `::after` layer over the tile's surface (1.5px, the Review row's mix, radius inherited, z 2) instead of an outline, whose top side did not show on Tom's phone. Mock: dev/tile-edge-options.html (E1 picked). Two compare switches stay: the glow alone (`tile-no-ring`) and the gold edge.
+
+## v402 (2026-10-03) — one voice on Home; the tile switches retired
+- Review button: the urgent dress is off for good (`urgent` forced false in practiceButton; thresholds kept); badge "N due" from 3 due. Tom's ruling after the double flash (tile on review + button glowing). Ledger entry for chat; decisions.md line.
+- `tile-no-ring` and `tile-gold-edge` retired (Tom kept the ring); STAGED_OPT_IN empty again. dev/tile-edge-options.html stays as the record.

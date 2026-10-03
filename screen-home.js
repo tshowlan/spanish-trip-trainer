@@ -216,8 +216,6 @@ function renderHome(opts) {
   // §3.2 Home = state + action only: the smart action tile, a quiet Practice chooser, and
   // (optionally) one line of divergence narration. The content library lives in the Learn tab.
   if (started) {
-    document.body.classList.toggle("tile-no-ring", isStaged("tile-no-ring"));   // STAGED compare switch: the pulse without the ring
-    document.body.classList.toggle("tile-gold-edge", isStaged("tile-gold-edge"));   // STAGED compare switch: the gold line on the tile's edge
     home.appendChild(heroTile());
     if (Object.keys(state.learn || {}).length) home.appendChild(practiceButton());   // nothing met yet = nothing to practice: the row stays away so the tile is the only door (Tom 9/25)
     // the divergence line (§7.3) is PARKED (Tom 9/28): its coverage message nags every chapter-1 learner (the categories are chapter 3's places) and its review message is not the right nudge yet; revisit with chapter 3. divergenceLine() stays for then.
@@ -785,7 +783,10 @@ function practiceButton() {
   const due = dueForReview().length;
   const fading = (typeof fadingItems === "function") ? fadingItems().filter(f => f.strength < RETENTION_FADE).length : 0;
   const sag = _todayDelta("retention") < 0;
-  const urgent = due >= PRACTICE_URGENT_DUE || (sag && due >= PRACTICE_URGENT_SAG);
+  // ONE VOICE (Tom 10/3): the tile is the app's recommendation, this button is the learner's own door. The tile already turns to review
+  // when the queue is big, so the button never wears the urgent dress (outline, breath, "fading"); it keeps the count as information.
+  // The thresholds stay for the record; the artifact's urgent state is on the ledger for chat.
+  const urgent = false && (due >= PRACTICE_URGENT_DUE || (sag && due >= PRACTICE_URGENT_SAG));
   const badge = urgent || due >= PRACTICE_BADGE_DUE;
   // artifact copy: the due badge counts the queue ("8 due"); the urgent badge names the
   // urgency ("12 fading") — falls back to the due count if nothing is technically fading

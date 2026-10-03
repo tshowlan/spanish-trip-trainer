@@ -91,3 +91,8 @@
 - **Juice and tea:** do zumo and té join Counter words? Code's lean: yes, near-cognates, ordered daily.
 - **The replies as chapter 2's hear emphasis:** each ask gets the two or three things you hear back (Ahora mismo · Marchando · No hay · Son doce · A las ocho), and the exchange beat becomes "hear the reply, pick what it meant". Chat to write the reply sets.
 - **Small frames from chapter 1's pairs:** con ___ / sin ___, para ___, and Somos ___ / A las ___ once the number machine lands. Chat to rule whether these are chapter 2 or chapter 3.
+
+## 2026-10-03 — Home: one voice (the tile speaks, the Review button is the learner's door)
+- **Changed ruling (Tom 10/3, live v402):** the Review button under the action tile never wears the urgent dress from design/home.html (gold outline, the two arrival breaths, the "N fading" badge). It keeps the count badge ("56 due") as information. Reason: the tile is the app's recommendation and already turns to review when the queue is big (15+), so both calling out at once was a double flash. The thresholds remain in code for the record.
+- **Open for chat, later:** when chapter 2 defines special review sessions, what does the tile recommend and in what order (next chapter session, a ready scene, a review set), and does the Review button's urgency state leave the artifact for good?
+- **Decided and closed:** the action tile keeps the ring-in-the-glow pulse as shipped (two alternatives mocked and retired, 10/3).
