@@ -1750,3 +1750,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v400 (2026-10-03) — STAGED `tile-gold-edge` (compare switch)
 - The Review row's gold line (1.5px, accent-2 at 60% over the border color) drawn on the action tile's own edge as an outline (inset 1.5px, follows the corners), still; the glow breathes behind it with no ring. Second compare switch beside `tile-no-ring`; both off until Tom flips them.
+
+## v401 (2026-10-03) — the gold edge as mock E1
+- `tile-gold-edge` redrawn: a `::after` layer over the tile's surface (1.5px, the Review row's mix, radius inherited, z 2) instead of an outline, whose top side did not show on Tom's phone. Mock: dev/tile-edge-options.html (E1 picked). Two compare switches stay: the glow alone (`tile-no-ring`) and the gold edge.
