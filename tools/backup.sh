@@ -40,5 +40,5 @@ if [ -s "$KEYFILE" ]; then
 else say "vault export skipped (no service key at $KEYFILE)"; fi
 
 # keep the newest 8
-ls -1d "$DEST"/20* 2>/dev/null | sort | head -n -8 | while read -r old; do rm -rf "$old" && say "pruned $(basename "$old")"; done
+ls -1d "$DEST"/20* 2>/dev/null | sort | awk -v keep=8 '{ a[NR] = $0 } END { for (i = 1; i <= NR - keep; i++) print a[i] }' | while read -r old; do rm -rf "$old" && say "pruned $(basename "$old")"; done   # (macOS head has no -n -8)
 say "backup done"
