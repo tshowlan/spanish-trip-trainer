@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Tripfluent weekly backup into iCloud Drive (Tom, 2026-10-03). Install: copy to ~/Library/LaunchAgents and `launchctl load` it.
+       Sundays at 10:00; if the Mac is asleep then, it runs at the next wake. -->
+  <key>Label</key><string>com.tripfluent.backup</string>
+  <key>ProgramArguments</key>
+  <array><string>/bin/bash</string><string>/Users/thomashowland/spanish-trip-trainer/tools/backup.sh</string></array>
+  <key>StartCalendarInterval</key>
+  <dict><key>Weekday</key><integer>0</integer><key>Hour</key><integer>10</integer><key>Minute</key><integer>0</integer></dict>
+  <key>StandardOutPath</key><string>/tmp/tripfluent-backup.out</string>
+  <key>StandardErrorPath</key><string>/tmp/tripfluent-backup.err</string>
+</dict>
+</plist>
