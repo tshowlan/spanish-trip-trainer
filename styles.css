@@ -2107,6 +2107,9 @@ img.scene-art { width: 286px; }
 body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for the arrival: it begins as the candle finishes igniting (Tom 9/25) */
 body.arriving.pulse-go .hero-tile.as-button { animation: hero-pulse-first 2600ms ease-in-out both, hero-pulse 2600ms ease-in-out 2600ms infinite; }   /* Test Lab (Tom 9/29): the tile begins as the corner light leaves its apex */
 body.tile-no-ring .hero-tile.as-button, body.tile-no-ring.arriving.pulse-go .hero-tile.as-button { animation-name: hero-pulse-first-soft, hero-pulse-soft; }   /* STAGED "tile-no-ring": the glow without the ring */
+/* STAGED "tile-gold-edge" (Tom 10/3): the Review row's gold line drawn on the tile's own edge, still, with the glow breathing behind it and no ring */
+body.tile-gold-edge .hero-tile.as-button, body.tile-gold-edge.arriving.pulse-go .hero-tile.as-button { animation-name: hero-pulse-first-soft, hero-pulse-soft;
+  outline: 1.5px solid color-mix(in srgb, var(--accent-2) 60%, var(--border)); outline-offset: -1.5px; }
 .hero-tile.as-button:active { animation: none; }
 @media (prefers-reduced-motion: reduce) { .hero-tile.as-button { animation: none; } }
 /* THE DOORS LEAVE ON THE SLIDE (Tom 9/24): the chapter door travels out like #qbody.leaving; the scene door lives in #qbody and uses it */

@@ -1747,3 +1747,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 - **Tom's recording 10-03 09-28:** the dials hold still through the whole launch (the v398 layer fix works). The tile holds still until the pulse begins (6.1s), then steps between two places 1pt apart every few frames: its glow grows and shrinks, so the box it is drawn in changes size every frame, and now that the tile sits on its own layer that box is re-placed each time.
 - **Fix:** an invisible fourth shadow at the glow's full reach (34px blur, 10px spread, alpha 0) in every pulse frame and in the resting shadow, so the drawn box never changes size. NOT verified in motion here; needs Tom's recording.
 - **STAGED `tile-no-ring` (compare switch, off by default):** the pulse without the solid gold ring, glow only (`hero-pulse-soft`, `hero-pulse-first-soft`; body class `tile-no-ring` set when Home renders).
+
+## v400 (2026-10-03) — STAGED `tile-gold-edge` (compare switch)
+- The Review row's gold line (1.5px, accent-2 at 60% over the border color) drawn on the action tile's own edge as an outline (inset 1.5px, follows the corners), still; the glow breathes behind it with no ring. Second compare switch beside `tile-no-ring`; both off until Tom flips them.
