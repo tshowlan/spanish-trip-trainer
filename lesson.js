@@ -1520,7 +1520,7 @@ function renderPresent(q) {
   // the hear emphasis (Tom 9/26): you hear the line before you read it. The words come back the moment the line ENDS (plus a beat),
   // not on a fixed clock: a short line sat on a blank card for two seconds and read as a loading bug (Tom's recording 9/30). 1.9s is the cap.
   let hearShow = null;
-  if (earOn() && run.lesson && run.lesson.emphasis === "hear" && !q.requeued) {
+  if (earOn() && run.lesson && run.lesson.emphasis === "hear" && !q.requeued && !isStaged("hear-no-wait")) {   // STAGED compare (Tom 10/4): the words show at once, the line still plays
     card.classList.add("hear-first");
     hearShow = () => { if (!hearShow) return; hearShow = null; card.classList.remove("hear-first"); };
     setTimeout(() => hearShow && hearShow(), 1900);

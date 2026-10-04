@@ -1771,3 +1771,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v406 (2026-10-04) — STAGED `ch1-three-words` (chat's 10/03 answers)
 - ¿Qué tal? (hear) takes Pase's seat in Words you'll hear; Muy bien takes Adiós's seat and No entiendo joins as the eighth (before ¿Inglés?) in First words · Part 2; each carries chat's one-line note on the card (hidden with the words during the listen-first beat). New item field `until:` (the seat an item gives up when a staged swap is on) beside `staged:`. Verified both ways: switch off = today's lists; on = the swaps, 14 sessions either way. Pack audit: 0 hard errors.
+
+## v407 (2026-10-04) — STAGED compare `hear-no-wait`
+- Tom's recording 10/4 (v406): the hear-first wait now measures 1.0s (Dígame: card 1.2s, words 2.2s) and 1.3s (Aquí tiene), down from 2.0s, and still reads as loading. It is the 9/26 listen-first beat, not a load. Compare switch (off by default): the words show at once while the line plays.
