@@ -8,12 +8,13 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v408";
+const APP_BUILD = "v409";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
    is his word - only then does the feature leave this list and reach the live app. */
 const STAGED = {
+  "asks-1": "Chapter 2 opens with The asks \u00b7 Part 1: Quiero, \u00bfMe puede traer?, \u00bfD\u00f3nde est\u00e1?, \u00bfCu\u00e1nto cuesta? (cards, the board, Which one do you say?, build the sentence, the listening board)",
   "ch1-three-words": "Chapter 1, three words (chat 10/3): \u00bfQu\u00e9 tal? takes Pase's seat in Words you'll hear; Muy bien takes Adi\u00f3s's seat and No entiendo joins as the eighth in First words \u00b7 Part 2",
 };
 // SHIPPED (Tom, 2026-10-03, v403): "chapter-1-adds" (Days you'll read as chapter 1's fourteenth session, after Signs; zumo and te in Counter

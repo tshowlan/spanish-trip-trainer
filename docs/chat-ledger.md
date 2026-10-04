@@ -114,3 +114,10 @@ Chat to write: the three cards (context lines, glosses) and the seat decision (e
 
 ## 2026-10-04 — Ruling changed: an introduction is never a test (live v408)
 The hear sessions' cards no longer hold their words back while the line plays (the 9/26 listen-first beat). Tom read the wait as a loading bug twice, then ruled: when a word is introduced it is shown immediately; the testing by ear belongs to the rungs. For the constitution's hear-emphasis line. Tom is still thinking about a distinct "Listen" introduction for that session; nothing is planned.
+
+## 2026-10-04 — The asks · Part 1 (STAGED v409 `asks-1`): Code's drafts for the voice pass
+- **Session line:** "Want, bring, where, how much. The four you will use most."
+- **Contexts (built from met words):** Quiero un café. / I want a coffee. · ¿Me puede traer la cuenta? / Could you bring me the check? · ¿Dónde está el baño? / Where is the bathroom? · ¿Cuánto cuesta el taxi? / How much is the taxi?
+- **Situations as rendered** (chat's eight, made full lines): You know what you want at the counter. · The case is full of pastries. · The waiter passes close. · The glasses are empty. · Two unmarked doors. · The map died with your phone. · The tag is missing. · You reach the ticket window.
+- **Direction:** "Which one do you say?" · the reveal shows the meaning and the word glosses (chat's table) under it.
+- **Shape as built:** four cards → the words board → which one (situation 1, each ask) → build the sentence (each ask) → which one (situation 2) → the listening board. The asks sit at the head of chapter 2, before the rooms.

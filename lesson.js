@@ -326,6 +326,40 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
   if (anchor && floor.lap !== "scaffolded") qs.push({ type: "close", item: anchor });
   return qs;
 }
+/* THE ASKS (STAGED "asks-1"; Tom + chat 9/25, confirmed 10/3): the chapter-1 kit shape for a frame and a slot. Meet the four (cards, the
+   board), then per ask: which one do you say (situation 1) · build its sentence from met words · which one do you say (situation 2), the
+   three passes interleaved so no ask repeats back to back; the listening board closes. The reveal carries the word glosses. */
+function composeAsks(lesson, newItems) {
+  const pool = lesson.items || [], qs = [];
+  (newItems.length ? newItems : []).forEach(it => qs.push({ type: "present", item: it, arc: true }));
+  if (newItems.length && pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });
+  const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
+  const which = k => shuffle(pool.filter(it => (it.sits || [])[k])).map(it => ({ type: "ask_which", item: it, pool, sit: it.sits[k], arc: true, resNote: it.gloss }));
+  const build = shuffle(pool.filter(it => it.contextEs)).map(it => {
+    const tiles = tilesOf(it.contextEs);
+    const others = pool.filter(x => x !== it).flatMap(x => tilesOf(x.contextEs || "")).filter(w => w && !tiles.includes(w));
+    return { type: "weld", item: it, pool, target: it.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: it.contextEn, cueRole: "Build the sentence", cueMeaning: it.contextEn, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, resNote: it.gloss };
+  });
+  const add = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };   // no ask twice in a row across a seam
+  add(which(0)); add(build); add(which(1));
+  if (pool.length >= 3) qs.push({ type: "pairs", items: pool.slice(), arc: true, encoreFirst: !isStaged("pairs-chain"), lap: true });   // the final pass: hear them all
+  return qs;
+}
+/* WHICH ONE DO YOU SAY? (the asks' own rung): a situation in plain English, the session's asks as the answers. Picking is knowing which
+   ask to reach for when it is your turn. Anchored like every chapter-1 rung: the line up top, the answers in the lower third. */
+function renderAskWhich(q) {
+  const item = q.item, body = $("#qbody");
+  _anchor(body);
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">Which one do you say?</div>`));
+  top.appendChild(el(`<div class="act-sit need">${q.sit}</div>`));
+  body.appendChild(top);
+  q.grownBelow = true; q.esOnStage = true;
+  const opts = shuffle((q.pool && q.pool.length ? q.pool : run.lesson.items).slice());
+  const answers = el(`<div class="answers at63"></div>`);
+  answers.appendChild(_signChoices(opts.map(o => o.es), opts.indexOf(item), item));
+  body.appendChild(answers);
+}
 function composeSession(lesson) {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();             // §6 variety rule clock (srs.js reads it)
   const lessonItems = lesson.items || [];
@@ -341,6 +375,7 @@ function composeSession(lesson) {
   // open primer → first presentation card.
   const reviewPool = newItems.length ? [] : lessonItems.slice();      // replays drill own items only
   if (lesson.numbers && isStaged("numbers-1")) return composeNumbers(lesson);   // numbers are an ear skill: their own session shape
+  if (lesson.asks) return composeAsks(lesson, newItems);                         // the asks: a frame and a slot, their own session shape
 
   const qs = [];
 
@@ -1406,7 +1441,7 @@ function renderQuestion() {
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
      scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear, scene_sign: renderSceneSign, context_choice: renderContextChoice,
      num_set: renderNumSet, num_pad: renderNumPad, num_run: renderNumRun,
-     sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable, days_set: renderDaysSet, sign_wall: renderSignWall, days_order: renderDaysOrder,
+     ask_which: renderAskWhich, sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable, days_set: renderDaysSet, sign_wall: renderSignWall, days_order: renderDaysOrder,
      circuit_door: renderCircuitDoor, circuit_close: renderCircuitClose,
      reply: renderReplyChat }[q.type])(q);
 }
@@ -1437,6 +1472,7 @@ const ES_PHOTOS = new Set(["cafe", "market", "default"]);
 // §4c.1 v2.1 dismissal check targets the NEW material — the new chunk for chunked phrases, else the item.
 // Distractor is an auto-picked plausible near-meaning (content pass will author better ones).
 function _itemDistractor(item) {
+  if (run.lesson && run.lesson.asks) { const sib = run.lesson.items.filter(x => x !== item); if (sib.length) return sample(sib, 1)[0].en; }   // an ask's wrong option is another ask
   const m = mcOptions(item, true, run.lesson && run.lesson.items);
   return m.options.find(o => norm(o) !== norm(m.answer)) || null;
 }

@@ -1777,3 +1777,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v408 (2026-10-04) — the listen-first wait retired
 - Tom's ruling: an introduction is never a test. The hear card shows its words at once; the line still plays on arrival. `hear-first` code, style and the `hear-no-wait` compare switch removed; `speak()` keeps `opts.onend` (unused for now). decisions.md, ear-sessions.md and the ledger updated.
+
+## v409 (2026-10-04) — STAGED `asks-1`: The asks · Part 1
+- Chapter 2 opens with it (before the rooms) when the switch is on. Data: `flow.asks` in curriculum.js (four asks: es with the slot "___", gloss, contextEs/En, two situations each). Deck: `_chapterFlowDeck` prepends asks to stage 1 (`asks: true, wordsSession: true`). Composer: `composeAsks` (cards → board → ask_which ×4 → build ×4 → ask_which ×4 → listening board; no ask twice in a row across a seam). New rung `renderAskWhich` ("Which one do you say?", anchored, the session's asks as answers; reveal = meaning + word glosses via resNote). `speak()` reads the slot as silence. An ask card's wrong option is a sibling ask.
+- Verified in the preview (staging on): card, which-one + reveal, build + reveal, both boards render; ids unique; switch off = chapter 2 unchanged. Motion and sound not judged here (pane limits); Tom's play is the test.

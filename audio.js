@@ -15,7 +15,7 @@ function speak(text, rate, opts) {
   // queue naturally when we skip the cancel; everything else keeps cancel-and-speak
   if (!(opts && opts.queue)) speechSynthesis.cancel();
   const lang = (typeof activePack === "function" ? activePack().tts : "es-ES");
-  const u = new SpeechSynthesisUtterance(text);
+  const u = new SpeechSynthesisUtterance(String(text).replace(/_+/g, " "));   // an ask's slot ("Quiero ___") is silence, not "underscore"
   u.lang = lang; const v = voiceFor(lang); if (v) u.voice = v; u.rate = rate || 0.9;
   if (opts && opts.onend) { u.onend = opts.onend; u.onerror = opts.onend; }   // the line's end, for surfaces that wait for it (the hear-first card)
   speechSynthesis.speak(u);
