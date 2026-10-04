@@ -1774,3 +1774,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v407 (2026-10-04) — STAGED compare `hear-no-wait`
 - Tom's recording 10/4 (v406): the hear-first wait now measures 1.0s (Dígame: card 1.2s, words 2.2s) and 1.3s (Aquí tiene), down from 2.0s, and still reads as loading. It is the 9/26 listen-first beat, not a load. Compare switch (off by default): the words show at once while the line plays.
+
+## v408 (2026-10-04) — the listen-first wait retired
+- Tom's ruling: an introduction is never a test. The hear card shows its words at once; the line still plays on arrival. `hear-first` code, style and the `hear-no-wait` compare switch removed; `speak()` keeps `opts.onend` (unused for now). decisions.md, ear-sessions.md and the ledger updated.

@@ -10,7 +10,7 @@
 
 **The return:** next new day, once, the tile offers the parked session first; the pill reads SAVED FOR SOUND; the line stays the session's own. The Learn row's tag reads the same. Starting the session clears the park. Parking never blocks the chapter and does not touch Momentum or pace.
 
-**The hear emphasis (Words you'll hear):** the card hides its words for 1.9s while the line plays (hear it before you read it); the rungs rotate listen and fill · listen and build · listen and pick the meaning; the lap is the listening board.
+**The hear emphasis (Words you'll hear):** the card shows its words at once and plays the line (the listen-first wait was retired 10/4: an introduction is never a test); the rungs rotate listen and fill · listen and build · listen and pick the meaning; the lap is the listening board.
 
 **The read emphasis (Signs, Days):** the rungs rotate finish the sentence · read the sign, pick its meaning · build the sentence; the lap is the board turned around (the meaning on the left, find the word). Sound stays on tap; nothing depends on it.
 

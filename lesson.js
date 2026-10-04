@@ -1517,16 +1517,10 @@ function renderPresent(q) {
     });
   }
   body.appendChild(card);
-  // the hear emphasis (Tom 9/26): you hear the line before you read it. The words come back the moment the line ENDS (plus a beat),
-  // not on a fixed clock: a short line sat on a blank card for two seconds and read as a loading bug (Tom's recording 9/30). 1.9s is the cap.
-  let hearShow = null;
-  if (earOn() && run.lesson && run.lesson.emphasis === "hear" && !q.requeued && !isStaged("hear-no-wait")) {   // STAGED compare (Tom 10/4): the words show at once, the line still plays
-    card.classList.add("hear-first");
-    hearShow = () => { if (!hearShow) return; hearShow = null; card.classList.remove("hear-first"); };
-    setTimeout(() => hearShow && hearShow(), 1900);
-  }
+  // an introduction is never a test (Tom 10/4): the card shows its words at once in every session, the hear sessions too; the line plays
+  // on arrival and the ear work lives in the rungs. (The listen-first wait of 9/26 read as a loading bug twice and is retired.)
   // audio row: 44px speaker + inline hint, matching the artifact's AudioControl composition
-  const replay = audioControl(() => speak(item.es, null, hearShow ? { onend: () => setTimeout(() => hearShow && hearShow(), 220) } : undefined));
+  const replay = audioControl(() => speak(item.es));
   const hint = platesOn(run.lesson) ? "Tap to hear it said" : chunked ? "Tap any part to hear it alone" : "Tap the sentence to hear it in context";
   const audioRow = el(`<div class="present-audio"></div>`);
   audioRow.appendChild(replay);

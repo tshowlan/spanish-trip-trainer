@@ -2128,7 +2128,6 @@ body.arriving.pulse-go .hero-tile.as-button { animation: hero-pulse-first 2600ms
    the hear-first card hides its words until the line has played; the ear escape's two full buttons stack in the footer */
 .hero-tile .ear-pill { display: inline-flex; align-self: flex-start; align-items: center; margin-top: 8px; font-family: var(--font-display); font-size: 9.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(216,183,19,.55); border-radius: 999px; padding: 2px 7px; white-space: nowrap; }
 .lmeta .ear-tag { font-family: var(--font-display); font-size: 9.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent-2); white-space: nowrap; }
-.present-card.hear-first .present-es, .present-card.hear-first .present-en, .present-card.hear-first .present-ctx, .present-card.hear-first .present-note { visibility: hidden; }   /* the card's one line waits too (¿Qué tal?, 10/4) */
 .footer .btn + .btn.grey { margin-top: 10px; }
 /* the read-and-pick rung's confirmation (Tom 9/26): the word at the top takes the reveal's green sweep in place */
 .prompt.mc-word { position: relative; display: inline-block; margin-bottom: 16px; }   /* room under the word for the sweep, so the speaker clears it (Tom 9/26) */

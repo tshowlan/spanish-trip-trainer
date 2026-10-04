@@ -111,3 +111,6 @@ Chat to write: the three cards (context lines, glosses) and the seat decision (e
 3. The asks · 1: confirmed; Code builds it next, staged.
 4. Tile order and the Review button: recorded in decisions.md as a position to ratify with chapter 2. The urgent state's removal from design/home.html waits for chat's next re-issue of that artifact.
 5. Still with chat: the bloom motion ruling and the action-tile artifact (pack received).
+
+## 2026-10-04 — Ruling changed: an introduction is never a test (live v408)
+The hear sessions' cards no longer hold their words back while the line plays (the 9/26 listen-first beat). Tom read the wait as a loading bug twice, then ruled: when a word is introduced it is shown immediately; the testing by ear belongs to the rungs. For the constitution's hear-emphasis line. Tom is still thinking about a distinct "Listen" introduction for that session; nothing is planned.
