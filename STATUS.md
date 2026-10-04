@@ -1757,3 +1757,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v402 (2026-10-03) — one voice on Home; the tile switches retired
 - Review button: the urgent dress is off for good (`urgent` forced false in practiceButton; thresholds kept); badge "N due" from 3 due. Tom's ruling after the double flash (tile on review + button glowing). Ledger entry for chat; decisions.md line.
 - `tile-no-ring` and `tile-gold-edge` retired (Tom kept the ring); STAGED_OPT_IN empty again. dev/tile-edge-options.html stays as the record.
+
+## v403 (2026-10-03) — chapter-1 adds, sign plates and ear sessions SHIPPED
+- STAGED map empty on Tom's word. Live for everyone: Days you'll read (chapter 1's fourteenth session, after Signs, 7 words, the three timetable stories, the week in order); zumo and té in Counter words · 1; the read sessions as plates (door plate dark, enamel light; read the sign then act, which sign, the sign wall); ear sessions (Best with sound / Saved for sound on the tile and the Learn row, the escape's way back next new day, hear sessions listen first, read sessions read only).
+- Verified with staging off: 14 chapter-1 sessions in order, Days present (7 items), zumo/té present, platesOn true for Signs and Days, isEarLesson true for Words you'll hear. Test Lab reads "Nothing staged right now."

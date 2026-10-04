@@ -8,16 +8,17 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v402";
+const APP_BUILD = "v403";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
    is his word - only then does the feature leave this list and reach the live app. */
 const STAGED = {
-  "chapter-1-adds": "Chapter 1: a fourteenth session, Days you'll read, after Signs; zumo and t\u00e9 in Counter words (chat 9/25)",
-  "sign-plates": "Signs as signs: the read sessions show plates (door on dark, enamel on light); read the sign then act, which sign, pick its meaning; the days on Horario timetables (Tom 9/26)",
-  "ear-sessions": "Ear sessions: Best with sound on the tile and the Learn row; the escape offers a way back (saved, returns next new day); hear sessions listen first, read sessions read only (Signs, Days: the lap board turned around)",
 };
+// SHIPPED (Tom, 2026-10-03, v403): "chapter-1-adds" (Days you'll read as chapter 1's fourteenth session, after Signs; zumo and te in Counter
+// words), "sign-plates" (the read sessions show signs as plates: door plate on dark, enamel on light; read the sign then act, which sign, the
+// timetable stories, the sign wall and the week in order), "ear-sessions" (Best with sound on the tile and the Learn row; the escape's way
+// back, returning next new day; hear sessions listen first, read sessions read only).
 // SHIPPED (Tom, 2026-09-25, v359): "door-swash", the upleveled chapter door (centered, the count under Chapter 1, the lighthouse with its
 // lantern's glow, Source Serif 4 title and line).
 // SHIPPED (Tom, 2026-09-24, v344), chapter one and its surfaces: "chapter-flow" (chapter 1 = the words that get you by, thirteen

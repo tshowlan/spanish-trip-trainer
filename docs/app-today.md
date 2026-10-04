@@ -48,3 +48,10 @@
 
 ## Process (from 2026-09-08)
 - Staging before live · a ship note (≤10 plain lines) per increment · this page maintained per ship · one surface per ship · "Surfaces touched" on every handoff and report.
+
+
+## v403 (2026-10-03)
+- Chapter 1 is fourteen sessions: Days you'll read sits after Signs you'll read (seven words on every shop door; a set card, the words board, three timetable stories, the week in order).
+- Counter words · Part 1 carries zumo and té after con leche.
+- The read sessions show signs as plates (a door plate on the dark theme, enamel on the light): read the sign then act, which sign, the timetable, the sign wall.
+- Sessions best heard wear "Best with sound" on the Home tile and the Learn row; leaving one for sound saves it and it returns the next new day as "Saved for sound". Hear sessions play first and ask after; read sessions never play audio.
