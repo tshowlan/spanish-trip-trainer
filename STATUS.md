@@ -1768,3 +1768,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v405 (2026-10-03) — the chapter door's font flash
 - Source Serif 4 (door only) was fetched on first use, so the door could draw a frame in Georgia and swap (Tom 10/3, no fixed scenario: it depends on whether the font was still in memory). Now preloaded in index.html (both weights, plus Playfair) and warmed with document.fonts.load during the splash, which waits for them (1.5s cap). Verified: all five faces report loaded before the splash lifts.
+
+## v406 (2026-10-04) — STAGED `ch1-three-words` (chat's 10/03 answers)
+- ¿Qué tal? (hear) takes Pase's seat in Words you'll hear; Muy bien takes Adiós's seat and No entiendo joins as the eighth (before ¿Inglés?) in First words · Part 2; each carries chat's one-line note on the card (hidden with the words during the listen-first beat). New item field `until:` (the seat an item gives up when a staged swap is on) beside `staged:`. Verified both ways: switch off = today's lists; on = the swaps, 14 sessions either way. Pack audit: 0 hard errors.

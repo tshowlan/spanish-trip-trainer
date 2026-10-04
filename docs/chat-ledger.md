@@ -104,3 +104,10 @@ Tom compared what other language apps teach for travel. Judged against the const
 - **No entiendo** (not on Tom's list; the real gap in that family): ¿Inglés? does the job today; No entiendo is the honest word before it. Seat: First words · 2 beside ¿Inglés?, or chat's call.
 Ruled OUT, no dispute: y tú (register trap, never returned by a traveler), vamos (chapter 3 at most, as something heard), lo siento (Perdón does the work; met from them in chapter 2's reply sets, "Lo siento, no hay"), no lo sé, excelente (cognate, free), what's your name (the check-in line "¿A nombre de quién?" is a chapter 2 room line), good luck.
 Chat to write: the three cards (context lines, glosses) and the seat decision (eighth items vs swaps; sessions are seven today).
+
+## 2026-10-04 — chat's answers to the 10/03 handoff: dispositions (docs/handoff-1003-answers.md)
+1. Three cards and seats: STAGED v406 as `ch1-three-words` (¿Qué tal? in Pase's seat; Muy bien in Adiós's seat; No entiendo eighth, before ¿Inglés?; each card carries chat's one line). Awaiting Tom's play.
+2. Voice pass: nothing to change. One note: the shipped closer reads "The whole week, in order." (Tom's wording, 9/28); chat quoted "The week, in order." Shipped stays unless chat objects.
+3. The asks · 1: confirmed; Code builds it next, staged.
+4. Tile order and the Review button: recorded in decisions.md as a position to ratify with chapter 2. The urgent state's removal from design/home.html waits for chat's next re-issue of that artifact.
+5. Still with chat: the bloom motion ruling and the action-tile artifact (pack received).

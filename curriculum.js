@@ -746,8 +746,10 @@ const CURRICULUM = {
         { es: "Sí", en: "Yes", tags: ["basics"], contextEs: "Sí, por favor.", contextEn: "Yes, please." },
         { es: "No", en: "No", tags: ["basics"], contextEs: "No, gracias.", contextEn: "No, thanks." },
         { es: "Vale", en: "Okay", tags: ["basics"], contextEs: "Vale, gracias.", contextEn: "Okay, thanks." },
-        { es: "Adiós", en: "Goodbye", tags: ["greetings"], contextEs: "Adiós, buenas noches.", contextEn: "Bye, good night." },
+        { es: "Adiós", en: "Goodbye", until: "ch1-three-words", tags: ["greetings"], contextEs: "Adiós, buenas noches.", contextEn: "Bye, good night." },   // leaves when the three words ship: Hasta luego carries goodbye in Spain (chat 10/3)
+        { es: "Muy bien", en: "Very well", staged: "ch1-three-words", tags: ["basics"], contextEs: "Muy bien, gracias.", contextEn: "Very well, thanks.", note: "The one answer to ¿qué tal?, ¿todo bien?, and \"how was it\"." },
         { es: "Hasta luego", en: "See you later", tags: ["greetings"], contextEs: "Vale, hasta luego.", contextEn: "Okay, see you later." },
+        { es: "No entiendo", en: "I don't understand", staged: "ch1-three-words", tags: ["communication"], contextEs: "No entiendo. ¿Inglés?", contextEn: "I don't understand. English?", note: "Say it before ¿Inglés?. It is honest, and it slows people down." },   // the eighth item: the honesty pair (chat 10/3)
         { es: "¿Inglés?", en: "English?", tags: ["communication"], contextEs: "Perdón, ¿inglés?", contextEn: "Excuse me, English?" } ] },
       { id: "w-hear", topic: "Core phrases", title: "Words you'll hear", emphasis: "hear", line: "What they say to you before you say anything.", items: [
         { es: "Dígame", en: "Go ahead / Tell me", hear: true, tags: ["service"], contextEs: "¿Sí? Dígame.", contextEn: "Yes? Go ahead." },
@@ -756,7 +758,8 @@ const CURRICULUM = {
         { es: "¿Algo más?", en: "Anything else?", hear: true, tags: ["service"], contextEs: "¿Algo más? No, gracias.", contextEn: "Anything else? No, thanks." },
         { es: "¿Todo bien?", en: "Everything okay?", hear: true, tags: ["service"], contextEs: "¿Todo bien? Sí, gracias.", contextEn: "All good? Yes, thanks." },
         { es: "Ahora mismo", en: "Right away", hear: true, tags: ["service"], contextEs: "Sí, ahora mismo.", contextEn: "Yes, right away." },
-        { es: "Pase", en: "Come in", hear: true, tags: ["service"], contextEs: "Pase, por favor.", contextEn: "Come in, please." } ] },
+        { es: "Pase", en: "Come in", until: "ch1-three-words", hear: true, tags: ["service"], contextEs: "Pase, por favor.", contextEn: "Come in, please." },   // re-homes to chapter 3's hotel line when the three words ship ("Pase, pase" lives in What locals say to you)
+        { es: "¿Qué tal?", en: "How's it going?", staged: "ch1-three-words", hear: true, tags: ["service"], contextEs: "Hola, ¿qué tal?", contextEn: "Hi, how's it going?", note: "A greeting, not a question. Nobody is waiting for an answer." } ] },
       /* NUMBERS, two sessions, the same thirteen (Tom 9/20: one session was the densest load in the chapter with the least ear work):
          · 1 MEETS them (the set card, heard singles, the numeral board, the say keypad, two bills, three how-many rungs);
          · 2 is BY EAR (runs that lean on the neighbor pairs, the bills, the how-many rungs; no new words). `num` is the numeral.
