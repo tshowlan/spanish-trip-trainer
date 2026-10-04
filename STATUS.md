@@ -1761,3 +1761,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v403 (2026-10-03) — chapter-1 adds, sign plates and ear sessions SHIPPED
 - STAGED map empty on Tom's word. Live for everyone: Days you'll read (chapter 1's fourteenth session, after Signs, 7 words, the three timetable stories, the week in order); zumo and té in Counter words · 1; the read sessions as plates (door plate dark, enamel light; read the sign then act, which sign, the sign wall); ear sessions (Best with sound / Saved for sound on the tile and the Learn row, the escape's way back next new day, hear sessions listen first, read sessions read only).
 - Verified with staging off: 14 chapter-1 sessions in order, Days present (7 items), zumo/té present, platesOn true for Signs and Days, isEarLesson true for Words you'll hear. Test Lab reads "Nothing staged right now."
+
+## v404 (2026-10-03) — the hear-first card shows its words when the line ends; word vs phrase by content words
+- Tom's recording 9/30 (Words you'll hear): the card sat blank for two seconds and read as a loading bug. It was the hear-first beat on a fixed 1.9s clock. Now `speak()` takes `opts.onend`; the card's words return 220ms after the line ends (1.9s stays as the cap if the voice never reports).
+- NEW WORD vs NEW PHRASE (Tom 10/3): a card is a word only when both languages have one content word (articles el/la/los/las/un/una/the/a/an do not count): la cuenta / the bill is a word; ¿Algo más? / Anything else?, Un momento / One moment, por favor / please, Dígame / Go ahead are phrases.

@@ -1465,7 +1465,11 @@ function renderPresent(q) {
   // no "New phrase" label on a re-teach — the "Second chance" chip already frames it
   if (!q.requeued) {
     const newCount = chunked ? item.chunks.filter(c => c[2] === "new").length : 0;
-    const label = platesOn(run.lesson) ? "NEW SIGN" : short && !chunked ? "NEW WORD"
+    // word or phrase (Tom 10/3): one content word in BOTH languages is a word (la cuenta / the bill); anything more is a phrase
+    // (¿Algo más? / Anything else?). Articles do not count. Chunked cards are phrases by build.
+    const content = t => t.replace(/[¿?¡!.,]/g, "").trim().split(/\s+/).filter(w => !/^(el|la|los|las|un|una|unos|unas|the|a|an)$/i.test(w)).length;
+    const oneWord = content(item.es) <= 1 && content(item.en) <= 1;
+    const label = platesOn(run.lesson) ? "NEW SIGN" : short && !chunked && oneWord ? "NEW WORD"
       : "NEW PHRASE" + (newCount === 1 ? " · ONE NEW PIECE" : "");
     body.appendChild(el(`<div class="present-label">${label}</div>`));
   }
@@ -1513,11 +1517,16 @@ function renderPresent(q) {
     });
   }
   body.appendChild(card);
-  if (earOn() && run.lesson && run.lesson.emphasis === "hear" && !q.requeued) {   // the hear emphasis (Tom 9/26): you hear the line before you read it
-    card.classList.add("hear-first"); setTimeout(() => card.classList.remove("hear-first"), 1900);
+  // the hear emphasis (Tom 9/26): you hear the line before you read it. The words come back the moment the line ENDS (plus a beat),
+  // not on a fixed clock: a short line sat on a blank card for two seconds and read as a loading bug (Tom's recording 9/30). 1.9s is the cap.
+  let hearShow = null;
+  if (earOn() && run.lesson && run.lesson.emphasis === "hear" && !q.requeued) {
+    card.classList.add("hear-first");
+    hearShow = () => { if (!hearShow) return; hearShow = null; card.classList.remove("hear-first"); };
+    setTimeout(() => hearShow && hearShow(), 1900);
   }
   // audio row: 44px speaker + inline hint, matching the artifact's AudioControl composition
-  const replay = audioControl(() => speak(item.es));
+  const replay = audioControl(() => speak(item.es, null, hearShow ? { onend: () => setTimeout(() => hearShow && hearShow(), 220) } : undefined));
   const hint = platesOn(run.lesson) ? "Tap to hear it said" : chunked ? "Tap any part to hear it alone" : "Tap the sentence to hear it in context";
   const audioRow = el(`<div class="present-audio"></div>`);
   audioRow.appendChild(replay);

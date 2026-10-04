@@ -17,6 +17,7 @@ function speak(text, rate, opts) {
   const lang = (typeof activePack === "function" ? activePack().tts : "es-ES");
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang; const v = voiceFor(lang); if (v) u.voice = v; u.rate = rate || 0.9;
+  if (opts && opts.onend) { u.onend = opts.onend; u.onerror = opts.onend; }   // the line's end, for surfaces that wait for it (the hear-first card)
   speechSynthesis.speak(u);
 }
 
