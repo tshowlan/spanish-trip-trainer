@@ -212,7 +212,12 @@ function devReplayArrival(variant) {
 function runSplash() {
   const splash = document.getElementById("splash");
   if (!splash) return;
-  const ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+  // the door's serif is used nowhere before the door, so a browser fetched it on first use and showed Georgia for a frame (Tom 10/3).
+  // Warm every face the door and the wordmark wear while the splash is up; the splash waits for them (capped: a slow network never holds it)
+  const warm = (document.fonts && document.fonts.load) ? Promise.race([
+    Promise.all(["600 28px 'Source Serif 4'", "400 18px 'Source Serif 4'", "italic 500 20px 'Playfair Display'"].map(f => document.fonts.load(f))).catch(() => {}),
+    new Promise(r => setTimeout(r, 1500))]) : Promise.resolve();
+  const ready = warm.then(() => (document.fonts && document.fonts.ready) ? document.fonts.ready : null);
   (SPLASH_STYLE === "zoom" ? runSplashZoom : runSplashArrival)(splash, ready);
 }
 /* THE ARRIVAL: black + lighthouse (0-1.4s) -> eclipse (1.45-2.25) -> daybreak (2.2-2.65)

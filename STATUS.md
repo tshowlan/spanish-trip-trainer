@@ -1765,3 +1765,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v404 (2026-10-03) — the hear-first card shows its words when the line ends; word vs phrase by content words
 - Tom's recording 9/30 (Words you'll hear): the card sat blank for two seconds and read as a loading bug. It was the hear-first beat on a fixed 1.9s clock. Now `speak()` takes `opts.onend`; the card's words return 220ms after the line ends (1.9s stays as the cap if the voice never reports).
 - NEW WORD vs NEW PHRASE (Tom 10/3): a card is a word only when both languages have one content word (articles el/la/los/las/un/una/the/a/an do not count): la cuenta / the bill is a word; ¿Algo más? / Anything else?, Un momento / One moment, por favor / please, Dígame / Go ahead are phrases.
+
+## v405 (2026-10-03) — the chapter door's font flash
+- Source Serif 4 (door only) was fetched on first use, so the door could draw a frame in Georgia and swap (Tom 10/3, no fixed scenario: it depends on whether the font was still in memory). Now preloaded in index.html (both weights, plus Playfair) and warmed with document.fonts.load during the splash, which waits for them (1.5s cap). Verified: all five faces report loaded before the splash lifts.
