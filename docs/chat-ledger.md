@@ -96,3 +96,11 @@
 - **Changed ruling (Tom 10/3, live v402):** the Review button under the action tile never wears the urgent dress from design/home.html (gold outline, the two arrival breaths, the "N fading" badge). It keeps the count badge ("56 due") as information. Reason: the tile is the app's recommendation and already turns to review when the queue is big (15+), so both calling out at once was a double flash. The thresholds remain in code for the record.
 - **Open for chat, later:** when chapter 2 defines special review sessions, what does the tile recommend and in what order (next chapter session, a ready scene, a review set), and does the Review button's urgency state leave the artifact for good?
 - **Decided and closed:** the action tile keeps the ring-in-the-glow pulse as shipped (two alternatives mocked and retired, 10/3).
+
+## 2026-10-03 — Three chapter-1 candidates from the other apps' travel lists (Tom and Code agreed; chat to write)
+Tom compared what other language apps teach for travel. Judged against the constitution's test (important on the trip AND not carried by context; say / hear / read), three survive:
+- **¿Qué tal?** as a HEAR word: the opening line at every counter ("Hola, ¿qué tal?"); the learner needs to know it's a greeting, not a question to answer. Seat: Words you'll hear, eighth item, or in place of Pase (the weakest of the seven).
+- **Muy bien** as a SAY word, paired with it: the one answer to ¿qué tal?, ¿todo bien?, "how was it". Seat: First words · 2, eighth item, or in place of Adiós (Hasta luego carries goodbye in Spain).
+- **No entiendo** (not on Tom's list; the real gap in that family): ¿Inglés? does the job today; No entiendo is the honest word before it. Seat: First words · 2 beside ¿Inglés?, or chat's call.
+Ruled OUT, no dispute: y tú (register trap, never returned by a traveler), vamos (chapter 3 at most, as something heard), lo siento (Perdón does the work; met from them in chapter 2's reply sets, "Lo siento, no hay"), no lo sé, excelente (cognate, free), what's your name (the check-in line "¿A nombre de quién?" is a chapter 2 room line), good luck.
+Chat to write: the three cards (context lines, glosses) and the seat decision (eighth items vs swaps; sessions are seven today).
