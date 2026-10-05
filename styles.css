@@ -141,6 +141,11 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
   animation: arr-flood 800ms cubic-bezier(.5,.05,.3,1) 1450ms both, arr-flood-out 650ms ease 2300ms forwards; }
 @keyframes arr-flood { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(85); opacity: 1; } }
 @keyframes arr-flood-out { from { opacity: 1; } to { opacity: 0; } }
+/* TEST LAB "calm" (Tom 10/5): the eclipse and daybreak left out. On the dark theme the flood read as a white flash between the lighthouse
+   and a twilight Home; here the lighthouse holds and the whole splash dissolves into Home as it rises. */
+#splash.calm .splash-flood, #splash.calm .daybreak { display: none; }
+#splash.calm .splash-stack { animation: none; }
+#splash.calm { transition: opacity .7s ease; }
 .splash-ver { position: absolute; left: 0; right: 0; bottom: calc(22px + env(safe-area-inset-bottom)); z-index: 2;
   text-align: center; font-family: var(--font-text); font-size: 11px; font-weight: 600; letter-spacing: .05em;
   color: #a7a494; opacity: .7; }

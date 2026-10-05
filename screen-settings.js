@@ -105,7 +105,7 @@ function renderProfile() {
   });
   wrap.appendChild(stg);
   // the arrival, replayed (Tom 9/29): the shipped form and two candidates, nothing shipped changes
-  const arr = el(`<div class="lab-row"><div class="lab-lbl">The arrival, replayed (splash, then Home)</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn-quiet" data-v="">As shipped (twilight, breathing)</button><button class="btn-quiet" data-v="classic">The old formation</button><button class="btn-quiet" data-v="twilight">Twilight, no breath</button></div></div>`);
+  const arr = el(`<div class="lab-row"><div class="lab-lbl">The arrival, replayed (splash, then Home)</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn-quiet" data-v="">As shipped (twilight, breathing)</button><button class="btn-quiet" data-v="classic">The old formation</button><button class="btn-quiet" data-v="twilight">Twilight, no breath</button><button class="btn-quiet" data-v="calm">No flash: the lighthouse hands straight to Home</button></div></div>`);
   arr.querySelectorAll("button").forEach(b => b.addEventListener("click", () => devReplayArrival(b.dataset.v || null)));
   wrap.appendChild(arr);
   // the light held still (Tom 10/2): this visit only; tells the flame apart from anything else that moves on Home

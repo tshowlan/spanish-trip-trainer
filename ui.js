@@ -203,7 +203,8 @@ function devReplayArrival(variant) {
   document.querySelectorAll(".tab-candle.arr-in").forEach(n => n.classList.remove("arr-in"));   // the one candle persists across replays
   const s = el(`<div id="splash" class="arrival"></div>`);
   document.body.appendChild(s);
-  document.body.classList.add("arriving"); if (variant) document.body.classList.add("arr-" + variant);
+  document.body.classList.add("arriving"); if (variant && variant !== "calm") document.body.classList.add("arr-" + variant);
+  if (variant === "calm") s.classList.add("calm");   // Test Lab (Tom 10/5): no flood of light; the lighthouse holds, then hands straight to twilight
   s.innerHTML = splashMarkup();
   if (typeof showTabbar === "function") showTabbar("home");
   renderHome();
@@ -273,7 +274,7 @@ function runSplashArrival(splash, ready) {
     else document.body.classList.remove("arriving");
   };
   splash.addEventListener("pointerdown", () => finish(true));
-  ready.then(() => setTimeout(() => finish(false), reduced ? 450 : 2600));
+  ready.then(() => setTimeout(() => finish(false), reduced ? 450 : splash.classList.contains("calm") ? 1700 : 2600));   // calm: no eclipse to wait for
 }
 function runSplashBeacon(splash, ready) {
   ready.then(() => {                                    // hold on the lighthouse, then flood + reveal
