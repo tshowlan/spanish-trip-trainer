@@ -1289,6 +1289,9 @@ body.in-runner .footer { background: transparent; border-top: none; }
   border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 14px 24px calc(22px + env(safe-area-inset-bottom));
   transform: translateY(105%); transition: transform var(--t-slow) cubic-bezier(.2,.7,.3,1); }
 .corr-wrap.show .corr-sheet { transform: none; }
+/* the correction card is SOLID on the dark theme (Tom 10/5): the card color there is 72% see-through, and the answers behind it showed through the phrase */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .corr-sheet { background: #232118; } }
+:root[data-theme="dark"] .corr-sheet { background: #232118; }
 .corr-grab { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
 .corr-wrong { font-size: 14px; color: var(--text-dim); text-decoration: line-through; text-decoration-color: var(--red); margin-bottom: 12px; }
 .corr-label { font-family: var(--font-display); font-size: 11px; letter-spacing: .06em; font-weight: 600; color: var(--accent-2); text-transform: uppercase; margin-bottom: 8px; }
