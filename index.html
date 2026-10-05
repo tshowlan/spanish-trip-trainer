@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
   <!-- single meta; applyTheme() (ui.js) syncs content to --bg for the ACTIVE app theme (not the system scheme) -->
-  <meta name="theme-color" content="#fcfcf3" />
+  <meta name="theme-color" content="#030408" />
+  <!-- the first paint is the splash's own ground, before any stylesheet arrives: a cream page showed for two frames between iOS's black
+       launch and the lighthouse (Tom's recording 10/5). styles.css takes the background back to the theme's once it loads. -->
+  <style>html { background: #030408; }</style>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <!-- translucent so the home atmosphere reaches the top edge under the status bar; safe-area padding on the topbar keeps content clear of the notch -->
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
