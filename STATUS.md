@@ -1805,3 +1805,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Situations are [place, want] pairs; the place rides the direction row in gold (`.direction .at`); the want is the line. Eight rewritten (Code's drafts, on the ledger).
 - Hints (mock dev/hint-scheme.html): `_hairlineWords` (after a correct Which one, the chosen answer's words wear hairlines; tap = solid `.hint-pop` with the English, line turns gold) and `_attachHint` (Build the sentence: HINT button in the direction row toggles the cue between plain and piece-over-Spanish; `q.peeked` recorded, no cost). The equals-sign `resNote` is gone. Item data: `words` (ask glosses), `hint` (context pieces), `sits` pairs.
 - Verified in the preview: B2 row, hairlines + bubble, Hint on/off, clean reveals. Not yet applied to chapter 1's exercises.
+
+## v416-v417 (2026-10-05) — the Stronger whisper never meets the top line
+- v416: `.stick` top 52 → 43px (tucked under the ring). v417: a guarantee instead of a nudge: `_anchor` measures the whisper's bottom and sets `--top-min`; the anchored top is `max(16dvh, --top-min)`. The 16% anchor is a share of the screen and the whisper hangs a fixed distance under the ring, so short phones and tall notches brought them together; the dev back/forward buttons play no part (the whisper is pinned to the right edge, not to the ring). Checked at 852 tall (clear 60px, unchanged) and 480 tall (held at 8px).
+- asks-1 (staged): "me" is glossed "me", not "to me": the plain English word in that seat, no grammar-book padding.

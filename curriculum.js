@@ -900,7 +900,7 @@ const CURRICULUM = {
         { es: "Quiero ___", en: "I want ___", tags: ["asks"], words: [["Quiero", "I want"]], contextEs: "Quiero un caf\u00e9.", contextEn: "I want a coffee.",
           hint: [["I want", "quiero"], ["a", "un"], ["coffee.", "caf\u00e9"]],
           sits: [["At the counter", "You're ready to order a coffee."], ["At the bakery", "That pastry in the case is the one."]] },
-        { es: "\u00bfMe puede traer ___?", en: "Could you bring me ___?", tags: ["asks"], words: [["Me", "to me"], ["puede", "could you"], ["traer", "bring"]], contextEs: "\u00bfMe puede traer la cuenta?", contextEn: "Could you bring me the check?",
+        { es: "\u00bfMe puede traer ___?", en: "Could you bring me ___?", tags: ["asks"], words: [["Me", "me"], ["puede", "could you"], ["traer", "bring"]], contextEs: "\u00bfMe puede traer la cuenta?", contextEn: "Could you bring me the check?",
           hint: [["Could you", "puede"], ["bring", "traer"], ["me", "me"], ["the check?", "la cuenta"]],
           sits: [["At the table", "You need the check."], ["At the table", "The glasses are empty. More water."]] },
         { es: "\u00bfD\u00f3nde est\u00e1 ___?", en: "Where is ___?", tags: ["asks"], words: [["D\u00f3nde", "where"], ["est\u00e1", "is"]], contextEs: "\u00bfD\u00f3nde est\u00e1 el ba\u00f1o?", contextEn: "Where is the bathroom?",

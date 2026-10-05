@@ -1958,7 +1958,7 @@ img.scene-art { width: 286px; }
    percentage minus that. 16%: the exercise portion. 63%: the middle choice. 73%: the tile
    bank. 47% and 53%: the two baselines the built sentence rests on. */
 #qbody.anchored { position: relative; min-height: calc(100dvh - var(--qtop, 90px) - 40px); }
-#qbody.anchored .top { position: absolute; left: 0; right: 0; top: calc(16dvh - var(--qtop, 90px)); }
+#qbody.anchored .top { position: absolute; left: 0; right: 0; top: calc(max(16dvh, var(--top-min, 0px)) - var(--qtop, 90px)); }   /* never under the Stronger whisper (--top-min, set by _anchor) */
 #qbody.anchored .direction { color: var(--text-dim); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
 #qbody.anchored .answers { position: absolute; left: 0; right: 0; translate: 0 -50%; }
 #qbody.anchored .answers.at63 { top: calc(63dvh - var(--qtop, 90px)); }

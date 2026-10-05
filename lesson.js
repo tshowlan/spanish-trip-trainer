@@ -2721,6 +2721,10 @@ function _anchor(body) {
   body.classList.add("anchored");
   const top = body.getBoundingClientRect().top + (window.scrollY || 0);
   body.style.setProperty("--qtop", Math.round(top) + "px");
+  // the top line never sits under the Stronger whisper: its 16% anchor is a share of the screen, the whisper hangs a fixed distance under
+  // the ring, so on a short phone (or one with a tall notch) the two met (Tom 10/5). The line takes whichever is lower.
+  const st = document.getElementById("q-stick");
+  if (st) body.style.setProperty("--top-min", Math.round(st.getBoundingClientRect().bottom + (window.scrollY || 0) + 8) + "px");
 }
 /* SIGNS AS SIGNS (Tom 9/26; STAGED "sign-plates"): a read session shows its word as a PLATE (door plate on the dark theme, enamel on the
    light one). The card: plate, meaning, where you'd see it. The rungs: read the sign then act (a situation, two actions) · which sign do
