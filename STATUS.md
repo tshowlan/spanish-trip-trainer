@@ -1788,3 +1788,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v411 (2026-10-05) — the grey flash before the lighthouse
 - Tom's recording 10/5, frame by frame (1.30-1.95s): iOS's black launch, then TWO frames of grey (about 1.73-1.77s), then the splash. A light page showing through for two frames before the splash's dark ground paints. Three things could put a light color there before our stylesheet: the web view's first paint, the theme-color meta (cream), the manifest's background_color (cream). All three now carry the splash's ground #030408: an inline `html { background }` in the head, the meta's initial value (applyTheme still syncs it at runtime), and the manifest (iOS reads the manifest when the icon is added, so that part may need a re-add). Not verifiable off-device.
+
+## v412 (2026-10-05) — launch images
+- Tom's recording 10-26: launch 1 clean; launch 2 (a relaunch seconds later) shows two flat neutral-grey frames (6,6,6 then 51,51,51) before the splash; the 09-57 recording had four (3, 20, 44, 72). A white or near-white layer fading in until our first paint cuts it off: nothing in the page can paint earlier than its own first paint, so v411's in-page changes could only shorten it.
+- Added `launch/` (12 flat #030408 stills, 484K total, one per iPhone size) and `apple-touch-startup-image` links. With the manifest's dark background_color (v411), both are read by iOS when the icon is ADDED, so they take effect only after Tom removes and re-adds the icon. Not in the service worker's asset list (install-time only).
