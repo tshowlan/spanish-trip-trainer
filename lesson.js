@@ -334,11 +334,11 @@ function composeAsks(lesson, newItems) {
   (newItems.length ? newItems : []).forEach(it => qs.push({ type: "present", item: it, arc: true }));
   if (newItems.length && pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });
   const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
-  const which = k => shuffle(pool.filter(it => (it.sits || [])[k])).map(it => ({ type: "ask_which", item: it, pool, sit: it.sits[k], arc: true, resNote: it.gloss }));
+  const which = k => shuffle(pool.filter(it => (it.sits || [])[k])).map(it => ({ type: "ask_which", item: it, pool, place: it.sits[k][0], sit: it.sits[k][1], arc: true }));
   const build = shuffle(pool.filter(it => it.contextEs)).map(it => {
     const tiles = tilesOf(it.contextEs);
     const others = pool.filter(x => x !== it).flatMap(x => tilesOf(x.contextEs || "")).filter(w => w && !tiles.includes(w));
-    return { type: "weld", item: it, pool, target: it.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: it.contextEn, cueRole: "Build the sentence", cueMeaning: it.contextEn, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, resNote: it.gloss };
+    return { type: "weld", item: it, pool, target: it.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: it.contextEn, cueRole: "Build the sentence", cueMeaning: it.contextEn, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint };
   });
   const add = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };   // no ask twice in a row across a seam
   add(which(0)); add(build); add(which(1));
@@ -351,14 +351,49 @@ function renderAskWhich(q) {
   const item = q.item, body = $("#qbody");
   _anchor(body);
   const top = el(`<div class="top"></div>`);
-  top.appendChild(el(`<div class="direction">Which one do you say?</div>`));
+  top.appendChild(el(`<div class="direction">Which one do you say?${q.place ? ` <span class="at">\u00b7 ${q.place}</span>` : ""}</div>`));   // shape B2 (Tom 10/5): the place in the row, the want as the line
   top.appendChild(el(`<div class="act-sit need">${q.sit}</div>`));
   body.appendChild(top);
   q.grownBelow = true; q.esOnStage = true;
   const opts = shuffle((q.pool && q.pool.length ? q.pool : run.lesson.items).slice());
   const answers = el(`<div class="answers at63"></div>`);
-  answers.appendChild(_signChoices(opts.map(o => o.es), opts.indexOf(item), item));
+  const choices = _signChoices(opts.map(o => o.es), opts.indexOf(item), item, ok => { if (ok) _hairlineWords(choices.children[opts.indexOf(item)], item); });
+  answers.appendChild(choices);
   body.appendChild(answers);
+}
+/* THE HINTS (Tom 10/5; mock dev/hint-scheme.html). Two forms, one mark, the hairline:
+   - under an ANSWER (the prompt was not a translation): once the answer stands, each of its words wears a hairline; a tap shows that
+     word's English in a solid bubble and its line turns gold. Nothing before the answer.
+   - on a PROMPT that is the answer's English: a Hint button at the end of the direction row; pressed, each piece of the English gets a
+     hairline with its Spanish beneath, in English order (the Spanish order stays the learner's). A peek is free.
+   Never on a card (it already gives the meaning), never on the word under test. */
+function _hairlineWords(host, item) {
+  if (!host || !(item.words || []).length) return;
+  let html = host.textContent;
+  item.words.forEach(w => { html = html.replace(w[0], `<span class="hl" data-en="${w[1]}">${w[0]}</span>`); });
+  host.innerHTML = html; host.classList.add("hinted");
+  host.querySelectorAll(".hl").forEach(n => n.addEventListener("click", e => {
+    e.stopPropagation();
+    const was = n.classList.contains("open");
+    host.querySelectorAll(".hl.open").forEach(o => { o.classList.remove("open"); const p = o.querySelector(".hint-pop"); if (p) p.remove(); });
+    if (!was) { n.classList.add("open"); n.appendChild(el(`<span class="hint-pop">${n.dataset.en}</span>`)); }
+  }));
+}
+function _attachHint(body, q) {
+  const dirEl = body.querySelector(".conv-cuewrap .direction"), cue = body.querySelector(".conv-cuewrap .cue-meaning");
+  if (!dirEl || !cue || !(q.hint || []).length) return;
+  const plain = cue.innerHTML;
+  const paired = q.hint.map(p => p[1] ? `<span class="hint-col"><span class="pc">${p[0]}</span><span class="hint-es">${p[1]}</span></span>` : p[0]).join(" ");
+  dirEl.classList.add("split");
+  dirEl.innerHTML = `<span>${dirEl.innerHTML}</span>`;
+  const btn = el(`<button class="hint-btn" aria-pressed="false">Hint</button>`);
+  btn.addEventListener("click", () => {
+    const on = !btn.classList.contains("on");
+    btn.classList.toggle("on", on); btn.setAttribute("aria-pressed", on ? "true" : "false");
+    cue.innerHTML = on ? paired : plain; cue.classList.toggle("hinting", on);
+    if (on) q.peeked = true;
+  });
+  dirEl.appendChild(btn);
 }
 function composeSession(lesson) {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();             // §6 variety rule clock (srs.js reads it)
@@ -2117,6 +2152,7 @@ function renderWeld(q) {
   if (q.cueMeaning !== "") cueBlock.appendChild(el(`<div class="cue-meaning conv-cue">${q.cueMeaning || (outOfLesson && !q.ves ? q.item.en : q.cue.fen)}</div>`));
   if (anchored) { const top = el(`<div class="top"></div>`); top.appendChild(cueBlock); body.appendChild(top); }
   else body.appendChild(cueBlock);
+  if (q.hint && anchored) _attachHint(body, q);                   // the Hint button (asks; Tom 10/5)
   const stage = el(`<div class="machine-stage"></div>`);
   if (q.inputForm ? q.inputForm === "typed" : _inputClimbed(item)) {   // ruling 7: the form was fixed at composition when staged
     // the climb: tiles retire, the keyboard serves (typed weld; typo/accent tolerance,

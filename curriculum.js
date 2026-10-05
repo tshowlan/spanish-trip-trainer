@@ -893,15 +893,22 @@ const CURRICULUM = {
        The kit shape: four cards, the words board, then per ask "Which one do you say?" (chat's situations, two each), build the sentence from
        met words, and the listening board. gloss = the word glosses for the reveal (chat's table). Contexts and the session line are Code's drafts. */
     asks: [
+      /* sits: [place, want] (shape B2, Tom 10/5): the place rides in the direction row, the want is the line, and the want never uses the
+         ask's own English. words: the ask's word glosses, tapped under the answer. hint: the context sentence's English, piece by piece, with
+         the Spanish each piece hides (English order; the Spanish order stays the learner's to work out). */
       { id: "asks-1", staged: "asks-1", topic: "First sentences", title: "The asks \u00b7 Part 1", line: "Want, bring, where, how much. The four you will use most.", items: [
-        { es: "Quiero ___", en: "I want ___", tags: ["asks"], gloss: "quiero = I want", contextEs: "Quiero un caf\u00e9.", contextEn: "I want a coffee.",
-          sits: ["You know what you want at the counter.", "The case is full of pastries."] },
-        { es: "\u00bfMe puede traer ___?", en: "Could you bring me ___?", tags: ["asks"], gloss: "me = to me \u00b7 puede = could you \u00b7 traer = bring", contextEs: "\u00bfMe puede traer la cuenta?", contextEn: "Could you bring me the check?",
-          sits: ["The waiter passes close.", "The glasses are empty."] },
-        { es: "\u00bfD\u00f3nde est\u00e1 ___?", en: "Where is ___?", tags: ["asks"], gloss: "d\u00f3nde = where \u00b7 est\u00e1 = is", contextEs: "\u00bfD\u00f3nde est\u00e1 el ba\u00f1o?", contextEn: "Where is the bathroom?",
-          sits: ["Two unmarked doors.", "The map died with your phone."] },
-        { es: "\u00bfCu\u00e1nto cuesta ___?", en: "How much is ___?", tags: ["asks"], gloss: "cu\u00e1nto = how much \u00b7 cuesta = it costs", contextEs: "\u00bfCu\u00e1nto cuesta el taxi?", contextEn: "How much is the taxi?",
-          sits: ["The tag is missing.", "You reach the ticket window."] } ] }
+        { es: "Quiero ___", en: "I want ___", tags: ["asks"], words: [["Quiero", "I want"]], contextEs: "Quiero un caf\u00e9.", contextEn: "I want a coffee.",
+          hint: [["I want", "quiero"], ["a", "un"], ["coffee.", "caf\u00e9"]],
+          sits: [["At the counter", "You're ready to order a coffee."], ["At the bakery", "That pastry in the case is the one."]] },
+        { es: "\u00bfMe puede traer ___?", en: "Could you bring me ___?", tags: ["asks"], words: [["Me", "to me"], ["puede", "could you"], ["traer", "bring"]], contextEs: "\u00bfMe puede traer la cuenta?", contextEn: "Could you bring me the check?",
+          hint: [["Could you", "puede"], ["bring", "traer"], ["me", "me"], ["the check?", "la cuenta"]],
+          sits: [["At the table", "You need the check."], ["At the table", "The glasses are empty. More water."]] },
+        { es: "\u00bfD\u00f3nde est\u00e1 ___?", en: "Where is ___?", tags: ["asks"], words: [["D\u00f3nde", "where"], ["est\u00e1", "is"]], contextEs: "\u00bfD\u00f3nde est\u00e1 el ba\u00f1o?", contextEn: "Where is the bathroom?",
+          hint: [["Where", "d\u00f3nde"], ["is", "est\u00e1"], ["the bathroom?", "el ba\u00f1o"]],
+          sits: [["In the restaurant", "You need the bathroom."], ["On the street", "You can't find the metro."]] },
+        { es: "\u00bfCu\u00e1nto cuesta ___?", en: "How much is ___?", tags: ["asks"], words: [["Cu\u00e1nto", "how much"], ["cuesta", "it costs"]], contextEs: "\u00bfCu\u00e1nto cuesta el taxi?", contextEn: "How much is the taxi?",
+          hint: [["How much", "cu\u00e1nto"], ["is", "cuesta"], ["the taxi?", "el taxi"]],
+          sits: [["In a shop", "The scarf has no price tag."], ["At the ticket window", "You need the price before you buy."]] } ] }
     ]
   },
   glueGloss: {

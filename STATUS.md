@@ -1800,3 +1800,8 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v414 (2026-10-05) — the correction card solid on the dark theme
 - `.corr-sheet` background #232118 on dark (was the 72% see-through card color; the answers showed through the phrase, Tom's screenshot). Light theme was already solid. Only the correction card; other sheets untouched.
+
+## v415 (2026-10-05) — asks-1 (still STAGED): B2 situations and the hint scheme
+- Situations are [place, want] pairs; the place rides the direction row in gold (`.direction .at`); the want is the line. Eight rewritten (Code's drafts, on the ledger).
+- Hints (mock dev/hint-scheme.html): `_hairlineWords` (after a correct Which one, the chosen answer's words wear hairlines; tap = solid `.hint-pop` with the English, line turns gold) and `_attachHint` (Build the sentence: HINT button in the direction row toggles the cue between plain and piece-over-Spanish; `q.peeked` recorded, no cost). The equals-sign `resNote` is gone. Item data: `words` (ask glosses), `hint` (context pieces), `sits` pairs.
+- Verified in the preview: B2 row, hairlines + bubble, Hint on/off, clean reveals. Not yet applied to chapter 1's exercises.
