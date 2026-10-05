@@ -7,7 +7,13 @@
   <meta name="theme-color" content="#030408" />
   <!-- the first paint is the splash's own ground, before any stylesheet arrives: a cream page showed for two frames between iOS's black
        launch and the lighthouse (Tom's recording 10/5). styles.css takes the background back to the theme's once it loads. -->
-  <style>html { background: #030408; }</style>
+  <!-- THE FIRST PAINT WAITS FOR NOTHING (10/5): this is all the browser needs to draw the splash's ground. The two stylesheets used to sit
+       here and block the first paint while the service worker revalidated them over the network; in that gap iOS faded the launch image
+       into a blank white web view (two to four grey frames in Tom's recordings). They now load after the first frame (the loader at the
+       end of the body), and the app's scripts wait for them, so nothing boots unstyled. -->
+  <style id="pre-style">html { background: #030408; } #splash { position: fixed; inset: 0; z-index: 2000; background: #030408; } body > :not(#splash) { visibility: hidden; }</style>
+  <link rel="preload" as="style" href="./fonts.css" />
+  <link rel="preload" as="style" href="./styles.css" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <!-- translucent so the home atmosphere reaches the top edge under the status bar; safe-area padding on the topbar keeps content clear of the notch -->
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -32,8 +38,6 @@
   <link rel="preload" href="./fonts/source-serif-4-600.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="./fonts/source-serif-4-400.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="./fonts/playfair-italic-500.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="./fonts.css" />
-  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <div id="splash"></div>
@@ -47,36 +51,31 @@
   <nav id="tabbar"></nav>
   <div class="toast" id="toast"></div>
 
-  <!-- content packs (plain data) -->
-  <script src="./config.js"></script>
-  <script src="./curriculum.js"></script>
-  <script src="./content_mx.js"></script>
-  <script src="./messages.js"></script>
-  <!-- engine -->
-  <script src="./state.js"></script>
-  <script src="./engine.js"></script>
-  <script src="./audio.js"></script>
-  <script src="./ui.js"></script>
-  <script src="./srs.js"></script>
-  <script src="./weights.js"></script>
-  <script src="./scoring.js"></script>
-  <script src="./tiers.js"></script>
-  <!-- screens -->
-  <script src="./screen-onboarding.js"></script>
-  <script src="./charts.js"></script>
-  <script src="./screen-home.js"></script>
-  <script src="./screen-learn.js"></script>
-  <script src="./screen-quests.js"></script>
-  <script src="./screen-phrasebook.js"></script>
-  <script src="./screen-progress.js"></script>
-  <script src="./screen-settings.js"></script>
-  <script src="./lesson.js"></script>
-  <script src="./cloud.js"></script>
-  <script src="./accounts.js"></script>
-  <script src="./push.js"></script>
-  <script src="./trips.js"></script>
-  <script src="./nav.js"></script>
-  <!-- entry point (boots + routes) -->
-  <script src="./app.js"></script>
+  <!-- THE LOADER: first frame, then the stylesheets, then the scripts in their order (content packs, engine, screens, app.js last).
+       Scripts added this way with async=false run in the order they were added, exactly as the old script tags did. -->
+  <script>
+  (function () {
+    var css = ["./fonts.css", "./styles.css"];
+    var js = ["./config.js", "./curriculum.js", "./content_mx.js", "./messages.js", "./state.js", "./engine.js", "./audio.js", "./ui.js", "./srs.js", "./weights.js", "./scoring.js", "./tiers.js", "./screen-onboarding.js", "./charts.js", "./screen-home.js", "./screen-learn.js", "./screen-quests.js", "./screen-phrasebook.js", "./screen-progress.js", "./screen-settings.js", "./lesson.js", "./cloud.js", "./accounts.js", "./push.js", "./trips.js", "./nav.js", "./app.js"];
+    var started = false;
+    function scripts() {
+      if (started) return; started = true;
+      var pre = document.getElementById("pre-style"); if (pre) pre.textContent = "html { background: #030408; }";   // the stylesheet owns everything else now
+      js.forEach(function (src) { var el = document.createElement("script"); el.src = src; el.async = false; document.body.appendChild(el); });
+    }
+    function styles() {
+      var left = css.length;
+      css.forEach(function (href) {
+        var l = document.createElement("link"); l.rel = "stylesheet"; l.href = href;
+        l.onload = l.onerror = function () { if (--left === 0) scripts(); };
+        document.head.appendChild(l);
+      });
+      setTimeout(scripts, 8000);   // never strand the app behind a stylesheet that will not answer
+    }
+    var go = function () { setTimeout(styles, 0); };
+    if (window.requestAnimationFrame) requestAnimationFrame(go); else go();   // after the first frame has been drawn
+    setTimeout(function () { if (!document.querySelector('link[rel="stylesheet"]')) styles(); }, 400);   // a hidden tab draws no frames: do not wait for one
+  })();
+  </script>
 </body>
 </html>
