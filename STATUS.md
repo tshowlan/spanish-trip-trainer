@@ -1834,3 +1834,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v423 (2026-10-06) — the mic follows your voice; a match feels like a right answer
 - Level meter: on the mic tap a second mic stream (getUserMedia) feeds an analyser; each frame the ring's shadow and scale follow the voice level (set from JS; the phone's sound-start/end events drive a quick pulse when a second stream is refused). Tracks and the audio context stop with recognition.
 - A match: the ding and buzz, the word turns green with the sweep underline, the mic ring turns green, the kicker THAT'S IT with "You said jamón.", the button reads Next (Tom: "it should feel like you got it right, not just that you did it").
+
+## v424 (2026-10-06) — "Keep going, just listening" swaps in Which one sounds different?
+- The speaking escape's listening path no longer clicks through the remaining words: the rest of the run becomes `odd_one` rounds (renderOddOne: four plain words, three share the sound, tap the odd one; a tap says the word; the reveal line says why; wrong taps shake and count), one per remaining sound that has an `odd` entry (seven of nine: v and the vowels have none), then the ending. Data: `odd: [word, why]` on each sound.

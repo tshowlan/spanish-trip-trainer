@@ -570,9 +570,48 @@ function speakEscape(container, q) {
       <span class="big">This one is built for your voice.</span>
       <span>Listen for now, or come back when you can speak. It will be waiting on Home.</span></div>`));
     const cf = footer(`<button class="btn" id="swapcont">Keep going, just listening</button><button class="btn grey" id="swappark">Come back when I can speak</button>`);
-    cf.querySelector("#swapcont").addEventListener("click", () => { run.speakOff = true; body.className = ""; body.innerHTML = ""; renderQuestion(); });
+    cf.querySelector("#swapcont").addEventListener("click", () => {
+      // listening only: the rest of the run is not worth clicking through (Tom 10/6), so the remaining words become "Which one sounds
+      // different?" rounds, one per sound that has an odd one out; the ending stays
+      run.speakOff = true;
+      const rest = run.qs.slice(run.idx).filter(x => x.type === "say_it").map(x => x.item).filter(it => it.odd);
+      const tail = run.qs.slice(run.idx).filter(x => x.type !== "say_it");
+      run.qs = run.qs.slice(0, run.idx).concat(rest.map(it => ({ type: "odd_one", item: it, pool: run.lesson.items, arc: true })), tail);
+      body.className = ""; body.innerHTML = ""; renderQuestion();
+    });
     cf.querySelector("#swappark").addEventListener("click", () => { parkEarSession(); leaveSession(); });
   });
+}
+/* WHICH ONE SOUNDS DIFFERENT? (the sounds session's listening form, Tom 10/6): three words that share the key sound and one that does not,
+   plain, no gold (the gold would give it away). Tap the odd one; the reveal says why. */
+function renderOddOne(q) {
+  const it = q.item, body = $("#qbody");
+  _anchor(body);
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">Which one sounds different?</div>`));
+  const sub = el(`<div class="wall-sub">Three of these share a sound. Tap a word to hear it.</div>`); top.appendChild(sub);
+  body.appendChild(top);
+  const words = shuffle([it.es, ...(it.more || []).slice(0, 2).map(m => m[0]), it.odd[0]]);
+  const grid = el(`<div class="sound-wall odd-grid"></div>`);
+  let done = false;
+  words.forEach(w => {
+    const b = el(`<button class="choice">${w}</button>`);
+    b.addEventListener("click", () => {
+      speak(w);
+      if (done) return;
+      if (w === it.odd[0]) {
+        done = true; b.classList.add("correct"); [...grid.children].forEach(c => { if (c !== b) c.classList.add("dim"); });
+        playSound("correct"); haptic("correct");
+        sub.textContent = it.odd[1];
+        const barEl = document.querySelector(".pbar > i"); if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
+        const cf = footer(`<button class="btn" id="cont">Continue</button>`);
+        let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
+      } else { run.wrong++; b.classList.add("shake-x"); setTimeout(() => b.classList.remove("shake-x"), 400); playSound("wrong"); }
+    });
+    grid.appendChild(b);
+  });
+  top.appendChild(grid);
+  clearFooter();
 }
 function renderSoundsEnd(q) {
   const body = $("#qbody");
@@ -1669,7 +1708,7 @@ function renderQuestion() {
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
      scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear, scene_sign: renderSceneSign, context_choice: renderContextChoice,
      num_set: renderNumSet, num_pad: renderNumPad, num_run: renderNumRun,
-     ask_which: renderAskWhich, key_sound: renderKeySound, sound_wall: renderSoundWall, say_it: renderSayIt, sounds_end: renderSoundsEnd, sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable, days_set: renderDaysSet, sign_wall: renderSignWall, days_order: renderDaysOrder,
+     ask_which: renderAskWhich, key_sound: renderKeySound, sound_wall: renderSoundWall, say_it: renderSayIt, odd_one: renderOddOne, sounds_end: renderSoundsEnd, sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable, days_set: renderDaysSet, sign_wall: renderSignWall, days_order: renderDaysOrder,
      circuit_door: renderCircuitDoor, circuit_close: renderCircuitClose,
      reply: renderReplyChat }[q.type])(q);
 }
