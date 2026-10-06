@@ -1830,3 +1830,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v422 (2026-10-06) — Say it: the wall's header, the mic shows it hears you
 - Header: "SAY IT" then "2 OF 9 SAID" beneath (the wall's format), replacing "SAY IT · 3 OF 9" over "SAY IT OUT LOUD".
 - The mic: listening = a slow breathing ring (mic-listen); the phone's soundstart/speechstart events switch it to a quick bigger pulse with "Hearing you…" (mic-hear); soundend/speechend settle it; onend clears both. Reduced motion: a still ring.
+
+## v423 (2026-10-06) — the mic follows your voice; a match feels like a right answer
+- Level meter: on the mic tap a second mic stream (getUserMedia) feeds an analyser; each frame the ring's shadow and scale follow the voice level (set from JS; the phone's sound-start/end events drive a quick pulse when a second stream is refused). Tracks and the audio context stop with recognition.
+- A match: the ding and buzz, the word turns green with the sweep underline, the mic ring turns green, the kicker THAT'S IT with "You said jamón.", the button reads Next (Tom: "it should feel like you got it right, not just that you did it").

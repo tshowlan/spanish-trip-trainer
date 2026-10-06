@@ -502,18 +502,48 @@ function renderSayIt(q) {
   if (run.speakOff) arow.appendChild(el(`<span class="audio-hint">Just listen for now</span>`));   // the escape fired: listening only (Tom 10/6)
   else if (Rec && !(run.soundOff || state.sound === false)) {
     const mic = el(`<button class="mic" aria-label="Say it to the microphone">${icon("microphone", 20)}</button>`);
+    const wordEl = top.querySelector(".big-word"), saidBtn = () => top.querySelector("#said");
+    // THE LEVEL METER (Tom 10/6): the ring follows your voice. A second mic stream (getUserMedia) feeds an analyser; each frame sets
+    // --level on the ring. If the phone refuses a second stream, the phone's sound-start/sound-end events drive the ring instead.
+    let meterStop = null;
+    const startMeter = async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const AC = window.AudioContext || window.webkitAudioContext; const ctx = new AC();
+        const src = ctx.createMediaStreamSource(stream), an = ctx.createAnalyser(); an.fftSize = 512; src.connect(an);
+        const buf = new Uint8Array(an.fftSize); let raf = 0, smooth = 0;
+        const tick = () => { an.getByteTimeDomainData(buf); let sum = 0; for (let k = 0; k < buf.length; k++) { const v = (buf[k] - 128) / 128; sum += v * v; }
+          const rms = Math.sqrt(sum / buf.length); smooth = Math.max(rms, smooth * 0.82);
+          const lvl = Math.min(1, smooth * 6);
+          mic.style.boxShadow = `0 0 0 ${(4 + 18 * lvl).toFixed(1)}px rgba(216,183,19,${(0.10 + 0.22 * lvl).toFixed(3)})`; mic.style.transform = `scale(${(1 + 0.12 * lvl).toFixed(3)})`;   // set here, not in CSS calc (WebKit)
+          mic.classList.toggle("hearing", lvl > 0.12); raf = requestAnimationFrame(tick); };
+        raf = requestAnimationFrame(tick);
+        meterStop = () => { cancelAnimationFrame(raf); stream.getTracks().forEach(t => t.stop()); try { ctx.close(); } catch (_) {} mic.style.boxShadow = ""; mic.style.transform = ""; mic.classList.remove("hearing"); meterStop = null; };
+        mic.classList.add("metered");
+      } catch (_) { /* no second stream: the event-driven pulse stays */ }
+    };
     mic.addEventListener("click", () => {
-      if (mic.classList.contains("live")) return;
+      if (mic.classList.contains("live") || mic.classList.contains("hit")) return;
       let rec; try { rec = new Rec(); } catch (_) { heard.textContent = "The microphone is not available here."; return; }
       rec.lang = (typeof activePack === "function" ? activePack().tts : "es-ES"); rec.maxAlternatives = 3;
       mic.classList.add("live"); heard.textContent = "Listening…";
-      // the mic shows it is hearing you: the phone reports when sound starts and stops (Tom 10/6)
-      rec.onsoundstart = rec.onspeechstart = () => { mic.classList.add("hearing"); heard.textContent = "Hearing you\u2026"; };
-      rec.onsoundend = rec.onspeechend = () => mic.classList.remove("hearing");
-      rec.onresult = e => { const alts = Array.from(e.results[0]).map(r => r.transcript); const hit = alts.some(a => norm(a).includes(norm(it.es))); heard.innerHTML = hit ? `<b>That's it.</b> We heard ${alts[0]}.` : `We heard "${alts[0]}". Try it once more, or move on.`; if (hit) { playSound("correct"); haptic("correct"); } };
+      // the phone reports when sound starts and stops: the ring quickens; the meter above takes over when it can
+      rec.onsoundstart = rec.onspeechstart = () => { if (!mic.classList.contains("metered")) mic.classList.add("hearing"); heard.textContent = "Hearing you…"; };
+      rec.onsoundend = rec.onspeechend = () => { if (!mic.classList.contains("metered")) mic.classList.remove("hearing"); };
+      rec.onresult = e => {
+        const alts = Array.from(e.results[0]).map(r => r.transcript); const hit = alts.some(a => norm(a).includes(norm(it.es)));
+        if (hit) {
+          // a right answer, in the house grammar: the ding, the word's green sweep, the kicker (Tom 10/6: it should feel like you got it right)
+          playSound("correct"); haptic("correct");
+          mic.classList.add("hit"); if (wordEl) { wordEl.classList.add("said"); wordEl.appendChild(el(`<span class="sweep2"></span>`)); }
+          heard.innerHTML = `<div class="res-yours">THAT'S IT</div><div>You said ${it.es}.</div>`;
+          const sb = saidBtn(); if (sb) sb.textContent = "Next";
+        } else heard.innerHTML = `We heard "${alts[0]}". Try it once more, or move on.`;
+      };
       rec.onerror = () => { heard.textContent = "The microphone did not catch that."; };
-      rec.onend = () => mic.classList.remove("live", "hearing");
-      try { rec.start(); } catch (_) { mic.classList.remove("live"); heard.textContent = "The microphone is not available here."; }
+      rec.onend = () => { mic.classList.remove("live"); if (!mic.classList.contains("metered")) mic.classList.remove("hearing"); if (meterStop) meterStop(); mic.classList.remove("metered"); };
+      startMeter().finally(() => { try { rec.start(); } catch (_) { mic.classList.remove("live"); heard.textContent = "The microphone is not available here."; if (meterStop) meterStop(); } });
     });
     arow.appendChild(mic);
     arow.appendChild(el(`<span class="audio-hint">Hear it, or say it to the mic</span>`));
