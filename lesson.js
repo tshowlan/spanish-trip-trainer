@@ -589,19 +589,20 @@ function renderOddOne(q) {
   _anchor(body);
   const top = el(`<div class="top"></div>`);
   top.appendChild(el(`<div class="direction">Which one sounds different?</div>`));
-  const sub = el(`<div class="wall-sub">Three of these share a sound. Tap a word to hear it.</div>`); top.appendChild(sub);
+  top.appendChild(el(`<div class="act-sit need">Three of these share a sound.</div>`));   // the exercise size, like every other rung's line
+  const sub = el(`<div class="odd-sub">Read them. Tap the one that does not belong.</div>`); top.appendChild(sub);
   body.appendChild(top);
+  // no audio before the answer (Tom 10/6, mock D3): hearing the four would hand over the answer; the reveal plays the odd one
   const words = shuffle([it.es, ...(it.more || []).slice(0, 2).map(m => m[0]), it.odd[0]]);
-  const grid = el(`<div class="sound-wall odd-grid"></div>`);
+  const grid = el(`<div class="odd4"></div>`);
   let done = false;
   words.forEach(w => {
     const b = el(`<button class="choice">${w}</button>`);
     b.addEventListener("click", () => {
-      speak(w);
       if (done) return;
       if (w === it.odd[0]) {
         done = true; b.classList.add("correct"); [...grid.children].forEach(c => { if (c !== b) c.classList.add("dim"); });
-        playSound("correct"); haptic("correct");
+        playSound("correct"); haptic("correct"); setTimeout(() => speak(w), 250);
         sub.textContent = it.odd[1];
         const barEl = document.querySelector(".pbar > i"); if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
         const cf = footer(`<button class="btn" id="cont">Continue</button>`);
@@ -610,7 +611,7 @@ function renderOddOne(q) {
     });
     grid.appendChild(b);
   });
-  top.appendChild(grid);
+  const answers = el(`<div class="answers at63"></div>`); answers.appendChild(grid); body.appendChild(answers);
   clearFooter();
 }
 function renderSoundsEnd(q) {

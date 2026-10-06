@@ -1847,3 +1847,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v427 (2026-10-06) — test mode: scrub the session from the bar; the IPA behind every say line
 - Test mode (staging on): tap or drag the progress bar to land on any exercise; the bar and the index follow (Tom 10/6: no more clicking through ten to see the end).
 - Every key sound carries `ipa`, the standard Castilian transcription the say line is derived from (ˈɡɾa.θjas, xaˈmon, ˈo.la, ˈka.ʝe, ˈba.ɲo, ˈbi.no, ˈkje.ɾo, ˈpe.ro, kaˈfe); the pack comment names the rules (distinción, yeísmo, b/v, tap vs trill). The app's es-ES voice remains the authority a learner hears.
+
+## v428 (2026-10-06) — Which one sounds different? as mock D3; the sounds handoff
+- renderOddOne rebuilt: direction, the line at the exercise size ("Three of these share a sound."), "Read them. Tap the one that does not belong.", the four ordinary choice tiles in the lower third (at63), no audio before the answer; the reveal says the odd one and plays it. Verified at phone width (tiles at the ordinary color, answers at 441px of 812).
+- docs/handoff-sounds-1006.md (Desktop copy): the pronunciation check for chat (the nine with IPA, say lines, decoys, carriers, open questions) and the voice pass on every line.
