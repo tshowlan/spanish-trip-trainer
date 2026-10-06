@@ -1854,3 +1854,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v429 (2026-10-06) — chat's sounds ruling applied
 - Say lines and decoys to the say-line law's key; wall tiles are the sound alone (the gold is the letter, the tile is its sound; hola oh/hoh and café's whole-word pair excepted); gold on the letter only; perro's carriers cerrado and carretera (pero stays the odd one on the listening path); rule lines 1 and 9 rewritten; "You found every sound."; "You said all nine out loud."; the first card carries "Said the Spain way. The voice is the real thing." once (lesson.note, rendered on idx 0 only). Verified in the preview: first-card confirm GRAH-see-ahs / GRAH-thyahs, the note on card 1 only, round-one tiles oh hoh y j s h l n th ny, the ending line.
+
+## v430 (2026-10-06) — Say it listens by itself; the green word gone
+- After the word plays, the mic starts listening on its own once the phone has allowed it before (`state.micOk`, set the first time recognition starts); the first Say it screen still asks for one tap ("Tap the mic once to let the app listen."). The word no longer turns green with a sweep on a match (Tom: it sat oddly); the ring turns green, the ding plays. The win's copy is under review (dev/say-it-win-options.html).

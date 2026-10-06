@@ -524,7 +524,7 @@ function renderSayIt(q) {
         mic.classList.add("metered");
       } catch (_) { /* no second stream: the event-driven pulse stays */ }
     };
-    mic.addEventListener("click", () => {
+    const listen = () => {
       if (mic.classList.contains("live") || mic.classList.contains("hit")) return;
       let rec; try { rec = new Rec(); } catch (_) { heard.textContent = "The microphone is not available here."; return; }
       rec.lang = (typeof activePack === "function" ? activePack().tts : "es-ES"); rec.maxAlternatives = 3;
@@ -537,15 +537,18 @@ function renderSayIt(q) {
         if (hit) {
           // a right answer, in the house grammar: the ding, the word's green sweep, the kicker (Tom 10/6: it should feel like you got it right)
           playSound("correct"); haptic("correct");
-          mic.classList.add("hit"); if (wordEl) { wordEl.classList.add("said"); wordEl.appendChild(el(`<span class="sweep2"></span>`)); }
-          heard.innerHTML = `<div class="res-yours">THAT'S IT</div><div>You said ${it.es}.</div>`;
+          mic.classList.add("hit");   // the ring turns green; the word stays as it is (Tom 10/6: the green underline sat oddly)
+          heard.innerHTML = `<div class="res-yours">THAT'S IT</div><div>You said ${it.es}.</div>`;   // copy under review (mock dev/say-it-win-options.html)
           const sb = saidBtn(); if (sb) sb.textContent = "Next";
         } else heard.innerHTML = `We heard "${alts[0]}". Try it once more, or move on.`;
       };
       rec.onerror = () => { heard.textContent = "The microphone did not catch that."; };
       rec.onend = () => { mic.classList.remove("live"); if (!mic.classList.contains("metered")) mic.classList.remove("hearing"); if (meterStop) meterStop(); mic.classList.remove("metered"); };
+      rec.onstart = () => { if (!state.micOk) { state.micOk = true; save(); } };   // the phone let us listen once: from now on Say it listens by itself
       startMeter().finally(() => { try { rec.start(); } catch (_) { mic.classList.remove("live"); heard.textContent = "The microphone is not available here."; if (meterStop) meterStop(); } });
-    });
+    };
+    mic.addEventListener("click", listen);
+    q._listen = listen;
     arow.appendChild(mic);
     arow.appendChild(el(`<span class="audio-hint">Hear it, or say it to the mic</span>`));
   } else arow.appendChild(el(`<span class="audio-hint">Say it, then tap to compare</span>`));
@@ -557,7 +560,12 @@ function renderSayIt(q) {
   body.appendChild(top);
   clearFooter();
   if (!run.speakOff) speakEscape(top, q);
-  setTimeout(() => play._fire(), 350);
+  // the word plays, then the mic listens by itself once the phone has allowed it before (Tom 10/6); the first time still takes a tap
+  setTimeout(() => {
+    if (q._listen && state.micOk) { play.querySelector(".ac-speaker").classList.add("playing"); speak(it.es, null, { onend: () => { play.querySelector(".ac-speaker").classList.remove("playing"); setTimeout(() => { if (!run.answered) q._listen(); }, 250); } }); }
+    else play._fire();
+  }, 350);
+  if (q._listen && !state.micOk) heard.textContent = "Tap the mic once to let the app listen.";
 }
 /* the speaking session's escape (Tom 10/6), the ear escape's sibling: listen for now, or come back when you can speak (parked like an ear session;
    the tile says Saved for speaking and offers it first next new day) */
