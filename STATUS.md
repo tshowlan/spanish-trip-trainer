@@ -1840,3 +1840,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v425 (2026-10-06) — the sounds session's ending: nine tiles (mock E1)
 - The ending card shows the nine carrier words in a 3x3 of tiles, gold letters kept, the say line small under each, instead of the bare letter groups. Kept as the one session with an ending card: the run's last screen is not a close, and the nine words are the recap (Tom 10/6).
+
+## v426 (2026-10-06) — the escape sheets read at arm's length
+- `.swapnote` (shared by the listening and speaking escapes): the line 15 → 21px, the body 13 → 16px with more air (Tom 10/6: hard to read, harder for older eyes).

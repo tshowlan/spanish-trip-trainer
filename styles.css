@@ -1798,9 +1798,9 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
   font-size: 12.5px; font-weight: 500; color: var(--text-dim); text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--text-dim) 40%, transparent);
   text-underline-offset: 3px; cursor: pointer; padding: 6px; margin-bottom: 10px; }
-.swapnote { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 22px 0;
-  font-size: 13px; color: var(--text-dim); text-align: center; }
-.swapnote .big { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text); }
+.swapnote { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 26px 8px;
+  font-size: 16px; line-height: 1.45; color: var(--text-dim); text-align: center; }   /* readable at arm's length (Tom 10/6: hard to read, harder for older eyes); both escapes share it */
+.swapnote .big { font-family: var(--font-display); font-size: 21px; font-weight: 700; line-height: 1.25; color: var(--text); }
 
 /* wrong-then-release (listening resolutions): the chosen wrong option is marked,
    then released to the uniform dim settle — never left glowing */
