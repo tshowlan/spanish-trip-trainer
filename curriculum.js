@@ -751,6 +751,20 @@ const CURRICULUM = {
         { es: "Hasta luego", en: "See you later", tags: ["greetings"], contextEs: "Vale, hasta luego.", contextEn: "Okay, see you later." },
         { es: "No entiendo", en: "I don't understand", staged: "ch1-three-words", tags: ["communication"], contextEs: "No entiendo. ¿Inglés?", contextEn: "I don't understand. English?", note: "Say it before ¿Inglés?. It is honest, and it slows people down." },   // the eighth item: the honesty pair (chat 10/3)
         { es: "¿Inglés?", en: "English?", tags: ["communication"], contextEs: "Perdón, ¿inglés?", contextEn: "Excuse me, English?" } ] },
+      /* SOUNDS YOU'LL SAY (STAGED "sounds-1", Tom 10/6; mocks dev/sounds-session-options*.html): nine key sounds of Spain's Spanish, each on a
+         carrier word (es) with the sound's letters in gold; the carriers are not taught and never enter review (noDerivedDone, no SRS items).
+         rule = the card's subtitle; say / wrong = the card's two-choice confirm; part / decoy = the wall's tiles (the gold letters with the
+         vowel after them, and the English reader's mistake). All lines are Code's drafts for chat. */
+      { id: "w-sounds", staged: "sounds-1", sounds: true, speaking: true, noSplit: true, noDerivedDone: true, topic: "Core sounds", title: "Sounds you'll say", line: "Nine sounds that trip an English eye. Hear them, then say them.", items: [
+        { key: "z \u00b7 ce \u00b7 ci", es: "gracias", gold: "c", en: "thank you", rule: "The c here is a soft th in Spain. The lisp is the accent, not a mistake.", more: [["zumo", "z"], ["cerveza", "c"]], say: "GRA-thyas", wrong: "GRA-see-as", part: "thee", decoy: "see" },
+        { key: "j \u00b7 ge \u00b7 gi", es: "jam\u00f3n", gold: "j", en: "ham", rule: "The j is rough, from the throat, like clearing it. The g before e or i does the same.", more: [["gente", "g"]], say: "ha-MON", wrong: "JA-mon", part: "ha", decoy: "ja" },
+        { key: "h", es: "hola", gold: "ho", en: "hello", rule: "The h is silent, always. Write it, never say it.", more: [["hospital", "ho"]], say: "OH-la", wrong: "HO-la", part: "o", decoy: "ho" },
+        { key: "ll \u00b7 y", es: "calle", gold: "ll", en: "street", rule: "The ll is the y in yes.", more: [["llave", "ll"], ["paella", "ll"]], say: "KA-yeh", wrong: "KAL-ee", part: "yeh", decoy: "leh" },
+        { key: "\u00f1", es: "ba\u00f1o", gold: "\u00f1", en: "bathroom", rule: "The \u00f1 is the ny in canyon.", more: [["ma\u00f1ana", "\u00f1"], ["se\u00f1ora", "\u00f1"]], say: "BA-nyo", wrong: "BA-no", part: "nyo", decoy: "no" },
+        { key: "v", es: "vino", gold: "v", en: "wine", rule: "The v sounds like a b.", more: [["vale", "v"]], say: "BEE-no", wrong: "VEE-no", part: "bee", decoy: "vee" },
+        { key: "qu \u00b7 gu", es: "quiero", gold: "qu", en: "I want", rule: "The qu is a plain k; the u is silent. Gu before e or i is a plain g.", more: [["queso", "qu"], ["gu\u00eda", "gu"]], say: "KYEH-ro", wrong: "KWEE-eh-ro", part: "kyeh", decoy: "kwee" },
+        { key: "r \u00b7 rr", es: "perro", gold: "rr", en: "dog", rule: "One r is a quick tap of the tongue. Two are a roll.", more: [["pero", "r"], ["cerrado", "rr"]], say: "PEH-rro", wrong: "PEH-ro", part: "rro", decoy: "ro" },
+        { key: "a \u00b7 e \u00b7 i \u00b7 o \u00b7 u", es: "caf\u00e9", gold: "\u00e9", en: "coffee", rule: "Five vowels, short and pure, never slid. Lean on the second-to-last part, or on the part with the mark.", more: [["est\u00e1", "\u00e1"], ["d\u00edas", "\u00ed"]], say: "ka-FEH", wrong: "KAF-fay", part: "FEH", decoy: "fay" } ] },
       { id: "w-hear", topic: "Core phrases", title: "Words you'll hear", emphasis: "hear", line: "What they say to you before you say anything.", items: [
         { es: "Dígame", en: "Go ahead / Tell me", hear: true, tags: ["service"], contextEs: "¿Sí? Dígame.", contextEn: "Yes? Go ahead." },
         { es: "Aquí tiene", en: "Here you go", hear: true, tags: ["service"], contextEs: "Aquí tiene. Gracias.", contextEn: "Here you go. Thanks." },

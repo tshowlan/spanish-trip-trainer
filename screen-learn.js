@@ -50,7 +50,7 @@ function _togglePeek(row, l) {
     ? l.machines.map(m => `<div class="peek-frame">${_capFrame(m.frame)}</div>${(m.items || []).map(line).join("")}`).join("")
     : (l.machine && l.frame ? `<div class="peek-frame">${_capFrame(l.frame)}</div>` : "") + (l.items || []).map(line).join("");
   // drawer option 1 (Tom 9/24): two labels in the whisper face, ABOUT THIS SESSION over the line (plain, not italic), THE WORDS over the list
-  const peek = el(`<div class="lesson-peek">${l.line ? `<div class="cue-label peek-label">About this session</div><div class="peek-line">${tidyBreaks(l.line)}</div>` : ""}<div class="cue-label peek-label">The words</div><div class="peek-list">${groups}</div></div>`);   // no button: the row itself starts the lesson (option A, Tom 9/21)
+  const peek = el(`<div class="lesson-peek">${l.line ? `<div class="cue-label peek-label">About this session</div><div class="peek-line">${tidyBreaks(l.line)}</div>` : ""}<div class="cue-label peek-label">${l.sounds ? "The sounds" : "The words"}</div><div class="peek-list">${groups}</div></div>`);   // no button: the row itself starts the lesson (option A, Tom 9/21)
   row.after(peek);
   requestAnimationFrame(() => {
     peek.classList.add("show");
@@ -67,8 +67,8 @@ function _lessonRow(l, isNext) {
   const fading = lessonDone(l.id) ? lessonFadingCount(l) : 0;
   const beat = _lessonBeat(l);
   const meta = _isMachine(l) ? `Pattern · ${(l.items || []).length} fillers`
-    : l.chain ? "Conversation" : `${(l.items || []).length} ${l.wordsSession ? "words" : "phrases"}`;
-  const earTag = (typeof earOn === "function" && earOn() && isEarLesson(l)) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for sound" : "Best with sound"}</span>` : "";   // R2 (Tom 9/26)
+    : l.chain ? "Conversation" : `${(l.items || []).length} ${l.sounds ? "sounds" : l.wordsSession ? "words" : "phrases"}`;
+  const earTag = (typeof earOn === "function" && earOn() && isEarLesson(l)) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for sound" : "Best with sound"}</span>` : isSpeakLesson(l) ? ` \u00b7 <span class="ear-tag">Best said out loud</span>` : "";   // R2 (Tom 9/26)
   const row = el(`<div class="lesson${isNext ? " next" : ""}">
     ${str != null ? strengthRing(str) : `<span class="caret-new">${icon("caret-right", 13)}</span>`}
     <div class="lmain">

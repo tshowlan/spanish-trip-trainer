@@ -2268,3 +2268,24 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 .hint-pop { position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%); z-index: 5; background: #2b2920; border: 1px solid #4a4634; border-radius: 10px;
   padding: 7px 12px; font-family: var(--font-display); font-size: 15px; font-weight: 600; color: #f6f4ea; white-space: nowrap; box-shadow: 0 10px 22px rgba(0,0,0,.6); letter-spacing: 0; }
 .hint-pop::after { content: ""; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-bottom-color: #4a4634; }
+
+/* SOUNDS YOU'LL SAY (STAGED "sounds-1", Tom 10/6; mocks dev/sounds-session-options*.html): the Key Sound card, the wall of key parts, the run */
+.present-card.key-sound .present-es .g, .wall-word .g, .big-word .g, .snd-more .g { color: var(--accent); }
+.snd-whisper { font-family: var(--font-text); font-size: 13px; color: var(--text-dim); margin: -2px 0 8px; }
+.snd-rule { font-family: var(--font-text); font-size: 16px; color: var(--text); line-height: 1.45; margin: 4px 0 2px; }
+.snd-more { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 14px; } .snd-more span { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--text-dim); }
+.found-count, .run-count { font-family: var(--font-display); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+.wall-word, .big-word { font-family: var(--font-display); font-size: 34px; font-weight: 700; color: var(--text); margin: 4px 0 2px; line-height: 1.15; }
+.wall-sub { font-family: var(--font-text); font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.sound-wall { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px; }
+.sound-wall .choice { min-height: 46px; font-family: var(--font-text); font-weight: 600; font-size: 15px; letter-spacing: .03em; padding: 8px 10px; text-align: center; }
+.sound-wall .choice.found { border-color: var(--green); color: var(--text-dim); opacity: .55; }
+.say-re { font-family: var(--font-text); font-size: 15px; color: var(--text-dim); letter-spacing: .04em; margin: 2px 0 14px; }
+.say-row { gap: 14px; }
+.mic { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); display: inline-flex; align-items: center; justify-content: center; color: var(--accent); cursor: pointer; }
+.mic.live { background: color-mix(in srgb, var(--accent) 28%, transparent); box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 12%, transparent); }
+.heard { font-family: var(--font-text); font-size: 14px; color: var(--text-dim); margin-top: 8px; min-height: 20px; } .heard b { color: var(--green); font-weight: 600; }
+.two { display: flex; gap: 10px; margin-top: 18px; } .two .btn { flex: 1; } .two .btn.grey { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
+.end-line { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--text); margin-top: 14px; line-height: 1.2; }
+.end-sub { font-family: var(--font-text); font-size: 15px; color: var(--text-dim); margin-top: 8px; line-height: 1.45; }
+.end-grid { margin-top: 22px; gap: 8px 16px; }

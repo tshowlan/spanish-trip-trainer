@@ -395,6 +395,140 @@ function _attachHint(body, q) {
   });
   dirEl.appendChild(btn);
 }
+/* SOUNDS YOU'LL SAY (STAGED "sounds-1", Tom 10/6): nine Key Sound cards (introduction, a two-choice confirm) -> the wall in two rounds
+   (one word at a time, the key part among decoys) -> the run of nine, said out loud -> the ending. Nothing here touches the SRS: the
+   carriers are not items. */
+function composeSounds(lesson) {
+  const items = lesson.items || [], qs = [];
+  items.forEach(it => qs.push({ type: "key_sound", item: it, arc: true }));
+  const half = Math.ceil(items.length / 2);
+  qs.push({ type: "sound_wall", items: items.slice(0, half), arc: true });
+  if (items.length > half) qs.push({ type: "sound_wall", items: items.slice(half), arc: true });
+  items.forEach((it, i) => qs.push({ type: "say_it", item: it, n: i + 1, of: items.length, arc: true }));
+  qs.push({ type: "sounds_end", items, arc: true, lap: true });
+  return qs;
+}
+function goldHtml(word, gold) {
+  if (!gold) return word;
+  const i = word.indexOf(gold); if (i < 0) return word;
+  return word.slice(0, i) + `<span class="g">${gold}</span>` + word.slice(i + gold.length);
+}
+function renderKeySound(q) {
+  const it = q.item, body = $("#qbody");
+  body.appendChild(el(`<div class="present-label">KEY SOUND</div>`));
+  body.appendChild(el(`<div class="present-card key-sound">
+    <div class="present-es">${goldHtml(it.es, it.gold)}</div>
+    <div class="snd-whisper">${it.en}</div>
+    <div class="snd-rule">${it.rule}</div>
+    ${(it.more || []).length ? `<div class="snd-more">${it.more.map(m => `<span>${goldHtml(m[0], m[1])}</span>`).join("")}</div>` : ""}
+  </div>`));
+  const play = audioControl(slow => { slow ? speak(it.es, 0.55) : speak(it.es); }, { speed: true });
+  const arow = el(`<div class="present-audio"></div>`); arow.appendChild(play); arow.appendChild(el(`<span class="audio-hint">Tap to hear it, or hear it slowly</span>`));
+  body.appendChild(arow);
+  setTimeout(() => play._fire(), 250);
+  body.appendChild(el(`<div class="microrep">Tap the pronunciation</div>`));
+  const two = shuffle([{ t: it.say, ok: 1 }, { t: it.wrong, ok: 0 }]);
+  const opts = el(`<div class="opts">${two.map(o => `<button class="opt" data-ok="${o.ok}">${o.t}</button>`).join("")}</div>`);
+  let odone = false;
+  opts.querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => {
+    if (b.dataset.ok === "1") {
+      if (odone) return; odone = true; playSound("correct"); haptic("correct"); b.classList.add("got");
+      const f = footer(`<button class="btn" id="pcont">Continue</button>`);
+      f.querySelector("#pcont").addEventListener("click", () => slideOut(next));
+    } else { haptic("press"); b.classList.add("dim"); opts.querySelectorAll(".opt").forEach(o => { if (o.dataset.ok === "1") o.classList.add("hinted"); }); }
+  }));
+  body.appendChild(opts);
+  const canBack = run.idx > 0 && run.qs[run.idx - 1] && run.qs[run.idx - 1].type === "key_sound";
+  if (canBack) { const f = footer(`<button class="btn grey" id="pback">${icon('caret-left', 18)} Back</button>`); f.querySelector("#pback").addEventListener("click", () => { run.idx--; renderQuestion(); }); }
+  else clearFooter();
+}
+function renderSoundWall(q) {
+  const body = $("#qbody");
+  _anchor(body);
+  const asks = shuffle(q.items.slice());
+  const tiles = shuffle(q.items.flatMap(it => [{ t: it.part, it }, { t: it.decoy, it: null }]));
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">Find the sound</div>`));
+  const count = el(`<div class="found-count"></div>`); top.appendChild(count);
+  const word = el(`<div class="wall-word"></div>`); top.appendChild(word);
+  const sub = el(`<div class="wall-sub">The part in gold: how does it sound?</div>`); top.appendChild(sub);
+  body.appendChild(top);
+  const wall = el(`<div class="sound-wall"></div>`);
+  const btns = new Map();
+  tiles.forEach(t => { const b = el(`<button class="choice">${t.t}</button>`); btns.set(t, b); wall.appendChild(b); });
+  top.appendChild(wall);                                            // the grid hangs under the word in flow (it can be ten tiles tall)
+  let i = 0, wrongThis = false, missed = 0;
+  const show = () => { count.textContent = `${i} of ${asks.length} found`; word.innerHTML = goldHtml(asks[i].es, asks[i].gold); wrongThis = false; setTimeout(() => speak(asks[i].es), 200); };
+  const finish = () => {
+    playSound("correct");
+    const barEl = document.querySelector(".pbar > i");
+    if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
+    count.textContent = `${asks.length} of ${asks.length} found`; word.textContent = "Every sound, found."; sub.textContent = missed ? (missed === 1 ? "One took a second look." : `${missed} took a second look.`) : "";
+    const cf = footer(`<button class="btn" id="cont">Continue</button>`);
+    let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
+  };
+  tiles.forEach(t => btns.get(t).addEventListener("click", () => {
+    const b = btns.get(t); if (b.classList.contains("found") || i >= asks.length) return;
+    if (t.it === asks[i]) {
+      b.classList.add("found"); playSound("correct"); haptic("correct"); if (wrongThis) missed++; i++;
+      if (i >= asks.length) finish(); else show();
+    } else {
+      if (!wrongThis) run.wrong++; wrongThis = true;
+      b.classList.add("shake-x"); setTimeout(() => b.classList.remove("shake-x"), 400); playSound("wrong");
+    }
+  }));
+  show();
+}
+function renderSayIt(q) {
+  const it = q.item, body = $("#qbody");
+  _anchor(body);
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="run-count">Say it · ${q.n} of ${q.of}</div>`));
+  top.appendChild(el(`<div class="direction">Say it out loud</div>`));
+  top.appendChild(el(`<div class="big-word">${goldHtml(it.es, it.gold)}</div>`));
+  top.appendChild(el(`<div class="say-re">${it.say}</div>`));
+  const arow = el(`<div class="present-audio say-row"></div>`);
+  const play = audioControl(() => speak(it.es));
+  arow.appendChild(play);
+  const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const heard = el(`<div class="heard"></div>`);
+  if (Rec && !(run.soundOff || state.sound === false)) {
+    const mic = el(`<button class="mic" aria-label="Say it to the microphone">${icon("microphone", 20)}</button>`);
+    mic.addEventListener("click", () => {
+      if (mic.classList.contains("live")) return;
+      let rec; try { rec = new Rec(); } catch (_) { heard.textContent = "The microphone is not available here."; return; }
+      rec.lang = (typeof activePack === "function" ? activePack().tts : "es-ES"); rec.maxAlternatives = 3;
+      mic.classList.add("live"); heard.textContent = "Listening…";
+      rec.onresult = e => { const alts = Array.from(e.results[0]).map(r => r.transcript); const hit = alts.some(a => norm(a).includes(norm(it.es))); heard.innerHTML = hit ? `We heard: <b>${alts[0]}</b>` : `We heard: ${alts[0]}. Try it once more, or move on.`; };
+      rec.onerror = () => { heard.textContent = "The microphone did not catch that."; };
+      rec.onend = () => mic.classList.remove("live");
+      try { rec.start(); } catch (_) { mic.classList.remove("live"); heard.textContent = "The microphone is not available here."; }
+    });
+    arow.appendChild(mic);
+    arow.appendChild(el(`<span class="audio-hint">Hear it, or say it to the mic</span>`));
+  } else arow.appendChild(el(`<span class="audio-hint">Say it, then tap to compare</span>`));
+  top.appendChild(arow); top.appendChild(heard);
+  const two = el(`<div class="two"><button class="btn grey" id="again">Again</button><button class="btn" id="said">Said it</button></div>`);
+  two.querySelector("#again").addEventListener("click", () => play._fire());
+  let gone = false; two.querySelector("#said").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
+  top.appendChild(two);
+  body.appendChild(top);
+  clearFooter();
+  setTimeout(() => play._fire(), 350);
+}
+function renderSoundsEnd(q) {
+  const body = $("#qbody");
+  _anchor(body);
+  const barEl = document.querySelector(".pbar > i"); if (barEl) { run.pct = 100; barEl.style.width = "100%"; }
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">Sounds you'll say</div>`));
+  top.appendChild(el(`<div class="end-line">${q.items.length === 9 ? "Nine" : q.items.length} sounds, said out loud.</div>`));
+  top.appendChild(el(`<div class="end-sub">You will hear every one of them in the next sessions. Now you know what you are hearing.</div>`));
+  top.appendChild(el(`<div class="snd-more end-grid">${q.items.map(it => `<span class="g">${it.key}</span>`).join("")}</div>`));
+  body.appendChild(top);
+  const cf = footer(`<button class="btn" id="cont">Continue</button>`);
+  let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
+}
 function composeSession(lesson) {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();             // §6 variety rule clock (srs.js reads it)
   const lessonItems = lesson.items || [];
@@ -411,6 +545,7 @@ function composeSession(lesson) {
   const reviewPool = newItems.length ? [] : lessonItems.slice();      // replays drill own items only
   if (lesson.numbers && isStaged("numbers-1")) return composeNumbers(lesson);   // numbers are an ear skill: their own session shape
   if (lesson.asks) return composeAsks(lesson, newItems);                         // the asks: a frame and a slot, their own session shape
+  if (lesson.sounds) return composeSounds(lesson);                              // the key sounds: introduce, find them, say them
 
   const qs = [];
 
@@ -1476,7 +1611,7 @@ function renderQuestion() {
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
      scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear, scene_sign: renderSceneSign, context_choice: renderContextChoice,
      num_set: renderNumSet, num_pad: renderNumPad, num_run: renderNumRun,
-     ask_which: renderAskWhich, sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable, days_set: renderDaysSet, sign_wall: renderSignWall, days_order: renderDaysOrder,
+     ask_which: renderAskWhich, key_sound: renderKeySound, sound_wall: renderSoundWall, say_it: renderSayIt, sounds_end: renderSoundsEnd, sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable, days_set: renderDaysSet, sign_wall: renderSignWall, days_order: renderDaysOrder,
      circuit_door: renderCircuitDoor, circuit_close: renderCircuitClose,
      reply: renderReplyChat }[q.type])(q);
 }

@@ -755,7 +755,8 @@ function heroTile() {
   const sub = button && h.kind === "lesson" && h.lesson ? (h.lesson.line || `${h.lesson.topic}${h.lesson.items ? ` \u00b7 ${h.lesson.items.length} ${h.lesson.wordsSession ? "words" : "phrases"}` : ""}`) : h.sub;
   // "Best with sound" (Tom 9/26, mock T1): an ear session says so under its line; a parked one says it came back
   const ear = earOn() && h.kind === "lesson" && h.lesson && isEarLesson(h.lesson);
-  const earPill = ear ? `<div class="ear-pill">${state.parkedEar && state.parkedEar.id === h.lesson.id ? "Saved for sound" : "Best with sound"}</div>` : "";
+  const spk = h.kind === "lesson" && h.lesson && isSpeakLesson(h.lesson);
+  const earPill = ear ? `<div class="ear-pill">${state.parkedEar && state.parkedEar.id === h.lesson.id ? "Saved for sound" : "Best with sound"}</div>` : spk ? `<div class="ear-pill">Best said out loud</div>` : "";
   const t = el(`<button class="hero-tile hero-${h.kind}${button ? " as-button" : ""}">
     ${photo ? `<div class="hero-img" style="background-image:url('${photo}')" aria-hidden="true"></div>` : ""}
     <div class="hero-inner">

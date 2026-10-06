@@ -159,7 +159,7 @@ function _chapterFlowDeck(deck, rooms) {
   const partWord = t => (typeof isStaged === "function" && isStaged("learn-peek")) ? t.replace(/ ([\u00b7·]) (\d)$/, " $1 Part $2") : t;
   const lineFor = w => (w.lineProfile && w.lineProfile.allergies && (p.allergies || []).length) ? w.lineProfile.allergies : w.line;   // profile-keyed lines (Table words)
   const live = d => (!d.staged || (typeof isStaged === "function" && isStaged(d.staged))) && !(d.until && typeof isStaged === "function" && isStaged(d.until));   // "until": the seat it gives up when a staged swap is on   // a session or a word may wait behind a switch (chapter-1-adds)
-  const words = flow.words.filter(w => (numbersOn || w.numbers !== "ear") && live(w)).map(w => Object.assign({}, w, { title: partWord(w.title), line: lineFor(w), primer: null })).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, items: w.items.filter(fits).filter(live).map(mk) }));
+  const words = flow.words.filter(w => (numbersOn || w.numbers !== "ear") && live(w)).map(w => Object.assign({}, w, { title: partWord(w.title), line: lineFor(w), primer: null })).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: !w.sounds, items: w.sounds ? w.items.slice() : w.items.filter(fits).filter(live).map(mk) }));   // a sounds session carries key sounds, not words
   const old = deck.stages;
   // no phrase is lost: what the old kit held that is not a word re-homes into a later lesson
   (old[0] ? old[0].lessons : []).filter(l => !l.machine).forEach(l => {
@@ -202,6 +202,7 @@ function rebuildDeck() {
   const packKey = activePack().key;
   DECK.stages.forEach(st => st.lessons.forEach(l => {
     LESSON_ORDER.push(l.id);
+    if (l.sounds) return;                                            // key sounds are not items: never indexed, never reviewed (Tom 10/6)
     l.items.forEach(it => {
       // normalize pass: give every item a stable, deterministic id (authored id wins).
       // Identity is the PHRASE (pack:slug), not its lesson — so a phrase keeps its SRS
@@ -262,6 +263,7 @@ function registerActivity() {
    the rooms' replies). They wear "Best with sound" on the tile and the Learn row; their escape offers a way back; a read session
    (Signs, Days) runs reading forms only. Rides the "ear-sessions" switch. */
 function isEarLesson(l) { return !!l && (l.emphasis === "hear" || l.numbers === "ear"); }
+function isSpeakLesson(l) { return !!l && !!l.speaking; }   // "Best said out loud" (Tom 10/6)
 function isReadLesson(l) { return !!l && l.emphasis === "read"; }
 function earOn() { return typeof isStaged === "function" && isStaged("ear-sessions"); }
 function dayKey() { return new Date().toDateString(); }
