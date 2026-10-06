@@ -1826,3 +1826,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v421 (2026-10-06) — the speaking escape; the torn buttons
 - Say it: "I can't speak right now" under the buttons → "This one is built for your voice." / "Listen for now, or come back when you can speak. It will be waiting on Home." → Keep going, just listening (run.speakOff: no mic, "Just listen for now", the button reads Next) or Come back when I can speak (parked exactly like an ear session: state.parkedEar; the tile and the Learn row read SAVED FOR SPEAKING; it comes back first next new day). A mic match now dings and buzzes like a right answer.
 - The card's two answer buttons sit on their own layer (`.opts { transform: translateZ(0) }`): in Tom's 13-42 recording their bottom edge tore for the length of the speaker's bars animation. Not verifiable here; the recording is the evidence.
+
+## v422 (2026-10-06) — Say it: the wall's header, the mic shows it hears you
+- Header: "SAY IT" then "2 OF 9 SAID" beneath (the wall's format), replacing "SAY IT · 3 OF 9" over "SAY IT OUT LOUD".
+- The mic: listening = a slow breathing ring (mic-listen); the phone's soundstart/speechstart events switch it to a quick bigger pulse with "Hearing you…" (mic-hear); soundend/speechend settle it; onend clears both. Reduced motion: a still ring.

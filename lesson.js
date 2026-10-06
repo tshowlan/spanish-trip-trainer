@@ -490,8 +490,8 @@ function renderSayIt(q) {
   const it = q.item, body = $("#qbody");
   _anchor(body);
   const top = el(`<div class="top"></div>`);
-  top.appendChild(el(`<div class="run-count">Say it · ${q.n} of ${q.of}</div>`));
-  top.appendChild(el(`<div class="direction">Say it out loud</div>`));
+  top.appendChild(el(`<div class="direction">Say it</div>`));                    // the wall's format (Tom 10/6): the direction, then the count beneath
+  top.appendChild(el(`<div class="found-count">${q.n - 1} of ${q.of} said</div>`));
   top.appendChild(el(`<div class="big-word">${goldHtml(it.es, it.gold)}</div>`));
   top.appendChild(el(`<div class="say-re">${it.say}</div>`));
   const arow = el(`<div class="present-audio say-row"></div>`);
@@ -507,9 +507,12 @@ function renderSayIt(q) {
       let rec; try { rec = new Rec(); } catch (_) { heard.textContent = "The microphone is not available here."; return; }
       rec.lang = (typeof activePack === "function" ? activePack().tts : "es-ES"); rec.maxAlternatives = 3;
       mic.classList.add("live"); heard.textContent = "Listening…";
+      // the mic shows it is hearing you: the phone reports when sound starts and stops (Tom 10/6)
+      rec.onsoundstart = rec.onspeechstart = () => { mic.classList.add("hearing"); heard.textContent = "Hearing you\u2026"; };
+      rec.onsoundend = rec.onspeechend = () => mic.classList.remove("hearing");
       rec.onresult = e => { const alts = Array.from(e.results[0]).map(r => r.transcript); const hit = alts.some(a => norm(a).includes(norm(it.es))); heard.innerHTML = hit ? `<b>That's it.</b> We heard ${alts[0]}.` : `We heard "${alts[0]}". Try it once more, or move on.`; if (hit) { playSound("correct"); haptic("correct"); } };
       rec.onerror = () => { heard.textContent = "The microphone did not catch that."; };
-      rec.onend = () => mic.classList.remove("live");
+      rec.onend = () => mic.classList.remove("live", "hearing");
       try { rec.start(); } catch (_) { mic.classList.remove("live"); heard.textContent = "The microphone is not available here."; }
     });
     arow.appendChild(mic);

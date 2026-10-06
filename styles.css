@@ -2283,7 +2283,11 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 .say-re { font-family: var(--font-text); font-size: 15px; color: var(--text-dim); letter-spacing: .04em; margin: 2px 0 14px; }
 .say-row { gap: 14px; }
 .mic { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); display: inline-flex; align-items: center; justify-content: center; color: var(--accent); cursor: pointer; }
-.mic.live { background: color-mix(in srgb, var(--accent) 28%, transparent); box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 12%, transparent); }
+.mic.live { background: color-mix(in srgb, var(--accent) 28%, transparent); animation: mic-listen 1400ms ease-in-out infinite; }   /* listening: a slow breath */
+.mic.hearing { animation: mic-hear 450ms ease-in-out infinite; }   /* hearing you: a quick, bigger pulse */
+@keyframes mic-listen { 0%, 100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent); } 50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--accent) 8%, transparent); } }
+@keyframes mic-hear { 0%, 100% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 22%, transparent); transform: scale(1); } 50% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--accent) 10%, transparent); transform: scale(1.08); } }
+@media (prefers-reduced-motion: reduce) { .mic.live, .mic.hearing { animation: none; box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 12%, transparent); } }
 .heard { font-family: var(--font-text); font-size: 14px; color: var(--text-dim); margin-top: 8px; min-height: 20px; } .heard b { color: var(--green); font-weight: 600; }
 .two { display: flex; gap: 10px; margin-top: 18px; } .top .whisper-escape { margin-top: 14px; } .two .btn { flex: 1; } .two .btn.grey { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
 .end-line { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--text); margin-top: 14px; line-height: 1.2; }
