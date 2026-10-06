@@ -537,7 +537,7 @@ function renderSayIt(q) {
         if (hit) {
           // a right answer, in the house grammar: the ding, the word's green sweep, the kicker (Tom 10/6: it should feel like you got it right)
           playSound("correct"); haptic("correct");
-          mic.classList.add("hit");   // the ring turns green; the word stays as it is (Tom 10/6: the green underline sat oddly)
+          mic.classList.add("hit"); if (wordEl) { wordEl.classList.add("said"); wordEl.appendChild(el(`<span class="sweep2"></span>`)); }   // the green word and its sweep: kept (Tom 10/6)
           heard.innerHTML = `<div class="res-yours">THAT'S IT</div><div>You said ${it.es}.</div>`;   // copy under review (mock dev/say-it-win-options.html)
           const sb = saidBtn(); if (sb) sb.textContent = "Next";
         } else heard.innerHTML = `We heard "${alts[0]}". Try it once more, or move on.`;
@@ -553,8 +553,7 @@ function renderSayIt(q) {
     arow.appendChild(el(`<span class="audio-hint">Hear it, or say it to the mic</span>`));
   } else arow.appendChild(el(`<span class="audio-hint">Say it, then tap to compare</span>`));
   top.appendChild(arow); top.appendChild(heard);
-  const two = el(`<div class="two"><button class="btn grey" id="again">Again</button><button class="btn" id="said">${run.speakOff ? "Next" : "Said it"}</button></div>`);
-  two.querySelector("#again").addEventListener("click", () => play._fire());
+  const two = el(`<div class="two"><button class="btn" id="said">${run.speakOff ? "Next" : "Said it"}</button></div>`);   // no Again: the speaker already replays (Tom 10/6)
   let gone = false; two.querySelector("#said").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
   top.appendChild(two);
   body.appendChild(top);

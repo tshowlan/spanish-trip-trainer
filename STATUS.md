@@ -1857,3 +1857,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v430 (2026-10-06) — Say it listens by itself; the green word gone
 - After the word plays, the mic starts listening on its own once the phone has allowed it before (`state.micOk`, set the first time recognition starts); the first Say it screen still asks for one tap ("Tap the mic once to let the app listen."). The word no longer turns green with a sweep on a match (Tom: it sat oddly); the ring turns green, the ding plays. The win's copy is under review (dev/say-it-win-options.html).
+
+## v431 (2026-10-06) — Say it: the green word back, the Again button gone
+- A mic match turns the word green with the sweep again (Tom likes it). The Again button is gone: the speaker already replays; one full-width button (Said it, or Next on the listening path). The win's copy stays "You said X." until Tom picks a line.
