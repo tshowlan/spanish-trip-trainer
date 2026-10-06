@@ -45,7 +45,8 @@ function _togglePeek(row, l) {
   document.querySelectorAll(".lesson.open").forEach(n => n.classList.remove("open"));
   if (open) return;
   row.classList.add("open");
-  const line = it => `<div class="peek-item"><span class="es">${it.es}</span><span class="en">${it.en}</span></div>`;
+  const line = it => l.sounds ? `<div class="peek-item"><span class="es">${goldHtml(it.es, it.gold)}</span><span class="en">${it.say}</span></div>`   // a sounds session previews the sound, not the meaning (Tom 10/6)
+    : `<div class="peek-item"><span class="es">${it.es}</span><span class="en">${it.en}</span></div>`;
   const groups = l.machines
     ? l.machines.map(m => `<div class="peek-frame">${_capFrame(m.frame)}</div>${(m.items || []).map(line).join("")}`).join("")
     : (l.machine && l.frame ? `<div class="peek-frame">${_capFrame(l.frame)}</div>` : "") + (l.items || []).map(line).join("");
