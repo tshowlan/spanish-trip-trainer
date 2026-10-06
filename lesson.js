@@ -432,6 +432,7 @@ function renderKeySound(q) {
   const play = audioControl(slow => { slow ? speak(it.es, 0.55) : speak(it.es); }, { speed: true });
   const arow = el(`<div class="present-audio"></div>`); arow.appendChild(play); arow.appendChild(el(`<span class="audio-hint">Tap to hear it, or hear it slowly</span>`));
   body.appendChild(arow);
+  if (run.idx === 0 && run.lesson.note) body.appendChild(el(`<div class="snd-once">${run.lesson.note}</div>`));   // the say-line law's one disclaimer, first card only (chat 10/6)
   setTimeout(() => play._fire(), 250);
   body.appendChild(el(`<div class="microrep">Tap the pronunciation</div>`));
   const two = shuffle([{ t: it.say, ok: 1 }, { t: it.wrong, ok: 0 }]);
@@ -470,7 +471,7 @@ function renderSoundWall(q) {
     playSound("correct");
     const barEl = document.querySelector(".pbar > i");
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
-    count.textContent = `${asks.length} of ${asks.length} found`; word.textContent = "Every sound, found."; sub.innerHTML = missed ? (missed === 1 ? "One took a second look." : `${missed} took a second look.`) : "&nbsp;";   // the line keeps its height: the tiles do not shift (Tom 10/6)
+    count.textContent = `${asks.length} of ${asks.length} found`; word.textContent = "You found every sound."; sub.innerHTML = missed ? (missed === 1 ? "One took a second look." : `${missed} took a second look.`) : "&nbsp;";   // the line keeps its height: the tiles do not shift (Tom 10/6)
     const cf = footer(`<button class="btn" id="cont">Continue</button>`);
     let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
   };
@@ -620,7 +621,7 @@ function renderSoundsEnd(q) {
   const barEl = document.querySelector(".pbar > i"); if (barEl) { run.pct = 100; barEl.style.width = "100%"; }
   const top = el(`<div class="top"></div>`);
   top.appendChild(el(`<div class="direction">Sounds you'll say</div>`));
-  top.appendChild(el(`<div class="end-line">${q.items.length === 9 ? "Nine" : q.items.length} sounds, said out loud.</div>`));
+  top.appendChild(el(`<div class="end-line">You said all ${q.items.length === 9 ? "nine" : q.items.length} out loud.</div>`));
   top.appendChild(el(`<div class="end-sub">You will hear every one of them in the next sessions. Now you know what you are hearing.</div>`));
   top.appendChild(el(`<div class="grid9">${q.items.map(it => `<div class="cell9">${goldHtml(it.es, it.gold)}<small>${it.say}</small></div>`).join("")}</div>`));   // the nine carriers, gold letters kept, say line under each (Tom 10/6, mock E1)
   body.appendChild(top);
