@@ -621,7 +621,7 @@ function renderSoundsEnd(q) {
   top.appendChild(el(`<div class="direction">Sounds you'll say</div>`));
   top.appendChild(el(`<div class="end-line">${q.items.length === 9 ? "Nine" : q.items.length} sounds, said out loud.</div>`));
   top.appendChild(el(`<div class="end-sub">You will hear every one of them in the next sessions. Now you know what you are hearing.</div>`));
-  top.appendChild(el(`<div class="snd-more end-grid">${q.items.map(it => `<span class="g">${it.key}</span>`).join("")}</div>`));
+  top.appendChild(el(`<div class="grid9">${q.items.map(it => `<div class="cell9">${goldHtml(it.es, it.gold)}<small>${it.say}</small></div>`).join("")}</div>`));   // the nine carriers, gold letters kept, say line under each (Tom 10/6, mock E1)
   body.appendChild(top);
   const cf = footer(`<button class="btn" id="cont">Continue</button>`);
   let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });

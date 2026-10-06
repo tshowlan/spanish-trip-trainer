@@ -1837,3 +1837,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v424 (2026-10-06) — "Keep going, just listening" swaps in Which one sounds different?
 - The speaking escape's listening path no longer clicks through the remaining words: the rest of the run becomes `odd_one` rounds (renderOddOne: four plain words, three share the sound, tap the odd one; a tap says the word; the reveal line says why; wrong taps shake and count), one per remaining sound that has an `odd` entry (seven of nine: v and the vowels have none), then the ending. Data: `odd: [word, why]` on each sound.
+
+## v425 (2026-10-06) — the sounds session's ending: nine tiles (mock E1)
+- The ending card shows the nine carrier words in a 3x3 of tiles, gold letters kept, the say line small under each, instead of the bare letter groups. Kept as the one session with an ending card: the run's last screen is not a close, and the nine words are the recap (Tom 10/6).
