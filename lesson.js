@@ -1650,6 +1650,14 @@ function renderQuestion() {
         if (run.idx > 0) { run.idx--; run.pct = Math.round(run.idx / run.qs.length * 100); renderQuestion(); } };   // test mode: the bar follows the hop both ways (Tom 9/28)
       wrap.querySelector("#dev-back").addEventListener("click", () => hop(-1));
       wrap.querySelector("#dev-fwd").addEventListener("click", () => hop(1));
+      // test mode: tap or drag the bar to land anywhere in the session (Tom 10/6)
+      const bar = wrap.querySelector(".pbar"); let scrubbing = false;
+      const jumpTo = x => { const r = bar.getBoundingClientRect(); const i = Math.max(0, Math.min(run.qs.length - 1, Math.floor((x - r.left) / r.width * run.qs.length)));
+        if (i === run.idx) return; try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (_) {} clearFooter(); run.answered = false; run.idx = i; run.pct = Math.round(i / run.qs.length * 100); renderQuestion(); };
+      bar.style.cursor = "pointer"; bar.style.touchAction = "none";
+      bar.addEventListener("pointerdown", e => { scrubbing = true; bar.setPointerCapture(e.pointerId); jumpTo(e.clientX); });
+      bar.addEventListener("pointermove", e => { if (scrubbing) jumpTo(e.clientX); });
+      ["pointerup", "pointercancel"].forEach(ev => bar.addEventListener(ev, () => { scrubbing = false; }));
     }
     // listeners live on the persistent shell — bound once per runner, not per question
     ["pointerdown", "click"].forEach(ev => wrap.addEventListener(ev, e => {

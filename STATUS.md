@@ -1843,3 +1843,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v426 (2026-10-06) — the escape sheets read at arm's length
 - `.swapnote` (shared by the listening and speaking escapes): the line 15 → 21px, the body 13 → 16px with more air (Tom 10/6: hard to read, harder for older eyes).
+
+## v427 (2026-10-06) — test mode: scrub the session from the bar; the IPA behind every say line
+- Test mode (staging on): tap or drag the progress bar to land on any exercise; the bar and the index follow (Tom 10/6: no more clicking through ten to see the end).
+- Every key sound carries `ipa`, the standard Castilian transcription the say line is derived from (ˈɡɾa.θjas, xaˈmon, ˈo.la, ˈka.ʝe, ˈba.ɲo, ˈbi.no, ˈkje.ɾo, ˈpe.ro, kaˈfe); the pack comment names the rules (distinción, yeísmo, b/v, tap vs trill). The app's es-ES voice remains the authority a learner hears.
