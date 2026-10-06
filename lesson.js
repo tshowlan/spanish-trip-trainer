@@ -499,14 +499,15 @@ function renderSayIt(q) {
   arow.appendChild(play);
   const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
   const heard = el(`<div class="heard"></div>`);
-  if (Rec && !(run.soundOff || state.sound === false)) {
+  if (run.speakOff) arow.appendChild(el(`<span class="audio-hint">Just listen for now</span>`));   // the escape fired: listening only (Tom 10/6)
+  else if (Rec && !(run.soundOff || state.sound === false)) {
     const mic = el(`<button class="mic" aria-label="Say it to the microphone">${icon("microphone", 20)}</button>`);
     mic.addEventListener("click", () => {
       if (mic.classList.contains("live")) return;
       let rec; try { rec = new Rec(); } catch (_) { heard.textContent = "The microphone is not available here."; return; }
       rec.lang = (typeof activePack === "function" ? activePack().tts : "es-ES"); rec.maxAlternatives = 3;
       mic.classList.add("live"); heard.textContent = "Listening…";
-      rec.onresult = e => { const alts = Array.from(e.results[0]).map(r => r.transcript); const hit = alts.some(a => norm(a).includes(norm(it.es))); heard.innerHTML = hit ? `<b>That's it.</b> We heard ${alts[0]}.` : `We heard "${alts[0]}". Try it once more, or move on.`; };
+      rec.onresult = e => { const alts = Array.from(e.results[0]).map(r => r.transcript); const hit = alts.some(a => norm(a).includes(norm(it.es))); heard.innerHTML = hit ? `<b>That's it.</b> We heard ${alts[0]}.` : `We heard "${alts[0]}". Try it once more, or move on.`; if (hit) { playSound("correct"); haptic("correct"); } };
       rec.onerror = () => { heard.textContent = "The microphone did not catch that."; };
       rec.onend = () => mic.classList.remove("live");
       try { rec.start(); } catch (_) { mic.classList.remove("live"); heard.textContent = "The microphone is not available here."; }
@@ -515,13 +516,30 @@ function renderSayIt(q) {
     arow.appendChild(el(`<span class="audio-hint">Hear it, or say it to the mic</span>`));
   } else arow.appendChild(el(`<span class="audio-hint">Say it, then tap to compare</span>`));
   top.appendChild(arow); top.appendChild(heard);
-  const two = el(`<div class="two"><button class="btn grey" id="again">Again</button><button class="btn" id="said">Said it</button></div>`);
+  const two = el(`<div class="two"><button class="btn grey" id="again">Again</button><button class="btn" id="said">${run.speakOff ? "Next" : "Said it"}</button></div>`);
   two.querySelector("#again").addEventListener("click", () => play._fire());
   let gone = false; two.querySelector("#said").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
   top.appendChild(two);
   body.appendChild(top);
   clearFooter();
+  if (!run.speakOff) speakEscape(top, q);
   setTimeout(() => play._fire(), 350);
+}
+/* the speaking session's escape (Tom 10/6), the ear escape's sibling: listen for now, or come back when you can speak (parked like an ear session;
+   the tile says Saved for speaking and offers it first next new day) */
+function speakEscape(container, q) {
+  const w = el(`<button class="whisper-escape">I can't speak right now</button>`);
+  container.appendChild(w);
+  w.addEventListener("click", () => {
+    const body = $("#qbody");
+    body.innerHTML = "";
+    body.appendChild(el(`<div class="swapnote">
+      <span class="big">This one is built for your voice.</span>
+      <span>Listen for now, or come back when you can speak. It will be waiting on Home.</span></div>`));
+    const cf = footer(`<button class="btn" id="swapcont">Keep going, just listening</button><button class="btn grey" id="swappark">Come back when I can speak</button>`);
+    cf.querySelector("#swapcont").addEventListener("click", () => { run.speakOff = true; body.className = ""; body.innerHTML = ""; renderQuestion(); });
+    cf.querySelector("#swappark").addEventListener("click", () => { parkEarSession(); leaveSession(); });
+  });
 }
 function renderSoundsEnd(q) {
   const body = $("#qbody");

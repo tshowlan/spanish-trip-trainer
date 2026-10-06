@@ -475,7 +475,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* §4c.1 v2.1 active dismissal: two-soft-option meaning check on the new material (replaces "Got it") */
 .microrep { font-size: var(--text-sm); color: var(--text-dim); line-height: 1.5; min-height: 44px; display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .microrep .q { color: var(--text); font-weight: 500; }
-.opts { display: flex; gap: 8px; margin-top: 4px; }
+.opts { display: flex; gap: 8px; margin-top: 4px; transform: translateZ(0); }   /* on their own layer: the bottom edge of the two buttons tore while the speaker's bars animated above them (Tom's recording 10/6) */
 .opt { flex: 1; border: 1px solid var(--border); background: var(--bg-card); border-radius: var(--radius-md); padding: 12px;
   font-family: var(--font-display); font-size: 15px; font-weight: 500; color: var(--text); cursor: pointer; min-height: 48px; text-align: center;
   transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition); }
@@ -2285,7 +2285,7 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 .mic { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); display: inline-flex; align-items: center; justify-content: center; color: var(--accent); cursor: pointer; }
 .mic.live { background: color-mix(in srgb, var(--accent) 28%, transparent); box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 12%, transparent); }
 .heard { font-family: var(--font-text); font-size: 14px; color: var(--text-dim); margin-top: 8px; min-height: 20px; } .heard b { color: var(--green); font-weight: 600; }
-.two { display: flex; gap: 10px; margin-top: 18px; } .two .btn { flex: 1; } .two .btn.grey { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
+.two { display: flex; gap: 10px; margin-top: 18px; } .top .whisper-escape { margin-top: 14px; } .two .btn { flex: 1; } .two .btn.grey { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
 .end-line { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--text); margin-top: 14px; line-height: 1.2; }
 .end-sub { font-family: var(--font-text); font-size: 15px; color: var(--text-dim); margin-top: 8px; line-height: 1.45; }
 .end-grid { margin-top: 22px; gap: 8px 16px; }

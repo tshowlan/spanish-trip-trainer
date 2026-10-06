@@ -1822,3 +1822,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 - The wall: the word on top is 24px like every other exercise's word (.prompt); the ending keeps the sub line's height, so the tiles no longer shift up.
 - Say it: a matched recognition reads "That's it. We heard gracias."; a miss reads "We heard X. Try it once more, or move on."
 - Not reproduced: the clipping Tom sees on the Tap the pronunciation buttons when the speaker plays (the 13-42 recording, frame by frame, shows the buttons intact at the autoplay and at the tap). Awaiting a screenshot of the moment.
+
+## v421 (2026-10-06) — the speaking escape; the torn buttons
+- Say it: "I can't speak right now" under the buttons → "This one is built for your voice." / "Listen for now, or come back when you can speak. It will be waiting on Home." → Keep going, just listening (run.speakOff: no mic, "Just listen for now", the button reads Next) or Come back when I can speak (parked exactly like an ear session: state.parkedEar; the tile and the Learn row read SAVED FOR SPEAKING; it comes back first next new day). A mic match now dings and buzzes like a right answer.
+- The card's two answer buttons sit on their own layer (`.opts { transform: translateZ(0) }`): in Tom's 13-42 recording their bottom edge tore for the length of the speaker's bars animation. Not verifiable here; the recording is the evidence.

@@ -69,7 +69,7 @@ function _lessonRow(l, isNext) {
   const beat = _lessonBeat(l);
   const meta = _isMachine(l) ? `Pattern · ${(l.items || []).length} fillers`
     : l.chain ? "Conversation" : `${(l.items || []).length} ${l.sounds ? "sounds" : l.wordsSession ? "words" : "phrases"}`;
-  const earTag = (typeof earOn === "function" && earOn() && isEarLesson(l)) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for sound" : "Best with sound"}</span>` : isSpeakLesson(l) ? ` \u00b7 <span class="ear-tag">Best said out loud</span>` : "";   // R2 (Tom 9/26)
+  const earTag = (typeof earOn === "function" && earOn() && isEarLesson(l)) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for sound" : "Best with sound"}</span>` : isSpeakLesson(l) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for speaking" : "Best said out loud"}</span>` : "";   // R2 (Tom 9/26)
   const row = el(`<div class="lesson${isNext ? " next" : ""}">
     ${str != null ? strengthRing(str) : `<span class="caret-new">${icon("caret-right", 13)}</span>`}
     <div class="lmain">
