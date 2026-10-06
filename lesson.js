@@ -420,8 +420,15 @@ function renderKeySound(q) {
     <div class="present-es">${goldHtml(it.es, it.gold)}</div>
     <div class="snd-whisper">${it.en}</div>
     <div class="snd-rule">${it.rule}</div>
-    ${(it.more || []).length ? `<div class="snd-more">${it.more.map(m => `<span>${goldHtml(m[0], m[1])}</span>`).join("")}</div>` : ""}
+    ${(it.more || []).length ? `<div class="snd-more">${it.more.map((m, i) => `<span class="hl" data-i="${i}">${goldHtml(m[0], m[1])}</span>`).join("")}</div>` : ""}
   </div>`));
+  // the other carriers wear the hairline (the hint mark): a tap says the word and shows what it means (Tom 10/6)
+  body.querySelectorAll(".snd-more .hl").forEach(n => n.addEventListener("click", () => {
+    const m = it.more[+n.dataset.i]; const was = n.classList.contains("open");
+    body.querySelectorAll(".snd-more .hl.open").forEach(o => { o.classList.remove("open"); const p = o.querySelector(".hint-pop"); if (p) p.remove(); });
+    speak(m[0]);
+    if (!was && m[2]) { n.classList.add("open"); n.appendChild(el(`<span class="hint-pop">${m[2]}</span>`)); }
+  }));
   const play = audioControl(slow => { slow ? speak(it.es, 0.55) : speak(it.es); }, { speed: true });
   const arow = el(`<div class="present-audio"></div>`); arow.appendChild(play); arow.appendChild(el(`<span class="audio-hint">Tap to hear it, or hear it slowly</span>`));
   body.appendChild(arow);
@@ -463,7 +470,7 @@ function renderSoundWall(q) {
     playSound("correct");
     const barEl = document.querySelector(".pbar > i");
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
-    count.textContent = `${asks.length} of ${asks.length} found`; word.textContent = "Every sound, found."; sub.textContent = missed ? (missed === 1 ? "One took a second look." : `${missed} took a second look.`) : "";
+    count.textContent = `${asks.length} of ${asks.length} found`; word.textContent = "Every sound, found."; sub.innerHTML = missed ? (missed === 1 ? "One took a second look." : `${missed} took a second look.`) : "&nbsp;";   // the line keeps its height: the tiles do not shift (Tom 10/6)
     const cf = footer(`<button class="btn" id="cont">Continue</button>`);
     let gone = false; cf.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
   };
@@ -499,7 +506,7 @@ function renderSayIt(q) {
       let rec; try { rec = new Rec(); } catch (_) { heard.textContent = "The microphone is not available here."; return; }
       rec.lang = (typeof activePack === "function" ? activePack().tts : "es-ES"); rec.maxAlternatives = 3;
       mic.classList.add("live"); heard.textContent = "Listening…";
-      rec.onresult = e => { const alts = Array.from(e.results[0]).map(r => r.transcript); const hit = alts.some(a => norm(a).includes(norm(it.es))); heard.innerHTML = hit ? `We heard: <b>${alts[0]}</b>` : `We heard: ${alts[0]}. Try it once more, or move on.`; };
+      rec.onresult = e => { const alts = Array.from(e.results[0]).map(r => r.transcript); const hit = alts.some(a => norm(a).includes(norm(it.es))); heard.innerHTML = hit ? `<b>That's it.</b> We heard ${alts[0]}.` : `We heard "${alts[0]}". Try it once more, or move on.`; };
       rec.onerror = () => { heard.textContent = "The microphone did not catch that."; };
       rec.onend = () => mic.classList.remove("live");
       try { rec.start(); } catch (_) { mic.classList.remove("live"); heard.textContent = "The microphone is not available here."; }

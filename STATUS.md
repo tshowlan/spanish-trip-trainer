@@ -1816,3 +1816,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v419 (2026-10-06) — the sounds drawer previews the sound
 - The Learn drawer for Sounds you'll say lists each carrier with its key letters in gold and its say line on the right (GRA-thyas), not the translation (Tom 10/6).
+
+## v420 (2026-10-06) — Sounds you'll say after Tom's first play
+- Card: the whisper sits 8px under the word (the word card's gap); every sound shows TWO other carriers, each with a hairline: a tap says the word and opens a solid bubble with its meaning (more: [word, gold, meaning]). The qu card no longer mentions gu (it read as if guía were a k): "The qu is a plain k. The u is silent."; queso, aquí.
+- The wall: the word on top is 24px like every other exercise's word (.prompt); the ending keeps the sub line's height, so the tiles no longer shift up.
+- Say it: a matched recognition reads "That's it. We heard gracias."; a miss reads "We heard X. Try it once more, or move on."
+- Not reproduced: the clipping Tom sees on the Tap the pronunciation buttons when the speaker plays (the 13-42 recording, frame by frame, shows the buttons intact at the autoplay and at the tap). Awaiting a screenshot of the moment.
