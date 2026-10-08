@@ -1872,3 +1872,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v434 (2026-10-07) — compare switch: quotes around the letters and sounds in the rule lines
 - STAGED_OPT_IN `sound-quotes`: the Key Sound rule lines with single quotes around every letter and sound ('c', 'th', 'ny'), authored as `ruleQ` per sound; the key letter keeps its gold inside the quotes. Off = the gold letter alone (v433). Verified both states for all nine.
+
+## v435 (2026-10-07) — the rule lines in news style: gold letter, quoted sound
+- The one look (Tom 10/7, after the style-guide check): the key letter in gold (the app's stand-in for italics, letters as letters), the sound in single quotes as spoken ('th', 'y', 'ny', 'b', 'k'). The quotes-everywhere compare switch retired; `ruleQ` removed.
