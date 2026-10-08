@@ -419,7 +419,7 @@ function renderKeySound(q) {
   body.appendChild(el(`<div class="present-card key-sound">
     <div class="present-es">${goldHtml(it.es, it.gold)}</div>
     <div class="snd-whisper">${it.en}</div>
-    <div class="snd-rule">${it.rule}</div>
+    <div class="snd-rule">${it.gold && !/[\u00e1\u00e9\u00ed\u00f3\u00fa]/.test(it.gold) ? it.rule.replace(new RegExp("(^|[^\\p{L}])(" + it.gold + ")(?![\\p{L}])", "u"), `$1<span class="g">$2</span>`) : it.rule}</div>
     ${(it.more || []).length ? `<div class="snd-more">${it.more.map((m, i) => `<span class="hl" data-i="${i}">${goldHtml(m[0], m[1])}</span>`).join("")}</div>` : ""}
   </div>`));
   // the other carriers wear the hairline (the hint mark): a tap says the word and shows what it means (Tom 10/6)
