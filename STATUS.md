@@ -1860,3 +1860,8 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v431 (2026-10-06) — Say it: the green word back, the Again button gone
 - A mic match turns the word green with the sweep again (Tom likes it). The Again button is gone: the speaker already replays; one full-width button (Said it, or Next on the listening path). The win's copy stays "You said X." until Tom picks a line.
+
+## v432 (2026-10-07) — three catches from Tom's 10/6 play
+- The wall's café tiles were the whole-word stress pair (kah-FEH / KAF-fay, chat's exception); on the wall they read as the odd ones out. Now the vowel's own sound, eh / ay (the gold is the letter, the tile is its sound); the stress pair stays on the card's confirm. Noted for chat.
+- The bloom (Learn row → session): the clone's words faded with a 70ms delay, so they rode the 1.06 breath and shifted sideways for a few frames. They now let go at once (60ms, no delay).
+- Which one sounds different?: the block is no longer centered by a transform; on a wrong tap the phone re-placed the whole block (all four tiles bobbed). It is placed by top alone now, its center still on the 63% line.

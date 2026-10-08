@@ -619,7 +619,7 @@ function renderOddOne(q) {
     });
     grid.appendChild(b);
   });
-  const answers = el(`<div class="answers at63"></div>`); answers.appendChild(grid); body.appendChild(answers);
+  const answers = el(`<div class="answers at63 odd-answers"></div>`); answers.appendChild(grid); body.appendChild(answers);
   clearFooter();
 }
 function renderSoundsEnd(q) {

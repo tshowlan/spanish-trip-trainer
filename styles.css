@@ -2055,7 +2055,7 @@ img.scene-art { width: 286px; }
   transition: transform 190ms cubic-bezier(.2,.7,.3,1), opacity 320ms ease; }
 .bloom-cover.fill { transition: transform 200ms cubic-bezier(.4,0,.7,1), opacity 320ms ease; }   /* the fill accelerates: the tile comes toward you */
 .bloom-cover .bloom-tile { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; transform: none !important; box-shadow: none; z-index: 0; }
-.bloom-cover .bloom-tile > * { transition: opacity 120ms ease 70ms; }
+.bloom-cover .bloom-tile > * { transition: opacity 60ms ease; }   /* the words let go at once: with a 70ms delay they rode the breath and shifted sideways (Tom's recording 10/6) */
 .bloom-cover.breathe .bloom-tile > *, .bloom-cover.fill .bloom-tile > * { opacity: 0; }   /* the words and the picture let go during the breathe */
 /* the aura: the splash lantern's recipe, a radial LAYER behind the tile (never a filter), soft, no line */
 .bloom-cover .bloom-aura { position: absolute; inset: -40% -18%; z-index: -1; border-radius: 50%; opacity: 0; pointer-events: none;
@@ -2299,7 +2299,8 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 .end-sub { font-family: var(--font-text); font-size: 15px; color: var(--text-dim); margin-top: 8px; line-height: 1.45; }
 .end-grid { margin-top: 22px; gap: 8px 16px; }
 .peek-item .es .g { color: var(--accent); }   /* the sounds session's drawer: the key letters in gold, the say line on the right */
-.odd4 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }   /* which one sounds different (mock D3): the four in the lower third, the ordinary choice tiles */
+.odd4 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#qbody.anchored .answers.odd-answers { transform: none; top: calc(63dvh - var(--qtop, 90px) - 71px); }   /* not centered by a transform: the shake on one tile made the phone re-place the whole block (Tom 10/6); 71px = half the grid */   /* which one sounds different (mock D3): the four in the lower third, the ordinary choice tiles */
 .odd4 .choice { min-height: 66px; font-family: var(--font-display); font-size: 21px; font-weight: 600; letter-spacing: 0; text-align: center; }
 .odd4 .choice.correct { border-color: var(--green); background: color-mix(in srgb, var(--green) 10%, transparent); } .odd4 .choice.dim { opacity: .45; }
 .odd-sub { font-family: var(--font-text); font-size: 14px; color: var(--text-dim); margin-top: 8px; line-height: 1.45; }
