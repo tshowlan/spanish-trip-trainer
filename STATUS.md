@@ -1875,3 +1875,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v435 (2026-10-07) — the rule lines in news style: gold letter, quoted sound
 - The one look (Tom 10/7, after the style-guide check): the key letter in gold (the app's stand-in for italics, letters as letters), the sound in single quotes as spoken ('th', 'y', 'ny', 'b', 'k'). The quotes-everywhere compare switch retired; `ruleQ` removed.
+
+## v436 (2026-10-07) — the other letters in a rule line take quotes
+- Only the key letter is gold; every other letter a rule mentions sits in single quotes ("The 'g' before 'e' or 'i'", "The 'u' is silent", "One 'r'", "like 'l' or 'r'"). decisions.md line amended.
