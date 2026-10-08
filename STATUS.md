@@ -1878,3 +1878,8 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v436 (2026-10-07) — the other letters in a rule line take quotes
 - Only the key letter is gold; every other letter a rule mentions sits in single quotes ("The 'g' before 'e' or 'i'", "The 'u' is silent", "One 'r'", "like 'l' or 'r'"). decisions.md line amended.
+
+## v437 (2026-10-08) — Tom's 10/8 notes
+- Test mode scrub: a gold thumb appears under the finger while scrubbing and the bar's touch zone is 40px tall (the hairline was hard to grab).
+- Café's rule reads as a sound, not an exercise: "The vowels are short and clean: 'ah', 'eh', 'ee', 'oh', 'oo', never stretched into two. The mark on the é says this is the part you lean on." (Code's draft, replaces chat's line 9; on the ledger.)
+- Say it: recognition accepts an interim match the moment it appears (interimResults, stop on match), instead of waiting ~2s for the phone to decide you stopped (recording 09-00: Listening 3-5s, result at 6s). The word no longer turns green; only the sweep. The "line shifting down" could not be seen frame by frame (the sweep grows from the left at the word's baseline); re-check with the green gone.

@@ -527,13 +527,18 @@ function renderSayIt(q) {
     const listen = () => {
       if (mic.classList.contains("live") || mic.classList.contains("hit")) return;
       let rec; try { rec = new Rec(); } catch (_) { heard.textContent = "The microphone is not available here."; return; }
-      rec.lang = (typeof activePack === "function" ? activePack().tts : "es-ES"); rec.maxAlternatives = 3;
+      rec.lang = (typeof activePack === "function" ? activePack().tts : "es-ES"); rec.maxAlternatives = 3; rec.interimResults = true;   // a match counts the moment it appears, not after the phone decides you have stopped (Tom 10/8)
       mic.classList.add("live"); heard.textContent = "Listening…";
       // the phone reports when sound starts and stops: the ring quickens; the meter above takes over when it can
       rec.onsoundstart = rec.onspeechstart = () => { if (!mic.classList.contains("metered")) mic.classList.add("hearing"); heard.textContent = "Hearing you…"; };
       rec.onsoundend = rec.onspeechend = () => { if (!mic.classList.contains("metered")) mic.classList.remove("hearing"); };
+      let settled = false;
       rec.onresult = e => {
-        const alts = Array.from(e.results[0]).map(r => r.transcript); const hit = alts.some(a => norm(a).includes(norm(it.es)));
+        if (settled) return;
+        const alts = []; for (let k = 0; k < e.results.length; k++) for (let m = 0; m < e.results[k].length; m++) alts.push(e.results[k][m].transcript);
+        const hit = alts.some(a => norm(a).includes(norm(it.es))); const final = e.results[e.results.length - 1].isFinal;
+        if (!hit && !final) return;                                    // still listening: wait for a match or the final word
+        settled = true; try { rec.stop(); } catch (_) {}
         if (hit) {
           // a right answer, in the house grammar: the ding, the word's green sweep, the kicker (Tom 10/6: it should feel like you got it right)
           playSound("correct"); haptic("correct");
@@ -1663,10 +1668,12 @@ function renderQuestion() {
       const bar = wrap.querySelector(".pbar"); let scrubbing = false;
       const jumpTo = x => { const r = bar.getBoundingClientRect(); const i = Math.max(0, Math.min(run.qs.length - 1, Math.floor((x - r.left) / r.width * run.qs.length)));
         if (i === run.idx) return; try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (_) {} clearFooter(); run.answered = false; run.idx = i; run.pct = Math.round(i / run.qs.length * 100); renderQuestion(); };
-      bar.style.cursor = "pointer"; bar.style.touchAction = "none";
-      bar.addEventListener("pointerdown", e => { scrubbing = true; bar.setPointerCapture(e.pointerId); jumpTo(e.clientX); });
-      bar.addEventListener("pointermove", e => { if (scrubbing) jumpTo(e.clientX); });
-      ["pointerup", "pointercancel"].forEach(ev => bar.addEventListener(ev, () => { scrubbing = false; }));
+      bar.classList.add("scrub"); bar.style.touchAction = "none";
+      const thumb = el(`<span class="scrub-thumb" aria-hidden="true"></span>`); bar.appendChild(thumb);   // a handle under the finger while scrubbing (Tom 10/8)
+      const place = x => { const r = bar.getBoundingClientRect(); thumb.style.left = Math.max(0, Math.min(r.width, x - r.left)) + "px"; };
+      bar.addEventListener("pointerdown", e => { scrubbing = true; bar.setPointerCapture(e.pointerId); bar.classList.add("scrubbing"); place(e.clientX); jumpTo(e.clientX); });
+      bar.addEventListener("pointermove", e => { if (scrubbing) { place(e.clientX); jumpTo(e.clientX); } });
+      ["pointerup", "pointercancel"].forEach(ev => bar.addEventListener(ev, () => { scrubbing = false; bar.classList.remove("scrubbing"); }));
     }
     // listeners live on the persistent shell — bound once per runner, not per question
     ["pointerdown", "click"].forEach(ev => wrap.addEventListener(ev, e => {

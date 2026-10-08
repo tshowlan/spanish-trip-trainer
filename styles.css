@@ -2287,7 +2287,7 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 .mic.hearing { animation: mic-hear 300ms ease-in-out infinite; }   /* hearing you (the phone's events): a quick, bigger pulse */
 .mic.metered { animation: none !important; transition: box-shadow 60ms linear, transform 60ms linear; }   /* the ring follows your voice: the level meter sets its shadow and scale each frame */
 .mic.hit { border-color: var(--green); background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green); animation: none !important; box-shadow: 0 0 0 6px color-mix(in srgb, var(--green) 14%, transparent); transform: none; }
-.big-word { position: relative; display: inline-block; } .big-word.said { color: var(--green); }
+.big-word { position: relative; display: inline-block; }   /* a match: only the sweep, the word keeps its color (Tom 10/8) */
 .big-word .sweep2 { position: absolute; left: 0; right: 0; bottom: -6px; height: 2.5px; background: var(--green); border-radius: 2px; transform-origin: left; animation: sweep-in 420ms cubic-bezier(.2,.7,.3,1) both; }
 .heard .res-yours { margin: 2px 0 4px; }
 @keyframes mic-listen { 0%, 100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent); } 50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--accent) 8%, transparent); } }
@@ -2308,3 +2308,8 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 .grid9 .cell9 { border: 1px solid var(--border); border-radius: 12px; padding: 12px 6px; text-align: center; font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--text); background: color-mix(in srgb, var(--bg-card) 60%, transparent); }
 .grid9 .cell9 .g { color: var(--accent); } .grid9 .cell9 small { display: block; font-family: var(--font-text); font-size: 11px; font-weight: 600; color: var(--text-dim); letter-spacing: .03em; margin-top: 4px; }
 .snd-once { font-family: var(--font-text); font-size: 12.5px; color: var(--text-dim); margin: -6px 0 10px; }   /* "Said the Spain way. The voice is the real thing." once */
+/* test mode: the progress bar scrubs; a taller touch zone and a thumb under the finger while scrubbing (Tom 10/8) */
+.pbar.scrub { overflow: visible; position: relative; cursor: pointer; }
+.pbar.scrub::before { content: ""; position: absolute; left: 0; right: 0; top: -18px; bottom: -18px; }
+.scrub-thumb { position: absolute; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,.45), 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent); opacity: 0; transform: scale(.6); transition: opacity 120ms ease, transform 120ms ease; pointer-events: none; }
+.pbar.scrubbing .scrub-thumb { opacity: 1; transform: scale(1); }
