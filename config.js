@@ -8,12 +8,13 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v433";
+const APP_BUILD = "v434";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
    is his word - only then does the feature leave this list and reach the live app. */
 const STAGED = {
+  "sound-quotes": "Key Sound cards: single quotes around each letter and sound in the rule line ('c', 'th'); compare switch, off until you flip it",
   "sounds-1": "Chapter 1: Sounds you'll say, after First words \u00b7 Part 2 (nine key sounds on cards, the wall with decoys, the run of nine said out loud)",
   "asks-1": "Chapter 2 opens with The asks \u00b7 Part 1: Quiero, \u00bfMe puede traer?, \u00bfD\u00f3nde est\u00e1?, \u00bfCu\u00e1nto cuesta? (cards, the board, Which one do you say?, build the sentence, the listening board)",
   "ch1-three-words": "Chapter 1, three words (chat 10/3): \u00bfQu\u00e9 tal? takes Pase's seat in Words you'll hear; Muy bien takes Adi\u00f3s's seat and No entiendo joins as the eighth in First words \u00b7 Part 2",
@@ -37,7 +38,7 @@ function stagingOn() { try { return localStorage.getItem("sts_staging") === "1";
 function stagedOff() { try { return JSON.parse(localStorage.getItem("sts_staging_off") || "[]"); } catch (e) { return []; } }
 function setStagedOff(feature, off) { const list = stagedOff().filter(f => f !== feature); if (off) list.push(feature); try { localStorage.setItem("sts_staging_off", JSON.stringify(list)); } catch (e) {} }
 // opt-in features (alternatives to compare) stay OFF until Tom turns them on; the rest are on with staging
-const STAGED_OPT_IN = [];   // (the two tile looks of 10/3 retired: Tom kept the ring)   // compare switches: off by default, on only when Tom flips them
+const STAGED_OPT_IN = ["sound-quotes"];   // (the two tile looks of 10/3 retired: Tom kept the ring)   // compare switches: off by default, on only when Tom flips them
 function stagedOn() { try { return JSON.parse(localStorage.getItem("sts_staging_on") || "[]"); } catch (e) { return []; } }
 function setStagedOn(feature, on) { const list = stagedOn().filter(f => f !== feature); if (on) list.push(feature); try { localStorage.setItem("sts_staging_on", JSON.stringify(list)); } catch (e) {} }
 function isStaged(feature) {

@@ -1869,3 +1869,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v433 (2026-10-07) — the odd-one block really stops moving; the rule names its letter in gold
 - Tom's recording 21-29: on a wrong tap the three lower text rows rose 1pt for about half a second, twice. The 63% centering is the `translate` property (`#qbody.anchored .answers { translate: 0 -50% }`), which v432's `transform: none` did not touch. `.odd-answers` now has `translate: none` as well, placed by top alone.
 - Key Sound cards: the rule line names its letter in the word's gold (the c, j, h, ll, ñ, v, qu), Unicode-aware match; rr and the vowels' rules do not name a single letter and are unchanged. Chosen over quotes: one mark for the letter everywhere.
+
+## v434 (2026-10-07) — compare switch: quotes around the letters and sounds in the rule lines
+- STAGED_OPT_IN `sound-quotes`: the Key Sound rule lines with single quotes around every letter and sound ('c', 'th', 'ny'), authored as `ruleQ` per sound; the key letter keeps its gold inside the quotes. Off = the gold letter alone (v433). Verified both states for all nine.
