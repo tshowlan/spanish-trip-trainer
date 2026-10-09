@@ -18,7 +18,7 @@
 - **Machine lessons (7):** forge-present → conveyor → welds ×4 → conveyor lap 2 → the stretch ×2 → exchanges ×4 → close. ~4.4 real minutes. Narrative cues on every machine phrase. SHIPPED v278 (journey-1): four ROOM lessons replace them — Asking for things · 1 (Want + Bring) and · 2 (Need, solo), Finding out · 1 (Find + There) and · 2 (Price + When); a room runs each machine's short arc (forge · conveyor ×3 · weld ×2 · exchange ×1) then one lap across both frames, ~4 minutes; the forge label is the machine's name; "Your first machine" once. Depth (lap 2, stretch, other exchanges) moves to the machine shop and the return lap.
 - **Primer:** the scene text, a guess, the reveal. Pre-star design; upgrade parked (return-door grammar, pictures).
 - **Return door:** re-entering a finished lesson: photo band, machine badge, frame pedestal, mess-up headline, "Bring them back / Run the lap / Rebuild it." Its badge/frame grammar differs from the scene door (ruling on hold).
-- **Session end:** the ceremony and its facts; after Continue, Home comes back in one breath, the twilight fade, the logo with the rest (v441). After Sounds you'll say the ledger is still blank: copy options mocked, Tom to pick.
+- **Session end:** the ceremony and its facts; after Continue, Home comes back in one breath, the twilight fade, the logo with the rest (v441). After Sounds you'll say the ledger reads "9 sounds met" and "9 said out loud" (or "N odd ones found" on the listening path), v442, staged with the session.
 
 ## Review (the Scenes track)
 - **Review sheet (was Practice):** three doors: Review (smart default, one line saying what it picked; names a ready scene when there is one), By scenario, The machine shop. Picks bloom into the session. (v344)

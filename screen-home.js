@@ -252,6 +252,10 @@ function _sfactRows(facts) {
   if (facts.stronger > 0) rows.push(`<div class="sfact"><span class="sf-glyph">${glyphs.check}</span><span><span class="sf-n">${facts.stronger}</span> stronger</span></div>`);
   if (facts.restored > 0) rows.push(`<div class="sfact"><span class="sf-glyph">${glyphs.restore}</span><span><span class="sf-n">${facts.restored}</span> restored</span></div>`);
   if (facts.soloed > 0) rows.push(`<div class="sfact"><span class="sf-glyph">${glyphs.star}</span><span><span class="sf-n">${facts.soloed}</span> soloed</span></div>`);
+  // the sounds session (Tom 10/8, option A): the sounds arrived (gold), you said them or found the odd ones (green)
+  if (facts.sounds > 0) rows.push(`<div class="sfact"><span class="sf-glyph gold">${glyphs.plus}</span><span><span class="sf-n">${facts.sounds}</span> sounds met</span></div>`);
+  if (facts.said > 0) rows.push(`<div class="sfact"><span class="sf-glyph">${glyphs.check}</span><span><span class="sf-n">${facts.said}</span> said out loud</span></div>`);
+  if (facts.odd > 0) rows.push(`<div class="sfact"><span class="sf-glyph">${glyphs.check}</span><span><span class="sf-n">${facts.odd}</span> odd ones found</span></div>`);
   return rows.join("");
 }
 const _RING_C = 2 * Math.PI * 52;

@@ -565,7 +565,7 @@ function renderSayIt(q) {
   } else arow.appendChild(el(`<span class="audio-hint">Say it, then tap to compare</span>`));
   top.appendChild(arow); top.appendChild(heard);
   const two = el(`<div class="two"><button class="btn" id="said">${run.speakOff ? "Next" : "Said it"}</button></div>`);   // no Again: the speaker already replays (Tom 10/6)
-  let gone = false; two.querySelector("#said").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
+  let gone = false; two.querySelector("#said").addEventListener("click", () => { if (gone) return; gone = true; if (!run.speakOff) run.saidN = (run.saidN || 0) + 1; slideOut(next); });   // the ledger counts what you said out loud (Tom 10/8, option A)
   top.appendChild(two);
   body.appendChild(top);
   clearFooter();
@@ -621,6 +621,7 @@ function renderOddOne(q) {
       if (done) return;
       if (w === it.odd[0]) {
         done = true; b.classList.add("correct"); [...grid.children].forEach(c => { if (c !== b) c.classList.add("dim"); });
+        run.oddN = (run.oddN || 0) + 1;                   // the ledger's listening-path row: odd ones found
         playSound("correct"); haptic("correct"); setTimeout(() => speak(w), 250);
         sub.textContent = it.odd[1];
         const barEl = document.querySelector(".pbar > i"); if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
@@ -4265,7 +4266,10 @@ function finishLesson() {
   const cs = state.topicStats[cat] = state.topicStats[cat] || { correct: 0, total: 0 };
   cs.correct += correct; cs.total += total;
   // session log → powers Momentum / Recency / Retention
-  _sessionEndBookkeeping({ at: now, lessonId: lesson.id, category: cat, phrases: total, correct });
+  // a sounds session has no words for the ledger (nothing new, stronger, restored or soloed): its own two rows,
+  // what arrived (the sounds) and what you did (said them, or found the odd ones on the listening path). Tom 10/8, option A.
+  const facts = lesson.sounds ? { newN: 0, stronger: 0, restored: 0, soloed: 0, sounds: (lesson.items || []).length, said: run.saidN || 0, odd: run.oddN || 0 } : null;
+  _sessionEndBookkeeping({ at: now, lessonId: lesson.id, category: cat, phrases: total, correct }, facts);
 }
 
 /* §6b session end (2026-07-21): shared bookkeeping for every completed flow, then straight
