@@ -498,7 +498,10 @@ function renderSayIt(q) {
   const arow = el(`<div class="present-audio say-row"></div>`);
   const play = audioControl(() => speak(it.es));
   arow.appendChild(play);
-  const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  // THE MIC CHECK is parked, not deleted (Tom 10/8): on iPhone, any web speech recognition moves playback to the quiet earpiece and the
+  // route does not come back for the rest of the session. The whole path (auto-listen, the ring, the match, THAT'S IT) stays behind the
+  // "mic-check" compare switch for Tom's testing, and for the native app, which can own the audio route. Off: say it, tap Said it.
+  const Rec = isStaged("mic-check") ? (window.SpeechRecognition || window.webkitSpeechRecognition) : null;
   const heard = el(`<div class="heard"></div>`);
   if (run.speakOff) arow.appendChild(el(`<span class="audio-hint">Just listen for now</span>`));   // the escape fired: listening only (Tom 10/6)
   else if (Rec && !(run.soundOff || state.sound === false)) {

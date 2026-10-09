@@ -1890,3 +1890,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v439 (2026-10-08) — the level meter off: the audio route stuck on the earpiece
 - Tom: during Say it the sound moved to the quieter speaker and stayed there after the mic closed. The second mic stream (getUserMedia for the level meter) is what changes iPhone's audio route; closing it did not restore the route. The meter is off (state.micMeter keeps the code for a future try); the ring follows the phone's sound-start/sound-end events (the quick pulse). Speech recognition alone remains.
+
+## v440 (2026-10-08) — the mic check parked behind a switch
+- Say it runs without the mic by default (the honor system: say it, Said it). The entire mic path is intact behind STAGED_OPT_IN `mic-check` (off until flipped in the Test Lab); decisions.md records why and where. Nothing deleted.
