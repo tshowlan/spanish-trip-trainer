@@ -388,13 +388,15 @@ function sessionEndCeremony(home, data, reduced) {
       setTimeout(() => { layer.remove(); document.body.classList.remove("in-ceremony"); maybeStatusMoment(); }, 250);
       return;
     }
-    timers.push(setTimeout(() => back(".home-atmo, .topbar, .home .trip"), at(1000)));
-    timers.push(setTimeout(() => back(".home .hero-tile"), at(1300)));
-    timers.push(setTimeout(() => back(".home .practice"), at(1450)));
-    timers.push(setTimeout(() => back(".home > *"), at(1600)));   // whisper lines, divergence, presence, banner
-    timers.push(setTimeout(() => { back("#tabbar"); showTabbar("home"); }, at(1750)));
-    timers.push(setTimeout(() => { const dw = document.getElementById("dw-today"); if (dw) dw.classList.add("show"); }, at(2150)));
-    timers.push(setTimeout(() => { layer.remove(); document.body.classList.remove("in-ceremony"); maybeStatusMoment(); }, at(2750)));
+    // Home comes back the way it arrives at launch (Tom 10/8): everything in one breath, the dials the still point.
+    // The piece-by-piece refill (trip 1000, tile 1300, practice 1450, rest 1600, nav 1750, whisper 2150, logo at the
+    // teardown 2750) read as delayed loading. The fade is 1400ms (styles: .cer-back), the teardown waits for it.
+    const t0 = at(1000);
+    timers.push(setTimeout(() => {
+      back(".home-atmo, .topbar, .home > *, #tabbar"); showTabbar("home");
+      const dw = document.getElementById("dw-today"); if (dw) dw.classList.add("show");
+    }, t0));
+    timers.push(setTimeout(() => { layer.remove(); document.body.classList.remove("in-ceremony"); maybeStatusMoment(); }, t0 + 1550));
   });
 }
 

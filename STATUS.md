@@ -1893,3 +1893,8 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v440 (2026-10-08) — the mic check parked behind a switch
 - Say it runs without the mic by default (the honor system: say it, Said it). The entire mic path is intact behind STAGED_OPT_IN `mic-check` (off until flipped in the Test Lab); decisions.md records why and where. Nothing deleted.
+
+## v441 (2026-10-08) — the ceremony's return in one breath, and the dial hop
+- Tom's recording 20-08: after Continue, Home refilled piece by piece (trip 1.0s, tile 1.3s, nav 1.75s, the logo only when the layer came down at 2.75s) and read as delayed loading; and the dial row dropped 2pt. Measured frame by frame: the drop is on the exact frame the "+1 today" whisper begins its reveal (9.07s), nothing else on the screen moves, and layout is identical before and after (checked in the browser). So it is the whisper's reveal getting a layer of its own for 300ms and the dial row redrawn around it, the same class of jump as the 10/2 Home rows. Cure: `.delta-whisper, .dial-delta { will-change: transform, opacity }`, the layer exists from the start.
+- The return is now the twilight arrival's shape: everything (atmosphere, logo bar, trip, tile, Practice, nav, the whisper) fades in together over 1400ms, one second after Continue, no rise; the layer comes down after the fade. The topbar's visibility returns with the fade (`.topbar.cer-back`), not at the teardown.
+- The ceremony panel after Sounds you'll say is blank (no words to count): five copy options mocked (dev/ceremony-sounds-options.html). Nothing built until Tom picks.

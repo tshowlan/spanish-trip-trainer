@@ -1620,16 +1620,23 @@ body.in-ceremony .topbar { visibility: hidden; transition: opacity 550ms cubic-b
 /* the atmosphere breathes back in slowest (artifact: 900ms bloom rise) — the world
    arrives with weight, not as a page load */
 body.in-ceremony .home-atmo { transition: opacity 900ms cubic-bezier(.2,.7,.3,1); }
-/* home pieces MATERIALIZE (the system's standard 6px rise), each one placed, not loaded */
-body.in-ceremony .home > :not(.hero) { transform: translateY(6px);
-  transition: opacity 550ms cubic-bezier(.2,.7,.3,1), transform 550ms cubic-bezier(.2,.7,.3,1); }
-body.in-ceremony .home > .cer-back { transform: none; }
+/* home pieces come back the way Home arrives at launch (Tom 10/8, recording 20-08: the staggered refill read as delayed
+   loading, the logo last of all): ONE breath together, a fade only, twilight's 1400ms and curve. No rise (the 10/2 ruling:
+   twilight is a fade only), so nothing is handed between layers when the fade ends. */
+body.in-ceremony .home > :not(.hero) { transition: opacity 550ms cubic-bezier(.2,.7,.3,1); }
 body.in-ceremony .cer-back { opacity: 1 !important; pointer-events: auto !important; }
+body.in-ceremony .home-atmo.cer-back, body.in-ceremony .topbar.cer-back, body.in-ceremony .home > .cer-back, body.in-ceremony #tabbar.cer-back {
+  transition-duration: 1400ms; transition-timing-function: cubic-bezier(.3,.05,.2,1); }
+body.in-ceremony .topbar.cer-back { visibility: visible; }   /* the logo fades in WITH the rest, not when the layer is torn down 1.5s later */
 body.in-ceremony .ring-card { pointer-events: none; }          /* sheets wait for home */
 body.in-ceremony .dial-delta { opacity: 0; transition: opacity 300ms; }
 body.in-ceremony .dial-delta.show { opacity: 1; }
 .delta-whisper { font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--green);
   margin-top: 7px; transition: opacity 300ms, transform 300ms; }
+/* THE HOP (Tom's recording 10/8 20-08, 9.07s): on the frame the "+1 today" whisper begins its reveal, the whole dial row drops 2pt
+   (6 device px) and nothing else on the screen moves; layout is identical before and after (measured). The whisper's reveal gives it
+   a layer of its own for 300ms and the dial row is redrawn around it. Same cure as the Home rows (10/2): the layer exists from the start. */
+.delta-whisper, .dial-delta { will-change: transform, opacity; }
 body.in-ceremony .delta-whisper { opacity: 0; transform: translateY(3px); }
 body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .ring-card.dial-pop { opacity: 0; transform: scale(0.9);
