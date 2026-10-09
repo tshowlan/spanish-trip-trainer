@@ -508,6 +508,9 @@ function renderSayIt(q) {
     // --level on the ring. If the phone refuses a second stream, the phone's sound-start/sound-end events drive the ring instead.
     let meterStop = null;
     const startMeter = async () => {
+      // OFF (Tom 10/8): opening a second mic stream flips iPhone's audio route to the quiet earpiece speaker and it did not flip back after the
+      // mic closed. The ring follows the phone's sound-start/sound-end events instead. (Kept behind state.micMeter for a future try.)
+      if (!state.micMeter) return;
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });

@@ -1887,3 +1887,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v438 (2026-10-08) — café as a key-sound card; the sweep keeps its layer
 - Café: key "é · á · í"; the rule states the key sound first, then the two examples: "The é is a short, clean 'eh', never 'ay', and the mark says this is the part you lean on. The 'á' in está and the 'í' in días work the same way." The é is gold in the rule (accented key letters now allowed).
 - The green sweep under a said word carries will-change: transform: in Tom's recording the line settled a pixel lower exactly as its 420ms sweep ended (6.41s), the layer being dropped; it keeps the layer now.
+
+## v439 (2026-10-08) — the level meter off: the audio route stuck on the earpiece
+- Tom: during Say it the sound moved to the quieter speaker and stayed there after the mic closed. The second mic stream (getUserMedia for the level meter) is what changes iPhone's audio route; closing it did not restore the route. The meter is off (state.micMeter keeps the code for a future try); the ring follows the phone's sound-start/sound-end events (the quick pulse). Speech recognition alone remains.
