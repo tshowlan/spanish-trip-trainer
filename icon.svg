@@ -1,7 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#fcfcf3"/>
-  <svg x="106" y="61" width="300" height="390" viewBox="0 0 100 130" preserveAspectRatio="xMidYMid meet">
-    <defs><clipPath id="tower"><polygon points="35,102 65,102 60,44 40,44"/></clipPath></defs>
+<!-- the app icon (Tom 10/10, mock G3): the dark ground, the lighthouse untouched, the lantern's light centred between the lantern and the middle -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#05060d"/><defs><radialGradient id="halo" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1" gradientTransform="translate(256.0 215.0) scale(280 340)">
+      <stop offset="0" stop-color="#d8b713" stop-opacity="0.4"/><stop offset=".35" stop-color="#d8b713" stop-opacity="0.240"/>
+      <stop offset=".6" stop-color="#d8b713" stop-opacity="0.120"/><stop offset=".8" stop-color="#d8b713" stop-opacity="0.040"/><stop offset="1" stop-color="#d8b713" stop-opacity="0"/></radialGradient></defs>
+    <rect width="512" height="512" rx="112" fill="url(#halo)"/>
+  <svg x="132.9" y="98.0" width="246.2" height="320" viewBox="0 0 100 130"><defs><clipPath id="tower"><polygon points="35,102 65,102 60,44 40,44"/></clipPath></defs>
     <polygon points="43,23 43,33 6,26 11,10" fill="#d8b713" opacity="0.82"/>
     <polygon points="57,23 57,33 94,26 89,10" fill="#d8b713" opacity="0.82"/>
     <rect x="18" y="110" width="64" height="6" fill="#1c275e"/>
@@ -13,6 +15,4 @@
     <rect x="37" y="44" width="26" height="2" fill="#4a7fc1"/>
     <rect x="43" y="22" width="14" height="18" fill="#1c275e"/>
     <rect x="44.5" y="23.5" width="11" height="15" fill="#d8b713"/>
-    <polygon points="41,22 59,22 50,13" fill="#1c275e"/>
-  </svg>
-</svg>
+    <polygon points="41,22 59,22 50,13" fill="#1c275e"/></svg></svg>

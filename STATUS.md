@@ -1901,3 +1901,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v442 (2026-10-08) — the ledger after Sounds you'll say (option A, staged with `sounds-1`)
 - Tom picked A: two rows in the ledger's own grammar. What arrived, in gold: "9 sounds met". What you did, in green: "9 said out loud" (every Said it / Next tapped with the voice on), or on the listening path "5 odd ones found". The four word facts are forced to zero for a sounds session; the rows are nonzero-only like the rest.
+
+## v443 (2026-10-10) — the app icon on a dark ground
+- Tom's pick after four mock rounds (dev/app-icon-options*.html): the dark theme's ground behind the lighthouse (untouched drawing, at the chapter door's proportion), the lantern's gold light centred between the lantern and the tile's middle, dark left at the edges (mock G3). Same icon.svg via the manifest; iOS copies the icon when the app is added, so remove and re-add to see it.
