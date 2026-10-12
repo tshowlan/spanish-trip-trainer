@@ -1910,3 +1910,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v445 (2026-10-12) — the app icon: a silver outline on the lighthouse
 - Tom: J1 still hard to see. Round six (dev/app-icon-options-6.html): outlines (silver, light blue, gold) or a lighter tower. Pick K2: a heavier silver line around the tower, base, gallery and lantern, the beams untouched. Icon only; the lighthouse drawing stays as it is everywhere else.
+
+## v446 (2026-10-12) — the app icon: the outline in gold (K4), to compare with K2
+- Tom trying K4 after K2: the same line in the lantern's gold, thin. Icon only.
