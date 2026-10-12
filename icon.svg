@@ -1,8 +1,7 @@
-<!-- the app icon (Tom 10/10, mock G3): the dark ground, the lighthouse untouched, the lantern's light centred between the lantern and the middle -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#05060d"/><defs><radialGradient id="halo" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1" gradientTransform="translate(256.0 215.0) scale(280 340)">
-      <stop offset="0" stop-color="#d8b713" stop-opacity="0.4"/><stop offset=".35" stop-color="#d8b713" stop-opacity="0.240"/>
-      <stop offset=".6" stop-color="#d8b713" stop-opacity="0.120"/><stop offset=".8" stop-color="#d8b713" stop-opacity="0.040"/><stop offset="1" stop-color="#d8b713" stop-opacity="0"/></radialGradient></defs>
-    <rect width="512" height="512" rx="112" fill="url(#halo)"/>
+<!-- the app icon (Tom 10/12, mock J1): the dark theme's ground, the lighthouse untouched, the app's one candle rising from the bottom-left corner. Nothing behind the lantern. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#05060d"/><defs><radialGradient id="candle" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1" gradientTransform="translate(0 512) scale(560 620)">
+      <stop offset="0" stop-color="#c96a2b" stop-opacity="0.32"/><stop offset=".4" stop-color="#e6c62a" stop-opacity="0.120"/><stop offset=".68" stop-color="#e6c62a" stop-opacity="0.051"/><stop offset=".94" stop-color="#e6c62a" stop-opacity="0"/></radialGradient></defs>
+    <rect width="512" height="512" rx="112" fill="url(#candle)"/>
   <svg x="132.9" y="98.0" width="246.2" height="320" viewBox="0 0 100 130"><defs><clipPath id="tower"><polygon points="35,102 65,102 60,44 40,44"/></clipPath></defs>
     <polygon points="43,23 43,33 6,26 11,10" fill="#d8b713" opacity="0.82"/>
     <polygon points="57,23 57,33 94,26 89,10" fill="#d8b713" opacity="0.82"/>

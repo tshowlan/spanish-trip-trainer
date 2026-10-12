@@ -1904,3 +1904,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v443 (2026-10-10) — the app icon on a dark ground
 - Tom's pick after four mock rounds (dev/app-icon-options*.html): the dark theme's ground behind the lighthouse (untouched drawing, at the chapter door's proportion), the lantern's gold light centred between the lantern and the tile's middle, dark left at the edges (mock G3). Same icon.svg via the manifest; iOS copies the icon when the app is added, so remove and re-add to see it.
+
+## v444 (2026-10-12) — the app icon: the candle in the corner, nothing behind the lantern
+- Tom: G3's light behind the lighthouse washed the mark out. Round five (dev/app-icon-options-5.html): plain dark grounds and the app's own candle. Pick J1: the dark theme's ground, the lighthouse untouched, the corner light at the app's strength rising from the bottom-left, as on Home.
