@@ -1907,3 +1907,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v444 (2026-10-12) — the app icon: the candle in the corner, nothing behind the lantern
 - Tom: G3's light behind the lighthouse washed the mark out. Round five (dev/app-icon-options-5.html): plain dark grounds and the app's own candle. Pick J1: the dark theme's ground, the lighthouse untouched, the corner light at the app's strength rising from the bottom-left, as on Home.
+
+## v445 (2026-10-12) — the app icon: a silver outline on the lighthouse
+- Tom: J1 still hard to see. Round six (dev/app-icon-options-6.html): outlines (silver, light blue, gold) or a lighter tower. Pick K2: a heavier silver line around the tower, base, gallery and lantern, the beams untouched. Icon only; the lighthouse drawing stays as it is everywhere else.
