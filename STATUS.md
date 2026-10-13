@@ -1913,3 +1913,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v446 (2026-10-12) — the app icon: the outline in gold (K4), to compare with K2
 - Tom trying K4 after K2: the same line in the lantern's gold, thin. Icon only.
+
+## v447 (2026-10-12) — the app icon: the lighthouse at full size (L4)
+- Tom trying the full tile (480 of 512) with K4's gold outline and the corner candle, after the sizes mock (dev/app-icon-options-7.html).
