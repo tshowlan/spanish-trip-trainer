@@ -1928,3 +1928,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v451 (2026-10-12) — the app icon: the two blues swapped (M2)
 - Tom: M3 too dark. Pick M2: a light blue tower with navy stripes, the same two colours as the drawing, the lighter one carrying the shape. No outline, no glow. Size 400, corner candle, dark ground. Icon address v=451.
+
+## v452 (2026-10-12) — the app icon: M2's blues with a wide light behind (N3)
+- Tom's pick from round nine (dev/app-icon-options-9.html): the swapped blues of M2 with M3's shape-hugging gold light made wider. Size 400, corner candle, dark ground. Icon address v=452.
