@@ -1916,3 +1916,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v447 (2026-10-12) — the app icon: the lighthouse at full size (L4)
 - Tom trying the full tile (480 of 512) with K4's gold outline and the corner candle, after the sizes mock (dev/app-icon-options-7.html).
+
+## v448 (2026-10-12) — the app icon settled: L2
+- Tom's pick after the sizes: the lighthouse at 400 of 512 (the old cream icon's size), the gold outline, the corner candle, the dark theme's ground.
