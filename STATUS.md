@@ -1919,3 +1919,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v448 (2026-10-12) — the app icon settled: L2
 - Tom's pick after the sizes: the lighthouse at 400 of 512 (the old cream icon's size), the gold outline, the corner candle, the dark theme's ground.
+
+## v449 (2026-10-12) — the icon's address carries its version
+- Tom re-added the app and still saw L4: Safari keeps icon.svg in its own cache when the address has not changed. The manifest now points at icon.svg?v=448, a new address on every icon change, so the add-to-home-screen fetch is fresh.
