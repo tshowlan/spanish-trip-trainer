@@ -1922,3 +1922,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v449 (2026-10-12) — the icon's address carries its version
 - Tom re-added the app and still saw L4: Safari keeps icon.svg in its own cache when the address has not changed. The manifest now points at icon.svg?v=448, a new address on every icon change, so the add-to-home-screen fetch is fresh.
+
+## v450 (2026-10-12) — the app icon: lit from behind, no outline (M3)
+- Tom: the drawn outline made the icon not fit with other apps. Round eight (dev/app-icon-options-8.html): lifts without a line. Pick M3: a soft gold light hugging the lighthouse's shape from behind (a blurred silhouette), the way the splash tints the mark with its own light. Size 400, corner candle, dark ground. Icon address bumped to v=450.
