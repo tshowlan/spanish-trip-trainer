@@ -1,17 +1,17 @@
-<!-- the app icon (Tom 10/12, mock M3): the dark theme's ground, the candle from the bottom-left corner, the lighthouse at 400 of 512 lit from behind by its own light (a blurred gold silhouette; no outline). Icon only; the drawing is untouched elsewhere. -->
+<!-- the app icon (Tom 10/12, mock M2): the dark theme's ground, the candle from the bottom-left corner, the lighthouse at 400 of 512 with its two blues swapped (light blue tower, navy stripes). No outline, no glow. Icon only; the drawing is untouched elsewhere. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#05060d"/><defs><radialGradient id="candle" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1" gradientTransform="translate(0 512) scale(560 620)">
       <stop offset="0" stop-color="#c96a2b" stop-opacity="0.32"/><stop offset=".4" stop-color="#e6c62a" stop-opacity="0.120"/><stop offset=".68" stop-color="#e6c62a" stop-opacity="0.051"/><stop offset=".94" stop-color="#e6c62a" stop-opacity="0"/></radialGradient></defs>
     <rect width="512" height="512" rx="112" fill="url(#candle)"/>
-  <svg x="102.2" y="58.0" width="307.7" height="400" viewBox="0 0 100 130"><defs><filter id="blur" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3.2"/></filter></defs><g filter="url(#blur)" opacity="0.55" fill="#d8b713"><rect x="18" y="110" width="64" height="6"/><rect x="28" y="102" width="44" height="9"/><polygon points="35,102 65,102 60,44 40,44"/><rect x="37" y="39" width="26" height="6"/><rect x="43" y="22" width="14" height="18"/><polygon points="41,22 59,22 50,13"/></g><defs><clipPath id="tower"><polygon points="35,102 65,102 60,44 40,44"/></clipPath></defs>
+  <svg x="102.2" y="58.0" width="307.7" height="400" viewBox="0 0 100 130"><defs><clipPath id="tower"><polygon points="35,102 65,102 60,44 40,44"/></clipPath></defs>
     <polygon points="43,23 43,33 6,26 11,10" fill="#d8b713" opacity="0.82"/>
     <polygon points="57,23 57,33 94,26 89,10" fill="#d8b713" opacity="0.82"/>
-    <rect x="18" y="110" width="64" height="6" fill="#1c275e"/>
-    <rect x="28" y="102" width="44" height="9" fill="#1c275e"/>
-    <polygon points="35,102 65,102 60,44 40,44" fill="#1c275e"/>
-    <rect x="0" y="60" width="100" height="9" fill="#4a7fc1" clip-path="url(#tower)"/>
-    <rect x="0" y="79" width="100" height="9" fill="#4a7fc1" clip-path="url(#tower)"/>
-    <rect x="37" y="39" width="26" height="6" fill="#1c275e"/>
-    <rect x="37" y="44" width="26" height="2" fill="#4a7fc1"/>
-    <rect x="43" y="22" width="14" height="18" fill="#1c275e"/>
+    <rect x="18" y="110" width="64" height="6" fill="#4a7fc1"/>
+    <rect x="28" y="102" width="44" height="9" fill="#4a7fc1"/>
+    <polygon points="35,102 65,102 60,44 40,44" fill="#4a7fc1"/>
+    <rect x="0" y="60" width="100" height="9" fill="#1c275e" clip-path="url(#tower)"/>
+    <rect x="0" y="79" width="100" height="9" fill="#1c275e" clip-path="url(#tower)"/>
+    <rect x="37" y="39" width="26" height="6" fill="#4a7fc1"/>
+    <rect x="37" y="44" width="26" height="2" fill="#1c275e"/>
+    <rect x="43" y="22" width="14" height="18" fill="#4a7fc1"/>
     <rect x="44.5" y="23.5" width="11" height="15" fill="#d8b713"/>
-    <polygon points="41,22 59,22 50,13" fill="#1c275e"/></svg></svg>
+    <polygon points="41,22 59,22 50,13" fill="#4a7fc1"/></svg></svg>

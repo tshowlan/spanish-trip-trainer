@@ -1925,3 +1925,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v450 (2026-10-12) — the app icon: lit from behind, no outline (M3)
 - Tom: the drawn outline made the icon not fit with other apps. Round eight (dev/app-icon-options-8.html): lifts without a line. Pick M3: a soft gold light hugging the lighthouse's shape from behind (a blurred silhouette), the way the splash tints the mark with its own light. Size 400, corner candle, dark ground. Icon address bumped to v=450.
+
+## v451 (2026-10-12) — the app icon: the two blues swapped (M2)
+- Tom: M3 too dark. Pick M2: a light blue tower with navy stripes, the same two colours as the drawing, the lighter one carrying the shape. No outline, no glow. Size 400, corner candle, dark ground. Icon address v=451.
