@@ -1934,3 +1934,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v453 (2026-10-16) — the app icon settled: P2
 - Tom's pick after eleven rounds (dev/app-icon-options*.html): the dark theme's ground, the corner candle at the app's strength, the lighthouse at 400 of 512 with its two blues swapped (light blue tower, navy stripes), the beams and lantern pane in the dark theme's gold at full strength (the drawing's 82% beams read muted on dark). No outline, no glow behind. Icon only; the lighthouse drawing is untouched everywhere else. Icon address v=453.
+
+## v454 (2026-10-16) — the app icon: the ground a step lighter (Q1)
+- Tom: P2's ground too dark. Round twelve (dev/app-icon-options-12.html). Pick Q1: a dark navy ground (#0c1020), everything else as P2. Icon address v=454.
