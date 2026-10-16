@@ -1931,3 +1931,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v452 (2026-10-12) — the app icon: M2's blues with a wide light behind (N3)
 - Tom's pick from round nine (dev/app-icon-options-9.html): the swapped blues of M2 with M3's shape-hugging gold light made wider. Size 400, corner candle, dark ground. Icon address v=452.
+
+## v453 (2026-10-16) — the app icon settled: P2
+- Tom's pick after eleven rounds (dev/app-icon-options*.html): the dark theme's ground, the corner candle at the app's strength, the lighthouse at 400 of 512 with its two blues swapped (light blue tower, navy stripes), the beams and lantern pane in the dark theme's gold at full strength (the drawing's 82% beams read muted on dark). No outline, no glow behind. Icon only; the lighthouse drawing is untouched everywhere else. Icon address v=453.
