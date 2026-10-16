@@ -1937,3 +1937,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v454 (2026-10-16) — the app icon: the ground a step lighter (Q1)
 - Tom: P2's ground too dark. Round twelve (dev/app-icon-options-12.html). Pick Q1: a dark navy ground (#0c1020), everything else as P2. Icon address v=454.
+
+## v455 (2026-10-16) — the app icon SETTLED: P2
+- Tom, after Q1: back to P2 (the dark theme's ground #05060d, the corner candle, the lighthouse at 400 with swapped blues, full-strength gold beams and pane). The icon rounds close here; the twelve mocks stay in dev/ as history. Icon address v=455.
