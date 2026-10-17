@@ -1940,3 +1940,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v455 (2026-10-16) — the app icon SETTLED: P2
 - Tom, after Q1: back to P2 (the dark theme's ground #05060d, the corner candle, the lighthouse at 400 with swapped blues, full-strength gold beams and pane). The icon rounds close here; the twelve mocks stay in dev/ as history. Icon address v=455.
+
+## v456 (2026-10-17) — the result rows' drop after their fade
+- Tom's recordings 10-45-03 / 10-45-48 (Which one do you say?): after the right answer, the meaning line and "Tap to hear it again" appear, then shift down. Measured: each row sits 1pt high during its 300ms fade and drops 2-3 device px on the frame the fade ends (the meaning first, the audio row 300ms later). The end-of-fade layer hand-back, as the Home rows on 10/2. Cure: `will-change: opacity` on `.res-grown .res-en / .res-audio / .res-note`, the layer from the start. Applies to every exercise's result block, which is why Tom saw it in several.

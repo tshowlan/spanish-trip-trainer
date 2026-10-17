@@ -1463,6 +1463,11 @@ body.in-runner .footer { background: transparent; border-top: none; }
 .res-grown { opacity: 0; transform: translateY(5px); transition: opacity 300ms cubic-bezier(.2,.7,.3,1), transform 300ms cubic-bezier(.2,.7,.3,1); margin-top: 16px; }
 .res-grown.show { opacity: 1; transform: none; }
 .res-grown .res-en, .res-grown .res-audio, .res-grown .res-note { opacity: 0; transition: opacity 300ms cubic-bezier(.2,.7,.3,1); }
+/* THE DROP AFTER THE FADE (Tom's recordings 10/17 10-45-03 and 10-45-48, measured frame by frame): the meaning line and the Tap-to-hear row
+   each sit 1pt high while they fade in and drop 2-3 device px on the exact frame their own 300ms fade ends (the row first, the audio 300ms
+   later). iPhone draws a fading element on a layer of its own and hands it back to the page when the fade is done; the hand-back lands a
+   pixel lower. Same cure as the Home rows (10/2): the layer exists from the start, nothing is handed over. */
+.res-grown .res-en, .res-grown .res-audio, .res-grown .res-note { will-change: opacity; }
 .res-grown.show .res-en { opacity: 1; transition-delay: 150ms; }
 .res-grown.show .res-audio { opacity: 1; transition-delay: 300ms; }
 .res-grown.show .res-note { opacity: 1; transition-delay: 450ms; }
