@@ -1534,10 +1534,11 @@ body.in-runner .footer { background: transparent; border-top: none; }
 .pcard.matched.en { color: var(--text-dim); font-weight: 400; font-size: 14px; }
 .pcard.matched.audio { cursor: pointer; }                    /* replay stays available */
 .pcard.matched .pc-glyph { color: var(--text-dim); }
-.pcard .es-word { position: relative; padding-bottom: 3px; }
-.pcard.matched .es-word::after, .pcard.settled .es-word::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0;
-  height: 2px; background: var(--green); border-radius: 2px; transform: scaleX(0); transform-origin: left center;
-  animation: res-sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+.pcard .es-word { position: relative; }
+/* a matched tile shows it is right on its BOTTOM EDGE, like a pressed key's edge (Tom 10/19, mock dev/pairs-correct-options.html C): the
+   green line that used to sit under the words read oddly on two-line phrases and never existed on the sound tiles. The edge fades in on
+   the tile's own border-color transition; the meaning tile dims as before. */
+.pcard.es.matched, .pcard.audio.matched, .pcard.settled { border-bottom: 3px solid var(--green); }
 .pcard.playing .es-word { color: var(--accent-2); }          /* es gold while playing (chunk rules) */
 .pcard.miss { opacity: 0.45; }                               /* mismatch: brief dim — no red, no shake */
 .pcard.fade { opacity: 0.35; }

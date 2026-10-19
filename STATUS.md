@@ -1943,3 +1943,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v456 (2026-10-17) — the result rows' drop after their fade
 - Tom's recordings 10-45-03 / 10-45-48 (Which one do you say?): after the right answer, the meaning line and "Tap to hear it again" appear, then shift down. Measured: each row sits 1pt high during its 300ms fade and drops 2-3 device px on the frame the fade ends (the meaning first, the audio row 300ms later). The end-of-fade layer hand-back, as the Home rows on 10/2. Cure: `will-change: opacity` on `.res-grown .res-en / .res-audio / .res-note`, the layer from the start. Applies to every exercise's result block, which is why Tom saw it in several.
+
+## v457 (2026-10-19) — the board: a matched tile shows it on its bottom edge
+- Tom: the green line under the Spanish read oddly (under the last line only on two-line phrases). Mocks dev/pairs-correct-options.html and -2.html (eight ways; C and D on chapter 1's boards). Pick C: the matched Spanish or sound tile's bottom edge turns green, 3px, like a pressed key's edge; the meaning tile dims as before. One rule, every board (text, sound, numerals, reverse, the settled reveal). The sound tiles, which had no mark at all, now carry one.
