@@ -1519,7 +1519,10 @@ body.in-runner .footer { background: transparent; border-top: none; }
   display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center;
   font-family: var(--font-display); font-size: 15.5px; font-weight: 500; color: var(--text);
   transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition), opacity var(--transition); }
-.pcard:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
+/* the press is a CLASS, not :active (Tom's recording 10/19 15-17, measured): iPhone kept :active on the tapped tile after the finger
+   lifted, so a selected tile sat 2px sunk until the NEXT touch, and popped back up on the very frame the match landed. The class is
+   set on pointerdown and cleared on pointerup / pointercancel (lesson.js), so the tile rises when the finger does. */
+.pcard.press { transform: translateY(2px); box-shadow: var(--shadow-press); }
 .pcard.sel { border-color: var(--secondary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--secondary) 15%, transparent), var(--shadow); }
 .pc-glyph { color: var(--accent-2); display: flex; }   /* flat card carries the GOLD glyph (§3.7) */
 .pbars { display: flex; align-items: flex-end; gap: 2px; height: 12px; }

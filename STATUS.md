@@ -1946,3 +1946,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v457 (2026-10-19) — the board: a matched tile shows it on its bottom edge
 - Tom: the green line under the Spanish read oddly (under the last line only on two-line phrases). Mocks dev/pairs-correct-options.html and -2.html (eight ways; C and D on chapter 1's boards). Pick C: the matched Spanish or sound tile's bottom edge turns green, 3px, like a pressed key's edge; the meaning tile dims as before. One rule, every board (text, sound, numerals, reverse, the settled reveal). The sound tiles, which had no mark at all, now carry one.
+
+## v458 (2026-10-19) — the board tile's press releases with the finger
+- Tom's recording 15-17-13 ("an odd shake when selected, and when the right one is selected"), measured: the tapped tile sinks 2pt on the tap and STAYS sunk the whole time it is selected, then pops up on the exact frame the second tile is touched (the match). iPhone keeps :active on a tapped tile until the next touch. The press is now a class set on pointerdown and cleared on pointerup / pointercancel, so the tile rises when the finger lifts. The v457 edge moves nothing (measured: the words' position is identical with and without it).

@@ -4305,3 +4305,8 @@ function finishReview() {
   const total = run.qs.length, correct = Math.max(0, total - run.wrong);
   _sessionEndBookkeeping({ at: now, lessonId: "__review__", category: "Review", phrases: total, correct });
 }
+
+/* the board tiles' press (Tom 10/19): a class set while the finger is down, cleared the moment it lifts or the touch is cancelled.
+   iPhone's own :active stuck to a tapped tile until the next touch (the tile sat sunk while selected and popped up at the match). */
+document.addEventListener("pointerdown", e => { const c = e.target.closest && e.target.closest(".pcard"); if (c) c.classList.add("press"); }, { passive: true });
+["pointerup", "pointercancel"].forEach(ev => document.addEventListener(ev, () => document.querySelectorAll(".pcard.press").forEach(c => c.classList.remove("press")), { passive: true }));
