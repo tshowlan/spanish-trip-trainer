@@ -39,7 +39,7 @@
 - **Progress tab:** trend charts, coverage by topic. Untouched since July.
 
 ## Staged, awaiting Tom's play
-- Nothing. Chapter one shipped v344. Next increments, one at a time: The asks (chapter 2's chunk session), the hear and read emphases inside Words you'll hear and Signs, the Numbermachine, chat's lines for chapters 2-4. UPDATE 10/19 (v459): Part 1 is LIVE. Part 2 is STAGED (asks-2): Necesito, ¿Hay?, ¿Tiene?, ¿A qué hora?, Tengo alergia a, the same shape; Which one do you say? shows four of the five.
+- **STAGED now (10/19, v459):** The asks · Part 2 (asks-2: Necesito, ¿Hay?, ¿Tiene?, ¿A qué hora?, Tengo alergia a; Part 1's shape; Which one do you say? shows four of the five), Sounds you'll say (sounds-1), the three chapter-1 words (ch1-three-words). LIVE 10/19: The asks · Part 1 (v459). Next, one at a time: the reply sets, the rooms refit, Numbermachine.
 
 ## Rulings on hold (Tom reading)
 - The ask grammar (one shape for every exercise: context → ask with four role labels → stage).
