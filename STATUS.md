@@ -1956,3 +1956,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v460 (2026-10-19) — the board: both tiles of a matched pair wear the green edge
 - Tom: the right column too. One rule now: `.pcard.matched` (and settled) carries the 3px green bottom edge; the meaning tile still dims.
+
+## v461 (2026-10-19) — The asks · Part 2 amended: four, all askable
+- Tom, on Code's recommendation: Tengo alergia a is a statement (moves to the rooms refit, intake-keyed); ¿A qué hora? waits for Numbermachine; ¿Puedo? (¿Puedo pagar con tarjeta?) takes the seat. Part 2 = Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?. Chapter 2 stays "eight ways to ask". Ledger carries the ruling change and the ¿Puedo? reply-set draft for chat.

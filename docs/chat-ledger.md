@@ -163,3 +163,11 @@ The hear sessions' cards no longer hold their words back while the line plays (t
 - **Flag:** abre (in the ¿A qué hora? context) is a chapter-2 filler card not yet met; the hint carries it. If you would rather the context use only met words, say which (¿A qué hora es? reads thin).
 - **Shape note:** with five asks, Which one do you say? shows the ask plus three of the others (four answers), never five.
 - The reply sets (hear the reply, pick what it meant) are the NEXT build after Part 2's play; the wording of 9/25 stands unless you change it.
+
+## 2026-10-19 — The asks · Part 2 amended (v461): four, all askable
+- **Ruling changed at Tom's direction (Code's recommendation, Tom aligned):** Part 2 = Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?. Three changes to the 9/25 list:
+  - **Tengo alergia a ___ leaves the asks** (it is a statement, not an ask; chapter 2's line is "eight ways to ask"). It moves to the ROOMS REFIT as a weld keyed to the intake (the slot fills with the learner's own allergy words, already met in Table words). The old injected allergy/dietary lessons retire then, as ruled.
+  - **¿A qué hora ___? waits for Numbermachine** (its replies are all times: A las ocho). It keeps its room (Finding out · 2) and its reply set.
+  - **¿Puedo ___? takes the seat** (Can I...?: ¿Puedo pagar con tarjeta?, the pack's own phrase). Gloss puedo = can I. Reply set wanted from you: Code's draft is Sí, claro · Claro · No, lo siento (lo siento is met from them, per your 9/25 note).
+- Code's drafts for ¿Puedo?: context "¿Puedo pagar con tarjeta?" / "Can I pay by card?"; hint Can I = puedo, pay = pagar, by card = con tarjeta; sits: At the counter "You have no cash on you." / In a shop "The jacket looks right and you want it on before you buy."
+- No dedicated allergies section in the new flow: the words live in chapter 1's Table words (intake-keyed), the sentence in the rooms refit.
