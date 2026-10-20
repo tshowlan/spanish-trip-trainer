@@ -1953,3 +1953,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v459 (2026-10-19) — The asks · Part 1 live; Part 2 staged (asks-2)
 - Part 1 shipped on Tom's word (the "asks-1" key leaves the STAGED map; the data's staged tags stay and read live).
 - Part 2 (`asks-2`, Test Lab switch): Necesito, ¿Hay?, ¿Tiene?, ¿A qué hora?, Tengo alergia a; the Part 1 shape (five cards, the words board, Which one do you say? twice per ask, build the sentence, the listening board; 22 steps). Which one shows four answers at most (the ask plus three others). Contexts/hints/situations are Code's drafts, in the ledger for chat; abre flagged as not yet met.
+
+## v460 (2026-10-19) — the board: both tiles of a matched pair wear the green edge
+- Tom: the right column too. One rule now: `.pcard.matched` (and settled) carries the 3px green bottom edge; the meaning tile still dims.
