@@ -84,7 +84,50 @@ function _lessonRow(l, isNext) {
   row.addEventListener("click", () => { window._lessonFrom = "learn"; window._learnScroll = window.scrollY || 0; enterWith(row, () => startLesson(l)); });   // remember where the list was, so the row is back in its place on return
   const pk = row.querySelector(".pk-zone");
   if (pk) { row.classList.add("has-peek"); pk.addEventListener("click", e => { e.stopPropagation(); _togglePeek(row, l); }); }
+  if (isStaged("learn-reset-swipe")) _swipeReset(row, l);
   return row;
+}
+/* SWIPE TO RESET (Tom 10/19, STAGED "learn-reset-swipe"): drag a row to the left and a Reset action appears behind it; tap it and the
+   session is as if never seen (the lesson mark gone, every one of its words back to zero exposures). A quick way to replay a session
+   from the top. The swipe swallows the row's own tap; any tap elsewhere closes an open row. */
+function _swipeReset(row, l) {
+  const OPEN = 96;
+  const act = el(`<button class="lesson-reset" aria-label="Reset this session">Reset</button>`);
+  row.appendChild(act);
+  let x0 = null, y0 = null, dx = 0, dragging = false, open = false;
+  const setX = v => { row.style.transform = v ? `translateX(${v}px)` : ""; };
+  const close = () => { open = false; row.classList.remove("swiped"); setX(0); };
+  row.addEventListener("pointerdown", e => { if (e.target === act) return; x0 = e.clientX; y0 = e.clientY; dx = 0; dragging = false; });
+  row.addEventListener("pointermove", e => {
+    if (x0 == null) return;
+    const mx = e.clientX - x0, my = e.clientY - y0;
+    if (!dragging) { if (Math.abs(mx) < 8 || Math.abs(my) > Math.abs(mx)) return; dragging = true; row.classList.add("swiping"); try { row.setPointerCapture(e.pointerId); } catch (_) {} }
+    dx = Math.max(-OPEN - 24, Math.min(open ? OPEN : 0, mx + (open ? -OPEN : 0)));
+    setX(dx);
+    row.classList.toggle("swiped", dx < -OPEN / 2);
+  });
+  const end = () => {
+    if (x0 == null) return;
+    const was = dragging; x0 = y0 = null; row.classList.remove("swiping");
+    if (!was) return;
+    if (dx < -OPEN / 2) { open = true; row.classList.add("swiped"); setX(-OPEN); } else close();
+    const swallow = e => { if (e.target === act) return; e.stopPropagation(); e.preventDefault(); row.removeEventListener("click", swallow, true); };   // the Reset tap itself is never swallowed
+    row.addEventListener("click", swallow, true);                  // the drag was not a tap
+    setTimeout(() => row.removeEventListener("click", swallow, true), 400);
+  };
+  row.addEventListener("pointerup", end); row.addEventListener("pointercancel", end);
+  document.addEventListener("pointerdown", e => { if (open && !row.contains(e.target)) close(); });
+  act.addEventListener("click", e => {
+    e.stopPropagation();
+    delete state.lessons[l.id];
+    const items = (l.items || []).concat((l.machines || []).flatMap(m => m.items || []));
+    items.forEach(it => { const id = itemId(it); if (id && state.learn) delete state.learn[id]; });
+    if (state.parkedEar && state.parkedEar.id === l.id) delete state.parkedEar;
+    save();
+    if (typeof cloudSync === "function") cloudSync().catch(err => console.warn("sync after reset", err));
+    if (typeof toast === "function") toast(`${l.title} reset`);
+    window._learnScroll = window.scrollY || 0; renderLearn();
+  });
 }
 
 // passes render as chapters (learning spec §1b.2); Stage 0 is Chapter 0 once content exists.

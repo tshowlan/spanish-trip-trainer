@@ -388,6 +388,15 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   transition: transform .08s;
 }
 .lesson:active { transform: translateY(2px); }
+/* swipe to reset (staged "learn-reset-swipe"): the row slides left over its own Reset action */
+.lesson { position: relative; }
+.lesson.swiping { transition: none; }
+.lesson:not(.swiping) { transition: transform 200ms cubic-bezier(.2,.7,.3,1); }
+.lesson .lesson-reset { position: absolute; left: 100%; top: 2px; bottom: 2px; width: 90px; margin-left: 6px;   /* 6 + 90 = the 96px the row slides, so the action ends flush with the list's edge */ border: none; border-radius: var(--radius);
+  background: var(--red); color: #fff; font-family: var(--font-display); font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; cursor: pointer; }
+.lesson.swiped .lesson-reset, .lesson.swiping .lesson-reset { opacity: 1; }
+.lesson.swiped .lesson-reset { pointer-events: auto; }
+.chapter { overflow-x: clip; }
 .lesson .badge {
   width: 48px; height: 48px; border-radius: 50%;
   display: grid; place-items: center; font-size: 22px; flex: none;
