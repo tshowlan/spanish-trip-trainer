@@ -151,3 +151,15 @@ The hear sessions' cards no longer hold their words back while the line plays (t
 
 ## 2026-10-19 — the board's matched mark (v457)
 - **Ruling changed at Tom's direction:** a matched pair no longer wears the green line under the Spanish (the sweep under the words). The matched tile's BOTTOM EDGE turns green (3px, a pressed key's edge), on text tiles and sound tiles alike; the meaning tile dims as before. Any artifact showing the underline on a board (design/correct-feedback.html's pairs state, if it has one) is superseded.
+
+## 2026-10-19 — The asks · Part 1 SHIPPED (v459); Part 2 STAGED (asks-2): a writing job
+- **Part 1 live** on Tom's word ("looks great"), with the B2 situations and the hairline hints as played.
+- **Part 2 built, staged, Code's drafts for your pass** (curriculum.js asks-2). Five asks as ruled 9/25 (¿Tiene? the ninth, beside ¿Hay?):
+  - Necesito ___ · "Necesito un taxi." · sits: At the hotel desk "It's late and the metro has stopped." / On the street "Your phone is dead and the hotel is far."
+  - ¿Hay ___? · "¿Hay una farmacia cerca?" · sits: On the street "You need plasters and no shop is in sight." / At the table "The bread basket is empty."
+  - ¿Tiene ___? (gloss tiene = you have) · "¿Tiene café con leche?" · sits from your ruling: At the pharmacy "You're at the counter with something to ask for." / In a shop "What you want might be in the back."
+  - ¿A qué hora ___? (gloss a qué hora = what time, one piece) · "¿A qué hora abre?" · sits: At the hotel desk "Breakfast, and you don't want to miss it." / At the shop door "It's closed and you'll come back."
+  - Tengo alergia a ___ (glosses tengo = I have, alergia = allergy, a = to) · "Tengo alergia al marisco." · sits: At the table "The paella has shellfish and you can't eat it." / At the bakery "The pastry might have nuts."
+- **Flag:** abre (in the ¿A qué hora? context) is a chapter-2 filler card not yet met; the hint carries it. If you would rather the context use only met words, say which (¿A qué hora es? reads thin).
+- **Shape note:** with five asks, Which one do you say? shows the ask plus three of the others (four answers), never five.
+- The reply sets (hear the reply, pick what it meant) are the NEXT build after Part 2's play; the wording of 9/25 stands unless you change it.

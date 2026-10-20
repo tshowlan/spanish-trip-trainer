@@ -355,7 +355,8 @@ function renderAskWhich(q) {
   top.appendChild(el(`<div class="act-sit need">${q.sit}</div>`));
   body.appendChild(top);
   q.grownBelow = true; q.esOnStage = true;
-  const opts = shuffle((q.pool && q.pool.length ? q.pool : run.lesson.items).slice());
+  const all = (q.pool && q.pool.length ? q.pool : run.lesson.items).slice();
+  const opts = shuffle(all.length > 4 ? [item].concat(sample(all.filter(x => x !== item), 3)) : all);   // four answers at most (a five-ask session, Part 2): the ask plus three of the others
   const answers = el(`<div class="answers at63"></div>`);
   const choices = _signChoices(opts.map(o => o.es), opts.indexOf(item), item, ok => { if (ok) _hairlineWords(choices.children[opts.indexOf(item)], item); });
   answers.appendChild(choices);

@@ -926,7 +926,26 @@ const CURRICULUM = {
           sits: [["In the restaurant", "You need the bathroom."], ["On the street", "You can't find the metro."]] },
         { es: "\u00bfCu\u00e1nto cuesta ___?", en: "How much is ___?", tags: ["asks"], words: [["Cu\u00e1nto", "how much"], ["cuesta", "it costs"]], contextEs: "\u00bfCu\u00e1nto cuesta el taxi?", contextEn: "How much is the taxi?",
           hint: [["How much", "cu\u00e1nto"], ["is", "cuesta"], ["the taxi?", "el taxi"]],
-          sits: [["In a shop", "The scarf has no price tag."], ["At the ticket window", "You need the price before you buy."]] } ] }
+          sits: [["In a shop", "The scarf has no price tag."], ["At the ticket window", "You need the price before you buy."]] } ] },
+      /* THE ASKS · PART 2 (STAGED "asks-2"; chat's 9/25 ruling: five, with ¿Tiene? as the ninth ask beside ¿Hay?). Contexts, hints and
+         situations are Code's drafts (ledger 10/19) except ¿Tiene?'s situations, which are chat's. abre in the ¿A qué hora? context is one
+         of chapter 2's filler cards, not yet met: the hint carries it until the rooms refit. */
+      { id: "asks-2", staged: "asks-2", topic: "First sentences", title: "The asks · Part 2", line: "Need, is there, do you have, what time, allergic. Five more ways to ask.", items: [
+        { es: "Necesito ___", en: "I need ___", tags: ["asks"], words: [["Necesito", "I need"]], contextEs: "Necesito un taxi.", contextEn: "I need a taxi.",
+          hint: [["I need", "necesito"], ["a taxi.", "un taxi"]],
+          sits: [["At the hotel desk", "It's late and the metro has stopped."], ["On the street", "Your phone is dead and the hotel is far."]] },
+        { es: "¿Hay ___?", en: "Is there ___?", tags: ["asks"], words: [["Hay", "is there"]], contextEs: "¿Hay una farmacia cerca?", contextEn: "Is there a pharmacy nearby?",
+          hint: [["Is there", "hay"], ["a pharmacy", "una farmacia"], ["nearby?", "cerca"]],
+          sits: [["On the street", "You need plasters and no shop is in sight."], ["At the table", "The bread basket is empty."]] },
+        { es: "¿Tiene ___?", en: "Do you have ___?", tags: ["asks"], words: [["Tiene", "you have"]], contextEs: "¿Tiene café con leche?", contextEn: "Do you have coffee with milk?",
+          hint: [["Do you have", "tiene"], ["coffee", "café"], ["with milk?", "con leche"]],
+          sits: [["At the pharmacy", "You're at the counter with something to ask for."], ["In a shop", "What you want might be in the back."]] },
+        { es: "¿A qué hora ___?", en: "What time ___?", tags: ["asks"], words: [["A qué hora", "what time"]], contextEs: "¿A qué hora abre?", contextEn: "What time does it open?",
+          hint: [["What time", "a qué hora"], ["does it open?", "abre"]],
+          sits: [["At the hotel desk", "Breakfast, and you don't want to miss it."], ["At the shop door", "It's closed and you'll come back."]] },
+        { es: "Tengo alergia a ___", en: "I'm allergic to ___", tags: ["asks"], words: [["Tengo", "I have"], ["alergia", "allergy"], ["a", "to"]], contextEs: "Tengo alergia al marisco.", contextEn: "I'm allergic to shellfish.",
+          hint: [["I'm allergic", "tengo alergia"], ["to shellfish.", "al marisco"]],
+          sits: [["At the table", "The paella has shellfish and you can't eat it."], ["At the bakery", "The pastry might have nuts."]] } ] }
     ]
   },
   glueGloss: {
