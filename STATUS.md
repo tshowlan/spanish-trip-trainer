@@ -1965,3 +1965,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v463 (2026-10-19) — Learn tab: swipe a session left to reset it (STAGED `learn-reset-swipe`)
 - Tom: a quick way to make a session never seen. Drag a Learn row left: a red Reset action appears behind it; tap it and the lesson mark goes, every one of its words returns to zero exposures (machine rooms included), a parked ear/speak mark clears, and the list re-renders with the row as new. The drag swallows the row's own tap; a tap anywhere else closes an open row. Staged: Test Lab users only. Verified in the browser (slide, geometry flush with the list, the reset, the re-render).
+
+## v464 (2026-10-19) — Learn tab: the empty strength ring is visible
+- Tom: Words you'll hear had no mark on its row. A started, unfinished session draws the strength ring at zero and its track was `--bg-elevated`, invisible on the dark ground. The track is now `--solid-track` (the progress bar's colour) in both themes.
