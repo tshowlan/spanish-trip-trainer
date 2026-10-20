@@ -931,18 +931,21 @@ const CURRICULUM = {
          is a statement and moves to the rooms refit keyed to the intake; ¿A qué hora? waits for Numbermachine (its replies are all times);
          ¿Puedo? takes the seat. Contexts, hints and situations are Code's drafts (ledger 10/19) except ¿Tiene?'s situations, which are chat's. */
       { id: "asks-2", staged: "asks-2", topic: "First sentences", title: "The asks · Part 2", line: "Need, is there, do you have, can I. Four more ways to ask.", items: [
+        /* the essence test (Tom 10/19): NEED = a real need you cannot do without right now; IS THERE = an open question to the world, whether a
+           thing exists here at all; DO YOU HAVE = a specific thing, asked of the one person who knows or stocks it; CAN I = permission. The
+           lines name the thing (it is the slot); the answer is which frame you reach for, so the situation makes that unmistakable. */
         { es: "Necesito ___", en: "I need ___", tags: ["asks"], words: [["Necesito", "I need"]], contextEs: "Necesito un taxi.", contextEn: "I need a taxi.",
           hint: [["I need", "necesito"], ["a taxi.", "un taxi"]],
-          sits: [["At the hotel desk", "It's late and the metro has stopped."], ["On the street", "Your phone is dead and the hotel is far."]] },
+          sits: [["At the hotel desk", "Someone in your group is sick, and it's getting worse."], ["On the street", "It's 2am. The metro is closed and the hotel is across town."]] },
         { es: "¿Hay ___?", en: "Is there ___?", tags: ["asks"], words: [["Hay", "is there"]], contextEs: "¿Hay una farmacia cerca?", contextEn: "Is there a pharmacy nearby?",
           hint: [["Is there", "hay"], ["a pharmacy", "una farmacia"], ["nearby?", "cerca"]],
-          sits: [["On the street", "You need plasters and no shop is in sight."], ["At the table", "The bread basket is empty."]] },
-        { es: "¿Tiene ___?", en: "Do you have ___?", tags: ["asks"], words: [["Tiene", "you have"]], contextEs: "¿Tiene café con leche?", contextEn: "Do you have coffee with milk?",
-          hint: [["Do you have", "tiene"], ["coffee", "café"], ["with milk?", "con leche"]],
-          sits: [["At the pharmacy", "You're at the counter with something to ask for."], ["In a shop", "What you want might be in the back."]] },
+          sits: [["On the street", "You cut your finger. You need a band-aid and have no idea if there's a pharmacy around here."], ["In a café", "You used all of your data. You want to know if this place has any wifi at all."]] },
+        { es: "¿Tiene ___?", en: "Do you have ___?", tags: ["asks"], words: [["Tiene", "you have"]], contextEs: "¿Tiene cambio?", contextEn: "Do you have change?",
+          hint: [["Do you have", "tiene"], ["change?", "cambio"]],
+          sits: [["In the taxi", "You only have a fifty. Will the driver be able to break it?"], ["At the pharmacy", "You want ibuprofen. The pharmacist knows if it's in stock."]] },
         { es: "¿Puedo ___?", en: "Can I ___?", tags: ["asks"], words: [["Puedo", "can I"]], contextEs: "¿Puedo pagar con tarjeta?", contextEn: "Can I pay by card?",
           hint: [["Can I", "puedo"], ["pay", "pagar"], ["by card?", "con tarjeta"]],
-          sits: [["At the counter", "You have no cash on you."], ["In a shop", "The jacket looks right and you want it on before you buy."]] } ] }
+          sits: [["At the café", "There's one empty table outside and you'd like to take it."], ["In a shop", "The jacket looks right. You'd like to try it on first."]] } ] }
     ]
   },
   glueGloss: {
