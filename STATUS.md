@@ -1968,3 +1968,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v464 (2026-10-19) — Learn tab: the empty strength ring is visible
 - Tom: Words you'll hear had no mark on its row. A started, unfinished session draws the strength ring at zero and its track was `--bg-elevated`, invisible on the dark ground. The track is now `--solid-track` (the progress bar's colour) in both themes.
+
+## v465 (2026-10-20) — the app icon: the corner candle strong and orange (R4)
+- Tom wanted more of Home's bottom-left orange on the icon. Round thirteen (dev/app-icon-options-13.html). Pick R4: the candle at two thirds strength, orange carrying past the middle before the gold, reaching far. Everything else as P2. Icon address v=465.
