@@ -1974,3 +1974,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v466 (2026-10-20) — the app icon: the corner candle strong and quick to fade (S1)
 - Tom, after R4: stronger at the corner but dissipating quickly. Round fourteen (dev/app-icon-options-14.html). Pick S1: P2's reach, the corner at twice the strength, a steep falloff. Icon address v=466.
+
+## v467 (2026-10-20) — the app icon: the light from behind the lantern (U5)
+- Tom, via T2 (the source at the top edge): the source moved to the lantern itself, strong and quick to fade, gone before the base. Round sixteen (dev/app-icon-options-16.html). Icon address v=467.
