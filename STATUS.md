@@ -1977,3 +1977,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v467 (2026-10-20) — the app icon: the light from behind the lantern (U5)
 - Tom, via T2 (the source at the top edge): the source moved to the lantern itself, strong and quick to fade, gone before the base. Round sixteen (dev/app-icon-options-16.html). Icon address v=467.
+
+## v468 (2026-10-20) — the app icon: U4 (the lantern's light with the longer reach)
+- Tom trying U4 after U5: the same light from behind the lantern, reaching further (rx 460 ry 520, a .8). Icon address v=468.
