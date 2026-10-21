@@ -1986,3 +1986,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v470 (2026-10-20) — Learn rows: the strength ring only once a session is done
 - Tom, after v464: the empty ring on Words you'll hear still read as a missing graphic. A started, unfinished session now keeps the caret; the ring appears once the session is done.
+
+## v471 (2026-10-20) — v470 withdrawn: the ring from the first play again
+- Tom's "nevermind" arrived as v470 went out. The row shows the strength ring from the first play (visible empty track, v464); the caret only before any play.
