@@ -1980,3 +1980,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v468 (2026-10-20) — the app icon: U4 (the lantern's light with the longer reach)
 - Tom trying U4 after U5: the same light from behind the lantern, reaching further (rx 460 ry 520, a .8). Icon address v=468.
+
+## v469 (2026-10-20) — the app icon SETTLED on U5
+- Tom, after U4: back to U5 (the light from behind the lantern, strong and quick to fade, gone before the base). The icon rounds close here (sixteen mocks in dev/app-icon-options*.html). Icon address v=469.

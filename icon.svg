@@ -1,6 +1,6 @@
-<!-- the app icon (Tom 10/20, mock U4): the light from behind the lantern itself, strong and quick to fade. Dark ground, the lighthouse at 400 of 512 with swapped blues and full gold beams. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#05060d"/><defs><radialGradient id="candle" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1" gradientTransform="translate(256 153.3846153846154) scale(460 520)">
-      <stop offset="0" stop-color="#c96a2b" stop-opacity="0.8"/><stop offset=".22" stop-color="#cf7430" stop-opacity="0.440"/><stop offset=".48" stop-color="#e0952b" stop-opacity="0.144"/><stop offset=".72" stop-color="#e6c62a" stop-opacity="0.032"/><stop offset=".9" stop-color="#e6c62a" stop-opacity="0"/></radialGradient></defs>
+<!-- the app icon (Tom 10/20, mock U5): the light from behind the lantern itself, strong and quick to fade, gone before the tower's base. Dark ground, the lighthouse at 400 of 512 with swapped blues and full gold beams. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#05060d"/><defs><radialGradient id="candle" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1" gradientTransform="translate(256 153.3846153846154) scale(360 400)">
+      <stop offset="0" stop-color="#c96a2b" stop-opacity="0.85"/><stop offset=".22" stop-color="#cf7430" stop-opacity="0.468"/><stop offset=".48" stop-color="#e0952b" stop-opacity="0.153"/><stop offset=".72" stop-color="#e6c62a" stop-opacity="0.034"/><stop offset=".9" stop-color="#e6c62a" stop-opacity="0"/></radialGradient></defs>
     <rect width="512" height="512" rx="112" fill="url(#candle)"/>
   <svg x="102.2" y="58.0" width="307.7" height="400" viewBox="0 0 100 130"><defs><clipPath id="tower"><polygon points="35,102 65,102 60,44 40,44"/></clipPath></defs>
     <polygon points="43,23 43,33 6,26 11,10" fill="#e6c62a" opacity="1"/>
