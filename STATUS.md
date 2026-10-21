@@ -1996,3 +1996,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v473 (2026-10-20) — the tappable hairline is gold before the tap (mock B)
 - Tom: the grey line under a Which-one answer's word did not read as tappable. Every tappable hairline (`.hl`: the Which-one answer's glossed words, the Key sound card's example words) is now gold from the start, brighter and thicker when open. The Build-the-sentence hint lines (not tappable) stay grey. Mock dev/hairline-gold-options.html.
+
+## v474 (2026-10-20) — the situation in review (STAGED `ask-review`) and a bank of six situations per ask
+- Tom's direction: chapter 2 stays eight frames; the skill of reaching for the right ask is built in review. With the switch on, a due ask is served as "Which one do you say?" with a situation from its bank (the session used the first two; review starts on the third and rotates), the other answers drawn from the asks the learner has met, then its sentence (the asks' build step, now a shared helper). Six situations per ask in curriculum.js (Code's drafts, in the ledger for chat). Verified in the browser: rotation, the met pool, four answers.

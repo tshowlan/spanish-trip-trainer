@@ -329,17 +329,34 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
 /* THE ASKS (STAGED "asks-1"; Tom + chat 9/25, confirmed 10/3): the chapter-1 kit shape for a frame and a slot. Meet the four (cards, the
    board), then per ask: which one do you say (situation 1) · build its sentence from met words · which one do you say (situation 2), the
    three passes interleaved so no ask repeats back to back; the listening board closes. The reveal carries the word glosses. */
+/* the asks' build-the-sentence step, shared by the session and the review rung (one shape, one place) */
+function _askBuild(it, pool) {
+  const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "").toLowerCase()).filter(Boolean);
+  const tiles = tilesOf(it.contextEs);
+  const others = pool.filter(x => x !== it).flatMap(x => tilesOf(x.contextEs || "")).filter(w => w && !tiles.includes(w));
+  return { type: "weld", item: it, pool, target: it.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: it.contextEn, cueRole: "Build the sentence", cueMeaning: it.contextEn, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint };
+}
+/* THE SITUATION IN REVIEW (Tom 10/20, STAGED "ask-review"): when an ask comes up for practice it is met the way it is used, a
+   situation and "Which one do you say?", never a translation. The bank rotates (a pointer on the item's record), the other answers are
+   the asks the learner has met (padded from the ask's own session while few are met), then its sentence is built. */
+function _askReviewForms(it, st) {
+  const k = (2 + ((st && st.sitK) || 0)) % it.sits.length;   // the session met the first two; review starts on the third and walks the bank
+  if (st) st.sitK = ((st && st.sitK) || 0) + 1;
+  const all = (typeof DECK !== "undefined" && DECK ? DECK.stages.flatMap(x => x.lessons) : []).filter(l => l.asks).flatMap(l => l.items || []).filter(x => x.sits && x.sits.length);
+  const met = all.filter(x => x !== it && (learnPeek(x) || {}).exposures >= 1);
+  const own = all.filter(x => x !== it && !met.includes(x) && (DECK.stages.flatMap(y => y.lessons).find(l => (l.items || []).includes(it)) || { items: [] }).items.includes(x));
+  const pool = [it].concat(met.length >= 3 ? met : met.concat(own).slice(0, Math.max(3, met.length)));
+  const forms = [{ type: "ask_which", item: it, pool, place: it.sits[k][0], sit: it.sits[k][1], arc: true }];
+  if (it.contextEs) forms.push(_askBuild(it, pool));
+  return forms;
+}
 function composeAsks(lesson, newItems) {
   const pool = lesson.items || [], qs = [];
   (newItems.length ? newItems : []).forEach(it => qs.push({ type: "present", item: it, arc: true }));
   if (newItems.length && pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });
   const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
   const which = k => shuffle(pool.filter(it => (it.sits || [])[k])).map(it => ({ type: "ask_which", item: it, pool, place: it.sits[k][0], sit: it.sits[k][1], arc: true }));
-  const build = shuffle(pool.filter(it => it.contextEs)).map(it => {
-    const tiles = tilesOf(it.contextEs);
-    const others = pool.filter(x => x !== it).flatMap(x => tilesOf(x.contextEs || "")).filter(w => w && !tiles.includes(w));
-    return { type: "weld", item: it, pool, target: it.contextEs, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: it.contextEn, cueRole: "Build the sentence", cueMeaning: it.contextEn, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint };
-  });
+  const build = shuffle(pool.filter(it => it.contextEs)).map(it => _askBuild(it, pool));
   const add = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };   // no ask twice in a row across a seam
   add(which(0)); add(build); add(which(1));
   if (pool.length >= 3) qs.push({ type: "pairs", items: pool.slice(), arc: true, encoreFirst: !isStaged("pairs-chain"), lap: true });   // the final pass: hear them all
@@ -837,6 +854,7 @@ function _practicePick(pool) {
   return cands.slice(0, Math.min(8, cands.length));
 }
 function _practiceForms(it, st, opts) {
+  if (it.sits && it.sits.length && isStaged("ask-review")) return _askReviewForms(it, st);   // an ask is reviewed as a situation, never a translation
   const strength = itemStrength(st);
   const scaffold = opts && opts.scaffoldFirst;   // GONE rebuild (door r5.5): skip recognition, open with scaffolded production
   const forms = [];

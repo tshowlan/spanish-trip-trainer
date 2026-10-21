@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v473";
+const APP_BUILD = "v474";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -17,6 +17,7 @@ const STAGED = {
   "mic-check": "Say it: the microphone check (auto-listen after the word, the ring, the match). PARKED: on iPhone it leaves playback on the quiet earpiece; off until the native app can own the audio route (Tom 10/8)",
   "sounds-1": "Chapter 1: Sounds you'll say, after First words \u00b7 Part 2 (nine key sounds on cards, the wall with decoys, the run of nine said out loud)",
   "learn-reset-swipe": "Learn tab: swipe a session row to the left and tap Reset to make it never seen (the lesson mark and its words' history cleared)",
+  "ask-review": "Practice: an ask comes back as a situation (Which one do you say?, from a rotating bank of six per ask, the other answers the asks you have met) and its sentence, never a translation",
   "asks-2": "Chapter 2: The asks \u00b7 Part 2: Necesito, \u00bfHay?, \u00bfTiene?, \u00bfPuedo? (Part 1's shape: cards, the board, Which one do you say?, build the sentence, the listening board)",
   "ch1-three-words": "Chapter 1, three words (chat 10/3): \u00bfQu\u00e9 tal? takes Pase's seat in Words you'll hear; Muy bien takes Adi\u00f3s's seat and No entiendo joins as the eighth in First words \u00b7 Part 2",
 };

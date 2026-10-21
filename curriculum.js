@@ -917,16 +917,16 @@ const CURRICULUM = {
       { id: "asks-1", staged: "asks-1", topic: "First sentences", title: "The asks \u00b7 Part 1", line: "Want, bring, where, how much. The four you will use most.", items: [
         { es: "Quiero ___", en: "I want ___", tags: ["asks"], words: [["Quiero", "I want"]], contextEs: "Quiero un caf\u00e9.", contextEn: "I want a coffee.",
           hint: [["I want", "quiero"], ["a", "un"], ["coffee.", "caf\u00e9"]],
-          sits: [["At the counter", "You're ready to order a coffee."], ["At the bakery", "That pastry in the case is the one."]] },
+          sits: [["At the counter", "You're ready to order a coffee."], ["At the bakery", "That pastry in the case is the one."], ["At the bar", "A glass of the house red."], ["At the market", "That cheese, the one on the left."], ["At the kiosk", "A bottle of water for the walk."], ["At the ticket window", "Two for the four o'clock."]] },
         { es: "\u00bfMe puede traer ___?", en: "Could you bring me ___?", tags: ["asks"], words: [["Me", "me"], ["puede", "could you"], ["traer", "bring"]], contextEs: "\u00bfMe puede traer la cuenta?", contextEn: "Could you bring me the check?",
           hint: [["Could you", "puede"], ["bring", "traer"], ["me", "me"], ["the check?", "la cuenta"]],
-          sits: [["At the table", "You need the check."], ["At the table", "The glasses are empty. More water."]] },
+          sits: [["At the table", "You need the check."], ["At the table", "The glasses are empty. More water."], ["At the table", "The menu never came."], ["At the table", "Your fork is on the floor."], ["At the hotel desk", "The room has no towels."], ["At the table", "The basket is empty and you'd like more bread."]] },
         { es: "\u00bfD\u00f3nde est\u00e1 ___?", en: "Where is ___?", tags: ["asks"], words: [["D\u00f3nde", "where"], ["est\u00e1", "is"]], contextEs: "\u00bfD\u00f3nde est\u00e1 el ba\u00f1o?", contextEn: "Where is the bathroom?",
           hint: [["Where", "d\u00f3nde"], ["is", "est\u00e1"], ["the bathroom?", "el ba\u00f1o"]],
-          sits: [["In the restaurant", "You need the bathroom."], ["On the street", "You can't find the metro."]] },
+          sits: [["In the restaurant", "You need the bathroom."], ["On the street", "You can't find the metro."], ["In the station", "Platform four is on none of the signs."], ["On the street", "The pharmacy was supposed to be on this corner."], ["In the hotel", "The breakfast room, somewhere downstairs."], ["In the museum", "The exit, after two hours of rooms."]] },
         { es: "\u00bfCu\u00e1nto cuesta ___?", en: "How much is ___?", tags: ["asks"], words: [["Cu\u00e1nto", "how much"], ["cuesta", "it costs"]], contextEs: "\u00bfCu\u00e1nto cuesta el taxi?", contextEn: "How much is the taxi?",
           hint: [["How much", "cu\u00e1nto"], ["is", "cuesta"], ["the taxi?", "el taxi"]],
-          sits: [["In a shop", "The scarf has no price tag."], ["At the ticket window", "You need the price before you buy."]] } ] },
+          sits: [["In a shop", "The scarf has no price tag."], ["At the ticket window", "You need the price before you buy."], ["At the market", "The olives are sold by weight and there's no sign."], ["In the taxi", "Before you get in: the ride to the airport."], ["At the kiosk", "The map in the window has no sticker."], ["At the counter", "A coffee and a pastry, and you're counting coins."]] } ] },
       /* THE ASKS · PART 2 (STAGED "asks-2"). Four, all askable (Tom 10/19 on Code's recommendation, chat's 9/25 list amended): Tengo alergia a
          is a statement and moves to the rooms refit keyed to the intake; ¿A qué hora? waits for Numbermachine (its replies are all times);
          ¿Puedo? takes the seat. Contexts, hints and situations are Code's drafts (ledger 10/19) except ¿Tiene?'s situations, which are chat's. */
@@ -936,16 +936,16 @@ const CURRICULUM = {
            lines name the thing (it is the slot); the answer is which frame you reach for, so the situation makes that unmistakable. */
         { es: "Necesito ___", en: "I need ___", tags: ["asks"], words: [["Necesito", "I need"]], contextEs: "Necesito un taxi.", contextEn: "I need a taxi.",
           hint: [["I need", "necesito"], ["a taxi.", "un taxi"]],
-          sits: [["At the hotel desk", "Someone in your group is sick, and it's getting worse."], ["On the street", "It's 2am. The metro is closed and the hotel is across town."]] },
+          sits: [["At the hotel desk", "Someone in your group is sick, and it's getting worse."], ["On the street", "It's 2am. The metro is closed and the hotel is across town."], ["At the pharmacy", "The headache has lasted all day. Something for it, now."], ["At the hotel desk", "Your phone is at 1% and the charger is in another country."], ["On the street", "Your bag was just stolen. The police."], ["In the station", "The last train leaves in five minutes. A ticket, fast."]] },
         { es: "¿Hay ___?", en: "Is there ___?", tags: ["asks"], words: [["Hay", "is there"]], contextEs: "¿Hay una farmacia cerca?", contextEn: "Is there a pharmacy nearby?",
           hint: [["Is there", "hay"], ["a pharmacy", "una farmacia"], ["nearby?", "cerca"]],
-          sits: [["On the street", "You cut your finger. You need a band-aid and have no idea if there's a pharmacy around here."], ["In a café", "You used all of your data. You want to know if this place has any wifi at all."]] },
+          sits: [["On the street", "You cut your finger. You need a band-aid and have no idea if there's a pharmacy around here."], ["In a café", "You used all of your data. You want to know if this place has any wifi at all."], ["At the restaurant door", "No reservation. Any chance of a table tonight?"], ["At the table", "You can't eat gluten. Anything on the menu without it?"], ["On the street", "A cash machine, anywhere in this neighbourhood?"], ["At the hotel desk", "A room for tonight, if any is free."]] },
         { es: "¿Tiene ___?", en: "Do you have ___?", tags: ["asks"], words: [["Tiene", "you have"]], contextEs: "¿Tiene cambio?", contextEn: "Do you have change?",
           hint: [["Do you have", "tiene"], ["change?", "cambio"]],
-          sits: [["In the taxi", "You're paying with a fifty, and the driver may not carry change."], ["At the pharmacy", "You want ibuprofen. The pharmacist knows if it's in stock."]] },
+          sits: [["In the taxi", "You're paying with a fifty, and the driver may not carry change."], ["At the pharmacy", "You want ibuprofen. The pharmacist knows if it's in stock."], ["In a shop", "The same shirt, a size up. The clerk would know."], ["At the kiosk", "A charger for your phone, maybe behind the counter."], ["At the counter", "Oat milk. The barista knows what's in the fridge."], ["At the hotel desk", "A map of the city; the desk usually keeps some."]] },
         { es: "¿Puedo ___?", en: "Can I ___?", tags: ["asks"], words: [["Puedo", "can I"]], contextEs: "¿Puedo pagar con tarjeta?", contextEn: "Can I pay by card?",
           hint: [["Can I", "puedo"], ["pay", "pagar"], ["by card?", "con tarjeta"]],
-          sits: [["At the café", "There's one empty table outside and you'd like to take it."], ["In a shop", "The jacket looks right. You'd like to try it on first."]] } ] }
+          sits: [["At the café", "There's one empty table outside and you'd like to take it."], ["In a shop", "The jacket looks right. You'd like to try it on first."], ["At the counter", "You'd rather pay by card than cash."], ["In the museum", "You'd love a photo of the painting."], ["At the hotel desk", "Checkout is at noon; you'd like to leave the bags until five."], ["On the train", "The window seat is empty and you'd like it."]] } ] }
     ]
   },
   glueGloss: {

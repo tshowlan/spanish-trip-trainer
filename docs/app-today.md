@@ -39,7 +39,7 @@
 - **Progress tab:** trend charts, coverage by topic. Untouched since July.
 
 ## Staged, awaiting Tom's play
-- **STAGED now (10/19, v459):** The asks · Part 2 (asks-2: Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?; Part 1's shape), Sounds you'll say (sounds-1), the three chapter-1 words (ch1-three-words). LIVE 10/19: The asks · Part 1 (v459). Next, one at a time: the reply sets, the rooms refit, Numbermachine.
+- **STAGED now (10/20, v474):** the situation in review (ask-review: a due ask comes back as Which one do you say? from a bank of six, then its sentence; never a translation), swipe-to-reset on Learn rows (learn-reset-swipe), The asks · Part 2 (asks-2: Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?; Part 1's shape), Sounds you'll say (sounds-1), the three chapter-1 words (ch1-three-words). LIVE 10/19: The asks · Part 1 (v459). Next, one at a time: the reply sets, the rooms refit, Numbermachine.
 
 ## Rulings on hold (Tom reading)
 - The ask grammar (one shape for every exercise: context → ask with four role labels → stage).
