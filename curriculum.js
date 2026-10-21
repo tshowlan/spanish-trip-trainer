@@ -942,7 +942,7 @@ const CURRICULUM = {
           sits: [["On the street", "You cut your finger. You need a band-aid and have no idea if there's a pharmacy around here."], ["In a café", "You used all of your data. You want to know if this place has any wifi at all."]] },
         { es: "¿Tiene ___?", en: "Do you have ___?", tags: ["asks"], words: [["Tiene", "you have"]], contextEs: "¿Tiene cambio?", contextEn: "Do you have change?",
           hint: [["Do you have", "tiene"], ["change?", "cambio"]],
-          sits: [["In the taxi", "You only have a fifty. Will the driver be able to break it?"], ["At the pharmacy", "You want ibuprofen. The pharmacist knows if it's in stock."]] },
+          sits: [["In the taxi", "You're paying with a fifty, and the driver may not carry change."], ["At the pharmacy", "You want ibuprofen. The pharmacist knows if it's in stock."]] },
         { es: "¿Puedo ___?", en: "Can I ___?", tags: ["asks"], words: [["Puedo", "can I"]], contextEs: "¿Puedo pagar con tarjeta?", contextEn: "Can I pay by card?",
           hint: [["Can I", "puedo"], ["pay", "pagar"], ["by card?", "con tarjeta"]],
           sits: [["At the café", "There's one empty table outside and you'd like to take it."], ["In a shop", "The jacket looks right. You'd like to try it on first."]] } ] }

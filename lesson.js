@@ -4129,6 +4129,14 @@ function resolveCorrect(item, q, info) {
   const room = (topEl && ansEl) ? ansEl.getBoundingClientRect().top - topEl.getBoundingClientRect().bottom : Infinity;
   if (q && q.grownBelow && qb.classList.contains("anchored") && room < 64) { grown.classList.add("grown-below"); qb.appendChild(grown); }
   else (qb.classList.contains("anchored") ? (topEl || qb) : qb).appendChild(grown);
+  // the reveal must not run into the answers (Tom 10/20: a four-line situation plus RESTORED's note overlapped the first tile). Measured
+  // after the fact: if the top now reaches the answers, the note goes first (the kicker already says it); if it still does not fit, the
+  // reveal drops under the answers.
+  if (qb.classList.contains("anchored") && topEl && ansEl && !grown.classList.contains("grown-below")) {
+    const fits = () => topEl.getBoundingClientRect().bottom <= ansEl.getBoundingClientRect().top - 6;
+    if (!fits()) { const nt = grown.querySelector(".res-note"); if (nt) nt.remove(); }
+    if (!fits()) { grown.classList.add("grown-below"); qb.appendChild(grown); }
+  }
   requestAnimationFrame(() => requestAnimationFrame(() => grown.classList.add("show")));
   // the exit is the learner's tap (Pacing Rule) — so the tap must be ON SCREEN: tall
   // exercises (requeued chip + choices) can push Continue past the fold on short phones

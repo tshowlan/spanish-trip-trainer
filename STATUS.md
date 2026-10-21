@@ -1989,3 +1989,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v471 (2026-10-20) — v470 withdrawn: the ring from the first play again
 - Tom's "nevermind" arrived as v470 went out. The row shows the strength ring from the first play (visible empty track, v464); the caret only before any play.
+
+## v472 (2026-10-20) — the reveal stays clear of the answers; the taxi situation
+- Tom's screenshot (Which one, ¿Hay? on the street): the four-line situation plus RESTORED's note ran into the first tile. The reveal is now measured after it is placed: if the top reaches the answers the note goes first (the kicker already says it), and if it still does not fit the reveal drops under the answers. Verified at phone width: the note goes, the reveal sits 26px clear of the tiles.
+- ¿Tiene?'s taxi line read as a "can you" request: now "You're paying with a fifty, and the driver may not carry change."
