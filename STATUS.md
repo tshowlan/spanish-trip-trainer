@@ -1971,3 +1971,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v465 (2026-10-20) — the app icon: the corner candle strong and orange (R4)
 - Tom wanted more of Home's bottom-left orange on the icon. Round thirteen (dev/app-icon-options-13.html). Pick R4: the candle at two thirds strength, orange carrying past the middle before the gold, reaching far. Everything else as P2. Icon address v=465.
+
+## v466 (2026-10-20) — the app icon: the corner candle strong and quick to fade (S1)
+- Tom, after R4: stronger at the corner but dissipating quickly. Round fourteen (dev/app-icon-options-14.html). Pick S1: P2's reach, the corner at twice the strength, a steep falloff. Icon address v=466.
