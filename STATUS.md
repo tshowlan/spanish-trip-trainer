@@ -1993,3 +1993,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v472 (2026-10-20) — the reveal stays clear of the answers; the taxi situation
 - Tom's screenshot (Which one, ¿Hay? on the street): the four-line situation plus RESTORED's note ran into the first tile. The reveal is now measured after it is placed: if the top reaches the answers the note goes first (the kicker already says it), and if it still does not fit the reveal drops under the answers. Verified at phone width: the note goes, the reveal sits 26px clear of the tiles.
 - ¿Tiene?'s taxi line read as a "can you" request: now "You're paying with a fifty, and the driver may not carry change."
+
+## v473 (2026-10-20) — the tappable hairline is gold before the tap (mock B)
+- Tom: the grey line under a Which-one answer's word did not read as tappable. Every tappable hairline (`.hl`: the Which-one answer's glossed words, the Key sound card's example words) is now gold from the start, brighter and thicker when open. The Build-the-sentence hint lines (not tappable) stay grey. Mock dev/hairline-gold-options.html.
