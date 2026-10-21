@@ -1983,3 +1983,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v469 (2026-10-20) — the app icon SETTLED on U5
 - Tom, after U4: back to U5 (the light from behind the lantern, strong and quick to fade, gone before the base). The icon rounds close here (sixteen mocks in dev/app-icon-options*.html). Icon address v=469.
+
+## v470 (2026-10-20) — Learn rows: the strength ring only once a session is done
+- Tom, after v464: the empty ring on Words you'll hear still read as a missing graphic. A started, unfinished session now keeps the caret; the ring appears once the session is done.

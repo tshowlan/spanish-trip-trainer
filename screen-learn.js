@@ -64,7 +64,7 @@ function _togglePeek(row, l) {
   });
 }
 function _lessonRow(l, isNext) {
-  const str = lessonStrength(l);
+  const str = lessonDone(l.id) ? lessonStrength(l) : null;   // the ring only once the session is DONE; a started, unfinished one keeps the caret (Tom 10/20: an empty ring read as a missing graphic)
   const fading = lessonDone(l.id) ? lessonFadingCount(l) : 0;
   const beat = _lessonBeat(l);
   const meta = _isMachine(l) ? `Pattern · ${(l.items || []).length} fillers`
