@@ -732,18 +732,18 @@ function heroState() {
   if (scene && (tiltShare() >= 0.5 || !next))
     return { kind: "review", scene, title: `Scene: ${scene.title} is ready`, sub: `${scene.beats.length} asks. Your phrases, in the room where you'll use them.`, run: () => startScene(scene) };
   if (days !== null && days <= 14)
-    return { kind: "cram", title: `${days} day${days === 1 ? "" : "s"} out. Drill your essentials.`, run: () => startReview(backlog.length ? backlog : seenItems()) };
+    return { kind: "cram", title: `${days} day${days === 1 ? "" : "s"} out. Drill your essentials.`, pool: backlog.length ? backlog : seenItems(), run: () => startReview(backlog.length ? backlog : seenItems()) };
   // §7.3 quality problem: doing the work but earlier phrases decaying → steer today to review
   if (dv && dv.kind === "review") {
     const fad = fadingItems().filter(x => x.strength < 55).slice(0, 12).map(x => ITEM_INDEX[x.id]).filter(Boolean);
-    if (fad.length) return { kind: "review", title: `${dv.fading} phrases are fading. Bring them back.`, sub: "Point today at review, not new content", run: () => startReview(fad) };
+    if (fad.length) return { kind: "review", title: `${dv.fading} phrases are fading. Bring them back.`, sub: "Point today at review, not new content", pool: fad, run: () => startReview(fad) };
   }
   if (backlog.length >= 15) {
     const portion = Math.min(8, backlog.length);   // mirrors the depth composer's set size
-    return { kind: "review", title: `Bring back today's ${portion}`, sub: `${backlog.length} in the queue. A set a day works it down.`, run: () => startReview(backlog) };
+    return { kind: "review", title: `Bring back today's ${portion}`, sub: `${backlog.length} in the queue. A set a day works it down.`, pool: backlog, run: () => startReview(backlog) };
   }
   if (lastDays !== null && lastDays >= 2 && backlog.length)
-    return { kind: "momentum", title: "Momentum is dipping. Three minutes brings it back.", run: () => startReview(backlog.slice(0, 8)) };
+    return { kind: "momentum", title: "Momentum is dipping. Three minutes brings it back.", pool: backlog.slice(0, 8), run: () => startReview(backlog.slice(0, 8)) };
   if (next)   // §7.3 coverage problem: retention solid but too little covered → new content, said plainly
     return { kind: "lesson", lesson: next, title: `Start: ${next.title}`, sub: dv && dv.kind === "cover" ? `${destInfo(p.destination).label} needs more, ${dv.untouched} categories untouched` : next.topic, run: () => startLesson(next) };
   return { kind: "caught", title: "You're ahead. Up for a speed round?", run: () => startSpeedRound() };   // §7.6 pure fun, advances nothing
@@ -766,7 +766,7 @@ function heroTile() {
   const t = el(`<button class="hero-tile hero-${h.kind}${button ? " as-button" : ""}">
     ${photo ? `<div class="hero-img" style="background-image:url('${photo}')" aria-hidden="true"></div>` : ""}
     <div class="hero-inner">
-      <div class="hero-k">${kicker}</div>
+      ${isStaged("tile-words") ? `<div class="hero-k krow"><span class="hint-btn tile-pill" role="button" tabindex="0" aria-expanded="false">${kicker}</span></div>` : `<div class="hero-k">${kicker}</div>`}
       <div class="hero-title">${button ? h.title.replace(/^Start: /, "").replace(/ ([\u00b7·]) (Part) (\d)/, "\u00a0$1 $2\u00a0$3") : h.title}</div>
       ${sub ? `<div class="hero-sub">${button ? tidyBreaks(sub) : sub}</div>` : ""}
       ${earPill}
@@ -774,6 +774,26 @@ function heroTile() {
     ${button ? `<div class="hero-strip" aria-hidden="true">${icon("caret-right", 22)}</div>` : ""}
   </button>`);
   t.addEventListener("click", () => enterWith(t, h.run));   // the bloom (staged): the tile lights up and the light carries you in
+  // THE WORDS BEHIND THE TILE (Tom 10/21, STAGED "tile-words", mock F): the kicker is a gold pill, the Hint button's part; a tap opens the
+  // hint's bubble with the words this tile would open on: the due set a review would pick, or the session's words. The bubble lives in
+  // .home (the tile clips to its corners), placed under the pill; a tap anywhere else closes it. The card itself still starts.
+  const pill = t.querySelector(".tile-pill");
+  if (pill) pill.addEventListener("click", e => {
+    e.stopPropagation(); e.preventDefault();
+    const home = t.closest(".home"); if (!home) return;
+    const open = home.querySelector(".tile-pop");
+    if (open) { open.remove(); pill.classList.remove("on"); pill.setAttribute("aria-expanded", "false"); return; }
+    const items = h.kind === "lesson" && h.lesson ? (h.lesson.items || []) : (h.pool && typeof _practicePick === "function" ? _practicePick(h.pool).map(p => p.it) : []);
+    if (!items.length) return;
+    const row = it => h.lesson && h.lesson.sounds ? `<span class="pl-row"><b>${typeof goldHtml === "function" ? goldHtml(it.es, it.gold) : it.es}</b><i>${it.say || ""}</i></span>` : `<span class="pl-row"><b>${it.es}</b><i>${it.en}</i></span>`;
+    const pop = el(`<div class="hint-pop pop-list tile-pop">${items.map(row).join("")}</div>`);
+    home.appendChild(pop);
+    const hr = home.getBoundingClientRect(), pr = pill.getBoundingClientRect();
+    pop.style.top = (pr.bottom - hr.top + 14) + "px"; pop.style.left = (pr.left - hr.left) + "px";
+    pill.classList.add("on"); pill.setAttribute("aria-expanded", "true");
+    const close = ev => { if (pop.contains(ev.target)) return; pop.remove(); pill.classList.remove("on"); pill.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", close, true); };
+    setTimeout(() => document.addEventListener("pointerdown", close, true), 0);
+  });
   return t;
 }
 

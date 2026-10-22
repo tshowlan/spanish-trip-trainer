@@ -2341,3 +2341,14 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 .pbar.scrub::before { content: ""; position: absolute; left: 0; right: 0; top: -18px; bottom: -18px; }
 .scrub-thumb { position: absolute; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,.45), 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent); opacity: 0; transform: scale(.6); transition: opacity 120ms ease, transform 120ms ease; pointer-events: none; }
 .pbar.scrubbing .scrub-thumb { opacity: 1; transform: scale(1); }
+
+/* THE WORDS BEHIND THE TILE (Tom 10/21, staged "tile-words", mock F): the kicker as the Hint pill; the bubble is the hint's own */
+.hero-k.krow { display: flex; align-items: center; margin-bottom: 2px; }
+.hero-tile .tile-pill { color: var(--accent-2); border-color: color-mix(in srgb, var(--accent-2) 55%, transparent); padding: 3px 9px; font-size: 10px; letter-spacing: .06em; pointer-events: auto; }
+.hero-tile .tile-pill.on { color: #1c275e; background: var(--accent-2); border-color: var(--accent-2); }
+.home .tile-pop { position: absolute; transform: none; z-index: 40; min-width: 250px; max-width: calc(100% - 48px); text-align: left; padding: 10px 14px; text-transform: none; letter-spacing: 0; }
+.home .tile-pop::after { left: 20px; transform: none; }
+.pl-row { display: flex; justify-content: space-between; gap: 14px; padding: 5px 0; border-bottom: 1px solid #4a4634; font-size: 13px; }
+.pl-row:last-child { border-bottom: none; }
+.pl-row b { font-family: var(--font-display); font-weight: 600; color: var(--text); } .pl-row i { font-style: normal; color: var(--text-dim); text-align: right; }
+.pl-row b .g { color: var(--accent); }

@@ -1118,7 +1118,8 @@ function startReview(items, opts) {
   const body = _composeDepth(items && items.length ? items : null, opts);   // depth ruling 4: 5-8 at depth, from the pool or the world
   if (!body.length) { toast("Nothing to review yet. Finish a lesson first."); return; }
   const label = opts.label || "CIRCUIT: FADING PHRASES";
-  const qs = [{ type: "circuit_door", label, line: _circuitLine(body) }].concat(body, [{ type: "circuit_close", count: body.length }]);
+  const straight = isStaged("review-straight-in");   // Tom 10/21: no Start card, no END CIRCUIT; the first exercise is the start and the ceremony is the end
+  const qs = straight ? body.slice() : [{ type: "circuit_door", label, line: _circuitLine(body) }].concat(body, [{ type: "circuit_close", count: body.length }]);
   run = { lesson: { id: "__review__", topic: "Review", items: items || [] }, qs, idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
 }
@@ -1142,8 +1143,10 @@ function startMachineShop(lesson) {
   sample(replyPool, Math.min(3, replyPool.length)).forEach(r =>
     qs.push({ type: "exchange", reply: r, frame: lesson.frame, mlesson: lesson, cue: sample(cues, 1)[0], arc: true }));
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();
-  qs.unshift({ type: "circuit_door", label: "CIRCUIT: THE MACHINES", line: `${_machineBadgeName(lesson.frame) || "One"} machine, start to finish.` });
-  qs.push({ type: "circuit_close", count: qs.length - 1 });
+  if (!isStaged("review-straight-in")) {
+    qs.unshift({ type: "circuit_door", label: "CIRCUIT: THE MACHINES", line: `${_machineBadgeName(lesson.frame) || "One"} machine, start to finish.` });
+    qs.push({ type: "circuit_close", count: qs.length - 1 });
+  }
   run = { lesson: { id: "__shop__", topic: lesson.topic, items }, qs, idx: 0, wrong: 0, restored: 0,
     answered: false, reasks: {}, pct: 0, review: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
