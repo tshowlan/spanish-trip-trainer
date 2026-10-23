@@ -2015,3 +2015,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v478 (2026-10-22) — the outline toggle is W2
 - Tom: the v477 outline leaked into the letters (the stroke sits half inside the glyph) and read heavy. Mock dev/trip-outline-options.html; pick W2: one soft 2px ring at half strength in the shadow, no stroke, both lines.
+
+## v479 (2026-10-22) — the outline toggle is C3
+- Tom trying C3 after W2: a light grey 1.5px ring at half strength, no stroke, both lines.
