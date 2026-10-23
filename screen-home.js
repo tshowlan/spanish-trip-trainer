@@ -105,6 +105,7 @@ function destHero() { return (state.active === "spain") ? "./img/es/hero.jpg" : 
 function setHomeAtmo() {
   clearHomeAtmo();
   const a = el(`<div class="home-atmo" aria-hidden="true"><div class="atmo-photo"><img src="${destHero()}" alt=""></div></div>`);   // the photo only: the light is the app's one candle (Tom 10/2)
+  try { document.body.classList.toggle("trip-outline", localStorage.getItem("sts_trip_outline") === "1"); } catch (_) {}   // Test Lab: a slight dark outline on Spain and the countdown (Tom 10/22)
   try { const b = localStorage.getItem("sts_photo_bright"); if (b) document.documentElement.style.setProperty("--atmo-bright", String(+b / 100)); else document.documentElement.style.removeProperty("--atmo-bright"); } catch (_) {}   // Test Lab: the photo's brightness (Tom 10/22)
   const candle = document.querySelector(".tab-candle");
   document.body.insertBefore(a, candle ? candle.nextSibling : document.body.firstChild);   // the atmosphere sits just ABOVE the app's one candle, so the light shows through the photo's fade as Home's own ground did (Tom 9/29)
@@ -823,23 +824,8 @@ function practiceButton() {
     <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
     <span class="lbl">Review</span>
     ${badge ? `<span class="pbadge">${badgeText}</span>` : ""}
-    ${isStaged("review-row-words") ? `<span class="pk-zone" role="button" aria-label="See the words due"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>` : `<span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>`}
+    <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
   </button>`);
-  // COMPARE (Tom 10/22, opt-in "review-row-words"): the Learn rows' chevron zone on the Review row, opening the Learn drawer under it
-  // with the set a review would pick. To be judged against the tile's pill and the sheet's Recommended list.
-  const zone = b.querySelector(".pk-zone");
-  if (zone) {
-    b.classList.add("has-peek");
-    zone.addEventListener("click", e => {
-      e.stopPropagation(); e.preventDefault();
-      const open = b.nextElementSibling && b.nextElementSibling.classList.contains("lesson-peek") ? b.nextElementSibling : null;
-      if (open) { open.remove(); zone.classList.remove("open"); return; }
-      const items = (typeof _practicePick === "function") ? _practicePick(null).map(p => p.it) : [];
-      if (!items.length) return;
-      const peek = el(`<div class="lesson-peek show row-peek"><div class="cue-label peek-label">The words due</div><div class="peek-list">${items.map(it => `<div class="peek-item"><span class="es">${it.es}</span><span class="en">${it.en}</span></div>`).join("")}</div></div>`);
-      b.after(peek); zone.classList.add("open");
-    });
-  }
   // arrival breath: fires only when the threshold is NEWLY crossed (urgency announces
   // itself once, never loops); the crossing is persisted so re-renders stay still
   const prom = urgent ? "urgent" : badge ? "badge" : "quiet";
@@ -858,8 +844,20 @@ function practiceChooser() {
     <div class="sheet"><div class="sheet-grab"></div><div class="sheet-title">Review</div>
       <div class="practice-opts"></div></div></div>`);
   const opts = wrap.querySelector(".practice-opts");
-  const add = (title, sub, run, disabled, starts) => {
-    const b = el(`<button class="practice-opt" ${disabled ? "disabled" : ""}><div class="po-t">${title}</div><div class="po-s">${sub}</div></button>`);
+  const rows = isStaged("sheet-rows");   // Tom 10/22: the sheet's doors in the Learn tab's row form; Recommended wears the down caret when a review is picked, opening the words due
+  if (rows) opts.classList.add("learn-rows");
+  const add = (title, sub, run, disabled, starts, words) => {
+    const b = rows
+      ? el(`<div class="lesson sheet-row${disabled ? " locked" : ""}${words ? " has-peek" : ""}" role="button"><span class="caret-new">${icon("caret-right", 13)}</span><div class="lmain"><div class="lname-row"><span class="lname">${title}</span></div><div class="lmeta">${sub}</div></div>${words ? `<span class="pk-zone" aria-label="See the words due">${icon("caret-right", 15)}</span>` : ""}</div>`)
+      : el(`<button class="practice-opt" ${disabled ? "disabled" : ""}><div class="po-t">${title}</div><div class="po-s">${sub}</div></button>`);
+    const zone = b.querySelector(".pk-zone");
+    if (zone) zone.addEventListener("click", e => {
+      e.stopPropagation();
+      const open = b.nextElementSibling && b.nextElementSibling.classList.contains("lesson-peek") ? b.nextElementSibling : null;
+      if (open) { open.remove(); b.classList.remove("open"); return; }
+      b.classList.add("open");
+      b.after(el(`<div class="lesson-peek show"><div class="cue-label peek-label">The words due</div><div class="peek-list">${words.map(it => `<div class="peek-item"><span class="es">${it.es}</span><span class="en">${it.en}</span></div>`).join("")}</div></div>`));
+    });
     // the light only on the tap that takes you INTO a session; a tap that opens another chooser is just a tap (Tom 9/22)
     if (!disabled) b.addEventListener("click", () => { if (starts && isStaged("enter-bloom")) { enterWith(b, () => { closeSheet(); run(); }); } else { closeSheet(); run(); } });
     opts.appendChild(b);
@@ -867,9 +865,7 @@ function practiceChooser() {
   const picked = (typeof _practicePick === "function") ? _practicePick(null) : [];
   const line = (typeof practicePickLine === "function") ? practicePickLine(picked) : null;
   const sc = isStaged("review-door") ? sceneReady() : null;   // staged: the door names the scene it will serve
-  add("Recommended", sc ? `Scene: ${sc.title} \u00b7 ${sc.beats.length} asks` : (line || "Finish a lesson first"), () => startReview(), !picked.length && !sc, true);
-  // COMPARE (Tom 10/22, opt-in "sheet-words"): the words of the pick, listed under Recommended in the sheet itself
-  if (isStaged("sheet-words") && picked.length && !sc) opts.lastElementChild.appendChild(el(`<div class="po-words">${picked.map(p => `<span class="pl-row"><b>${p.it.es}</b><i>${p.it.en}</i></span>`).join("")}</div>`));
+  add("Recommended", sc ? `Scene: ${sc.title} \u00b7 ${sc.beats.length} asks` : (line || "Finish a lesson first"), () => startReview(), !picked.length && !sc, true, (picked.length && !sc) ? picked.map(p => p.it) : null);
   add("By scenario", "Pick a category and drill it hard", scenarioChooser);
   const shops = machineShopLessons();
   add("The machine shop", shops.length ? "Drill one machine start to finish" : "Meet a machine first", machineShopChooser, !shops.length);

@@ -2353,9 +2353,16 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 .pl-row b { font-family: var(--font-display); font-weight: 600; color: var(--text); } .pl-row i { font-style: normal; color: var(--text-dim); text-align: right; }
 .pl-row b .g { color: var(--accent); }
 
-/* COMPARE switches (Tom 10/22): the Review row's chevron zone + drawer; the sheet's Recommended list */
-.practice.has-peek { padding-right: 0; }
-.practice .pk-zone { align-self: stretch; width: 48px; display: flex; align-items: center; justify-content: center; border-left: 1px solid var(--border); margin: -1px 0; color: var(--text-dim); }
-.practice .pk-zone.open svg { transform: rotate(180deg); }
-.home .lesson-peek.row-peek { margin: 4px 0 0; padding: 10px 16px 12px 40px; }
-.po-words { margin-top: 8px; }
+/* THE SHEET'S DOORS IN THE LEARN TAB'S FORM (Tom 10/22, staged "sheet-rows"): the Learn row, card and all; Recommended's chevron zone
+   opens the words due under it. The Review button on Home keeps its arrow (the chevron compare of v476 was withdrawn). */
+.practice-opts.learn-rows .lesson { display: flex; align-items: center; gap: 12px; background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 8px; cursor: pointer; box-shadow: var(--shadow); }
+.practice-opts.learn-rows .lesson:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
+.practice-opts.learn-rows .lesson.locked { opacity: .5; pointer-events: none; }
+.practice-opts.learn-rows .lesson.has-peek { padding-right: 0; }
+.practice-opts.learn-rows .lesson .pk-zone { margin: -12px 0; }
+.practice-opts.learn-rows .lesson.open .pk-zone .ph { transform: rotate(-90deg); }
+.practice-opts.learn-rows .lesson-peek { margin: -2px 0 10px; }
+/* a slight dark outline on Spain and the countdown (Test Lab, Tom 10/22: the brighter photo washed them out) */
+body.home-lit.trip-outline .trip .dest { text-shadow: 0 0 1px rgba(0,0,0,.95), 0 0 3px rgba(0,0,0,.85), 0 1px 10px rgba(0,0,0,.6); -webkit-text-stroke: .3px rgba(0,0,0,.55); }
+body.home-lit.trip-outline .trip .sub { text-shadow: 0 0 1px rgba(0,0,0,.95), 0 0 3px rgba(0,0,0,.8), 0 1px 6px rgba(0,0,0,.55); -webkit-text-stroke: .25px rgba(0,0,0,.5); }

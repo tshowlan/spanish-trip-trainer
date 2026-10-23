@@ -2008,3 +2008,7 @@ clean on both packs. **No live browser check this session** — worth a device p
 - The tile's pill closes its bubble on a second tap (the outside-tap closer ignored the pill itself).
 - COMPARE (opt-in, off by default): `review-row-words` gives the Review row the Learn rows' chevron zone and a drawer under it with the words due; `sheet-words` lists the pick under Recommended in the Review sheet. Both to be judged against the tile's pill (v475).
 - Test Lab: "The photo on Home: brightness", As shipped / 70 / 85 / 100 / 115 / 130%. Persists on the device (`sts_photo_bright` → `--atmo-bright`); as shipped is 55% on dark, 82% on light.
+
+## v477 (2026-10-22) — the Review sheet's doors as Learn rows (STAGED `sheet-rows`); the outline toggle; the Review row keeps its arrow
+- Tom: the Review button should not carry the chevron; the sheet's Recommended should. The sheet's three doors now take the Learn tab's row form (card, caret circle, title, line); Recommended wears the down caret, opening the words due under it, only when a review is picked. The v476 compare switches (review-row-words, sheet-words) are withdrawn.
+- Test Lab: "Spain and the countdown over the photo": a slight dark outline (text shadow ring + a hair of stroke) for the brighter photo settings. Persists on the device.
