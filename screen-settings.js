@@ -113,6 +113,11 @@ function renderProfile() {
   const fl = el(`<div class="lab-row"><div class="lab-lbl">The light on Home</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn-quiet">${still ? "Bring the flame back" : "Hold the light still"}</button></div></div>`);
   fl.querySelector("button").addEventListener("click", () => { const on = document.body.classList.toggle("flame-still"); toast(on ? "The light is still until you close the app" : "The flame is back"); renderProfile(); });
   wrap.appendChild(fl);
+  // the photo's brightness on Home (Tom 10/22: it read as shadowed): as shipped is 55% on dark, 82% on light; the pick persists on this device
+  const curB = (() => { try { return localStorage.getItem("sts_photo_bright") || ""; } catch (_) { return ""; } })();
+  const ph = el(`<div class="lab-row"><div class="lab-lbl">The photo on Home: brightness (as shipped = 55% on dark)</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">${["", "70", "85", "100", "115", "130"].map(v => `<button class="btn-quiet" data-b="${v}" ${v === curB ? 'style="color:var(--accent);border-color:var(--accent)"' : ""}>${v ? v + "%" : "As shipped"}</button>`).join("")}</div></div>`);
+  ph.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { try { if (b.dataset.b) localStorage.setItem("sts_photo_bright", b.dataset.b); else localStorage.removeItem("sts_photo_bright"); } catch (_) {} if (b.dataset.b) document.documentElement.style.setProperty("--atmo-bright", String(+b.dataset.b / 100)); else document.documentElement.style.removeProperty("--atmo-bright"); toast(b.dataset.b ? `Photo at ${b.dataset.b}%` : "Photo as shipped"); renderProfile(); }));
+  wrap.appendChild(ph);
   const fresh = el(`<button class="btn-quiet" style="margin:6px 0 10px">Start over as a fresh learner (keeps your profile)</button>`);
   fresh.addEventListener("click", () => { state.learn = {}; state.lessons = {}; state.chapterDoors = []; save(); rebuildDeck(); toast("Fresh learner: nothing met, nothing done"); renderProfile(); });
   wrap.appendChild(fresh);

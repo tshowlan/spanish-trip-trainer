@@ -105,6 +105,7 @@ function destHero() { return (state.active === "spain") ? "./img/es/hero.jpg" : 
 function setHomeAtmo() {
   clearHomeAtmo();
   const a = el(`<div class="home-atmo" aria-hidden="true"><div class="atmo-photo"><img src="${destHero()}" alt=""></div></div>`);   // the photo only: the light is the app's one candle (Tom 10/2)
+  try { const b = localStorage.getItem("sts_photo_bright"); if (b) document.documentElement.style.setProperty("--atmo-bright", String(+b / 100)); else document.documentElement.style.removeProperty("--atmo-bright"); } catch (_) {}   // Test Lab: the photo's brightness (Tom 10/22)
   const candle = document.querySelector(".tab-candle");
   document.body.insertBefore(a, candle ? candle.nextSibling : document.body.firstChild);   // the atmosphere sits just ABOVE the app's one candle, so the light shows through the photo's fade as Home's own ground did (Tom 9/29)
   document.body.classList.add("home-lit");                 // photo-on: transparent topbar, wordmark halo, white header text
@@ -791,7 +792,7 @@ function heroTile() {
     const hr = home.getBoundingClientRect(), pr = pill.getBoundingClientRect();
     pop.style.top = (pr.bottom - hr.top + 14) + "px"; pop.style.left = (pr.left - hr.left) + "px";
     pill.classList.add("on"); pill.setAttribute("aria-expanded", "true");
-    const close = ev => { if (pop.contains(ev.target)) return; pop.remove(); pill.classList.remove("on"); pill.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", close, true); };
+    const close = ev => { if (pop.contains(ev.target) || pill.contains(ev.target)) return; pop.remove(); pill.classList.remove("on"); pill.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", close, true); };
     setTimeout(() => document.addEventListener("pointerdown", close, true), 0);
   });
   return t;
@@ -822,8 +823,23 @@ function practiceButton() {
     <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
     <span class="lbl">Review</span>
     ${badge ? `<span class="pbadge">${badgeText}</span>` : ""}
-    <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+    ${isStaged("review-row-words") ? `<span class="pk-zone" role="button" aria-label="See the words due"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>` : `<span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>`}
   </button>`);
+  // COMPARE (Tom 10/22, opt-in "review-row-words"): the Learn rows' chevron zone on the Review row, opening the Learn drawer under it
+  // with the set a review would pick. To be judged against the tile's pill and the sheet's Recommended list.
+  const zone = b.querySelector(".pk-zone");
+  if (zone) {
+    b.classList.add("has-peek");
+    zone.addEventListener("click", e => {
+      e.stopPropagation(); e.preventDefault();
+      const open = b.nextElementSibling && b.nextElementSibling.classList.contains("lesson-peek") ? b.nextElementSibling : null;
+      if (open) { open.remove(); zone.classList.remove("open"); return; }
+      const items = (typeof _practicePick === "function") ? _practicePick(null).map(p => p.it) : [];
+      if (!items.length) return;
+      const peek = el(`<div class="lesson-peek show row-peek"><div class="cue-label peek-label">The words due</div><div class="peek-list">${items.map(it => `<div class="peek-item"><span class="es">${it.es}</span><span class="en">${it.en}</span></div>`).join("")}</div></div>`);
+      b.after(peek); zone.classList.add("open");
+    });
+  }
   // arrival breath: fires only when the threshold is NEWLY crossed (urgency announces
   // itself once, never loops); the crossing is persisted so re-renders stay still
   const prom = urgent ? "urgent" : badge ? "badge" : "quiet";
@@ -852,6 +868,8 @@ function practiceChooser() {
   const line = (typeof practicePickLine === "function") ? practicePickLine(picked) : null;
   const sc = isStaged("review-door") ? sceneReady() : null;   // staged: the door names the scene it will serve
   add("Recommended", sc ? `Scene: ${sc.title} \u00b7 ${sc.beats.length} asks` : (line || "Finish a lesson first"), () => startReview(), !picked.length && !sc, true);
+  // COMPARE (Tom 10/22, opt-in "sheet-words"): the words of the pick, listed under Recommended in the sheet itself
+  if (isStaged("sheet-words") && picked.length && !sc) opts.lastElementChild.appendChild(el(`<div class="po-words">${picked.map(p => `<span class="pl-row"><b>${p.it.es}</b><i>${p.it.en}</i></span>`).join("")}</div>`));
   add("By scenario", "Pick a category and drill it hard", scenarioChooser);
   const shops = machineShopLessons();
   add("The machine shop", shops.length ? "Drill one machine start to finish" : "Meet a machine first", machineShopChooser, !shops.length);
