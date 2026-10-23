@@ -2012,3 +2012,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v477 (2026-10-22) — the Review sheet's doors as Learn rows (STAGED `sheet-rows`); the outline toggle; the Review row keeps its arrow
 - Tom: the Review button should not carry the chevron; the sheet's Recommended should. The sheet's three doors now take the Learn tab's row form (card, caret circle, title, line); Recommended wears the down caret, opening the words due under it, only when a review is picked. The v476 compare switches (review-row-words, sheet-words) are withdrawn.
 - Test Lab: "Spain and the countdown over the photo": a slight dark outline (text shadow ring + a hair of stroke) for the brighter photo settings. Persists on the device.
+
+## v478 (2026-10-22) — the outline toggle is W2
+- Tom: the v477 outline leaked into the letters (the stroke sits half inside the glyph) and read heavy. Mock dev/trip-outline-options.html; pick W2: one soft 2px ring at half strength in the shadow, no stroke, both lines.

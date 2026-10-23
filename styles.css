@@ -2364,5 +2364,5 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 .practice-opts.learn-rows .lesson.open .pk-zone .ph { transform: rotate(-90deg); }
 .practice-opts.learn-rows .lesson-peek { margin: -2px 0 10px; }
 /* a slight dark outline on Spain and the countdown (Test Lab, Tom 10/22: the brighter photo washed them out) */
-body.home-lit.trip-outline .trip .dest { text-shadow: 0 0 1px rgba(0,0,0,.95), 0 0 3px rgba(0,0,0,.85), 0 1px 10px rgba(0,0,0,.6); -webkit-text-stroke: .3px rgba(0,0,0,.55); }
-body.home-lit.trip-outline .trip .sub { text-shadow: 0 0 1px rgba(0,0,0,.95), 0 0 3px rgba(0,0,0,.8), 0 1px 6px rgba(0,0,0,.55); -webkit-text-stroke: .25px rgba(0,0,0,.5); }
+body.home-lit.trip-outline .trip .dest { text-shadow: 0 0 2px rgba(0,0,0,.6), 0 1px 10px rgba(0,0,0,.5); }   /* W2 (Tom 10/22): one soft ring at half strength, no stroke (the stroke ate into the letters) */
+body.home-lit.trip-outline .trip .sub { text-shadow: 0 0 2px rgba(0,0,0,.55), 0 1px 6px rgba(0,0,0,.45); }
