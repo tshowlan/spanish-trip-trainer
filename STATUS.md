@@ -2042,3 +2042,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v488 (2026-10-23) — SHIPPED: Sounds you'll say, the three chapter-1 words, The asks · Part 2, Practice straight in, the tile's pill
 - Five switches leave the STAGED map on Tom's word: `sounds-1`, `ch1-three-words`, `asks-2`, `review-straight-in`, `tile-words`. Chapter 1 is fifteen sessions; chapter 2 opens with both asks sessions. Still staged: `ask-review`, `sheet-rows` (awaiting play), `learn-reset-swipe` (lab-only by design), `mic-check` (parked).
+
+## v489 (2026-10-23) — Test Lab: "Make the asks due"
+- Tom's recording 23-10-18: with ask-review on, the tile kept recommending First words · Part 1. Not a bug: the tile is the recommendation and nothing was due (chapter 1 at 0 of 15 in that state; the asks played today), so it points at the next session; ask-review changes what a REVIEW serves, not when the tile asks for one. A lab button now puts every met ask on the review queue, so Review, Recommended serves them as situations at once. Verified in the browser: with the asks due, Recommended composes eight situations.

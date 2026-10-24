@@ -107,6 +107,16 @@ function renderProfile() {
   const fresh = el(`<button class="btn-quiet" style="margin:6px 0 10px">Start over as a fresh learner (keeps your profile)</button>`);
   fresh.addEventListener("click", () => { state.learn = {}; state.lessons = {}; state.chapterDoors = []; save(); rebuildDeck(); toast("Fresh learner: nothing met, nothing done"); renderProfile(); });
   wrap.appendChild(fresh);
+  // the asks, made due (Tom 10/23): the situation-in-review switch only shows when an ask is DUE, and a freshly played ask is not; this
+  // puts every met ask on the review queue so Practice's Recommended serves it now
+  const dueAsks = el(`<button class="btn-quiet" style="margin:0 0 10px">Make the asks due (to see them come back as situations)</button>`);
+  dueAsks.addEventListener("click", () => {
+    const asks = (DECK ? DECK.stages : []).flatMap(st => st.lessons).filter(l => l.asks).flatMap(l => l.items || []);
+    let n = 0;
+    asks.forEach(it => { if (!it.id) return; state.learn[it.id] = Object.assign(state.learn[it.id] || { exposures: 0, streak: 0, lapses: 0 }, { exposures: Math.max(2, (state.learn[it.id] || {}).exposures || 0), interval: 2, lastSeen: daysAgoStr(5), lastCorrect: daysAgoStr(5), due: daysAgoStr(3) }); n++; });
+    save(); toast(n ? `${n} asks are due: open Review, Recommended` : "No asks met yet: play The asks first"); renderProfile();
+  });
+  wrap.appendChild(dueAsks);
   // scene readiness readout (never trust self-reported success): each scene's due-mass vs the
   // bar it must clear today, plus a "Make ready" that puts its phrases due so the door can show
   const scRow = el(`<div class="lab-row"><div class="lab-lbl">Scenes: due-mass vs the bar (${sceneMassMin().toFixed(1)} today, tilt ${tiltShare().toFixed(2)}, staging ${stagingOn() ? "ON" : "off"})</div><div id="lab-scenes"></div></div>`);
