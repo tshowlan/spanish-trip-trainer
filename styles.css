@@ -2374,3 +2374,7 @@ body.home-lit.photo-chips .topbar .lang-flag-top { background: rgba(0,0,0,.28); 
 /* the streak is a READOUT, not a button (Tom 10/23, mock G2): no chip; the gold number and the flame wear the same tight dark ring */
 body.home-lit.photo-chips .stat.streak { text-shadow: 0 0 2px rgba(0,0,0,.85), 0 1px 6px rgba(0,0,0,.6); }
 body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5px rgba(0,0,0,.85)) drop-shadow(0 1px 4px rgba(0,0,0,.6)); }
+
+/* THE AURA IN THE ICON'S ORANGE (Tom 10/23, staged "splash-orange", mock T2): the shipped aura's box, centre and softness, the gold
+   swapped for the orange the app icon and the tabs' candle carry. */
+#splash.splash-orange .splash-lh::before { background: radial-gradient(closest-side at 50% 45%, rgba(201,106,43,.40) 0%, rgba(207,116,48,.26) 35%, rgba(224,149,43,.12) 58%, rgba(230,198,42,.04) 78%, rgba(230,198,42,0) 100%); }

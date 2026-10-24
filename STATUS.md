@@ -2024,3 +2024,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v481 (2026-10-23) — the streak is a readout again (photo-chips: G2)
 - Tom: the frosted streak read as a button. The language chip keeps F1's glass (it is a control); the streak drops the chip and wears a tight dark ring on the gold number and, by Tom's ask, the same ring on the flame (a drop shadow on the icon, since text shadows do not reach SVG). Mock dev/photo-chips-options-3.html.
+
+## v482 (2026-10-23) — the splash's aura in the icon's orange (STAGED `splash-orange`, mock T2)
+- Tom: more of the app's orange on the arrival. Mocks dev/splash-glow-options.html and -2.html; pick T2: the shipped aura's box, centre and soft stops with the gold swapped for the orange of the icon and the candle. On the launch and on the Test Lab's arrival replay.

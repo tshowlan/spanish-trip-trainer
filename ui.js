@@ -169,6 +169,7 @@ function initSplash() {
   const s = document.getElementById("splash");
   if (!s) return;
   s.classList.add(SPLASH_STYLE);
+  if (typeof isStaged === "function" && isStaged("splash-orange")) s.classList.add("splash-orange");   // the aura in the icon's orange (staged, Tom 10/23, mock T2)
   // the formation's hidden states must be on BEFORE home paints beneath the splash
   if (SPLASH_STYLE === "arrival") document.body.classList.add("arriving");
   s.innerHTML = splashMarkup();
@@ -201,7 +202,7 @@ function devReplayArrival(variant) {
   document.querySelectorAll("#splash").forEach(n => n.remove());
   document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "arr-classic", "pulse-go");
   document.querySelectorAll(".tab-candle.arr-in").forEach(n => n.classList.remove("arr-in"));   // the one candle persists across replays
-  const s = el(`<div id="splash" class="arrival"></div>`);
+  const s = el(`<div id="splash" class="arrival${(typeof isStaged === "function" && isStaged("splash-orange")) ? " splash-orange" : ""}"></div>`);
   document.body.appendChild(s);
   document.body.classList.add("arriving"); if (variant && variant !== "calm") document.body.classList.add("arr-" + variant);
   if (variant === "calm") s.classList.add("calm");   // Test Lab (Tom 10/5): no flood of light; the lighthouse holds, then hands straight to twilight
