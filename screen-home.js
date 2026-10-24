@@ -105,7 +105,8 @@ function destHero() { return (state.active === "spain") ? "./img/es/hero.jpg" : 
 function setHomeAtmo() {
   clearHomeAtmo();
   const a = el(`<div class="home-atmo" aria-hidden="true"><div class="atmo-photo"><img src="${destHero()}" alt=""></div></div>`);   // the photo only: the light is the app's one candle (Tom 10/2)
-  try { document.body.classList.toggle("trip-outline", localStorage.getItem("sts_trip_outline") === "1"); } catch (_) {}   // Test Lab: a slight dark outline on Spain and the countdown (Tom 10/22)
+  try { document.body.classList.toggle("trip-outline", localStorage.getItem("sts_trip_outline") === "1"); } catch (_) {}
+  document.body.classList.toggle("photo-chips", isStaged("photo-chips"));   // the frosted chips and the light track (staged, Tom 10/23)   // Test Lab: a slight dark outline on Spain and the countdown (Tom 10/22)
   try { const b = localStorage.getItem("sts_photo_bright"); if (b) document.documentElement.style.setProperty("--atmo-bright", String(+b / 100)); else document.documentElement.style.removeProperty("--atmo-bright"); } catch (_) {}   // Test Lab: the photo's brightness (Tom 10/22)
   const candle = document.querySelector(".tab-candle");
   document.body.insertBefore(a, candle ? candle.nextSibling : document.body.firstChild);   // the atmosphere sits just ABOVE the app's one candle, so the light shows through the photo's fade as Home's own ground did (Tom 9/29)

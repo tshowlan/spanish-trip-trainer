@@ -2018,3 +2018,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v479 (2026-10-22) — the outline toggle is C3
 - Tom trying C3 after W2: a light grey 1.5px ring at half strength, no stroke, both lines.
+
+## v480 (2026-10-23) — the chips and the track over the lit photo (STAGED `photo-chips`, mock F1)
+- Tom: at 100% brightness the streak, the language chip and the dials' unfilled track blended into the photo. Mocks dev/photo-chips-options.html and -2.html; pick F1: both chips as dark frosted glass (black at 28%, 12px blur, a 22% hairline), the track a light white at 22%. The outline toggle (C3) and the halo mock were set aside.

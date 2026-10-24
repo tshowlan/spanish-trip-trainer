@@ -2366,3 +2366,9 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 /* a slight dark outline on Spain and the countdown (Test Lab, Tom 10/22: the brighter photo washed them out) */
 body.home-lit.trip-outline .trip .dest { text-shadow: 0 0 1.5px rgba(40,40,40,.6), 0 1px 10px rgba(0,0,0,.5); }   /* C3 (Tom 10/22): a light grey ring at half strength, no stroke (the stroke ate into the letters) */
 body.home-lit.trip-outline .trip .sub { text-shadow: 0 0 1.5px rgba(40,40,40,.55), 0 1px 6px rgba(0,0,0,.45); }
+
+/* THE CHIPS AND THE TRACK OVER THE LIT PHOTO (Tom 10/23, staged "photo-chips", mock F1): the streak and the language chip as dark frosted
+   glass (the photo blurred through a black tint), the dials' unfilled track a light white so the rings read as rings. */
+body.home-lit.photo-chips { --ring-track: rgba(255,255,255,.22); }
+body.home-lit.photo-chips .stat.streak, body.home-lit.photo-chips .topbar .lang-flag-top { background: rgba(0,0,0,.28); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; padding: 4px 9px; }
+body.home-lit.photo-chips .stat.streak { text-shadow: none; }
