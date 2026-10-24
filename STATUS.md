@@ -2030,3 +2030,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v483 (2026-10-23) — LIVE: the chips and the track over the photo; the splash's orange aura
 - Tom's word: `photo-chips` and `splash-orange` leave the STAGED map (live for everyone). The photo's brightness (Test Lab percent) and the outline toggle stay lab settings until Tom names the number to lock in.
+
+## v484 (2026-10-23) — LIVE: the photo at 100%, the outline on
+- Tom's numbers: the Home photo at full brightness on dark (was 55%), Spain and the countdown with the C3 outline (a light grey ring in the shadow). The Test Lab's percent buttons and outline toggle retire; the device settings they wrote are ignored.

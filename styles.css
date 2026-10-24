@@ -351,8 +351,8 @@ body.home-lit { min-height: calc(100vh + 1px); }
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%);
           mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%); }
 .home-atmo .atmo-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 34%); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .home-atmo .atmo-photo img { filter: saturate(.6) brightness(var(--atmo-bright, .55)) contrast(1.02); } }
-:root[data-theme="dark"] .home-atmo .atmo-photo img { filter: saturate(.6) brightness(var(--atmo-bright, .55)) contrast(1.02); }   /* --atmo-bright: the Test Lab's brightness, unset = as shipped (Tom 10/22) */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .home-atmo .atmo-photo img { filter: saturate(.6) brightness(1) contrast(1.02); } }
+:root[data-theme="dark"] .home-atmo .atmo-photo img { filter: saturate(.6) brightness(1) contrast(1.02); }   /* the photo at full brightness on dark (Tom 10/23, after a week on the Test Lab percent buttons; was .55) */
 
 /* §3.2 trip header — destination name anchors over the photo, subline is pure countdown */
 /* trip header — matches the re-mocked 390px artifact (dest 28px; the ~12% scale-up lives in the dials). */
@@ -2364,8 +2364,8 @@ body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .prese
 .practice-opts.learn-rows .lesson.open .pk-zone .ph { transform: rotate(-90deg); }
 .practice-opts.learn-rows .lesson-peek { margin: -2px 0 10px; }
 /* a slight dark outline on Spain and the countdown (Test Lab, Tom 10/22: the brighter photo washed them out) */
-body.home-lit.trip-outline .trip .dest { text-shadow: 0 0 1.5px rgba(40,40,40,.6), 0 1px 10px rgba(0,0,0,.5); }   /* C3 (Tom 10/22): a light grey ring at half strength, no stroke (the stroke ate into the letters) */
-body.home-lit.trip-outline .trip .sub { text-shadow: 0 0 1.5px rgba(40,40,40,.55), 0 1px 6px rgba(0,0,0,.45); }
+body.home-lit .trip .dest { text-shadow: 0 0 1.5px rgba(40,40,40,.6), 0 1px 10px rgba(0,0,0,.5); }   /* the outline, LIVE (Tom 10/23, mock C3): a light grey ring at half strength in the shadow, no stroke */
+body.home-lit .trip .sub { text-shadow: 0 0 1.5px rgba(40,40,40,.55), 0 1px 6px rgba(0,0,0,.45); }
 
 /* THE CHIPS AND THE TRACK OVER THE LIT PHOTO (Tom 10/23, staged "photo-chips", mock F1): the streak and the language chip as dark frosted
    glass (the photo blurred through a black tint), the dials' unfilled track a light white so the rings read as rings. */
