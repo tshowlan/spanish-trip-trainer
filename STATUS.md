@@ -2036,3 +2036,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v486 (2026-10-23) — Test Lab: the brightness, outline and arrival-replay rows leave
 - The v484 note said the lab controls retired; the edit had not landed. Gone now, with the arrival replay buttons (Tom: the arrival is settled).
+
+## v487 (2026-10-23) — Test Lab: "Hold the light still" leaves
+- A diagnostic from 10/2 (to tell the flame's drift apart from the launch shift Tom was seeing); that investigation closed at v399. The row goes; the CSS hook stays harmless.
