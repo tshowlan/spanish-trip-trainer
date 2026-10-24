@@ -104,24 +104,11 @@ function renderProfile() {
     stg.querySelector("#lab-staged-list").appendChild(row);
   });
   wrap.appendChild(stg);
-  // the arrival, replayed (Tom 9/29): the shipped form and two candidates, nothing shipped changes
-  const arr = el(`<div class="lab-row"><div class="lab-lbl">The arrival, replayed (splash, then Home)</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn-quiet" data-v="">As shipped (twilight, breathing)</button><button class="btn-quiet" data-v="classic">The old formation</button><button class="btn-quiet" data-v="twilight">Twilight, no breath</button><button class="btn-quiet" data-v="calm">No flash: the lighthouse hands straight to Home</button></div></div>`);
-  arr.querySelectorAll("button").forEach(b => b.addEventListener("click", () => devReplayArrival(b.dataset.v || null)));
-  wrap.appendChild(arr);
   // the light held still (Tom 10/2): this visit only; tells the flame apart from anything else that moves on Home
   const still = document.body.classList.contains("flame-still");
   const fl = el(`<div class="lab-row"><div class="lab-lbl">The light on Home</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn-quiet">${still ? "Bring the flame back" : "Hold the light still"}</button></div></div>`);
   fl.querySelector("button").addEventListener("click", () => { const on = document.body.classList.toggle("flame-still"); toast(on ? "The light is still until you close the app" : "The flame is back"); renderProfile(); });
   wrap.appendChild(fl);
-  // the photo's brightness on Home (Tom 10/22: it read as shadowed): as shipped is 55% on dark, 82% on light; the pick persists on this device
-  const curB = (() => { try { return localStorage.getItem("sts_photo_bright") || ""; } catch (_) { return ""; } })();
-  const ph = el(`<div class="lab-row"><div class="lab-lbl">The photo on Home: brightness (as shipped = 55% on dark)</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">${["", "70", "85", "100", "115", "130"].map(v => `<button class="btn-quiet" data-b="${v}" ${v === curB ? 'style="color:var(--accent);border-color:var(--accent)"' : ""}>${v ? v + "%" : "As shipped"}</button>`).join("")}</div></div>`);
-  ph.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { try { if (b.dataset.b) localStorage.setItem("sts_photo_bright", b.dataset.b); else localStorage.removeItem("sts_photo_bright"); } catch (_) {} if (b.dataset.b) document.documentElement.style.setProperty("--atmo-bright", String(+b.dataset.b / 100)); else document.documentElement.style.removeProperty("--atmo-bright"); toast(b.dataset.b ? `Photo at ${b.dataset.b}%` : "Photo as shipped"); renderProfile(); }));
-  wrap.appendChild(ph);
-  const outl = (() => { try { return localStorage.getItem("sts_trip_outline") === "1"; } catch (_) { return false; } })();
-  const ol = el(`<div class="lab-row"><div class="lab-lbl">Spain and the countdown over the photo</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn-quiet">${outl ? "Outline on (tap to turn off)" : "Give them a slight dark outline"}</button></div></div>`);
-  ol.querySelector("button").addEventListener("click", () => { try { localStorage.setItem("sts_trip_outline", outl ? "0" : "1"); } catch (_) {} document.body.classList.toggle("trip-outline", !outl); toast(outl ? "Outline off" : "A slight outline on Spain and the countdown"); renderProfile(); });
-  wrap.appendChild(ol);
   const fresh = el(`<button class="btn-quiet" style="margin:6px 0 10px">Start over as a fresh learner (keeps your profile)</button>`);
   fresh.addEventListener("click", () => { state.learn = {}; state.lessons = {}; state.chapterDoors = []; save(); rebuildDeck(); toast("Fresh learner: nothing met, nothing done"); renderProfile(); });
   wrap.appendChild(fresh);

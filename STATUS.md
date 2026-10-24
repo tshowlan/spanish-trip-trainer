@@ -2033,3 +2033,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v484 (2026-10-23) — LIVE: the photo at 100%, the outline on
 - Tom's numbers: the Home photo at full brightness on dark (was 55%), Spain and the countdown with the C3 outline (a light grey ring in the shadow). The Test Lab's percent buttons and outline toggle retire; the device settings they wrote are ignored.
+
+## v486 (2026-10-23) — Test Lab: the brightness, outline and arrival-replay rows leave
+- The v484 note said the lab controls retired; the edit had not landed. Gone now, with the arrival replay buttons (Tom: the arrival is settled).
