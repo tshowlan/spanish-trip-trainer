@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v482";
+const APP_BUILD = "v483";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -17,8 +17,6 @@ const STAGED = {
   "mic-check": "Say it: the microphone check (auto-listen after the word, the ring, the match). PARKED: on iPhone it leaves playback on the quiet earpiece; off until the native app can own the audio route (Tom 10/8)",
   "sounds-1": "Chapter 1: Sounds you'll say, after First words \u00b7 Part 2 (nine key sounds on cards, the wall with decoys, the run of nine said out loud)",
   "learn-reset-swipe": "Learn tab: swipe a session row to the left and tap Reset to make it never seen (the lesson mark and its words' history cleared)",
-  "splash-orange": "The arrival splash: the aura behind the lighthouse in the icon's orange instead of gold (the shipped size and softness, mock T2)",
-  "photo-chips": "Home over the photo: the streak and the language chip as dark frosted glass, the dials' unfilled track a light white (mock F1)",
   "sheet-rows": "The Review sheet's doors (Recommended, By scenario, The machine shop) in the Learn tab's row form; Recommended carries the down caret, opening the words due, when a review is picked",
   "tile-words": "Home: the action tile's kicker (REVIEW, NEXT SESSION) is a gold pill; a tap opens the hint bubble with the words the tile would open on",
   "review-straight-in": "Practice: no Start card and no END CIRCUIT card; the first exercise is the start, the ceremony is the end",
@@ -26,6 +24,7 @@ const STAGED = {
   "asks-2": "Chapter 2: The asks \u00b7 Part 2: Necesito, \u00bfHay?, \u00bfTiene?, \u00bfPuedo? (Part 1's shape: cards, the board, Which one do you say?, build the sentence, the listening board)",
   "ch1-three-words": "Chapter 1, three words (chat 10/3): \u00bfQu\u00e9 tal? takes Pase's seat in Words you'll hear; Muy bien takes Adi\u00f3s's seat and No entiendo joins as the eighth in First words \u00b7 Part 2",
 };
+// SHIPPED (Tom, 2026-10-23, v483): "photo-chips" (over the lit photo: the language chip as dark frosted glass, the streak a readout with a dark ring on the number and the flame, the dials' track a light white) and "splash-orange" (the arrival's aura in the icon's orange).
 // SHIPPED (Tom, 2026-10-19, v459): "asks-1", The asks · Part 1 (Quiero, ¿Me puede traer?, ¿Dónde está?, ¿Cuánto cuesta?) with the B2 situations and the hairline hints.
 // SHIPPED (Tom, 2026-10-03, v403): "chapter-1-adds" (Days you'll read as chapter 1's fourteenth session, after Signs; zumo and te in Counter
 // words), "sign-plates" (the read sessions show signs as plates: door plate on dark, enamel on light; read the sign then act, which sign, the

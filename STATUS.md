@@ -2027,3 +2027,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v482 (2026-10-23) — the splash's aura in the icon's orange (STAGED `splash-orange`, mock T2)
 - Tom: more of the app's orange on the arrival. Mocks dev/splash-glow-options.html and -2.html; pick T2: the shipped aura's box, centre and soft stops with the gold swapped for the orange of the icon and the candle. On the launch and on the Test Lab's arrival replay.
+
+## v483 (2026-10-23) — LIVE: the chips and the track over the photo; the splash's orange aura
+- Tom's word: `photo-chips` and `splash-orange` leave the STAGED map (live for everyone). The photo's brightness (Test Lab percent) and the outline toggle stay lab settings until Tom names the number to lock in.
