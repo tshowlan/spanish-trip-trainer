@@ -2039,3 +2039,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v487 (2026-10-23) — Test Lab: "Hold the light still" leaves
 - A diagnostic from 10/2 (to tell the flame's drift apart from the launch shift Tom was seeing); that investigation closed at v399. The row goes; the CSS hook stays harmless.
+
+## v488 (2026-10-23) — SHIPPED: Sounds you'll say, the three chapter-1 words, The asks · Part 2, Practice straight in, the tile's pill
+- Five switches leave the STAGED map on Tom's word: `sounds-1`, `ch1-three-words`, `asks-2`, `review-straight-in`, `tile-words`. Chapter 1 is fifteen sessions; chapter 2 opens with both asks sessions. Still staged: `ask-review`, `sheet-rows` (awaiting play), `learn-reset-swipe` (lab-only by design), `mic-check` (parked).

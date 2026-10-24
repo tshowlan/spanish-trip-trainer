@@ -40,7 +40,8 @@
 
 ## Staged, awaiting Tom's play
 - **LIVE 10/23 (v483):** over the lit photo the language chip is dark frosted glass, the streak a readout with a dark ring on the number and the flame, the dials' unfilled track a light white; the arrival's aura behind the lighthouse is the icon's orange. The photo at 100% on dark (v484) and Spain and the countdown with a light grey outline ring.
-- **STAGED now (10/21, v475):** the tile's kicker as a gold pill opening the words bubble (tile-words), Practice straight in with no Start/End cards (review-straight-in), the situation in review (ask-review: a due ask comes back as Which one do you say? from a bank of six, then its sentence; never a translation), swipe-to-reset on Learn rows (learn-reset-swipe), The asks · Part 2 (asks-2: Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?; Part 1's shape), Sounds you'll say (sounds-1), the three chapter-1 words (ch1-three-words). LIVE 10/19: The asks · Part 1 (v459). Next, one at a time: the reply sets, the rooms refit, Numbermachine.
+- **LIVE 10/23 (v488):** Sounds you'll say in chapter 1 (after First words · Part 2), the three chapter-1 words (¿Qué tal?, Muy bien, No entiendo), The asks · Part 2 (Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?), Practice straight in (no Start or End card), the tile's kicker as a gold pill opening the words bubble.
+- **STAGED now (10/23, v488):** the situation in review (ask-review), the Review sheet's doors as Learn rows (sheet-rows), swipe-to-reset on Learn rows (lab-only), the mic check (parked). the situation in review (ask-review: a due ask comes back as Which one do you say? from a bank of six, then its sentence; never a translation), swipe-to-reset on Learn rows (learn-reset-swipe), LIVE 10/19: The asks · Part 1 (v459). Next, one at a time: the review refit, the reply sets, the rooms refit, Numbermachine.
 
 ## Rulings on hold (Tom reading)
 - The ask grammar (one shape for every exercise: context → ask with four role labels → stage).

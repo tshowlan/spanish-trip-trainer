@@ -199,3 +199,8 @@ The hear sessions' cards no longer hold their words back while the line plays (t
 ## 2026-10-23 — Home over the lit photo and the splash's light (v483, live)
 - **Ruling changed at Tom's direction:** on Home the language chip is dark frosted glass (black 28%, 12px blur, a 22% hairline); the streak is a READOUT, no chip, the gold number and the flame wearing a tight dark ring; the dials' unfilled track is a light white (22%) so the rings read as rings over a brighter photo. The arrival splash's aura behind the lighthouse is the icon's orange (the shipped size and softness). Artifacts touched: design/home.html (.photo-on .flame and .lang), design/splash-arrival.html (the aura's colour). The photo's brightness is still a Test Lab setting; the number comes when Tom names it.
 - **10/23 (v484):** the Home photo at 100% brightness on dark (was 55%); Spain and the countdown wear a light grey ring in their shadow (mock C3). design/home.html's photo filter and .photo-on text shadows are superseded.
+
+## 2026-10-23 — SHIPPED on Tom's word (v488)
+- Chapter 1: Sounds you'll say (honor-system Say it, the nine-sound ledger; mic parked) and the three words (¿Qué tal? in Words you'll hear; Muy bien and No entiendo in First words · Part 2, Adiós and Pase giving up their seats).
+- Chapter 2: The asks · Part 2 (Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?) with the essence-test situations.
+- Practice runs straight in (no Start or End card). Home: the tile's kicker is a gold pill opening the bubble with the words the tile would open on. Still staged: the situation in review (ask-review), the Review sheet's doors as Learn rows (sheet-rows).
