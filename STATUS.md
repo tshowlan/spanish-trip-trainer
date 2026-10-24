@@ -2021,3 +2021,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v480 (2026-10-23) — the chips and the track over the lit photo (STAGED `photo-chips`, mock F1)
 - Tom: at 100% brightness the streak, the language chip and the dials' unfilled track blended into the photo. Mocks dev/photo-chips-options.html and -2.html; pick F1: both chips as dark frosted glass (black at 28%, 12px blur, a 22% hairline), the track a light white at 22%. The outline toggle (C3) and the halo mock were set aside.
+
+## v481 (2026-10-23) — the streak is a readout again (photo-chips: G2)
+- Tom: the frosted streak read as a button. The language chip keeps F1's glass (it is a control); the streak drops the chip and wears a tight dark ring on the gold number and, by Tom's ask, the same ring on the flame (a drop shadow on the icon, since text shadows do not reach SVG). Mock dev/photo-chips-options-3.html.

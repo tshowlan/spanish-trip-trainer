@@ -2370,5 +2370,7 @@ body.home-lit.trip-outline .trip .sub { text-shadow: 0 0 1.5px rgba(40,40,40,.55
 /* THE CHIPS AND THE TRACK OVER THE LIT PHOTO (Tom 10/23, staged "photo-chips", mock F1): the streak and the language chip as dark frosted
    glass (the photo blurred through a black tint), the dials' unfilled track a light white so the rings read as rings. */
 body.home-lit.photo-chips { --ring-track: rgba(255,255,255,.22); }
-body.home-lit.photo-chips .stat.streak, body.home-lit.photo-chips .topbar .lang-flag-top { background: rgba(0,0,0,.28); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; padding: 4px 9px; }
-body.home-lit.photo-chips .stat.streak { text-shadow: none; }
+body.home-lit.photo-chips .topbar .lang-flag-top { background: rgba(0,0,0,.28); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; padding: 4px 9px; }
+/* the streak is a READOUT, not a button (Tom 10/23, mock G2): no chip; the gold number and the flame wear the same tight dark ring */
+body.home-lit.photo-chips .stat.streak { text-shadow: 0 0 2px rgba(0,0,0,.85), 0 1px 6px rgba(0,0,0,.6); }
+body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5px rgba(0,0,0,.85)) drop-shadow(0 1px 4px rgba(0,0,0,.6)); }
