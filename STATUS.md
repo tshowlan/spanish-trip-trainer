@@ -2073,3 +2073,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v497 (2026-10-25) — Counter sentences by frame: variability over repeats
 - Tom (10/25): seeing ¿Tiene té? three times is low value; test the frame with other taught words; two strays in the banks; ¿Tiene té? too short; ¿Algo más? twice in a row; the typed reveal doubled the sentence and crowded the audio row; the ear build's reveal doubled the audio row. Now: fourteen sentences across five frames (three each for Quiero, Tiene, Hay, Me puede traer; two for Puedo), every word from chapter 1; the ladder spreads a frame's sentences across its beats (build one, hear-and-build another, answer a third, pick one with near misses, type one), so no sentence more than twice and each frame five times. Two strays per bank. The ear build's reveal shows the English, not a second speaker. The typed line is the es on stage, matured to the canonical form on resolve. No reply twice in a row. ¿Tiene té? became ¿Tiene algo sin gluten? and ¿Tiene té con leche?.
+
+## v498 (2026-10-25) — caña means beer
+- Tom: caña is the common word for a beer, so the gloss is "beer", not "small draft beer"; the size detail lives in the card's note. The counter sentence reads "I want two beers."
