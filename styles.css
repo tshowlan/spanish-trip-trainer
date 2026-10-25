@@ -1512,7 +1512,7 @@ body.in-runner .footer { background: transparent; border-top: none; }
 .runner { position: relative; }
 @media (prefers-reduced-motion: reduce) {
   .build-answer, .build-answer .word, .res-grown, .stick, .bank,
-  .res-grown .res-en, .res-grown .res-audio, .res-grown .res-note { transition: none; }
+  .res-grown .res-en, .res-grown .res-audio, .res-grown .res-note, .res-note.under-build { transition: none; }
   .build-answer.fused .sweep, .res-grown.show .sweep2 { animation: none; transform: scaleX(1); }
 }
 
@@ -1996,6 +1996,8 @@ img.scene-art { width: 286px; }
 #qbody.anchored .build-answer.fused { column-gap: 5px; row-gap: calc(6.3dvh - 38px); }
 #qbody.anchored .build-answer.fused .word { height: 38px; }
 #qbody.anchored .build-answer .sweep { bottom: -4px; }
+#qbody.anchored > .res-note.under-build { position: absolute; left: 0; right: 0; margin: 0; font-size: 12.5px; font-weight: 400; color: var(--text-dim); opacity: 0; transition: opacity 300ms cubic-bezier(.2,.7,.3,1) 450ms; will-change: opacity; }   /* the sentence's note under the built row (10/25) */
+#qbody.anchored > .res-note.under-build.show { opacity: 1; }
 #qbody.anchored .res-grown { margin-top: 18px; }
 
 /* ===== NUMBERS (rulings 2026-09-20; staged "numbers-1") ===== */

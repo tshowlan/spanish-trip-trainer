@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v504 (2026-10-25) — the sentence's note sits under the built row
+- v503 put croissant's spelling note in the reveal above the built row; with the three-line hint open it ran into the sentence (the fit check measures the reveal against the answers, not the mid-screen row). On an anchored build with a `.build-answer` row, a sentence's note (`q.resNote`) now leaves the reveal and sits as its own line under the row (absolute, placed from the row's bottom, re-placed once the fuse's gap settles), fading in last. The row's sweep stays under the words. Files: lesson.js, styles.css.
+
 ## v503 (2026-10-25) — the croissant at the Counter (a cognate needs no card)
 - Tom: croissant works in chapter 2 without a chapter 1 introduction, the word is the same. Ruling: a cognate is a met word; the sentence's hint carries it, the reveal's note gives the Spanish spelling. The third Hay line is now ¿Hay croissants de chocolate? (hint: Are there / hay · chocolate / de chocolate · croissants? / croissants; note: "Also spelled cruasán, and said the French way."; replies Sí, claro · No, solo normales · Un momento). ¿Hay pan para la mesa? is out of the Counter, kept for the Table session.
 - Engine: `_sentenceBuild` carries an item's `note` as the reveal's note (`resNote`), on every build rung of that sentence; the reveal's fit check drops it when it does not fit.

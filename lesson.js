@@ -4237,6 +4237,14 @@ function resolveCorrect(item, q, info) {
   const room = (topEl && ansEl) ? ansEl.getBoundingClientRect().top - topEl.getBoundingClientRect().bottom : Infinity;
   if (q && q.grownBelow && qb.classList.contains("anchored") && room < 64) { grown.classList.add("grown-below"); qb.appendChild(grown); }
   else (qb.classList.contains("anchored") ? (topEl || qb) : qb).appendChild(grown);
+  // a sentence's own note (croissant's spelling, 10/25) sits under the built row, the thing it reads; the stage above the row has no
+  // room for it beside a three-line hint. It fades in last, like the note in the reveal.
+  const builtRow = qb.classList.contains("anchored") ? qb.querySelector(":scope > .build-answer") : null, nt0 = grown.querySelector(".res-note");
+  if (builtRow && nt0 && q && q.resNote) {
+    nt0.remove(); nt0.classList.add("under-build"); builtRow.after(nt0);   // a sibling, not a child: the row's sweep stays under the words
+    const place = () => { nt0.style.top = (builtRow.offsetTop + builtRow.offsetHeight + 14) + "px"; };
+    place(); requestAnimationFrame(() => requestAnimationFrame(() => { place(); nt0.classList.add("show"); })); setTimeout(place, 520);   // again once the fuse's gap has settled
+  }
   // the reveal must not run into the answers (Tom 10/20: a four-line situation plus RESTORED's note overlapped the first tile). Measured
   // after the fact: if the top now reaches the answers, the note goes first (the kicker already says it); if it still does not fit, the
   // reveal drops under the answers.
