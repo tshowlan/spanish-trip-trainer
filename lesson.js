@@ -371,10 +371,10 @@ function composeSentences(lesson) {
   frames.forEach(list => {
     const s = shuffle(list.slice()), at = i => s[i % s.length];
     builds.push(_sentenceBuild(at(0), pool));
-    ears.push(Object.assign(_sentenceBuild(at(1), pool), { heard: at(1).es, listenBuild: true, cueRole: "Listen, then build it", cueMeaning: "", hint: null, noEn: false, noAudio: true }));   // the stage keeps the replay; the English shows in the reveal (Tom 10/25)
+    ears.push(Object.assign(_sentenceBuild(at(1), pool), { heard: at(1).es, listenBuild: true, cueRole: "Listen, then build it", cueMeaning: "", hint: null, noEn: false, noAudio: true, resNote: null }));   // a sentence's note rides the first build only (once a session, Tom 10/25)   // the stage keeps the replay; the English shows in the reveal (Tom 10/25)
     const ex = at(2); if ((ex.replies || []).length) { const r = sample(ex.replies, 1)[0]; exchanges.push({ type: "reply_hear", item: ex, es: r[0], en: r[1], set: { ask: ex.es, line: ex.es, place, replies: ex.replies.map(x => x[0]) }, options: ex.replies.map(x => x[1]), arc: true }); }
     const pk = [at(1), at(0), at(2)].find(x => (x.near || []).length >= 2); if (pk) picks.push({ type: "hear_pick", item: pk, es: pk.es, en: pk.en, place, options: [pk.en].concat(pk.near.slice(0, 2)), arc: true });
-    typed.push(Object.assign(_sentenceBuild(at(s.length >= 3 ? 2 : 1), pool), { inputForm: "typed", cueRole: "Say it in Spanish", hint: null, arc: true, lap: true }));
+    typed.push(Object.assign(_sentenceBuild(at(s.length >= 3 ? 2 : 1), pool), { inputForm: "typed", cueRole: "Say it in Spanish", hint: null, arc: true, lap: true, resNote: null }));
   });
   const qs = [];
   const noSeam = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };
