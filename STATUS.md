@@ -2045,3 +2045,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v489 (2026-10-23) — Test Lab: "Make the asks due"
 - Tom's recording 23-10-18: with ask-review on, the tile kept recommending First words · Part 1. Not a bug: the tile is the recommendation and nothing was due (chapter 1 at 0 of 15 in that state; the asks played today), so it points at the next session; ask-review changes what a REVIEW serves, not when the tile asks for one. A lab button now puts every met ask on the review queue, so Review, Recommended serves them as situations at once. Verified in the browser: with the asks due, Recommended composes eight situations.
+
+## v490 (2026-10-24) — SHIPPED: the situation in review; one line edit
+- Tom played the review ("all look great"): `ask-review` leaves the STAGED map. ¿Cuánto cuesta? at the kiosk now reads "The map in the window has no price tag."

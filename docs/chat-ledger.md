@@ -204,3 +204,4 @@ The hear sessions' cards no longer hold their words back while the line plays (t
 - Chapter 1: Sounds you'll say (honor-system Say it, the nine-sound ledger; mic parked) and the three words (¿Qué tal? in Words you'll hear; Muy bien and No entiendo in First words · Part 2, Adiós and Pase giving up their seats).
 - Chapter 2: The asks · Part 2 (Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?) with the essence-test situations.
 - Practice runs straight in (no Start or End card). Home: the tile's kicker is a gold pill opening the bubble with the words the tile would open on. Still staged: the situation in review (ask-review), the Review sheet's doors as Learn rows (sheet-rows).
+- **10/24 (v490):** the situation in review SHIPPED on Tom's play ("the review exercises all look great"). One line edit: ¿Cuánto cuesta? at the kiosk, "The map in the window has no price tag."
