@@ -970,7 +970,7 @@ const CURRICULUM = {
        a greeting opens the sentences where a real counter would hear one. A sentence that already lives in the pack reuses that item.
        Replies are heard lines: met ones are met, the rest are chapter 2's hear words. The lists are Code's drafts for chat's pass. */
     sentences: [
-      { id: "sent-counter", staged: "sentences-1", sentences: true, noSplit: true, place: "At the counter", topic: "Sentences by place", title: "Counter sentences", line: "Coffee, beer, water and the card, said in full at the counter.",
+      { id: "sent-counter", staged: "sentences-1", sentences: true, noSplit: true, place: "At the counter", topic: "Sentences by place", title: "Counter sentences", line: "How to order, listen, and respond at the counter.", examples: ["Quiero", "\u00bfPuedo?", "caf\u00e9", "agua"],
         /* FRAMES, NOT REPEATS (Tom 10/25): each ask has three sentences at the counter; the ladder spreads them across its beats
            (build one, hear-and-build another, answer a third), so the frame is met five times through different words and no
            sentence more than twice. Every word met in chapter 1. The pick's wrong answers (near) turn on the frame or one word. */

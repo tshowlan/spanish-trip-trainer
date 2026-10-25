@@ -2080,5 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v501 (2026-10-25) — a sentence session's preview is the gist, not the list; the Oxford comma
+- Tom (10/25): the Counter drawer and the Home bubble listed fourteen sentences, too long; mock C1 chosen (the pills of C2 are not tappable and look like controls). A sentence session (`sentences: true`) now previews as its summary line plus four example words: Learn drawer = ABOUT THIS SESSION, the line, FOR EXAMPLE, the words (label on its own line so no word orphans at phone width); Home bubble = FOR EXAMPLE and the words only, since the tile's sub already carries the line. Data: `line` + `examples` on sent-counter in curriculum.js ("How to order, listen, and respond at the counter." · Quiero, ¿Puedo?, café, agua).
+- The Oxford comma is the app's rule from here (Tom): the summary line carries it; a scan of rendered strings found no other three-item list without it.
+- Staged with `sentences-1`. Files: curriculum.js, screen-learn.js, screen-home.js, styles.css.
+
 ## v500 (2026-10-25) — the exchange's line wears the hint mark; two slim sentences lengthened
 - Tom: ¿Hay pan? and ¿Hay tapas? too slim, now ¿Hay pan para la mesa? and ¿Hay tapas sin carne?; a hint on the exchange: the line you said wears the gold hairline on each piece (tap = its English), the app's hint mark, matched case-insensitively so the line keeps its own casing. The session preview for sentence sessions (purpose, frames, the beats, not every sentence) is under discussion.
