@@ -362,7 +362,8 @@ function composeReplies(lesson) {
   (lesson.sets || []).forEach(set => (set.replies || []).forEach(es => { const it = byEs.get(norm(es)), r = raw.get(norm(es)) || it; if (it) beats.push({ type: "reply_hear", item: it, es: r.es, en: r.en, set, options: set.replies.map(x => (raw.get(norm(x)) || byEs.get(norm(x)) || { en: x }).en), arc: true }); }));
   // shuffled so no ask comes twice in a row, each reply once
   let order = shuffle(beats);
-  for (let tries = 0; tries < 80 && order.some((b, i) => i > 0 && order[i - 1].set === b.set); tries++) order = shuffle(beats);   // never the same ask twice in a row (Tom 10/24)
+  const clash = (x, y) => x.set === y.set || x.item === y.item;   // never the same ask, nor the same reply, twice in a row (Tom 10/24)
+  for (let tries = 0; tries < 120 && order.some((b, i) => i > 0 && clash(order[i - 1], b)); tries++) order = shuffle(beats);
   const qs = order.slice();
   const half = Math.ceil((lesson.sets || []).length / 2);
   const firstSets = (lesson.sets || []).slice(0, half), lastSets = (lesson.sets || []).slice(half);

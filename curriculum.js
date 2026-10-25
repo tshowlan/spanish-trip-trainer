@@ -949,12 +949,12 @@ const CURRICULUM = {
       /* WHAT THEY SAY BACK (STAGED "replies-1"; chat's reply sets 9/25, the meanings Code's drafts 10/24): chapter 2's hearing session.
          sets = per ask: the line you said, where, and its replies; items = the unique replies (hear words, so they come back in review).
          A reply met in chapter 1 (Un momento, Aquí tiene) is the same item. */
-      { id: "replies-1", staged: "replies-1", replySet: true, noSplit: true, emphasis: "hear", topic: "First sentences", title: "What they say back · Part 1", line: "You ask, they answer. The replies to the four asks of Part 1.",
+      { id: "replies-1", staged: "replies-1", replySet: true, noSplit: true, emphasis: "hear", topic: "First sentences", title: "What they say back · Part 1", line: "You ask, they answer. The replies to the asks of Part 1.",
         sets: [
           { ask: "Quiero ___", line: "Quiero un café.", place: "At the counter", replies: ["Ahora mismo", "Marchando", "¿Con leche?"] },
           { ask: "¿Me puede traer ___?", line: "¿Me puede traer la cuenta?", place: "At the table", replies: ["Claro", "Ahora mismo", "Un momento"] },
-          { ask: "¿Dónde está ___?", line: "¿Dónde está el baño?", place: "In the restaurant", replies: ["A la derecha", "Todo recto", "Al final"] },
-          { ask: "¿Cuánto cuesta ___?", line: "¿Cuánto cuesta el taxi?", place: "On the street", replies: ["Son cinco", "Son diez", "Son veinte"] } ],
+          { ask: "¿Dónde está ___?", line: "¿Dónde está el baño?", place: "In the restaurant", replies: ["A la derecha", "Todo recto", "Al final"] } ],
+          /* ¿Cuánto cuesta?'s replies (prices) wait for Numbermachine (Tom 10/24: not worth training now; the numbers are chapter 1's) */
         items: [
           { es: "Ahora mismo", en: "Right away", hear: true, tags: ["replies"] },
           { es: "Marchando", en: "Coming right up", hear: true, tags: ["replies"] },
@@ -963,10 +963,7 @@ const CURRICULUM = {
           { es: "Un momento", en: "One moment", hear: true, tags: ["replies"] },
           { es: "A la derecha", en: "On the right", hear: true, tags: ["replies"] },
           { es: "Todo recto", en: "Straight ahead", hear: true, tags: ["replies"] },
-          { es: "Al final", en: "At the end", hear: true, tags: ["replies"] },
-          { es: "Son cinco", en: "Five", hear: true, tags: ["replies"] },
-          { es: "Son diez", en: "Ten", hear: true, tags: ["replies"] },
-          { es: "Son veinte", en: "Twenty", hear: true, tags: ["replies"] } ] }
+          { es: "Al final", en: "At the end", hear: true, tags: ["replies"] } ] }
     ]
   },
   glueGloss: {

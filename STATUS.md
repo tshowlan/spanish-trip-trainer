@@ -2059,3 +2059,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v493 (2026-10-24) — the price replies from met numbers only
 - Tom: doce is not met (Numbers · 1 is one to ten and the three bills). The set is Son cinco · Son diez · Son veinte (Five · Ten · Twenty). The standalone session stays (Tom: no folding into review for now).
+
+## v494 (2026-10-24) — What they say back: no price set, no reply twice in a row
+- Tom: ¿Cuánto cuesta?'s replies are not worth training now (prices wait for Numbermachine); and Ahora mismo came back to back across two asks. The session is three sets, nine beats; the shuffle forbids the same ask and the same reply in a row. The session's place in chapter 2 is under discussion (Tom: it reads like chapter 1; strengthen it or move it).
