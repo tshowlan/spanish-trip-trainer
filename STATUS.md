@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v512 (2026-10-25) — the card says it first, so it keeps "Keep in mind"
+- The card is the first place the app says puede is the polite part, so "Remember" would be wrong there (Tom). The clash of two keeps is fixed on the first sentence: "...¿Me trae...?, so listen for it. Keep in mind that puede adds the politeness." The Counter reminder, which comes later, is where "remember" belongs; its line is Tom's call. File: curriculum.js.
+
 ## v511 (2026-10-25) — GOOD TO KNOW wears B2
 - Tom chose B2 of dev/card-note-options-2.html: the label in full text colour, the line in the whisper grey, on cards and under built sentences alike. File: styles.css.
 
