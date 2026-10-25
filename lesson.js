@@ -353,6 +353,29 @@ function _askReviewForms(it, st) {
 /* WHAT THEY SAY BACK (STAGED "replies-1", Tom 10/24; mock dev/replies-beat-options.html): chapter 2's hearing session. Per set, each
    reply is heard once against the line you said; the three meanings of that set are the answers. Then the replies on the listening
    board, in two halves. The replies are hear items: the beat records an answer, the board a rep, and review takes them from there. */
+/* SENTENCES BY PLACE (STAGED "sentences-1", Tom 10/24): the asks filled with chapter 1's words. Per sentence: build it from tiles
+   (the English as the cue, the Hint pieces behind the button), hear it and pick its meaning, the exchange (you said it, they answer,
+   pick what the answer meant); then the sentences on the listening board. Blocks, shuffled, no sentence twice at a seam. */
+function _sentenceBuild(it, pool) {
+  const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
+  const tiles = tilesOf(it.es);
+  const others = pool.filter(x => x !== it).flatMap(x => tilesOf(x.es)).filter(w => w && !tiles.includes(w));
+  return { type: "weld", item: it, pool, target: it.es, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint };
+}
+function composeSentences(lesson) {
+  const pool = lesson.items || [], place = lesson.place || "";
+  const qs = [];
+  const noSeam = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };
+  noSeam(shuffle(pool.map(it => _sentenceBuild(it, pool))));
+  noSeam(shuffle(pool.map(it => ({ type: "hear_pick", item: it, es: it.es, en: it.en, place, options: [it.en].concat(sample(pool.filter(x => x !== it).map(x => x.en), 2)), arc: true }))));
+  noSeam(shuffle(pool.filter(it => (it.replies || []).length).map(it => {
+    const set = { ask: it.es, line: it.es, place, replies: it.replies.map(r => r[0]) };
+    const r = sample(it.replies, 1)[0];
+    return { type: "reply_hear", item: it, es: r[0], en: r[1], set, options: it.replies.map(x => x[1]), arc: true };
+  })));
+  if (pool.length >= 3) qs.push({ type: "pairs", items: pool.slice(), arc: true, lap: true });
+  return qs;
+}
 function composeReplies(lesson) {
   const byEs = new Map((lesson.items || []).map(it => [norm(it.es), it]));
   // the reply's own words and meaning come from the pack's entry (a reply met in chapter 1 is that item for its history, but it is
@@ -377,8 +400,10 @@ function renderReplyHear(q) {
   const item = q.item, set = q.set, body = $("#qbody");
   _anchor(body);
   const top = el(`<div class="top"></div>`);
-  top.appendChild(el(`<div class="direction">They answer${set.place ? ` <span class="at">· ${set.place}</span>` : ""}</div>`));
-  top.appendChild(el(`<div class="act-sit need you-said"><span class="ys-label">You said</span>${set.line}</div>`));
+  const place = set ? set.place : q.place;   // the same beat hears a reply (after your line) or a sentence on its own (hear_pick)
+  top.appendChild(el(`<div class="direction">${set ? "They answer" : "What did you hear?"}${place ? ` <span class="at">· ${place}</span>` : ""}</div>`));
+  if (set) top.appendChild(el(`<div class="act-sit need you-said"><span class="ys-label">You said</span>${set.line}</div>`));
+  else top.appendChild(el(`<div class="act-sit need">Listen, then pick what it meant.</div>`));
   const silent = run.soundOff || state.sound === false || !("speechSynthesis" in window);
   const said = q.es || item.es, meaning = q.en || item.en;
   const play = audioControl(slow => { slow ? speak(said, 0.55) : speak(said); }, { speed: true });
@@ -389,6 +414,7 @@ function renderReplyHear(q) {
   body.appendChild(top);
   if (!silent) setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
   q.esOnStage = true; q.noEn = true; q.noAudio = true; q.earReveal = true;
+  if (!q._shuffled) { q.options = shuffle(q.options.slice()); q._shuffled = true; }   // the right meaning never sits in the same seat
   const okIndex = q.options.indexOf(meaning);
   const answers = el(`<div class="answers at63"></div>`);
   const choices = _signChoices(q.options, okIndex, item, () => {
@@ -730,6 +756,7 @@ function composeSession(lesson) {
   // open primer → first presentation card.
   const reviewPool = newItems.length ? [] : lessonItems.slice();      // replays drill own items only
   if (lesson.numbers && isStaged("numbers-1")) return composeNumbers(lesson);   // numbers are an ear skill: their own session shape
+  if (lesson.sentences) return composeSentences(lesson);                       // sentences by place: build, hear, the exchange, the board
   if (lesson.replySet) return composeReplies(lesson);                           // what they say back: hear the reply, pick what it meant
   if (lesson.asks) return composeAsks(lesson, newItems);                         // the asks: a frame and a slot, their own session shape
   if (lesson.sounds) return composeSounds(lesson);                              // the key sounds: introduce, find them, say them
@@ -1806,7 +1833,7 @@ function renderQuestion() {
      grasp: renderGrasp, variation: renderVariation,
      machine_drill: renderMachineDrill, exchange: renderExchange, weld: renderWeld, stretch: renderWeld,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
-     listen_choice: renderListenChoice, reply_listen: renderReply, reply_hear: renderReplyHear,
+     listen_choice: renderListenChoice, reply_listen: renderReply, reply_hear: renderReplyHear, hear_pick: renderReplyHear,
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
      word_fill: renderWordFill, phrase_fill: renderPhraseFill,
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,

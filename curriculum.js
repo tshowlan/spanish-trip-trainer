@@ -964,6 +964,20 @@ const CURRICULUM = {
           { es: "A la derecha", en: "On the right", hear: true, tags: ["replies"] },
           { es: "Todo recto", en: "Straight ahead", hear: true, tags: ["replies"] },
           { es: "Al final", en: "At the end", hear: true, tags: ["replies"] } ] }
+    ],
+    /* SENTENCES BY PLACE (Tom 10/24; STAGED "sentences-1"): chapter 2's second half. The asks filled with chapter 1's words, one place
+       at a time: build it, hear it, the exchange (you said it, they answer, pick what it meant), the board. Every word met in chapter 1;
+       a greeting opens the sentences where a real counter would hear one. A sentence that already lives in the pack reuses that item.
+       Replies are heard lines: met ones are met, the rest are chapter 2's hear words. The lists are Code's drafts for chat's pass. */
+    sentences: [
+      { id: "sent-counter", staged: "sentences-1", sentences: true, noSplit: true, place: "At the counter", topic: "Sentences by place", title: "Counter sentences", line: "Coffee, beer, water and the card, said in full at the counter.", items: [
+        { es: "Hola. Quiero un café con leche.", en: "Hello. I want a coffee with milk.", hint: [["Hello.", "hola"], ["I want", "quiero"], ["a coffee", "un café"], ["with milk.", "con leche"]], replies: [["Marchando", "Coming right up"], ["¿Algo más?", "Anything else?"], ["Ahora mismo", "Right away"]] },
+        { es: "Quiero dos cañas.", en: "I want two small beers.", hint: [["I want", "quiero"], ["two", "dos"], ["small beers.", "cañas"]], replies: [["Marchando", "Coming right up"], ["¿Algo más?", "Anything else?"], ["Aquí tiene", "Here you go"]] },
+        { es: "Quiero un cortado para llevar.", en: "I want a cortado to go.", hint: [["I want", "quiero"], ["a cortado", "un cortado"], ["to go.", "para llevar"]], replies: [["Ahora mismo", "Right away"], ["Un momento", "One moment"], ["¿Algo más?", "Anything else?"]] },
+        { es: "¿Tiene té?", en: "Do you have tea?", hint: [["Do you have", "tiene"], ["tea?", "té"]], replies: [["Sí, claro", "Yes, of course"], ["Sí, ¿con leche?", "Yes, with milk?"], ["No, lo siento", "No, sorry"]] },
+        { es: "¿Hay agua sin gas?", en: "Is there still water?", hint: [["Is there", "hay"], ["still water?", "agua sin gas"]], replies: [["Sí, hay", "Yes, there is"], ["No hay", "There isn't"], ["Un momento", "One moment"]] },
+        { es: "Buenos días. ¿Me puede traer un zumo?", en: "Good morning. Could you bring me a juice?", hint: [["Good morning.", "buenos días"], ["Could you", "puede"], ["bring", "traer"], ["me", "me"], ["a juice?", "un zumo"]], replies: [["Claro", "Of course"], ["Ahora mismo", "Right away"], ["Un momento", "One moment"]] },
+        { es: "¿Puedo pagar con tarjeta?", en: "Can I pay by card?", hint: [["Can I", "puedo"], ["pay", "pagar"], ["by card?", "con tarjeta"]], replies: [["Sí, claro", "Yes, of course"], ["Solo efectivo", "Cash only"], ["Un momento", "One moment"]] } ] }
     ]
   },
   glueGloss: {
