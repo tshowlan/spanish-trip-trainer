@@ -451,9 +451,9 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .present-es { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.25; color: var(--text); }
 .present-en { font-size: 16px; color: var(--text-dim); margin-top: 8px; }
 /* GOOD TO KNOW (Tom 10/25, mock B): an aside on a card or under a built sentence wears a small label over the line, the line in full text colour */
-.note-label { display: block; margin: 14px 0 3px; }
-.present-note { font-size: 13px; color: var(--text); margin-top: 0; line-height: 1.4; }
-.res-note.gtk { color: var(--text); font-size: 13px; line-height: 1.4; } .res-note.gtk .note-label { margin-top: 0; }
+.note-label { display: block; margin: 14px 0 3px; color: var(--text); }   /* B2 (Tom 10/25): the label in full text colour, the line in the whisper grey */
+.present-note { font-size: 13px; color: var(--text-dim); margin-top: 0; line-height: 1.4; }
+.res-note.gtk { color: var(--text-dim); font-size: 13px; line-height: 1.4; } .res-note.gtk .note-label { margin-top: 0; }
 .present-ctx { font-size: 15px; color: var(--text-dim); margin-top: 12px; line-height: 1.5; }
 .present-ctx .es { color: var(--text); font-family: var(--font-display); font-weight: 500; cursor: pointer; border-bottom: 1px dotted var(--text-dim); }
 .present-ctx .es.playing { color: var(--accent-2); border-bottom-color: var(--accent-2); }
