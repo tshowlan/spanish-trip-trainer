@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v510 (2026-10-25) — the Counter reminder's last words
+- Tom: "Keep an ear out for it." on the three ¿Me puede traer? reminders at the Counter. File: curriculum.js.
+
 ## v509 (2026-10-25) — the card line ends at the politeness
 - Tom: the blurb ends "...puede adds the politeness." The over-polite tourist clause is cut. File: curriculum.js.
 
