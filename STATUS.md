@@ -2056,3 +2056,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 - Tom's dispositions (recording 20-45-57): "No hay" to Quiero un café is not a real reply, now "¿Con leche?"; the price set was a tell ("That's twelve" against bare "Five"/"Twenty") and treated cinco/veinte as new hear words, now Son cinco / Son doce / Son veinte with the meanings Five / Twelve / Twenty; the same ask never twice in a row; a reply already met as a chapter-1 word is that word (one identity, one history: Un momento, Ahora mismo, con leche, a la derecha, todo recto), heard here in its reply form.
 - The drop after the reveal (measured: the answers band moves a point 0.4s after the tap): the played line and the anchored answers keep a layer from the start.
 - "4 stronger, five pairs": the ledger counts a word whose strength rose as stronger and a word met for the first time as new; a pair of a new word shows under new, not stronger.
+
+## v493 (2026-10-24) — the price replies from met numbers only
+- Tom: doce is not met (Numbers · 1 is one to ten and the three bills). The set is Son cinco · Son diez · Son veinte (Five · Ten · Twenty). The standalone session stays (Tom: no folding into review for now).
