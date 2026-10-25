@@ -359,27 +359,28 @@ function _askReviewForms(it, st) {
 function _sentenceBuild(it, pool) {
   const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
   const tiles = tilesOf(it.es);
-  const others = pool.filter(x => x !== it).flatMap(x => tilesOf(x.es)).filter(w => w && !tiles.includes(w));
-  return { type: "weld", item: it, pool, target: it.es, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint };
+  const others = [...new Set(pool.filter(x => x !== it).flatMap(x => tilesOf(x.es)).filter(w => w && !tiles.includes(w)))];
+  return { type: "weld", item: it, pool, target: it.es, tiles, distractors: sample(others, Math.min(2, others.length)), targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint };   // two strays in chapter 2's banks (Tom 10/25)
 }
 function composeSentences(lesson) {
   const pool = lesson.items || [], place = lesson.place || "";
+  // the frames: each ask's sentences, shuffled, so the beats spread across them (build one, hear another, answer a third)
+  const frames = new Map();
+  pool.forEach(it => { const k = it.frame || norm(it.es); if (!frames.has(k)) frames.set(k, []); frames.get(k).push(it); });
+  const builds = [], ears = [], exchanges = [], picks = [], typed = [];
+  frames.forEach(list => {
+    const s = shuffle(list.slice()), at = i => s[i % s.length];
+    builds.push(_sentenceBuild(at(0), pool));
+    ears.push(Object.assign(_sentenceBuild(at(1), pool), { heard: at(1).es, listenBuild: true, cueRole: "Listen, then build it", cueMeaning: "", hint: null, noEn: false, noAudio: true }));   // the stage keeps the replay; the English shows in the reveal (Tom 10/25)
+    const ex = at(2); if ((ex.replies || []).length) { const r = sample(ex.replies, 1)[0]; exchanges.push({ type: "reply_hear", item: ex, es: r[0], en: r[1], set: { ask: ex.es, line: ex.es, place, replies: ex.replies.map(x => x[0]) }, options: ex.replies.map(x => x[1]), arc: true }); }
+    const pk = [at(1), at(0), at(2)].find(x => (x.near || []).length >= 2); if (pk) picks.push({ type: "hear_pick", item: pk, es: pk.es, en: pk.en, place, options: [pk.en].concat(pk.near.slice(0, 2)), arc: true });
+    typed.push(Object.assign(_sentenceBuild(at(s.length >= 3 ? 2 : 1), pool), { inputForm: "typed", cueRole: "Say it in Spanish", hint: null, arc: true, lap: true }));
+  });
   const qs = [];
   const noSeam = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };
-  // 1. build it: the English as the cue, the tiles below (the Hint pieces behind the button)
-  noSeam(shuffle(pool.map(it => _sentenceBuild(it, pool))));
-  // 2. hear it, build it: the sentence plays, no English, the same tiles (Tom 10/24: the ear beat is production, not a pick)
-  noSeam(shuffle(pool.map(it => Object.assign(_sentenceBuild(it, pool), { heard: it.es, listenBuild: true, cueRole: "Listen, then build it", cueMeaning: "", hint: null }))));
-  // 3. the exchange: you said it, they answer, pick what the answer meant
-  noSeam(shuffle(pool.filter(it => (it.replies || []).length).map(it => {
-    const set = { ask: it.es, line: it.es, place, replies: it.replies.map(r => r[0]) };
-    const r = sample(it.replies, 1)[0];
-    return { type: "reply_hear", item: it, es: r[0], en: r[1], set, options: it.replies.map(x => x[1]), arc: true };
-  })));
-  // 4. hear it, pick it: three sentences, the wrong answers near misses around the same word (authored; none authored, none served)
-  noSeam(sample(pool.filter(it => (it.near || []).length >= 2), 3).map(it => ({ type: "hear_pick", item: it, es: it.es, en: it.en, place, options: [it.en].concat(it.near.slice(0, 2)), arc: true })));
-  // 5. the lap, cold: four sentences typed from the English (chapter 2 lets the keyboard in)
-  noSeam(sample(pool, Math.min(4, pool.length)).map(it => Object.assign(_sentenceBuild(it, pool), { inputForm: "typed", cueRole: "Say it in Spanish", hint: null, arc: true, lap: true })));
+  let exs = shuffle(exchanges);
+  for (let t = 0; t < 60 && exs.some((q, i) => i > 0 && norm(exs[i - 1].es) === norm(q.es)); t++) exs = shuffle(exchanges);   // never the same reply twice in a row
+  noSeam(shuffle(builds)); noSeam(shuffle(ears)); noSeam(exs); noSeam(shuffle(picks)); noSeam(shuffle(typed));
   return qs;
 }
 function composeReplies(lesson) {
@@ -2528,6 +2529,7 @@ function renderWeld(q) {
     // standard resolution + correction). The cue chrome stays - the task is unchanged.
     const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe aquí…">`);
     stage.appendChild(input);
+    if (anchored) { q.esOnStage = true; q.onResolve = () => { input.value = target; input.readOnly = true; input.blur(); }; }   // chapter 2's cold lap: the typed line is the es on stage (no-repeat), matured to the canonical form on resolve (Tom 10/25: the reveal doubled it and crowded the audio row)
     if (anchored) { const answers = el(`<div class="answers at63"></div>`); answers.appendChild(stage); body.appendChild(answers); }   // the keyboard's field in the answers region, like the tiles (chapter 2's cold lap)
     else body.appendChild(stage);
     setTimeout(() => input.focus(), 50);
