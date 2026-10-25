@@ -2389,3 +2389,6 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
 
 /* the cold lap's field sits in flow under the English (chapter 2, Tom 10/25) */
 #qbody.anchored.typed-lap .top .machine-stage { margin-top: 22px; }
+
+.you-said .ys-line .hl { padding-bottom: 4px; }   /* the exchange's line wears the hint mark */
+.you-said .ys-line .hl .hint-pop { font-size: 14px; text-transform: none; letter-spacing: 0; font-weight: 500; }

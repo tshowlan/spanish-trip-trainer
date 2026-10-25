@@ -2079,3 +2079,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
+
+## v500 (2026-10-25) — the exchange's line wears the hint mark; two slim sentences lengthened
+- Tom: ¿Hay pan? and ¿Hay tapas? too slim, now ¿Hay pan para la mesa? and ¿Hay tapas sin carne?; a hint on the exchange: the line you said wears the gold hairline on each piece (tap = its English), the app's hint mark, matched case-insensitively so the line keeps its own casing. The session preview for sentence sessions (purpose, frames, the beats, not every sentence) is under discussion.

@@ -409,7 +409,7 @@ function renderReplyHear(q) {
   const top = el(`<div class="top"></div>`);
   const place = set ? set.place : q.place;   // the same beat hears a reply (after your line) or a sentence on its own (hear_pick)
   top.appendChild(el(`<div class="direction">${set ? "They answer" : "What did you hear?"}${place ? ` <span class="at">· ${place}</span>` : ""}</div>`));
-  if (set) top.appendChild(el(`<div class="act-sit need you-said"><span class="ys-label">You said</span>${set.line}</div>`));
+  if (set) { const line = el(`<div class="act-sit need you-said"><span class="ys-label">You said</span><span class="ys-line">${set.line}</span></div>`); top.appendChild(line); if ((item.hint || []).length) _hairlineWords(line.querySelector(".ys-line"), { words: item.hint.map(h => [h[1], h[0]]) }); }   // the hint mark on the line you said (Tom 10/25)
   else top.appendChild(el(`<div class="act-sit need">Listen, then pick what it meant.</div>`));
   const silent = run.soundOff || state.sound === false || !("speechSynthesis" in window);
   const said = q.es || item.es, meaning = q.en || item.en;
@@ -471,7 +471,7 @@ function renderAskWhich(q) {
 function _hairlineWords(host, item) {
   if (!host || !(item.words || []).length) return;
   let html = host.textContent;
-  item.words.forEach(w => { html = html.replace(w[0], `<span class="hl" data-en="${w[1]}">${w[0]}</span>`); });
+  item.words.forEach(w => { const re = new RegExp(w[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"); html = html.replace(re, m => `<span class="hl" data-en="${w[1]}">${m}</span>`); });   // case-insensitive, the line keeps its own casing (the exchange's YOU SAID line, Tom 10/25)
   host.innerHTML = html; host.classList.add("hinted");
   host.querySelectorAll(".hl").forEach(n => n.addEventListener("click", e => {
     e.stopPropagation();
