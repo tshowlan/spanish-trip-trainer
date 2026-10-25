@@ -13,3 +13,5 @@ Eight ways to ask, then the asks filled with the words you own, one place at a t
 9. **Numbermachine.** Numbers inside the sentences: prices and the hour; ¿A qué hora? and its replies.
 
 Retiring as the places land: the four old rooms, and What they say back as a session (its beat is the exchange inside each place). Review carries the chapter: a due ask comes back as a situation and its sentence (live), and a solid word comes back inside a sentence that carries it (the review refit, next).
+
+**Kept in mind for later (10/25): ¿Qué?** is not an ask until its replies are learnable. First seat: ¿A qué hora? in Numbermachine. After that only with a pointable answer (¿Qué es esto?, ¿Qué me recomienda?) in a later place session, once food and dish words exist to be the answers. See the ledger, 10/25.
