@@ -366,14 +366,20 @@ function composeSentences(lesson) {
   const pool = lesson.items || [], place = lesson.place || "";
   const qs = [];
   const noSeam = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };
+  // 1. build it: the English as the cue, the tiles below (the Hint pieces behind the button)
   noSeam(shuffle(pool.map(it => _sentenceBuild(it, pool))));
-  noSeam(shuffle(pool.map(it => ({ type: "hear_pick", item: it, es: it.es, en: it.en, place, options: [it.en].concat(sample(pool.filter(x => x !== it).map(x => x.en), 2)), arc: true }))));
+  // 2. hear it, build it: the sentence plays, no English, the same tiles (Tom 10/24: the ear beat is production, not a pick)
+  noSeam(shuffle(pool.map(it => Object.assign(_sentenceBuild(it, pool), { heard: it.es, listenBuild: true, cueRole: "Listen, then build it", cueMeaning: "", hint: null }))));
+  // 3. the exchange: you said it, they answer, pick what the answer meant
   noSeam(shuffle(pool.filter(it => (it.replies || []).length).map(it => {
     const set = { ask: it.es, line: it.es, place, replies: it.replies.map(r => r[0]) };
     const r = sample(it.replies, 1)[0];
     return { type: "reply_hear", item: it, es: r[0], en: r[1], set, options: it.replies.map(x => x[1]), arc: true };
   })));
-  if (pool.length >= 3) qs.push({ type: "pairs", items: pool.slice(), arc: true, lap: true });
+  // 4. hear it, pick it: three sentences, the wrong answers near misses around the same word (authored; none authored, none served)
+  noSeam(sample(pool.filter(it => (it.near || []).length >= 2), 3).map(it => ({ type: "hear_pick", item: it, es: it.es, en: it.en, place, options: [it.en].concat(it.near.slice(0, 2)), arc: true })));
+  // 5. the lap, cold: four sentences typed from the English (chapter 2 lets the keyboard in)
+  noSeam(sample(pool, Math.min(4, pool.length)).map(it => Object.assign(_sentenceBuild(it, pool), { inputForm: "typed", cueRole: "Say it in Spanish", hint: null, arc: true, lap: true })));
   return qs;
 }
 function composeReplies(lesson) {
@@ -409,7 +415,7 @@ function renderReplyHear(q) {
   const play = audioControl(slow => { slow ? speak(said, 0.55) : speak(said); }, { speed: true });
   const stage = el(`<div class="listen-stage"></div>`);
   if (silent) stage.appendChild(el(`<div class="played-line show"><span>${said}</span></div>`));   // no sound: read what they said
-  else { stage.appendChild(play); stage.appendChild(el(`<div class="hint">They answer. Tap to hear it again</div>`)); }
+  else { stage.appendChild(play); stage.appendChild(el(`<div class="hint">${set ? "They answer. Tap to hear it again" : "Tap to hear it again"}</div>`)); }
   top.appendChild(stage);
   body.appendChild(top);
   if (!silent) setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
@@ -2486,7 +2492,7 @@ function renderWeld(q) {
   const item = q.item;
   const target = q.target || q.ves || item.es;         // the stretch builds an authored VARIANT (depth ruling 2); scenes pin a target
   const body = $("#qbody");
-  const anchored = !!q.contextBuild && q.inputForm !== "typed";   // kit rung: the anchored layout, a plain direction, no brand line (Tom 9/13)
+  const anchored = !!q.contextBuild;   // kit rung: the anchored layout, a plain direction, no brand line (Tom 9/13); the typed form too (chapter 2's cold lap, Tom 10/24)
   if (anchored) _anchor(body);
   else body.appendChild(el(`<div class="qtype">${q.ves ? "The stretch" : "The weld"}</div>`));
   const cueBlock = el(`<div class="conv-cuewrap"></div>`);
@@ -2522,7 +2528,8 @@ function renderWeld(q) {
     // standard resolution + correction). The cue chrome stays - the task is unchanged.
     const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe aquí…">`);
     stage.appendChild(input);
-    body.appendChild(stage);
+    if (anchored) { const answers = el(`<div class="answers at63"></div>`); answers.appendChild(stage); body.appendChild(answers); }   // the keyboard's field in the answers region, like the tiles (chapter 2's cold lap)
+    else body.appendChild(stage);
     setTimeout(() => input.focus(), 50);
     const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
     input.addEventListener("input", () => { $("#check").disabled = !input.value.trim(); });
