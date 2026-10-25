@@ -951,22 +951,22 @@ const CURRICULUM = {
          A reply met in chapter 1 (Un momento, Aquí tiene) is the same item. */
       { id: "replies-1", staged: "replies-1", replySet: true, noSplit: true, emphasis: "hear", topic: "First sentences", title: "What they say back · Part 1", line: "You ask, they answer. The replies to the four asks of Part 1.",
         sets: [
-          { ask: "Quiero ___", line: "Quiero un café.", place: "At the counter", replies: ["Ahora mismo", "Marchando", "No hay"] },
+          { ask: "Quiero ___", line: "Quiero un café.", place: "At the counter", replies: ["Ahora mismo", "Marchando", "¿Con leche?"] },
           { ask: "¿Me puede traer ___?", line: "¿Me puede traer la cuenta?", place: "At the table", replies: ["Claro", "Ahora mismo", "Un momento"] },
           { ask: "¿Dónde está ___?", line: "¿Dónde está el baño?", place: "In the restaurant", replies: ["A la derecha", "Todo recto", "Al final"] },
-          { ask: "¿Cuánto cuesta ___?", line: "¿Cuánto cuesta el taxi?", place: "On the street", replies: ["Son doce", "Cinco", "Veinte"] } ],
+          { ask: "¿Cuánto cuesta ___?", line: "¿Cuánto cuesta el taxi?", place: "On the street", replies: ["Son cinco", "Son doce", "Son veinte"] } ],
         items: [
           { es: "Ahora mismo", en: "Right away", hear: true, tags: ["replies"] },
           { es: "Marchando", en: "Coming right up", hear: true, tags: ["replies"] },
-          { es: "No hay", en: "There's none", hear: true, tags: ["replies"] },
+          { es: "¿Con leche?", en: "With milk?", hear: true, tags: ["replies"] },
           { es: "Claro", en: "Of course", hear: true, tags: ["replies"] },
           { es: "Un momento", en: "One moment", hear: true, tags: ["replies"] },
           { es: "A la derecha", en: "On the right", hear: true, tags: ["replies"] },
           { es: "Todo recto", en: "Straight ahead", hear: true, tags: ["replies"] },
           { es: "Al final", en: "At the end", hear: true, tags: ["replies"] },
-          { es: "Son doce", en: "That's twelve", hear: true, tags: ["replies"] },
-          { es: "Cinco", en: "Five", hear: true, tags: ["replies"] },
-          { es: "Veinte", en: "Twenty", hear: true, tags: ["replies"] } ] }
+          { es: "Son cinco", en: "Five", hear: true, tags: ["replies"] },
+          { es: "Son doce", en: "Twelve", hear: true, tags: ["replies"] },
+          { es: "Son veinte", en: "Twenty", hear: true, tags: ["replies"] } ] }
     ]
   },
   glueGloss: {

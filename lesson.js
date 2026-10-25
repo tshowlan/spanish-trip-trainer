@@ -355,11 +355,14 @@ function _askReviewForms(it, st) {
    board, in two halves. The replies are hear items: the beat records an answer, the board a rep, and review takes them from there. */
 function composeReplies(lesson) {
   const byEs = new Map((lesson.items || []).map(it => [norm(it.es), it]));
+  // the reply's own words and meaning come from the pack's entry (a reply met in chapter 1 is that item for its history, but it is
+  // HEARD here as the reply: "¿Con leche?", not "con leche")
+  const raw = new Map((((activePack().flow || {}).asks || []).find(l => l.id === lesson.id) || { items: [] }).items.map(d => [norm(d.es), d]));
   const beats = [];
-  (lesson.sets || []).forEach(set => (set.replies || []).forEach(es => { const it = byEs.get(norm(es)); if (it) beats.push({ type: "reply_hear", item: it, set, options: set.replies.map(r => (byEs.get(norm(r)) || { en: r }).en), arc: true }); }));
-  // shuffled so no ask runs three in a row, each reply once
+  (lesson.sets || []).forEach(set => (set.replies || []).forEach(es => { const it = byEs.get(norm(es)), r = raw.get(norm(es)) || it; if (it) beats.push({ type: "reply_hear", item: it, es: r.es, en: r.en, set, options: set.replies.map(x => (raw.get(norm(x)) || byEs.get(norm(x)) || { en: x }).en), arc: true }); }));
+  // shuffled so no ask comes twice in a row, each reply once
   let order = shuffle(beats);
-  for (let tries = 0; tries < 40 && order.some((b, i) => i > 0 && order[i - 1].set === b.set && i > 1 && order[i - 2].set === b.set); tries++) order = shuffle(beats);
+  for (let tries = 0; tries < 80 && order.some((b, i) => i > 0 && order[i - 1].set === b.set); tries++) order = shuffle(beats);   // never the same ask twice in a row (Tom 10/24)
   const qs = order.slice();
   const half = Math.ceil((lesson.sets || []).length / 2);
   const firstSets = (lesson.sets || []).slice(0, half), lastSets = (lesson.sets || []).slice(half);
@@ -376,20 +379,21 @@ function renderReplyHear(q) {
   top.appendChild(el(`<div class="direction">They answer${set.place ? ` <span class="at">· ${set.place}</span>` : ""}</div>`));
   top.appendChild(el(`<div class="act-sit need you-said"><span class="ys-label">You said</span>${set.line}</div>`));
   const silent = run.soundOff || state.sound === false || !("speechSynthesis" in window);
-  const play = audioControl(slow => { slow ? speak(item.es, 0.55) : speak(item.es); }, { speed: true });
+  const said = q.es || item.es, meaning = q.en || item.en;
+  const play = audioControl(slow => { slow ? speak(said, 0.55) : speak(said); }, { speed: true });
   const stage = el(`<div class="listen-stage"></div>`);
-  if (silent) stage.appendChild(el(`<div class="played-line show"><span>${item.es}</span></div>`));   // no sound: read what they said
+  if (silent) stage.appendChild(el(`<div class="played-line show"><span>${said}</span></div>`));   // no sound: read what they said
   else { stage.appendChild(play); stage.appendChild(el(`<div class="hint">They answer. Tap to hear it again</div>`)); }
   top.appendChild(stage);
   body.appendChild(top);
   if (!silent) setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
   q.esOnStage = true; q.noEn = true; q.noAudio = true; q.earReveal = true;
-  const okIndex = q.options.indexOf(item.en);
+  const okIndex = q.options.indexOf(meaning);
   const answers = el(`<div class="answers at63"></div>`);
   const choices = _signChoices(q.options, okIndex, item, () => {
     if (silent) return;
     const pl = el(`<div class="played-line"></div>`);            // the stage gives way to the reply's line and its replay (the ear never loses the answer)
-    pl.appendChild(audioControl(() => speak(item.es))); pl.appendChild(el(`<span>${item.es}</span>`));
+    pl.appendChild(audioControl(() => speak(said))); pl.appendChild(el(`<span>${said}</span>`));
     stage.replaceWith(pl); setTimeout(() => pl.classList.add("show"), 20);
   });
   answers.appendChild(choices);

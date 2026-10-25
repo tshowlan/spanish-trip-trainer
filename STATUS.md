@@ -2051,3 +2051,8 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v491 (2026-10-24) — What they say back · Part 1 (STAGED `replies-1`)
 - Chapter 2's hearing session, in the chapter-1 form (mock dev/replies-beat-options.html): per ask, the line you said up top (YOU SAID), the reply plays on entry, the three meanings of that ask's set are the answers; the stage gives way to the reply's line and its replay (no-repeat); then the replies on the listening board in two halves. Twelve beats, each reply once, no ask three in a row. The replies are hear items (Un momento is the chapter-1 word); the beat records the answer. No sound: the reply is read instead of played. Sets from chat's 9/25 reply sets; the English meanings are Code's drafts (ledger). The session is whole (noSplit).
+
+## v492 (2026-10-24) — What they say back · Part 1 after Tom's first play
+- Tom's dispositions (recording 20-45-57): "No hay" to Quiero un café is not a real reply, now "¿Con leche?"; the price set was a tell ("That's twelve" against bare "Five"/"Twenty") and treated cinco/veinte as new hear words, now Son cinco / Son doce / Son veinte with the meanings Five / Twelve / Twenty; the same ask never twice in a row; a reply already met as a chapter-1 word is that word (one identity, one history: Un momento, Ahora mismo, con leche, a la derecha, todo recto), heard here in its reply form.
+- The drop after the reveal (measured: the answers band moves a point 0.4s after the tap): the played line and the anchored answers keep a layer from the start.
+- "4 stronger, five pairs": the ledger counts a word whose strength rose as stronger and a word met for the first time as new; a pair of a new word shows under new, not stronger.

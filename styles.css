@@ -2381,3 +2381,8 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
 
 /* WHAT THEY SAY BACK (staged "replies-1"): the line you said, labelled */
 .act-sit.you-said .ys-label { display: block; font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+
+/* THE DROP AFTER THE REVEAL (Tom's recording 10/24 20-45, measured): the answers band moves a point 0.4s after the tap, at the end of the
+   reveal's fade. The played line and the anchored answers keep a layer from the start, as the result rows and the Home rows do. */
+.played-line { will-change: opacity; }
+#qbody.anchored .answers { will-change: transform; }

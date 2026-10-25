@@ -171,7 +171,7 @@ function _chapterFlowDeck(deck, rooms) {
   });
   // a word met in chapter one IS the same item when a later lesson carries it (one identity, one history)
   old.slice(1).forEach(st => st.lessons.forEach(l => { l.items = (l.items || []).map(it => made.get(slug(it.es)) || it); }));
-  const asks = (flow.asks || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, asks: true, items: w.items.filter(live).map(d => Object.assign({ tier: 1 }, d)) }));
+  const asks = (flow.asks || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, asks: true, items: w.items.filter(live).map(d => (w.replySet && made.has(slug(d.es))) ? made.get(slug(d.es)) : Object.assign({ tier: 1 }, d)) }));
   const order = flow.rooms || [];
   const roomList = rooms.slice().sort((a, b) => (order.indexOf(a.id) + 1 || 99) - (order.indexOf(b.id) + 1 || 99));
   const t = flow.chapters || [], b = flow.blurbs || [];

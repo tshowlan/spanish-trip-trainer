@@ -211,3 +211,4 @@ The hear sessions' cards no longer hold their words back while the line plays (t
 - The lines you said (one per ask, Code's): Quiero un café. · ¿Me puede traer la cuenta? · ¿Dónde está el baño? · ¿Cuánto cuesta el taxi?
 - Part 2 (Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?) follows once Tom has played Part 1; its ¿Puedo? set is still Code's draft (Sí, claro · Claro · No, lo siento).
 - Chapter 2's session list is written out in docs/chapter-2-sessions.md.
+- **10/24 (v492), two deviations from your reply sets, Tom's call:** Quiero's "No hay" is out (no café is out of coffee): "¿Con leche?" in. ¿Cuánto cuesta?'s "Son doce · Cinco · Veinte" is now "Son cinco · Son doce · Son veinte" (one shape, no tell; the bare numbers are chapter-1 words, not replies). Tom also asks whether the price replies should wait for Numbermachine at all; Code's view in the ledger reply below.
