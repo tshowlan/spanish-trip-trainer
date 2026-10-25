@@ -360,7 +360,7 @@ function _sentenceBuild(it, pool) {
   const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
   const tiles = tilesOf(it.es);
   const others = [...new Set(pool.filter(x => x !== it).flatMap(x => tilesOf(x.es)).filter(w => w && !tiles.includes(w)))];
-  return { type: "weld", item: it, pool, target: it.es, tiles, distractors: sample(others, Math.min(2, others.length)), targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint };   // two strays in chapter 2's banks (Tom 10/25)
+  return { type: "weld", item: it, pool, target: it.es, tiles, distractors: sample(others, Math.min(2, others.length)), targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint, resNote: it.note || null };   // two strays in chapter 2's banks (Tom 10/25); a sentence's note rides its reveal (croissant's spelling, 10/25)
 }
 function composeSentences(lesson) {
   const pool = lesson.items || [], place = lesson.place || "";
