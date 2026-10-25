@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v505 (2026-10-25) — the exchange's replay sits clear of the gold lines
+- Tom's screenshot: after the pick, the reply's speaker and line sat 4px under the YOU SAID line's hairlines. The played line under a YOU SAID line now has an 18px top margin (`.you-said + .played-line`); other listening rungs unchanged. File: styles.css.
+
 ## v504 (2026-10-25) — the sentence's note sits under the built row
 - v503 put croissant's spelling note in the reveal above the built row; with the three-line hint open it ran into the sentence (the fit check measures the reveal against the answers, not the mid-screen row). On an anchored build with a `.build-answer` row, a sentence's note (`q.resNote`) now leaves the reveal and sits as its own line under the row (absolute, placed from the row's bottom, re-placed once the fuse's gap settles), fading in last. The row's sweep stays under the words. Files: lesson.js, styles.css.
 
