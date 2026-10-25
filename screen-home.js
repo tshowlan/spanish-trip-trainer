@@ -789,7 +789,7 @@ function heroTile() {
     if (!items.length && !(h.lesson && h.lesson.sentences)) return;
     const row = it => h.lesson && h.lesson.sounds ? `<span class="pl-row"><b>${typeof goldHtml === "function" ? goldHtml(it.es, it.gold) : it.es}</b><i>${it.say || ""}</i></span>` : `<span class="pl-row"><b>${it.es}</b><i>${it.en}</i></span>`;
     const pop = (h.kind === "lesson" && h.lesson && h.lesson.sentences)   // a sentence session: the gist, not the list (Tom 10/25)
-      ? el(`<div class="hint-pop pop-list tile-pop">${button ? "" : `<div class="pl-about">${h.lesson.line || ""}</div>`}${(h.lesson.examples || []).length ? `<div class="peek-ex"><span class="ex-label">For example</span>${h.lesson.examples.join(" \u00b7 ")}</div>` : ""}</div>`)
+      ? el(`<div class="hint-pop pop-list tile-pop">${button ? "" : `<div class="pl-about">${h.lesson.line || ""}</div>`}${(h.lesson.examples || []).length ? `<div class="peek-ex"><span class="ex-label">Examples</span>${h.lesson.examples.join(" \u00b7 ")}</div>` : ""}</div>`)
       : el(`<div class="hint-pop pop-list tile-pop">${items.map(row).join("")}</div>`);
     home.appendChild(pop);
     const hr = home.getBoundingClientRect(), pr = pill.getBoundingClientRect();

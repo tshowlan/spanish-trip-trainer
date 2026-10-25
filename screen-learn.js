@@ -53,7 +53,7 @@ function _togglePeek(row, l) {
   // drawer option 1 (Tom 9/24): two labels in the whisper face, ABOUT THIS SESSION over the line (plain, not italic), THE WORDS over the list
   // a sentence session's drawer is the gist, not the list (Tom 10/25, mock C1): the summary line and four example words
   const peek = l.sentences
-    ? el(`<div class="lesson-peek"><div class="cue-label peek-label">About this session</div><div class="peek-line">${tidyBreaks(l.line || "")}</div>${(l.examples || []).length ? `<div class="peek-ex"><span class="ex-label">For example</span>${l.examples.join(" \u00b7 ")}</div>` : ""}</div>`)
+    ? el(`<div class="lesson-peek"><div class="cue-label peek-label">About this session</div><div class="peek-line">${tidyBreaks(l.line || "")}</div>${(l.examples || []).length ? `<div class="peek-ex"><span class="ex-label">Examples</span>${l.examples.join(" \u00b7 ")}</div>` : ""}</div>`)
     : el(`<div class="lesson-peek">${l.line ? `<div class="cue-label peek-label">About this session</div><div class="peek-line">${tidyBreaks(l.line)}</div>` : ""}<div class="cue-label peek-label">${l.sounds ? "The sounds" : "The words"}</div><div class="peek-list">${groups}</div></div>`);   // no button: the row itself starts the lesson (option A, Tom 9/21)
   row.after(peek);
   requestAnimationFrame(() => {

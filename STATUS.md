@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v502 (2026-10-25) — the preview's label is Examples; six words
+- Tom: "Examples", not "For example", and six words, four felt light. Counter now previews Quiero · ¿Tiene? · ¿Puedo? · café · agua · tapas. Open with Tom: ¿Hay pan para la mesa? reads as a Table sentence (pan is a Table word); Code's proposed swap is ¿Hay café para llevar? at the Counter, pan carried to Table. No pastry word is met in chapter 1 (croissant and pasteles live in the old Coffee shop room), so adding one is a chapter 1 edit for chat.
+
 ## v501 (2026-10-25) — a sentence session's preview is the gist, not the list; the Oxford comma
 - Tom (10/25): the Counter drawer and the Home bubble listed fourteen sentences, too long; mock C1 chosen (the pills of C2 are not tappable and look like controls). A sentence session (`sentences: true`) now previews as its summary line plus four example words: Learn drawer = ABOUT THIS SESSION, the line, FOR EXAMPLE, the words (label on its own line so no word orphans at phone width); Home bubble = FOR EXAMPLE and the words only, since the tile's sub already carries the line. Data: `line` + `examples` on sent-counter in curriculum.js ("How to order, listen, and respond at the counter." · Quiero, ¿Puedo?, café, agua).
 - The Oxford comma is the app's rule from here (Tom): the summary line carries it; a scan of rendered strings found no other three-item list without it.
