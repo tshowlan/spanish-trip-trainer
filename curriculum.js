@@ -945,7 +945,28 @@ const CURRICULUM = {
           sits: [["In the taxi", "You're paying with a fifty, and the driver may not carry change."], ["At the pharmacy", "You want ibuprofen. The pharmacist knows if it's in stock."], ["In a shop", "The same shirt, a size up. The clerk would know."], ["At the kiosk", "A charger for your phone, maybe behind the counter."], ["At the counter", "Oat milk. The barista knows what's in the fridge."], ["At the hotel desk", "A map of the city; the desk usually keeps some."]] },
         { es: "¿Puedo ___?", en: "Can I ___?", tags: ["asks"], words: [["Puedo", "can I"]], contextEs: "¿Puedo pagar con tarjeta?", contextEn: "Can I pay by card?",
           hint: [["Can I", "puedo"], ["pay", "pagar"], ["by card?", "con tarjeta"]],
-          sits: [["At the café", "There's one empty table outside and you'd like to take it."], ["In a shop", "The jacket looks right. You'd like to try it on first."], ["At the counter", "You'd rather pay by card than cash."], ["In the museum", "You'd love a photo of the painting."], ["At the hotel desk", "Checkout is at noon; you'd like to leave the bags until five."], ["On the train", "The window seat is empty and you'd like it."]] } ] }
+          sits: [["At the café", "There's one empty table outside and you'd like to take it."], ["In a shop", "The jacket looks right. You'd like to try it on first."], ["At the counter", "You'd rather pay by card than cash."], ["In the museum", "You'd love a photo of the painting."], ["At the hotel desk", "Checkout is at noon; you'd like to leave the bags until five."], ["On the train", "The window seat is empty and you'd like it."]] } ] },
+      /* WHAT THEY SAY BACK (STAGED "replies-1"; chat's reply sets 9/25, the meanings Code's drafts 10/24): chapter 2's hearing session.
+         sets = per ask: the line you said, where, and its replies; items = the unique replies (hear words, so they come back in review).
+         A reply met in chapter 1 (Un momento, Aquí tiene) is the same item. */
+      { id: "replies-1", staged: "replies-1", replySet: true, noSplit: true, emphasis: "hear", topic: "First sentences", title: "What they say back · Part 1", line: "You ask, they answer. The replies to the four asks of Part 1.",
+        sets: [
+          { ask: "Quiero ___", line: "Quiero un café.", place: "At the counter", replies: ["Ahora mismo", "Marchando", "No hay"] },
+          { ask: "¿Me puede traer ___?", line: "¿Me puede traer la cuenta?", place: "At the table", replies: ["Claro", "Ahora mismo", "Un momento"] },
+          { ask: "¿Dónde está ___?", line: "¿Dónde está el baño?", place: "In the restaurant", replies: ["A la derecha", "Todo recto", "Al final"] },
+          { ask: "¿Cuánto cuesta ___?", line: "¿Cuánto cuesta el taxi?", place: "On the street", replies: ["Son doce", "Cinco", "Veinte"] } ],
+        items: [
+          { es: "Ahora mismo", en: "Right away", hear: true, tags: ["replies"] },
+          { es: "Marchando", en: "Coming right up", hear: true, tags: ["replies"] },
+          { es: "No hay", en: "There's none", hear: true, tags: ["replies"] },
+          { es: "Claro", en: "Of course", hear: true, tags: ["replies"] },
+          { es: "Un momento", en: "One moment", hear: true, tags: ["replies"] },
+          { es: "A la derecha", en: "On the right", hear: true, tags: ["replies"] },
+          { es: "Todo recto", en: "Straight ahead", hear: true, tags: ["replies"] },
+          { es: "Al final", en: "At the end", hear: true, tags: ["replies"] },
+          { es: "Son doce", en: "That's twelve", hear: true, tags: ["replies"] },
+          { es: "Cinco", en: "Five", hear: true, tags: ["replies"] },
+          { es: "Veinte", en: "Twenty", hear: true, tags: ["replies"] } ] }
     ]
   },
   glueGloss: {

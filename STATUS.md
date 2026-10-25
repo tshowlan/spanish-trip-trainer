@@ -2048,3 +2048,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v490 (2026-10-24) — SHIPPED: the situation in review; one line edit
 - Tom played the review ("all look great"): `ask-review` leaves the STAGED map. ¿Cuánto cuesta? at the kiosk now reads "The map in the window has no price tag."
+
+## v491 (2026-10-24) — What they say back · Part 1 (STAGED `replies-1`)
+- Chapter 2's hearing session, in the chapter-1 form (mock dev/replies-beat-options.html): per ask, the line you said up top (YOU SAID), the reply plays on entry, the three meanings of that ask's set are the answers; the stage gives way to the reply's line and its replay (no-repeat); then the replies on the listening board in two halves. Twelve beats, each reply once, no ask three in a row. The replies are hear items (Un momento is the chapter-1 word); the beat records the answer. No sound: the reply is read instead of played. Sets from chat's 9/25 reply sets; the English meanings are Code's drafts (ledger). The session is whole (noSplit).

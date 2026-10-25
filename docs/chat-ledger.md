@@ -205,3 +205,9 @@ The hear sessions' cards no longer hold their words back while the line plays (t
 - Chapter 2: The asks · Part 2 (Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?) with the essence-test situations.
 - Practice runs straight in (no Start or End card). Home: the tile's kicker is a gold pill opening the bubble with the words the tile would open on. Still staged: the situation in review (ask-review), the Review sheet's doors as Learn rows (sheet-rows).
 - **10/24 (v490):** the situation in review SHIPPED on Tom's play ("the review exercises all look great"). One line edit: ¿Cuánto cuesta? at the kiosk, "The map in the window has no price tag."
+
+## 2026-10-24 — What they say back · Part 1 (STAGED `replies-1`): the meanings, a writing job
+- Built on your 9/25 reply sets, in the chapter-1 form (the line you said up top, the reply plays, three meanings to pick from, then the listening board). The English on the answers is Code's draft; pass it: Ahora mismo "Right away" · Marchando "Coming right up" · No hay "There's none" · Claro "Of course" · Un momento "One moment" · A la derecha "On the right" · Todo recto "Straight ahead" · Al final "At the end" · Son doce "That's twelve" · Cinco "Five" · Veinte "Twenty".
+- The lines you said (one per ask, Code's): Quiero un café. · ¿Me puede traer la cuenta? · ¿Dónde está el baño? · ¿Cuánto cuesta el taxi?
+- Part 2 (Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?) follows once Tom has played Part 1; its ¿Puedo? set is still Code's draft (Sí, claro · Claro · No, lo siento).
+- Chapter 2's session list is written out in docs/chapter-2-sessions.md.

@@ -350,6 +350,51 @@ function _askReviewForms(it, st) {
   if (it.contextEs) forms.push(_askBuild(it, pool));
   return forms;
 }
+/* WHAT THEY SAY BACK (STAGED "replies-1", Tom 10/24; mock dev/replies-beat-options.html): chapter 2's hearing session. Per set, each
+   reply is heard once against the line you said; the three meanings of that set are the answers. Then the replies on the listening
+   board, in two halves. The replies are hear items: the beat records an answer, the board a rep, and review takes them from there. */
+function composeReplies(lesson) {
+  const byEs = new Map((lesson.items || []).map(it => [norm(it.es), it]));
+  const beats = [];
+  (lesson.sets || []).forEach(set => (set.replies || []).forEach(es => { const it = byEs.get(norm(es)); if (it) beats.push({ type: "reply_hear", item: it, set, options: set.replies.map(r => (byEs.get(norm(r)) || { en: r }).en), arc: true }); }));
+  // shuffled so no ask runs three in a row, each reply once
+  let order = shuffle(beats);
+  for (let tries = 0; tries < 40 && order.some((b, i) => i > 0 && order[i - 1].set === b.set && i > 1 && order[i - 2].set === b.set); tries++) order = shuffle(beats);
+  const qs = order.slice();
+  const half = Math.ceil((lesson.sets || []).length / 2);
+  const firstSets = (lesson.sets || []).slice(0, half), lastSets = (lesson.sets || []).slice(half);
+  const itemsOf = sets => [...new Set(sets.flatMap(st => st.replies.map(r => byEs.get(norm(r))).filter(Boolean)))];
+  const a = itemsOf(firstSets), b = itemsOf(lastSets).filter(it => !a.includes(it));
+  if (a.length >= 3) qs.push({ type: "pairs", items: a, arc: true, lap: true });
+  if (b.length >= 3) qs.push({ type: "pairs", items: b, arc: true, lap: true });
+  return qs;
+}
+function renderReplyHear(q) {
+  const item = q.item, set = q.set, body = $("#qbody");
+  _anchor(body);
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">They answer${set.place ? ` <span class="at">· ${set.place}</span>` : ""}</div>`));
+  top.appendChild(el(`<div class="act-sit need you-said"><span class="ys-label">You said</span>${set.line}</div>`));
+  const silent = run.soundOff || state.sound === false || !("speechSynthesis" in window);
+  const play = audioControl(slow => { slow ? speak(item.es, 0.55) : speak(item.es); }, { speed: true });
+  const stage = el(`<div class="listen-stage"></div>`);
+  if (silent) stage.appendChild(el(`<div class="played-line show"><span>${item.es}</span></div>`));   // no sound: read what they said
+  else { stage.appendChild(play); stage.appendChild(el(`<div class="hint">They answer. Tap to hear it again</div>`)); }
+  top.appendChild(stage);
+  body.appendChild(top);
+  if (!silent) setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
+  q.esOnStage = true; q.noEn = true; q.noAudio = true; q.earReveal = true;
+  const okIndex = q.options.indexOf(item.en);
+  const answers = el(`<div class="answers at63"></div>`);
+  const choices = _signChoices(q.options, okIndex, item, () => {
+    if (silent) return;
+    const pl = el(`<div class="played-line"></div>`);            // the stage gives way to the reply's line and its replay (the ear never loses the answer)
+    pl.appendChild(audioControl(() => speak(item.es))); pl.appendChild(el(`<span>${item.es}</span>`));
+    stage.replaceWith(pl); setTimeout(() => pl.classList.add("show"), 20);
+  });
+  answers.appendChild(choices);
+  body.appendChild(answers);
+}
 function composeAsks(lesson, newItems) {
   const pool = lesson.items || [], qs = [];
   (newItems.length ? newItems : []).forEach(it => qs.push({ type: "present", item: it, arc: true }));
@@ -680,6 +725,7 @@ function composeSession(lesson) {
   // open primer → first presentation card.
   const reviewPool = newItems.length ? [] : lessonItems.slice();      // replays drill own items only
   if (lesson.numbers && isStaged("numbers-1")) return composeNumbers(lesson);   // numbers are an ear skill: their own session shape
+  if (lesson.replySet) return composeReplies(lesson);                           // what they say back: hear the reply, pick what it meant
   if (lesson.asks) return composeAsks(lesson, newItems);                         // the asks: a frame and a slot, their own session shape
   if (lesson.sounds) return composeSounds(lesson);                              // the key sounds: introduce, find them, say them
 
@@ -1755,7 +1801,7 @@ function renderQuestion() {
      grasp: renderGrasp, variation: renderVariation,
      machine_drill: renderMachineDrill, exchange: renderExchange, weld: renderWeld, stretch: renderWeld,
      type_translation: renderType, listen_type: renderListen, fill_blank: renderFill, speak_it: renderSpeak,
-     listen_choice: renderListenChoice, reply_listen: renderReply,
+     listen_choice: renderListenChoice, reply_listen: renderReply, reply_hear: renderReplyHear,
      pairs: renderPairs, close: renderClose, close_swap: renderClose,
      word_fill: renderWordFill, phrase_fill: renderPhraseFill,
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,

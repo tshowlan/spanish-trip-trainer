@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v490";
+const APP_BUILD = "v491";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -16,6 +16,7 @@ const APP_BUILD = "v490";
 const STAGED = {
   "mic-check": "Say it: the microphone check (auto-listen after the word, the ring, the match). PARKED: on iPhone it leaves playback on the quiet earpiece; off until the native app can own the audio route (Tom 10/8)",
   "learn-reset-swipe": "Learn tab: swipe a session row to the left and tap Reset to make it never seen (the lesson mark and its words' history cleared)",
+  "replies-1": "Chapter 2: What they say back \u00b7 Part 1, the replies to the four asks of Part 1 (you ask, they answer out loud, you pick what it meant; then the replies on the board)",
   "sheet-rows": "The Review sheet's doors (Recommended, By scenario, The machine shop) in the Learn tab's row form; Recommended carries the down caret, opening the words due, when a review is picked",
 };
 // SHIPPED (Tom, 2026-10-24, v490): "ask-review", a due ask comes back in Practice as a situation (Which one do you say? from its bank of six) and its sentence, never a translation.
