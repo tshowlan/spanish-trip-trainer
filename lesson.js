@@ -4242,7 +4242,8 @@ function resolveCorrect(item, q, info) {
   const builtRow = qb.classList.contains("anchored") ? qb.querySelector(":scope > .build-answer") : null, nt0 = grown.querySelector(".res-note");
   if (builtRow && nt0 && q && q.resNote) {
     nt0.remove(); nt0.classList.add("under-build"); builtRow.after(nt0);   // a sibling, not a child: the row's sweep stays under the words
-    const place = () => { nt0.style.top = (builtRow.offsetTop + builtRow.offsetHeight + 14) + "px"; };
+    const lines = qb.querySelector(":scope > .lines");   // the stage's ruled band: the note sits under its second line, never across it (Tom's screenshot 10/25)
+    const place = () => { const under = lines || builtRow; nt0.style.top = (Math.max(under.offsetTop + under.offsetHeight, builtRow.offsetTop + builtRow.offsetHeight) + 14) + "px"; };
     place(); requestAnimationFrame(() => requestAnimationFrame(() => { place(); nt0.classList.add("show"); })); setTimeout(place, 520);   // again once the fuse's gap has settled
   }
   // the reveal must not run into the answers (Tom 10/20: a four-line situation plus RESTORED's note overlapped the first tile). Measured
