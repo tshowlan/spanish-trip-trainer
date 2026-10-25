@@ -2076,3 +2076,6 @@ clean on both packs. **No live browser check this session** — worth a device p
 
 ## v498 (2026-10-25) — caña means beer
 - Tom: caña is the common word for a beer, so the gloss is "beer", not "small draft beer"; the size detail lives in the card's note. The counter sentence reads "I want two beers."
+
+## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
+- Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.

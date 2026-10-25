@@ -2386,3 +2386,6 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
    reveal's fade. The played line and the anchored answers keep a layer from the start, as the result rows and the Home rows do. */
 .played-line { will-change: opacity; }
 #qbody.anchored .answers { will-change: transform; }
+
+/* the cold lap's field sits in flow under the English (chapter 2, Tom 10/25) */
+#qbody.anchored.typed-lap .top .machine-stage { margin-top: 22px; }

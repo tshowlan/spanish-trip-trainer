@@ -2530,7 +2530,7 @@ function renderWeld(q) {
     const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe aquí…">`);
     stage.appendChild(input);
     if (anchored) { q.esOnStage = true; q.onResolve = () => { input.value = target; input.readOnly = true; input.blur(); }; }   // chapter 2's cold lap: the typed line is the es on stage (no-repeat), matured to the canonical form on resolve (Tom 10/25: the reveal doubled it and crowded the audio row)
-    if (anchored) { const answers = el(`<div class="answers at63"></div>`); answers.appendChild(stage); body.appendChild(answers); }   // the keyboard's field in the answers region, like the tiles (chapter 2's cold lap)
+    if (anchored) { const topEl = body.querySelector(".top"); (topEl || body).appendChild(stage); body.classList.add("typed-lap"); }   // the field right under the English, in flow: when the keyboard opens the phone keeps the cue in view (Tom 10/25: the anchored seat scrolled it away)
     else body.appendChild(stage);
     setTimeout(() => input.focus(), 50);
     const f = footer(`<button class="btn" id="check" disabled>Check</button>`);
