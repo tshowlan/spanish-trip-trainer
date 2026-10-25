@@ -1948,7 +1948,7 @@ function renderPresent(q) {
       <div class="present-es">${item.es}</div>
       <div class="present-en">${item.en}</div>
       ${ctx}
-      ${item.note ? `<div class="present-note">${item.note}</div>` : ""}
+      ${item.note ? `<div class="cue-label note-label">Good to know</div><div class="present-note">${item.note}</div>` : ""}
       ${item.anchor ? `<div class="present-anchor"><span class="lead">Think:</span> ${item.anchor}</div>` : ""}
     </div>`);
     const ctxEs = card.querySelector(".present-ctx .es");
@@ -4200,7 +4200,7 @@ function resolveCorrect(item, q, info) {
   // YOURS NOW rides silent (Tom, 2026-08-15): the kicker is the whole message, the
   // explaining sentence dignified the moment (voice law 4). RESTORED keeps its note: it
   // carries information the kicker alone does not (that the item had faded).
-  const note = (q && q.resNote) ? `<div class="res-note">${q.resNote}</div>`
+  const note = (q && q.resNote) ? `<div class="res-note gtk"><span class="cue-label note-label">Good to know</span>${q.resNote}</div>`   // the aside's one dress: a label over the line (Tom 10/25, mock B)
     : kick === "restored" ? `<div class="res-note">This one was fading. You brought it back.</div>` : "";
   // no-repeat (§3.7): the grown carries only what's MISSING from the screen. When the
   // exercise's own sentence completed in place (fused row, filled blank, typed close),

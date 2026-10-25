@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v508 (2026-10-25) — GOOD TO KNOW: the aside's one dress
+- Tom chose B of dev/card-note-options.html: a small label, GOOD TO KNOW, over the line in full text colour, no more secondary blue. Applied to a card's note (`.present-note`) and to a sentence's note in the reveal (`.res-note.gtk`, in the grown or under the built row). RESTORED's own note is untouched. The card's line now ends "Keep in mind that puede adds the politeness, and a slightly over-polite tourist is the best kind." Files: curriculum.js, lesson.js, styles.css.
+
 ## v507 (2026-10-25) — the ¿Me trae? note in Tom's words, and a reminder at the Counter
 - The ask card's note is now Tom's: "You will also hear Spaniards say the shortened version, ¿Me trae...?, so keep an ear out for it. Though puede adds the politeness, and a slightly over-polite tourist is the best kind." The Counter's three ¿Me puede traer? sentences carry a one-line reminder ("Shortened on the street to ¿Me trae...? Keep an ear out.") under the built row. A sentence's note now rides the first build only, not the ear build or the typed lap, so a note shows once a session (croissant's too). Files: curriculum.js, lesson.js.
 
