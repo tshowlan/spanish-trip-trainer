@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v514 (2026-10-25) — "I can't listen right now" on a Counter ear build
+- Tom: the escape on Counter sentences left no exercise. Cause: a sound-off ear build routed to the context-choice form (fill the blank in the word's context line), and a sentence has no context line, so the renderer threw on an undefined string and the screen stayed blank. Now a sound-off ear build of an item without a context line becomes the plain build from its English (cue, Hint, tiles); items with a context line keep the fill-the-blank form. File: lesson.js.
+
 ## v513 (2026-10-25) — the note under the second line; the session's note wins over a reused phrase's
 - Tom's screenshot: the Counter's ¿Me puede traer la cuenta? showed an old note ("Me trae...? is the shorter version of the same ask. Both are right.") and it ran across the stage's second ruled line. Two causes. (1) The engine reuses a pack phrase the learner already holds as the same object, and carried only replies/hint/near/frame from the session; the old chapter 3 phrase's `note` showed. `own` now carries `note` too. (2) The GOOD TO KNOW line was placed from the built row's bottom, inside the ruled band. It now sits 14px under the band's second line (`#qbody.anchored .lines`), or under the row if that is lower. Files: engine.js, lesson.js.
 

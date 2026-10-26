@@ -2489,7 +2489,11 @@ function renderMachineDrill(q) {
    are BARE lowercase words (D6); the fuse dresses them in place. A real production rep. */
 function renderWeld(q) {
   // listen-and-build without sound: the read-and-fill form is its backup (Tom 9/12)
-  if (q.heard && q.listenBuild && (run.soundOff || !("speechSynthesis" in window) || state.sound === false)) return renderContextChoice(Object.assign({}, q, { type: "context_choice" }));
+  if (q.heard && q.listenBuild && (run.soundOff || !("speechSynthesis" in window) || state.sound === false)) {
+    if (q.item.contextEs) return renderContextChoice(Object.assign({}, q, { type: "context_choice" }));   // a word with a context line: fill the blank
+    // a sentence has no context line (the Counter, Tom 10/25: the escape left a blank screen); it is built from its English instead, hint and all
+    Object.assign(q, { heard: null, listenBuild: false, cueRole: "Build the sentence", cueMeaning: q.item.en, noEn: true, noAudio: false, hint: q.item.hint || null });
+  }
   const item = q.item;
   const target = q.target || q.ves || item.es;         // the stretch builds an authored VARIANT (depth ruling 2); scenes pin a target
   const body = $("#qbody");
