@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v515 (2026-10-25) — the table-inside reply says no first
+- Tom: "Fuera, sí" (Outside, yes) is an odd answer to ¿Hay mesa dentro? A real one says no and then offers outside. Now "Dentro no, fuera sí" (Not inside. Outside, yes), all met words (pero is not met, so "No, pero fuera sí" waits). File: curriculum.js.
+
 ## v514 (2026-10-25) — "I can't listen right now" on a Counter ear build
 - Tom: the escape on Counter sentences left no exercise. Cause: a sound-off ear build routed to the context-choice form (fill the blank in the word's context line), and a sentence has no context line, so the renderer threw on an undefined string and the screen stayed blank. Now a sound-off ear build of an item without a context line becomes the plain build from its English (cue, Hint, tiles); items with a context line keep the fill-the-blank form. File: lesson.js.
 
