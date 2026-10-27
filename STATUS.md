@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v517 (2026-10-26) — chapter 2's line: the words you already know
+- Tom: "The words you already know go in them." (was "already own"). Files: curriculum.js, docs/chapter2-cues.md.
+
 ## v516 (2026-10-26) — the silent exchange is a dialogue
 - Tom chose A of dev/silent-reply-options.html: with sound off, the reply sits under YOU SAID as a second labelled line, THEY SAY, in the same dress (hear_pick's silent form labels the sentence THE LINE). The bare centred played-line is gone from this rung. The ¿Me trae? reminder stays as written (Tom). Files: lesson.js, styles.css.
 
