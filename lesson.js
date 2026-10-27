@@ -415,7 +415,7 @@ function renderReplyHear(q) {
   const said = q.es || item.es, meaning = q.en || item.en;
   const play = audioControl(slow => { slow ? speak(said, 0.55) : speak(said); }, { speed: true });
   const stage = el(`<div class="listen-stage"></div>`);
-  if (silent) stage.appendChild(el(`<div class="played-line show"><span>${said}</span></div>`));   // no sound: read what they said
+  if (silent) stage.appendChild(el(`<div class="act-sit need you-said they-say"><span class="ys-label">${set ? "They say" : "The line"}</span><span class="ys-line">${said}</span></div>`));   // no sound: their line, labelled, under yours (Tom 10/26, mock A: the dialogue)
   else { stage.appendChild(play); stage.appendChild(el(`<div class="hint">${set ? "They answer. Tap to hear it again" : "Tap to hear it again"}</div>`)); }
   top.appendChild(stage);
   body.appendChild(top);

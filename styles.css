@@ -1804,6 +1804,7 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 /* Sound is the centerpiece: hero SIZE VARIANT of the canonical AudioControl
    (64px, same anatomy, scaled never restyled) centered on the listening stage */
 .listen-stage { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 26px 0 22px; }
+.listen-stage:has(> .they-say) { display: block; padding: 0; }   /* the silent dialogue line sits in flow, left-aligned like YOU SAID */
 .listen-stage .ac-speaker { width: 64px; height: 64px; min-width: 64px; }
 .listen-stage .ac-speaker .ac-glyph { width: 24px; height: 24px; }
 .listen-stage .ac-speaker .ac-bars { height: 22px; }
@@ -2395,6 +2396,7 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
 /* the cold lap's field sits in flow under the English (chapter 2, Tom 10/25) */
 #qbody.anchored.typed-lap .top .machine-stage { margin-top: 22px; }
 
+.act-sit.need.they-say { margin-top: 14px; }   /* sound off: THEY SAY under YOU SAID, the dialogue (Tom 10/26, mock A) */
 .you-said .ys-line .hl { padding-bottom: 4px; }   /* the exchange's line wears the hint mark */
 .you-said + .played-line { margin-top: 18px; }   /* the reply's replay sits clear of the gold lines (Tom 10/25: too close at 4px) */
 .you-said .ys-line .hl .hint-pop { font-size: 14px; text-transform: none; letter-spacing: 0; font-weight: 500; }
