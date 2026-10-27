@@ -236,3 +236,22 @@ The hear sessions' cards no longer hold their words back while the line plays (t
 - **10/26 (v516), RULING (Tom): the silent exchange is a dialogue.** With sound off, the reply is a second labelled line under YOU SAID: THEY SAY, same dress (mock A of five). Rule kept: your lines build, their lines are read; the exchange's job is knowing what the barista said among the common replies, with or without sound.
 - **10/26 (v517-v518):** chapter 2's line says "the words you already know". Sound: with sound off every ear rung carries "Turn sound back on" where the escape sat; a tap restores the rung's ear form and the escape (Tom's ask). The exchange carries the escape now (it had none). **Open with Tom:** the arrival's flood of light in the icon's orange rather than white; five recipes mocked in dev/splash-flood-options.html (as shipped, warm white, orange full, orange glow with dark corners, amber glow).
 - **10/26 (v520-v523):** the flood of light: three glow recipes in the Test Lab (E warm white, F amber light heart, G amber deep), the orange retired; the glows now reach the corners (the disc, not the gradient, was short). ¿Hay tapas sin carne?'s third reply was a slip ("Dentro, sí"); now "Solo con carne".
+
+## 2026-10-26 — COUNTER SENTENCES SHIPPED (v524): the handoff for the next place sessions
+**What is live.** Chapter 2's first place session, Counter sentences: fourteen sentences in five frames (Quiero ×3, ¿Tiene? ×3, ¿Hay? ×3, ¿Me puede traer? ×3, ¿Puedo? ×2), each frame met through different words. The ladder per frame: build one from its English (tiles, two strays from the session's own words, the HINT pill with the English pieces over their Spanish) → hear another and build it → the exchange on a third (YOU SAID with gold hairlines, they answer out loud, pick what it meant from three replies) → three near-miss meaning picks → typed. No sentence at a seam, no reply twice in a row. Its preview on Learn and Home: the summary line ("How to order, listen, and respond at the counter.") and six example words (Quiero · ¿Tiene? · ¿Puedo? · café · agua · tapas). The Table session copies this shape exactly.
+
+**Rulings since the last pull (all Tom's, in force):**
+- The Oxford comma in every rendered line.
+- A cognate is a met word; it needs no chapter 1 card (croissant). The sentence's hint carries it, a GOOD TO KNOW note carries its spelling.
+- GOOD TO KNOW is the one dress for an aside: a small label in full text colour, the line in the whisper grey; on a card's note and under a built sentence (once a session, the first build).
+- The mouth keeps ¿Me puede traer?; the ear is told about ¿Me trae? on the ask's card and once at the Counter.
+- With sound off: your lines build (from the English), their lines are read (THEY SAY under YOU SAID). The exchange carries the escape; "Turn sound back on" sits in the escape's slot and restores the ear form.
+- ¿Qué? is not an ask until its replies are learnable: ¿A qué hora? in Numbermachine first, then only with a pointable answer.
+- Chapter 2's line: "Eight ways to ask. The words you already know go in them."
+
+**WRITING WANTED from chat, in this order:**
+1. **Table sentences** (the next build): fourteen or so sentences by frame, met words only (chapter 1 plus the asks; cognates allowed), each with its English, hint pieces, two near misses, and three replies; a summary line in the Counter's shape; six example words; any GOOD TO KNOW notes. ¿Hay pan para la mesa? (replies Sí, hay · No hay · Un momento) is already written and waits here. Greetings open some sentences by scenario, not all.
+2. **Paying, Street, Shop, Help**: the same per session, as chat gets to them. Paying's prices wait for Numbermachine.
+3. **Replies for the Counter you may want to revise:** ¿Hay mesa dentro? → Sí, hay · No hay · Dentro no, fuera sí. ¿Hay tapas sin carne? → Sí, hay · No hay · Solo con carne. ¿Hay croissants de chocolate? → Sí, claro · No, solo normales · Un momento (Code's drafts).
+
+**Questions for chat:** doble and jarra for the pack (caña's note names them)? Does croissant's note keep "and said the French way"? When the places exist, What they say back · Part 1 retires as a session (its beat lives in each exchange): confirm. The constitution's chapter 2 wording should now read "the asks, then sentences by place".

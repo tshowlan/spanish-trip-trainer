@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v524 (2026-10-26) — Counter sentences SHIPPED
+- Tom: "counter sentences is good". `sentences-1` leaves the STAGED map; the session is live for everyone. The ledger closes with a handoff section (what is live, the rulings since the last pull, the writing wanted: Table first) and goes to chat now. Files: config.js, docs/app-today.md, docs/chat-ledger.md.
+
 ## v523 (2026-10-26) — the tapas reply
 - Tom: "Dentro, sí" was no answer to ¿Hay tapas sin carne? (a slip copied from the table line). Now "Solo con carne" (Only with meat), the counter's real negative, met words. File: curriculum.js.
 
