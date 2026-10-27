@@ -141,6 +141,11 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
   animation: arr-flood 800ms cubic-bezier(.5,.05,.3,1) 1450ms both, arr-flood-out 650ms ease 2300ms forwards; }
 @keyframes arr-flood { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(85); opacity: 1; } }
 @keyframes arr-flood-out { from { opacity: 1; } to { opacity: 0; } }
+/* TEST LAB "calm" (Tom 10/5): the eclipse and daybreak left out. On the dark theme the flood read as a white flash between the lighthouse
+   and a twilight Home; here the lighthouse holds and the whole splash dissolves into Home as it rises. */
+#splash.calm .splash-flood, #splash.calm .daybreak { display: none; }
+#splash.calm .splash-stack { animation: none; }
+#splash.calm { transition: opacity .7s ease; }
 .splash-ver { position: absolute; left: 0; right: 0; bottom: calc(22px + env(safe-area-inset-bottom)); z-index: 2;
   text-align: center; font-family: var(--font-text); font-size: 11px; font-weight: 600; letter-spacing: .05em;
   color: #a7a494; opacity: .7; }
@@ -157,7 +162,7 @@ body.arriving .scores, body.arriving .empty-hero, body.arriving .hero-tile, body
 body.arriving .home-diverge, body.arriving .whisper, body.arriving .presence, body.arriving #tabbar {
   opacity: 0; transform: translateY(4px);
   transition: opacity 300ms cubic-bezier(.2,.7,.3,1), transform 300ms cubic-bezier(.2,.7,.3,1); }
-body.arriving .arr-in:not(.atmo-ground) { opacity: 1 !important; transform: none !important; }
+body.arriving .arr-in:not(.atmo-ground):not(.tab-candle) { opacity: 1 !important; transform: none !important; }   /* the candle keeps its own centering transform and its own fade (10/2) */
 /* the floating nav centers via translateX(-50%): its formation is OPACITY-ONLY, like the
    ceremony's (a translateY would shear the centering and beach the pill half off-screen) */
 body.arriving #tabbar { transform: translateX(-50%); }
@@ -342,12 +347,12 @@ body.home-lit { min-height: calc(100vh + 1px); }
 /* extend the crown by the status-bar inset: with black-translucent the photo reaches under the status
    bar (top:0) but the content is pushed down by the safe area, so add it back or the blend lands above the dials */
 .home-atmo .atmo-photo { position: absolute; top: 0; left: 0; right: 0; height: calc(264px + env(safe-area-inset-top)); }
-.home-atmo .atmo-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.72) brightness(.82) contrast(.95);
+.home-atmo .atmo-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.72) brightness(var(--atmo-bright, .82)) contrast(.95);
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%);
           mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0,0,0,.5) 58%, transparent 96%); }
 .home-atmo .atmo-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 34%); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .home-atmo .atmo-photo img { filter: saturate(.6) brightness(.55) contrast(1.02); } }
-:root[data-theme="dark"] .home-atmo .atmo-photo img { filter: saturate(.6) brightness(.55) contrast(1.02); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .home-atmo .atmo-photo img { filter: saturate(.6) brightness(1) contrast(1.02); } }
+:root[data-theme="dark"] .home-atmo .atmo-photo img { filter: saturate(.6) brightness(1) contrast(1.02); }   /* the photo at full brightness on dark (Tom 10/23, after a week on the Test Lab percent buttons; was .55) */
 
 /* §3.2 trip header — destination name anchors over the photo, subline is pure countdown */
 /* trip header — matches the re-mocked 390px artifact (dest 28px; the ~12% scale-up lives in the dials). */
@@ -383,6 +388,15 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   transition: transform .08s;
 }
 .lesson:active { transform: translateY(2px); }
+/* swipe to reset (staged "learn-reset-swipe"): the row slides left over its own Reset action */
+.lesson { position: relative; }
+.lesson.swiping { transition: none; }
+.lesson:not(.swiping) { transition: transform 200ms cubic-bezier(.2,.7,.3,1); }
+.lesson .lesson-reset { position: absolute; left: 100%; top: 2px; bottom: 2px; width: 90px; margin-left: 6px;   /* 6 + 90 = the 96px the row slides, so the action ends flush with the list's edge */ border: none; border-radius: var(--radius);
+  background: var(--red); color: #fff; font-family: var(--font-display); font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; cursor: pointer; }
+.lesson.swiped .lesson-reset, .lesson.swiping .lesson-reset { opacity: 1; }
+.lesson.swiped .lesson-reset { pointer-events: auto; }
+.chapter { overflow-x: clip; }
 .lesson .badge {
   width: 48px; height: 48px; border-radius: 50%;
   display: grid; place-items: center; font-size: 22px; flex: none;
@@ -436,7 +450,10 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .present-card { margin: 8px 0 16px; }
 .present-es { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.25; color: var(--text); }
 .present-en { font-size: 16px; color: var(--text-dim); margin-top: 8px; }
-.present-note { font-size: 13px; color: var(--secondary); margin-top: 12px; line-height: 1.4; }
+/* GOOD TO KNOW (Tom 10/25, mock B): an aside on a card or under a built sentence wears a small label over the line, the line in full text colour */
+.note-label { display: block; margin: 14px 0 3px; color: var(--text); }   /* B2 (Tom 10/25): the label in full text colour, the line in the whisper grey */
+.present-note { font-size: 13px; color: var(--text-dim); margin-top: 0; line-height: 1.4; }
+.res-note.gtk { color: var(--text-dim); font-size: 13px; line-height: 1.4; } .res-note.gtk .note-label { margin-top: 0; }
 .present-ctx { font-size: 15px; color: var(--text-dim); margin-top: 12px; line-height: 1.5; }
 .present-ctx .es { color: var(--text); font-family: var(--font-display); font-weight: 500; cursor: pointer; border-bottom: 1px dotted var(--text-dim); }
 .present-ctx .es.playing { color: var(--accent-2); border-bottom-color: var(--accent-2); }
@@ -470,7 +487,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 /* §4c.1 v2.1 active dismissal: two-soft-option meaning check on the new material (replaces "Got it") */
 .microrep { font-size: var(--text-sm); color: var(--text-dim); line-height: 1.5; min-height: 44px; display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .microrep .q { color: var(--text); font-weight: 500; }
-.opts { display: flex; gap: 8px; margin-top: 4px; }
+.opts { display: flex; gap: 8px; margin-top: 4px; transform: translateZ(0); }   /* on their own layer: the bottom edge of the two buttons tore while the speaker's bars animated above them (Tom's recording 10/6) */
 .opt { flex: 1; border: 1px solid var(--border); background: var(--bg-card); border-radius: var(--radius-md); padding: 12px;
   font-family: var(--font-display); font-size: 15px; font-weight: 500; color: var(--text); cursor: pointer; min-height: 48px; text-align: center;
   transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition); }
@@ -1070,7 +1087,7 @@ body.in-runner .footer { background: transparent; border-top: none; }
 .cat-meta { font-size: 12px; color: var(--text-dim); font-weight: 700; white-space: nowrap; }
 .cat-meta span { background: none !important; }
 .ls-ring { display: block; }
-.ls-ring .ls-bg { fill: none; stroke: var(--bg-elevated); stroke-width: 4; }
+.ls-ring .ls-bg { fill: none; stroke: var(--solid-track); stroke-width: 4; }   /* the empty track in the app's track colour (the progress bar's): a started session at zero strength drew a ring the dark ground swallowed and the row looked unmarked (Tom 10/19, Words you'll hear) */
 .ls-ring .ls-fg { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset .6s; }
 .ls-ring.band-top .ls-fg { stroke: var(--green); } .ls-ring.band-good .ls-fg { stroke: var(--secondary); }
 .ls-ring.band-mid .ls-fg { stroke: var(--accent-2); } .ls-ring.band-low .ls-fg { stroke: var(--text-dim); }
@@ -1284,6 +1301,9 @@ body.in-runner .footer { background: transparent; border-top: none; }
   border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 14px 24px calc(22px + env(safe-area-inset-bottom));
   transform: translateY(105%); transition: transform var(--t-slow) cubic-bezier(.2,.7,.3,1); }
 .corr-wrap.show .corr-sheet { transform: none; }
+/* the correction card is SOLID on the dark theme (Tom 10/5): the card color there is 72% see-through, and the answers behind it showed through the phrase */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .corr-sheet { background: #232118; } }
+:root[data-theme="dark"] .corr-sheet { background: #232118; }
 .corr-grab { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
 .corr-wrong { font-size: 14px; color: var(--text-dim); text-decoration: line-through; text-decoration-color: var(--red); margin-bottom: 12px; }
 .corr-label { font-family: var(--font-display); font-size: 11px; letter-spacing: .06em; font-weight: 600; color: var(--accent-2); text-transform: uppercase; margin-bottom: 8px; }
@@ -1455,6 +1475,11 @@ body.in-runner .footer { background: transparent; border-top: none; }
 .res-grown { opacity: 0; transform: translateY(5px); transition: opacity 300ms cubic-bezier(.2,.7,.3,1), transform 300ms cubic-bezier(.2,.7,.3,1); margin-top: 16px; }
 .res-grown.show { opacity: 1; transform: none; }
 .res-grown .res-en, .res-grown .res-audio, .res-grown .res-note { opacity: 0; transition: opacity 300ms cubic-bezier(.2,.7,.3,1); }
+/* THE DROP AFTER THE FADE (Tom's recordings 10/17 10-45-03 and 10-45-48, measured frame by frame): the meaning line and the Tap-to-hear row
+   each sit 1pt high while they fade in and drop 2-3 device px on the exact frame their own 300ms fade ends (the row first, the audio 300ms
+   later). iPhone draws a fading element on a layer of its own and hands it back to the page when the fade is done; the hand-back lands a
+   pixel lower. Same cure as the Home rows (10/2): the layer exists from the start, nothing is handed over. */
+.res-grown .res-en, .res-grown .res-audio, .res-grown .res-note { will-change: opacity; }
 .res-grown.show .res-en { opacity: 1; transition-delay: 150ms; }
 .res-grown.show .res-audio { opacity: 1; transition-delay: 300ms; }
 .res-grown.show .res-note { opacity: 1; transition-delay: 450ms; }
@@ -1483,13 +1508,14 @@ body.in-runner .footer { background: transparent; border-top: none; }
 .q-sring { width: 26px; height: 26px; flex: none; display: inline-flex; }
 .q-sring .sr-bg { fill: none; stroke: var(--ring-track, var(--bg-elevated)); stroke-width: 3; }
 .q-sring .sr-fg { fill: none; stroke: var(--secondary); stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 500ms cubic-bezier(.2,.7,.3,1); }
-.stick { position: absolute; top: 52px; right: 16px; font-family: var(--font-display); font-size: 11px; font-weight: 600;
+.stick { position: absolute; top: 43px; right: 16px;   /* tucked under the ring (was 52px): the direction row now runs to the right edge (the place, the Hint button) and the whisper sat on it (Tom 10/5) */
+  font-family: var(--font-display); font-size: 11px; font-weight: 600;
   color: var(--green); opacity: 0; transform: translateY(3px); transition: opacity 300ms, transform 300ms; pointer-events: none; }
 .stick.show { opacity: 1; transform: none; }
 .runner { position: relative; }
 @media (prefers-reduced-motion: reduce) {
   .build-answer, .build-answer .word, .res-grown, .stick, .bank,
-  .res-grown .res-en, .res-grown .res-audio, .res-grown .res-note { transition: none; }
+  .res-grown .res-en, .res-grown .res-audio, .res-grown .res-note, .res-note.under-build { transition: none; }
   .build-answer.fused .sweep, .res-grown.show .sweep2 { animation: none; transform: scaleX(1); }
 }
 
@@ -1505,7 +1531,10 @@ body.in-runner .footer { background: transparent; border-top: none; }
   display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center;
   font-family: var(--font-display); font-size: 15.5px; font-weight: 500; color: var(--text);
   transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition), opacity var(--transition); }
-.pcard:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
+/* the press is a CLASS, not :active (Tom's recording 10/19 15-17, measured): iPhone kept :active on the tapped tile after the finger
+   lifted, so a selected tile sat 2px sunk until the NEXT touch, and popped back up on the very frame the match landed. The class is
+   set on pointerdown and cleared on pointerup / pointercancel (lesson.js), so the tile rises when the finger does. */
+.pcard.press { transform: translateY(2px); box-shadow: var(--shadow-press); }
 .pcard.sel { border-color: var(--secondary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--secondary) 15%, transparent), var(--shadow); }
 .pc-glyph { color: var(--accent-2); display: flex; }   /* flat card carries the GOLD glyph (§3.7) */
 .pbars { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
@@ -1520,10 +1549,11 @@ body.in-runner .footer { background: transparent; border-top: none; }
 .pcard.matched.en { color: var(--text-dim); font-weight: 400; font-size: 14px; }
 .pcard.matched.audio { cursor: pointer; }                    /* replay stays available */
 .pcard.matched .pc-glyph { color: var(--text-dim); }
-.pcard .es-word { position: relative; padding-bottom: 3px; }
-.pcard.matched .es-word::after, .pcard.settled .es-word::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0;
-  height: 2px; background: var(--green); border-radius: 2px; transform: scaleX(0); transform-origin: left center;
-  animation: res-sweep 300ms cubic-bezier(.2,.7,.3,1) 80ms forwards; }
+.pcard .es-word { position: relative; }
+/* a matched tile shows it is right on its BOTTOM EDGE, like a pressed key's edge (Tom 10/19, mock dev/pairs-correct-options.html C): the
+   green line that used to sit under the words read oddly on two-line phrases and never existed on the sound tiles. The edge fades in on
+   the tile's own border-color transition; the meaning tile dims as before. */
+.pcard.matched, .pcard.settled { border-bottom: 3px solid var(--green); }   /* both tiles of the pair wear the edge (Tom 10/19) */
 .pcard.playing .es-word { color: var(--accent-2); }          /* es gold while playing (chunk rules) */
 .pcard.miss { opacity: 0.45; }                               /* mismatch: brief dim — no red, no shake */
 .pcard.fade { opacity: 0.35; }
@@ -1611,16 +1641,23 @@ body.in-ceremony .topbar { visibility: hidden; transition: opacity 550ms cubic-b
 /* the atmosphere breathes back in slowest (artifact: 900ms bloom rise) — the world
    arrives with weight, not as a page load */
 body.in-ceremony .home-atmo { transition: opacity 900ms cubic-bezier(.2,.7,.3,1); }
-/* home pieces MATERIALIZE (the system's standard 6px rise), each one placed, not loaded */
-body.in-ceremony .home > :not(.hero) { transform: translateY(6px);
-  transition: opacity 550ms cubic-bezier(.2,.7,.3,1), transform 550ms cubic-bezier(.2,.7,.3,1); }
-body.in-ceremony .home > .cer-back { transform: none; }
+/* home pieces come back the way Home arrives at launch (Tom 10/8, recording 20-08: the staggered refill read as delayed
+   loading, the logo last of all): ONE breath together, a fade only, twilight's 1400ms and curve. No rise (the 10/2 ruling:
+   twilight is a fade only), so nothing is handed between layers when the fade ends. */
+body.in-ceremony .home > :not(.hero) { transition: opacity 550ms cubic-bezier(.2,.7,.3,1); }
 body.in-ceremony .cer-back { opacity: 1 !important; pointer-events: auto !important; }
+body.in-ceremony .home-atmo.cer-back, body.in-ceremony .topbar.cer-back, body.in-ceremony .home > .cer-back, body.in-ceremony #tabbar.cer-back {
+  transition-duration: 1400ms; transition-timing-function: cubic-bezier(.3,.05,.2,1); }
+body.in-ceremony .topbar.cer-back { visibility: visible; }   /* the logo fades in WITH the rest, not when the layer is torn down 1.5s later */
 body.in-ceremony .ring-card { pointer-events: none; }          /* sheets wait for home */
 body.in-ceremony .dial-delta { opacity: 0; transition: opacity 300ms; }
 body.in-ceremony .dial-delta.show { opacity: 1; }
 .delta-whisper { font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--green);
   margin-top: 7px; transition: opacity 300ms, transform 300ms; }
+/* THE HOP (Tom's recording 10/8 20-08, 9.07s): on the frame the "+1 today" whisper begins its reveal, the whole dial row drops 2pt
+   (6 device px) and nothing else on the screen moves; layout is identical before and after (measured). The whisper's reveal gives it
+   a layer of its own for 300ms and the dial row is redrawn around it. Same cure as the Home rows (10/2): the layer exists from the start. */
+.delta-whisper, .dial-delta { will-change: transform, opacity; }
 body.in-ceremony .delta-whisper { opacity: 0; transform: translateY(3px); }
 body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .ring-card.dial-pop { opacity: 0; transform: scale(0.9);
@@ -1767,6 +1804,7 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 /* Sound is the centerpiece: hero SIZE VARIANT of the canonical AudioControl
    (64px, same anatomy, scaled never restyled) centered on the listening stage */
 .listen-stage { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 26px 0 22px; }
+.listen-stage:has(> .they-say) { display: block; padding: 0; }   /* the silent dialogue line sits in flow, left-aligned like YOU SAID */
 .listen-stage .ac-speaker { width: 64px; height: 64px; min-width: 64px; }
 .listen-stage .ac-speaker .ac-glyph { width: 24px; height: 24px; }
 .listen-stage .ac-speaker .ac-bars { height: 22px; }
@@ -1789,9 +1827,9 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
   font-size: 12.5px; font-weight: 500; color: var(--text-dim); text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--text-dim) 40%, transparent);
   text-underline-offset: 3px; cursor: pointer; padding: 6px; margin-bottom: 10px; }
-.swapnote { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 22px 0;
-  font-size: 13px; color: var(--text-dim); text-align: center; }
-.swapnote .big { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text); }
+.swapnote { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 26px 8px;
+  font-size: 16px; line-height: 1.45; color: var(--text-dim); text-align: center; }   /* readable at arm's length (Tom 10/6: hard to read, harder for older eyes); both escapes share it */
+.swapnote .big { font-family: var(--font-display); font-size: 21px; font-weight: 700; line-height: 1.25; color: var(--text); }
 
 /* wrong-then-release (listening resolutions): the chosen wrong option is marked,
    then released to the uniform dim settle — never left glowing */
@@ -1949,7 +1987,7 @@ img.scene-art { width: 286px; }
    percentage minus that. 16%: the exercise portion. 63%: the middle choice. 73%: the tile
    bank. 47% and 53%: the two baselines the built sentence rests on. */
 #qbody.anchored { position: relative; min-height: calc(100dvh - var(--qtop, 90px) - 40px); }
-#qbody.anchored .top { position: absolute; left: 0; right: 0; top: calc(16dvh - var(--qtop, 90px)); }
+#qbody.anchored .top { position: absolute; left: 0; right: 0; top: calc(max(16dvh, var(--top-min, 0px)) - var(--qtop, 90px)); }   /* never under the Stronger whisper (--top-min, set by _anchor) */
 #qbody.anchored .direction { color: var(--text-dim); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
 #qbody.anchored .answers { position: absolute; left: 0; right: 0; translate: 0 -50%; }
 #qbody.anchored .answers.at63 { top: calc(63dvh - var(--qtop, 90px)); }
@@ -1962,6 +2000,8 @@ img.scene-art { width: 286px; }
 #qbody.anchored .build-answer.fused { column-gap: 5px; row-gap: calc(6.3dvh - 38px); }
 #qbody.anchored .build-answer.fused .word { height: 38px; }
 #qbody.anchored .build-answer .sweep { bottom: -4px; }
+#qbody.anchored > .res-note.under-build { position: absolute; left: 0; right: 0; margin: 0; font-size: 12.5px; font-weight: 400; color: var(--text-dim); opacity: 0; transition: opacity 300ms cubic-bezier(.2,.7,.3,1) 450ms; will-change: opacity; }   /* the sentence's note under the built row (10/25) */
+#qbody.anchored > .res-note.under-build.show { opacity: 1; }
 #qbody.anchored .res-grown { margin-top: 18px; }
 
 /* ===== NUMBERS (rulings 2026-09-20; staged "numbers-1") ===== */
@@ -2046,7 +2086,7 @@ img.scene-art { width: 286px; }
   transition: transform 190ms cubic-bezier(.2,.7,.3,1), opacity 320ms ease; }
 .bloom-cover.fill { transition: transform 200ms cubic-bezier(.4,0,.7,1), opacity 320ms ease; }   /* the fill accelerates: the tile comes toward you */
 .bloom-cover .bloom-tile { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; transform: none !important; box-shadow: none; z-index: 0; }
-.bloom-cover .bloom-tile > * { transition: opacity 120ms ease 70ms; }
+.bloom-cover .bloom-tile > * { transition: opacity 60ms ease; }   /* the words let go at once: with a 70ms delay they rode the breath and shifted sideways (Tom's recording 10/6) */
 .bloom-cover.breathe .bloom-tile > *, .bloom-cover.fill .bloom-tile > * { opacity: 0; }   /* the words and the picture let go during the breathe */
 /* the aura: the splash lantern's recipe, a radial LAYER behind the tile (never a filter), soft, no line */
 .bloom-cover .bloom-aura { position: absolute; inset: -40% -18%; z-index: -1; border-radius: 50%; opacity: 0; pointer-events: none;
@@ -2073,7 +2113,7 @@ img.scene-art { width: 286px; }
 .bloom-cover.white.day .bloom-day { opacity: 1; }                                    /* the gold light stays underneath; the white rises over it */
 
 /* THE TILE IS THE BUTTON (staged "hero-start", option A): a pressed edge, the whole card sinks on press; the chevron went 9/24 */
-.hero-tile.as-button { min-height: 135px; border-bottom: 4px solid #222c66; box-shadow: 0 6px 16px rgba(0,0,0,.35); }   /* 135px (Tom 9/24) */
+.hero-tile.as-button { min-height: 135px; border-bottom: 4px solid #222c66; box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 34px 10px rgba(216,183,19,0); }   /* the invisible shadow holds the box at the glow's reach while the pulse waits (see hero-pulse) */   /* 135px (Tom 9/24) */
 .hero-tile.as-button .hero-inner { width: 70%; padding: 16px 16px 14px; gap: 0; justify-content: flex-start; }   /* the rows stack from the top: kicker, title, the line right under it (Tom 9/24) */
 .hero-tile.as-button .hero-title { margin: 4px 0 8px; }
 .hero-tile.as-button:active { transform: translateY(3px); border-bottom-width: 1px; box-shadow: 0 2px 8px rgba(0,0,0,.35); }   /* the key goes down onto its edge */
@@ -2095,11 +2135,14 @@ img.scene-art { width: 286px; }
   box-shadow: 0 4px 0 color-mix(in srgb, var(--border) 60%, #000), 0 6px 14px rgba(0,0,0,.3); }   /* the outline stays all the way round; the pressed edge sits beneath it (Tom 9/24) */
 .practice.as-button:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--border) 60%, #000), 0 2px 6px rgba(0,0,0,.3); }
 /* THE PULSE (Tom 9/24, Duolingo's cue for "this one"): a slow gold glow breathing behind the action tile, drawn as a shadow so iPhone renders it */
-@keyframes hero-pulse { 0%, 100% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 18px 2px rgba(216,183,19,.18); } 50% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 2px rgba(216,183,19,.28), 0 0 34px 10px rgba(216,183,19,.42); } }
-@keyframes hero-pulse-in { from { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 0 0 rgba(216,183,19,0); } to { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 18px 2px rgba(216,183,19,.18); } }
-/* the first breath rises from nothing over 700ms, then the loop takes over at exactly that level (Tom's recording 9/25: the glow used to jump in at its resting level) */
-.hero-tile.as-button { animation: hero-pulse-in 700ms ease-out both, hero-pulse 2600ms ease-in-out 700ms infinite; }
+/* every frame ends with an invisible shadow at the glow's full reach (34px blur, 10px spread): the tile's drawn box then never changes size
+   while the glow breathes. Without it the tile, now on its own layer (v398), was re-placed every frame and vibrated (Tom's recording 10/3). */
+@keyframes hero-pulse { 0%, 100% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 18px 2px rgba(216,183,19,.18), 0 0 34px 10px rgba(216,183,19,0); } 50% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 2px rgba(216,183,19,.28), 0 0 34px 10px rgba(216,183,19,.42), 0 0 34px 10px rgba(216,183,19,0); } }
+@keyframes hero-pulse-first { 0% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 0 0 rgba(216,183,19,0), 0 0 34px 10px rgba(216,183,19,0); } 50% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 2px rgba(216,183,19,.28), 0 0 34px 10px rgba(216,183,19,.42), 0 0 34px 10px rgba(216,183,19,0); } 100% { box-shadow: 0 6px 16px rgba(0,0,0,.35), 0 0 0 0 rgba(216,183,19,0), 0 0 18px 2px rgba(216,183,19,.18), 0 0 34px 10px rgba(216,183,19,0); } }
+/* the first cycle is ONE motion: from nothing up to the peak and down to rest, then the loop takes over at rest (Tom's recording 9/29: a separate rise-in read as a hitch) */
+.hero-tile.as-button { animation: hero-pulse-first 2600ms ease-in-out both, hero-pulse 2600ms ease-in-out 2600ms infinite; }
 body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for the arrival: it begins as the candle finishes igniting (Tom 9/25) */
+body.arriving.pulse-go .hero-tile.as-button { animation: hero-pulse-first 2600ms ease-in-out both, hero-pulse 2600ms ease-in-out 2600ms infinite; }   /* Test Lab (Tom 9/29): the tile begins as the corner light leaves its apex */
 .hero-tile.as-button:active { animation: none; }
 @media (prefers-reduced-motion: reduce) { .hero-tile.as-button { animation: none; } }
 /* THE DOORS LEAVE ON THE SLIDE (Tom 9/24): the chapter door travels out like #qbody.leaving; the scene door lives in #qbody and uses it */
@@ -2121,3 +2164,255 @@ body.arriving .hero-tile.as-button { animation: none; }   /* the pulse waits for
   background: radial-gradient(closest-side at 50% 40%, rgba(216,183,19,0.30) 0%, rgba(216,183,19,0.18) 35%, rgba(216,183,19,0.09) 60%, rgba(216,183,19,0.03) 80%, rgba(216,183,19,0) 100%); }
 .chapter-door.swash .scene-line { margin: 0; }
 .chapter-door.swash .scene-line .sl { font-family: 'Source Serif 4', Georgia, serif; font-weight: 400; font-style: normal; font-size: 18px; color: #b9bfcc; }   /* the line in the same serif, a light grey between the whisper and white (T3) */   /* the subtitle in the app's italic voice, white (the base of the mocks Tom picked from) */
+/* EAR SESSIONS (Tom 9/26, mocks T1 + R2): "Best with sound" as a small gold pill under the tile's line; bare gold words beside the Learn row's count;
+   the hear-first card hides its words until the line has played; the ear escape's two full buttons stack in the footer */
+.hero-tile .ear-pill { display: inline-flex; align-self: flex-start; align-items: center; margin-top: 8px; font-family: var(--font-display); font-size: 9.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(216,183,19,.55); border-radius: 999px; padding: 2px 7px; white-space: nowrap; }
+.lmeta .ear-tag { font-family: var(--font-display); font-size: 9.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent-2); white-space: nowrap; }
+.footer .btn + .btn.grey { margin-top: 10px; }
+/* the read-and-pick rung's confirmation (Tom 9/26): the word at the top takes the reveal's green sweep in place */
+.prompt.mc-word { position: relative; display: inline-block; margin-bottom: 16px; }   /* room under the word for the sweep, so the speaker clears it (Tom 9/26) */
+.prompt.mc-word .sweep2 { position: absolute; left: 0; right: 0; bottom: -6px; height: 2.5px; background: var(--green); border-radius: 2px; transform-origin: left; animation: sweep-in 420ms cubic-bezier(.2,.7,.3,1) both; }
+@keyframes sweep-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+/* THE PLATE (Tom 9/26, STAGED "sign-plates"): a sign drawn as a sign. Light theme: enamel, a deeper cream than the page with a navy
+   edge. Dark theme: the door plate, dark with cream letters. One plate, two shades, picked by the theme. */
+.plate { display: inline-block; padding: 14px 22px; border-radius: 8px; font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+  background: #ebe4cf; color: #1c275e; box-shadow: inset 0 0 0 2px #1c275e, inset 0 0 0 5px #ebe4cf, inset 0 0 0 6px rgba(28,39,94,.4), 0 0 0 1.5px #1c275e, 0 8px 18px rgba(28,39,94,.22);
+  transition: box-shadow 200ms ease, opacity 200ms ease; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .plate { background: #141a33; color: #f3efe2; box-shadow: inset 0 0 0 2px rgba(243,239,226,.85), inset 0 0 0 5px #141a33, inset 0 0 0 6px rgba(243,239,226,.35), 0 6px 14px rgba(0,0,0,.35); } }
+:root[data-theme="dark"] .plate { background: #141a33; color: #f3efe2; box-shadow: inset 0 0 0 2px rgba(243,239,226,.85), inset 0 0 0 5px #141a33, inset 0 0 0 6px rgba(243,239,226,.35), 0 6px 14px rgba(0,0,0,.35); }
+.plate.sm { font-size: 18px; padding: 10px 14px; letter-spacing: .06em; }
+.plate.confirmed { box-shadow: inset 0 0 0 2px var(--green), inset 0 0 0 5px transparent, 0 0 0 2px var(--green), 0 6px 14px rgba(0,0,0,.3) !important; }
+.plate.wrong { opacity: .55; } .plate.dim { opacity: .35; }
+.plate-stage { text-align: center; margin-top: 14px; }
+.plate.tt { text-align: left; padding: 12px 16px 10px; font-size: 14px; letter-spacing: .02em; text-transform: none; font-weight: 600; min-width: 260px; white-space: normal; }
+.tt-head { font-weight: 800; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; text-align: center; border-bottom: 1.5px solid currentColor; padding-bottom: 6px; margin-bottom: 8px; opacity: .9; }
+.tt-row { display: flex; justify-content: space-between; gap: 14px; padding: 3px 0; }
+.tt-day { font-weight: 700; } .tt-hrs { font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.act-sit { font-family: var(--font-display); font-size: 23px; font-weight: 700; line-height: 1.3; margin-top: 18px; }
+.act-sit.long { font-size: 19px; margin-top: 14px; }   /* the timetable situations run to three lines; a step down so they clear the answers (Tom 9/28) */   /* the same size as every other rung's English cue (Tom 9/28) */
+.act-sit.need { margin-top: 6px; }
+.choices.plates { flex-direction: row; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.choices.plates .choice, .choices.plates .choice.correct, .choices.plates .choice.wrong, .choices.plates .choice.dim { width: auto; padding: 0; background: none; border: none; box-shadow: none; }
+.present-card.sign-card { text-align: center; }
+.present-card.sign-card .plate-stage { margin-top: 4px; }
+.present-card.sign-card .present-en { margin-top: 16px; font-size: 18px; }
+.plate-place { font-size: 13px; color: var(--text-dim); margin-top: 10px; }
+/* the days set card (mock S1), the wall (G1), the week in order (D1); Tom 9/28 */
+.days-grid { grid-template-columns: 1fr; }
+.day-chip { justify-content: flex-start; }
+.day-chip .n { min-width: 26px; }
+.day-chip .w { font-weight: 700; }
+.day-chip .en { margin-left: auto; font-size: 13px; color: var(--text-dim); }
+.choices.plates.wall { gap: 10px 12px; }
+.choices.plates.wall .plate.sm { font-size: 14px; padding: 8px 10px; }
+.choices.plates .choice.found { pointer-events: none; }
+.choices.plates .choice.found .plate.confirmed { opacity: .55; transition: opacity 600ms ease 500ms; }   /* the found sign keeps its green edge and settles back, so the wall thins but stays collected */
+.order-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; min-height: 46px; padding: 8px; border: 1px dashed var(--border); border-radius: 12px; }   /* centered (Tom 9/28) */
+.order-row .plate.sm { font-size: 14px; padding: 8px 10px; }
+#qbody.anchored .res-grown.grown-below { position: absolute; left: 0; right: 0; top: calc(79dvh - var(--qtop, 90px)); text-align: center; }   /* under the three answers, above the footer */
+/* the closers hold still (Tom 9/28): a taken plate leaves a ghost slot; the pool recedes at the end; the closing sentence fades in below */
+.choices.plates .choice.ghost { visibility: hidden; pointer-events: none; }
+.choices.plates.recede { opacity: 0; transition: opacity 500ms ease; }
+.act-sit.fade { opacity: 0; transition: opacity 400ms ease; }
+.res-grown.closer-line { text-align: center; padding: 0 8px; }
+.res-grown.closer-line .pairs-allset { font-size: 15px; color: var(--text); line-height: 1.4; }
+/* equal-width plates (Tom 9/28, mocks W1 / K1): the wall and the week on a 3-column grid; the row above the week uses the same grid */
+.plates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; justify-items: stretch; transition: opacity 500ms ease; }
+.plates-grid .choice, .plates-grid .choice.correct, .plates-grid .choice.wrong, .plates-grid .choice.dim { width: auto; padding: 0; background: none; border: none; box-shadow: none; }
+.plates-grid .plate { display: block; width: 100%; box-sizing: border-box; text-align: center; font-size: 13px; padding: 10px 4px; letter-spacing: .05em; }
+.plates-grid .choice.ghost { visibility: hidden; pointer-events: none; }
+.plates-grid .choice.found { pointer-events: none; }
+.plates-grid .choice.found .plate.confirmed { opacity: .55; transition: opacity 600ms ease 500ms; }
+.plates-grid.recede { opacity: 0; }
+.plates-grid.last-two > .choice:nth-last-child(2) { grid-column: 1; margin-left: 50%; width: calc(100% + 5px); } .plates-grid.last-two > .choice:last-child { grid-column: 2; margin-left: 50%; width: calc(100% + 5px); }   /* a last row of two, centered */
+.plates-grid.last-one > .choice:last-child { grid-column: 2; }   /* a last row of one, centered */
+.order-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.order-grid .plate { display: block; width: 100%; box-sizing: border-box; text-align: center; font-size: 13px; padding: 9px 4px; letter-spacing: .05em; }
+.order-grid > .plate:nth-child(3n+1):last-child { grid-column: 2; }   /* a lone plate on the last row sits in the middle (Domingo; Tom 9/28) */
+/* TEST LAB ARRIVAL CANDIDATES (Tom 9/29; dev replays only, the shipped formation is untouched). "From darkness" retired 9/29. */
+body.arr-twilight .home-atmo .atmo-photo, body.arriving:not(.arr-classic) .home-atmo .atmo-photo, body.arriving:not(.arr-classic) .topbar, body.arriving:not(.arr-classic) .trip, body.arriving:not(.arr-classic) .scores, body.arriving:not(.arr-classic) .empty-hero, body.arriving:not(.arr-classic) .hero-tile, body.arriving:not(.arr-classic) .practice, body.arriving:not(.arr-classic) .home-diverge, body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .presence, body.arriving:not(.arr-classic) #tabbar, body.arr-twilight3 .home-atmo .atmo-photo, body.arr-twilight3 .topbar, body.arr-twilight3 .trip, body.arr-twilight3 .scores, body.arr-twilight3 .empty-hero, body.arr-twilight3 .hero-tile, body.arr-twilight3 .practice, body.arr-twilight3 .home-diverge, body.arr-twilight3 .whisper, body.arr-twilight3 .presence, body.arr-twilight3 #tabbar, body.arr-twilight .topbar, body.arr-twilight .trip, body.arr-twilight .scores, body.arr-twilight .empty-hero,
+body.arr-twilight .hero-tile, body.arr-twilight .practice, body.arr-twilight .home-diverge, body.arr-twilight .whisper, body.arr-twilight .presence, body.arr-twilight #tabbar {
+  transition-duration: 1400ms !important; transition-timing-function: cubic-bezier(.3,.05,.2,1) !important; }   /* twilight: one long breath together */
+body.arr-twilight .home-atmo .atmo-ground.arr-in { animation-duration: 1400ms; }
+body.arr-twilight3 .home-atmo .atmo-ground, body.arriving:not(.arr-classic):not(.arr-twilight) .home-atmo .atmo-ground { transform-origin: 0% 100%; }
+body.arr-twilight3 .home-atmo .atmo-ground.arr-in, body.arriving:not(.arr-classic):not(.arr-twilight) .home-atmo .atmo-ground.arr-in { animation: ground-breathe 3000ms both; }   /* twilight, breathing: up in one motion with everything else, past rest, then back down (bigger and longer, Tom 9/29) */
+@keyframes ground-breathe {
+  0%   { opacity: 0; transform: scale(.86); animation-timing-function: cubic-bezier(.3,.05,.2,1); }
+  53%  { opacity: 1; transform: scale(1.12); filter: brightness(1.2); animation-timing-function: cubic-bezier(.4,0,.3,1); }   /* 1.6s: the peak, 12% past rest and a fifth brighter */
+  100% { opacity: 1; transform: scale(1); filter: brightness(1); } }
+/* THE ONE LIGHT (Tom 10/2): a single candle for the whole app, and it TRAVELS: .candle-pos is three screens wide with the source at its
+   middle, so sliding it sideways puts the source in the bottom-left corner on Home and under the active tab elsewhere; it glides 620ms,
+   70ms behind the nav line (the flame follows the candle). The light ITSELF is exactly Home's ground as it was before 10/2 (Tom:
+   "use the 15-36 recording as the reference"): one glow, the same reach, the same breath at launch, the same flame on Home. */
+.tab-candle { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; transition: opacity 400ms ease; }
+#app { position: relative; z-index: 1; }   /* the content sits above the light on every tab (the bars are 10, 40, 60) */
+.candle-pos { position: absolute; top: 0; left: -100%; width: 300%; height: 100%; transform: translateX(var(--tx, 0px)); transition: transform 620ms cubic-bezier(.25,.8,.3,1) 70ms; will-change: transform; }
+.candle-wash { position: absolute; inset: 0; transform-origin: 54.67% 100%;   /* = the screen's bottom-left corner when the source is at Home, the origin the ground always breathed from */
+  background: radial-gradient(61.667% 165% at 50% 116%, color-mix(in srgb, #c96a2b 40%, transparent) 0%, color-mix(in srgb, #e0952b 24%, transparent) 30%, color-mix(in srgb, var(--accent) 14%, transparent) 55%, color-mix(in srgb, var(--accent) 6%, transparent) 76%, transparent 94%);
+  animation: candle-glow-tab 7900ms ease-in-out infinite alternate, candle-flicker-tab 1700ms ease-in-out infinite alternate; }   /* off Home: brightness only, nothing slides */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .candle-wash { background: radial-gradient(61.667% 165% at 50% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); } }
+:root[data-theme="dark"] .candle-wash { background: radial-gradient(61.667% 165% at 50% 116%, rgba(201,106,43,.32) 0%, rgba(230,198,42,.12) 40%, rgba(230,198,42,.05) 68%, transparent 94%); }
+body.home-lit .candle-wash { animation: candle-drift 5300ms ease-in-out infinite alternate, candle-glow 7900ms ease-in-out infinite alternate, candle-flicker 1700ms ease-in-out infinite alternate; }   /* on Home: the drifting flame */
+/* the flame at the strength Tom approved in the Test Lab on 9/29 (v389). It was doubled on 10/2 and read as the background moving (recordings 15-50, 16-06) */
+@keyframes candle-drift { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.035) translate(5px, -4px); } }
+@keyframes candle-glow { from { filter: brightness(1); } to { filter: brightness(1.09); } }
+@keyframes candle-flicker { from { opacity: 1; } to { opacity: .94; } }
+body.flame-still .candle-wash { animation: none !important; }   /* Test Lab: the light held still, to tell the flame apart from anything else that moves */
+@keyframes candle-glow-tab { from { filter: brightness(1); } to { filter: brightness(1.07); } }
+@keyframes candle-flicker-tab { from { opacity: 1; } to { opacity: .95; } }
+body.in-runner .tab-candle, .tab-candle.bloom-fade { opacity: 0; }                                  /* runners have no candle; the bloom takes it with the bars */
+body.in-runner .candle-wash { animation-play-state: paused; }
+/* the arrival: dark until its turn, then the breath exactly as before 10/2 (out past rest and back, from the corner) */
+body.arriving .tab-candle { opacity: 0; }
+body.arriving .tab-candle.arr-in { opacity: 1; transition: none; }
+body.arriving .tab-candle.arr-in .candle-wash { animation: ground-breathe 3000ms both; }
+body.arriving.arr-twilight .tab-candle.arr-in .candle-wash, body.arriving.arr-classic .tab-candle.arr-in .candle-wash { animation: ground-ignite 1400ms cubic-bezier(.3,.05,.2,1) both; }
+body.arriving.arr-classic .tab-candle.arr-in .candle-wash { animation-duration: 1800ms; animation-timing-function: cubic-bezier(.45,.05,.3,.95); }
+@media (prefers-reduced-motion: reduce) { .candle-wash { animation: none !important; } .candle-pos { transition: none; } }
+/* THE SHIFT (Tom's recording 10/2, frames 5.2s vs 5.75s: every element moved together): twilight kept the old formation's 4px rise and
+   stretched it over 1.4s, so its tail landed after everything was already visible. Twilight is a fade only; the rise belongs to the old formation. */
+body.arriving:not(.arr-classic) .home-atmo .atmo-photo, body.arriving:not(.arr-classic) .topbar, body.arriving:not(.arr-classic) .trip, body.arriving:not(.arr-classic) .scores,
+body.arriving:not(.arr-classic) .empty-hero, body.arriving:not(.arr-classic) .hero-tile, body.arriving:not(.arr-classic) .practice, body.arriving:not(.arr-classic) .home-diverge,
+body.arriving:not(.arr-classic) .whisper, body.arriving:not(.arr-classic) .presence { transform: none; }
+/* THE JUMP AT THE END OF THE FADE (recording 10/2 16-06, measured element by element): on the exact frame the 1.4s fade finishes, the dials and
+   the tile drop 3 device pixels, the presence line 2, while the Review row, the header bar and the tab bar stay put. The ones that stay are the ones
+   iPhone always draws on a layer of their own (blurred backdrop, sticky, fixed); the ones that jump only get a layer for the length of the fade and
+   are redrawn into the page when it ends. So they keep their layer, like the Review row: nothing is handed over, nothing lands anywhere new. */
+.home .trip, .home .scores, .home .empty-hero, .home .hero-tile, .home .home-diverge, .home .whisper, .home .presence { will-change: transform, opacity; }
+
+
+/* THE HINTS (STAGED with "asks-1", Tom 10/5; mock dev/hint-scheme.html): the hairline is the one mark. Under an answer each word wears it
+   and a tap opens a SOLID bubble with its meaning (the line turns gold); on a prompt the Hint button lays a hairline under each piece with
+   its Spanish beneath. The place of a situation rides in the direction row in gold (shape B2). */
+#qbody.anchored .direction .at { color: var(--accent); }
+#qbody.anchored .direction.split { display: flex; justify-content: space-between; align-items: center; }
+.hint-btn { font-family: var(--font-display); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim);
+  border: 1px solid var(--border); border-radius: 999px; padding: 5px 12px; background: none; cursor: pointer; }
+.hint-btn.on { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
+.cue-meaning.hinting { line-height: 1.25; }
+.hint-col { display: inline-flex; flex-direction: column; align-items: center; vertical-align: top; }
+.hint-col .pc, .hl { position: relative; display: inline-block; padding-bottom: 5px; }
+.hint-col .pc::after, .hl::after { content: ""; position: absolute; left: 1px; right: 1px; bottom: 0; height: 1.5px; border-radius: 1px; background: color-mix(in srgb, var(--text-dim) 70%, transparent); }
+.hint-es { font-family: var(--font-text); font-size: 13.5px; font-weight: 600; color: var(--accent); letter-spacing: 0; margin-top: 6px; }
+.hl { cursor: pointer; } .hl.open::after { background: var(--accent); height: 2px; }
+/* a tappable hairline is GOLD from the start (Tom 10/20, mock B: the grey line did not read as something to tap); open = brighter and
+   thicker. The Build-the-sentence lines under the Hint pieces (.hint-col .pc) are not tappable and stay grey. */
+.hl::after { background: var(--accent-2); }
+.choice.hinted { overflow: visible; position: relative; z-index: 2; }
+.hint-pop { position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%); z-index: 5; background: #2b2920; border: 1px solid #4a4634; border-radius: 10px;
+  padding: 7px 12px; font-family: var(--font-display); font-size: 15px; font-weight: 600; color: #f6f4ea; white-space: nowrap; box-shadow: 0 10px 22px rgba(0,0,0,.6); letter-spacing: 0; }
+.hint-pop::after { content: ""; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-bottom-color: #4a4634; }
+
+/* SOUNDS YOU'LL SAY (STAGED "sounds-1", Tom 10/6; mocks dev/sounds-session-options*.html): the Key Sound card, the wall of key parts, the run */
+.present-card.key-sound .present-es .g, .wall-word .g, .big-word .g, .snd-more .g { color: var(--accent); }
+.snd-whisper { font-family: var(--font-text); font-size: 13px; color: var(--text-dim); margin: 8px 0 8px; }   /* the word card's gap under the word (Tom 10/6) */
+.snd-rule { font-family: var(--font-text); font-size: 16px; color: var(--text); line-height: 1.45; margin: 4px 0 2px; } .snd-rule .g { color: var(--accent); font-weight: 600; }   /* the rule names its letter in the same gold as the word (Tom 10/7) */
+.snd-more { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px; } .snd-more span.hl { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--text-dim); } .snd-more .hint-pop { font-size: 14px; }
+.found-count, .run-count { font-family: var(--font-display); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+.wall-word, .big-word { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--text); margin: 8px 0 4px; line-height: 1.25; }   /* the size of every other exercise's word on top (.prompt), Tom 10/6 */
+.wall-sub { font-family: var(--font-text); font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.sound-wall { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px; }
+.sound-wall .choice { min-height: 46px; font-family: var(--font-text); font-weight: 600; font-size: 15px; letter-spacing: .03em; padding: 8px 10px; text-align: center; }
+.sound-wall .choice.found { border-color: var(--green); color: var(--text-dim); opacity: .55; }
+.say-re { font-family: var(--font-text); font-size: 15px; color: var(--text-dim); letter-spacing: .04em; margin: 2px 0 14px; }
+.say-row { gap: 14px; }
+.mic { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); display: inline-flex; align-items: center; justify-content: center; color: var(--accent); cursor: pointer; }
+.mic.live { background: color-mix(in srgb, var(--accent) 28%, transparent); animation: mic-listen 1400ms ease-in-out infinite; }   /* listening: a slow breath */
+.mic.hearing { animation: mic-hear 300ms ease-in-out infinite; }   /* hearing you (the phone's events): a quick, bigger pulse */
+.mic.metered { animation: none !important; transition: box-shadow 60ms linear, transform 60ms linear; }   /* the ring follows your voice: the level meter sets its shadow and scale each frame */
+.mic.hit { border-color: var(--green); background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green); animation: none !important; box-shadow: 0 0 0 6px color-mix(in srgb, var(--green) 14%, transparent); transform: none; }
+.big-word { position: relative; display: inline-block; }   /* a match: only the sweep, the word keeps its color (Tom 10/8) */
+.big-word .sweep2 { position: absolute; left: 0; right: 0; bottom: -6px; height: 2.5px; background: var(--green); border-radius: 2px; transform-origin: left; animation: sweep-in 420ms cubic-bezier(.2,.7,.3,1) both; will-change: transform; }   /* keeps its layer: at the end of the sweep the phone re-placed it a pixel lower (Tom's recording 10/8, 6.41s) */
+.heard .res-yours { margin: 2px 0 4px; }
+@keyframes mic-listen { 0%, 100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent); } 50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--accent) 8%, transparent); } }
+@keyframes mic-hear { 0%, 100% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 22%, transparent); transform: scale(1); } 50% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--accent) 10%, transparent); transform: scale(1.08); } }
+@media (prefers-reduced-motion: reduce) { .mic.live, .mic.hearing { animation: none; box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 12%, transparent); } }
+.heard { font-family: var(--font-text); font-size: 14px; color: var(--text-dim); margin-top: 8px; min-height: 20px; } .heard b { color: var(--green); font-weight: 600; }
+.two { display: flex; gap: 10px; margin-top: 18px; } .top .whisper-escape { margin-top: 14px; } .two .btn { flex: 1; } .two .btn.grey { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
+.end-line { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--text); margin-top: 14px; line-height: 1.2; }
+.end-sub { font-family: var(--font-text); font-size: 15px; color: var(--text-dim); margin-top: 8px; line-height: 1.45; }
+.end-grid { margin-top: 22px; gap: 8px 16px; }
+.peek-item .es .g { color: var(--accent); }   /* the sounds session's drawer: the key letters in gold, the say line on the right */
+.odd4 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#qbody.anchored .answers.odd-answers { translate: none; transform: none; top: calc(63dvh - var(--qtop, 90px) - 71px); }   /* the centering is the translate property, not transform (the 10/7 fix missed it) */   /* not centered by a transform: the shake on one tile made the phone re-place the whole block (Tom 10/6); 71px = half the grid */   /* which one sounds different (mock D3): the four in the lower third, the ordinary choice tiles */
+.odd4 .choice { min-height: 66px; font-family: var(--font-display); font-size: 21px; font-weight: 600; letter-spacing: 0; text-align: center; }
+.odd4 .choice.correct { border-color: var(--green); background: color-mix(in srgb, var(--green) 10%, transparent); } .odd4 .choice.dim { opacity: .45; }
+.odd-sub { font-family: var(--font-text); font-size: 14px; color: var(--text-dim); margin-top: 8px; line-height: 1.45; }
+.grid9 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 22px; }
+.grid9 .cell9 { border: 1px solid var(--border); border-radius: 12px; padding: 12px 6px; text-align: center; font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--text); background: color-mix(in srgb, var(--bg-card) 60%, transparent); }
+.grid9 .cell9 .g { color: var(--accent); } .grid9 .cell9 small { display: block; font-family: var(--font-text); font-size: 11px; font-weight: 600; color: var(--text-dim); letter-spacing: .03em; margin-top: 4px; }
+.snd-once { font-family: var(--font-text); font-size: 12.5px; color: var(--text-dim); margin: -6px 0 10px; }   /* "Said the Spain way. The voice is the real thing." once */
+/* test mode: the progress bar scrubs; a taller touch zone and a thumb under the finger while scrubbing (Tom 10/8) */
+.pbar.scrub { overflow: visible; position: relative; cursor: pointer; }
+.pbar.scrub::before { content: ""; position: absolute; left: 0; right: 0; top: -18px; bottom: -18px; }
+.scrub-thumb { position: absolute; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,.45), 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent); opacity: 0; transform: scale(.6); transition: opacity 120ms ease, transform 120ms ease; pointer-events: none; }
+.pbar.scrubbing .scrub-thumb { opacity: 1; transform: scale(1); }
+
+/* THE WORDS BEHIND THE TILE (Tom 10/21, staged "tile-words", mock F): the kicker as the Hint pill; the bubble is the hint's own */
+.hero-k.krow { display: flex; align-items: center; margin-bottom: 2px; }
+.hero-tile .tile-pill { color: var(--accent-2); border-color: color-mix(in srgb, var(--accent-2) 55%, transparent); padding: 3px 9px; font-size: 10px; letter-spacing: .06em; pointer-events: auto; }
+.hero-tile .tile-pill.on { color: #1c275e; background: var(--accent-2); border-color: var(--accent-2); }
+.home .tile-pop { position: absolute; transform: none; z-index: 40; min-width: 250px; max-width: calc(100% - 48px); text-align: left; padding: 10px 14px; text-transform: none; letter-spacing: 0; }
+.home .tile-pop::after { left: 20px; transform: none; }
+.pl-row { display: flex; justify-content: space-between; gap: 14px; padding: 5px 0; border-bottom: 1px solid #4a4634; font-size: 13px; }
+.pl-row:last-child { border-bottom: none; }
+.pl-row b { font-family: var(--font-display); font-weight: 600; color: var(--text); } .pl-row i { font-style: normal; color: var(--text-dim); text-align: right; }
+.pl-row b .g { color: var(--accent); }
+
+/* THE SHEET'S DOORS IN THE LEARN TAB'S FORM (Tom 10/22, staged "sheet-rows"): the Learn row, card and all; Recommended's chevron zone
+   opens the words due under it. The Review button on Home keeps its arrow (the chevron compare of v476 was withdrawn). */
+.practice-opts.learn-rows .lesson { display: flex; align-items: center; gap: 12px; background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 8px; cursor: pointer; box-shadow: var(--shadow); }
+.practice-opts.learn-rows .lesson:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
+.practice-opts.learn-rows .lesson.locked { opacity: .5; pointer-events: none; }
+.practice-opts.learn-rows .lesson.has-peek { padding-right: 0; }
+.practice-opts.learn-rows .lesson .pk-zone { margin: -12px 0; }
+.practice-opts.learn-rows .lesson.open .pk-zone .ph { transform: rotate(-90deg); }
+.practice-opts.learn-rows .lesson-peek { margin: -2px 0 10px; }
+/* a slight dark outline on Spain and the countdown (Test Lab, Tom 10/22: the brighter photo washed them out) */
+body.home-lit .trip .dest { text-shadow: 0 0 1.5px rgba(40,40,40,.6), 0 1px 10px rgba(0,0,0,.5); }   /* the outline, LIVE (Tom 10/23, mock C3): a light grey ring at half strength in the shadow, no stroke */
+body.home-lit .trip .sub { text-shadow: 0 0 1.5px rgba(40,40,40,.55), 0 1px 6px rgba(0,0,0,.45); }
+
+/* THE CHIPS AND THE TRACK OVER THE LIT PHOTO (Tom 10/23, staged "photo-chips", mock F1): the streak and the language chip as dark frosted
+   glass (the photo blurred through a black tint), the dials' unfilled track a light white so the rings read as rings. */
+body.home-lit.photo-chips { --ring-track: rgba(255,255,255,.22); }
+body.home-lit.photo-chips .topbar .lang-flag-top { background: rgba(0,0,0,.28); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; padding: 4px 9px; }
+/* the streak is a READOUT, not a button (Tom 10/23, mock G2): no chip; the gold number and the flame wear the same tight dark ring */
+body.home-lit.photo-chips .stat.streak { text-shadow: 0 0 2px rgba(0,0,0,.85), 0 1px 6px rgba(0,0,0,.6); }
+body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5px rgba(0,0,0,.85)) drop-shadow(0 1px 4px rgba(0,0,0,.6)); }
+
+/* THE AURA IN THE ICON'S ORANGE (Tom 10/23, staged "splash-orange", mock T2): the shipped aura's box, centre and softness, the gold
+   swapped for the orange the app icon and the tabs' candle carry. */
+#splash.splash-orange .splash-lh::before { background: radial-gradient(closest-side at 50% 45%, rgba(201,106,43,.40) 0%, rgba(207,116,48,.26) 35%, rgba(224,149,43,.12) 58%, rgba(230,198,42,.04) 78%, rgba(230,198,42,0) 100%); }
+
+/* THE FLOOD'S COLOUR (Test Lab, Tom 10/26; mock dev/splash-flood-options-2.html): the arrival's flood as a GLOW rather than a flash, with a
+   gradient still on screen at the peak. The flood is a 34px CIRCLE (border-radius 50%), so its disc only reaches 17px x scale from the
+   centre: at 32 times that is 544px, short of the far corner (~700px on a tall phone), which is why v520/v521 left the corners black
+   (Tom's catch, twice). Now the swell goes to 48 (or 44) times, the disc reaches past every corner, and the stops are compressed so the
+   dark rim arrives by the screen's edge: a bright heart at the lantern, a deep brown at the corners, no black. The orange recipes of
+   v519 are retired (Tom: not the orange). */
+#splash.flood-e .splash-flood { background: radial-gradient(circle, #fff3dc 0%, #ffe4aa 14%, #e6b450 28%, #a0641e 44%, #2a1a0a 60%, #2a1a0a 100%); animation-name: arr-flood-48, arr-flood-out; }
+#splash.flood-f .splash-flood { background: radial-gradient(circle, #ffe9a8 0%, #ffd056 12%, #e6aa28 26%, #aa641e 40%, #50280a 54%, #241408 62%, #241408 100%); animation-name: arr-flood-48, arr-flood-out; }
+#splash.flood-g .splash-flood { background: radial-gradient(circle, #fff0c0 0%, #f0c850 10%, #c88228 24%, #783c14 38%, #281408 52%, #1a1008 60%, #1a1008 100%); animation-name: arr-flood-44, arr-flood-out; }
+@keyframes arr-flood-48 { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(48); opacity: 1; } }
+@keyframes arr-flood-44 { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(44); opacity: 1; } }
+
+/* WHAT THEY SAY BACK (staged "replies-1"): the line you said, labelled */
+.act-sit.you-said .ys-label { display: block; font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+
+/* THE DROP AFTER THE REVEAL (Tom's recording 10/24 20-45, measured): the answers band moves a point 0.4s after the tap, at the end of the
+   reveal's fade. The played line and the anchored answers keep a layer from the start, as the result rows and the Home rows do. */
+.played-line { will-change: opacity; }
+#qbody.anchored .answers { will-change: transform; }
+
+/* the cold lap's field sits in flow under the English (chapter 2, Tom 10/25) */
+#qbody.anchored.typed-lap .top .machine-stage { margin-top: 22px; }
+
+.act-sit.need.they-say { margin-top: 14px; }   /* sound off: THEY SAY under YOU SAID, the dialogue (Tom 10/26, mock A) */
+.you-said .ys-line .hl { padding-bottom: 4px; }   /* the exchange's line wears the hint mark */
+.you-said + .played-line { margin-top: 18px; }   /* the reply's replay sits clear of the gold lines (Tom 10/25: too close at 4px) */
+.you-said .ys-line .hl .hint-pop { font-size: 14px; text-transform: none; letter-spacing: 0; font-weight: 500; }
+
+/* a sentence session's preview: the summary line and the example words (Tom 10/25, mock C1) */
+.peek-ex { font-size: 14px; color: var(--text); margin: 2px 0 6px; } .peek-ex .ex-label { display: block; font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin: 8px 0 3px; }   /* the label on its own line: the four words then never orphan one onto a second line at phone width */
+.tile-pop .pl-about { font-size: 13px; color: var(--text); line-height: 1.4; margin-bottom: 6px; } .tile-pop .peek-ex { font-size: 12.5px; margin: 0; }

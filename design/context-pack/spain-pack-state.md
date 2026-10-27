@@ -1,4 +1,4 @@
-# Spain pack state (repo truth, 2026-09-25)
+# Spain pack state (repo truth, 2026-10-27)
 
 Auto-exported by tools/export-pack-state.mjs (context-pack ritual). Phrase lists are the
 taught-once law's ground truth: author against THIS, never memory. Atlas numbers merged from
@@ -183,13 +183,13 @@ tools/atlas-snapshot.json (2026-07-24).
 - atlas (2026-07-24): 5.2 min · in band 5-8 · difficulty 1.9 · ramp 1.3
 - phrases (9; first = anchor):
   1. ¿Dónde está el servicio? — Where is the bathroom?  (4 tok)  [note: Spain says 'el servicio / los servicios'. Signs read 'Aseos'. · kw: dónde, servicio]
-  2. los aseos — the restrooms (sign)  (2 tok)  [kw: aseos]
-  3. Caballeros — Men (sign)  (1 tok)  [kw: caballeros]
-  4. Señoras — Women (sign)  (1 tok)  [kw: señoras]
+  2. los aseos — the restrooms  (2 tok)  [kw: aseos]
+  3. Caballeros — Men  (1 tok)  [kw: caballeros]
+  4. Señoras — Women  (1 tok)  [kw: señoras]
   5. Salida — Exit  (1 tok)  [kw: salida]
   6. Entrada — Entrance  (1 tok)  [kw: entrada]
-  7. Empujar — Push (sign)  (1 tok)  [kw: empujar]
-  8. Tirar — Pull (sign)  (1 tok)  [note: On doors 'Tirar' = pull. Confusingly it also means 'to throw'. · kw: tirar]
+  7. Empujar — Push  (1 tok)  [kw: empujar]
+  8. Tirar — Pull  (1 tok)  [note: On doors 'Tirar' = pull. Confusingly it also means 'to throw'. · kw: tirar]
   9. ¿Me da la llave del servicio? — Can I have the bathroom key?  (6 tok)  [note: Cafés often keep the loo locked. The key lives behind the counter. · kw: llave, servicio]
 - build-eligible (4-8 tok): 2/9
 
@@ -466,7 +466,7 @@ tools/atlas-snapshot.json (2026-07-24).
   1. ¿Puede limpiar la habitación? — Can you clean the room?  (4 tok)  [kw: limpiar, habitación]
   2. Necesito más toallas — I need more towels  (3 tok)  [kw: toallas]
   3. ¿Puede traer otra almohada? — Can you bring another pillow?  (4 tok)  [kw: almohada]
-  4. No molestar — Do not disturb (sign)  (2 tok)  [kw: molestar]
+  4. No molestar — Do not disturb  (2 tok)  [kw: molestar]
   5. El aire acondicionado no funciona — The AC isn't working  (5 tok)  [kw: aire]
   6. el papel higiénico — toilet paper  (3 tok)  [note: Spain: 'papel higiénico'. · kw: papel]
   7. jabón — soap  (1 tok)  [kw: jabón]
