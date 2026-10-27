@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v520 (2026-10-26) — the flood as a glow with a real gradient: three new recipes in the lab
+- Tom: not the orange; the glow shape yes; the warm white and amber read as one colour at the peak, wants dark parts in the white and light and dark parts in the amber. The flood's recipes now carry five stops from a bright heart to a dark rim and the swell stops at 32 or 28 times: E warm white glow, F amber glow with a light heart, G amber glow, deep. The lab row is As shipped / E / F / G; A-D retired. Files: styles.css, screen-settings.js.
+
 ## v519 (2026-10-26) — Test Lab: the flood of light in five colours
 - Tom: buttons to try the flood recipes. Test Lab gains a row, "The arrival's flood of light", with As shipped / A warm white / B orange full / C orange glow / D amber glow; each replays the whole arrival with the flood in that recipe (`devReplayArrival(null, key)` adds `flood-<key>` to the splash; C and D swell to 38 times instead of 85 via `arr-flood-glow`). Nothing in the shipped arrival changes. Files: styles.css, ui.js, screen-settings.js.
 

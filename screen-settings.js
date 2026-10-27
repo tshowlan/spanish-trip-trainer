@@ -119,7 +119,7 @@ function renderProfile() {
   wrap.appendChild(dueAsks);
   // the flood of light (Tom 10/26): replay the arrival with the flood in another colour (mock dev/splash-flood-options.html)
   const floodRow = el(`<div class="lab-row" style="display:block;margin:0 0 10px"><div class="lab-lbl" style="margin-bottom:6px">The arrival's flood of light (replays the arrival)</div><div style="display:flex;flex-wrap:wrap;gap:6px"></div></div>`);
-  [["", "As shipped"], ["a", "A. Warm white"], ["b", "B. Orange, full"], ["c", "C. Orange glow"], ["d", "D. Amber glow"]].forEach(([k, label]) => {
+  [["", "As shipped"], ["e", "E. Warm white glow"], ["f", "F. Amber glow, light heart"], ["g", "G. Amber glow, deep"]].forEach(([k, label]) => {   // the orange (B-D) retired, Tom 10/26
     const b = el(`<button class="btn-quiet" style="margin:0">${label}</button>`);
     b.addEventListener("click", () => { if (typeof devReplayArrival === "function") devReplayArrival(null, k || null); });
     floodRow.lastElementChild.appendChild(b);
