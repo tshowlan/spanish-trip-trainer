@@ -78,6 +78,13 @@ function exportPack(pack, key, label) {
     "taught-once law's ground truth: author against THIS, never memory. Atlas numbers merged from",
     `tools/atlas-snapshot.json${snapPack ? ` (${snap.date})` : " (no snapshot for this pack yet)"}.`,
     "",
+    "## Pack rules (chat 2026-10-27; read before writing a place session)",
+    "- PLACE FRAMES: the eight asks are universal; each place session may carry one frame of its own (Counter ¿Me pone?, Table Para mí, Paying ¿Me cobra?). The mouth keeps the usted form; the ear is told the tú form once, in a GOOD TO KNOW.",
+    key === "spain"
+      ? "- SPAIN: poner is the serving verb (¿Qué le pongo? heard, ¿Me pone ___? said). Castilian bar Spanish; it does not travel."
+      : "- MEXICO: poner as the serving verb is SPAIN-ONLY. Do not copy the Spain Counter verbatim: Mexico's counter frame is ¿Me da ___? (or ¿Me regala ___?), the barista's question ¿Qué le doy? / ¿Qué va a tomar?. Para mí and the bare noun + por favor travel to both.",
+    "- Never taught: quisiera / querría (textbook, marks a foreigner), voy a tomar (an unmet verb), ponme / dame (blunt from a tourist). Quiero with por favor is what a local says.",
+    "",
   ];
   (pack.stages || []).forEach((stage, passIdx) => {
     lines.push(`## Stage: ${stage.title || stage.id || "pass " + passIdx} (pass ${stage.pass != null ? stage.pass : passIdx})`);

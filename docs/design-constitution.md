@@ -31,6 +31,10 @@ Duolingo's teacher is a mascot with a guilt schedule. Tripfluent's teacher is th
 
 Meet it in a scene before you meet it as words — the primer shows the moment, the guess comes before the reveal, so the phrase lands as the answer to a situation, not a vocabulary entry. Then the hands take over: grasp its meaning, build it from pieces, watch the frame vary so the pattern shows itself, and type it cold — the summit, because retrieval under mild pressure is what writes it in. The scaffolds dissolve as competence shows (tiles give way to the keyboard); misses move the ladder, never punish. And the phrase never retires: it comes back in exchanges, welds into new company, and appears in the review room next to phrases it will really stand beside in Spain. A phrase is DONE when it shows up beside strangers and still comes out cold.
 
+### Place frames (chat, 2026-10-27)
+
+The eight asks are universal. Each place session may carry one frame of its own, an opener with a slot that only works where that place serves you: the Counter's ¿Me pone ___?, the Table's Para mí, ___, Paying's ¿Me cobra? A place frame is chapter 2 content (frame plus slot) but not an ask, so "eight ways to ask" stands. The register rule, generalized from puede and ¿Me trae?: the mouth keeps the usted form; the ear is told the tú form once, in a GOOD TO KNOW. A traveler saying the usted form is never wrong. Spain and Mexico may differ on a place frame (poner is Spain's serving verb; Mexico's counter frame is ¿Me da?), so a place frame belongs to a pack, never to the engine.
+
 ### How one session is shaped (the six minutes)
 
 A session is one breath: arrive through a door that says where you are and why now; climb — each beat slightly harder or newer than the last; the middle weaves new phrases among returning ones so nothing is learned in isolation; the lap runs today's material once more at speed; the close bows out doing the thing; the ceremony shows what actually moved. Sequence is the app's, pace is the learner's, and the session never asks for more than it said it would.

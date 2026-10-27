@@ -371,6 +371,10 @@ function composeSentences(lesson) {
   frames.forEach(list => {
     const s = shuffle(list.slice()), at = i => s[i % s.length];
     builds.push(_sentenceBuild(at(0), pool));
+    if (s.length < 2) {   // a frame with ONE sentence (the Table's ¿Puedo?, ¿Dónde está?): build it and answer it, no ear or typed lap, so no sentence runs five times (Tom's rule 10/25: no sentence more than twice)
+      const ex1 = at(0); if ((ex1.replies || []).length) { const r = sample(ex1.replies, 1)[0]; exchanges.push({ type: "reply_hear", item: ex1, es: r[0], en: r[1], set: { ask: ex1.es, line: ex1.es, place, replies: ex1.replies.map(x => x[0]) }, options: ex1.replies.map(x => x[1]), arc: true }); }
+      return;
+    }
     ears.push(Object.assign(_sentenceBuild(at(1), pool), { heard: at(1).es, listenBuild: true, cueRole: "Listen, then build it", cueMeaning: "", hint: null, noEn: false, noAudio: true, resNote: null }));   // a sentence's note rides the first build only (once a session, Tom 10/25)   // the stage keeps the replay; the English shows in the reveal (Tom 10/25)
     const ex = at(2); if ((ex.replies || []).length) { const r = sample(ex.replies, 1)[0]; exchanges.push({ type: "reply_hear", item: ex, es: r[0], en: r[1], set: { ask: ex.es, line: ex.es, place, replies: ex.replies.map(x => x[0]) }, options: ex.replies.map(x => x[1]), arc: true }); }
     const pk = [at(1), at(0), at(2)].find(x => (x.near || []).length >= 2); if (pk) picks.push({ type: "hear_pick", item: pk, es: pk.es, en: pk.en, place, options: [pk.en].concat(pk.near.slice(0, 2)), arc: true });

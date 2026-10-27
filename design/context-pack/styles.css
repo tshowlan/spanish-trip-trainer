@@ -137,8 +137,12 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
    the mark silhouettes against its own light before it is consumed */
 .splash-flood { position: absolute; left: 50%; top: calc(34% - 55px); width: 34px; height: 34px; z-index: 1;
   border-radius: 50%; transform: translate(-50%,-50%) scale(1); opacity: 0; pointer-events: none; will-change: transform, opacity;
-  background: radial-gradient(circle, #fffdf0 0%, rgba(255,250,214,.92) 38%, rgba(216,183,19,.55) 68%, rgba(216,183,19,0) 100%);
-  animation: arr-flood 800ms cubic-bezier(.5,.05,.3,1) 1450ms both, arr-flood-out 650ms ease 2300ms forwards; }
+  /* THE WARM WHITE GLOW (Tom 10/27, lab option E made official): a warm white heart, straw, deep amber, a deep brown rim; the swell stops at
+     48 times (the flood is a circle, 17px x scale reaches the far corner at 44+) so the screen holds the gradient at the peak, light at the
+     lantern and dark at the bottom, no white flash. The cream flash of v1-v524 is retired. */
+  background: radial-gradient(circle, #fff3dc 0%, #ffe4aa 14%, #e6b450 28%, #a0641e 44%, #2a1a0a 60%, #2a1a0a 100%);
+  animation: arr-flood-glow 800ms cubic-bezier(.5,.05,.3,1) 1450ms both, arr-flood-out 650ms ease 2300ms forwards; }
+@keyframes arr-flood-glow { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(48); opacity: 1; } }
 @keyframes arr-flood { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(85); opacity: 1; } }
 @keyframes arr-flood-out { from { opacity: 1; } to { opacity: 0; } }
 /* TEST LAB "calm" (Tom 10/5): the eclipse and daybreak left out. On the dark theme the flood read as a white flash between the lighthouse
@@ -2384,18 +2388,6 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
 /* THE AURA IN THE ICON'S ORANGE (Tom 10/23, staged "splash-orange", mock T2): the shipped aura's box, centre and softness, the gold
    swapped for the orange the app icon and the tabs' candle carry. */
 #splash.splash-orange .splash-lh::before { background: radial-gradient(closest-side at 50% 45%, rgba(201,106,43,.40) 0%, rgba(207,116,48,.26) 35%, rgba(224,149,43,.12) 58%, rgba(230,198,42,.04) 78%, rgba(230,198,42,0) 100%); }
-
-/* THE FLOOD'S COLOUR (Test Lab, Tom 10/26; mock dev/splash-flood-options-2.html): the arrival's flood as a GLOW rather than a flash, with a
-   gradient still on screen at the peak. The flood is a 34px CIRCLE (border-radius 50%), so its disc only reaches 17px x scale from the
-   centre: at 32 times that is 544px, short of the far corner (~700px on a tall phone), which is why v520/v521 left the corners black
-   (Tom's catch, twice). Now the swell goes to 48 (or 44) times, the disc reaches past every corner, and the stops are compressed so the
-   dark rim arrives by the screen's edge: a bright heart at the lantern, a deep brown at the corners, no black. The orange recipes of
-   v519 are retired (Tom: not the orange). */
-#splash.flood-e .splash-flood { background: radial-gradient(circle, #fff3dc 0%, #ffe4aa 14%, #e6b450 28%, #a0641e 44%, #2a1a0a 60%, #2a1a0a 100%); animation-name: arr-flood-48, arr-flood-out; }
-#splash.flood-f .splash-flood { background: radial-gradient(circle, #ffe9a8 0%, #ffd056 12%, #e6aa28 26%, #aa641e 40%, #50280a 54%, #241408 62%, #241408 100%); animation-name: arr-flood-48, arr-flood-out; }
-#splash.flood-g .splash-flood { background: radial-gradient(circle, #fff0c0 0%, #f0c850 10%, #c88228 24%, #783c14 38%, #281408 52%, #1a1008 60%, #1a1008 100%); animation-name: arr-flood-44, arr-flood-out; }
-@keyframes arr-flood-48 { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(48); opacity: 1; } }
-@keyframes arr-flood-44 { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(44); opacity: 1; } }
 
 /* WHAT THEY SAY BACK (staged "replies-1"): the line you said, labelled */
 .act-sit.you-said .ys-label { display: block; font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }

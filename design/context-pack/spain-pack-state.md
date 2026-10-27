@@ -4,6 +4,11 @@ Auto-exported by tools/export-pack-state.mjs (context-pack ritual). Phrase lists
 taught-once law's ground truth: author against THIS, never memory. Atlas numbers merged from
 tools/atlas-snapshot.json (2026-07-24).
 
+## Pack rules (chat 2026-10-27; read before writing a place session)
+- PLACE FRAMES: the eight asks are universal; each place session may carry one frame of its own (Counter ¿Me pone?, Table Para mí, Paying ¿Me cobra?). The mouth keeps the usted form; the ear is told the tú form once, in a GOOD TO KNOW.
+- SPAIN: poner is the serving verb (¿Qué le pongo? heard, ¿Me pone ___? said). Castilian bar Spanish; it does not travel.
+- Never taught: quisiera / querría (textbook, marks a foreigner), voy a tomar (an unmet verb), ponme / dame (blunt from a tourist). Quiero with por favor is what a local says.
+
 ## Stage: Survival kit (pass 0)
 
 ### First words  `sp0-first-words`
