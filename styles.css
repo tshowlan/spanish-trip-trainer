@@ -2387,10 +2387,11 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
 
 /* THE FLOOD'S COLOUR (Test Lab, Tom 10/26; mock dev/splash-flood-options-2.html): the arrival's flood as a GLOW rather than a flash. The swell
    stops short (32 or 28 times, not 85), so the light keeps its edge on screen, and the recipes carry five stops from a bright heart to a
-   dark rim, so the screen holds a gradient at the peak instead of one colour. The orange recipes of v519 are retired (Tom: not the orange). */
-#splash.flood-e .splash-flood { background: radial-gradient(circle, #fff3dc 0%, rgba(255,228,170,.95) 22%, rgba(230,180,80,.75) 45%, rgba(160,100,30,.45) 68%, rgba(60,35,10,0) 100%); animation-name: arr-flood-32, arr-flood-out; }
-#splash.flood-f .splash-flood { background: radial-gradient(circle, #ffe9a8 0%, #ffd056 18%, rgba(230,170,40,.90) 40%, rgba(170,100,30,.60) 62%, rgba(80,40,10,.20) 85%, rgba(80,40,10,0) 100%); animation-name: arr-flood-32, arr-flood-out; }
-#splash.flood-g .splash-flood { background: radial-gradient(circle, #fff0c0 0%, rgba(240,200,80,.95) 15%, rgba(200,130,40,.85) 38%, rgba(120,60,20,.60) 60%, rgba(40,20,8,.30) 80%, rgba(40,20,8,0) 100%); animation-name: arr-flood-28, arr-flood-out; }
+   dark rim, so the screen holds a gradient at the peak instead of one colour. The orange recipes of v519 are retired (Tom: not the orange).
+   v521: every stop is OPAQUE, the rim a deep brown, so the flood fills the screen at the end (Tom 10/26: the glows left the corners black). */
+#splash.flood-e .splash-flood { background: radial-gradient(circle, #fff3dc 0%, #ffe4aa 22%, #e6b450 45%, #a0641e 68%, #2a1a0a 100%); animation-name: arr-flood-32, arr-flood-out; }
+#splash.flood-f .splash-flood { background: radial-gradient(circle, #ffe9a8 0%, #ffd056 18%, #e6aa28 40%, #aa641e 62%, #50280a 85%, #241408 100%); animation-name: arr-flood-32, arr-flood-out; }
+#splash.flood-g .splash-flood { background: radial-gradient(circle, #fff0c0 0%, #f0c850 15%, #c88228 38%, #783c14 60%, #281408 80%, #1a1008 100%); animation-name: arr-flood-28, arr-flood-out; }
 @keyframes arr-flood-32 { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(32); opacity: 1; } }
 @keyframes arr-flood-28 { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(28); opacity: 1; } }
 

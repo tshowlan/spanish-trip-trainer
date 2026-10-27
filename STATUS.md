@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v521 (2026-10-26) — the glows fill the screen at the end
+- Tom: none of E/F/G filled the screen at the end. The rims faded to transparent over the black ground, so the corners stayed black. Every stop is now opaque and the rim a deep brown (E #2a1a0a, F #241408, G #1a1008); at 32 and 28 times the disc reaches past the far corner, so the screen is covered edge to edge with the gradient still on it when the daybreak takes over. File: styles.css.
+
 ## v520 (2026-10-26) — the flood as a glow with a real gradient: three new recipes in the lab
 - Tom: not the orange; the glow shape yes; the warm white and amber read as one colour at the peak, wants dark parts in the white and light and dark parts in the amber. The flood's recipes now carry five stops from a bright heart to a dark rim and the swell stops at 32 or 28 times: E warm white glow, F amber glow with a light heart, G amber glow, deep. The lab row is As shipped / E / F / G; A-D retired. Files: styles.css, screen-settings.js.
 
