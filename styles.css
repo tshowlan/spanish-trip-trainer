@@ -2385,6 +2385,14 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
    swapped for the orange the app icon and the tabs' candle carry. */
 #splash.splash-orange .splash-lh::before { background: radial-gradient(closest-side at 50% 45%, rgba(201,106,43,.40) 0%, rgba(207,116,48,.26) 35%, rgba(224,149,43,.12) 58%, rgba(230,198,42,.04) 78%, rgba(230,198,42,0) 100%); }
 
+/* THE FLOOD'S COLOUR (Test Lab, Tom 10/26; mock dev/splash-flood-options.html): the arrival's flood of light in other recipes. A/B keep the
+   full swell (a flash in a warmer colour); C/D stop the swell at 38 times, so the light keeps an edge and reads as a glow from the lantern. */
+#splash.flood-a .splash-flood { background: radial-gradient(circle, #fff0d2 0%, rgba(255,220,160,.92) 38%, rgba(216,183,19,.55) 68%, rgba(216,183,19,0) 100%); }
+#splash.flood-b .splash-flood, #splash.flood-c .splash-flood { background: radial-gradient(circle, #ffb15a 0%, rgba(224,149,43,.92) 38%, rgba(201,106,43,.60) 68%, rgba(216,183,19,0) 100%); }
+#splash.flood-d .splash-flood { background: radial-gradient(circle, #ffd56a 0%, rgba(230,198,42,.90) 38%, rgba(201,106,43,.50) 68%, rgba(216,183,19,0) 100%); }
+#splash.flood-c .splash-flood, #splash.flood-d .splash-flood { animation-name: arr-flood-glow, arr-flood-out; }
+@keyframes arr-flood-glow { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(38); opacity: 1; } }
+
 /* WHAT THEY SAY BACK (staged "replies-1"): the line you said, labelled */
 .act-sit.you-said .ys-label { display: block; font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
 

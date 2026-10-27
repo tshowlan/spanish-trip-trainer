@@ -198,7 +198,7 @@ function initSplash() {
 /* TEST LAB (Tom 9/29): replay the whole arrival, the splash and then Home's formation, in the shipped form or one of two
    candidates: "dark" (the candle's light spreads from the corner and reveals a finished Home) and "twilight" (everything
    materializes together as the candle comes on). Nothing here touches the shipped arrival. */
-function devReplayArrival(variant) {
+function devReplayArrival(variant, flood) {   // flood: "a".."d", the flood of light in another recipe (Test Lab, Tom 10/26)
   document.querySelectorAll("#splash").forEach(n => n.remove());
   document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "arr-classic", "pulse-go");
   document.querySelectorAll(".tab-candle.arr-in").forEach(n => n.classList.remove("arr-in"));   // the one candle persists across replays
@@ -206,6 +206,7 @@ function devReplayArrival(variant) {
   document.body.appendChild(s);
   document.body.classList.add("arriving"); if (variant && variant !== "calm") document.body.classList.add("arr-" + variant);
   if (variant === "calm") s.classList.add("calm");   // Test Lab (Tom 10/5): no flood of light; the lighthouse holds, then hands straight to twilight
+  if (flood) s.classList.add("flood-" + flood);
   s.innerHTML = splashMarkup();
   if (typeof showTabbar === "function") showTabbar("home");
   renderHome();

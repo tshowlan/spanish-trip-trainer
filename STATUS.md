@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v519 (2026-10-26) — Test Lab: the flood of light in five colours
+- Tom: buttons to try the flood recipes. Test Lab gains a row, "The arrival's flood of light", with As shipped / A warm white / B orange full / C orange glow / D amber glow; each replays the whole arrival with the flood in that recipe (`devReplayArrival(null, key)` adds `flood-<key>` to the splash; C and D swell to 38 times instead of 85 via `arr-flood-glow`). Nothing in the shipped arrival changes. Files: styles.css, ui.js, screen-settings.js.
+
 ## v518 (2026-10-26) — the way back to sound
 - Tom: a clearer button to turn sound back on, and the escape should return when sound does. With sound off, every ear rung now carries "Turn sound back on" in the escape's own slot (the whisper above Continue); a tap restores the rung's ear form (the type or the listen-and-build it had before the swap, remembered at swap time) and re-renders it with "I can't listen right now" back. The session menu's button does the same. The exchange (They answer) now carries the escape too; it had none. The swapnote points at the line under the exercise instead of the session menu. File: lesson.js.
 
