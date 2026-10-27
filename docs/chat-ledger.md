@@ -1,5 +1,7 @@
 # THE CHAT LEDGER (running; sent to chat at milestones, not per ship)
 
+**LATEST SEND: 2026-10-26, v524, Counter sentences shipped.** The newest section is the LAST one in this file ("2026-10-26 — COUNTER SENTENCES SHIPPED (v524): the handoff"); read from there. The entries below it, from 2026-09-22 on, are history chat has mostly seen, kept for the record.
+
 *Milestone send 2026-09-22 (chapter 1 near ship; everything below is staged, Tom has played most of it). Tom's process ruling 2026-09-20: Code no longer writes a paste-ready chat block on every ship. Everything that wants chat's eye collects here. Tom sends this file to chat at milestones (next: chapter 1 ready to ship) or when Code flags that a ruling is blocking. Chat is called in deliberately for writing jobs and cross-chapter rulings. Items leave the ledger when chat answers them.*
 
 **Milestone 2026-09-24, v344: CHAPTER ONE SHIPPED.** Everything below that was "staged" is now live for every learner: the chapter flow, numbers, the listening board chain, the Learn drawer, the button tile, the white bloom, the gloss tap, the scene door. The A items are live copy awaiting the voice pass, not staged copy.
