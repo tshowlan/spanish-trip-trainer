@@ -2385,15 +2385,17 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
    swapped for the orange the app icon and the tabs' candle carry. */
 #splash.splash-orange .splash-lh::before { background: radial-gradient(closest-side at 50% 45%, rgba(201,106,43,.40) 0%, rgba(207,116,48,.26) 35%, rgba(224,149,43,.12) 58%, rgba(230,198,42,.04) 78%, rgba(230,198,42,0) 100%); }
 
-/* THE FLOOD'S COLOUR (Test Lab, Tom 10/26; mock dev/splash-flood-options-2.html): the arrival's flood as a GLOW rather than a flash. The swell
-   stops short (32 or 28 times, not 85), so the light keeps its edge on screen, and the recipes carry five stops from a bright heart to a
-   dark rim, so the screen holds a gradient at the peak instead of one colour. The orange recipes of v519 are retired (Tom: not the orange).
-   v521: every stop is OPAQUE, the rim a deep brown, so the flood fills the screen at the end (Tom 10/26: the glows left the corners black). */
-#splash.flood-e .splash-flood { background: radial-gradient(circle, #fff3dc 0%, #ffe4aa 22%, #e6b450 45%, #a0641e 68%, #2a1a0a 100%); animation-name: arr-flood-32, arr-flood-out; }
-#splash.flood-f .splash-flood { background: radial-gradient(circle, #ffe9a8 0%, #ffd056 18%, #e6aa28 40%, #aa641e 62%, #50280a 85%, #241408 100%); animation-name: arr-flood-32, arr-flood-out; }
-#splash.flood-g .splash-flood { background: radial-gradient(circle, #fff0c0 0%, #f0c850 15%, #c88228 38%, #783c14 60%, #281408 80%, #1a1008 100%); animation-name: arr-flood-28, arr-flood-out; }
-@keyframes arr-flood-32 { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(32); opacity: 1; } }
-@keyframes arr-flood-28 { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(28); opacity: 1; } }
+/* THE FLOOD'S COLOUR (Test Lab, Tom 10/26; mock dev/splash-flood-options-2.html): the arrival's flood as a GLOW rather than a flash, with a
+   gradient still on screen at the peak. The flood is a 34px CIRCLE (border-radius 50%), so its disc only reaches 17px x scale from the
+   centre: at 32 times that is 544px, short of the far corner (~700px on a tall phone), which is why v520/v521 left the corners black
+   (Tom's catch, twice). Now the swell goes to 48 (or 44) times, the disc reaches past every corner, and the stops are compressed so the
+   dark rim arrives by the screen's edge: a bright heart at the lantern, a deep brown at the corners, no black. The orange recipes of
+   v519 are retired (Tom: not the orange). */
+#splash.flood-e .splash-flood { background: radial-gradient(circle, #fff3dc 0%, #ffe4aa 14%, #e6b450 28%, #a0641e 44%, #2a1a0a 60%, #2a1a0a 100%); animation-name: arr-flood-48, arr-flood-out; }
+#splash.flood-f .splash-flood { background: radial-gradient(circle, #ffe9a8 0%, #ffd056 12%, #e6aa28 26%, #aa641e 40%, #50280a 54%, #241408 62%, #241408 100%); animation-name: arr-flood-48, arr-flood-out; }
+#splash.flood-g .splash-flood { background: radial-gradient(circle, #fff0c0 0%, #f0c850 10%, #c88228 24%, #783c14 38%, #281408 52%, #1a1008 60%, #1a1008 100%); animation-name: arr-flood-44, arr-flood-out; }
+@keyframes arr-flood-48 { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(48); opacity: 1; } }
+@keyframes arr-flood-44 { 0% { transform: translate(-50%,-50%) scale(1); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%,-50%) scale(44); opacity: 1; } }
 
 /* WHAT THEY SAY BACK (staged "replies-1"): the line you said, labelled */
 .act-sit.you-said .ys-label { display: block; font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }

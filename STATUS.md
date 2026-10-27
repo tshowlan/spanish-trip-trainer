@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v522 (2026-10-26) — the glows reach the corners
+- Tom, twice: the glows still did not cover the screen. The real cause: the flood is a 34px circle, so its disc reaches only 17px x scale from the centre; at 32 times that is 544px, short of a tall phone's far corner (~700px). v521's opaque rim could not help what the disc never reached. The swell now goes to 48 times (E, F) or 44 (G), past every corner, and the gradient's stops are compressed so the deep brown arrives by the screen's edge. File: styles.css.
+
 ## v521 (2026-10-26) — the glows fill the screen at the end
 - Tom: none of E/F/G filled the screen at the end. The rims faded to transparent over the black ground, so the corners stayed black. Every stop is now opaque and the rim a deep brown (E #2a1a0a, F #241408, G #1a1008); at 32 and 28 times the disc reaches past the far corner, so the screen is covered edge to edge with the gradient still on it when the daybreak takes over. File: styles.css.
 
