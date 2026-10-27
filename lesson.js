@@ -432,6 +432,7 @@ function renderReplyHear(q) {
   });
   answers.appendChild(choices);
   body.appendChild(answers);
+  if (!silent) setTimeout(() => listenEscape($("#footer") || footer(``), q, { keep: true }), 0);   // the exchange is a listening rung: it carries the escape too (Tom 10/26)
 }
 function composeAsks(lesson, newItems) {
   const pool = lesson.items || [], qs = [];
@@ -1805,7 +1806,7 @@ function renderQuestion() {
   // must bite at render - Tom's catch, 2026-08-02)
   if (run.soundOff && q.item && EAR_SIBLINGS[q.type]) {
     const sib = [EAR_SIBLINGS[q.type], "word_fill", "phrase_fill"].find(m => _modeFeasible(m, q.item));
-    if (sib) q.type = sib;
+    if (sib) { if (!q._earType) q._earType = q.type; q.type = sib; }   // remembered, so sound back on restores it
   }
   run.answered = false;
   run.slotT0 = Date.now();                              // per-slot timing telemetry (2026-07-22)
@@ -1849,6 +1850,7 @@ function renderQuestion() {
      ask_which: renderAskWhich, key_sound: renderKeySound, sound_wall: renderSoundWall, say_it: renderSayIt, odd_one: renderOddOne, sounds_end: renderSoundsEnd, sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable, days_set: renderDaysSet, sign_wall: renderSignWall, days_order: renderDaysOrder,
      circuit_door: renderCircuitDoor, circuit_close: renderCircuitClose,
      reply: renderReplyChat }[q.type])(q);
+  setTimeout(() => soundBackOnWhisper(q), 0);   // sound off on an ear rung: the way back sits where the escape sat (Tom 10/26)
 }
 
 /* ----- intro flow: new phrases one at a time over a regional photo, then a recap page ----- */
@@ -2080,14 +2082,14 @@ function listenEscape(f, q, opts) {
     if (run.answered) return;
     run.soundOff = true;
     try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (_) {}
-    if (!(opts && opts.keep)) q.type = (typeof EAR_SIBLINGS !== "undefined" && EAR_SIBLINGS[q.type]) || "mc_es2en";   // keep: the renderer has its own sound-off form
+    if (!(opts && opts.keep)) { if (!q._earType) q._earType = q.type; q.type = (typeof EAR_SIBLINGS !== "undefined" && EAR_SIBLINGS[q.type]) || "mc_es2en"; }   // keep: the renderer has its own sound-off form
     const body = $("#qbody");
     body.innerHTML = "";
     const numbers = !!(run.lesson && run.lesson.numbers);           // numbers are an ear skill: the escape says so (chat's door line, Tom 9/22)
     const ear = earOn() && isEarLesson(run.lesson);                 // an ear session's escape offers the way back (Tom 9/26); copy is Code's draft for chat
     body.appendChild(el(`<div class="swapnote">
       <span class="big">${numbers ? "Numbers are an ear skill." : ear ? "This one is built for your ears." : "Switched to reading and typing"}</span>
-      <span>${ear ? "Keep going without sound, or come back to it when you can listen. It will be waiting on Home." : numbers ? "This one is better with sound on. Sound stays off for this session; turn it back on any time from the session menu." : "Sound stays off for this session. Turn it back on any time from the session menu."}</span></div>`));
+      <span>${ear ? "Keep going without sound, or come back to it when you can listen. It will be waiting on Home." : numbers ? "This one is better with sound on. Sound stays off for this session; turn it back on any time from the line under the exercise." : "Sound stays off for this session. Turn it back on any time from the line under the exercise."}</span></div>`));
     if (ear) {
       const cf = footer(`<button class="btn" id="swapcont">Keep going without sound</button><button class="btn grey" id="swappark">Come back when I can listen</button>`);
       cf.querySelector("#swapcont").addEventListener("click", () => renderQuestion());
@@ -2097,6 +2099,24 @@ function listenEscape(f, q, opts) {
       cf.querySelector("#swapcont").addEventListener("click", () => renderQuestion());
     }
   });
+}
+/* THE WAY BACK (Tom 10/26): with sound off, the escape's slot offers "Turn sound back on" on every ear rung; a tap restores the rung's
+   ear form (the type or build it had before the swap) and re-renders it, escape and all. The session menu's button does the same. */
+function _earRung(q) { return !!(q && (q.heard || q.listenBuild || q._ear || q._earType || (typeof EAR_SIBLINGS !== "undefined" && EAR_SIBLINGS[q.type]) || /^(reply_hear|hear_pick|listen_choice|reply_listen|scene_hear|num_)/.test(q.type || ""))); }
+function soundBackOn(q) {
+  run.soundOff = false;
+  const cur = q || run.qs[run.idx];
+  if (cur && cur._ear) { Object.assign(cur, cur._ear); delete cur._ear; }
+  if (cur && cur._earType) { cur.type = cur._earType; delete cur._earType; }
+  if (!run.answered) renderQuestion();
+}
+function soundBackOnWhisper(q) {
+  if (!run || !run.soundOff || run.answered || !_earRung(q)) return;
+  const f = $("#footer") || footer(``);
+  if (f.querySelector(".whisper-escape")) return;
+  const w = el(`<button class="whisper-escape">Turn sound back on</button>`);
+  f.insertBefore(w, f.firstChild);
+  w.addEventListener("click", () => { if (run.answered) return; soundBackOn(q); });
 }
 /* parking an ear session (Tom 9/26): leaving one before it is done saves it; the tile offers it first next new day */
 function parkEarSession() { if (!run || !run.lesson || lessonDone(run.lesson.id)) return; state.parkedEar = { id: run.lesson.id, day: dayKey() }; save(); }
@@ -2115,7 +2135,7 @@ function sessionSheet() {
   wrap.querySelector(".sheet-backdrop").addEventListener("click", close);
   wrap.querySelector("#cs-cancel").addEventListener("click", close);
   const sb = wrap.querySelector("#cs-sound");
-  if (sb) sb.addEventListener("click", () => { run.soundOff = false; close(); toast("Sound is back on"); });
+  if (sb) sb.addEventListener("click", () => { close(); soundBackOn(); toast("Sound is back on"); });
   wrap.querySelector("#cs-ok").addEventListener("click", () => { close(); if (earOn() && run && isEarLesson(run.lesson)) parkEarSession(); leaveSession(); });   // leave to where you came from (Tom 9/21); an ear session left early is saved for sound (Tom 9/26)   // leave to where you came from (Tom 9/21)
 }
 
@@ -2492,6 +2512,7 @@ function renderWeld(q) {
   if (q.heard && q.listenBuild && (run.soundOff || !("speechSynthesis" in window) || state.sound === false)) {
     if (q.item.contextEs) return renderContextChoice(Object.assign({}, q, { type: "context_choice" }));   // a word with a context line: fill the blank
     // a sentence has no context line (the Counter, Tom 10/25: the escape left a blank screen); it is built from its English instead, hint and all
+    if (!q._ear) q._ear = { heard: q.heard, listenBuild: true, cueRole: q.cueRole, cueMeaning: q.cueMeaning, noEn: q.noEn, noAudio: q.noAudio, hint: q.hint };   // kept, so sound back on restores the ear form (Tom 10/26)
     Object.assign(q, { heard: null, listenBuild: false, cueRole: "Build the sentence", cueMeaning: q.item.en, noEn: true, noAudio: false, hint: q.item.hint || null });
   }
   const item = q.item;
