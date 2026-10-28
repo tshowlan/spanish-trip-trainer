@@ -476,8 +476,18 @@ function renderAskWhich(q) {
    Never on a card (it already gives the meaning), never on the word under test. */
 function _hairlineWords(host, item) {
   if (!host || !(item.words || []).length) return;
-  let html = host.textContent;
-  item.words.forEach(w => { const re = new RegExp(w[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"); html = html.replace(re, m => `<span class="hl" data-en="${w[1]}">${m}</span>`); });   // case-insensitive, the line keeps its own casing (the exchange's YOU SAID line, Tom 10/25)
+  // every mark is found on the plain text first, then the HTML is built once: a word is never matched inside a tag already inserted
+  // ("pan" inside <span>, Tom's screenshot 10/27). Case-insensitive, the line keeps its own casing (the exchange's YOU SAID line, Tom 10/25).
+  const text = host.textContent, marks = [];
+  item.words.forEach(w => {
+    const re = new RegExp(w[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "ig"); let m;
+    while ((m = re.exec(text))) { const a = m.index, b = a + m[0].length; if (!marks.some(k => a < k.end && b > k.start)) { marks.push({ start: a, end: b, en: w[1] }); break; } }
+  });
+  marks.sort((a, b) => a.start - b.start);
+  const esc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  let html = "", pos = 0;
+  marks.forEach(k => { html += esc(text.slice(pos, k.start)) + `<span class="hl" data-en="${esc(k.en).replace(/"/g, "&quot;")}">${esc(text.slice(k.start, k.end))}</span>`; pos = k.end; });
+  html += esc(text.slice(pos));
   host.innerHTML = html; host.classList.add("hinted");
   host.querySelectorAll(".hl").forEach(n => n.addEventListener("click", e => {
     e.stopPropagation();
@@ -2535,7 +2545,8 @@ function renderWeld(q) {
   const narrLine = q.sceneNarr || (!q.ves && q.item.narr);
   const narr = narrLine ? `<span class="cue-narr">${narrLine}</span> · ` : "";
   // scene welds carry their authored cue verbatim (label + meaning); everything else composes
-  cueBlock.appendChild(el(`<div class="${anchored ? "direction" : "cue-label"}">${q.cueRole ? q.cueRole : (q.cueLabel ? `<span class="cue-narr">${q.cueLabel}</span>` : (q.ves ? "Another way to ask for" : narr + (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for")))}</div>`));
+  const placeTag = anchored && (q.place || (q.item && q.item.place)) ? ` <span class="at">\u00b7 ${q.place || q.item.place}</span>` : "";   // where you are, on every sentence rung (Tom 10/27: the context, in the session and in review)
+  cueBlock.appendChild(el(`<div class="${anchored ? "direction" : "cue-label"}">${q.cueRole ? q.cueRole : (q.cueLabel ? `<span class="cue-narr">${q.cueLabel}</span>` : (q.ves ? "Another way to ask for" : narr + (outOfLesson ? (_inputClimbed(q.item) ? "Type it in Spanish" : "Say it in Spanish") : "Ask for")))}${placeTag}</div>`));
   let heardRow = null;
   if (q.heard) {                                                  // role-inversion: hear their ask first
     const play = audioControl(slow => { slow ? speak(q.heard, 0.55) : speak(q.heard); }, { speed: true });
@@ -2606,7 +2617,9 @@ function renderWeld(q) {
     setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
       ans.querySelectorAll(".word").forEach(w => w.remove());
       const sweepEl = ans.querySelector(".sweep");
-      dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
+      dressed.forEach((t, i) => ans.insertBefore(el(`<span class="word">${t}${i < dressed.length - 1 ? " " : ""}</span>`), sweepEl));   // the space rides inside the word, so the underline runs through it
+      // on the ruled band the fused row becomes lines of text and the green runs under EACH line (Tom 10/27: a wrapped sentence had its line under the second row only)
+      if (ans.closest("#qbody.anchored")) { ans.classList.add("lined"); requestAnimationFrame(() => requestAnimationFrame(() => ans.classList.add("drawn"))); }
     }, 550);
     if (!q.sceneLocal) recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });   // scene-local welds record nowhere (flagged in data)
     if (wrongTaps > 0) run.wrong++;
@@ -4201,7 +4214,7 @@ function finishGrade(ok, item, extra, wrong, words) {
   // accent/typo slips are forgiven SILENTLY (we grade for the trip, not the classroom; the es-reveal
   // teaches passively). Slip telemetry logs quietly; it never surfaces.
   if (extra && post) post.slips = (post.slips || 0) + 1;
-  const slips = words ? words.filter(w => w.kind === "typo" || w.kind === "accent") : [];   // called out in the reveal, on the word (Tom 10/27)
+  const slips = words ? words.filter(w => w.kind === "typo") : [];   // a letter slip is called out in the reveal, on the word; an accent slip passes in silence (Tom 10/27)
   resolveCorrect(item, q, { yoursNow, restored, strengthAfter: post ? Math.round(itemStrength(post)) : 0, slips });
 }
 

@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v529 (2026-10-27) — Tom's Table play: the place on every sentence rung, the green under each line, the hairline bug, fewer tidbits
+- **The place on every sentence rung.** A sentence item now carries its session's `place` (engine `own`, new and reused objects alike), and the build, ear build, and typed rungs put it in the direction in the accent colour ("BUILD THE SENTENCE · AT THE TABLE"), as the exchange already did. In review the same rung shows the same place, since it rides the item. Tom's catch: some rungs had the context and others did not.
+- **The green under each line.** On the ruled band a wrapped sentence had its green line under the second row only. Once dressed, the fused row becomes lines of text (the space inside each word, so the underline runs through it), sitting on the band's lines (line-height = the band's pitch, nudged to keep the text in place), and the green is an underline every line carries, drawing in by colour. The scenes' builds keep the sweep. Measured: line one on the band's first rule, line two on its second.
+- **The hairline bug** (Tom's screenshot: raw `pan class="hl"…` in the YOU SAID line): the marks were inserted one by one into the HTML, so "pan" matched inside its own `<span>`. The marks are now found on the plain text and the HTML built once.
+- **Accent slips pass in silence**; only a letter slip is named in the Spelling line (Tom: mí typed mi is not a misspelling).
+- **Fewer tidbits.** The Table's terrace, side-plate, and English-menu notes are gone (Tom: not necessary, and opinion); Quiero's por-favor note and Para mí's note stay, since they teach language. "¿Puedo pagar en la mesa?" (odd at the table) is now "¿Puedo pagar aquí?" (Can I pay here?), aquí heard in Aquí tiene. Idea parked for chat: a small icon for a tidbit worth keeping, instead of a line. Files: lesson.js, engine.js, styles.css, curriculum.js.
+
 ## v528 (2026-10-27) — the ¿Me pone? sentence carries no note
 - Tom: the card says it once; the sentence's short note is removed. Rule: a place frame's register note lives on its card only. File: curriculum.js.
 
