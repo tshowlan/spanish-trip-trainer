@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v528 (2026-10-27) — the ¿Me pone? sentence carries no note
+- Tom: the card says it once; the sentence's short note is removed. Rule: a place frame's register note lives on its card only. File: curriculum.js.
+
 ## v527 (2026-10-27) — the ¿Me pone? card in plain English; chapter 2's line
 - Tom: the card's GOOD TO KNOW now reads "An ask built for the bar. The barman asks you ¿Qué le pongo?, and ¿Me pone? is your side of the same verb. Say pone, not pones: pones is the casual form for a friend, and pone is the polite one, always right with a stranger." ("Both directions" and "nobody minds" are gone; pones is the tú form, not a plural.) The first ¿Me pone? sentence's note is the short form of the same. Chapter 2's line on Learn: "The primary ways to ask, built on the words you learned in chapter 1." Files: curriculum.js, docs/chapter2-cues.md.
 
