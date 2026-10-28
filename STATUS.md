@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v532 (2026-10-27) — the Para mí card in Tom's words
+- "The Spain way to order in a restaurant. When the waiter comes round, each person says Para mí and then the dish, no verb." File: curriculum.js.
+
 ## v531 (2026-10-27) — the Para mí card
 - Tom: the Table's place frame gets an intro card, like ¿Me pone? at the Counter: "Para mí, ___ / For me, ___", the context line "Para mí, una copa de vino.", and the GOOD TO KNOW on why it matters at a restaurant ("The table's way to order. When the waiter comes round, each person says Para mí and then the dish, no verb. It is how a table orders in Spain, and it is what the waiter is waiting to hear."). The pan con tomate sentence's note is removed (the card says it once). Rule now general: a place frame opens its session with a card. File: curriculum.js.
 
