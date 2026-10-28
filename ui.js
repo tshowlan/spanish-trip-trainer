@@ -129,8 +129,25 @@ function audioControl(play, opts) {
 
 /* ---------- lighthouse mark (geometric, brand palette) ---------- */
 let _lhId = 0;
-function lighthouse(h = 40) {
+function lighthouse(h = 40, opts) {
   const id = "lh-" + (++_lhId);
+  // THE ICON'S MARK (Tom 10/28, STAGED "splash-mark"): the app icon's palette on the splash's lighthouse: the blues swapped (a light tower,
+  // dark bands), the beams and the lantern in the icon's gold at full strength. Every other lighthouse in the app keeps the shipped mark.
+  if (opts && opts.icon) return `<svg class="lighthouse" viewBox="0 0 100 130" height="${h}" role="img" aria-label="lighthouse" style="display:block">
+    <defs><clipPath id="${id}"><polygon points="35,102 65,102 60,44 40,44"/></clipPath></defs>
+    <polygon points="43,23 43,33 6,26 11,10" fill="#e6c62a"/>
+    <polygon points="57,23 57,33 94,26 89,10" fill="#e6c62a"/>
+    <rect x="18" y="110" width="64" height="6" fill="#4a7fc1"/>
+    <rect x="28" y="102" width="44" height="9" fill="#4a7fc1"/>
+    <polygon points="35,102 65,102 60,44 40,44" fill="#4a7fc1"/>
+    <rect x="0" y="60" width="100" height="9" fill="#1c275e" clip-path="url(#${id})"/>
+    <rect x="0" y="79" width="100" height="9" fill="#1c275e" clip-path="url(#${id})"/>
+    <rect x="37" y="39" width="26" height="6" fill="#4a7fc1"/>
+    <rect x="37" y="44" width="26" height="2" fill="#1c275e"/>
+    <rect x="43" y="22" width="14" height="18" fill="#4a7fc1"/>
+    <rect x="44.5" y="23.5" width="11" height="15" fill="#e6c62a"/>
+    <polygon points="41,22 59,22 50,13" fill="#4a7fc1"/>
+  </svg>`;
   return `<svg class="lighthouse" viewBox="0 0 100 130" height="${h}" role="img" aria-label="lighthouse" style="display:block">
     <defs><clipPath id="${id}"><polygon points="35,102 65,102 60,44 40,44"/></clipPath></defs>
     <polygon points="43,23 43,33 6,26 11,10" fill="#d8b713" opacity="0.82"/>
@@ -161,7 +178,7 @@ function splashMarkup() {
   // marks verbatim (recomposed, never redrawn); daybreak = the theme-aware clearing layer
   return `<div class="daybreak"></div><div class="splash-flood"></div>
     <div class="splash-stack">
-      <div class="splash-lh">${lighthouse(110)}</div>
+      <div class="splash-lh">${lighthouse(110, { icon: typeof isStaged === "function" && isStaged("splash-mark") })}</div>
       <div class="splash-wm">${wordmark(34)}</div>
     </div>`;
 }

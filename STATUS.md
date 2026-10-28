@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v538 (2026-10-28) — the splash's lighthouse in the icon's colours (STAGED `splash-mark`); Progress thoughts logged
+- Tom: match the splash's lighthouse to the app icon. `lighthouse(h, { icon: true })` draws the icon's mark (blues swapped: light tower, dark bands; beams and lantern in #e6c62a at full strength); the splash uses it under the switch, every other lighthouse keeps the shipped mark. Mock: dev/splash-mark-options.html (the icon beside the splash as shipped and with the icon's mark). Tom's Progress-tab thoughts logged in the ledger for a later discussion. Files: ui.js, config.js.
+
 ## v537 (2026-10-28) — chapter 2 is "The sentences that get things done"
 - Tom: chapter 2's name on Learn and its door is "The sentences that get things done" (was "Your first sentences"); its line "The primary ways to ask for what you need, built on the words you learned in chapter 1." The asks keep their name (Quiero and Necesito are requests). Chapters 3 and 4 keep their old names until their own redraw. Files: curriculum.js, engine.js, docs.
 
