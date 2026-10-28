@@ -276,6 +276,36 @@ function levenshtein(a, b) {
   }
   return prev[n];
 }
+/* WORD BY WORD (Tom 10/27): a typed sentence is judged a word at a time. A word may SLIP (an accent missed, one letter off, two letters swapped)
+   and still count; a wrong word, an extra word, or a missing word fails. Returns { ok, words } where words is the target's words in order,
+   each { right, typed, kind } with kind ok | accent | typo | missing, plus any extra typed words as { typed, kind: "extra" }, so the
+   correction can mark the one word that was off instead of striking the whole line. */
+function _slipKind(a, b) {
+  const x = norm(a), y = norm(b);
+  if (x === y) return a.toLowerCase() === b.toLowerCase() ? "ok" : "accent";
+  if (y.length < 3) return null;                                          // short words (un, la, de) must be exact
+  if (levenshtein(x, y) <= 1) return "typo";
+  if (x.length === y.length) { for (let i = 0; i + 1 < x.length; i++) if (x[i] !== y[i]) return (x[i] === y[i + 1] && x[i + 1] === y[i] && x.slice(i + 2) === y.slice(i + 2)) ? "typo" : null; }
+  return null;
+}
+function judgeWords(raw, target) {
+  const tok = t => String(t || "").replace(/[\u00bf\u00a1?!.,;:"\u00ab\u00bb()]/g, " ").trim().split(/\s+/).filter(Boolean);
+  const A = tok(raw), B = tok(target);
+  // the longest run of matches (exact or slipped), so one missing or extra word does not throw the rest off
+  const L = Array.from({ length: A.length + 1 }, () => new Array(B.length + 1).fill(0));
+  for (let i = A.length - 1; i >= 0; i--) for (let j = B.length - 1; j >= 0; j--) L[i][j] = _slipKind(A[i], B[j]) ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  const words = []; let i = 0, j = 0;
+  while (i < A.length && j < B.length) {
+    const k = _slipKind(A[i], B[j]);
+    if (k && L[i][j] === L[i + 1][j + 1] + 1) { words.push({ right: B[j], typed: A[i], kind: k }); i++; j++; }
+    else if (L[i + 1][j] >= L[i][j + 1]) { words.push({ typed: A[i], kind: "extra" }); i++; }
+    else { words.push({ right: B[j], kind: "missing" }); j++; }
+  }
+  while (i < A.length) words.push({ typed: A[i++], kind: "extra" });
+  while (j < B.length) words.push({ right: B[j++], kind: "missing" });
+  const ok = words.every(w => w.kind === "ok" || w.kind === "accent" || w.kind === "typo");
+  return { ok, words, accent: ok && words.some(w => w.kind === "accent"), typo: ok && words.some(w => w.kind === "typo") };
+}
 // returns { ok, accent?, typo? }. accent = right letters, wrong/missing accents.
 function judgeTyped(raw, target) {
   const a = norm(raw), b = norm(target);

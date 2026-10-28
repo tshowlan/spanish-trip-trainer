@@ -1310,6 +1310,14 @@ body.in-runner .footer { background: transparent; border-top: none; }
 :root[data-theme="dark"] .corr-sheet { background: #232118; }
 .corr-grab { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
 .corr-wrong { font-size: 14px; color: var(--text-dim); text-decoration: line-through; text-decoration-color: var(--red); margin-bottom: 12px; }
+/* the attempt word by word (Tom 10/27): the line is not struck; the word that was off is */
+.corr-wrong.by-word { text-decoration: none; }
+.corr-wrong .w-extra { text-decoration: line-through; text-decoration-color: var(--red); }
+.corr-wrong .w-slip { text-decoration: underline; text-decoration-color: var(--red); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.corr-wrong .w-miss { color: var(--red); font-style: italic; }
+/* a slipped word, called out in the reveal: the typed form struck, the right one beside it */
+.res-slip { font-size: 13px; color: var(--text-dim); line-height: 1.4; margin-top: 10px; } .res-slip .note-label { margin-top: 0; }
+.res-slip .slip { margin-right: 12px; color: var(--text); font-weight: 600; } .res-slip .slip s { color: var(--text-dim); font-weight: 400; text-decoration-color: var(--red); margin-right: 6px; }
 .corr-label { font-family: var(--font-display); font-size: 11px; letter-spacing: .06em; font-weight: 600; color: var(--accent-2); text-transform: uppercase; margin-bottom: 8px; }
 /* unified chunk semantics (decisions 2026-07-16): known chunks = dotted-underline text; only the ERROR
    chunk is the gold box (box + gold = attend here). Mirrors the presentation card's .chunk-pill. */

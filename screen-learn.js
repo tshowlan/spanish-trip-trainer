@@ -5,7 +5,7 @@
 
 // mean current strength across a lesson's seen phrases; null = not started yet
 function lessonStrength(l) {
-  const ss = (l.items || []).map(it => { const s = state.learn && state.learn[it.id]; return (s && s.exposures >= 1) ? itemStrength(s) : null; }).filter(x => x != null);
+  const ss = (l.items || []).filter(it => !it.card).map(it => { const s = state.learn && state.learn[it.id]; return (s && s.exposures >= 1) ? itemStrength(s) : null; }).filter(x => x != null);
   return ss.length ? Math.round(ss.reduce((a, b) => a + b, 0) / ss.length) : null;
 }
 // compact strength ring (native vocabulary for "how solid is this", replaces arcade stars)
@@ -71,7 +71,7 @@ function _lessonRow(l, isNext) {
   const fading = lessonDone(l.id) ? lessonFadingCount(l) : 0;
   const beat = _lessonBeat(l);
   const meta = _isMachine(l) ? `Pattern · ${(l.items || []).length} fillers`
-    : l.chain ? "Conversation" : `${(l.items || []).length} ${l.sounds ? "sounds" : l.wordsSession ? "words" : "phrases"}`;
+    : l.chain ? "Conversation" : `${(l.items || []).filter(it => !it.card).length} ${l.sounds ? "sounds" : l.wordsSession ? "words" : "phrases"}`;
   const earTag = (typeof earOn === "function" && earOn() && isEarLesson(l)) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for sound" : "Best with sound"}</span>` : isSpeakLesson(l) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for speaking" : "Best said out loud"}</span>` : "";   // R2 (Tom 9/26)
   const row = el(`<div class="lesson${isNext ? " next" : ""}">
     ${str != null ? strengthRing(str) : `<span class="caret-new">${icon("caret-right", 13)}</span>`}

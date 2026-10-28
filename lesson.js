@@ -363,7 +363,8 @@ function _sentenceBuild(it, pool) {
   return { type: "weld", item: it, pool, target: it.es, tiles, distractors: sample(others, Math.min(2, others.length)), targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint, resNote: it.note || null };   // two strays in chapter 2's banks (Tom 10/25); a sentence's note rides its reveal (croissant's spelling, 10/25)
 }
 function composeSentences(lesson) {
-  const pool = lesson.items || [], place = lesson.place || "";
+  const cards = (lesson.items || []).filter(it => it.card);   // a place frame's intro card (¿Me pone ___?, Tom 10/27): shown first, never a sentence of the ladder
+  const pool = (lesson.items || []).filter(it => !it.card), place = lesson.place || "";
   // the frames: each ask's sentences, shuffled, so the beats spread across them (build one, hear another, answer a third)
   const frames = new Map();
   pool.forEach(it => { const k = it.frame || norm(it.es); if (!frames.has(k)) frames.set(k, []); frames.get(k).push(it); });
@@ -380,7 +381,7 @@ function composeSentences(lesson) {
     const pk = [at(1), at(0), at(2)].find(x => (x.near || []).length >= 2); if (pk) picks.push({ type: "hear_pick", item: pk, es: pk.es, en: pk.en, place, options: [pk.en].concat(pk.near.slice(0, 2)), arc: true });
     typed.push(Object.assign(_sentenceBuild(at(s.length >= 3 ? 2 : 1), pool), { inputForm: "typed", cueRole: "Say it in Spanish", hint: null, arc: true, lap: true, resNote: null }));
   });
-  const qs = [];
+  const qs = cards.map(it => ({ type: "present", item: it, arc: true }));
   const noSeam = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };
   let exs = shuffle(exchanges);
   for (let t = 0; t < 60 && exs.some((q, i) => i > 0 && norm(exs[i - 1].es) === norm(q.es)); t++) exs = shuffle(exchanges);   // never the same reply twice in a row
@@ -1905,7 +1906,7 @@ function renderPresent(q) {
   const item = q.item;
   const body = $("#qbody");
   const chunked = Array.isArray(item.chunks) && item.chunks.length;
-  const short = item.es.trim().split(/\s+/).length < 3 || !!(run.lesson && run.lesson.wordsSession && item.contextEs);   // a word session's card always shows its context ("¿Qué le pongo?" is three words)
+  const short = item.es.trim().split(/\s+/).length < 3 || !!(run.lesson && run.lesson.wordsSession && item.contextEs) || !!(item.card && item.contextEs);   // a word session's card always shows its context ("¿Qué le pongo?" is three words); a place frame's card too
   // Attention semantics (decisions 2026-07-15, per design/presentation-card.html): GOLD + a NEW tag mark
   // the one new piece; everything already-known is unmarked (green "known" outline retired app-wide). The
   // new piece is content-flagged (chunks[i][2] === "new"). Tap any pill → meaning popover + chunk audio.
@@ -1981,7 +1982,7 @@ function renderPresent(q) {
   run.exposed = run.exposed || new Set();
   const advance = () => {
     const id = itemId(item);
-    if (!run.exposed.has(id)) { run.exposed.add(id); recordExposure(id); }   // idempotent — Back can't inflate exposures
+    if (!item.card && !run.exposed.has(id)) { run.exposed.add(id); recordExposure(id); }   // idempotent — Back can't inflate exposures; a place frame's card is not an item for review
     next();
   };
   const check = _presentCheck(item, chunked);
@@ -4141,12 +4142,18 @@ function grade(ok, item) { finishGrade(ok, item, null); }
 // typed answers get typo/accent tolerance (edit distance ≤ 1, accent slips accepted)
 function gradeTyped(raw, item) {
   // §4b.3: accept the canonical form OR any authored variant (same typo tolerance)
-  let j = { ok: false };
-  for (const t of [item.es].concat(item.variants || [])) { const r = judgeTyped(raw, t); if (r.ok) { j = r; break; } }
-  const extra = j.accent ? "Almost: watch the accent." : (j.typo ? "Close: mind the spelling." : null);
-  finishGrade(j.ok, item, extra, raw);                 // pass the raw attempt for the struck-through line
+  let j = { ok: false }, words = null;
+  for (const t of [item.es].concat(item.variants || [])) {
+    const w = typeof judgeWords === "function" ? judgeWords(raw, t) : null;   // word by word (Tom 10/27): a slipped word counts, and the miss is marked on its word
+    if (w && w.ok) { j = w; words = w.words; break; }
+    const r = judgeTyped(raw, t); if (r.ok) { j = r; break; }
+    if (!words && w && t === item.es) words = w.words;                     // the miss, marked word by word against the canonical form
+  }
+  const missing = !j.ok && words ? words.filter(w => w.kind === "missing").map(w => w.right) : [];
+  const extra = j.accent ? "Almost: watch the accent." : (j.typo ? "Close: mind the spelling." : (missing.length ? `${missing.length === 1 ? "One word missing" : "Missing"}: ${missing.join(", ")}.` : null));
+  finishGrade(j.ok, item, extra, raw, words);          // pass the raw attempt (and its words) for the marked line
 }
-function finishGrade(ok, item, extra, wrong) {
+function finishGrade(ok, item, extra, wrong, words) {
   run.answered = true;
   _recordSlotTime(run.qs[run.idx]);
   const q = run.qs[run.idx];
@@ -4187,14 +4194,15 @@ function finishGrade(ok, item, extra, wrong) {
     return;
   }
   // §3.3/§4c.2 (everywhere else): a wrong answer opens the correction sheet (no footer, no shake — the sheet is the feedback)
-  if (!ok) { clearFooter(); showCorrection(item, extra, wrong); return; }   // drop the exercise's Check footer so its shadow doesn't sit behind Continue
+  if (!ok) { clearFooter(); showCorrection(item, extra, wrong, words); return; }   // drop the exercise's Check footer so its shadow doesn't sit behind Continue
 
   // ---- correct: §3.5 resolution frame (built to design/resolution-frame.html r7) ----
   // Both mid-exercise toasts retired (decisions 2026-07-19): Restored folds into the frame's kicker;
   // accent/typo slips are forgiven SILENTLY (we grade for the trip, not the classroom; the es-reveal
   // teaches passively). Slip telemetry logs quietly; it never surfaces.
   if (extra && post) post.slips = (post.slips || 0) + 1;
-  resolveCorrect(item, q, { yoursNow, restored, strengthAfter: post ? Math.round(itemStrength(post)) : 0 });
+  const slips = words ? words.filter(w => w.kind === "typo" || w.kind === "accent") : [];   // called out in the reveal, on the word (Tom 10/27)
+  resolveCorrect(item, q, { yoursNow, restored, strengthAfter: post ? Math.round(itemStrength(post)) : 0, slips });
 }
 
 /* ---- §3.5 resolution frame: every correct answer matures the page IN PLACE. The learner's own
@@ -4243,6 +4251,7 @@ function resolveCorrect(item, q, info) {
       : `<div class="es-reveal">${item.es}<span class="sweep2"></span></div>`) : ""}
     ${(q && (q.noEn || q.esFootnote)) ? "" : `<div class="res-en">${item.en}</div>`}
     ${(q && (q.noAudio || q.noAudioRow)) ? "" : `<div class="res-audio"></div>`}
+    ${(info.slips || []).length ? `<div class="res-slip"><span class="cue-label note-label">Spelling</span>${info.slips.map(w => `<span class="slip"><s>${w.typed}</s>${w.right}</span>`).join("")}</div>` : ""}
     ${note}
     ${isStaged("journey-1") ? "" : `<button class="btn res-cont">Continue</button>`}
   </div>`);
@@ -4319,8 +4328,13 @@ function _setQStrength(val, tick) {
 // §3.3 correction sheet (built to design/correction-sheet.html): scrim over the dimmed exercise,
 // the phrase as chunk pills (known ones outlined green, tappable for meaning), gold replay audio,
 // the anchor line, one Continue exit. Not dismissible by scrim-tap — the tap-through is the pedagogy.
-function showCorrection(item, extra, wrong) {
+function showCorrection(item, extra, wrong, words) {
   document.querySelectorAll(".corr-wrap").forEach(n => n.remove());
+  // the attempt, word by word (Tom 10/27): only the word that was off is struck; a slipped word is underlined; a missing word shows in red
+  const esc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const wrongHtml = words && words.length
+    ? words.map(w => w.kind === "extra" ? `<span class="w-extra">${esc(w.typed)}</span>` : w.kind === "missing" ? `<span class="w-miss">${esc(w.right)}</span>` : (w.kind === "ok" ? `<span>${esc(w.typed)}</span>` : `<span class="w-slip">${esc(w.typed)}</span>`)).join(" ")
+    : (wrong ? esc(wrong) : "");
   const chunked = Array.isArray(item.chunks) && item.chunks.length;
   // Attention semantics (decisions 2026-07-16): gold marks a POINT, never a region. Box the error chunk
   // ONLY when the error is localized to exactly one chunk (you know the phrase except this spot). A diffuse
@@ -4341,7 +4355,7 @@ function showCorrection(item, extra, wrong) {
     <div class="corr-scrim"></div>
     <div class="corr-sheet" role="dialog" aria-label="Correction">
       <div class="corr-grab"></div>
-      ${wrong ? `<div class="corr-wrong">${wrong}</div>` : ""}
+      ${wrong ? `<div class="corr-wrong${words && words.length ? " by-word" : ""}">${wrongHtml}</div>` : ""}
       <div class="corr-label">The phrase</div>
       <div class="corr-chunks">${pills}<button class="corr-audio" aria-label="Replay audio">${icon('speaker', 18)}</button></div>
       <div class="corr-trans">${item.en}</div>
