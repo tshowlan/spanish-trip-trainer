@@ -178,7 +178,7 @@ function _chapterFlowDeck(deck, rooms) {
   const t = flow.chapters || [], b = flow.blurbs || [];
   deck.stages = [
     Object.assign({}, old[0], { pass: 0, title: t[0] || "The words", blurb: b[0] || "", lessons: words }),
-    { id: "sp-first-sentences", pass: 1, title: t[1] || "Your first sentences", blurb: b[1] || "", lessons: asks.concat(sentences, roomList) },   // the asks open the chapter, the rooms practice them
+    { id: "sp-first-sentences", pass: 1, title: t[1] || "The sentences that get things done", blurb: b[1] || "", lessons: asks.concat(sentences, roomList) },   // the asks open the chapter, the rooms practice them
     Object.assign({}, old[1] || {}, { pass: 2, title: t[2] || "Sentences by place", blurb: b[2] || "", lessons: (old[1] ? old[1].lessons : []).concat(old[2] ? old[2].lessons : []) }),
   ].concat(old.slice(3).map((st, i) => Object.assign({}, st, { pass: 3 + i, title: i === 0 ? (t[3] || st.title) : st.title, blurb: i === 0 ? (b[3] || "") : st.blurb })));
 }

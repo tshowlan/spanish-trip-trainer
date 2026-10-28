@@ -1,4 +1,4 @@
-# Chapter 2, "Your first sentences": the asks, then sentences by place (Counter, Table, Paying, Street, Shop, Help)
+# Chapter 2, "The sentences that get things done": the asks, then sentences by place (Counter, Table, Paying, Street, Shop, Help)
 
 *Wording confirmed by chat 2026-10-27. Chapter 3 becomes "longer exchanges leading into the scenes". PLACE FRAMES (2026-10-27): the eight asks are universal; each place session may carry one frame of its own (Counter ¿Me pone?, Table Para mí, Paying ¿Me cobra?); the mouth keeps the usted form, the ear is told the tú form once.*
 

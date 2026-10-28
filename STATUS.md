@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v537 (2026-10-28) — chapter 2 is "The sentences that get things done"
+- Tom: chapter 2's name on Learn and its door is "The sentences that get things done" (was "Your first sentences"); its line "The primary ways to ask for what you need, built on the words you learned in chapter 1." The asks keep their name (Quiero and Necesito are requests). Chapters 3 and 4 keep their old names until their own redraw. Files: curriculum.js, engine.js, docs.
+
 ## v536 (2026-10-28) — the Quiero register note moves to the ask's card
 - Tom asked whether the Table's "Quiero is not rude" note is needed. It is a register note, the kind the rule keeps, but it belongs where Quiero is first met: the Quiero card in The asks · Part 1 (live), which had no note. Moved there; the Table sentence carries none. File: curriculum.js.
 

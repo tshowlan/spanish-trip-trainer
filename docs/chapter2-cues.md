@@ -21,7 +21,7 @@ forty-two · thirty-five · sixty-seven · seventy-six · twenty-eight (fused, b
 Welds stay bare numbers until chapter 3's words are met.
 
 ## C0 — CHAPTER LINES (in curriculum.js flow.blurbs, live v360)
-2: "The primary ways to ask, built on the words you learned in chapter 1." · 3: "The café, the taxi, the hotel desk. What actually gets said there." (Tom's ear: cut "actually" if it reads as filler) · 4: "Longer exchanges, and the scenes that put all of it together."
+2: "The primary ways to ask for what you need, built on the words you learned in chapter 1." · 3: "The café, the taxi, the hotel desk. What actually gets said there." (Tom's ear: cut "actually" if it reads as filler) · 4: "Longer exchanges, and the scenes that put all of it together."
 
 ## D — POSITIONS (accepted)
 - The WELD survives inside rooms (the short arc's ×2 beat). The STRETCH lives in returns and circuits, not rooms (so Need's stretch leaves when the rooms are refit).
