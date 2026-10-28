@@ -2015,9 +2015,12 @@ img.scene-art { width: 286px; }
 /* THE GREEN UNDER EACH LINE (Tom 10/27): once dressed, the fused row on the ruled band is lines of text (a space between words), sitting on the
    band's lines (line-height = the band's pitch, nudged so the text keeps its old place), and the green is an underline that every line
    carries; it draws in by colour. The sweep stays for the scenes' builds, which are not on the band. */
-#qbody.anchored .build-answer.fused.lined { display: block; line-height: 6.3dvh; translate: 0 calc((38px - 6.3dvh) / 2); text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 2.5px; text-underline-offset: 7px; transition: text-decoration-color 400ms cubic-bezier(.2,.7,.3,1); }
-#qbody.anchored .build-answer.fused.lined.drawn { text-decoration-color: var(--green); }
-#qbody.anchored .build-answer.fused.lined .word { display: inline; height: auto; line-height: inherit; }
+#qbody.anchored .build-answer.fused.lined { display: block; line-height: 6.3dvh; translate: 0 calc((38px - 6.3dvh) / 2); }
+/* the green is a background strip on each word's inline box, not a text-decoration: Chrome paints neither an underline nor a background
+   over a space between inline boxes, so the line broke at every word. The words carry no spaces; the gap is the word's own right
+   padding (painted), and a <wbr> between words keeps the line breaking. The strip draws in from the left. */
+#qbody.anchored .build-answer.fused.lined .word { display: inline; height: auto; line-height: inherit; padding: 0 5px 3px 0; border-radius: 0; background-image: linear-gradient(var(--green), var(--green)); background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 2.5px; transition: background-size 400ms cubic-bezier(.2,.7,.3,1); }
+#qbody.anchored .build-answer.fused.lined.drawn .word { background-size: 100% 2.5px; }
 #qbody.anchored .build-answer.fused.lined .sweep { display: none; }
 #qbody.anchored .build-answer.fused .sweep { animation: none; }   /* the sweep never draws on the band; the underline does */
 #qbody.anchored > .res-note.under-build { position: absolute; left: 0; right: 0; margin: 0; font-size: 12.5px; font-weight: 400; color: var(--text-dim); opacity: 0; transition: opacity 300ms cubic-bezier(.2,.7,.3,1) 450ms; will-change: opacity; }   /* the sentence's note under the built row (10/25) */

@@ -2617,7 +2617,7 @@ function renderWeld(q) {
     setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
       ans.querySelectorAll(".word").forEach(w => w.remove());
       const sweepEl = ans.querySelector(".sweep");
-      dressed.forEach((t, i) => ans.insertBefore(el(`<span class="word">${t}${i < dressed.length - 1 ? " " : ""}</span>`), sweepEl));   // the space rides inside the word, so the underline runs through it
+      dressed.forEach((t, i) => { if (i) ans.insertBefore(document.createElement("wbr"), sweepEl); ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl); });   // no spaces: the gap is the word's own padding (the green runs through it), the break opportunity a <wbr>
       // on the ruled band the fused row becomes lines of text and the green runs under EACH line (Tom 10/27: a wrapped sentence had its line under the second row only)
       if (ans.closest("#qbody.anchored")) { ans.classList.add("lined"); requestAnimationFrame(() => requestAnimationFrame(() => ans.classList.add("drawn"))); }
     }, 550);
