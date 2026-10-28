@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v533 (2026-10-27) — the ¿Me pone? card, shorter
+- Tom: the pone/pones sentence is cut. The card's GOOD TO KNOW is "An ask built for the bar. The barman asks you ¿Qué le pongo?, and ¿Me pone? is your side of the same verb." (The tú form is not shown anywhere now; the usted-mouth / tú-ear rule stays in the constitution for a place where it earns a line.) File: curriculum.js.
+
 ## v532 (2026-10-27) — the Para mí card in Tom's words
 - "The Spain way to order in a restaurant. When the waiter comes round, each person says Para mí and then the dish, no verb." File: curriculum.js.
 
