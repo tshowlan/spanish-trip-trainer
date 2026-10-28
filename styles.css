@@ -2015,7 +2015,11 @@ img.scene-art { width: 286px; }
 /* THE GREEN UNDER EACH LINE (Tom 10/27): once dressed, the fused row on the ruled band is lines of text (a space between words), sitting on the
    band's lines (line-height = the band's pitch, nudged so the text keeps its old place), and the green is an underline that every line
    carries; it draws in by colour. The sweep stays for the scenes' builds, which are not on the band. */
-#qbody.anchored .build-answer.fused.lined { display: block; line-height: 6.3dvh; translate: 0 calc((38px - 6.3dvh) / 2); }
+#qbody.anchored .build-answer.fused.lined { display: block; line-height: 6.3dvh; translate: 0 round(nearest, calc((38px - 6.3dvh) / 2), 1px); will-change: transform; }
+/* THE ONE-POINT RISE (Tom's recording 10/28 19-49, measured frame by frame with the tracker): 0.7s after the fuse every row of text rose
+   1pt, and at 1.0s it dropped back. That is the reveal's fade (the grown's 300ms transform/opacity, 0.7s to 1.0s) re-rasterizing the
+   stage: the fused row sat at a FRACTIONAL offset (the band's pitch halved), so the raster snapped it a pixel and handed it back. Two
+   cures: the offset rounded to whole pixels, and the row on its own layer from the start, as the Home rows and the result rows are. */
 /* the green is a text underline on the ONE run of fused text: one line per row, through every space, drawing in by colour. (Per-word
    strips and per-word decorations both broke at the word boundaries on the phone.) */
 #qbody.anchored .build-answer.fused.lined .word { display: inline; height: auto; line-height: inherit; padding: 0; border-radius: 0; text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 7px; text-decoration-skip-ink: none; text-decoration-color: transparent; transition: text-decoration-color 400ms cubic-bezier(.2,.7,.3,1) 350ms; }   /* the green arrives on the old sweep's beat */
