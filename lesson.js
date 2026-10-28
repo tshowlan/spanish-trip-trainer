@@ -2617,9 +2617,12 @@ function renderWeld(q) {
     setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
       ans.querySelectorAll(".word").forEach(w => w.remove());
       const sweepEl = ans.querySelector(".sweep");
-      dressed.forEach((t, i) => { if (i) ans.insertBefore(document.createElement("wbr"), sweepEl); ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl); });   // no spaces: the gap is the word's own padding (the green runs through it), the break opportunity a <wbr>
-      // on the ruled band the fused row becomes lines of text and the green runs under EACH line (Tom 10/27: a wrapped sentence had its line under the second row only)
-      if (ans.closest("#qbody.anchored")) { ans.classList.add("lined"); requestAnimationFrame(() => requestAnimationFrame(() => ans.classList.add("drawn"))); }
+      if (ans.closest("#qbody.anchored")) {
+        // on the ruled band the fused sentence is ONE run of text (spaces inside it), so the underline is one line per row, unbroken
+        // (Tom 10/27: per-word strips showed gaps on the phone; an underline never crosses the boundary between two inline boxes)
+        ans.insertBefore(el(`<span class="word whole">${dressed.join(" ")}</span>`), sweepEl);
+        ans.classList.add("lined"); requestAnimationFrame(() => requestAnimationFrame(() => ans.classList.add("drawn")));
+      } else dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
     }, 550);
     if (!q.sceneLocal) recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });   // scene-local welds record nowhere (flagged in data)
     if (wrongTaps > 0) run.wrong++;

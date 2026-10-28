@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v534 (2026-10-27) — one green line per row
+- Tom (the phone): the per-word strips still showed gaps. The fused sentence on the ruled band is now ONE run of text in one span (spaces inside it), and the green is a text underline on that span: one unbroken line per row, through every space, drawing in by colour. Files: lesson.js, styles.css.
+
 ## v533 (2026-10-27) — the ¿Me pone? card, shorter
 - Tom: the pone/pones sentence is cut. The card's GOOD TO KNOW is "An ask built for the bar. The barman asks you ¿Qué le pongo?, and ¿Me pone? is your side of the same verb." (The tú form is not shown anywhere now; the usted-mouth / tú-ear rule stays in the constitution for a place where it earns a line.) File: curriculum.js.
 
