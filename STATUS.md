@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v531 (2026-10-27) — the Para mí card
+- Tom: the Table's place frame gets an intro card, like ¿Me pone? at the Counter: "Para mí, ___ / For me, ___", the context line "Para mí, una copa de vino.", and the GOOD TO KNOW on why it matters at a restaurant ("The table's way to order. When the waiter comes round, each person says Para mí and then the dish, no verb. It is how a table orders in Spain, and it is what the waiter is waiting to hear."). The pan con tomate sentence's note is removed (the card says it once). Rule now general: a place frame opens its session with a card. File: curriculum.js.
+
 ## v530 (2026-10-27) — the green under each line, done properly
 - v529's underline broke between words: Chrome paints no text decoration over a space at the end of an inline box, and the tile's 10px radius clipped a background strip's ends into tapers. Now the fused words carry no spaces (a <wbr> between them keeps the line breaking), each word's right padding is the gap, the green is a background strip on the word's box with no radius, so it runs unbroken through the gaps, and it draws in from the left. The Browser pane was hidden for the last checks, so the final look is confirmed by geometry, not by a screenshot: Tom's phone is the judge. File: lesson.js, styles.css.
 
