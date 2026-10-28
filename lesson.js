@@ -2618,18 +2618,24 @@ function renderWeld(q) {
     run.answered = true;
     playSound("correct"); haptic("correct");
     ans.appendChild(el(`<span class="sweep"></span>`));
-    requestAnimationFrame(() => ans.classList.add("fused"));
     bank.classList.add("recede");
-    setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
+    if (ans.closest("#qbody.anchored")) {
+      // ON THE RULED BAND the sentence takes its final form at the tap: the tiles go, the dressed sentence stands as ONE run of text in
+      // its final place, and the green draws under each line. Tom's recording (10/28): the old two-step (gap closes over 450ms, the
+      // dressed words swapped in at 550ms) wrapped differently from the final run, so a word hopped between lines as the green came in.
+      // One layout, once, beats the gaps-close choreography here. The scenes' builds keep the old fuse.
       ans.querySelectorAll(".word").forEach(w => w.remove());
-      const sweepEl = ans.querySelector(".sweep");
-      if (ans.closest("#qbody.anchored")) {
-        // on the ruled band the fused sentence is ONE run of text (spaces inside it), so the underline is one line per row, unbroken
-        // (Tom 10/27: per-word strips showed gaps on the phone; an underline never crosses the boundary between two inline boxes)
-        ans.insertBefore(el(`<span class="word whole">${dressed.join(" ")}</span>`), sweepEl);
-        ans.classList.add("lined"); requestAnimationFrame(() => requestAnimationFrame(() => ans.classList.add("drawn")));
-      } else dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
-    }, 550);
+      ans.insertBefore(el(`<span class="word whole">${dressed.join(" ")}</span>`), ans.querySelector(".sweep"));
+      ans.classList.add("fused", "lined");
+      requestAnimationFrame(() => requestAnimationFrame(() => ans.classList.add("drawn")));
+    } else {
+      requestAnimationFrame(() => ans.classList.add("fused"));
+      setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
+        ans.querySelectorAll(".word").forEach(w => w.remove());
+        const sweepEl = ans.querySelector(".sweep");
+        dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
+      }, 550);
+    }
     if (!q.sceneLocal) recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });   // scene-local welds record nowhere (flagged in data)
     if (wrongTaps > 0) run.wrong++;
     q.esOnStage = true;

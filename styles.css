@@ -2018,7 +2018,7 @@ img.scene-art { width: 286px; }
 #qbody.anchored .build-answer.fused.lined { display: block; line-height: 6.3dvh; translate: 0 calc((38px - 6.3dvh) / 2); }
 /* the green is a text underline on the ONE run of fused text: one line per row, through every space, drawing in by colour. (Per-word
    strips and per-word decorations both broke at the word boundaries on the phone.) */
-#qbody.anchored .build-answer.fused.lined .word { display: inline; height: auto; line-height: inherit; padding: 0; border-radius: 0; text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 7px; text-decoration-skip-ink: none; text-decoration-color: transparent; transition: text-decoration-color 400ms cubic-bezier(.2,.7,.3,1); }
+#qbody.anchored .build-answer.fused.lined .word { display: inline; height: auto; line-height: inherit; padding: 0; border-radius: 0; text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 7px; text-decoration-skip-ink: none; text-decoration-color: transparent; transition: text-decoration-color 400ms cubic-bezier(.2,.7,.3,1) 350ms; }   /* the green arrives on the old sweep's beat */
 #qbody.anchored .build-answer.fused.lined.drawn .word { text-decoration-color: var(--green); }
 #qbody.anchored .build-answer.fused.lined .sweep { display: none; }
 #qbody.anchored .build-answer.fused .sweep { animation: none; }   /* the sweep never draws on the band; the underline does */

@@ -2080,6 +2080,11 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v539 (2026-10-28) — the sentence fuses once; splash-mark SHIPPED; no ¿Puedo? at the Table
+- **The hop in Tom's recording** (words shifting as the green came in): measured in the pane. The fused flex row (gap 5px, lowercase tiles) wrapped "fuera" onto line one; the dressed run of text (spaces, capitals) wrapped it onto line two; the swap at 550ms moved it. On the ruled band the sentence now takes its final form at the tap: tiles out, the dressed run in its final place, the green drawing under each line 350ms later. One layout, once. The gaps-close choreography is retired for band builds (the scenes keep the old fuse).
+- **splash-mark SHIPPED** on Tom's word: the splash's lighthouse wears the icon's colours for everyone.
+- **No ¿Puedo? at the Table** (Tom: in Spain the terminal comes to the table; nobody asks). The Table is fourteen sentences in six frames. Files: lesson.js, styles.css, config.js, curriculum.js.
+
 ## v538 (2026-10-28) — the splash's lighthouse in the icon's colours (STAGED `splash-mark`); Progress thoughts logged
 - Tom: match the splash's lighthouse to the app icon. `lighthouse(h, { icon: true })` draws the icon's mark (blues swapped: light tower, dark bands; beams and lantern in #e6c62a at full strength); the splash uses it under the switch, every other lighthouse keeps the shipped mark. Mock: dev/splash-mark-options.html (the icon beside the splash as shipped and with the icon's mark). Tom's Progress-tab thoughts logged in the ledger for a later discussion. Files: ui.js, config.js.
 
