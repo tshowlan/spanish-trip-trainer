@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v535 (2026-10-28) — no twin replies back to back
+- Tom (the Table): "Sí, claro" and "Claro" came back to back in the exchanges. A reply's core is the reply without its yes or no (Sí, claro / Claro; Sí, hay / No hay; Un momento / Sí, un momento are one core each). Each sentence now prefers a reply no other exchange in the session is using, and the order never puts the same core twice in a row. 300 test compositions of the Table: no adjacent twins, one repeated core in total. The Counter and the underline are good on Tom's word. File: lesson.js.
+
 ## v534 (2026-10-27) — one green line per row
 - Tom (the phone): the per-word strips still showed gaps. The fused sentence on the ruled band is now ONE run of text in one span (spaces inside it), and the green is a text underline on that span: one unbroken line per row, through every space, drawing in by colour. Files: lesson.js, styles.css.
 

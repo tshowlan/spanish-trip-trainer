@@ -383,8 +383,14 @@ function composeSentences(lesson) {
   });
   const qs = cards.map(it => ({ type: "present", item: it, arc: true }));
   const noSeam = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };
+  // replies that are the same thing in different dress (Sí, claro / Claro; Sí, hay / No hay; Un momento / Sí, un momento) count as one:
+  // the core is the reply without its yes or no. Each sentence prefers a reply no other exchange is using, and the order never puts
+  // the same core twice in a row (Tom 10/28: Sí, claro and Claro came back to back at the Table).
+  const core = es => norm(es).replace(/^(si|no)\s+/, "").trim();
+  const used = new Map(); exchanges.forEach(x => used.set(core(x.es), (used.get(core(x.es)) || 0) + 1));
+  exchanges.forEach(x => { const c = core(x.es); if ((used.get(c) || 0) > 1) { const alt = (x.item.replies || []).find(r => !used.has(core(r[0]))); if (alt) { used.set(c, used.get(c) - 1); x.es = alt[0]; x.en = alt[1]; used.set(core(alt[0]), 1); } } });
   let exs = shuffle(exchanges);
-  for (let t = 0; t < 60 && exs.some((q, i) => i > 0 && norm(exs[i - 1].es) === norm(q.es)); t++) exs = shuffle(exchanges);   // never the same reply twice in a row
+  for (let t = 0; t < 60 && exs.some((q, i) => i > 0 && core(exs[i - 1].es) === core(q.es)); t++) exs = shuffle(exchanges);   // never the same reply, or its twin, twice in a row
   noSeam(shuffle(builds)); noSeam(shuffle(ears)); noSeam(exs); noSeam(shuffle(picks)); noSeam(shuffle(typed));
   return qs;
 }
