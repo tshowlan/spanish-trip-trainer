@@ -1930,10 +1930,24 @@ function _glossDistractor(correctEn) {
   const pick = near.length ? near : uniq;
   return pick.length ? sample(pick, 1)[0] : null;
 }
+/* THE CARD'S WRONG OPTION HAS THE SAME SHAPE (Tom 10/28: "this" against "Chicken or pasta?" was wildly different): the other meaning is
+   another item's English of the same kind: a word against a word, a frame with a slot against a frame with a slot, a question against a
+   question, within a word of the same length. The session's own items first, then the whole pack; an ask's wrong option stays another ask. */
+function _shapedDistractor(item) {
+  const en = item.en || ""; const wc = t => t.trim().split(/\s+/).length;
+  const shape = t => ({ w: wc(t), slot: /___/.test(t), q: /\?\s*$/.test(t) });
+  const tgt = shape(en);
+  const fits = t => { if (!t || norm(t) === norm(en)) return false; const sh = shape(t); if (sh.slot !== tgt.slot || sh.q !== tgt.q) return false; return tgt.w <= 2 ? sh.w <= 2 : Math.abs(sh.w - tgt.w) <= 1; };
+  const own = ((run.lesson && run.lesson.items) || []).filter(x => x !== item && !x.card).map(x => x.en).filter(fits);
+  if (own.length) return sample(own, 1)[0];
+  const all = (ALL_ITEMS || []).filter(x => x !== item && !x.card && !x.sits).map(x => x.en).filter(fits);
+  return all.length ? sample(all, 1)[0] : null;
+}
 function _presentCheck(item, chunked) {
   const nc = chunked ? (item.chunks.find(c => c[2] === "new") || null) : null;
   if (nc) return { es: nc[0], correct: nc[1], distract: _glossDistractor(nc[1]) || _itemDistractor(item) };
-  return { es: null, correct: item.en, distract: _itemDistractor(item) };
+  if (run.lesson && run.lesson.asks) return { es: null, correct: item.en, distract: _itemDistractor(item) };   // an ask against another ask
+  return { es: null, correct: item.en, distract: _shapedDistractor(item) || _itemDistractor(item) };
 }
 function renderPresent(q) {
   const item = q.item;

@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v552 (2026-10-28) — the card's wrong option has the same shape
+- Tom (the esto card: "this" against "Chicken or pasta?"): the meaning check's other option is now another item's English of the same kind: a word against a word, a frame with a slot against a frame with a slot, a question against a question, within a word of the same length; the session's own items first, then the pack. An ask's wrong option stays another ask; chunked cards keep their gloss distractor. `_shapedDistractor` in lesson.js. Also answered: esto is not met before the Shop in the live chapters (it lives only in the old chapter 3 rooms), so its card stays.
+
 ## v551 (2026-10-28) — the Street's two taxi asks leave
 - Tom: who do you say "I need a taxi, please" to? Nobody on the street: it is said to a receptionist, a waiter, or the person at a rank, people who can call one. Both Necesito taxi lines leave the Street (eleven sentences, five frames). The driver's own lines stay: ¿Está libre? and ¿Cuánto cuesta el taxi al hotel?. For chat: "Necesito un taxi, por favor." belongs where someone can call one (the Table, after the meal, or a hotel-desk session), and the Street may want the driver's "Al hotel, por favor." File: curriculum.js.
 
