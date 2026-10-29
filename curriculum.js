@@ -947,24 +947,8 @@ const CURRICULUM = {
         { es: "¿Puedo ___?", en: "Can I ___?", tags: ["asks"], words: [["Puedo", "can I"]], contextEs: "¿Puedo pagar con tarjeta?", contextEn: "Can I pay by card?",
           hint: [["Can I", "puedo"], ["pay", "pagar"], ["by card?", "con tarjeta"]],
           sits: [["At the café", "There's one empty table outside and you'd like to take it."], ["In a shop", "The jacket looks right. You'd like to try it on first."], ["At the counter", "You'd rather pay by card than cash."], ["In the museum", "You'd love a photo of the painting."], ["At the hotel desk", "Checkout is at noon; you'd like to leave the bags until five."], ["On the train", "The window seat is empty and you'd like it."]] } ] },
-      /* WHAT THEY SAY BACK (STAGED "replies-1"; chat's reply sets 9/25, the meanings Code's drafts 10/24): chapter 2's hearing session.
-         sets = per ask: the line you said, where, and its replies; items = the unique replies (hear words, so they come back in review).
-         A reply met in chapter 1 (Un momento, Aquí tiene) is the same item. */
-      { id: "replies-1", staged: "replies-1", replySet: true, noSplit: true, emphasis: "hear", topic: "First sentences", title: "What they say back · Part 1", line: "You ask, they answer. The replies to the asks of Part 1.",
-        sets: [
-          { ask: "Quiero ___", line: "Quiero un café.", place: "At the counter", replies: ["Ahora mismo", "Marchando", "¿Con leche?"] },
-          { ask: "¿Me puede traer ___?", line: "¿Me puede traer la cuenta?", place: "At the table", replies: ["Claro", "Ahora mismo", "Un momento"] },
-          { ask: "¿Dónde está ___?", line: "¿Dónde está el baño?", place: "In the restaurant", replies: ["A la derecha", "Todo recto", "Al final"] } ],
-          /* ¿Cuánto cuesta?'s replies (prices) wait for Numbermachine (Tom 10/24: not worth training now; the numbers are chapter 1's) */
-        items: [
-          { es: "Ahora mismo", en: "Right away", hear: true, tags: ["replies"] },
-          { es: "Marchando", en: "Coming right up", hear: true, tags: ["replies"] },
-          { es: "¿Con leche?", en: "With milk?", hear: true, tags: ["replies"] },
-          { es: "Claro", en: "Of course", hear: true, tags: ["replies"] },
-          { es: "Un momento", en: "One moment", hear: true, tags: ["replies"] },
-          { es: "A la derecha", en: "On the right", hear: true, tags: ["replies"] },
-          { es: "Todo recto", en: "Straight ahead", hear: true, tags: ["replies"] },
-          { es: "Al final", en: "At the end", hear: true, tags: ["replies"] } ] }
+              /* What they say back · Part 1 retired 10/28 (never live): its beat is the exchange inside each place session; every reply it
+           taught is heard there except ¿Con leche?, which rides chapter 1's con leche card. */
     ],
     /* SENTENCES BY PLACE (Tom 10/24; STAGED "sentences-1"): chapter 2's second half. The asks filled with chapter 1's words, one place
        at a time: build it, hear it, the exchange (you said it, they answer, pick what it meant), the board. Every word met in chapter 1;

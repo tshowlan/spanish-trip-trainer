@@ -2624,10 +2624,26 @@ function renderWeld(q) {
       // its final place, and the green draws under each line. Tom's recording (10/28): the old two-step (gap closes over 450ms, the
       // dressed words swapped in at 550ms) wrapped differently from the final run, so a word hopped between lines as the green came in.
       // One layout, once, beats the gaps-close choreography here. The scenes' builds keep the old fuse.
-      ans.querySelectorAll(".word").forEach(w => w.remove());
-      ans.insertBefore(el(`<span class="word whole">${dressed.join(" ")}</span>`), ans.querySelector(".sweep"));
+      // THE CROSSING (Tom 10/28: the tiles must still grow into the words on the line): the final run is laid out at once (one layout,
+      // no hop), kept invisible for 450ms while a ghost of each tile travels from where the tile stood to where its word sits in the
+      // run, shedding its chrome and growing to the line's size on the way. Then the run shows, the ghosts go, the green draws.
+      const tiles = [...ans.querySelectorAll(".word")], starts = tiles.map(t => t.getBoundingClientRect());
+      tiles.forEach(t => t.remove());
+      const run = el(`<span class="word whole">${dressed.join(" ")}</span>`);
+      ans.insertBefore(run, ans.querySelector(".sweep"));
       ans.classList.add("fused", "lined");
-      requestAnimationFrame(() => requestAnimationFrame(() => ans.classList.add("drawn")));
+      const tn = run.firstChild, text = tn ? tn.data : ""; let pos = 0;
+      const finals = dressed.map(w => { const i = text.indexOf(w, pos); if (i < 0) return null; const r = document.createRange(); r.setStart(tn, i); r.setEnd(tn, i + w.length); pos = i + w.length; return r.getBoundingClientRect(); });
+      const layer = el(`<div class="fuse-ghosts" aria-hidden="true"></div>`); document.body.appendChild(layer);
+      run.style.visibility = "hidden";
+      tiles.forEach((t, i) => {
+        const a = starts[i], b = finals[i]; if (!a || !b) return;
+        const g = el(`<span class="word ghost">${dressed[i]}</span>`);
+        g.style.cssText = `left:${a.left}px; top:${a.top}px; width:${a.width}px; height:${a.height}px; line-height:${a.height - 2}px;`;
+        layer.appendChild(g);
+        setTimeout(() => { g.classList.add("to-line"); g.style.cssText = `left:${b.left}px; top:${b.top}px; width:${b.width}px; height:${b.height}px; line-height:${b.height}px;`; }, 20);
+      });
+      setTimeout(() => { run.style.visibility = ""; layer.remove(); ans.classList.add("drawn"); }, 490);
     } else {
       requestAnimationFrame(() => ans.classList.add("fused"));
       setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
