@@ -960,8 +960,25 @@ function _practicePick(pool) {
   cands.sort((a, b) => b.score - a.score);
   return cands.slice(0, Math.min(8, cands.length));
 }
+/* A PLACE SENTENCE IN REVIEW (STAGED "sentence-review", the review refit's first step, Tom 10/28): a due sentence from a place session comes
+   back in the forms it was met in, with its place named: a near-miss meaning pick while it is weak, then the build from its English with the
+   HINT (or the cold typed lap once it is solid), then the exchange (you said it, they answer, pick what it meant). Never a translation
+   card, never a word exercise. The next step of the refit: a solid chapter-1 word reviewed inside a met sentence that carries it. */
+function _sentenceReviewForms(it, st) {
+  const strength = itemStrength(st);
+  const pool = (ALL_ITEMS || []).filter(x => x.sentence && x.place === it.place && x.hint);
+  const forms = [];
+  if (strength < 55 && (it.near || []).length >= 2) forms.push({ type: "hear_pick", item: it, es: it.es, en: it.en, place: it.place, options: [it.en].concat(it.near.slice(0, 2)) });
+  const build = _sentenceBuild(it, pool.length > 1 ? pool : [it]);
+  Object.assign(build, { place: it.place, arc: false, resNote: null });
+  if (strength >= 40) Object.assign(build, { inputForm: "typed", cueRole: "Say it in Spanish", hint: null });
+  forms.push(build);
+  if ((it.replies || []).length) { const r = sample(it.replies, 1)[0]; forms.push({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place: it.place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]) }); }
+  return forms.slice(0, strength < 55 ? 3 : 2);
+}
 function _practiceForms(it, st, opts) {
   if (it.sits && it.sits.length && isStaged("ask-review")) return _askReviewForms(it, st);   // an ask is reviewed as a situation, never a translation
+  if (it.sentence && it.hint && isStaged("sentence-review")) return _sentenceReviewForms(it, st);   // a place sentence is reviewed as itself, in its place
   const strength = itemStrength(st);
   const scaffold = opts && opts.scaffoldFirst;   // GONE rebuild (door r5.5): skip recognition, open with scaffolded production
   const forms = [];
@@ -987,7 +1004,7 @@ function _practiceForms(it, st, opts) {
 function practicePickLine(picked) {
   if (!picked || !picked.length) return null;
   const fades = picked.filter(p => p.overdue > 0).length;
-  const machines = picked.filter(p => p.it.frame).length;
+  const machines = picked.filter(p => p.it.frame && !p.it.sentence).length;   // a place sentence has a frame key but is not a machine phrase
   const bits = [];
   if (fades) bits.push(`${fades} fading`);
   if (machines) bits.push(`${machines} machine phrase${machines === 1 ? "" : "s"}`);

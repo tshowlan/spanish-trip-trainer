@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v546 (2026-10-28) — the review refit, step one: a place sentence comes back as itself (STAGED `sentence-review`)
+- A due sentence from a place session (its item carries `sentence: true` and its `place` from the engine) is reviewed in the forms it was met in, with its place named: a near-miss meaning pick while weak (strength under 55), then the build from its English with the HINT, or the cold typed lap once it is solid (40 and up), then the exchange (you said it, they answer, pick what it meant). Never a translation card or a word exercise. `_sentenceReviewForms` in lesson.js, hooked in `_practiceForms` behind the switch; Practice's line no longer counts a place sentence as a machine phrase. Next step of the refit: a solid chapter-1 word reviewed inside a met sentence that carries it. Also: the brief for chat (docs/chat-brief-2026-10-28.md) for Street, Shop, Help, Paying, and the dietary variants. Files: lesson.js, engine.js, config.js.
+
 ## v545 (2026-10-28) — TABLE SENTENCES + the Counter amendment SHIPPED
 - Tom: "table and counter is good". `sentences-2` leaves the STAGED map; the Table and the Counter's ¿Me pone? lines are live for everyone; the two outgoing Counter lines are deleted; the Counter's examples are Quiero · ¿Me pone? · ¿Tiene? · café · caña · tapas. STAGED now: mic-check (parked), learn-reset-swipe (lab), sheet-rows. Files: curriculum.js, config.js, docs/app-today.md.
 
