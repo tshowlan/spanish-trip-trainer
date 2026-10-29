@@ -129,9 +129,8 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 .splash-wm { animation: arr-fade 700ms ease 350ms both; }
 .splash-wm .wordmark { height: 34px; width: auto; }
 /* halo rule: marks on the black frame carry the dark-theme brand fills, both themes */
-/* the splash's wordmark wears Home's brand fills over the lit photo (Tom 10/28): navy Trip, blue fluent, the same as the top-left mark */
-.splash-wm .wordmark path { fill: #1c275e; }
-.splash-wm .wordmark g g:nth-child(n+5) path { fill: #4a7fc1; }
+.splash-wm .wordmark path { fill: #c8d2f5; }
+.splash-wm .wordmark g g:nth-child(n+5) path { fill: #7aa6db; }
 @keyframes arr-rise { from { transform: translateY(14px) scale(.92); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes arr-fade { from { opacity: 0; } to { opacity: 1; } }
 /* the eclipse: the flood swells FROM BEHIND THE LANTERN (z1, under the stack) —
@@ -2013,25 +2012,11 @@ img.scene-art { width: 286px; }
 #qbody.anchored .build-answer.fused { column-gap: 5px; row-gap: calc(6.3dvh - 38px); }
 #qbody.anchored .build-answer.fused .word { height: 38px; }
 #qbody.anchored .build-answer .sweep { bottom: -4px; }
-/* THE GREEN UNDER EACH LINE (Tom 10/27): once dressed, the fused row on the ruled band is lines of text (a space between words), sitting on the
-   band's lines (line-height = the band's pitch, nudged so the text keeps its old place), and the green is an underline that every line
-   carries; it draws in by colour. The sweep stays for the scenes' builds, which are not on the band. */
-#qbody.anchored .build-answer.fused.lined { display: block; line-height: 6.3dvh; translate: 0 round(nearest, calc((38px - 6.3dvh) / 2), 1px); will-change: transform; }
-/* THE ONE-POINT RISE (Tom's recording 10/28 19-49, measured frame by frame with the tracker): 0.7s after the fuse every row of text rose
-   1pt, and at 1.0s it dropped back. That is the reveal's fade (the grown's 300ms transform/opacity, 0.7s to 1.0s) re-rasterizing the
-   stage: the fused row sat at a FRACTIONAL offset (the band's pitch halved), so the raster snapped it a pixel and handed it back. Two
-   cures: the offset rounded to whole pixels, and the row on its own layer from the start, as the Home rows and the result rows are. */
-/* the green is a text underline on the ONE run of fused text: one line per row, through every space, drawing in by colour. (Per-word
-   strips and per-word decorations both broke at the word boundaries on the phone.) */
-#qbody.anchored .build-answer.fused.lined .word { display: inline; height: auto; line-height: inherit; padding: 0; border-radius: 0; text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 7px; text-decoration-skip-ink: none; text-decoration-color: transparent; transition: text-decoration-color 400ms cubic-bezier(.2,.7,.3,1); }   /* the green draws once the ghosts have landed */
-/* the fuse's ghosts (Tom 10/28): a fixed layer over the stage; each ghost starts as the tile it replaces and ends as the word in the line */
-.fuse-ghosts { position: fixed; inset: 0; z-index: 25; pointer-events: none; }
-.fuse-ghosts .word.ghost { position: absolute; box-sizing: border-box; display: block; white-space: nowrap; overflow: visible; text-align: left; margin: 0;
-  transition: left 450ms cubic-bezier(.2,.7,.3,1), top 450ms cubic-bezier(.2,.7,.3,1), width 450ms cubic-bezier(.2,.7,.3,1), height 450ms cubic-bezier(.2,.7,.3,1), line-height 450ms cubic-bezier(.2,.7,.3,1), padding 450ms cubic-bezier(.2,.7,.3,1), border-width 450ms cubic-bezier(.2,.7,.3,1), font-size 450ms cubic-bezier(.2,.7,.3,1), background-color 250ms, border-color 250ms, box-shadow 250ms; }
-.fuse-ghosts .word.ghost.to-line { background-color: transparent; border-color: transparent; border-width: 0; box-shadow: none; padding: 0; font-size: 22px; font-weight: 600; color: var(--text); border-radius: 0; }   /* border-width to 0 too: a 1px transparent border still insets the text a pixel off the run's glyphs */
-#qbody.anchored .build-answer.fused.lined.drawn .word { text-decoration-color: var(--green); }
-#qbody.anchored .build-answer.fused.lined .sweep { display: none; }
-#qbody.anchored .build-answer.fused .sweep { animation: none; }   /* the sweep never draws on the band; the underline does */
+/* THE GREEN UNDER EACH ROW (Tom 10/28): the sweep sits under the last row of the fused flex row; a wrapped sentence gets a second sweep
+   under its first row (38px words + 4px). The row keeps a layer from the start, the cure for the one-point rise at the reveal's fade
+   (measured frame by frame, 10/28). The one-run-of-text and ghost versions of 10/27-10/28 are retired: they moved words between rows. */
+#qbody.anchored .build-answer { will-change: transform; }
+#qbody.anchored .build-answer .sweep.sweep-1 { bottom: auto; top: 42px; }
 #qbody.anchored > .res-note.under-build { position: absolute; left: 0; right: 0; margin: 0; font-size: 12.5px; font-weight: 400; color: var(--text-dim); opacity: 0; transition: opacity 300ms cubic-bezier(.2,.7,.3,1) 450ms; will-change: opacity; }   /* the sentence's note under the built row (10/25) */
 #qbody.anchored > .res-note.under-build.show { opacity: 1; }
 #qbody.anchored .res-grown { margin-top: 18px; }

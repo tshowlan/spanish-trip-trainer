@@ -2618,40 +2618,18 @@ function renderWeld(q) {
     run.answered = true;
     playSound("correct"); haptic("correct");
     ans.appendChild(el(`<span class="sweep"></span>`));
+    // THE FUSE AS TOM APPROVED IT (recording 19-33, 10/28): the tiles stay in their rows, the chrome dissolves and the gap closes in place
+    // (450ms), the dressed words take over at 550ms. The one-run-of-text and ghost versions (v534-v542) moved words between rows and
+    // read as a different design; they are retired. On the ruled band a sentence that wraps gets a second green line under its first
+    // row (the sweep sits under the last row), so every row carries the green. The one-point rise at the reveal is cured on the row itself.
+    if (ans.closest("#qbody.anchored") && ans.offsetHeight > 50) ans.appendChild(el(`<span class="sweep sweep-1"></span>`));
+    requestAnimationFrame(() => ans.classList.add("fused"));
     bank.classList.add("recede");
-    if (ans.closest("#qbody.anchored")) {
-      // ON THE RULED BAND the sentence takes its final form at the tap: the tiles go, the dressed sentence stands as ONE run of text in
-      // its final place, and the green draws under each line. Tom's recording (10/28): the old two-step (gap closes over 450ms, the
-      // dressed words swapped in at 550ms) wrapped differently from the final run, so a word hopped between lines as the green came in.
-      // One layout, once, beats the gaps-close choreography here. The scenes' builds keep the old fuse.
-      // THE CROSSING (Tom 10/28: the tiles must still grow into the words on the line): the final run is laid out at once (one layout,
-      // no hop), kept invisible for 450ms while a ghost of each tile travels from where the tile stood to where its word sits in the
-      // run, shedding its chrome and growing to the line's size on the way. Then the run shows, the ghosts go, the green draws.
-      const tiles = [...ans.querySelectorAll(".word")], starts = tiles.map(t => t.getBoundingClientRect());
-      tiles.forEach(t => t.remove());
-      const run = el(`<span class="word whole">${dressed.join(" ")}</span>`);
-      ans.insertBefore(run, ans.querySelector(".sweep"));
-      ans.classList.add("fused", "lined");
-      const tn = run.firstChild, text = tn ? tn.data : ""; let pos = 0;
-      const finals = dressed.map(w => { const i = text.indexOf(w, pos); if (i < 0) return null; const r = document.createRange(); r.setStart(tn, i); r.setEnd(tn, i + w.length); pos = i + w.length; return r.getBoundingClientRect(); });
-      const layer = el(`<div class="fuse-ghosts" aria-hidden="true"></div>`); document.body.appendChild(layer);
-      run.style.visibility = "hidden";
-      tiles.forEach((t, i) => {
-        const a = starts[i], b = finals[i]; if (!a || !b) return;
-        const g = el(`<span class="word ghost">${dressed[i]}</span>`);
-        g.style.cssText = `left:${a.left}px; top:${a.top}px; width:${a.width}px; height:${a.height}px; line-height:${a.height - 2}px;`;
-        layer.appendChild(g);
-        setTimeout(() => { g.classList.add("to-line"); g.style.cssText = `left:${b.left}px; top:${b.top}px; width:${b.width}px; height:${b.height}px; line-height:${b.height}px;`; }, 20);
-      });
-      setTimeout(() => { run.style.visibility = ""; layer.remove(); ans.classList.add("drawn"); }, 490);
-    } else {
-      requestAnimationFrame(() => ans.classList.add("fused"));
-      setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
-        ans.querySelectorAll(".word").forEach(w => w.remove());
-        const sweepEl = ans.querySelector(".sweep");
-        dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
-      }, 550);
-    }
+    setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
+      ans.querySelectorAll(".word").forEach(w => w.remove());
+      const sweepEl = ans.querySelector(".sweep");
+      dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
+    }, 550);
     if (!q.sceneLocal) recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });   // scene-local welds record nowhere (flagged in data)
     if (wrongTaps > 0) run.wrong++;
     q.esOnStage = true;
