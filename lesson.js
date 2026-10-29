@@ -2667,14 +2667,26 @@ function renderWeld(q) {
       if (s1) s1.style.width = Math.round(rows.get(tops[0]) - left) + "px";
       if (s0) s0.style.width = Math.round(rows.get(tops[tops.length - 1]) - left) + "px";
     };
-    requestAnimationFrame(() => ans.classList.add("fused"));
-    bank.classList.add("recede");
-    setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
-      ans.querySelectorAll(".word").forEach(w => w.remove());
-      const sweepEl = ans.querySelector(".sweep");
-      dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
-      fitSweeps();
-    }, 550);
+    if (ans.closest("#qbody.anchored")) {
+      // NO WORD CHANGES ROWS TWICE (Tom's recording 22-30, 10/28, measured: llevar went up at +0.25s as the gap closed, then back down at +0.55s
+      // when the dressed, wider words arrived). The words dress AT the tap, so the widths are final from the first frame; then the final
+      // layout is measured before anything moves: if closing the gap would change the row count, the row snaps to its final shape at
+      // the tap (the chrome still dissolves) instead of sliding through a re-wrap; if the rows hold, the gap closes as approved.
+      ans.querySelectorAll(".word").forEach((w, i) => { if (dressed[i] != null) w.textContent = dressed[i]; });
+      const rowsNow = ans.offsetHeight > 50 ? 2 : 1;
+      ans.classList.add("fused", "snap"); const rowsThen = ans.offsetHeight > 50 ? 2 : 1;   // measured before paint: no flash
+      if (rowsThen === rowsNow) { ans.classList.remove("fused", "snap"); requestAnimationFrame(() => ans.classList.add("fused")); }
+      bank.classList.add("recede");
+      setTimeout(fitSweeps, 550);
+    } else {
+      requestAnimationFrame(() => ans.classList.add("fused"));
+      bank.classList.add("recede");
+      setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
+        ans.querySelectorAll(".word").forEach(w => w.remove());
+        const sweepEl = ans.querySelector(".sweep");
+        dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
+      }, 550);
+    }
     if (!q.sceneLocal) recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });   // scene-local welds record nowhere (flagged in data)
     if (wrongTaps > 0) run.wrong++;
     q.esOnStage = true;

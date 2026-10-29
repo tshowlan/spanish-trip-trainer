@@ -2016,6 +2016,7 @@ img.scene-art { width: 286px; }
    under its first row (38px words + 4px). The row keeps a layer from the start, the cure for the one-point rise at the reveal's fade
    (measured frame by frame, 10/28). The one-run-of-text and ghost versions of 10/27-10/28 are retired: they moved words between rows. */
 #qbody.anchored .build-answer { will-change: transform; }
+#qbody.anchored .build-answer.snap, #qbody.anchored .build-answer.snap .word { transition: none !important; }   /* the fuse that would re-wrap takes its final shape at once */
 #qbody.anchored .build-answer .sweep.sweep-1 { bottom: auto; top: 42px; }
 #qbody.anchored > .res-note.under-build { position: absolute; left: 0; right: 0; margin: 0; font-size: 12.5px; font-weight: 400; color: var(--text-dim); opacity: 0; transition: opacity 300ms cubic-bezier(.2,.7,.3,1) 450ms; will-change: opacity; }   /* the sentence's note under the built row (10/25) */
 #qbody.anchored > .res-note.under-build.show { opacity: 1; }
