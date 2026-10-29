@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v545 (2026-10-28) — TABLE SENTENCES + the Counter amendment SHIPPED
+- Tom: "table and counter is good". `sentences-2` leaves the STAGED map; the Table and the Counter's ¿Me pone? lines are live for everyone; the two outgoing Counter lines are deleted; the Counter's examples are Quiero · ¿Me pone? · ¿Tiene? · café · caña · tapas. STAGED now: mic-check (parked), learn-reset-swipe (lab), sheet-rows. Files: curriculum.js, config.js, docs/app-today.md.
+
 ## v544 (2026-10-28) — the fuse as Tom approved it; the splash wordmark back to the pale fills
 - Tom's two recordings compared frame by frame: 19-33 (the approved look) keeps the tiles in their rows, dissolves the chrome and closes the gap in place, then dresses the words; 20-12 (the ghosts) carried a whole second row up into the first when the sentence fit one line, and read as a different design. The in-place fuse is restored (the one-run and ghost versions are retired); a wrapped sentence gets a second green sweep under its first row; the row keeps a layer from the start (the rise cure). The splash wordmark is back to the pale fills (Tom: never mind). Files: lesson.js, styles.css.
 
