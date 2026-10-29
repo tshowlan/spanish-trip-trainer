@@ -1937,10 +1937,10 @@ function _shapedDistractor(item) {
   const en = item.en || ""; const wc = t => t.trim().split(/\s+/).length;
   const shape = t => ({ w: wc(t), slot: /___/.test(t), q: /\?\s*$/.test(t) });
   const tgt = shape(en);
-  const fits = t => { if (!t || norm(t) === norm(en)) return false; const sh = shape(t); if (sh.slot !== tgt.slot || sh.q !== tgt.q) return false; return tgt.w <= 2 ? sh.w <= 2 : Math.abs(sh.w - tgt.w) <= 1; };
+  const fits = t => { if (!t || norm(t) === norm(en)) return false; const sh = shape(t); if (sh.slot !== tgt.slot || sh.q !== tgt.q) return false; if (tgt.slot) return true; return tgt.w <= 2 ? sh.w <= 2 : Math.abs(sh.w - tgt.w) <= 1; };   // a frame with a slot: any other frame with a slot of the same kind
   const own = ((run.lesson && run.lesson.items) || []).filter(x => x !== item && !x.card).map(x => x.en).filter(fits);
   if (own.length) return sample(own, 1)[0];
-  const all = (ALL_ITEMS || []).filter(x => x !== item && !x.card && !x.sits).map(x => x.en).filter(fits);
+  const all = (ALL_ITEMS || []).filter(x => x !== item && !x.card).map(x => x.en).filter(fits);   // the asks included: a frame with a slot wants another frame with a slot
   return all.length ? sample(all, 1)[0] : null;
 }
 function _presentCheck(item, chunked) {
