@@ -2026,8 +2026,8 @@ img.scene-art { width: 286px; }
 /* the fuse's ghosts (Tom 10/28): a fixed layer over the stage; each ghost starts as the tile it replaces and ends as the word in the line */
 .fuse-ghosts { position: fixed; inset: 0; z-index: 25; pointer-events: none; }
 .fuse-ghosts .word.ghost { position: absolute; box-sizing: border-box; display: block; white-space: nowrap; overflow: visible; text-align: left; margin: 0;
-  transition: left 450ms cubic-bezier(.2,.7,.3,1), top 450ms cubic-bezier(.2,.7,.3,1), width 450ms cubic-bezier(.2,.7,.3,1), height 450ms cubic-bezier(.2,.7,.3,1), line-height 450ms cubic-bezier(.2,.7,.3,1), padding 450ms cubic-bezier(.2,.7,.3,1), font-size 450ms cubic-bezier(.2,.7,.3,1), background-color 250ms, border-color 250ms, box-shadow 250ms; }
-.fuse-ghosts .word.ghost.to-line { background-color: transparent; border-color: transparent; box-shadow: none; padding: 0; font-size: 22px; font-weight: 600; color: var(--text); border-radius: 0; }
+  transition: left 450ms cubic-bezier(.2,.7,.3,1), top 450ms cubic-bezier(.2,.7,.3,1), width 450ms cubic-bezier(.2,.7,.3,1), height 450ms cubic-bezier(.2,.7,.3,1), line-height 450ms cubic-bezier(.2,.7,.3,1), padding 450ms cubic-bezier(.2,.7,.3,1), border-width 450ms cubic-bezier(.2,.7,.3,1), font-size 450ms cubic-bezier(.2,.7,.3,1), background-color 250ms, border-color 250ms, box-shadow 250ms; }
+.fuse-ghosts .word.ghost.to-line { background-color: transparent; border-color: transparent; border-width: 0; box-shadow: none; padding: 0; font-size: 22px; font-weight: 600; color: var(--text); border-radius: 0; }   /* border-width to 0 too: a 1px transparent border still insets the text a pixel off the run's glyphs */
 #qbody.anchored .build-answer.fused.lined.drawn .word { text-decoration-color: var(--green); }
 #qbody.anchored .build-answer.fused.lined .sweep { display: none; }
 #qbody.anchored .build-answer.fused .sweep { animation: none; }   /* the sweep never draws on the band; the underline does */

@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v542 (2026-10-28) — the ghosts land to the pixel
+- The ghost's 1px border, transparent at the end, still inset its text a pixel from the run's glyphs; its width now goes to 0 on the way. Measured: every ghost's text ends exactly on its word in the run (seven words, two rows). File: styles.css.
+
 ## v541 (2026-10-28) — the fuse's crossing is back; What they say back retires
 - Tom: v539 lost the tiles-grow-into-the-words transition. Now the final run is laid out at once (so no hop), kept invisible for 450ms while a GHOST of each tile, on a fixed layer over the stage, travels from where the tile stood to where its word sits in the run, shedding the tile's chrome and growing to the line's size on the way; then the run shows, the ghosts go, the green draws. The ghosts' end boxes are the run's own per-word glyph boxes (measured from the text), so the swap is invisible.
 - **What they say back · Part 1 retired** (never live): its beat is the exchange inside each place session. Coverage check: every reply it taught is heard in a Counter or Table exchange except ¿Con leche?, which rides chapter 1's con leche card. The `replies-1` entry and flag are gone; `composeReplies` stays as dead code for now. Files: lesson.js, styles.css, curriculum.js, config.js.
