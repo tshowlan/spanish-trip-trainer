@@ -172,7 +172,31 @@ function _chapterFlowDeck(deck, rooms) {
   // a word met in chapter one IS the same item when a later lesson carries it (one identity, one history)
   old.slice(1).forEach(st => st.lessons.forEach(l => { l.items = (l.items || []).map(it => made.get(slug(it.es)) || it); }));
   const asks = (flow.asks || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, asks: true, items: w.items.filter(live).map(d => (w.replySet && made.has(slug(d.es))) ? made.get(slug(d.es)) : Object.assign({ tier: 1 }, d)) }));
-  const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { items: w.items.filter(live).map(d => { const k = slug(d.es), own = { replies: d.replies, hint: d.hint, near: d.near, frame: d.frame, note: d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
+  // THE DIETARY VARIANT (chat 10/28, STAGED "dietary-variants"): a base line marked `dietary` becomes, for a learner with a matching allergy or need
+  // (the first of the intake's selections that applies), the same sentence with the slot word in place; es, en, hint, and near are swapped
+  // mechanically, replies stay. A near miss that would equal the variant's own English flips from "without" to "with". The variant is its own
+  // item (its own id and history). Everyone else gets the base line.
+  const slots = (activePack().dietarySlots) || {};
+  const pick = (p.allergies || []).find(k => slots[k]) || ((p.needs || []).includes("vegetarian") && slots.vegetarian ? "vegetarian" : null);
+  const dietaryOn = typeof isStaged === "function" && isStaged("dietary-variants");
+  const variant = d => {
+    if (!dietaryOn || !d.dietary || !pick) return d;
+    const [es, en] = slots[pick]; const sp = d.dietary;
+    const swapEn = t => t.replace(sp.en, sp.en.startsWith("without") ? `without ${en}` : `without ${en}`).replace(/without milk/g, `with ${en}`);
+    const swapEs = t => t.replace(sp.es, `sin ${es}`);
+    if (sp.applies.includes(pick)) {
+      const v = Object.assign({}, d, { es: swapEs(d.es), en: swapEn(d.en), hint: (d.hint || []).map(h => [swapEn(h[0]), swapEs(h[1])]), near: (d.near || []).map(n => swapEn(n)) });
+      v.near = v.near.map(n => n === v.en ? n.replace(`without ${en}`, `with ${en}`) : n);
+      delete v.dietary; return v;
+    }
+    if (sp.alt && sp.alt.applies.includes(pick)) {
+      const fill = t => t.replace(/___/g, "\u0000").split("\u0000");   // placeholder → the slot word, es or en by field
+      const v = Object.assign({}, d, { es: sp.alt.es.replace(/___/g, es), en: sp.alt.en.replace(/___/g, en), hint: sp.alt.hint.map(h => [h[0].replace(/___/g, en), h[1].replace(/___/g, es)]), near: sp.alt.near.map(n => n.replace(/___/g, en)) });
+      delete v.dietary; return v;
+    }
+    return d;
+  };
+  const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { items: w.items.filter(live).map(variant).map(d => { const k = slug(d.es), own = { replies: d.replies, hint: d.hint, near: d.near, frame: d.frame, note: d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
   const order = flow.rooms || [];
   const roomList = rooms.slice().sort((a, b) => (order.indexOf(a.id) + 1 || 99) - (order.indexOf(b.id) + 1 || 99));
   const t = flow.chapters || [], b = flow.blurbs || [];

@@ -8,10 +8,10 @@ Eight ways to ask, then the asks filled with the words you own, one place at a t
 2. **The asks · Part 2** (LIVE). Necesito, ¿Hay?, ¿Tiene?, ¿Puedo?.
 3. **Counter sentences** (LIVE v524; the ¿Me pone? amendment STAGED sentences-2). Coffee, beer, water and the card at the counter: seven sentences built from chapter 1's words, each built from tiles, heard, answered (the exchange), then the board.
 4. **Table sentences** (STAGED sentences-2, chat's list 10/27). Fifteen sentences in seven frames; Para mí the table's own frame; the terrace, the side plate, the English menu, paying at the table as GOOD TO KNOWs.
-5. **Paying sentences.** ¿Cuánto cuesta esto?, card or cash, change, the check; the prices in the replies once the hour and the numbers machine exist.
-6. **Street sentences.** Where is, is there one nearby, is it far, I need a taxi.
-7. **Shop sentences.** Do you have, can I try it, is it open, which day (the days and the signs from chapter 1).
-8. **Help sentences.** I need help, a doctor, the hospital, No entiendo, ¿Habla inglés?.
+5. **Paying sentences** (STAGED sentences-3, chat 10/28; ¿Me cobra? its frame). ¿Cuánto cuesta esto?, card or cash, change, the check; the prices in the replies once the hour and the numbers machine exist.
+6. **Street sentences** (STAGED sentences-3; ¿Está? its frame). Where is, is there one nearby, is it far, I need a taxi.
+7. **Shop sentences** (STAGED sentences-3; esto its card). Do you have, can I try it, is it open, which day (the days and the signs from chapter 1).
+8. **Help sentences** (STAGED sentences-3; Llame a its frame). I need help, a doctor, the hospital, No entiendo, ¿Habla inglés?.
 9. **Numbermachine.** Numbers inside the sentences: prices and the hour; ¿A qué hora? and its replies.
 
 Retiring as the places land: the four old rooms, and What they say back as a session (its beat is the exchange inside each place). Review carries the chapter: a due ask comes back as a situation and its sentence (live), and a solid word comes back inside a sentence that carries it (the review refit, next).

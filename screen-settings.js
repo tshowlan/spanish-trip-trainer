@@ -117,6 +117,23 @@ function renderProfile() {
     save(); toast(n ? `${n} asks are due: open Review, Recommended` : "No asks met yet: play The asks first"); renderProfile();
   });
   wrap.appendChild(dueAsks);
+  // the place sentences, made due (Tom 10/28): a sentence played today is not due for days; this puts every met Counter/Table sentence on the review queue
+  const dueSent = el(`<button class="btn-quiet" style="margin:0 0 10px">Make the sentences due (to see a place sentence come back in review)</button>`);
+  dueSent.addEventListener("click", () => {
+    const sents = (ALL_ITEMS || []).filter(it => it.sentence && it.id);
+    let n = 0;
+    sents.forEach(it => { const st = state.learn[it.id]; if (!st || !st.exposures) return; state.learn[it.id] = Object.assign(st, { interval: 2, lastSeen: daysAgoStr(5), lastCorrect: daysAgoStr(5), due: daysAgoStr(3) }); n++; });
+    save(); toast(n ? `${n} sentences are due: open Practice` : "No place sentence met yet: play the Counter or the Table first"); renderProfile();
+  });
+  wrap.appendChild(dueSent);
+  // pretend a dietary selection (Tom 10/28): to see the dietary variants without re-onboarding
+  const dietRow = el(`<div class="lab-row" style="display:block;margin:0 0 10px"><div class="lab-lbl" style="margin-bottom:6px">Pretend a dietary selection (rebuilds the deck)</div><div style="display:flex;flex-wrap:wrap;gap:6px"></div></div>`);
+  [["", "None"], ["shellfish", "Shellfish"], ["nuts", "Nuts"], ["dairy", "Dairy"], ["eggs", "Eggs"], ["fish", "Fish"], ["vegetarian", "Vegetarian"]].forEach(([k, label]) => {
+    const b = el(`<button class="btn-quiet" style="margin:0">${label}</button>`);
+    b.addEventListener("click", () => { state.profile = state.profile || {}; if (k === "vegetarian") { state.profile.allergies = []; state.profile.needs = ["vegetarian"]; } else { state.profile.allergies = k ? [k] : []; state.profile.needs = (state.profile.needs || []).filter(n => n !== "vegetarian"); } save(); rebuildDeck(); toast(k ? `Pretending: ${label}` : "No dietary selection"); renderProfile(); });
+    dietRow.lastElementChild.appendChild(b);
+  });
+  wrap.appendChild(dietRow);
   // scene readiness readout (never trust self-reported success): each scene's due-mass vs the
   // bar it must clear today, plus a "Make ready" that puts its phrases due so the door can show
   const scRow = el(`<div class="lab-row"><div class="lab-lbl">Scenes: due-mass vs the bar (${sceneMassMin().toFixed(1)} today, tilt ${tiltShare().toFixed(2)}, staging ${stagingOn() ? "ON" : "off"})</div><div id="lab-scenes"></div></div>`);
