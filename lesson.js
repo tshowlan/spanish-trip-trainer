@@ -2674,8 +2674,12 @@ function renderWeld(q) {
       // the tap (the chrome still dissolves) instead of sliding through a re-wrap; if the rows hold, the gap closes as approved.
       ans.querySelectorAll(".word").forEach((w, i) => { if (dressed[i] != null) w.textContent = dressed[i]; });
       const rowsNow = ans.offsetHeight > 50 ? 2 : 1;
-      ans.classList.add("fused", "snap"); const rowsThen = ans.offsetHeight > 50 ? 2 : 1;   // measured before paint: no flash
-      if (rowsThen === rowsNow) { ans.classList.remove("fused", "snap"); requestAnimationFrame(() => ans.classList.add("fused")); }
+      // the final shape is measured on a hidden clone, never on the row itself: toggling the classes on the live row (v554) started the
+      // transitions from the fused state and the growth collapsed into one frame (Tom's recording 07-49, 10/29)
+      const probe = ans.cloneNode(true); probe.classList.add("fused", "snap"); probe.style.cssText = "visibility:hidden; pointer-events:none;";
+      ans.parentElement.appendChild(probe); const rowsThen = probe.offsetHeight > 50 ? 2 : 1; probe.remove();
+      if (rowsThen === rowsNow) requestAnimationFrame(() => ans.classList.add("fused"));
+      else ans.classList.add("fused", "snap");
       bank.classList.add("recede");
       setTimeout(fitSweeps, 550);
     } else {

@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v555 (2026-10-29) — the growth is back
+- Tom's recording (07-49), measured against 19-33: the approved fuse grows over about 0.35s (the text's left edge walks in, the letters grow); v554 jumped in one frame. Cause: v554 measured the final row count by toggling the fused classes on the live row, which started the transitions from the fused state, so nothing was left to animate. The measurement now happens on a hidden clone; the live row only ever gets `fused` once, from the tile state, and the growth plays as approved. The snap for a fuse that would re-wrap is unchanged. File: lesson.js.
+
 ## v554 (2026-10-28) — no word changes rows twice at the fuse
 - Tom's recording (22-30), measured: on ¿Me pone un cortado para llevar? "llevar" moved up at +0.25s as the gap closed, then back down at +0.55s when the dressed, wider words arrived. Now the words dress AT the tap (final widths from the first frame), and the final layout is measured before anything moves: if closing the gap would change the row count, the row snaps to its final shape at the tap (the chrome still dissolves, nothing slides through a re-wrap); if the rows hold, the gap closes as approved in the 19-33 recording. Files: lesson.js, styles.css.
 
