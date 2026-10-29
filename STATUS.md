@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v543 (2026-10-28) — the splash's wordmark in Home's colours
+- Tom: the splash's wordmark should match the one at Home's top left. The splash had the pale dark-theme fills (#c8d2f5 / #7aa6db); Home over the lit photo wears the brand's navy and blue (#1c275e Trip, #4a7fc1 fluent). The splash now wears those. File: styles.css.
+
 ## v542 (2026-10-28) — the ghosts land to the pixel
 - The ghost's 1px border, transparent at the end, still inset its text a pixel from the run's glyphs; its width now goes to 0 on the way. Measured: every ghost's text ends exactly on its word in the run (seven words, two rows). File: styles.css.
 

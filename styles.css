@@ -129,8 +129,9 @@ h1, h2, h3, .hero h1, .onb-card h2, .complete h2, .stage-head h2 { font-family: 
 .splash-wm { animation: arr-fade 700ms ease 350ms both; }
 .splash-wm .wordmark { height: 34px; width: auto; }
 /* halo rule: marks on the black frame carry the dark-theme brand fills, both themes */
-.splash-wm .wordmark path { fill: #c8d2f5; }
-.splash-wm .wordmark g g:nth-child(n+5) path { fill: #7aa6db; }
+/* the splash's wordmark wears Home's brand fills over the lit photo (Tom 10/28): navy Trip, blue fluent, the same as the top-left mark */
+.splash-wm .wordmark path { fill: #1c275e; }
+.splash-wm .wordmark g g:nth-child(n+5) path { fill: #4a7fc1; }
 @keyframes arr-rise { from { transform: translateY(14px) scale(.92); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes arr-fade { from { opacity: 0; } to { opacity: 1; } }
 /* the eclipse: the flood swells FROM BEHIND THE LANTERN (z1, under the stack) —
