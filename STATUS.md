@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v550 (2026-10-28) — the green line "too wide": the first-row line under a one-row sentence
+- Tom: not too long, too wide. Cause: the second-row line was decided at the tap from the padded tiles' height, and the tiles wrapped to two rows where the fused sentence fits on one (¿Cuánto cuesta el taxi al hotel?); the first-row line then sat flush under the single row, right against the main line, a 5px band. The second-row line is now decided once the words have dressed, from the fused rows themselves, and removed if the sentence settled on one row. File: lesson.js.
+
 ## v549 (2026-10-28) — Tom's Street play: the exit, the station, libre, the long green line
 - **The green line "bigger than normal"** on ¿Cuánto cuesta el taxi al hotel?: the sentence wraps with one word on the second row, and the row's sweep ran the stage's full width under that one word; the reveal also appended a second full-width sweep on top of the fuse's. Each row's green now runs the width of that row's words (fitted at the fuse and again when the words dress), and the reveal adds no second sweep when one exists. lesson.js.
 - **"¿Dónde está la salida?" leaves the Street** (Tom: not a street question; Salida is a sign you read inside). Street is thirteen sentences.

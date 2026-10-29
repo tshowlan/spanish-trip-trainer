@@ -2639,18 +2639,20 @@ function renderWeld(q) {
     // (450ms), the dressed words take over at 550ms. The one-run-of-text and ghost versions (v534-v542) moved words between rows and
     // read as a different design; they are retired. On the ruled band a sentence that wraps gets a second green line under its first
     // row (the sweep sits under the last row), so every row carries the green. The one-point rise at the reveal is cured on the row itself.
-    if (ans.closest("#qbody.anchored") && ans.offsetHeight > 50) ans.appendChild(el(`<span class="sweep sweep-1"></span>`));
-    // each row's green runs the width of that row's words, not the stage (Tom 10/28: a lone word on the second row carried a full-width line)
+    // each row's green runs the width of that row's words, not the stage (Tom 10/28: a lone word on the second row carried a full-width line).
+    // The second row's line is decided once the words have dressed: the padded tiles can wrap where the fused sentence does not, and a
+    // first-row line under a one-row sentence sat flush against the main one and read as a line twice as thick (Tom's "too wide", 10/28).
     const fitSweeps = () => {
       if (!ans.closest("#qbody.anchored")) return;
       const left = ans.getBoundingClientRect().left, rows = new Map();
       ans.querySelectorAll(".word").forEach(w => { const r = w.getBoundingClientRect(); const k = Math.round(r.top / 10); rows.set(k, Math.max(rows.get(k) || 0, r.right)); });
       const tops = [...rows.keys()].sort((a, b) => a - b); if (!tops.length) return;
-      const s1 = ans.querySelector(".sweep-1"), s0 = ans.querySelector(".sweep:not(.sweep-1)");
-      if (s1 && tops.length > 1) s1.style.width = Math.round(rows.get(tops[0]) - left) + "px";
+      let s1 = ans.querySelector(".sweep-1"); const s0 = ans.querySelector(".sweep:not(.sweep-1)");
+      if (tops.length > 1 && !s1) { s1 = el(`<span class="sweep sweep-1"></span>`); ans.appendChild(s1); }
+      if (tops.length < 2 && s1) { s1.remove(); s1 = null; }
+      if (s1) s1.style.width = Math.round(rows.get(tops[0]) - left) + "px";
       if (s0) s0.style.width = Math.round(rows.get(tops[tops.length - 1]) - left) + "px";
     };
-    fitSweeps();
     requestAnimationFrame(() => ans.classList.add("fused"));
     bank.classList.add("recede");
     setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
