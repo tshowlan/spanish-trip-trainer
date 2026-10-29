@@ -2080,6 +2080,12 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v549 (2026-10-28) — Tom's Street play: the exit, the station, libre, the long green line
+- **The green line "bigger than normal"** on ¿Cuánto cuesta el taxi al hotel?: the sentence wraps with one word on the second row, and the row's sweep ran the stage's full width under that one word; the reveal also appended a second full-width sweep on top of the fuse's. Each row's green now runs the width of that row's words (fitted at the fuse and again when the words dress), and the reveal adds no second sweep when one exists. lesson.js.
+- **"¿Dónde está la salida?" leaves the Street** (Tom: not a street question; Salida is a sign you read inside). Street is thirteen sentences.
+- **la estación is "the train station"** in the Street's English, hints, near misses, and Help's reply, so a learner never takes it for the metro (el metro is its own word). Chapter 1's card still says "the station"; flagged for chat.
+- **¿Está libre?** is "Are you free?" (to a taxi driver), hint "Are you / está · free? / libre", near misses "Are you taken?" and "Is it far?" ("Is it open?" was as right as the answer, and "Is it free?" read as no cost). Files: curriculum.js, lesson.js.
+
 ## v548 (2026-10-28) — the dietary slot table reaches the engine
 - v547's generator read the slot words from the registered pack, which copies named fields from the curriculum and did not carry `dietarySlots`; it does now. Checked in the pane with pretend selections: shellfish gives ¿Tiene algo sin marisco? / ¿Hay tapas sin marisco? / ¿Hay algo sin marisco en la carta? / ¿Tiene tapas sin marisco? (the pan line's swap), vegetarian gives the sin carne forms with the base tapas line unchanged, nuts gives frutos secos in all four. File: engine.js.
 

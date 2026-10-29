@@ -2640,12 +2640,24 @@ function renderWeld(q) {
     // read as a different design; they are retired. On the ruled band a sentence that wraps gets a second green line under its first
     // row (the sweep sits under the last row), so every row carries the green. The one-point rise at the reveal is cured on the row itself.
     if (ans.closest("#qbody.anchored") && ans.offsetHeight > 50) ans.appendChild(el(`<span class="sweep sweep-1"></span>`));
+    // each row's green runs the width of that row's words, not the stage (Tom 10/28: a lone word on the second row carried a full-width line)
+    const fitSweeps = () => {
+      if (!ans.closest("#qbody.anchored")) return;
+      const left = ans.getBoundingClientRect().left, rows = new Map();
+      ans.querySelectorAll(".word").forEach(w => { const r = w.getBoundingClientRect(); const k = Math.round(r.top / 10); rows.set(k, Math.max(rows.get(k) || 0, r.right)); });
+      const tops = [...rows.keys()].sort((a, b) => a - b); if (!tops.length) return;
+      const s1 = ans.querySelector(".sweep-1"), s0 = ans.querySelector(".sweep:not(.sweep-1)");
+      if (s1 && tops.length > 1) s1.style.width = Math.round(rows.get(tops[0]) - left) + "px";
+      if (s0) s0.style.width = Math.round(rows.get(tops[tops.length - 1]) - left) + "px";
+    };
+    fitSweeps();
     requestAnimationFrame(() => ans.classList.add("fused"));
     bank.classList.add("recede");
     setTimeout(() => {   // D6: the fuse dresses the bare tiles in place
       ans.querySelectorAll(".word").forEach(w => w.remove());
       const sweepEl = ans.querySelector(".sweep");
       dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
+      fitSweeps();
     }, 550);
     if (!q.sceneLocal) recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });   // scene-local welds record nowhere (flagged in data)
     if (wrongTaps > 0) run.wrong++;
@@ -4261,7 +4273,7 @@ function resolveCorrect(item, q, info) {
   // fusion: placed tiles dissolve their tile-ness in place; the unused bank recedes, nothing vanishes
   const ans = qb.querySelector(".build-answer");
   if (ans) {
-    ans.appendChild(el(`<span class="sweep"></span>`));
+    if (!ans.querySelector(".sweep")) ans.appendChild(el(`<span class="sweep"></span>`));   // the fuse already drew its own (sized to the row); a second, full-width one read as a thicker, longer line (Tom 10/28)
     requestAnimationFrame(() => ans.classList.add("fused"));
     const bank = qb.querySelector(".bank"); if (bank) bank.classList.add("recede");
   }
