@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v551 (2026-10-28) — the Street's two taxi asks leave
+- Tom: who do you say "I need a taxi, please" to? Nobody on the street: it is said to a receptionist, a waiter, or the person at a rank, people who can call one. Both Necesito taxi lines leave the Street (eleven sentences, five frames). The driver's own lines stay: ¿Está libre? and ¿Cuánto cuesta el taxi al hotel?. For chat: "Necesito un taxi, por favor." belongs where someone can call one (the Table, after the meal, or a hotel-desk session), and the Street may want the driver's "Al hotel, por favor." File: curriculum.js.
+
 ## v550 (2026-10-28) — the green line "too wide": the first-row line under a one-row sentence
 - Tom: not too long, too wide. Cause: the second-row line was decided at the tap from the padded tiles' height, and the tiles wrapped to two rows where the fused sentence fits on one (¿Cuánto cuesta el taxi al hotel?); the first-row line then sat flush under the single row, right against the main line, a 5px band. The second-row line is now decided once the words have dressed, from the fused rows themselves, and removed if the sentence settled on one row. File: lesson.js.
 
