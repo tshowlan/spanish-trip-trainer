@@ -2656,10 +2656,12 @@ function renderWeld(q) {
     // each row's green runs the width of that row's words, not the stage (Tom 10/28: a lone word on the second row carried a full-width line).
     // The second row's line is decided once the words have dressed: the padded tiles can wrap where the fused sentence does not, and a
     // first-row line under a one-row sentence sat flush against the main one and read as a line twice as thick (Tom's "too wide", 10/28).
-    const fitSweeps = () => {
+    // the rows and the per-row widths are read from a FINISHED layout (the hidden clone below, or the row once settled): the green of
+    // each row is sized before it starts to draw, so it never draws at one width and jumps to another (Tom's recording 19-49, 10/29)
+    const fitSweeps = (from) => {
       if (!ans.closest("#qbody.anchored")) return;
-      const left = ans.getBoundingClientRect().left, rows = new Map();
-      ans.querySelectorAll(".word").forEach(w => { const r = w.getBoundingClientRect(); const k = Math.round(r.top / 10); rows.set(k, Math.max(rows.get(k) || 0, r.right)); });
+      const src = from || ans, left = src.getBoundingClientRect().left, rows = new Map();
+      src.querySelectorAll(".word").forEach(w => { const r = w.getBoundingClientRect(); const k = Math.round(r.top / 10); rows.set(k, Math.max(rows.get(k) || 0, r.right)); });
       const tops = [...rows.keys()].sort((a, b) => a - b); if (!tops.length) return;
       let s1 = ans.querySelector(".sweep-1"); const s0 = ans.querySelector(".sweep:not(.sweep-1)");
       if (tops.length > 1 && !s1) { s1 = el(`<span class="sweep sweep-1"></span>`); ans.appendChild(s1); }
@@ -2673,15 +2675,14 @@ function renderWeld(q) {
       // layout is measured before anything moves: if closing the gap would change the row count, the row snaps to its final shape at
       // the tap (the chrome still dissolves) instead of sliding through a re-wrap; if the rows hold, the gap closes as approved.
       ans.querySelectorAll(".word").forEach((w, i) => { if (dressed[i] != null) w.textContent = dressed[i]; });
-      const rowsNow = ans.offsetHeight > 50 ? 2 : 1;
-      // the final shape is measured on a hidden clone, never on the row itself: toggling the classes on the live row (v554) started the
-      // transitions from the fused state and the growth collapsed into one frame (Tom's recording 07-49, 10/29)
+      // ONE FUSE FOR EVERY SENTENCE (Tom 10/29): the growth always plays (no snap, so every build moves at the same pace); the finished
+      // layout is read from a hidden clone, never from the live row (toggling the live row's classes killed the growth, v554), and the
+      // green of each row is sized from that clone before it draws.
       const probe = ans.cloneNode(true); probe.classList.add("fused", "snap"); probe.style.cssText = "visibility:hidden; pointer-events:none;";
-      ans.parentElement.appendChild(probe); const rowsThen = probe.offsetHeight > 50 ? 2 : 1; probe.remove();
-      if (rowsThen === rowsNow) requestAnimationFrame(() => ans.classList.add("fused"));
-      else ans.classList.add("fused", "snap");
+      ans.parentElement.appendChild(probe); fitSweeps(probe); probe.remove();
+      requestAnimationFrame(() => ans.classList.add("fused"));
       bank.classList.add("recede");
-      setTimeout(fitSweeps, 550);
+      setTimeout(() => fitSweeps(), 600);   // the settled row says the same; a safety for a wrap the clone could not foresee
     } else {
       requestAnimationFrame(() => ans.classList.add("fused"));
       bank.classList.add("recede");
