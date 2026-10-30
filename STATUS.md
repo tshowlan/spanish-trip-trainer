@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v565 (2026-10-30) — Known's undo is "Add back"
+- Tom: Forget was the wrong word; the session goes back into the deck. The swipe's undo now reads Add back (toast: "added back"). The row's look is still being chosen (mocks dev/known-row-options-2/3.html). File: screen-learn.js.
+
 ## v564 (2026-10-29) — the halo, lighter
 - Tom: the dark halo read as a cloud. Both lab halos are now a mid grey at a fraction of the reach: Halo 3px at 75% and 9px at 40%, Halo wider 4px at 85% and 12px at 50%, the least shading that lifts the letters. File: styles.css.
 

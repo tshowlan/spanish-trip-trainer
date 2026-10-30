@@ -117,13 +117,13 @@ function _swipeReset(row, l) {
   const OPEN = (known ? 96 : 0) + (showReset ? 96 : 0) || 96;
   const isKnown = !!(state.lessons[l.id] && state.lessons[l.id].known);
   const act = el(`<button class="lesson-reset" aria-label="Reset this session">Reset</button>`);
-  const kn = known ? el(`<button class="lesson-known${isKnown ? " off" : ""}" aria-label="${isKnown ? "Forget: review this session again" : "Mark this session known"}">${isKnown ? "Forget" : "Known"}</button>`) : null;
+  const kn = known ? el(`<button class="lesson-known${isKnown ? " off" : ""}" aria-label="${isKnown ? "Add this session back to the deck" : "Mark this session known"}">${isKnown ? "Add back" : "Known"}</button>`) : null;   // Add back (Tom 10/30): the session returns to the deck
   if (kn) row.appendChild(kn);
   if (showReset) { if (kn) act.style.left = "calc(100% + 96px)"; row.appendChild(act); }
   if (kn) kn.addEventListener("click", e => {
     e.stopPropagation();
     _markKnown(l, !isKnown);
-    if (typeof toast === "function") toast(isKnown ? `${l.title}: back in review` : `${l.title} marked known`);
+    if (typeof toast === "function") toast(isKnown ? `${l.title}: added back` : `${l.title} marked known`);
     window._learnScroll = window.scrollY || 0; renderLearn();
   });
   let x0 = null, y0 = null, dx = 0, dragging = false, open = false;
