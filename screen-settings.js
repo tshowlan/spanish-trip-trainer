@@ -134,6 +134,14 @@ function renderProfile() {
     dietRow.lastElementChild.appendChild(b);
   });
   wrap.appendChild(dietRow);
+  // the photo's translucent wash under Spain and the dials (Tom 10/29, mock dev/trip-block-options-2.html): none, A, B, C
+  const washRow = el(`<div class="lab-row" style="display:block;margin:0 0 10px"><div class="lab-lbl" style="margin-bottom:6px">Home: the photo's wash (A behind the block only, B settles into a wash, C the same lighter)</div><div style="display:flex;flex-wrap:wrap;gap:6px"></div></div>`);
+  [["", "None"], ["wash-a", "A"], ["wash-b", "B"], ["wash-c", "C"]].forEach(([k, label]) => {
+    const b = el(`<button class="btn-quiet" style="margin:0">${label}</button>`);
+    b.addEventListener("click", () => { try { if (k) localStorage.setItem("sts_home_wash", k); else localStorage.removeItem("sts_home_wash"); } catch (e) {} toast(k ? `Wash ${label}: open Home` : "No wash"); });
+    washRow.lastElementChild.appendChild(b);
+  });
+  wrap.appendChild(washRow);
   // scene readiness readout (never trust self-reported success): each scene's due-mass vs the
   // bar it must clear today, plus a "Make ready" that puts its phrases due so the door can show
   const scRow = el(`<div class="lab-row"><div class="lab-lbl">Scenes: due-mass vs the bar (${sceneMassMin().toFixed(1)} today, tilt ${tiltShare().toFixed(2)}, staging ${stagingOn() ? "ON" : "off"})</div><div id="lab-scenes"></div></div>`);

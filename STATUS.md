@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v558 (2026-10-29) — the ceremony's stray top bar; the photo's wash in the Test Lab
+- **The bug** (Tom's screenshot, "occasionally"): the top bar, the flame, and the language chip showed over the dials during THAT'S THE SESSION. The top bar, the atmo, and the tab bar persist between renders, and the previous ceremony's return had left `cer-back` on them; under `in-ceremony` that class means "visible". The ceremony now strips every `cer-back` as it begins. screen-home.js.
+- **Test Lab:** "Home: the photo's wash", None / A / B / C from mock dev/trip-block-options-2.html (A a soft wash behind the trip block only; B the photo settling into a translucent wash from the block down, Oura's; C the same lighter). The choice is a lab preference (localStorage `sts_home_wash`), applied as a body class on every Home render; the wash is the Home's own ::before under its content. Files: screen-home.js, screen-settings.js, styles.css.
+
 ## v557 (2026-10-29) — the correction sheet: accents unmarked, a word out of place named as such
 - Tom's screenshots: "estacion", "donde", "esta" were underlined (accent slips, which pass in silence in the reveal since v529 but were still marked on the sheet), and "la metro entrada" against "la entrada del metro" reported metro as missing when it was typed in the wrong place. The sheet no longer marks an accent slip. A word that is both extra and missing is a word out of place: it wears a dotted line where typed, its right place shows in red, and the line under the phrase says "Out of place: metro." with only the truly missing words under "Missing". Files: lesson.js, styles.css.
 

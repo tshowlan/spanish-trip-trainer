@@ -121,6 +121,7 @@ function renderHome(opts) {
   const cer = opts && opts.ceremony;                    // §6b: ceremony overlays this render
   const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (cer) document.body.classList.add("in-ceremony");  // before anything paints: no first-frame flash
+  { const w = (() => { try { return localStorage.getItem("sts_home_wash") || ""; } catch (e) { return ""; } })(); ["wash-a", "wash-b", "wash-c"].forEach(c => document.body.classList.toggle(c, w === c)); }   // Test Lab: the photo's translucent wash (Tom 10/29)
   renderTopbar();
   clearFooter();
   showTabbar("home");
@@ -278,6 +279,9 @@ function _tickHomeDial(card, from, to, dur, done) {
 }
 function sessionEndCeremony(home, data, reduced) {
   document.querySelectorAll(".cer-layer").forEach(n => n.remove());   // never stack ceremonies
+  // the top bar, the atmo, and the tab bar persist between renders, and the last ceremony's return left `cer-back` on them; under
+  // `in-ceremony` that class means "visible", so the logo, the flame, and the language chip showed over the dials (Tom 10/29)
+  document.querySelectorAll(".cer-back").forEach(n => n.classList.remove("cer-back"));
   document.body.classList.add("in-ceremony");
   // hide the bar WITHOUT hideTabbar(): that helper also tears down the home atmo, which
   // must stay mounted (opacity-hidden) so the dissolve can refill it in place
