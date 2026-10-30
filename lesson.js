@@ -362,6 +362,18 @@ function _sentenceBuild(it, pool) {
   const others = [...new Set(pool.filter(x => x !== it).flatMap(x => tilesOf(x.es)).filter(w => w && !tiles.includes(w)))];
   return { type: "weld", item: it, pool, target: it.es, tiles, distractors: sample(others, Math.min(2, others.length)), targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint, resNote: it.note || null };   // two strays in chapter 2's banks (Tom 10/25); a sentence's note rides its reveal (croissant's spelling, 10/25)
 }
+/* THE REPLY THAT IS THIS SENTENCE'S OWN (Tom 10/29: Un momento and Ahora mismo answered half of chapter 2). A sentence's three replies
+   carry one or two stock answers (wait, right away, of course) beside one that only this ask gets (El hospital, todo recto; Son cinco;
+   Fuera no, dentro sí). The exchange picks the rarest across the pack's sentences first, so the stock answers are heard only where a
+   sentence has nothing of its own; the no-twins pass then spreads what is left. */
+let _replyFreq = null;
+function _rareReply(it) {
+  if (!_replyFreq) { _replyFreq = new Map(); (ALL_ITEMS || []).forEach(x => (x.sentence ? (x.replies || []) : []).forEach(r => { const k = norm(r[0]).replace(/^(si|no)\s+/, ""); _replyFreq.set(k, (_replyFreq.get(k) || 0) + 1); })); }
+  const rs = (it.replies || []).slice(); if (!rs.length) return null;
+  const f = r => _replyFreq.get(norm(r[0]).replace(/^(si|no)\s+/, "")) || 0;
+  const best = Math.min(...rs.map(f));
+  return sample(rs.filter(r => f(r) === best), 1)[0];
+}
 function composeSentences(lesson) {
   const cards = (lesson.items || []).filter(it => it.card);   // a place frame's intro card (¿Me pone ___?, Tom 10/27): shown first, never a sentence of the ladder
   const pool = (lesson.items || []).filter(it => !it.card), place = lesson.place || "";
@@ -373,11 +385,11 @@ function composeSentences(lesson) {
     const s = shuffle(list.slice()), at = i => s[i % s.length];
     builds.push(_sentenceBuild(at(0), pool));
     if (s.length < 2) {   // a frame with ONE sentence (the Table's ¿Puedo?, ¿Dónde está?): build it and answer it, no ear or typed lap, so no sentence runs five times (Tom's rule 10/25: no sentence more than twice)
-      const ex1 = at(0); if ((ex1.replies || []).length) { const r = sample(ex1.replies, 1)[0]; exchanges.push({ type: "reply_hear", item: ex1, es: r[0], en: r[1], set: { ask: ex1.es, line: ex1.es, place, replies: ex1.replies.map(x => x[0]) }, options: ex1.replies.map(x => x[1]), arc: true }); }
+      const ex1 = at(0); if ((ex1.replies || []).length) { const r = _rareReply(ex1); exchanges.push({ type: "reply_hear", item: ex1, es: r[0], en: r[1], set: { ask: ex1.es, line: ex1.es, place, replies: ex1.replies.map(x => x[0]) }, options: ex1.replies.map(x => x[1]), arc: true }); }
       return;
     }
     ears.push(Object.assign(_sentenceBuild(at(1), pool), { heard: at(1).es, listenBuild: true, cueRole: "Listen, then build it", cueMeaning: "", hint: null, noEn: false, noAudio: true, resNote: null }));   // a sentence's note rides the first build only (once a session, Tom 10/25)   // the stage keeps the replay; the English shows in the reveal (Tom 10/25)
-    const ex = at(2); if ((ex.replies || []).length) { const r = sample(ex.replies, 1)[0]; exchanges.push({ type: "reply_hear", item: ex, es: r[0], en: r[1], set: { ask: ex.es, line: ex.es, place, replies: ex.replies.map(x => x[0]) }, options: ex.replies.map(x => x[1]), arc: true }); }
+    const ex = at(2); if ((ex.replies || []).length) { const r = _rareReply(ex); exchanges.push({ type: "reply_hear", item: ex, es: r[0], en: r[1], set: { ask: ex.es, line: ex.es, place, replies: ex.replies.map(x => x[0]) }, options: ex.replies.map(x => x[1]), arc: true }); }
     const pk = [at(1), at(0), at(2)].find(x => (x.near || []).length >= 2); if (pk) picks.push({ type: "hear_pick", item: pk, es: pk.es, en: pk.en, place, options: [pk.en].concat(pk.near.slice(0, 2)), arc: true });
     typed.push(Object.assign(_sentenceBuild(at(s.length >= 3 ? 2 : 1), pool), { inputForm: "typed", cueRole: "Say it in Spanish", hint: null, arc: true, lap: true, resNote: null }));
   });
@@ -388,7 +400,7 @@ function composeSentences(lesson) {
   // the same core twice in a row (Tom 10/28: Sí, claro and Claro came back to back at the Table).
   const core = es => norm(es).replace(/^(si|no)\s+/, "").trim();
   const used = new Map(); exchanges.forEach(x => used.set(core(x.es), (used.get(core(x.es)) || 0) + 1));
-  exchanges.forEach(x => { const c = core(x.es); if ((used.get(c) || 0) > 1) { const alt = (x.item.replies || []).find(r => !used.has(core(r[0]))); if (alt) { used.set(c, used.get(c) - 1); x.es = alt[0]; x.en = alt[1]; used.set(core(alt[0]), 1); } } });
+  exchanges.forEach(x => { const c = core(x.es); if ((used.get(c) || 0) > 1) { const alts = (x.item.replies || []).filter(r => !used.has(core(r[0]))); const alt = alts.length ? alts.sort((p, q) => (_replyFreq.get(core(p[0])) || 0) - (_replyFreq.get(core(q[0])) || 0))[0] : null; if (alt) { used.set(c, used.get(c) - 1); x.es = alt[0]; x.en = alt[1]; used.set(core(alt[0]), 1); } } });
   let exs = shuffle(exchanges);
   for (let t = 0; t < 60 && exs.some((q, i) => i > 0 && core(exs[i - 1].es) === core(q.es)); t++) exs = shuffle(exchanges);   // never the same reply, or its twin, twice in a row
   noSeam(shuffle(builds)); noSeam(shuffle(ears)); noSeam(exs); noSeam(shuffle(picks)); noSeam(shuffle(typed));
@@ -973,7 +985,7 @@ function _sentenceReviewForms(it, st) {
   Object.assign(build, { place: it.place, arc: false, resNote: null });
   if (strength >= 40) Object.assign(build, { inputForm: "typed", cueRole: "Say it in Spanish", hint: null });
   forms.push(build);
-  if ((it.replies || []).length) { const r = sample(it.replies, 1)[0]; forms.push({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place: it.place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]) }); }
+  if ((it.replies || []).length) { const r = _rareReply(it); forms.push({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place: it.place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]) }); }
   return forms.slice(0, strength < 55 ? 3 : 2);
 }
 function _practiceForms(it, st, opts) {

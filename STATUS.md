@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v560 (2026-10-29) — the exchange hears the sentence's own reply first
+- Tom: Un momento, Ahora mismo, and the like answer every session after the asks. Counted: Un momento on 18 of chapter 2's sentences, Ahora mismo on 16 (Help carries both on half its lines). The exchange now picks each sentence's RAREST reply across the pack's sentences (the one only that ask gets), falling to a stock answer only where a sentence has nothing of its own; the no-twins pass prefers the rarest unused alternative too; review's exchange does the same. The writing side (chat): reply sets with at most one stock answer and two of the sentence's own, logged. File: lesson.js.
+
 ## v559 (2026-10-29) — the ceremony holds one light; the return is the arrival
 - Tom's recording (20-57): two glows on THAT'S THE SESSION, the tint's at the top and the candle's in the bottom-left corner. The candle (the app's one light, a fixed layer) was never in the ceremony's hidden set; it is now, fading with the world. On Continue, Home comes back through the launch's own formation (twilight, breathing: everything rises together, the dials never dim, the tile's pulse as the corner light leaves its apex, the candle breathing in from the bottom left last) instead of the one-breath fade of 10/8. The formation is now a function (`runHomeFormation` in ui.js) the splash and the ceremony share. Files: ui.js, screen-home.js, styles.css.
 
