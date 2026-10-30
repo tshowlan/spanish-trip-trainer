@@ -121,7 +121,7 @@ function renderHome(opts) {
   const cer = opts && opts.ceremony;                    // §6b: ceremony overlays this render
   const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (cer) document.body.classList.add("in-ceremony");  // before anything paints: no first-frame flash
-  { const w = (() => { try { return localStorage.getItem("sts_home_wash") || ""; } catch (e) { return ""; } })(); ["wash-a", "wash-b", "wash-c"].forEach(c => document.body.classList.toggle(c, w === c)); }   // Test Lab: the photo's translucent wash (Tom 10/29)
+  { const w = (() => { try { return localStorage.getItem("sts_home_wash") || ""; } catch (e) { return ""; } })(); ["wash-a", "wash-a2", "wash-b", "wash-c"].forEach(c => document.body.classList.toggle(c, w === c)); }   // Test Lab: the photo's translucent wash (Tom 10/29)
   renderTopbar();
   clearFooter();
   showTabbar("home");

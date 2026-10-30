@@ -2431,7 +2431,9 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
 
 /* THE PHOTO'S WASH (Test Lab, Tom 10/29; mock dev/trip-block-options-2.html): a translucent dark wash the lit photo settles into, the way
    Oura's home does under its number. Drawn by the Home's own ::before, under its content (the Home is already a stacking context). */
-body.home-lit.wash-a .home::before, body.home-lit.wash-b .home::before, body.home-lit.wash-c .home::before { content: ""; position: absolute; left: 0; right: 0; z-index: -1; pointer-events: none; }
-body.home-lit.wash-a .home::before { top: -18px; height: 120px; background: radial-gradient(ellipse 70% 100% at 22% 50%, rgba(0,0,0,.42) 0%, rgba(0,0,0,.22) 45%, rgba(0,0,0,0) 100%); }
+body.home-lit.wash-a .home::before, body.home-lit.wash-a2 .home::before, body.home-lit.wash-b .home::before, body.home-lit.wash-c .home::before { content: ""; position: absolute; left: 0; right: 0; z-index: -1; pointer-events: none; }
+/* A and A2 (Tom 10/29): darker only right behind Spain and the countdown, on the left, blending out to no wash on every side */
+body.home-lit.wash-a .home::before { top: -16px; height: 112px; background: radial-gradient(ellipse 46% 115% at 15% 48%, rgba(0,0,0,.48) 0%, rgba(0,0,0,.30) 35%, rgba(0,0,0,.10) 65%, rgba(0,0,0,0) 100%); }
+body.home-lit.wash-a2 .home::before { top: -16px; height: 112px; background: radial-gradient(ellipse 46% 115% at 15% 48%, rgba(0,0,0,.62) 0%, rgba(0,0,0,.40) 35%, rgba(0,0,0,.14) 65%, rgba(0,0,0,0) 100%); }
 body.home-lit.wash-b .home::before { top: -24px; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.30) 70px, rgba(0,0,0,.42) 100%); }
 body.home-lit.wash-c .home::before { top: -24px; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.20) 70px, rgba(0,0,0,.30) 100%); }
