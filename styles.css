@@ -2438,8 +2438,9 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
 /* THE DARK HALO (Test Lab, Tom 10/29): what the wordmark wears in white (styles 371: two drop-shadows that follow the glyphs), Spain and the
    countdown wear in black: a glow that hugs the letters and fades to nothing, no stripe, no block. H1 tight, H2 wider and deeper. B and C
    (the photo settling into a wash from the block down) stay in the lab for comparison. */
-body.home-lit.wash-h1 .trip { filter: drop-shadow(0 0 6px rgba(0,0,0,.95)) drop-shadow(0 0 16px rgba(0,0,0,.7)); }
-body.home-lit.wash-h2 .trip { filter: drop-shadow(0 0 8px rgba(0,0,0,1)) drop-shadow(0 0 22px rgba(0,0,0,.85)) drop-shadow(0 0 40px rgba(0,0,0,.55)); }
+/* v564 (Tom): a lighter grey and the least of it, the minimum shading that lifts the letters, not a dark cloud */
+body.home-lit.wash-h1 .trip { filter: drop-shadow(0 0 3px rgba(70,70,70,.75)) drop-shadow(0 0 9px rgba(50,50,50,.4)); }
+body.home-lit.wash-h2 .trip { filter: drop-shadow(0 0 4px rgba(70,70,70,.85)) drop-shadow(0 0 12px rgba(50,50,50,.5)); }
 body.home-lit.wash-h1 .trip .dest, body.home-lit.wash-h2 .trip .dest, body.home-lit.wash-h1 .trip .sub, body.home-lit.wash-h2 .trip .sub { text-shadow: none; }   /* the halo does the separating; the outline and the soft shadow step back */
 body.home-lit.wash-b .home::before, body.home-lit.wash-c .home::before { content: ""; position: absolute; left: 0; right: 0; z-index: -1; pointer-events: none; }
 body.home-lit.wash-b .home::before { top: -24px; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.30) 70px, rgba(0,0,0,.42) 100%); }
