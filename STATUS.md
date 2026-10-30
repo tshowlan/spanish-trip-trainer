@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v562 (2026-10-29) — the dark halo on Spain and the countdown
+- Tom: not a stripe or a block; what the wordmark wears in white, a glow that follows the letters, but dark. Lab options are now Halo (two black drop-shadows, 6px and 16px, on the trip block; the outline and soft text shadow step back) and Halo, wider (8/22/40px), with B and C kept for comparison; A and A stronger retired. Files: styles.css, screen-settings.js, screen-home.js.
+
 ## v561 (2026-10-29) — the wash only behind Spain and the countdown
 - Tom: a wash only behind the left block, darker right behind it, blending into no wash. Lab option A is now that (a tight ellipse on the left, 48% at the heart, nothing by its edge), with "A, stronger" (62%) beside it; B and C stay for comparison. Files: styles.css, screen-settings.js, screen-home.js.
 

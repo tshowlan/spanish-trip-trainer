@@ -2429,11 +2429,12 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
 .peek-ex { font-size: 14px; color: var(--text); margin: 2px 0 6px; } .peek-ex .ex-label { display: block; font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin: 8px 0 3px; }   /* the label on its own line: the four words then never orphan one onto a second line at phone width */
 .tile-pop .pl-about { font-size: 13px; color: var(--text); line-height: 1.4; margin-bottom: 6px; } .tile-pop .peek-ex { font-size: 12.5px; margin: 0; }
 
-/* THE PHOTO'S WASH (Test Lab, Tom 10/29; mock dev/trip-block-options-2.html): a translucent dark wash the lit photo settles into, the way
-   Oura's home does under its number. Drawn by the Home's own ::before, under its content (the Home is already a stacking context). */
-body.home-lit.wash-a .home::before, body.home-lit.wash-a2 .home::before, body.home-lit.wash-b .home::before, body.home-lit.wash-c .home::before { content: ""; position: absolute; left: 0; right: 0; z-index: -1; pointer-events: none; }
-/* A and A2 (Tom 10/29): darker only right behind Spain and the countdown, on the left, blending out to no wash on every side */
-body.home-lit.wash-a .home::before { top: -16px; height: 112px; background: radial-gradient(ellipse 46% 115% at 15% 48%, rgba(0,0,0,.48) 0%, rgba(0,0,0,.30) 35%, rgba(0,0,0,.10) 65%, rgba(0,0,0,0) 100%); }
-body.home-lit.wash-a2 .home::before { top: -16px; height: 112px; background: radial-gradient(ellipse 46% 115% at 15% 48%, rgba(0,0,0,.62) 0%, rgba(0,0,0,.40) 35%, rgba(0,0,0,.14) 65%, rgba(0,0,0,0) 100%); }
+/* THE DARK HALO (Test Lab, Tom 10/29): what the wordmark wears in white (styles 371: two drop-shadows that follow the glyphs), Spain and the
+   countdown wear in black: a glow that hugs the letters and fades to nothing, no stripe, no block. H1 tight, H2 wider and deeper. B and C
+   (the photo settling into a wash from the block down) stay in the lab for comparison. */
+body.home-lit.wash-h1 .trip { filter: drop-shadow(0 0 6px rgba(0,0,0,.95)) drop-shadow(0 0 16px rgba(0,0,0,.7)); }
+body.home-lit.wash-h2 .trip { filter: drop-shadow(0 0 8px rgba(0,0,0,1)) drop-shadow(0 0 22px rgba(0,0,0,.85)) drop-shadow(0 0 40px rgba(0,0,0,.55)); }
+body.home-lit.wash-h1 .trip .dest, body.home-lit.wash-h2 .trip .dest, body.home-lit.wash-h1 .trip .sub, body.home-lit.wash-h2 .trip .sub { text-shadow: none; }   /* the halo does the separating; the outline and the soft shadow step back */
+body.home-lit.wash-b .home::before, body.home-lit.wash-c .home::before { content: ""; position: absolute; left: 0; right: 0; z-index: -1; pointer-events: none; }
 body.home-lit.wash-b .home::before { top: -24px; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.30) 70px, rgba(0,0,0,.42) 100%); }
 body.home-lit.wash-c .home::before { top: -24px; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.20) 70px, rgba(0,0,0,.30) 100%); }
