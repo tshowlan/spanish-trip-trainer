@@ -65,6 +65,7 @@ function recordAnswer(id, ok, opts) {
 //   production mastery lifts the ceiling — cold recall counts for more than recognition.
 function itemStrength(s) {
   if (!s || s.exposures < 1) return 0;
+  if (s.pinned) return 100;                                        // KNOWN (Tom 10/29): marked known on the Learn tab; never decays, never reviewed
   const iv = Math.max(1, s.interval || 1);
   const days = Math.max(0, _daysAgo(s.lastCorrect || s.lastSeen));
   const recency = Math.exp(-days / iv);

@@ -76,7 +76,7 @@ function _lessonRow(l, isNext) {
   const row = el(`<div class="lesson${isNext ? " next" : ""}">
     ${str != null ? strengthRing(str) : `<span class="caret-new">${icon("caret-right", 13)}</span>`}
     <div class="lmain">
-      <div class="lname-row"><span class="lname">${l.title}</span>${isNext ? `<span class="next-tag">NEXT</span>` : ""}${l.bonus ? `<span class="bonus-tag">BONUS</span>` : ""}</div>
+      <div class="lname-row"><span class="lname">${l.title}</span>${isNext ? `<span class="next-tag">NEXT</span>` : ""}${l.bonus ? `<span class="bonus-tag">BONUS</span>` : ""}${state.lessons[l.id] && state.lessons[l.id].known ? `<span class="next-tag known-tag">KNOWN</span>` : ""}</div>
       ${beat && !l.line ? `<div class="lbeat">${beat}</div>` : ""}
       <div class="lmeta">${meta}${earTag}${fading ? ` · <span class="fading">${fading} to review</span>` : ""}</div>
     </div>
@@ -87,20 +87,49 @@ function _lessonRow(l, isNext) {
   row.addEventListener("click", () => { window._lessonFrom = "learn"; window._learnScroll = window.scrollY || 0; enterWith(row, () => startLesson(l)); });   // remember where the list was, so the row is back in its place on return
   const pk = row.querySelector(".pk-zone");
   if (pk) { row.classList.add("has-peek"); pk.addEventListener("click", e => { e.stopPropagation(); _togglePeek(row, l); }); }
-  if (isStaged("learn-reset-swipe")) _swipeReset(row, l);
+  if (isStaged("learn-known") || isStaged("learn-reset-swipe")) _swipeReset(row, l);   // the swipe: Known (staged learn-known) and Reset (lab)
   return row;
 }
 /* SWIPE TO RESET (Tom 10/19, STAGED "learn-reset-swipe"): drag a row to the left and a Reset action appears behind it; tap it and the
    session is as if never seen (the lesson mark gone, every one of its words back to zero exposures). A quick way to replay a session
    from the top. The swipe swallows the row's own tap; any tap elsewhere closes an open row. */
+/* KNOWN (Tom 10/29, STAGED "learn-known"): the swipe's first action. A session marked known counts as done, its words are pinned at
+   full strength and never picked for review, and the row says KNOWN. Swipe again and the action reads Forget: the pin comes off and
+   the words return to the review queue with their history. The finer entry point: a learner who already orders coffee marks Counter
+   words known and the app stops quizzing café; nobody needs a quiz to start deeper. Per session, never per word. */
+function _markKnown(l, on) {
+  const now = new Date().toISOString(), today = todayStr();
+  const items = (l.items || []).concat((l.machines || []).flatMap(m => m.items || [])).filter(it => !it.card);
+  state.learn = state.learn || {}; state.lessons = state.lessons || {};
+  if (on) {
+    if (!state.lessons[l.id]) state.lessons[l.id] = { stars: 2, at: now, known: true }; else state.lessons[l.id].known = true;
+    items.forEach(it => { const id = itemId(it); if (!id) return; const st = state.learn[id] || { exposures: 0, streak: 0, lapses: 0 };
+      state.learn[id] = Object.assign(st, { pinned: true, exposures: Math.max(4, st.exposures || 0), streak: Math.max(3, st.streak || 0), interval: 365, lastSeen: today, lastCorrect: today, due: _dateAdd(today, 365) }); });
+  } else {
+    const rec = state.lessons[l.id]; if (rec && rec.known) { if (rec.stars === 2 && !rec.played) delete state.lessons[l.id]; else delete rec.known; }
+    items.forEach(it => { const id = itemId(it); const st = id && state.learn[id]; if (!st || !st.pinned) return; delete st.pinned; st.interval = 7; st.due = today; });
+  }
+  save();
+  if (typeof cloudSync === "function") cloudSync().catch(err => console.warn("sync after known", err));
+}
 function _swipeReset(row, l) {
-  const OPEN = 96;
+  const known = isStaged("learn-known"), showReset = isStaged("learn-reset-swipe");
+  const OPEN = (known ? 96 : 0) + (showReset ? 96 : 0) || 96;
+  const isKnown = !!(state.lessons[l.id] && state.lessons[l.id].known);
   const act = el(`<button class="lesson-reset" aria-label="Reset this session">Reset</button>`);
-  row.appendChild(act);
+  const kn = known ? el(`<button class="lesson-known${isKnown ? " off" : ""}" aria-label="${isKnown ? "Forget: review this session again" : "Mark this session known"}">${isKnown ? "Forget" : "Known"}</button>`) : null;
+  if (kn) row.appendChild(kn);
+  if (showReset) { if (kn) act.style.left = "calc(100% + 96px)"; row.appendChild(act); }
+  if (kn) kn.addEventListener("click", e => {
+    e.stopPropagation();
+    _markKnown(l, !isKnown);
+    if (typeof toast === "function") toast(isKnown ? `${l.title}: back in review` : `${l.title} marked known`);
+    window._learnScroll = window.scrollY || 0; renderLearn();
+  });
   let x0 = null, y0 = null, dx = 0, dragging = false, open = false;
   const setX = v => { row.style.transform = v ? `translateX(${v}px)` : ""; };
   const close = () => { open = false; row.classList.remove("swiped"); setX(0); };
-  row.addEventListener("pointerdown", e => { if (e.target === act) return; x0 = e.clientX; y0 = e.clientY; dx = 0; dragging = false; });
+  row.addEventListener("pointerdown", e => { if (e.target === act || e.target === kn) return; x0 = e.clientX; y0 = e.clientY; dx = 0; dragging = false; });
   row.addEventListener("pointermove", e => {
     if (x0 == null) return;
     const mx = e.clientX - x0, my = e.clientY - y0;
@@ -114,7 +143,7 @@ function _swipeReset(row, l) {
     const was = dragging; x0 = y0 = null; row.classList.remove("swiping");
     if (!was) return;
     if (dx < -OPEN / 2) { open = true; row.classList.add("swiped"); setX(-OPEN); } else close();
-    const swallow = e => { if (e.target === act) return; e.stopPropagation(); e.preventDefault(); row.removeEventListener("click", swallow, true); };   // the Reset tap itself is never swallowed
+    const swallow = e => { if (e.target === act || e.target === kn) return; e.stopPropagation(); e.preventDefault(); row.removeEventListener("click", swallow, true); };   // the action's own tap is never swallowed
     row.addEventListener("click", swallow, true);                  // the drag was not a tap
     setTimeout(() => row.removeEventListener("click", swallow, true), 400);
   };

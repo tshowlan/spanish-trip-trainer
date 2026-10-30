@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v563 (2026-10-29) — KNOWN (STAGED `learn-known`): mark a session known from the Learn swipe
+- Tom: ship the mark-sessions-known tool. Swipe a Learn row left and the first action is Known (gold): the session counts as done, every word in it is pinned at full strength (`pinned` on the learn record, `itemStrength` returns 100, `_practicePick` skips it) and never reviewed, and the row wears a KNOWN tag. Swipe a known row and the action reads Forget: the pin comes off, the words return to the review queue due today with their history, and a done-mark that Known created is removed. Per session, never per word. Reset stays beside it when the lab's swipe switch is on. Files: screen-learn.js, srs.js, lesson.js, styles.css, config.js.
+- **Entry points, Tom's question:** the intake's quick check still seeds "some" → chapter 1 met and "confident" → chapters 1 and 2; Code's recommendation is to retire that seeding once Known ships, start everyone at zero, and let Known be the only way to skip (a refresh learner plays the whole course; a learner who already owns a session marks it). Decision pending.
+
 ## v562 (2026-10-29) — the dark halo on Spain and the countdown
 - Tom: not a stripe or a block; what the wordmark wears in white, a glow that follows the letters, but dark. Lab options are now Halo (two black drop-shadows, 6px and 16px, on the trip block; the outline and soft text shadow step back) and Halo, wider (8/22/40px), with B and C kept for comparison; A and A stronger retired. Files: styles.css, screen-settings.js, screen-home.js.
 

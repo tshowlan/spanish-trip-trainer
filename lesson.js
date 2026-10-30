@@ -963,6 +963,7 @@ function _practicePick(pool) {
   const cands = [];
   for (const it of (pool && pool.length ? pool : (ALL_ITEMS || []))) {
     const st = learnPeek(it); if (!st || !st.exposures) continue;
+    if (st.pinned) continue;                                       // KNOWN (Tom 10/29): a session marked known is never quizzed
     if (PRACTICE_BASICS.has(norm(it.es))) continue;              // basics never eat a depth slot
     const strength = itemStrength(st);
     const overdue = st.due ? Math.max(0, (now - new Date(st.due + "T00:00:00").getTime()) / 864e5) : 0;

@@ -400,6 +400,12 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
   background: var(--red); color: #fff; font-family: var(--font-display); font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; cursor: pointer; }
 .lesson.swiped .lesson-reset, .lesson.swiping .lesson-reset { opacity: 1; }
 .lesson.swiped .lesson-reset { pointer-events: auto; }
+/* KNOWN (Tom 10/29): the swipe's first action, gold on the dark card; Forget when the session is already known */
+.lesson .lesson-known { position: absolute; left: 100%; top: 2px; bottom: 2px; width: 90px; margin-left: 6px; border: none; border-radius: var(--radius);
+  background: var(--accent-2); color: #1a1600; font-family: var(--font-display); font-size: 13px; font-weight: 700; opacity: 0; pointer-events: none; cursor: pointer; }
+.lesson .lesson-known.off { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
+.lesson.swiped .lesson-known, .lesson.swiping .lesson-known { opacity: 1; } .lesson.swiped .lesson-known { pointer-events: auto; }
+.known-tag { color: var(--accent-2); }
 .chapter { overflow-x: clip; }
 .lesson .badge {
   width: 48px; height: 48px; border-radius: 50%;
