@@ -4233,8 +4233,13 @@ function gradeTyped(raw, item) {
     const r = judgeTyped(raw, t); if (r.ok) { j = r; break; }
     if (!words && w && t === item.es) words = w.words;                     // the miss, marked word by word against the canonical form
   }
-  const missing = !j.ok && words ? words.filter(w => w.kind === "missing").map(w => w.right) : [];
-  const extra = j.accent ? "Almost: watch the accent." : (j.typo ? "Close: mind the spelling." : (missing.length ? `${missing.length === 1 ? "One word missing" : "Missing"}: ${missing.join(", ")}.` : null));
+  // a word typed in the wrong place is out of place, not missing (Tom 10/29: "la metro entrada" said metro was missing)
+  let missing = [], moved = [];
+  if (!j.ok && words) {
+    const extras = words.filter(w => w.kind === "extra"), misses = words.filter(w => w.kind === "missing");
+    misses.forEach(m => { const e = extras.find(x => x.kind === "extra" && norm(x.typed) === norm(m.right)); if (e) { e.kind = "moved"; m.kind = "moved-slot"; moved.push(m.right); } else missing.push(m.right); });
+  }
+  const extra = j.accent ? "Almost: watch the accent." : (j.typo ? "Close: mind the spelling." : ([missing.length ? `${missing.length === 1 ? "One word missing" : "Missing"}: ${missing.join(", ")}.` : "", moved.length ? `Out of place: ${moved.join(", ")}.` : ""].join(" ").trim() || null));
   finishGrade(j.ok, item, extra, raw, words);          // pass the raw attempt (and its words) for the marked line
 }
 function finishGrade(ok, item, extra, wrong, words) {
@@ -4417,7 +4422,7 @@ function showCorrection(item, extra, wrong, words) {
   // the attempt, word by word (Tom 10/27): only the word that was off is struck; a slipped word is underlined; a missing word shows in red
   const esc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
   const wrongHtml = words && words.length
-    ? words.map(w => w.kind === "extra" ? `<span class="w-extra">${esc(w.typed)}</span>` : w.kind === "missing" ? `<span class="w-miss">${esc(w.right)}</span>` : (w.kind === "ok" ? `<span>${esc(w.typed)}</span>` : `<span class="w-slip">${esc(w.typed)}</span>`)).join(" ")
+    ? words.map(w => w.kind === "extra" ? `<span class="w-extra">${esc(w.typed)}</span>` : w.kind === "moved" ? `<span class="w-moved">${esc(w.typed)}</span>` : (w.kind === "missing" || w.kind === "moved-slot") ? `<span class="w-miss">${esc(w.right)}</span>` : (w.kind === "typo" ? `<span class="w-slip">${esc(w.typed)}</span>` : `<span>${esc(w.typed)}</span>`)).join(" ")   // an accent slip is not marked (it passes in silence everywhere, Tom 10/29); a word out of place wears a dotted line, its right place shows in red
     : (wrong ? esc(wrong) : "");
   const chunked = Array.isArray(item.chunks) && item.chunks.length;
   // Attention semantics (decisions 2026-07-16): gold marks a POINT, never a region. Box the error chunk

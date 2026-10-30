@@ -1315,6 +1315,7 @@ body.in-runner .footer { background: transparent; border-top: none; }
 .corr-wrong .w-extra { text-decoration: line-through; text-decoration-color: var(--red); }
 .corr-wrong .w-slip { text-decoration: underline; text-decoration-color: var(--red); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
 .corr-wrong .w-miss { color: var(--red); font-style: italic; }
+.corr-wrong .w-moved { text-decoration: underline dotted; text-decoration-color: var(--red); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }   /* typed in the wrong place; its right place shows in red */
 /* a slipped word, called out in the reveal: the typed form struck, the right one beside it */
 .res-slip { font-size: 13px; color: var(--text-dim); line-height: 1.4; margin-top: 10px; } .res-slip .note-label { margin-top: 0; }
 .res-slip .slip { margin-right: 12px; color: var(--text); font-weight: 600; } .res-slip .slip s { color: var(--text-dim); font-weight: 400; text-decoration-color: var(--red); margin-right: 6px; }
