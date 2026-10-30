@@ -1651,6 +1651,11 @@ body.in-ceremony .home > :not(.hero), body.in-ceremony #tabbar {
    while the harness computed 0 - whatever the cascade quirk, visibility can't lose; it flips
    back instantly on exit while opacity carries the fade-in) */
 body.in-ceremony .topbar { visibility: hidden; transition: opacity 550ms cubic-bezier(.2,.7,.3,1), visibility 0s; }
+/* the corner glow belongs to Home, not to the ceremony (Tom 10/29: two glows showed, the tint's at the top and the candle's below): it goes
+   with the world and breathes back in with the formation on the way home */
+body.in-ceremony .tab-candle { opacity: 0; transition: opacity 550ms cubic-bezier(.2,.7,.3,1); }
+/* the return through the formation: the dials are the still point and never dim */
+body.arriving.cer-return .scores, body.arriving.cer-return .empty-hero { opacity: 1 !important; transform: none !important; }
 /* the atmosphere breathes back in slowest (artifact: 900ms bloom rise) — the world
    arrives with weight, not as a page load */
 body.in-ceremony .home-atmo { transition: opacity 900ms cubic-bezier(.2,.7,.3,1); }

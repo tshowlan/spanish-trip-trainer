@@ -243,20 +243,33 @@ function runSplash() {
 /* THE ARRIVAL: black + lighthouse (0-1.4s) -> eclipse (1.45-2.25) -> daybreak (2.2-2.65)
    -> the formation (session-end's meter) -> the candle. Tap-to-skip at any moment snaps
    to the finished home (skips lose waiting, never information). [tune]: hold, cadence. */
+const HOME_FORMATION_ORDER = [                           // [selector list, delay from formation t0]
+  [[".home-atmo .atmo-photo"], 0],                       // the photo: 600ms fade, the establishing beat
+  [[".tab-candle"], 1800],                               // THE CANDLE [tune]: last thing that moves is the gentlest (the app's one light, 10/2)
+  [[".scores", ".empty-hero"], 650],                     // the anchor arrives at the photo's completion
+  [[".hero-tile"], 800],
+  [[".practice"], 950],
+  [[".topbar", ".trip", ".home-diverge"], 1100],         // the lines, one step
+  [["#tabbar"], 1250],                                   // nav
+  [[".whisper", ".presence"], 1550]                      // whisper last
+];
+/* THE LAUNCH'S FORMATION, callable (Tom 10/29): twilight, breathing: everything rises together at twilight's pace, the candle with it,
+   the tile's pulse as the corner light leaves its apex. The splash calls it at launch; the session's end calls it on the way back to
+   Home, so the return IS the arrival (and the corner glow breathes in from the bottom left, as it does at launch). */
+let _formationTimers = [];
+function runHomeFormation(done) {
+  _formationTimers.forEach(clearTimeout); _formationTimers = [];
+  const applyAll = () => HOME_FORMATION_ORDER.forEach(step => step[0].forEach(sel => document.querySelectorAll(sel).forEach(n => n.classList.add("arr-in"))));
+  const finish = () => { document.body.classList.remove("arriving", "arr-twilight", "arr-twilight3", "arr-classic", "pulse-go", "cer-return"); done && done(); };
+  _formationTimers.push(setTimeout(applyAll, 60));
+  _formationTimers.push(setTimeout(() => document.body.classList.add("pulse-go"), 1660));   // the tile begins as the corner light leaves its apex (Tom 9/29)
+  _formationTimers.push(setTimeout(finish, 3200));
+}
 function runSplashArrival(splash, ready) {
   const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   // the formation applies only when home booted beneath; any other screen just gets the door
   const homeBelow = !!document.querySelector(".home");
-  const ORDER = [                                        // [selector list, delay from formation t0]
-    [[".home-atmo .atmo-photo"], 0],                     // the photo: 600ms fade, the establishing beat
-    [[".tab-candle"], 1800],                             // THE CANDLE [tune]: last thing that moves is the gentlest (the app's one light, 10/2)
-    [[".scores", ".empty-hero"], 650],                   // the anchor arrives at the photo's completion
-    [[".hero-tile"], 800],
-    [[".practice"], 950],
-    [[".topbar", ".trip", ".home-diverge"], 1100],       // the lines, one step
-    [["#tabbar"], 1250],                                 // nav
-    [[".whisper", ".presence"], 1550]                    // whisper last
-  ];
+  const ORDER = HOME_FORMATION_ORDER;
   let timers = [];
   // THE LAUNCH (Tom 9/29): twilight, breathing, is the arrival. The old formation lives on under body.arr-classic (Test Lab); plain twilight too.
   const variant = document.body.classList.contains("arr-classic") ? "classic" : document.body.classList.contains("arr-twilight") ? "twilight" : "twilight3";   // Test Lab replays only (Tom 9/29); "from darkness" and the slow candle retired 9/29
@@ -273,9 +286,7 @@ function runSplashArrival(splash, ready) {
     if (variant === "twilight3" && !instant && !reduced) {
       // TWILIGHT, BREATHING (Tom 9/29): everything rises together at twilight's pace, the candle with it; the candle grows in one smooth
       // motion to a touch past its resting size and brightness (1.4s), then breathes back down to where twilight leaves it (0.9s)
-      timers.push(setTimeout(() => applyAll(false), 60));
-      timers.push(setTimeout(() => document.body.classList.add("pulse-go"), 1660));   // the tile begins as the corner light leaves its apex (Tom 9/29)
-      timers.push(setTimeout(done, 3200));
+      runHomeFormation(null);
       return;
     }
     ORDER.forEach(step => {

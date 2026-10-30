@@ -398,15 +398,20 @@ function sessionEndCeremony(home, data, reduced) {
       setTimeout(() => { layer.remove(); document.body.classList.remove("in-ceremony"); maybeStatusMoment(); }, 250);
       return;
     }
-    // Home comes back the way it arrives at launch (Tom 10/8): everything in one breath, the dials the still point.
-    // The piece-by-piece refill (trip 1000, tile 1300, practice 1450, rest 1600, nav 1750, whisper 2150, logo at the
-    // teardown 2750) read as delayed loading. The fade is 1400ms (styles: .cer-back), the teardown waits for it.
+    // THE RETURN IS THE ARRIVAL (Tom 10/29): Home comes back through the launch's own formation, twilight breathing, the dials the
+    // still point (they never dim), the corner glow breathing in from the bottom left last. The ceremony's own hiding hands over to
+    // the formation's (body.arriving hides the same pieces until arr-in), so nothing flashes between the two.
     const t0 = at(1000);
     timers.push(setTimeout(() => {
-      back(".home-atmo, .topbar, .home > *, #tabbar"); showTabbar("home");
+      document.querySelectorAll(".arr-in").forEach(n => n.classList.remove("arr-in"));   // the launch's marks, cleared, so the pieces start hidden again
+      document.body.classList.add("arriving", "cer-return");
+      document.body.classList.remove("in-ceremony");
+      showTabbar("home");
       const dw = document.getElementById("dw-today"); if (dw) dw.classList.add("show");
+      if (typeof runHomeFormation === "function") runHomeFormation(() => maybeStatusMoment());
+      else { document.body.classList.remove("arriving", "cer-return"); maybeStatusMoment(); }
     }, t0));
-    timers.push(setTimeout(() => { layer.remove(); document.body.classList.remove("in-ceremony"); maybeStatusMoment(); }, t0 + 1550));
+    timers.push(setTimeout(() => layer.remove(), t0 + 1300));   // the tint has drained (1200ms); the formation carries on beneath
   });
 }
 
