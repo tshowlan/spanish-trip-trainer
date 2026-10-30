@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v566 (2026-10-30) — the KNOWN row wears F2
+- Tom chose F2 of dev/known-row-options-3.html: the card tinted gold (a 10% wash, a 45% gold edge), the strength ring replaced by a gold disc with a check, a small square K (20px) beside the title, the meta line plain; the KNOWN pill is gone. A check glyph joins the icon set. Files: screen-learn.js, styles.css, ui.js.
+
 ## v565 (2026-10-30) — Known's undo is "Add back"
 - Tom: Forget was the wrong word; the session goes back into the deck. The swipe's undo now reads Add back (toast: "added back"). The row's look is still being chosen (mocks dev/known-row-options-2/3.html). File: screen-learn.js.
 

@@ -73,10 +73,11 @@ function _lessonRow(l, isNext) {
   const meta = _isMachine(l) ? `Pattern · ${(l.items || []).length} fillers`
     : l.chain ? "Conversation" : `${(l.items || []).filter(it => !it.card).length} ${l.sounds ? "sounds" : l.wordsSession ? "words" : "phrases"}`;
   const earTag = (typeof earOn === "function" && earOn() && isEarLesson(l)) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for sound" : "Best with sound"}</span>` : isSpeakLesson(l) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for speaking" : "Best said out loud"}</span>` : "";   // R2 (Tom 9/26)
-  const row = el(`<div class="lesson${isNext ? " next" : ""}">
-    ${str != null ? strengthRing(str) : `<span class="caret-new">${icon("caret-right", 13)}</span>`}
+  const isKnownRow = !!(state.lessons[l.id] && state.lessons[l.id].known);   // KNOWN (Tom 10/30, mock F2): the card tinted gold, a check for the ring, a small K by the title
+  const row = el(`<div class="lesson${isNext ? " next" : ""}${isKnownRow ? " known" : ""}">
+    ${isKnownRow ? `<span class="known-disc">${icon("check", 16)}</span>` : str != null ? strengthRing(str) : `<span class="caret-new">${icon("caret-right", 13)}</span>`}
     <div class="lmain">
-      <div class="lname-row"><span class="lname">${l.title}</span>${isNext ? `<span class="next-tag">NEXT</span>` : ""}${l.bonus ? `<span class="bonus-tag">BONUS</span>` : ""}${state.lessons[l.id] && state.lessons[l.id].known ? `<span class="next-tag known-tag">KNOWN</span>` : ""}</div>
+      <div class="lname-row"><span class="lname">${l.title}</span>${isNext ? `<span class="next-tag">NEXT</span>` : ""}${l.bonus ? `<span class="bonus-tag">BONUS</span>` : ""}${isKnownRow ? `<span class="k-tag" aria-label="Known">K</span>` : ""}</div>
       ${beat && !l.line ? `<div class="lbeat">${beat}</div>` : ""}
       <div class="lmeta">${meta}${earTag}${fading ? ` · <span class="fading">${fading} to review</span>` : ""}</div>
     </div>
