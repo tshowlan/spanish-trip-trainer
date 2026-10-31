@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v568 (2026-10-31) — Remove known; the intake's auto-seeding retired
+- Tom: the swipe's undo reads Remove known (toast: "known removed"). The intake's level quiz no longer seeds two or three stages as played (`seedPlacement` removed from engine.js and the onboarding's finish): everyone starts at zero and marks what they know on the Learn tab. Records seeded before today keep their `seeded` flag and stay as they are (a deletion would not survive the cloud union). For chat (ledger): intake copy on how Known works, and the earned "settled" state (same check, a whisper at the review's close, the ceremony kept for a chapter). Files: screen-learn.js, screen-onboarding.js, engine.js, CLAUDE.md, docs.
+
 ## v567 (2026-10-31) — Known survived the session, not the app close
 - Tom: a Known mark reset every time the app closed. Cause: the boot pull's `_mergeLessons` rebuilt every session record as `{stars, at}` only, so `known` (and the intake's `seeded`) fell off while the items stayed pinned. The merge now keeps the fresher record's other fields (tie → this device). File: cloud.js.
 

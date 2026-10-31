@@ -73,29 +73,8 @@ function buildDietaryLesson(needs) {
     reward: "You can keep every meal on-plan without a translation app mid-order.", items
   };
 }
-// §4 personalization spec: skill level → entry depth. Seed known stages as review-strength items
-// (moderate strength, S≈7) so they count honestly toward scores and the map starts further in. A
-// failed review resets an item's strength and reopens the tree below it — the SRS self-corrects.
-function seedPlacement(level) {
-  if (!level || level === "new") return;
-  const stageCount = level === "confident" ? 3 : 2;   // Stage 0 (kit) always seeds with pass 1: some → kit+pass1; confident → +pass2
-  const now = new Date().toISOString();
-  state.learn = state.learn || {}; state.lessons = state.lessons || {};
-  (DECK ? DECK.stages : []).slice(0, stageCount).forEach(st => st.lessons.forEach(l => {
-    if (l.bonus || l.id.indexOf("personal-") === 0) return;   // never pre-seed safety (allergy/dietary) lessons
-    if (!state.lessons[l.id]) state.lessons[l.id] = { stars: 2, at: now, seeded: true };   // start past this stage
-    l.items.forEach(it => {
-      const id = it.id; if (!id || state.learn[id]) return;                                  // never overwrite real history
-      state.learn[id] = {
-        // §1b.5: seed LADDER state, not just strength — exposures:4 = recognition-cleared, scaffold-ready
-        // (never presentation-carded), with reduced S≈7 stability so the claim survives its first review.
-        exposures: 4, streak: 1, lapses: 0, interval: 7, ease: 2.3,
-        lastSeen: todayStr(), lastCorrect: todayStr(), due: _dateAdd(todayStr(), 7),
-        axes: { production: 0, cold: 0, native: 0, chained: 0 }, seeded: true
-      };
-    });
-  }));
-}
+// The intake's auto-seeding (seedPlacement: level quiz → entry depth) was RETIRED 2026-10-31 (Tom): everyone starts
+// at zero and marks sessions Known on the Learn tab; records seeded before that date keep their `seeded` flag.
 /* THE BEGINNING OF THE JOURNEY (rulings 2026-09-11, STAGED "journey-1"):
    - RULING 1: seven machine lessons become four room lessons - Asking for things · 1 (Want +
      Bring), Asking for things · 2 (Need, solo, full arc), Finding out · 1 (Find + There),

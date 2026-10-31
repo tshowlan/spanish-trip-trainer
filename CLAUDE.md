@@ -25,7 +25,7 @@ Momentum, Retention), deliberately anti-Duolingo.
 - `state.js` — `DEFAULT_STATE`, `STORE_KEY`, `DEST_FIELDS` (per-trip snapshot fields), load/save.
 - `engine.js` — content registry `CONTENT` (country → pack), `activePack()`, `rebuildDeck()` (filters
   `requires` lessons, injects generated allergy + dietary lessons), `meetsReq()`, `buildAllergyLesson()`,
-  `buildDietaryLesson()`, `seedPlacement()` (level → entry depth), item-id normalize pass.
+  `buildDietaryLesson()`, item-id normalize pass. (`seedPlacement` retired 2026-10-31: Known on the Learn tab replaces it.)
 - `srs.js` — exposure ladder + SM-2-lite scheduler. `chooseType()` (+ `opts.prefer` for §8.5 rhythm),
   `recordAnswer()`/`recordExposure()`, `itemStrength()`, mastery axes {production, cold, native, chained}.
 - `scoring.js` — Readiness/Momentum/Retention/Coverage/Recency, pace projection, `scoreDivergence()`,

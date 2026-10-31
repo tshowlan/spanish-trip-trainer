@@ -271,7 +271,7 @@ function renderOnboarding() {
     applyTrip(draft.destination);              // load existing progress for this destination (if any)
     state.profile = newProfile;                // refresh the plan with the new answers
     save(); rebuildDeck();
-    seedPlacement(draft.level); save();        // §4: skill level → entry depth (no-op for "new")
+    // the level quiz no longer seeds progress (Tom 10/31): everyone starts at zero and marks Known on the Learn tab
     toast(`¡Vamos! ${d.flag} ${Math.max(0, daysUntil(draft.date))} days to go`);
     const first = DECK.stages[0] && DECK.stages[0].lessons[0];
     const fresh = Object.keys(state.lessons).length === 0;
