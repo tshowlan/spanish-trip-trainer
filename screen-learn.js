@@ -85,7 +85,8 @@ function _lessonRow(l, isNext) {
   </div>`);
   // OPTION A (Tom 9/21, staged): ONE tap anywhere on the row starts the lesson; the arrow on the right, in its own zone behind a
   // hairline, opens what's inside. A miss lands on "start", the commoner intent.
-  row.addEventListener("click", () => { window._lessonFrom = "learn"; window._learnScroll = window.scrollY || 0; enterWith(row, () => startLesson(l)); });   // remember where the list was, so the row is back in its place on return
+  if (isKnownRow) row.addEventListener("click", () => { if (typeof toast === "function") toast("Marked Known. Swipe left to remove it."); });   // a known row never starts (Tom 10/31): the learner said not to teach it
+  else row.addEventListener("click", () => { window._lessonFrom = "learn"; window._learnScroll = window.scrollY || 0; enterWith(row, () => startLesson(l)); });   // remember where the list was, so the row is back in its place on return
   const pk = row.querySelector(".pk-zone");
   if (pk) { row.classList.add("has-peek"); pk.addEventListener("click", e => { e.stopPropagation(); _togglePeek(row, l); }); }
   if (isStaged("learn-known") || isStaged("learn-reset-swipe")) _swipeReset(row, l);   // the swipe: Known (staged learn-known) and Reset (lab)
@@ -118,13 +119,13 @@ function _swipeReset(row, l) {
   const OPEN = (known ? 96 : 0) + (showReset ? 96 : 0) || 96;
   const isKnown = !!(state.lessons[l.id] && state.lessons[l.id].known);
   const act = el(`<button class="lesson-reset" aria-label="Reset this session">Reset</button>`);
-  const kn = known ? el(`<button class="lesson-known${isKnown ? " off" : ""}" aria-label="${isKnown ? "Remove the known mark; the session returns to the deck" : "Mark this session known"}">${isKnown ? "Remove known" : "Known"}</button>`) : null;   // Remove known (Tom 10/31): the session returns to the deck
+  const kn = known ? el(`<button class="lesson-known${isKnown ? " off" : ""}" aria-label="${isKnown ? "Remove the known mark; the session returns to the deck" : "Mark this session known"}">${isKnown ? "Remove Known" : "Known"}</button>`) : null;   // Remove Known (Tom 10/31): the session returns to the deck
   if (kn) row.appendChild(kn);
   if (showReset) { if (kn) act.style.left = "calc(100% + 96px)"; row.appendChild(act); }
   if (kn) kn.addEventListener("click", e => {
     e.stopPropagation();
     _markKnown(l, !isKnown);
-    if (typeof toast === "function") toast(isKnown ? `${l.title}: known removed` : `${l.title} marked known`);
+    if (typeof toast === "function") toast(isKnown ? `${l.title}: Known removed` : `${l.title} marked known`);
     window._learnScroll = window.scrollY || 0; renderLearn();
   });
   let x0 = null, y0 = null, dx = 0, dragging = false, open = false;

@@ -406,6 +406,7 @@ body.home-lit .trip .sub { color: rgba(255,255,255,.9); text-shadow: 0 1px 6px r
 .lesson .lesson-known.off { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
 .lesson.swiped .lesson-known, .lesson.swiping .lesson-known { opacity: 1; } .lesson.swiped .lesson-known { pointer-events: auto; }
 /* the KNOWN row (Tom 10/30, mock F2): the card tinted gold, the ring a gold check, a small K by the title, the meta line plain */
+.learn .lesson.known:active { transform: none; box-shadow: none; }   /* a known row does not press: a tap never starts it (Tom 10/31) */
 .learn .lesson.known { background: color-mix(in srgb, var(--accent-2) 10%, var(--bg-card)); border-color: color-mix(in srgb, var(--accent-2) 45%, var(--border)); }
 .known-disc { width: 30px; height: 30px; border-radius: 50%; background: var(--accent-2); color: #1a1600; display: inline-flex; align-items: center; justify-content: center; flex: none; }
 .known-disc svg { width: 16px; height: 16px; }
