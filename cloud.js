@@ -209,7 +209,9 @@ function _mergeLessons(a, b) {
   a = a || {}; b = b || {}; const out = {};
   new Set([...Object.keys(a), ...Object.keys(b)]).forEach(id => {
     const x = a[id], y = b[id];
-    out[id] = !x ? y : !y ? x : { stars: Math.max(x.stars || 0, y.stars || 0), at: _laterISO(x.at, y.at) };
+    if (!x || !y) { out[id] = x || y; return; }
+    const later = _laterISO(x.at, y.at), base = later === (x.at || "") ? x : y;   // the fresher record's other fields (known, seeded) ride along; tie → local
+    out[id] = Object.assign({}, base, { stars: Math.max(x.stars || 0, y.stars || 0), at: later });
   });
   return out;
 }

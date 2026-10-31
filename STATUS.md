@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v567 (2026-10-31) — Known survived the session, not the app close
+- Tom: a Known mark reset every time the app closed. Cause: the boot pull's `_mergeLessons` rebuilt every session record as `{stars, at}` only, so `known` (and the intake's `seeded`) fell off while the items stayed pinned. The merge now keeps the fresher record's other fields (tie → this device). File: cloud.js.
+
 ## v566 (2026-10-30) — the KNOWN row wears F2
 - Tom chose F2 of dev/known-row-options-3.html: the card tinted gold (a 10% wash, a 45% gold edge), the strength ring replaced by a gold disc with a check, a small square K (20px) beside the title, the meta line plain; the KNOWN pill is gone. A check glyph joins the icon set. Files: screen-learn.js, styles.css, ui.js.
 
