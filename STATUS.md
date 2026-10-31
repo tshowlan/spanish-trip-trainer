@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v570 (2026-10-31) — the known tap says "Marked known"; toasts centred
+- Tom: the known row's tap line is just "Marked known"; every toast's text is centred (the pill was centred on the screen, a wrapped second line was not). Files: screen-learn.js, styles.css.
+
 ## v569 (2026-10-31) — Remove Known; a known row does not start
 - Tom: the K is capital (Remove Known; toast "Known removed"). A known row no longer starts its session on a tap (the learner said not to teach it): the tap shows "Marked Known. Swipe left to remove it.", the row does not press, the peek arrow and the swipe still work. Files: screen-learn.js, styles.css.
 

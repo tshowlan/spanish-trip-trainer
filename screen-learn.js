@@ -85,7 +85,7 @@ function _lessonRow(l, isNext) {
   </div>`);
   // OPTION A (Tom 9/21, staged): ONE tap anywhere on the row starts the lesson; the arrow on the right, in its own zone behind a
   // hairline, opens what's inside. A miss lands on "start", the commoner intent.
-  if (isKnownRow) row.addEventListener("click", () => { if (typeof toast === "function") toast("Marked Known. Swipe left to remove it."); });   // a known row never starts (Tom 10/31): the learner said not to teach it
+  if (isKnownRow) row.addEventListener("click", () => { if (typeof toast === "function") toast("Marked known"); });   // a known row never starts (Tom 10/31): the learner said not to teach it
   else row.addEventListener("click", () => { window._lessonFrom = "learn"; window._learnScroll = window.scrollY || 0; enterWith(row, () => startLesson(l)); });   // remember where the list was, so the row is back in its place on return
   const pk = row.querySelector(".pk-zone");
   if (pk) { row.classList.add("has-peek"); pk.addEventListener("click", e => { e.stopPropagation(); _togglePeek(row, l); }); }
