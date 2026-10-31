@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v571 (2026-10-31) — the known tap's full line, lower-case known
+- Tom meant the lower-case k, not a shorter line: the tap reads "Marked known. Swipe left to remove it." again. File: screen-learn.js.
+
 ## v570 (2026-10-31) — the known tap says "Marked known"; toasts centred
 - Tom: the known row's tap line is just "Marked known"; every toast's text is centred (the pill was centred on the screen, a wrapped second line was not). Files: screen-learn.js, styles.css.
 
