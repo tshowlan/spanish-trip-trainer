@@ -634,8 +634,9 @@ function readinessSheet() {
       <div class="rd-dlabel">WHAT'S DRIVING IT</div>
       ${driverHtml}
       <div class="rd-moves"><span class="rd-spark">${_sparkSVG}</span><span>${moves}</span></div>
+      ${isStaged("readiness-arc") ? trendBlock("readiness") : ""}
     </div>
-  </div>`);
+  </div>`);   // the readiness arc lives under its own dial (Tom 11/1, STAGED readiness-arc), so Progress never repeats Home's number
   document.body.appendChild(wrap);
   requestAnimationFrame(() => wrap.classList.add("show"));
   requestAnimationFrame(() => requestAnimationFrame(() => wrap.querySelectorAll(".rd-bar > div").forEach(b => b.style.width = b.dataset.w + "%")));

@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v572";
+const APP_BUILD = "v573";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -20,6 +20,7 @@ const STAGED = {
   "dietary-variants": "A dietary line (sin gluten, sin carne) served with your own allergy or need in the slot (marisco, frutos secos, lactosa...), the base line for everyone else",
   "learn-known": "Learn tab: swipe a session row to the left and mark it Known (done, its words pinned at full strength and never reviewed); swipe again for Remove Known",
   "reply-sets": "Chapter 2: every place sentence's replies rewritten by chat (11/1): three meanings, two the sentence's own, one stock reply at most; the exchange's floor (a stock reply owed to a place is heard once there, at most half of a play's exchanges, the rest in review); the Street's driver lines (Al hotel, A la estación), the Table's taxi line, the Shop's ¿Puedo pagar con tarjeta aquí?, chocolate's allergen variants",
+  "readiness-arc": "Home: the Trip Readiness sheet ends with the 30-day arc of the score (the chart Progress used to hold), under the driver bars",
   "intake-known": "The intake: the level quiz replaced by one screen, Already know some Spanish?, with the Known line and Got it (chat 11/1); Test Lab shows it",
   "sentence-review": "Review: a due place sentence (Counter, Table) comes back as itself, its place named: a meaning pick while weak, the build from its English or the typed lap once solid, then the exchange",
   "sheet-rows": "The Review sheet's doors (Recommended, By scenario, The machine shop) in the Learn tab's row form; Recommended carries the down caret, opening the words due, when a review is picked",
