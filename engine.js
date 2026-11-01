@@ -2,7 +2,7 @@
    Register a new destination = add a content_<cc>.js pack + an entry here +
    a DESTINATIONS entry. Each pack owns its scenarios, vocab, and TTS accent. */
 const CONTENT = {
-  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages, scenes: CURRICULUM.scenes || [], glueGloss: CURRICULUM.glueGloss || {}, dietarySlots: CURRICULUM.dietarySlots || {}, flow: CURRICULUM.flow || null },
+  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages, scenes: CURRICULUM.scenes || [], glueGloss: CURRICULUM.glueGloss || {}, dietarySlots: CURRICULUM.dietarySlots, stockReplies: CURRICULUM.stockReplies || {}, flow: CURRICULUM.flow || null },
   mexico: { key: "mexico", dialect: "Mexican Spanish",   tts: "es-MX", stages: (typeof MEXICO_PACK !== "undefined" ? MEXICO_PACK.stages : CURRICULUM.stages), scenes: (typeof MEXICO_PACK !== "undefined" && MEXICO_PACK.scenes) || [] }
 };
 function activePack() { return CONTENT[state.active] || CONTENT.spain; }
@@ -175,7 +175,7 @@ function _chapterFlowDeck(deck, rooms) {
     }
     return d;
   };
-  const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { items: w.items.filter(live).map(variant).map(d => { const k = slug(d.es), own = { replies: d.replies, hint: d.hint, near: d.near, frame: d.frame, note: d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
+  const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { items: w.items.filter(live).map(variant).map(d => { const k = slug(d.es), own = { replies: (isStaged("reply-sets") && d.replies2) || d.replies, hint: d.hint, near: d.near, frame: d.frame, note: d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
   const order = flow.rooms || [];
   const roomList = rooms.slice().sort((a, b) => (order.indexOf(a.id) + 1 || 99) - (order.indexOf(b.id) + 1 || 99));
   const t = flow.chapters || [], b = flow.blurbs || [];

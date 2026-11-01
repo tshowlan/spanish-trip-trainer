@@ -367,6 +367,25 @@ function _sentenceBuild(it, pool) {
    Fuera no, dentro sí). The exchange picks the rarest across the pack's sentences first, so the stock answers are heard only where a
    sentence has nothing of its own; the no-twins pass then spreads what is left. */
 let _replyFreq = null;
+// THE FLOOR (chat 11/1, STAGED "reply-sets"): rarest-first stands, but a stock reply (the pack's list of eleven) owed to a place is heard
+// once there, through the first sentence that carries it. Code's deviation: a play spends at most half its exchanges on owed stock replies
+// (a place carries up to seven and has five to seven exchanges), the rest are owed to review. Memory = `heard` keys on the sentence's record.
+function _replyKey(es) { return norm(es).replace(/^(si|no)\s+/, ""); }
+function _placeHeard(items) { const h = new Set(); (items || []).forEach(x => { const st = state.learn && state.learn[itemId(x)]; ((st && st.heard) || []).forEach(k => h.add(k)); }); return h; }
+function _replyCtx(items, stockLeft) { const p = (typeof activePack === "function" && activePack()) || {}; return { heard: new Set(), placeHeard: _placeHeard(items), stockLeft, stock: new Set((p.stockReplies || []).map(_replyKey)) }; }
+function _pickReply(it, ctx) {
+  if (!ctx || !isStaged("reply-sets")) return _rareReply(it);
+  const rs = (it.replies || []).slice(); if (!rs.length) return null;
+  if (!_replyFreq) _rareReply(it);                                                  // builds the frequency map
+  const key = r => _replyKey(r[0]), f = r => _replyFreq.get(key(r)) || 0, isStock = r => ctx.stock.has(key(r));
+  const st = state.learn && state.learn[itemId(it)], mine = new Set((st && st.heard) || []);
+  const fresh = rs.filter(r => !ctx.heard.has(key(r)));                              // never the same reply twice in one play
+  const owed = fresh.filter(r => isStock(r) && !ctx.placeHeard.has(key(r)));
+  let pick;
+  if (owed.length && ctx.stockLeft > 0) { pick = owed.sort((a, b) => f(b) - f(a))[0]; ctx.stockLeft--; }   // the commonest owed stock reply first
+  else { const own = fresh.filter(r => !isStock(r)); const c = [own.filter(r => !mine.has(key(r))), own, fresh, rs].find(t => t.length); const best = Math.min(...c.map(f)); pick = sample(c.filter(r => f(r) === best), 1)[0]; }
+  ctx.heard.add(key(pick)); return pick;
+}
 function _rareReply(it) {
   if (!_replyFreq) { _replyFreq = new Map(); (ALL_ITEMS || []).forEach(x => (x.sentence ? (x.replies || []) : []).forEach(r => { const k = norm(r[0]).replace(/^(si|no)\s+/, ""); _replyFreq.set(k, (_replyFreq.get(k) || 0) + 1); })); }
   const rs = (it.replies || []).slice(); if (!rs.length) return null;
@@ -381,15 +400,16 @@ function composeSentences(lesson) {
   const frames = new Map();
   pool.forEach(it => { const k = it.frame || norm(it.es); if (!frames.has(k)) frames.set(k, []); frames.get(k).push(it); });
   const builds = [], ears = [], exchanges = [], picks = [], typed = [];
+  const ctx = _replyCtx(pool, Math.ceil(frames.size / 2));   // the floor's budget for this play
   frames.forEach(list => {
     const s = shuffle(list.slice()), at = i => s[i % s.length];
     builds.push(_sentenceBuild(at(0), pool));
     if (s.length < 2) {   // a frame with ONE sentence (the Table's ¿Puedo?, ¿Dónde está?): build it and answer it, no ear or typed lap, so no sentence runs five times (Tom's rule 10/25: no sentence more than twice)
-      const ex1 = at(0); if ((ex1.replies || []).length) { const r = _rareReply(ex1); exchanges.push({ type: "reply_hear", item: ex1, es: r[0], en: r[1], set: { ask: ex1.es, line: ex1.es, place, replies: ex1.replies.map(x => x[0]) }, options: ex1.replies.map(x => x[1]), arc: true }); }
+      const ex1 = at(0); if ((ex1.replies || []).length) { const r = _pickReply(ex1, ctx); exchanges.push({ type: "reply_hear", item: ex1, es: r[0], en: r[1], set: { ask: ex1.es, line: ex1.es, place, replies: ex1.replies.map(x => x[0]) }, options: ex1.replies.map(x => x[1]), arc: true }); }
       return;
     }
     ears.push(Object.assign(_sentenceBuild(at(1), pool), { heard: at(1).es, listenBuild: true, cueRole: "Listen, then build it", cueMeaning: "", hint: null, noEn: false, noAudio: true, resNote: null }));   // a sentence's note rides the first build only (once a session, Tom 10/25)   // the stage keeps the replay; the English shows in the reveal (Tom 10/25)
-    const ex = at(2); if ((ex.replies || []).length) { const r = _rareReply(ex); exchanges.push({ type: "reply_hear", item: ex, es: r[0], en: r[1], set: { ask: ex.es, line: ex.es, place, replies: ex.replies.map(x => x[0]) }, options: ex.replies.map(x => x[1]), arc: true }); }
+    const ex = at(2); if ((ex.replies || []).length) { const r = _pickReply(ex, ctx); exchanges.push({ type: "reply_hear", item: ex, es: r[0], en: r[1], set: { ask: ex.es, line: ex.es, place, replies: ex.replies.map(x => x[0]) }, options: ex.replies.map(x => x[1]), arc: true }); }
     const pk = [at(1), at(0), at(2)].find(x => (x.near || []).length >= 2); if (pk) picks.push({ type: "hear_pick", item: pk, es: pk.es, en: pk.en, place, options: [pk.en].concat(pk.near.slice(0, 2)), arc: true });
     typed.push(Object.assign(_sentenceBuild(at(s.length >= 3 ? 2 : 1), pool), { inputForm: "typed", cueRole: "Say it in Spanish", hint: null, arc: true, lap: true, resNote: null }));
   });
@@ -986,7 +1006,7 @@ function _sentenceReviewForms(it, st) {
   Object.assign(build, { place: it.place, arc: false, resNote: null });
   if (strength >= 40) Object.assign(build, { inputForm: "typed", cueRole: "Say it in Spanish", hint: null });
   forms.push(build);
-  if ((it.replies || []).length) { const r = _rareReply(it); forms.push({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place: it.place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]) }); }
+  if ((it.replies || []).length) { const r = _pickReply(it, _replyCtx((ALL_ITEMS || []).filter(x => x.sentence && x.place === it.place), 1)); forms.push({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place: it.place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]) }); }
   return forms.slice(0, strength < 55 ? 3 : 2);
 }
 function _practiceForms(it, st, opts) {
@@ -4266,7 +4286,8 @@ function finishGrade(ok, item, extra, wrong, words) {
   const strengthBefore = pre ? itemStrength(pre) : 0;                // for the session-end "stronger" fact (§6b)
   const coldBefore = !!(pre && pre.axes && pre.axes.cold);           // for the Yours-now milestone (§3.5)
   if (!ok) { run.wrong++; if (run.missed) run.missed.set(id, item); }
-  recordAnswer(id, ok, { mode: q && q.type, scaffolded: q && q.slow });   // q.slow = used the 0.75× replay
+  recordAnswer(id, ok, { mode: q && q.type, scaffolded: q && q.slow });
+  if (q && q.type === "reply_hear" && q.es && q.item && typeof _replyKey === "function") { const sid = itemId(q.item), sr = sid && state.learn && state.learn[sid]; if (sr) { const h = sr.heard || [], k = _replyKey(q.es); if (!h.includes(k)) sr.heard = h.concat(k).slice(-12); } }   // the reply heard through this sentence (the floor's memory, chat 11/1)   // q.slow = used the 0.75× replay
   const restored = ok && wasFading;                    // correctly recalled a fading phrase → the sawtooth jump (§8.4)
   // Yours-now (§3.5): first cold production ever — typed/spoken only (tiles are scaffolding), once per item
   const post = id && state.learn && state.learn[id];

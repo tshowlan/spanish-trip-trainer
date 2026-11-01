@@ -48,7 +48,8 @@ function _currentLangStrength() {
   return vals.length ? Math.round(vals.reduce((x, y) => x + y, 0) / vals.length) : null;
 }
 
-function renderOnboarding() {
+function renderOnboarding(opts) {
+  opts = opts || {};   // { screen, preview }: the Test Lab shows one screen and returns to Profile
   const app = $("#app");
   const draft = { destination: null, date: "", tripType: null, lodging: [], transport: [], needs: [], allergies: [], home: "", grammar: null, pIdx: 0, pScore: 0, level: null };
   // §2.1: level and dietary/allergies are ACCOUNT-scoped — a returning user making a new trip
@@ -56,7 +57,7 @@ function renderOnboarding() {
   const prior = priorAccountAnswers();
   const returning = !!prior;
   if (returning) { draft.level = prior.level; draft.allergies = prior.allergies.slice(); draft.needs = prior.needs.slice(); draft.home = prior.home || ""; draft.grammar = prior.grammar || null; }
-  let screen = "welcome";
+  let screen = opts.screen || "welcome";
 
   const go = s => { screen = s; render(); };
   const nextAfterNeeds = () => draft.needs.includes("allergies") ? "allergens" : "home";
@@ -207,7 +208,14 @@ function renderOnboarding() {
       wrap.appendChild(chips);
       wrap.appendChild(el(`<div class="onb-sub" style="margin-top:12px">This only affects how a few phrases are worded. Neutral forms are understood everywhere.</div>`));
       const next = el(`<button class="btn" style="margin-top:18px" ${draft.grammar ? "" : "disabled"}>Continue</button>`);
-      next.addEventListener("click", () => go("placement"));
+      next.addEventListener("click", () => go(isStaged("intake-known") ? "known" : "placement"));   // the level quiz retires for the Known screen (chat 11/1, STAGED intake-known)
+      wrap.appendChild(next);
+    } else if (screen === "known") {
+      // THE KNOWN SCREEN (chat 11/1, STAGED "intake-known"): one screen in the level quiz's place; the Learn tab is the list, marking there is the one way
+      wrap.appendChild(el(`<div class="onb-q">Already know some Spanish?</div>`));
+      wrap.appendChild(el(`<div class="onb-sub" style="margin-top:10px">Swipe any session on the Learn tab and mark it Known. It will not be taught or reviewed. Remove Known brings it back.</div>`));
+      const next = el(`<button class="btn" style="margin-top:18px">Got it</button>`);
+      next.addEventListener("click", () => { if (opts.preview) { showTabbar("profile"); renderProfile(); return; } draft.level = draft.level || "new"; go("plan"); });
       wrap.appendChild(next);
     } else if (screen === "placement") {
       const q = PLACEMENT[draft.pIdx];
