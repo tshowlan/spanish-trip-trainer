@@ -56,3 +56,12 @@ The flat rate is the design risk: a hero that reads 90% all year stops moving. T
 
 ## → decisions.md (proposed, after chat)
 - 2026-11-01 — The Progress tab reframed as Insights (Tom): data you cannot see on Learn or Home. Hero = success rate over 14 days; places as icons with scores; exercise types against your usual; one flag (a missed sentence); the strip as a line; totals; trips as trophies. Needs the answer record. Name and words with chat.
+
+## 6. Round two (Tom's notes after the first mock, same evening; mocked as dev/insights-options.html round two)
+
+- **The hero stays a single big number.** Look B (two numbers up top) is retired.
+- **Best sessions as its own section:** a top five, all time. Code's draft rule: every answer right, then the quickest; a session shows its name, date, "23 of 23", and its time. Needs the duration on the session record.
+- **Time spent each day:** a block of minutes per day for the last week, with a door to a month view (a calendar of minutes, paged back to the first day). This block takes over the 14-dot strip's job, since it shows the same days with more truth; at zero, the empty strip and its line stay until there is a minute to show. Chat's ruling 7 (no charts on this page) meets its first exception here: bars of minutes are a chart. Tom asked for them; chat to say if the voice allows it or wants the month grid only.
+- **Say what the numbers are.** One line under each section head: "How well each place's sentences are holding, out of 100." · "Minutes each day. Tap for the month, back to your first day." · "The share you got right, against your usual." · "All time. Every answer right, then the quickest." Code's drafts; chat writes the real ones. The hero's caption carries its own ("Right, last 14 days").
+
+Added questions for chat: 8. the best-session rule (right first, then quick; or quick alone); 9. whether minutes per day may be bars; 10. the four explaining lines.
