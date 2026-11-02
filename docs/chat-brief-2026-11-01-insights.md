@@ -16,7 +16,7 @@
 ## 2. The shape Tom approved (mocked: dev/insights-options.html, three frames)
 
 1. **Hero:** the success rate over the last 14 days, large, with the all-time rate and the counts under it ("90% all time, 458 exercises in 22 sessions."). Look B adds the best session beside it.
-2. **Places:** six icons in the chapter's order with a score each, Not yet when unplayed, plain or in squares (both mocked). The score is the strength of the place's sentences. Tapping opens the place's words and sentences, low first.
+2. **Places:** six icons in the chapter's order with a score each, Not yet when unplayed, in squares (Tom's pick, 11/2). The score is the strength of the place's sentences. Tapping opens the place's words and sentences, low first.
 3. **By exercise, last 14 days:** one row per exercise type: the rate and the change against your usual ("up 4", "down 3", "steady").
 4. ~~In your way~~ **Retired (Tom 11/2).** People know what they are not good at; Practice should serve it without a tile. If a "keeps getting away" sentence earns anything, it is a place earlier in the review's order, or a line on the Learn tab or under Home's review button, where paths for it already exist. Insights holds no doors.
 5. **The strip as one line** at the bottom: the dots and "8 of the last 14 days."
