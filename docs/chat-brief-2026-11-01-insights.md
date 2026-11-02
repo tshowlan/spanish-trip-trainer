@@ -18,7 +18,7 @@
 1. **Hero:** the success rate over the last 14 days, large, with the all-time rate and the counts under it ("90% all time, 458 exercises in 22 sessions."). Look B adds the best session beside it.
 2. **Places:** six icons in the chapter's order with a score each, Not yet when unplayed, plain or in squares (both mocked). The score is the strength of the place's sentences. Tapping opens the place's words and sentences, low first.
 3. **By exercise, last 14 days:** one row per exercise type: the rate and the change against your usual ("up 4", "down 3", "steady").
-4. **In your way:** only the flag nothing else in the app shows: a sentence missed three times running, with Run it again. The slipping-words door stays Home's.
+4. ~~In your way~~ **Retired (Tom 11/2).** People know what they are not good at; Practice should serve it without a tile. If a "keeps getting away" sentence earns anything, it is a place earlier in the review's order, or a line on the Learn tab or under Home's review button, where paths for it already exist. Insights holds no doors.
 5. **The strip as one line** at the bottom: the dots and "8 of the last 14 days."
 6. **Totals:** "Since July: 48 sessions, 774 exercises, 696 right."
 7. Trips stay as trophies when one exists. No charts (chat's ruling 7 stands; arcs live under Home's dials).
@@ -65,5 +65,7 @@ The flat rate is the design risk: a hero that reads 90% all year stops moving. T
 - **Say what the numbers are.** One line under each section head: "How well each place's sentences are holding, out of 100." · "Minutes each day. Tap for the month, back to your first day." · "The share you got right, against your usual." · "All time. Every answer right, then the quickest." Code's drafts; chat writes the real ones. The hero's caption carries its own ("Right, last 14 days").
 
 - **The zero page says more is coming:** one line at the bottom, "More appears here as you move through the chapters." (Tom 11/2; Code's draft).
+
+Added (11/2): In your way is gone from Insights; chat may want the missed-sentence idea to live in the review's ordering (a sentence missed three times running comes first) or on Home's review row. Code's view: the ordering, silently.
 
 Added questions for chat: 8. the best-session line ("−35 s" against your usual time; the words); 9. whether minutes per day may be bars; 10. the five explaining lines, the zero line among them.
