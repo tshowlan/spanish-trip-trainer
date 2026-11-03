@@ -10,6 +10,36 @@ function toast(msg) {
   const t = $("#toast"); t.textContent = msg; t.classList.add("show");
   clearTimeout(t._tmo); t._tmo = setTimeout(() => t.classList.remove("show"), 2600);
 }
+/* EVERY SHEET CLOSES BY A DRAG DOWN (Tom 11/2; chat's Stats §6 assumed it): one document-level handler for any .sheet-wrap .sheet.
+   The drag starts only when the sheet's own scroll is at the top and the finger moves down, so a long sheet still scrolls; the
+   sheet follows the finger; past 90px it slides the rest of the way out and the wrap is removed (no pause), else it snaps back. */
+(function sheetDrag() {
+  let sheet = null, wrap = null, y0 = 0, dy = 0, dragging = false;
+  const move = e => {
+    if (!sheet) return;
+    dy = e.touches[0].clientY - y0;
+    if (!dragging) {
+      if (dy > 8 && sheet.scrollTop <= 0) { dragging = true; sheet.style.transition = "none"; }
+      else if (dy < 0 || sheet.scrollTop > 0) { stop(); return; }
+    }
+    if (dragging) { e.preventDefault(); sheet.style.transform = `translateY(${Math.max(0, dy)}px)`; }
+  };
+  const end = () => {
+    const s = sheet, w = wrap, d = dy, was = dragging; stop();
+    if (!s || !was) return;
+    if (d > 90) {
+      s.style.transition = "transform 220ms cubic-bezier(.3,.7,.3,1)"; s.style.transform = "translateY(110%)";   // out the rest of the way, from where the finger left it
+      w.classList.remove("show"); setTimeout(() => w.remove(), 240);
+    } else { s.style.transition = ""; s.style.transform = ""; }
+  };
+  const stop = () => { if (sheet) { sheet.removeEventListener("touchmove", move); sheet.removeEventListener("touchend", end); sheet.removeEventListener("touchcancel", end); } sheet = null; wrap = null; dragging = false; };
+  document.addEventListener("touchstart", e => {
+    if (e.touches.length !== 1) return;
+    const s = e.target.closest && e.target.closest(".sheet-wrap .sheet"); if (!s) return;
+    stop(); sheet = s; wrap = s.closest(".sheet-wrap"); y0 = e.touches[0].clientY; dy = 0; dragging = false;
+    s.addEventListener("touchmove", move, { passive: false }); s.addEventListener("touchend", end); s.addEventListener("touchcancel", end);
+  }, { passive: true });
+})();
 // §3.3 bottom-sheet confirm — replaces the banned confirm(). Primary button is the safe/stay
 // action; the destructive choice is the quiet ghost below it. Scrim-tap or the safe button cancels.
 function confirmSheet({ title, body, confirmLabel, cancelLabel, danger, onConfirm }) {

@@ -155,28 +155,13 @@ function renderStats(opts) {
 }
 function _stHead(t, sub) { return el(`<div class="st-headwrap"><div class="st-head">${t}</div>${sub ? `<div class="st-subline">${sub}</div>` : ""}</div>`); }
 
-/* ---- closing a Stats sheet: the scrim (tap or touch), and a drag down on the sheet itself (chat §6: close by swiping down).
-   The drag only starts when the sheet's own scroll is at the top, so a long sheet still scrolls. ---- */
+/* ---- closing a Stats sheet: the scrim closes on a tap or a touch; the drag down is every sheet's now (ui.js sheetDrag, Tom 11/2) ---- */
 function _stSheetClose(wrap) {
-  const sheet = wrap.querySelector(".sheet"), scrim = wrap.querySelector(".sheet-backdrop");
+  const scrim = wrap.querySelector(".sheet-backdrop");
   let closing = false;
   const close = () => { if (closing) return; closing = true; wrap.classList.remove("show"); setTimeout(() => wrap.remove(), 260); };
   scrim.addEventListener("click", close);
   scrim.addEventListener("touchend", e => { e.preventDefault(); close(); }, { passive: false });
-  let y0 = null, dy = 0, dragging = false;
-  sheet.addEventListener("touchstart", e => { if (e.touches.length !== 1) return; y0 = e.touches[0].clientY; dy = 0; dragging = false; }, { passive: true });
-  sheet.addEventListener("touchmove", e => {
-    if (y0 == null) return;
-    dy = e.touches[0].clientY - y0;
-    if (!dragging) { if (dy > 8 && sheet.scrollTop <= 0) { dragging = true; sheet.style.transition = "none"; } else if (dy < 0 || sheet.scrollTop > 0) { y0 = null; return; } }
-    if (dragging) { e.preventDefault(); sheet.style.transform = `translateY(${Math.max(0, dy)}px)`; }
-  }, { passive: false });
-  const end = () => {
-    if (!dragging) { y0 = null; return; }
-    sheet.style.transition = ""; dragging = false; y0 = null;
-    if (dy > 90) close(); else sheet.style.transform = "";
-  };
-  sheet.addEventListener("touchend", end); sheet.addEventListener("touchcancel", end);
   return close;
 }
 

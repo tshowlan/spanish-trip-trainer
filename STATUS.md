@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v579 (2026-11-02) — every sheet drags down; no pause; the Stats hero card more see-through
+- Tom: the Stats sheets paused on a drag down, and the Review sheet (Home's Practice chooser) could not be dragged at all. The drag moves to ui.js as one document-level handler for any `.sheet-wrap .sheet` (the Stats sheets, the Review chooser, the dial sheets, the quit sheet): starts only when the sheet's own scroll is at the top and the finger moves down; follows the finger; past 90px it slides the rest of the way out from where the finger left it (the pause was the sheet holding its dragged position while the scrim faded) and the wrap is removed; else it snaps back. The Stats sheets keep their scrim touch-close.
+- The hero card over the photo: the card's ground drops from 78% to 42% with a lighter blur; the caption and the small line go white with a shadow so they read on the photo.
+
 ## v578 (2026-11-02) — Stats under Spain's photo (Tom's colour B)
 - Tom wanted more colour on Stats; of the two mocks (the photo inside the hero card, or behind the top of the page as on Home) he chose B. `renderStats` mounts Home's own atmosphere (`setHomeAtmo`: the hero photo crowning the top, masked into the ground, the lit topbar); nav.js already tears it down off-tab. The page title goes white with Home's text shadow; the hero card frosts over the photo (the card's ground at 78% with a blur). Nothing else on the page changes.
 
