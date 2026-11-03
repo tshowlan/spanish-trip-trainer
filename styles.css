@@ -1895,6 +1895,7 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .lab-val { color: var(--text-dim); font-size: 13px; }
 .lab-btns { display: flex; gap: 10px; margin-top: 14px; }
 .lab-btns .btn { flex: 1; }
+.lab-btns.wrap { flex-wrap: wrap; } .lab-btns.wrap .btn { flex: 1 1 28%; } .lab-btns.wrap .btn.full { flex-basis: 100%; }   /* a row with more than four buttons wraps; a long label takes the whole line */
 .dial-delta.empty { visibility: hidden; }
 .lab-telem { font-size: 12px; color: var(--text-dim); line-height: 1.7; padding: 8px 10px; background: var(--bg-card); border-radius: 8px; }
 .lab-select { flex: 1.4; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 9px; font-size: 13px; font-family: var(--font-display); min-width: 0; }
