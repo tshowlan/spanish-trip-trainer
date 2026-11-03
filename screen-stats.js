@@ -19,6 +19,9 @@ const STATS_LINES = {
   counting: d => `Counting from ${d}. Give it a week.`,
   zero: "This page fills in as you play.",
 };
+// the hero card's ground over the photo: a percent Tom tunes in the Test Lab (42 shipped); applied at load
+(function () { try { const v = localStorage.getItem("sts_hero_ground"); if (v != null) document.documentElement.style.setProperty("--st-hero-ground", v + "%"); } catch (e) {} })();
+function setHeroGround(pct) { try { localStorage.setItem("sts_hero_ground", String(pct)); } catch (e) {} document.documentElement.style.setProperty("--st-hero-ground", pct + "%"); }
 const STAT_KIND_ORDER = ["listen", "pick", "build", "type"];
 
 /* ---- helpers ---- */

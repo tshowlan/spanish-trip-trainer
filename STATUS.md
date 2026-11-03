@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v580 (2026-11-02) — Learn under the photo (STAGED `learn-photo`); the hero card's ground tunable in the Test Lab
+- Tom, on the live capture: ship the photo for Learn and see. `renderLearn` mounts Home's atmosphere when staged; the Learn title goes white with Home's shadow; the Journey / Topics / Phrases bar frosts (dark glass, blur). nav.js tears the photo down off-tab as before.
+- The Stats hero card's ground is now `--st-hero-ground` (42% shipped). Test Lab: 70 / 55 / 42 / 30 / 18 / 0 percent buttons, kept in localStorage, applied at load; each tap shows the four-weeks preview so the card reads over the photo at once.
+
 ## v579 (2026-11-02) — every sheet drags down; no pause; the Stats hero card more see-through
 - Tom: the Stats sheets paused on a drag down, and the Review sheet (Home's Practice chooser) could not be dragged at all. The drag moves to ui.js as one document-level handler for any `.sheet-wrap .sheet` (the Stats sheets, the Review chooser, the dial sheets, the quit sheet): starts only when the sheet's own scroll is at the top and the finger moves down; follows the finger; past 90px it slides the rest of the way out from where the finger left it (the pause was the sheet holding its dragged position while the scrim faded) and the wrap is removed; else it snaps back. The Stats sheets keep their scrim touch-close.
 - The hero card over the photo: the card's ground drops from 78% to 42% with a lighter blur; the caption and the small line go white with a shadow so they read on the photo.
