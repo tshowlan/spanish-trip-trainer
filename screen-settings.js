@@ -217,7 +217,7 @@ function _labCard(wrap) {
     <div class="lab-btns"><button class="btn grey" id="lab-stats-clear">Clear my stats record</button></div>` : ""}
     ${isStaged("stats") ? `<div class="set-d" style="margin-top:14px">Show the Stats tab at a scripted state (a preview; your numbers are untouched):</div>
     <div class="lab-btns"><button class="btn grey" data-stats="zero">Zero</button><button class="btn grey" data-stats="week1">One week</button><button class="btn grey" data-stats="week4">Four weeks</button></div>` : ""}
-    ${isStaged("stats") ? `<div class="set-d" style="margin-top:14px">The Stats hero card over the photo: how much of the card's ground stays (42 shipped; less is more see-through):</div>
+    ${isStaged("stats") ? `<div class="set-d" style="margin-top:14px">The Stats hero card over the photo: how much of the card's ground stays (solid, like the squares, is shipped; less is more see-through):</div>
     <div class="lab-btns wrap">${[70, 55, 42, 30, 18, 0].map(n => `<button class="btn grey" data-hero="${n}">${n}%</button>`).join("")}<button class="btn grey full" data-hero="100">Solid, like the squares</button></div>` : ""}
     <div class="set-d" style="margin-top:14px">Make one lesson brand new again (primer + full first-pass arc on next entry):</div>
     <div class="lab-btns">

@@ -19,7 +19,7 @@ const STATS_LINES = {
   counting: d => `Counting from ${d}. Give it a week.`,
   zero: "This page fills in as you play.",
 };
-// the hero card's ground over the photo: a percent Tom tunes in the Test Lab (42 shipped); applied at load
+// the hero card's ground over the photo: a percent Tom tunes in the Test Lab (100 shipped, Tom 11/2: solid, like the squares); applied at load
 (function () { try { const v = localStorage.getItem("sts_hero_ground"); if (v != null) document.documentElement.style.setProperty("--st-hero-ground", v + "%"); } catch (e) {} })();
 function setHeroGround(pct) { try { localStorage.setItem("sts_hero_ground", String(pct)); } catch (e) {} document.documentElement.style.setProperty("--st-hero-ground", pct + "%"); }
 const STAT_KIND_ORDER = ["listen", "pick", "build", "type"];
@@ -110,7 +110,7 @@ function renderStats(opts) {
   wrap.appendChild(el(`<div class="screen-head"><h2>Stats</h2></div>`));
   // the hero
   const h = d.hero;
-  let ground = 42; try { const v = localStorage.getItem("sts_hero_ground"); if (v != null) ground = +v; } catch (e) {}
+  let ground = 100; try { const v = localStorage.getItem("sts_hero_ground"); if (v != null) ground = +v; } catch (e) {}
   wrap.appendChild(el(`<div class="st-hero${ground >= 100 ? " solid-card" : ""}">
     <div class="st-n${h.rate == null ? " dim" : ""}">${h.rate == null ? "&ndash;" : `${h.rate}<span class="pct">%</span>`}</div>
     <div class="st-cap">Right in the last 14 days</div>

@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v583 (2026-11-02) — the Stats hero card ships solid, like the squares
+- Tom's pick from the seven lab settings: the card takes the squares' own ground and border over the photo, no glass. The default is 100 (the lab buttons stay for now); a phone that chose another setting keeps it until it picks again.
+
 ## v582 (2026-11-02) — the Test Lab's hero row wraps
 - Tom could not see "Solid, like the squares": `.lab-btns` never wrapped, so the seventh button sat past the phone's right edge (and 18% at it). That row now wraps, three to a line, the solid button on a line of its own.
 
