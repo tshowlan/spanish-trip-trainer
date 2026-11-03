@@ -40,7 +40,7 @@ function recordAnswer(id, ok, opts) {
   s.exposures++; s.lastSeen = todayStr();
   const daysLeft = (state.profile && state.profile.tripDate) ? Math.max(1, daysUntil(state.profile.tripDate)) : 3650;
   if (ok) {
-    s.streak++; s.lastCorrect = todayStr();
+    s.streak++; s.lastCorrect = todayStr(); s.missRun = 0;
     s.interval = s.interval === 0 ? seedInterval(s.difficulty) : Math.round(s.interval * s.ease);
     const m = opts && opts.mode;                                  // mastery axes (as modes exist)
     if (m === "type_translation") { s.axes.production = 1; s.axes.cold = 1; }
@@ -54,7 +54,7 @@ function recordAnswer(id, ok, opts) {
     s.interval = Math.min(s.interval, daysLeft);                  // never schedule past the trip
     s.ease = Math.min(2.8, s.ease + 0.05);
   } else {
-    s.streak = 0; s.lapses++; s.lastMiss = todayStr();
+    s.streak = 0; s.lapses++; s.lastMiss = todayStr(); s.missRun = (s.missRun || 0) + 1;   // misses in a row (chat 11/2: three running puts a sentence first in review)
     s.interval = 1; s.ease = Math.max(1.3, s.ease - 0.2);
   }
   s.due = _dateAdd(todayStr(), s.interval);

@@ -8,7 +8,8 @@ function streakStrip() {
   }
   return `<div class="streak-strip"><span>Last 2 weeks</span><div class="dots">${days.join("")}</div></div>`;
 }
-function renderProgress() {
+function renderProgress() { return (typeof isStaged === "function" && isStaged("stats") && typeof renderStats === "function") ? renderStats() : renderProgressLegacy(); }
+function renderProgressLegacy() {
   showTabbar("progress");
   clearFooter();
   const app = $("#app"); app.innerHTML = "";

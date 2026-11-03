@@ -5,7 +5,7 @@
 const TABS = [
   { id: "home",     label: "Home",     icon: "house",         render: () => renderHome() },
   { id: "learn",    label: "Learn",    icon: "book-open",     render: () => renderLearn() },
-  { id: "progress", label: "Progress", icon: "chart-line-up", render: () => renderProgress() },
+  { id: "progress", label: (typeof isStaged === "function" && isStaged("stats")) ? "Stats" : "Progress", icon: "chart-line-up", render: () => renderProgress() },
   { id: "profile",  label: "Profile",  icon: "user",          render: () => renderProfile() }
 ];
 function initTabbar() {

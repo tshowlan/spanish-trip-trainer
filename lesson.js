@@ -989,6 +989,7 @@ function _practicePick(pool) {
     const overdue = st.due ? Math.max(0, (now - new Date(st.due + "T00:00:00").getTime()) / 864e5) : 0;
     const stakes = isCritical(it) ? 1.5 : 1;
     cands.push({ it, st, strength, overdue, score: (1 + Math.min(overdue, 21)) * (1.2 - strength / 100) * stakes });
+    if (it.sentence && (st.missRun || 0) >= 3 && isStaged("stats")) cands[cands.length - 1].score += 1e6;   // a sentence missed three times running goes first, silently (chat 11/2)
   }
   cands.sort((a, b) => b.score - a.score);
   return cands.slice(0, Math.min(8, cands.length));

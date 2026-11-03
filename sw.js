@@ -2,14 +2,14 @@
    Online → always fetch the latest (so updates land without reinstalling).
    Offline → fall back to the cache (works on the plane / no signal).
    Cross-origin requests (e.g. Supabase) are left untouched. */
-const CACHE = "sts-v575";
+const CACHE = "sts-v576";
 const ASSETS = [
   "./", "./index.html", "./styles.css", "./fonts.css",
   "./fonts/plus-jakarta-sans.woff2", "./fonts/inter.woff2", "./fonts/playfair-italic-500.woff2", "./fonts/plus-jakarta-sans-italic.woff2", "./fonts/source-serif-4-400.woff2", "./fonts/source-serif-4-600.woff2",
   "./config.js", "./curriculum.js", "./content_mx.js", "./messages.js",
   "./state.js", "./engine.js", "./audio.js", "./ui.js", "./srs.js", "./stats.js", "./weights.js", "./scoring.js", "./tiers.js", "./charts.js", "./nav.js",
   "./screen-onboarding.js", "./screen-home.js", "./screen-quests.js", "./screen-phrasebook.js",
-  "./screen-progress.js", "./screen-settings.js", "./screen-learn.js",
+  "./screen-progress.js", "./screen-stats.js", "./screen-settings.js", "./screen-learn.js",
   "./lesson.js", "./cloud.js", "./accounts.js", "./push.js", "./trips.js", "./app.js",
   "./manifest.webmanifest", "./icon.svg",
   "./img/es/hero.jpg", "./img/es/cafe.jpg", "./img/es/market.jpg", "./img/es/default.jpg"   // the photos: precached, served cache-first (Tom 9/24: pictures loading late after a lesson)

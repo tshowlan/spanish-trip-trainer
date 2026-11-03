@@ -215,6 +215,8 @@ function _labCard(wrap) {
     ${isStaged("stats-record") ? `<div class="set-d" style="margin-top:14px">The stats record (answers per day per kind, with their times):</div>
     <div class="lab-telem">${typeof statLabLine === "function" ? statLabLine() : ""}</div>
     <div class="lab-btns"><button class="btn grey" id="lab-stats-clear">Clear my stats record</button></div>` : ""}
+    ${isStaged("stats") ? `<div class="set-d" style="margin-top:14px">Show the Stats tab at a scripted state (a preview; your numbers are untouched):</div>
+    <div class="lab-btns"><button class="btn grey" data-stats="zero">Zero</button><button class="btn grey" data-stats="week1">One week</button><button class="btn grey" data-stats="week4">Four weeks</button></div>` : ""}
     <div class="set-d" style="margin-top:14px">Make one lesson brand new again (primer + full first-pass arc on next entry):</div>
     <div class="lab-btns">
       <select id="lab-lesson" class="lab-select"></select>
@@ -225,6 +227,7 @@ function _labCard(wrap) {
   lab.querySelector("#lab-pct").addEventListener("input", e => { lab.querySelector("#lab-pct-v").textContent = e.target.value + "%"; });
   const clearBtn = lab.querySelector("#lab-stats-clear");
   if (clearBtn) clearBtn.addEventListener("click", () => { clearStats(); toast("Stats record cleared"); renderProfile(); });
+  lab.querySelectorAll("[data-stats]").forEach(btn => btn.addEventListener("click", () => renderStats({ preview: btn.dataset.stats })));
   lab.querySelector("#lab-apply").addEventListener("click", () => {
     labApply({
       pct: +lab.querySelector("#lab-pct").value,
