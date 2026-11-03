@@ -212,6 +212,9 @@ function _labCard(wrap) {
     <div class="lab-telem">${Object.keys(state.telem || {}).length
       ? Object.entries(state.telem).sort((a, b) => b[1].n - a[1].n).map(([t, e]) => `${t}: ${(e.mean / 1000).toFixed(1)}s (x${e.n})`).join(" · ")
       : "none yet - play a lesson and they accrue"}</div>
+    ${isStaged("stats-record") ? `<div class="set-d" style="margin-top:14px">The stats record (answers per day per kind, with their times):</div>
+    <div class="lab-telem">${typeof statLabLine === "function" ? statLabLine() : ""}</div>
+    <div class="lab-btns"><button class="btn grey" id="lab-stats-clear">Clear my stats record</button></div>` : ""}
     <div class="set-d" style="margin-top:14px">Make one lesson brand new again (primer + full first-pass arc on next entry):</div>
     <div class="lab-btns">
       <select id="lab-lesson" class="lab-select"></select>
@@ -220,6 +223,8 @@ function _labCard(wrap) {
   </div>`);
   wrap.appendChild(lab);
   lab.querySelector("#lab-pct").addEventListener("input", e => { lab.querySelector("#lab-pct-v").textContent = e.target.value + "%"; });
+  const clearBtn = lab.querySelector("#lab-stats-clear");
+  if (clearBtn) clearBtn.addEventListener("click", () => { clearStats(); toast("Stats record cleared"); renderProfile(); });
   lab.querySelector("#lab-apply").addEventListener("click", () => {
     labApply({
       pct: +lab.querySelector("#lab-pct").value,

@@ -186,3 +186,11 @@ Code lists the real session-to-place mapping from the shipped chapter-1 list in 
 **Renderer-to-kind mapping** (§2) follows in the build handoff once the record is written; the four names are Listening, Picking, Building, Typing.
 
 **The mock:** dev/stats-options.html (Desktop copy stats-options.html), six frames: zero, one week, four weeks, the record's first week for an existing learner, the month, the Counter sheet. The PLACES line is amended for the words ("how well that place's words and sentences are holding"); chat to confirm the wording.
+
+**Renderer-to-kind mapping (§2), as built in stats.js (v574), for chat to check:**
+- **Listening:** listen_choice, hear_pick, reply_hear, reply_listen, sound_choice, scene_hear, exchange, num_pad, num_run, num_set, key_sound, odd_one, sound_wall, and the ear build (a weld served after its audio).
+- **Picking:** mc_es2en, context_choice, ask_which, sign_which, sign_act, variation, grasp, pairs (the boards), days_set, days_order, sign_table, sign_wall, circuit_door, circuit_close, scene_sign, scene_door, scene_close.
+- **Building:** weld (from the English), build, machine_drill, stretch.
+- **Typing:** type_translation, close, close_swap, listen_type.
+- **Not answers, not counted:** present, encore, say_it, sounds_end, the sound cards.
+Open for chat: the boards (pairs) as Picking; the number keypads as Listening; the ear build as Listening rather than Building.

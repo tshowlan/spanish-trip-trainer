@@ -6,7 +6,7 @@ function snapshotActive() {
 }
 function applyTrip(key) {
   const t = state.trips[key] || {};
-  const defaults = { profile: null, lessons: {}, topicStats: {}, sessions: [], learn: {} };
+  const defaults = { profile: null, lessons: {}, topicStats: {}, sessions: [], learn: {}, stats: {} };
   DEST_FIELDS.forEach(f => { state[f] = (t[f] !== undefined ? t[f] : defaults[f]); });
 }
 /* §5.1 trip completion: when the active trip's date passes, freeze a permanent record into the

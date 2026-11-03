@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v573";
+const APP_BUILD = "v574";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -24,6 +24,7 @@ const STAGED = {
   "intake-known": "The intake: the level quiz replaced by one screen, Already know some Spanish?, with the Known line and Got it (chat 11/1); Test Lab shows it",
   "sentence-review": "Review: a due place sentence (Counter, Table) comes back as itself, its place named: a meaning pick while weak, the build from its English or the typed lap once solid, then the exchange",
   "sheet-rows": "The Review sheet's doors (Recommended, By scenario, The machine shop) in the Learn tab's row form; Recommended carries the down caret, opening the words due, when a review is picked",
+  "stats-record": "The stats record (chat 11/2): every graded answer counted per day per kind (Listening, Picking, Building, Typing) with its time; each finished session keeps its duration and its expected time; synced per trip. Nothing shows yet except the Test Lab readout; the Stats tab reads it next. Fabricated progress never touches it; Clear my stats record in the lab",
 };
 // SHIPPED (Tom, 2026-10-28, v545): "sentences-2", Table sentences (fourteen in six frames, Para mí the table's frame, its card) and the Counter amendment (¿Me pone? ×2 with its card; the cortado Quiero and la cuenta out).
 // SHIPPED (Tom, 2026-10-28, v539): "splash-mark", the splash's lighthouse in the app icon's colours.

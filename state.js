@@ -13,8 +13,8 @@ const sessionDay = s => dayStr(new Date((s && s.at) || Date.now()));
 // Per-destination fields live in state.trips[<dest>]; the active trip's copy is
 // mirrored at the top level. Global fields (streak, gems, history, account,
 // cloud, sound, reminders) are shared across all destinations.
-const DEFAULT_STATE = { streak: 0, lastActive: null, lessons: {}, history: [], sound: true, profile: null, topicStats: {}, cloud: null, account: null, reminders: { enabled: false, morning: 480, evening: 1290 }, trips: {}, active: null, saved: [], goalsDone: {}, sessions: [], scoresCache: null, learn: {}, theme: "system", archive: [], tier: null, tierAchievedAt: null, legacyTierFloor: null, scoreRevealSeen: false };
-const DEST_FIELDS = ["profile", "lessons", "topicStats", "sessions", "learn"];
+const DEFAULT_STATE = { streak: 0, lastActive: null, lessons: {}, history: [], sound: true, profile: null, topicStats: {}, cloud: null, account: null, reminders: { enabled: false, morning: 480, evening: 1290 }, trips: {}, active: null, saved: [], goalsDone: {}, sessions: [], scoresCache: null, learn: {}, stats: {}, theme: "system", archive: [], tier: null, tierAchievedAt: null, legacyTierFloor: null, scoreRevealSeen: false };
+const DEST_FIELDS = ["profile", "lessons", "topicStats", "sessions", "learn", "stats"];   // stats = the per-day-per-kind record (stats.js)
 let state = load();
 
 function load() {

@@ -63,3 +63,4 @@
 - Counter words · Part 1 carries zumo and té after con leche.
 - The read sessions show signs as plates (a door plate on the dark theme, enamel on the light): read the sign then act, which sign, the timetable, the sign wall.
 - Sessions best heard wear "Best with sound" on the Home tile and the Learn row; leaving one for sound saves it and it returns the next new day as "Saved for sound". Hear sessions play first and ask after; read sessions never play audio.
+- 11/2 (v574): the stats record (STAGED `stats-record`): answers per day per kind with their time, session duration and expected time, synced per trip; Test Lab readout + Clear. The Stats tab (was Progress) is mocked and rulings-complete; it builds on this record next.

@@ -1496,7 +1496,7 @@ function renderSceneHear(q) {
       if (!ok) setTimeout(() => { c.classList.remove("wrong"); c.classList.add("dim"); }, 900);   // wrong-then-release
       reveal();
       if (q.item) { q.earReveal = true; grade(ok, q.item); return; }                       // pack phrase: the real rep
-      run.answered = true; _recordSlotTime(q);                                             // scene-local: no SRS home
+      run.answered = true; _recordSlotTime(q, ok);                                         // scene-local: no SRS home
       playSound(ok ? "correct" : "wrong"); haptic(ok ? "correct" : "wrong");
       if (!ok) run.wrong++;
       const f = footer(`<button class="btn" id="cont">Continue</button>`);
@@ -1525,7 +1525,7 @@ function renderSceneSign(q) {
       [...choices.children].forEach(ch => ch.classList.add(ch.textContent === b.answer ? "correct" : (ch === c ? "wrong" : "dim")));
       if (!ok) setTimeout(() => { c.classList.remove("wrong"); c.classList.add("dim"); }, 900);
       if (q.item) { grade(ok, q.item); return; }
-      run.answered = true; _recordSlotTime(q);
+      run.answered = true; _recordSlotTime(q, ok);
       playSound(ok ? "correct" : "wrong"); haptic(ok ? "correct" : "wrong");
       if (!ok) run.wrong++;
       const f = footer(`<button class="btn" id="cont">Continue</button>`);
@@ -1881,6 +1881,7 @@ function renderQuestion() {
   }
   run.answered = false;
   run.slotT0 = Date.now();                              // per-slot timing telemetry (2026-07-22)
+  run.t0 = run.t0 || Date.now();                        // the session's own clock (the stats record, chat 11/2)
   // strength ring only when exactly one item is on stage (§3.7); multi-item boards
   // (pairs, match) use a collective whisper instead
   const sring = document.getElementById("q-sring");
@@ -3587,8 +3588,8 @@ function renderNumPad(q) {
     if (val === expected[pos]) {
       pos++; paint();
       if (pos < expected.length) return;
-      run.answered = true; _recordSlotTime(q);
-      const ok = wrong === 0, id = itemId(item);
+      run.answered = true;
+      const ok = wrong === 0, id = itemId(item); _recordSlotTime(q, ok);
       recordAnswer(id, ok, { mode: q.reverse ? "num_say" : "num_hear", scaffolded: !!q.slow });
       if (!ok) run.wrong++;                                            // a miss informs; it never re-serves in the session
       if (ok) playSound("correct"); haptic(ok ? "correct" : "wrong");
@@ -3664,9 +3665,9 @@ function renderNumRun(q) {
     if (run.answered || playing) return;
     taps += val; paint();
     if (taps.length < total) return;
-    run.answered = true; _recordSlotTime(q);
+    run.answered = true;
     let at = 0; const okAt = want.map(w => { const got = taps.slice(at, at + w.length); at += w.length; return got === w; });
-    const okAll = okAt.every(Boolean);
+    const okAll = okAt.every(Boolean); _recordSlotTime(q, okAll);
     seq.forEach((it, i) => { const id = itemId(it); if (supported && okAt[i]) recordExposure(id); else recordAnswer(id, okAt[i], { mode: "num_run" }); });
     if (!okAll) run.wrong++;
     playSound(okAll ? "correct" : "wrong"); haptic(okAll ? "correct" : "wrong");
@@ -4232,7 +4233,7 @@ function _finishFill(q, item, wrongTaps) {
   const wasFading = !!(pre && pre.exposures >= 1 && itemStrength(pre) < RETENTION_FADE);
   const strengthBefore = pre ? itemStrength(pre) : 0;
   const pass = wrongTaps <= 1;
-  _recordSlotTime(q);
+  _recordSlotTime(q, pass);
   recordAnswer(id, pass, { mode: q.type });
   const post = id && state.learn && state.learn[id];
   if (wrongTaps > 0 && post) post.slips = (post.slips || 0) + wrongTaps;   // silent telemetry feeds future blanks
@@ -4246,8 +4247,9 @@ function _finishFill(q, item, wrongTaps) {
 }
 // per-slot elapsed time -> rolling per-type means (the atlas graduates from estimates
 // to measured medians as this accrues; the word was said 2026-07-22)
-function _recordSlotTime(q) {
+function _recordSlotTime(q, ok) {
   const ms = run && run.slotT0 ? Date.now() - run.slotT0 : null;
+  if (ok !== undefined && typeof recordStat === "function") recordStat(q, !!ok, ms);   // the stats record (chat 11/2): every graded answer
   if (ms == null || !q || !q.type || ms > 180000) return;
   const t = state.telem = state.telem || {};
   const e = t[q.type] = t[q.type] || { n: 0, mean: 0 };
@@ -4277,7 +4279,7 @@ function gradeTyped(raw, item) {
 }
 function finishGrade(ok, item, extra, wrong, words) {
   run.answered = true;
-  _recordSlotTime(run.qs[run.idx]);
+  _recordSlotTime(run.qs[run.idx], ok);
   const q = run.qs[run.idx];
   const id = itemId(item);
   // §8.4: was this phrase fading BEFORE we graded it? (seen ≥once + strength under the notify threshold)
@@ -4570,6 +4572,7 @@ function finishLesson() {
 function _sessionEndBookkeeping(sessionRec, factsOverride) {
   const prev = state.scoresCache || {};
   const before = { readiness: prev.readiness, momentum: prev.momentum, retention: prev.retention };
+  if (typeof statSessionEnd === "function") statSessionEnd(sessionRec);   // the stats record: duration + expected time (chat 11/2)
   state.sessions = state.sessions || [];
   state.sessions.push(sessionRec);
   registerActivity();

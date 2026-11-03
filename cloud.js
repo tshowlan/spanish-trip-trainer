@@ -233,6 +233,18 @@ function _mergeStats(a, b) {
   });
   return out;
 }
+// the stats record (stats.js): union by day; a day on both sides keeps, per kind, the fuller count (never summed)
+function _mergeStatRec(a, b) {
+  a = a || {}; b = b || {}; const out = {};
+  new Set([...Object.keys(a), ...Object.keys(b)]).forEach(day => {
+    const x = a[day], y = b[day];
+    if (!x || !y) { out[day] = x || y; return; }
+    const d = {};
+    new Set([...Object.keys(x), ...Object.keys(y)]).forEach(k => { const p = x[k], q = y[k]; d[k] = !p ? q : !q ? p : ((p.n || 0) >= (q.n || 0) ? p : q); });
+    out[day] = d;
+  });
+  return out;
+}
 function _mergeSessions(a, b) {
   const seen = new Set(), out = [];
   [...(a || []), ...(b || [])].forEach(s => {
@@ -255,7 +267,8 @@ function mergeTrip(local, server) {
     lessons: _mergeLessons(local.lessons, server.lessons),
     topicStats: _mergeStats(local.topicStats, server.topicStats),
     sessions: _mergeSessions(local.sessions, server.sessions),
-    learn: _mergeLearn(_remapLearnKeys(local.learn), _remapLearnKeys(server.learn))   // normalize old ids on either side
+    learn: _mergeLearn(_remapLearnKeys(local.learn), _remapLearnKeys(server.learn)),   // normalize old ids on either side
+    stats: _mergeStatRec(local.stats, server.stats)
   };
 }
 
