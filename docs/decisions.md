@@ -289,3 +289,4 @@ luminous law.)
 - 2026-11-02 — (Tom) The Solid mark on a Stats square = the app icon's light (the near-black ground, the orange candle light from the top, the icon gold) with the gold ring around the square; no check, no lantern, no beams. The best-session small line = columns: the right count bold on the left, then the time, then the date. Rate and change side by side on an exercise row.
 - 2026-11-02 — (Tom) Stats wears Spain's photo behind the top of the page as Home does (colour B); the hero card frosts over it. The Stats sheets close by a drag down and a tap or touch on the scrim.
 - 2026-11-02 — (Tom) Learn takes Spain's photo behind its top too (STAGED learn-photo): Home, Learn, and Stats share the photo; Profile does not.
+- 2026-11-02 — (Tom) The Learn photo is retired after one look; the photo marks Home and Stats only, the tabs that look at the trip from above. The tab order stays Home, Learn, Stats, Profile.

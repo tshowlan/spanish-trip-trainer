@@ -2501,8 +2501,6 @@ body.home-lit.wash-c .home::before { top: -24px; bottom: 0; background: linear-g
 /* Stats under the photo (Tom 11/2, colour B): the title white over the photo, the hero card frosted over it */
 body.home-lit .stats-screen .screen-head h2 { color: #fff; text-shadow: 0 0 1.5px rgba(40,40,40,.6), 0 1px 10px rgba(0,0,0,.5); }
 body.home-lit .st-hero { background: color-mix(in srgb, var(--bg-card) var(--st-hero-ground, 42%), transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border-color: rgba(255,255,255,.2); }   /* more of the photo through the card (Tom 11/2) */
+body.home-lit .st-hero.solid-card { -webkit-backdrop-filter: none; backdrop-filter: none; border-color: var(--border); background: var(--bg-card); }
+body.home-lit .st-hero.solid-card .st-cap, body.home-lit .st-hero.solid-card .st-sub { color: var(--text-dim); text-shadow: none; } body.home-lit .st-hero.solid-card .st-n { text-shadow: none; }
 body.home-lit .st-hero .st-cap, body.home-lit .st-hero .st-sub { color: rgba(255,255,255,.8); text-shadow: 0 1px 6px rgba(0,0,0,.45); } body.home-lit .st-hero .st-n { text-shadow: 0 2px 14px rgba(0,0,0,.45); }
-/* Learn under the photo (STAGED learn-photo, Tom 11/2): the title white, the mode bar frosted */
-body.home-lit .learn .learn-title { color: #fff; text-shadow: 0 0 1.5px rgba(40,40,40,.6), 0 1px 10px rgba(0,0,0,.5); }
-body.home-lit .learn .segs { background: rgba(0,0,0,.28); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-color: rgba(255,255,255,.18); }
-body.home-lit .learn .seg:not(.active) { color: rgba(255,255,255,.78); }

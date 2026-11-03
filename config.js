@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v580";
+const APP_BUILD = "v581";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -26,8 +26,8 @@ const STAGED = {
   "sheet-rows": "The Review sheet's doors (Recommended, By scenario, The machine shop) in the Learn tab's row form; Recommended carries the down caret, opening the words due, when a review is picked",
   "stats-record": "The stats record (chat 11/2): every graded answer counted per day per kind (Listening, Picking, Building, Typing) with its time; each finished session keeps its duration and its expected time; synced per trip. Nothing shows yet except the Test Lab readout; the Stats tab reads it next. Fabricated progress never touches it; Clear my stats record in the lab",
   "stats": "The Stats tab (was Progress; chat 11/2, Tom's calls): the rate over the last 14 days in a card, the six places as squares with a score (the mean strength of every word and sentence the place carries; Not yet, Known, or lit Solid), minutes per day with the month behind, by exercise against your average, best sessions by time under your usual, totals, trips; the tab bar says Stats; Test Lab shows it at zero, one week, four weeks",
-  "learn-photo": "The Learn tab wears Spain's photo behind its top as Home and Stats do (Tom 11/2): the title white, the Journey / Topics / Phrases bar frosted",
 };
+// RETIRED (Tom, 2026-11-02, v581): "learn-photo", the Learn tab under the photo (staged v580, one look): the photo marks the two tabs that look at the trip from above, Home and Stats; Learn stays as it was.
 // SHIPPED (Tom, 2026-10-28, v545): "sentences-2", Table sentences (fourteen in six frames, Para mí the table's frame, its card) and the Counter amendment (¿Me pone? ×2 with its card; the cortado Quiero and la cuenta out).
 // SHIPPED (Tom, 2026-10-28, v539): "splash-mark", the splash's lighthouse in the app icon's colours.
 // SHIPPED (Tom, 2026-10-26, v524): "sentences-1", Counter sentences: fourteen sentences in five frames (Quiero, ¿Tiene?, ¿Hay?, ¿Me puede traer?, ¿Puedo?), built from the English with the Hint, heard and built, the exchange with near misses, typed; the summary line and six example words as its preview; GOOD TO KNOW notes under the built row; the silent forms (build from English, THEY SAY).

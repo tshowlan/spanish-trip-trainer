@@ -224,7 +224,6 @@ function _topicsView(scroll) {
 function renderLearn() {
   showTabbar("learn");
   clearFooter();
-  if (isStaged("learn-photo") && typeof setHomeAtmo === "function") setHomeAtmo();   // Spain's photo behind the top, as Home and Stats (Tom 11/2); nav.js tears it down off-tab
   const app = $("#app"); app.innerHTML = "";
   const wrap = el(`<div class="screen tab-screen learn"></div>`);
   const head = el(`<div class="learn-head">

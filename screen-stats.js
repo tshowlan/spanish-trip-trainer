@@ -110,7 +110,8 @@ function renderStats(opts) {
   wrap.appendChild(el(`<div class="screen-head"><h2>Stats</h2></div>`));
   // the hero
   const h = d.hero;
-  wrap.appendChild(el(`<div class="st-hero">
+  let ground = 42; try { const v = localStorage.getItem("sts_hero_ground"); if (v != null) ground = +v; } catch (e) {}
+  wrap.appendChild(el(`<div class="st-hero${ground >= 100 ? " solid-card" : ""}">
     <div class="st-n${h.rate == null ? " dim" : ""}">${h.rate == null ? "&ndash;" : `${h.rate}<span class="pct">%</span>`}</div>
     <div class="st-cap">Right in the last 14 days</div>
     <div class="st-sub">${h.rate == null ? "Your first session sets this." : `${h.ph} exercise${h.ph === 1 ? "" : "s"} in ${h.n} session${h.n === 1 ? "" : "s"}. ${h.all}% all time.`}</div>
