@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v578 (2026-11-02) — Stats under Spain's photo (Tom's colour B)
+- Tom wanted more colour on Stats; of the two mocks (the photo inside the hero card, or behind the top of the page as on Home) he chose B. `renderStats` mounts Home's own atmosphere (`setHomeAtmo`: the hero photo crowning the top, masked into the ground, the lit topbar); nav.js already tears it down off-tab. The page title goes white with Home's text shadow; the hero card frosts over the photo (the card's ground at 78% with a blur). Nothing else on the page changes.
+
 ## v577 (2026-11-02) — the Stats sheets close by a drag down and by a touch on the scrim
 - Tom: the place sheet and the month sheet did not come down on a drag or a tap outside. The app's sheets never had a drag-to-close (Home's dials close on the scrim's click only); chat's §6 assumed one. `_stSheetClose` (screen-stats.js): the scrim closes on click and on touchend; a touch drag down on the sheet follows the finger when the sheet's own scroll is at the top (a long sheet still scrolls) and closes past 90px, else snaps back. Verified in the pane with synthetic touches. Offered for the app's other sheets in the ledger.
 

@@ -99,6 +99,7 @@ function _stSessionName(id) {
 function renderStats(opts) {
   showTabbar("progress");
   clearFooter();
+  if (typeof setHomeAtmo === "function") setHomeAtmo();   // Spain's photo behind the top of the page, as on Home (Tom 11/2, colour B); nav.js tears it down off-tab
   const preview = opts && opts.preview;
   const d = preview ? statsPreviewData(preview) : statsData();
   const app = $("#app"); app.innerHTML = "";
