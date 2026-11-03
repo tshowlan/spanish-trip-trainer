@@ -18,7 +18,12 @@ const STAT_KIND_OF = {
 };
 function statKind(q) {
   if (!q || !q.type) return null;
-  if (q.type === "weld" && q.listenBuild) return "listen";   // the ear build: heard, then built; hearing is the skill
+  if (q.type === "weld") {
+    if (q.listenBuild) return "listen";   // the ear build: heard, then built; hearing is the skill
+    // the typed rung is a weld answered by typing (inputForm fixed at composition, or climbed at render as the renderer decides)
+    const typed = q.inputForm ? q.inputForm === "typed" : (typeof _inputClimbed === "function" && q.item ? _inputClimbed(q.item) : false);
+    return typed ? "type" : "build";
+  }
   return STAT_KIND_OF[q.type] || null;
 }
 // the guard (Tom 11/2, b): fabricated progress and lab-launched sessions never touch the record; staged play does
