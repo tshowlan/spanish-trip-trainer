@@ -743,8 +743,9 @@ function heroState() {
   const scene = isStaged("review-door") ? sceneReady() : null;
   if (scene && (tiltShare() >= 0.5 || !next))
     return { kind: "review", scene, title: `Scene: ${scene.title} is ready`, sub: `${scene.beats.length} asks. Your phrases, in the room where you'll use them.`, run: () => startScene(scene) };
-  // the countdown (Tom 11/3, STAGED replay): the review's own pick in the final two weeks, never everything seen in a heap; with nothing due the tile reads the learner as on any other day
-  if (days !== null && days <= 14 && (backlog.length || !isStaged("replay")))
+  // THE COUNTDOWN RETIRES AS A MODE (Tom 11/3, STAGED replay): inside 14 days the tile reads the learner as on any other day; the trip header
+  // above it already counts the days. The old mode turned one due word into "Drill your essentials" for two weeks, over everything seen.
+  if (!isStaged("replay") && days !== null && days <= 14)
     return { kind: "cram", title: `${days} day${days === 1 ? "" : "s"} out. Drill your essentials.`, pool: backlog.length ? backlog : seenItems(), run: () => startReview(backlog.length ? backlog : seenItems()) };
   // §7.3 quality problem: doing the work but earlier phrases decaying → steer today to review
   if (dv && dv.kind === "review") {
