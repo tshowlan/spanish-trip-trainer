@@ -2080,6 +2080,11 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v587 (2026-11-03) — the rooms retire; no "The weld" in review; the review bubble wraps
+- Tom met "THE WELD · The waiter passes close · SAY IT IN SPANISH" in a review: a machine weld over a ROOM item (room-asking-1, the old chapter-2 rooms, still seated after the places and still on Learn). The 10/24 ruling said the rooms retire with the last place; Paying exists (sentences-3), so the rooms now leave chapter 2 and the deck when sentences-3 is on (engine.js `_chapterFlowDeck`). Their phrases live on as place sentences; their history stays harmlessly on the records.
+- A framed phrase that still reaches review (the old chapters 3 and 4 carry frames) comes back as the sentence built from its English, anchored, typed once climbed (STAGED replay); the machine weld and its header are no longer served in review. The machine_drill renderer keeps its header for a machine session, if one is ever played.
+- Home's review tile: the words bubble wrapped nothing (the hint bubble's nowrap), so long sentences ran off the phone's edge. The tile's bubble now wraps, the English dropping to its own line at the right when it must.
+
 ## v586 (2026-11-03) — the replay is the whole session (STAGED `replay`)
 - Tom: a second pass should be the full session, with its variants for chapter 2, not the eight weakest. The depth picker takes `all` (no cap, weakest first); a chapter-1 word session replays every met word in chapter one's shapes (two forms each, the board to close), scaffolded first when mostly faded. A chapter-2 session (asks, places, replies) replays through its own composer: the whole session, no primer, the exchange's replies rotating (the heard list first), a dietary line in its variant. The lap is no longer the all-holding case.
 

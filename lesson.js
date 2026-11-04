@@ -1060,6 +1060,16 @@ function _practiceForms(it, st, opts) {
   const scaffold = opts && opts.scaffoldFirst;   // GONE rebuild (door r5.5): skip recognition, open with scaffolded production
   const forms = [];
   const frameParts = it.frame ? _frameParts(it.frame, it.es) : null;
+  if (frameParts && isStaged("replay")) {                       // a framed phrase outside the rebuilt chapters: the sentence built from its English, anchored (no "The weld", retired 10/28), typed once climbed
+    const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
+    const tiles = tilesOf(it.es), kin = (ALL_ITEMS || []).filter(x => x !== it && x.frame === it.frame);
+    const others = kin.flatMap(x => tilesOf(x.es)).filter(w => w && !tiles.includes(w));
+    const build = () => ({ type: "weld", item: it, pool: ALL_ITEMS, target: it.es, tiles, distractors: others.length ? [sample(others, 1)[0]] : [], targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true });
+    if (!scaffold && strength < 55) forms.push({ type: "listen_choice", item: it, pool: ALL_ITEMS });
+    forms.push(build());
+    if (!scaffold && strength >= 55 && _inputClimbed(it)) forms.push(Object.assign(build(), { inputForm: "typed", cueRole: "Say it in Spanish" }));
+    return forms.slice(0, (scaffold || strength < 55) ? 3 : 2);
+  }
   if (frameParts) {                                              // machines drill in native forms
     const shell = _enShell((ALL_ITEMS || []).filter(x => x.frame === it.frame));
     const fen = _fillerEn(shell, it.en);

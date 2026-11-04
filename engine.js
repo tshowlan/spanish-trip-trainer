@@ -177,7 +177,9 @@ function _chapterFlowDeck(deck, rooms) {
   };
   const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { items: w.items.filter(live).map(variant).map(d => { const k = slug(d.es), own = { replies: (isStaged("reply-sets") && d.replies2) || d.replies, hint: d.hint, near: d.near, frame: d.frame, note: d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
   const order = flow.rooms || [];
-  const roomList = rooms.slice().sort((a, b) => (order.indexOf(a.id) + 1 || 99) - (order.indexOf(b.id) + 1 || 99));
+  // THE ROOMS RETIRE WITH THE LAST PLACE (Tom 10/24 ruling; done 11/3 when Tom met a room's machine weld in review): once the Street,
+  // Shop, Help, and Paying sessions exist (sentences-3), the four rooms leave chapter 2 and the deck; their phrases live on as place sentences
+  const roomList = (typeof isStaged === "function" && isStaged("sentences-3")) ? [] : rooms.slice().sort((a, b) => (order.indexOf(a.id) + 1 || 99) - (order.indexOf(b.id) + 1 || 99));
   const t = flow.chapters || [], b = flow.blurbs || [];
   deck.stages = [
     Object.assign({}, old[0], { pass: 0, title: t[0] || "The words", blurb: b[0] || "", lessons: words }),

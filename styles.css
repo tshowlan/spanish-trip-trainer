@@ -2505,3 +2505,6 @@ body.home-lit .st-hero { background: color-mix(in srgb, var(--bg-card) var(--st-
 body.home-lit .st-hero.solid-card { -webkit-backdrop-filter: none; backdrop-filter: none; border-color: var(--border); background: var(--bg-card); }
 body.home-lit .st-hero.solid-card .st-cap, body.home-lit .st-hero.solid-card .st-sub { color: var(--text-dim); text-shadow: none; } body.home-lit .st-hero.solid-card .st-n { text-shadow: none; }
 body.home-lit .st-hero .st-cap, body.home-lit .st-hero .st-sub { color: rgba(255,255,255,.8); text-shadow: 0 1px 6px rgba(0,0,0,.45); } body.home-lit .st-hero .st-n { text-shadow: 0 2px 14px rgba(0,0,0,.45); }
+/* the tile's words bubble: long sentences wrap, the English on its own line at the right when it must (Tom 11/3) */
+.home .tile-pop { white-space: normal; }
+.tile-pop .pl-row { flex-wrap: wrap; } .tile-pop .pl-row b { flex: 1 1 auto; } .tile-pop .pl-row i { flex: 0 1 auto; max-width: 100%; }
