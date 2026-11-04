@@ -978,7 +978,7 @@ function applyRhythm(qs) {
    exemption holds (8/2-17). Old mistakes-first front-load folds into the scoring: a missed
    item is weak AND overdue, so it surfaces on its own. */
 const PRACTICE_BASICS = new Set(["si", "no", "gracias", "por favor", "hola", "adios", "perdon", "de nada", "vale", "buenos dias", "buenas tardes", "buenas noches", "hasta luego"]);   // greetings joined 8/18 (Tom: cold-producing Buenos dias is silly)
-function _practicePick(pool) {
+function _practicePick(pool, opts) {
   const now = Date.now();
   const cands = [];
   for (const it of (pool && pool.length ? pool : (ALL_ITEMS || []))) {
@@ -992,6 +992,7 @@ function _practicePick(pool) {
     if (it.sentence && (st.missRun || 0) >= 3 && isStaged("stats")) cands[cands.length - 1].score += 1e6;   // a sentence missed three times running goes first, silently (chat 11/2)
   }
   cands.sort((a, b) => b.score - a.score);
+  if (opts && opts.all) return cands;                              // a replay takes the whole session, weakest first (Tom 11/3)
   return cands.slice(0, Math.min(8, cands.length));
 }
 /* A PLACE SENTENCE IN REVIEW (STAGED "sentence-review", the review refit's first step, Tom 10/28): a due sentence from a place session comes
@@ -1014,11 +1015,14 @@ function _sentenceReviewForms(it, st) {
    every word holding → the lap (the session's own closing form); some slipping → the depth drill over the session's words, weakest
    first; most faded → the same, scaffolded first. The words come back in chapter one's own shapes (_ch1ReviewForms). */
 function startReplay(lesson) {
+  // chapter 2 (the asks, the places, the replies): the whole session again, in its own shape; the exchange's replies rotate (the
+  // sentence's heard list first), a dietary line comes in its variant, no primer. The full session is the replay (Tom 11/3).
+  if (lesson.sentences || lesson.asks || lesson.replySet) return _startLessonProper(lesson);
   const items = (lesson.items || []).filter(it => !it.card && exposuresOf(it) >= 1);
   if (!items.length) return _startLessonProper(lesson);
   const fading = items.filter(it => { const st = learnPeek(it); return st && itemStrength(st) < RETENTION_FADE; });
-  if (!fading.length) return startLap(lesson);
-  startReview(items, { scaffoldFirst: fading.length > items.length * DOOR_GONE_FRAC });
+  // chapter 1: every word of the session, weakest first, in chapter one's shapes; mostly faded starts scaffolded
+  startReview(items, { all: true, scaffoldFirst: fading.length > items.length * DOOR_GONE_FRAC, label: lesson.title });
 }
 function _ch1LessonOf(it) {
   for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) if (!l.sounds && chapterOf(l) === 0 && (l.items || []).some(x => x.id === it.id)) return l;
@@ -1086,7 +1090,7 @@ function practicePickLine(picked) {
 }
 function _composeDepth(pool, opts) {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();
-  const picked = _practicePick(pool);
+  const picked = _practicePick(pool, opts);
   if (!picked.length) return [];
   state.practiceLine = practicePickLine(picked);
   const perItem = picked.map(p => _practiceForms(p.it, p.st, opts));

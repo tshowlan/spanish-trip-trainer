@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v586 (2026-11-03) — the replay is the whole session (STAGED `replay`)
+- Tom: a second pass should be the full session, with its variants for chapter 2, not the eight weakest. The depth picker takes `all` (no cap, weakest first); a chapter-1 word session replays every met word in chapter one's shapes (two forms each, the board to close), scaffolded first when mostly faded. A chapter-2 session (asks, places, replies) replays through its own composer: the whole session, no primer, the exchange's replies rotating (the heard list first), a dietary line in its variant. The lap is no longer the all-holding case.
+
 ## v585 (2026-11-03) — the countdown retires as a tile mode (STAGED `replay`)
 - Tom still saw "8 days out. Drill your essentials." after v584: it fired because he had words due, which was the mode's rule (one due word inside 14 days = two weeks of that tile, over everything else). Now, staged, the tile inside 14 days follows the same priority as any other day (a scene, a divergence, a backlog of fifteen, a momentum dip, the next session, the speed round); the trip header above it already counts the days. The old mode stays on the off-switch. Verified in the pane: eight days out with six words due, the tile reads "Start: First words"; with staging off, the old line.
 
