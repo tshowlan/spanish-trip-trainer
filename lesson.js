@@ -1010,9 +1010,48 @@ function _sentenceReviewForms(it, st) {
   if ((it.replies || []).length) { const r = _pickReply(it, _replyCtx((ALL_ITEMS || []).filter(x => x.sentence && x.place === it.place), 1)); forms.push({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place: it.place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]) }); }
   return forms.slice(0, strength < 55 ? 3 : 2);
 }
+/* THE REPLAY (Tom 11/3, STAGED replay): a completed session, tapped again, goes straight in. The door's three cases compose it:
+   every word holding → the lap (the session's own closing form); some slipping → the depth drill over the session's words, weakest
+   first; most faded → the same, scaffolded first. The words come back in chapter one's own shapes (_ch1ReviewForms). */
+function startReplay(lesson) {
+  const items = (lesson.items || []).filter(it => !it.card && exposuresOf(it) >= 1);
+  if (!items.length) return _startLessonProper(lesson);
+  const fading = items.filter(it => { const st = learnPeek(it); return st && itemStrength(st) < RETENTION_FADE; });
+  if (!fading.length) return startLap(lesson);
+  startReview(items, { scaffoldFirst: fading.length > items.length * DOOR_GONE_FRAC });
+}
+function _ch1LessonOf(it) {
+  for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) if (!l.sounds && chapterOf(l) === 0 && (l.items || []).some(x => x.id === it.id)) return l;
+  return null;
+}
+// chat's refit step two (10/28): a solid chapter-1 word is reviewed inside a met place sentence that carries it
+function _carrierSentence(it) {
+  const w = norm(it.es); if (!w) return null;
+  const met = (ALL_ITEMS || []).filter(x => x.sentence && x.hint && x.id !== it.id && exposuresOf(x) >= 1 && (" " + norm(x.es) + " ").includes(" " + w + " "));
+  if (!met.length) return null;
+  met.sort((a, b) => itemStrength(learnPeek(a) || {}) - itemStrength(learnPeek(b) || {}));   // the weakest carrier first: two birds
+  return met[0];
+}
+function _ch1ReviewForms(it, st, opts) {
+  const lesson = _ch1LessonOf(it); if (!lesson || !contextChoiceFeasible(it)) return null;
+  const pool = (lesson.items || []).filter(x => !x.card);
+  const strength = itemStrength(st), scaffold = opts && opts.scaffoldFirst;
+  const carrier = (!scaffold && strength >= 55) ? _carrierSentence(it) : null;
+  if (carrier) {
+    const build = _sentenceBuild(carrier, (ALL_ITEMS || []).filter(x => x.sentence && x.place === carrier.place && x.hint));
+    build.credit = it;                                                                        // the word earns its rep inside the sentence
+    return [build, kitRungFor(lesson, it, pool, 1)];                                          // then heard and built on its own
+  }
+  const forms = [];
+  if (scaffold || strength < 55) forms.push(kitRungFor(lesson, it, pool, 0));                 // finish the sentence (a pick)
+  forms.push(kitRungFor(lesson, it, pool, strength < 55 ? 1 : 3));                            // listen and build · build the sentence
+  if (!scaffold && strength >= 55 && _inputClimbed(it)) forms.push(Object.assign(kitRungFor(lesson, it, pool, 3), { inputForm: "typed", cueRole: "Say it in Spanish", hint: null }));   // typed once climbed
+  return forms.slice(0, (scaffold || strength < 55) ? 3 : 2);
+}
 function _practiceForms(it, st, opts) {
   if (it.sits && it.sits.length && isStaged("ask-review")) return _askReviewForms(it, st);   // an ask is reviewed as a situation, never a translation
   if (it.sentence && it.hint && isStaged("sentence-review")) return _sentenceReviewForms(it, st);   // a place sentence is reviewed as itself, in its place
+  if (isStaged("replay") && !it.frame && !it.sentence && !(it.sits && it.sits.length)) { const f = _ch1ReviewForms(it, st, opts); if (f) return f; }   // chapter one's words in chapter one's shapes
   const strength = itemStrength(st);
   const scaffold = opts && opts.scaffoldFirst;   // GONE rebuild (door r5.5): skip recognition, open with scaffolded production
   const forms = [];
@@ -1057,6 +1096,10 @@ function _composeDepth(pool, opts) {
     for (const forms of perItem) if (forms[round]) { qs.push(forms[round]); added = true; }
     if (!added) break;
   }
+  if (isStaged("replay")) {   // chapter one's closing form: the listening board over the words that came back (three or more)
+    const words = picked.map(p => p.it).filter(it => !it.frame && !it.sentence && !(it.sits && it.sits.length) && contextChoiceFeasible(it));
+    if (words.length >= 3) qs.push({ type: "pairs", items: words.slice(0, 6), arc: true, lap: true });
+  }
   return qs;
 }
 function composeReview() { return _composeDepth(null); }
@@ -1065,8 +1108,9 @@ function composeReview() { return _composeDepth(null); }
 let run = null;
 function startLesson(lesson) {
   if (lesson.chain) return renderChain(lesson);   // M4 boss lesson — a chat-style dialogue (§7.5)
-  // THE RETURN DOOR (depth ruling 5): a completed lesson greets before it drills
-  if (lessonDone(lesson.id)) return renderReturnDoor(lesson);
+  // THE RETURN DOOR (depth ruling 5): a completed lesson greets before it drills. NO DOOR (Tom 11/3, STAGED replay): the row's
+  // ring and the tile's preview already say it; a completed session opens its replay straight in, composed by the door's three cases
+  if (lessonDone(lesson.id)) return isStaged("replay") ? startReplay(lesson) : renderReturnDoor(lesson);
   return _startLessonProper(lesson);
 }
 /* THE CHAPTER DOOR (Tom 2026-09-21; rides the chapter-flow switch): the first time a learner starts ANY lesson of a chapter, from
@@ -4290,6 +4334,7 @@ function finishGrade(ok, item, extra, wrong, words) {
   const coldBefore = !!(pre && pre.axes && pre.axes.cold);           // for the Yours-now milestone (§3.5)
   if (!ok) { run.wrong++; if (run.missed) run.missed.set(id, item); }
   recordAnswer(id, ok, { mode: q && q.type, scaffolded: q && q.slow });
+  if (q && q.credit) { const cid = itemId(q.credit); if (cid && cid !== id) recordAnswer(cid, ok, { mode: "in_sentence" }); }   // a chapter-1 word reviewed inside the sentence that carries it (STAGED replay)
   if (q && q.type === "reply_hear" && q.es && q.item && typeof _replyKey === "function") { const sid = itemId(q.item), sr = sid && state.learn && state.learn[sid]; if (sr) { const h = sr.heard || [], k = _replyKey(q.es); if (!h.includes(k)) sr.heard = h.concat(k).slice(-12); } }   // the reply heard through this sentence (the floor's memory, chat 11/1)   // q.slow = used the 0.75× replay
   const restored = ok && wasFading;                    // correctly recalled a fading phrase → the sawtooth jump (§8.4)
   // Yours-now (§3.5): first cold production ever — typed/spoken only (tiles are scaffolding), once per item

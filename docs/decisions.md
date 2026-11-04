@@ -291,3 +291,4 @@ luminous law.)
 - 2026-11-02 — (Tom) Learn takes Spain's photo behind its top too (STAGED learn-photo): Home, Learn, and Stats share the photo; Profile does not.
 - 2026-11-02 — (Tom) The Learn photo is retired after one look; the photo marks Home and Stats only, the tabs that look at the trip from above. The tab order stays Home, Learn, Stats, Profile.
 - 2026-11-02 — (Tom) The Stats hero card over the photo is solid, like the squares: the card's ground and border, no glass.
+- 2026-11-03 — (Tom) No return door: a completed session opens its replay straight in; the Learn row's ring and the tile's preview carry the state. Chapter-1 words are reviewed in chapter-1 shapes, then inside a met sentence that carries them (chat's refit step two). The countdown serves the review's own pick, never everything seen; no scripted rehearsal (the review reads the learner).

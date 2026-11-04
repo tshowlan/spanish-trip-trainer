@@ -2080,6 +2080,12 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v584 (2026-11-03) — NO DOOR (STAGED `replay`): the replay straight in, chapter-1 words in chapter-1 shapes, the countdown on the review's pick
+- Tom: the second pass of a session and the final-weeks countdown were old content. Both ran the generic depth-drill forms over chapter-1 words (a meaning pick, a typed translation, a fill), the shapes from before the chapter rebuild; the return door was a screen in front of that. Tom: no door; and the rehearsal idea (a scripted place a day inside 14 days) withdrawn: the review reads the learner.
+- `startLesson` on a completed session → `startReplay`: all holding → the lap; some slipping → the depth drill over the session's met words, weakest first; most faded → scaffolded first. The door stays in the code off-switch.
+- `_ch1ReviewForms`: a plain chapter-1 word comes back through `kitRungFor` (finish the sentence while weak, listen and build, build the sentence, typed once climbed); once solid (≥55) and a met place sentence carries it, the sentence's build from English serves first with the word CREDITED (`q.credit`, graded in finishGrade), then the ear build on its own (chat's refit step two, 10/28). `_composeDepth` closes with the listening board over the words that came back. Asks and sentences keep their own review forms.
+- The countdown (Home, ≤14 days): the tile serves the backlog only; with nothing due it reads the learner as on any other day. The "everything seen" heap is gone.
+
 ## v583 (2026-11-02) — the Stats hero card ships solid, like the squares
 - Tom's pick from the seven lab settings: the card takes the squares' own ground and border over the photo, no glass. The default is 100 (the lab buttons stay for now); a phone that chose another setting keeps it until it picks again.
 
