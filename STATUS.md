@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v589 (2026-11-04) — the exchange, heard (STAGED `exchange-voices`)
+- Tom: in They answer nobody reads the written question once the reply plays. Staged: your line is spoken first in your voice, then their reply in a second Spanish voice; slow slows the reply only; the replay plays the exchange again; after the answer, the played line replays their reply in their voice. The written YOU SAID line stays.
+- audio.js `voiceFor(lang, who)`: the learner's voice prefers Mónica / Paulina / Jorge, never Apple's novelty voices (Eddy, Flo, Grandma, Grandpa, Reed and kin, which sit first in the list on a Mac and exist on iOS 17); "them" prefers the other gender in the same accent, then any other Spanish voice, else the same voice at a lower pitch.
+
 ## v588 (2026-11-04) — four small fixes and one set a day
 - The YOU SAID line's question mark no longer wraps alone: a hairline mark keeps the punctuation glued to it (¿ before, ?!., after).
 - A review never serves the same reply twice in one play: the exchange's "heard" memory is now one per review composition (it was one per sentence, so Ahora mismo came up twice running).

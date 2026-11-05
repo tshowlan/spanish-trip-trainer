@@ -67,3 +67,4 @@
 - 11/2 (v576): the STATS tab (STAGED `stats`) replaces Progress when staged: the 14-day rate in a card, six place squares with scores (words + sentences), minutes per day with the month behind, by exercise against your average, best sessions by time under your usual, totals, trips. Test Lab previews at zero, one week, four weeks.
 - 11/3 (v584): NO DOOR (STAGED `replay`): a completed session opens its replay straight in; chapter-1 words review in chapter-1 shapes and, once solid, inside a met sentence that carries them; the countdown serves only what is due.
 - 11/3 (v587): the four chapter-2 rooms retire once the last place exists (sentences-3); review never serves the machine weld; the review tile's words bubble wraps.
+- 11/4 (v589): the exchange heard (STAGED `exchange-voices`): your line, then their reply in a second voice.

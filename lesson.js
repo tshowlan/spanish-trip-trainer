@@ -456,10 +456,13 @@ function renderReplyHear(q) {
   else top.appendChild(el(`<div class="act-sit need">Listen, then pick what it meant.</div>`));
   const silent = run.soundOff || state.sound === false || !("speechSynthesis" in window);
   const said = q.es || item.es, meaning = q.en || item.en;
-  const play = audioControl(slow => { slow ? speak(said, 0.55) : speak(said); }, { speed: true });
+  // THE EXCHANGE, HEARD (STAGED exchange-voices, Tom 11/4): your line first in your voice, then their reply in another; slow slows the reply only
+  const voices = !!(set && isStaged("exchange-voices"));
+  const hear = slow => { if (voices) speak(set.line, undefined, { onend: () => speak(said, slow ? 0.55 : undefined, { who: "them", queue: true }) }); else slow ? speak(said, 0.55) : speak(said); };
+  const play = audioControl(hear, { speed: true });
   const stage = el(`<div class="listen-stage"></div>`);
   if (silent) stage.appendChild(el(`<div class="act-sit need you-said they-say"><span class="ys-label">${set ? "They say" : "The line"}</span><span class="ys-line">${said}</span></div>`));   // no sound: their line, labelled, under yours (Tom 10/26, mock A: the dialogue)
-  else { stage.appendChild(play); stage.appendChild(el(`<div class="hint">${set ? "They answer. Tap to hear it again" : "Tap to hear it again"}</div>`)); }
+  else { stage.appendChild(play); stage.appendChild(el(`<div class="hint">${set ? (voices ? "They answer. Tap to hear the exchange again" : "They answer. Tap to hear it again") : "Tap to hear it again"}</div>`)); }
   top.appendChild(stage);
   body.appendChild(top);
   if (!silent) setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
@@ -470,7 +473,7 @@ function renderReplyHear(q) {
   const choices = _signChoices(q.options, okIndex, item, () => {
     if (silent) return;
     const pl = el(`<div class="played-line"></div>`);            // the stage gives way to the reply's line and its replay (the ear never loses the answer)
-    pl.appendChild(audioControl(() => speak(said))); pl.appendChild(el(`<span>${said}</span>`));
+    pl.appendChild(audioControl(() => speak(said, undefined, voices ? { who: "them" } : undefined))); pl.appendChild(el(`<span>${said}</span>`));
     stage.replaceWith(pl); setTimeout(() => pl.classList.add("show"), 20);
   });
   answers.appendChild(choices);

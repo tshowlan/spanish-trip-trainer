@@ -1,10 +1,16 @@
 /* ---------- audio: TTS (per-country accent) + synthesized success sounds ---------- */
 if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = () => {};
-function voiceFor(lang) {
-  const vs = speechSynthesis.getVoices();
-  return vs.find(v => v.lang.replace("_", "-").toLowerCase() === lang.toLowerCase())   // exact (es-MX)
-      || vs.find(v => /^es/i.test(v.lang))                                             // any Spanish
-      || null;
+const _NOVELTY = /^(Eddy|Flo|Grandma|Grandpa|Reed|Rocko|Sandy|Shelley|Bells|Bubbles|Jester|Organ|Trinoids|Whisper|Zarvox|Bad News|Good News|Cellos|Boing|Wobble|Albert|Fred|Junior|Kathy|Ralph)\b/i;   // Apple's novelty and legacy voices: never a Spaniard
+function voiceFor(lang, who) {
+  const vs = speechSynthesis.getVoices().filter(v => !_NOVELTY.test(v.name)), L = lang.toLowerCase(), tag = v => v.lang.replace("_", "-").toLowerCase();
+  const same = vs.filter(v => tag(v) === L), any = vs.filter(v => /^es/i.test(v.lang));
+  const prefer = (list, names) => names.map(n => list.find(v => v.name.startsWith(n))).find(Boolean);
+  const mine = prefer(same, ["M\u00f3nica", "Monica", "Paulina", "Jorge", "Juan"]) || same[0] || any[0] || null;   // exact (es-MX), else any Spanish
+  if (who !== "them" || !mine) return mine;
+  // THE OTHER VOICE (STAGED exchange-voices, Tom 11/4): the reply in a second Spanish voice, the other gender if the phone has it, the same
+  // accent only; a phone with one voice in that accent falls back to the same voice at a lower pitch (speak() handles that)
+  const others = same.filter(v => v !== mine);   // the same accent only: a Spain learner never hears a Mexican reply; one voice → the same voice, lower (speak())
+  return prefer(others, ["Jorge", "Juan", "Diego", "Carlos", "Enrique", "M\u00f3nica", "Monica", "Paulina"]) || others[0] || mine;
 }
 // NO onend hook, on purpose (Sprint 2 ruling 1): the voice finishing gates NOTHING —
 // advance-on-TTS is the graveyarded auto-advance, and removing the socket keeps it dead.
@@ -16,7 +22,9 @@ function speak(text, rate, opts) {
   if (!(opts && opts.queue)) speechSynthesis.cancel();
   const lang = (typeof activePack === "function" ? activePack().tts : "es-ES");
   const u = new SpeechSynthesisUtterance(String(text).replace(/_+/g, " "));   // an ask's slot ("Quiero ___") is silence, not "underscore"
-  u.lang = lang; const v = voiceFor(lang); if (v) u.voice = v; u.rate = rate || 0.9;
+  const who = opts && opts.who;
+  u.lang = lang; const v = voiceFor(lang, who); if (v) u.voice = v; u.rate = rate || 0.9;
+  if (who === "them" && v && v === voiceFor(lang)) u.pitch = 0.8;   // one Spanish voice on this phone: they speak lower
   if (opts && opts.onend) { u.onend = opts.onend; u.onerror = opts.onend; }   // the line's end, for surfaces that wait for it (the hear-first card)
   speechSynthesis.speak(u);
 }
