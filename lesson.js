@@ -2308,11 +2308,11 @@ function sessionSheet() {
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
   const canPause = isStaged("resume") && run && run.qs && run.idx < run.qs.length - 1;
   const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div><div class="sheet"><div class="sheet-grab"></div>
-    <div class="sheet-title">${canPause ? "Leave the session?" : "Quit lesson?"}</div><div class="confirm-body">${canPause ? "Pause it and it waits on Home until the day ends. Quit and it starts fresh next time." : "Your progress in it is lost."}</div>
+    <div class="sheet-title">${canPause ? "Leave the session?" : "Quit lesson?"}</div><div class="confirm-body">${canPause ? "Pause it and it waits on Home until the day ends. Quit, and next time it starts over." : "Your progress in it is lost."}</div>
     <button class="btn" id="cs-cancel">Keep going</button>
-    ${canPause ? `<button class="btn grey" id="cs-pause">Pause, come back later</button>` : ""}
+    ${canPause ? `<button class="btn grey" id="cs-pause">Pause</button>` : ""}
     ${run && run.soundOff ? `<button class="btn grey" id="cs-sound">Turn sound back on</button>` : ""}
-    <button class="confirm-ghost" id="cs-ok">Quit lesson</button></div></div>`);
+    <button class="confirm-ghost" id="cs-ok">${canPause ? "Quit" : "Quit lesson"}</button></div></div>`);
   const close = () => { wrap.classList.remove("show"); setTimeout(() => wrap.remove(), 260); };
   document.body.appendChild(wrap);
   requestAnimationFrame(() => wrap.classList.add("show"));

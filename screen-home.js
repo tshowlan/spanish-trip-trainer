@@ -299,7 +299,7 @@ function sessionEndCeremony(home, data, reduced) {
     <div class="cer-tint"></div>
     <div class="cer-kicker">THAT'S THE SESSION</div>
     <div class="cer-panel">
-      <div class="sfacts">${_sfactRows(facts)}</div>
+      <div class="sfacts">${_sfactRows(facts)}${(!anyMoved && isStaged("ceremony-still")) ? `<div class="sfact sf-still"><span>Holding.</span></div>` : ""}</div>
       <button class="btn cer-cont quiet">Continue</button>
     </div>
   </div>`);
@@ -744,7 +744,7 @@ function heroState() {
   // rehearsal); earlier in the countdown it waits in the Practice sheet
   // A PAUSED SESSION comes first, today only (STAGED resume, Tom 11/4)
   if (isStaged("resume") && state.paused) {
-    if (state.paused.day === dayKey() && state.paused.n > 0) return { kind: "continue", title: `Continue: ${state.paused.title}`, sub: `${state.paused.idx} of ${state.paused.n} done. Picks up where you left it.`, run: () => resumeSession() };
+    if (state.paused.day === dayKey() && state.paused.n > 0) return { kind: "continue", title: `Continue: ${state.paused.title}`, sub: `${state.paused.idx} of ${state.paused.n} done. It picks up where you left off.`, run: () => resumeSession() };
     delete state.paused; save();                        // yesterday's pause is gone; a replay is always there
   }
   const scene = isStaged("review-door") ? sceneReady() : null;
@@ -906,7 +906,7 @@ function practiceChooser() {
   const sc = isStaged("review-door") ? sceneReady() : null;   // staged: the door names the scene it will serve
   add("Recommended", sc ? `Scene: ${sc.title} \u00b7 ${sc.beats.length} asks` : (line || "Finish a lesson first"), () => startReview(), !picked.length && !sc, true, (picked.length && !sc) ? picked.map(p => p.it) : null);
   if (isStaged("review-places")) add("By place", "Counter, Table, Street, Shop, Help, Paying", placeChooser);   // Tom 11/4: the six places as review doors
-  add("By scenario", "Pick a category and drill it hard", scenarioChooser);
+  if (!isStaged("review-places")) add("By scenario", "Pick a category and drill it hard", scenarioChooser);   // retires with By place (chat 11/5): the rooms' last trace
   const shops = machineShopLessons();
   add("The machine shop", shops.length ? "Drill one machine start to finish" : "Meet a machine first", machineShopChooser, !shops.length);
   document.body.appendChild(wrap);
@@ -952,7 +952,7 @@ function placeChooser() {
   const opts = wrap.querySelector(".practice-opts");
   (typeof STATS_PLACES !== "undefined" ? STATS_PLACES : []).forEach(pl => {
     const st = statsPlace(pl), met = st.met.map(m => m.it);
-    const sub = st.notYet ? "Not yet" : st.known ? "Marked Known" : `${st.score} out of 100 \u00b7 ${met.length} to draw from`;
+    const sub = st.notYet ? "Not yet" : st.known ? "Known" : `${st.score} out of 100 \u00b7 ${met.length} words and sentences`;
     const b = el(`<button class="practice-opt" ${st.notYet || !met.length ? "disabled" : ""}><div class="po-t">${pl.name}</div><div class="po-s">${sub}</div></button>`);
     if (!st.notYet && met.length) b.addEventListener("click", () => enterWith(b, () => { closeSheet(); startReview(met, { label: pl.name }); }));
     opts.appendChild(b);

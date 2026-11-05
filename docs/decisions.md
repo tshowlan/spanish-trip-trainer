@@ -292,3 +292,12 @@ luminous law.)
 - 2026-11-02 — (Tom) The Learn photo is retired after one look; the photo marks Home and Stats only, the tabs that look at the trip from above. The tab order stays Home, Learn, Stats, Profile.
 - 2026-11-02 — (Tom) The Stats hero card over the photo is solid, like the squares: the card's ground and border, no glass.
 - 2026-11-03 — (Tom) No return door: a completed session opens its replay straight in; the Learn row's ring and the tile's preview carry the state. Chapter-1 words are reviewed in chapter-1 shapes, then inside a met sentence that carries them (chat's refit step two). The countdown serves the review's own pick, never everything seen; no scripted rehearsal (the review reads the learner).
+- 2026-11-05 — (chat, Tom-passed) Known is a flag, not a history: it counts for Coverage, sits out of Retention and review, and Remove Known clears the flag alone.
+- 2026-11-05 — (chat) A word enters Retention at its first review; until then it counts for Coverage only. Misses stay in.
+- 2026-11-05 — (chat) Momentum's spec stands; no sessions term, no tighter day target. A full dial is a true dial.
+- 2026-11-05 — (chat) One answer per beat, everywhere: a miss is told and review serves it a day sooner. A chapter session is done only by being played.
+- 2026-11-05 — (chat) Listening is for the one hearing: beats stay identification, first-hear earns the full stability step and a replayed right answer half, speed lives in the speed round only. No arcade pressure.
+- 2026-11-05 — (chat) The still ceremony says "Holding." The ceremony's light is the icon's.
+- 2026-11-05 — (chat) "El cambio, para la propina." retired (unattested); the tip line is "Está bien así." with Quédese con la vuelta in the note; Spain pack says la vuelta for change returned, Mexico keeps el cambio.
+- 2026-11-05 — (chat) Stats says "average", not "usual"; the hero and totals count answers from the stats record, never presents; By scenario retires with By place.
+- 2026-11-05 — (chat) Bathroom words grows with the five you say (servicios, baño, la llave, papel, and the answer al fondo); Code seats Caballeros and Señoras in Signs you'll read and leaves Libre and Ocupado there.

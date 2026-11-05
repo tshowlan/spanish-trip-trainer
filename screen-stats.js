@@ -12,7 +12,7 @@ const STATS_PLACES = [
   { key: "paying", name: "Paying", icon: "credit-card", lessons: ["w-paying", "sent-paying"] },
 ];
 const STATS_LINES = {
-  places: "Your score at each place, out of 100. Tap a place to see what is holding it down.",
+  places: "Your score at each place, out of 100. Tap a place to see what is pulling it down.",
   time: "Minutes you spent in sessions, each day this week. Tap to see the month, back to your first day.",
   ex: "What you got right in the last 14 days, and how that compares with your average.",
   best: "Every one of these you got all right. The quickest against your average comes first.",
@@ -83,12 +83,24 @@ function statsData() {
     .map(s => ({ name: _stSessionName(s.lessonId), delta: s.exp - s.ms, ms: s.ms, right: `${s.correct} of ${s.phrases}`, date: _stShortDate(s.at) }))
     .sort((a, b) => b.delta - a.delta).slice(0, 5);
   const firstAt = sessions.length ? sessions[0].at : null;
+  // the hero and TOTALS count ANSWERS from the stats record, never the word cards (chat 11/5 §18); sessions still come from the session records
+  const sumK = pred => { let n = 0, ok = 0; Object.keys(S).forEach(d => { if (!pred(d)) return; Object.values(S[d] || {}).forEach(e => { n += e.n || 0; ok += e.ok || 0; }); }); return { n, ok }; };
+  const rWin = sumK(d => d >= since14), rAll = sumK(() => true);
+  const heroRate = rWin.n ? Math.round(100 * rWin.ok / rWin.n) : null, allRate = rAll.n ? Math.round(100 * rAll.ok / rAll.n) : null;
+  const firstSessionDay = firstAt ? _stDay(firstAt) : null;
+  let totalsLine = null;
+  if (sessions.length) {
+    const sinceMonth = new Date(firstAt).toLocaleDateString("en-US", { month: "long" });
+    if (!firstRecord) totalsLine = `${all.n} session${all.n === 1 ? "" : "s"} since ${sinceMonth}.`;
+    else if (firstRecord === firstSessionDay) totalsLine = `Since ${_stShortDate(firstRecord + "T12:00:00")}: ${all.n} session${all.n === 1 ? "" : "s"}, ${rAll.n} exercises, ${rAll.ok} right.`;
+    else totalsLine = `${all.n} session${all.n === 1 ? "" : "s"} since ${sinceMonth}. ${rAll.n} exercises since ${_stShortDate(firstRecord + "T12:00:00")}, ${rAll.ok} right.`;
+  }
   return {
-    hero: { rate: rate(win), all: rate(all), n: win.n, ph: win.ph },
+    hero: { rate: heroRate, all: allRate, n: win.n, ph: rWin.n },
     places, week, byDay, firstTimed, rows, best,
     counting: firstRecord ? _stShortDate(firstRecord + "T12:00:00") : _stShortDate(todayStr() + "T12:00:00"),
     recordEmpty: !recordDays.length,
-    totals: sessions.length ? { since: new Date(firstAt).toLocaleDateString("en-US", { month: "long" }), n: all.n, ph: all.ph, ok: all.ok } : null,
+    totals: totalsLine ? { line: totalsLine } : null,
     trips: (typeof completedTrips === "function") ? completedTrips() : [],
     zero: !sessions.length,
   };
@@ -115,7 +127,7 @@ function renderStats(opts) {
   wrap.appendChild(el(`<div class="st-hero${ground >= 100 ? " solid-card" : ""}">
     <div class="st-n${h.rate == null ? " dim" : ""}">${h.rate == null ? "&ndash;" : `${h.rate}<span class="pct">%</span>`}</div>
     <div class="st-cap">Right in the last 14 days</div>
-    <div class="st-sub">${h.rate == null ? "Your first session sets this." : `${h.ph} exercise${h.ph === 1 ? "" : "s"} in ${h.n} session${h.n === 1 ? "" : "s"}. ${h.all}% all time.`}</div>
+    <div class="st-sub">${h.rate != null ? `${h.ph} exercise${h.ph === 1 ? "" : "s"} in ${h.n} session${h.n === 1 ? "" : "s"}. ${h.all}% all time.` : d.zero ? "Your first session sets this." : d.recordEmpty ? STATS_LINES.counting(d.counting) : `No sessions in the last 14 days.${h.all != null ? ` ${h.all}% all time.` : ""}`}</div>
   </div>`));
   // places
   wrap.appendChild(_stHead("Places", STATS_LINES.places));
@@ -146,7 +158,7 @@ function renderStats(opts) {
   if (d.best.length) wrap.appendChild(el(`<div class="st-list best">${d.best.map((b, i) => `<div class="st-row"><span class="st-rk">${i + 1}</span><span class="st-rnm"><span>${b.name}</span><small><b>${b.right}</b><span>${_stDur(b.ms)}</span><span>${b.date}</span></small></span><span class="st-rt${b.delta < 0 ? " over" : ""}">${_stDur(Math.abs(b.delta))} ${b.delta < 0 ? "over" : "under"}</span></div>`).join("")}</div>`));
   else wrap.appendChild(el(`<div class="st-wait">${STATS_LINES.counting(d.counting)}</div>`));
   // totals
-  if (d.totals) { wrap.appendChild(_stHead("Totals")); wrap.appendChild(el(`<div class="st-totals">Since ${d.totals.since}: ${d.totals.n} session${d.totals.n === 1 ? "" : "s"}, ${d.totals.ph} exercises, ${d.totals.ok} right.</div>`)); }
+  if (d.totals) { wrap.appendChild(_stHead("Totals")); wrap.appendChild(el(`<div class="st-totals">${d.totals.line}</div>`)); }
   // trips: the trophies, last
   if (d.trips.length) {
     wrap.appendChild(_stHead("Trips"));
@@ -182,6 +194,7 @@ function statsPlaceSheet(p) {
   replies.sort((a, b) => (a.heard === b.heard ? 0 : a.heard ? 1 : -1));
   const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div><div class="sheet st-sheet"><div class="sheet-grab"></div>
     <div class="sheet-title st-shtitle"><span class="st-ic">${icon(p.icon, 22)}</span>${p.name}${p.solid ? `<span class="st-solid-tag">Solid</span>` : ""}</div>
+    ${p.solid ? `<div class="st-subline">Solid: every word here reached the top band and was still there at its next review.</div>` : ""}
     ${p.notYet && !p.known ? `<div class="st-shempty">Not yet. Its first session opens it.</div>` : ""}
     ${p.known ? `<div class="st-shempty">Marked Known. It is not taught or reviewed.</div>` : ""}
     ${sentences.length ? `<div class="st-shhead">Sentences</div>${rows(sentences)}` : ""}
@@ -230,9 +243,9 @@ function statsPreviewData(which) {
   if (which === "zero") return { hero: { rate: null }, places: P({}), week: week([]), byDay: {}, firstTimed: null, rows: [], best: [], counting: base.counting, recordEmpty: true, totals: null, trips: [], zero: true };
   if (which === "week1") return { hero: { rate: 88, all: 88, n: 4, ph: 61 }, places: P({ counter: { score: 54 }, table: { score: 41 } }), week: week([0, 12, 0, 18, 9, 0, 22]), byDay: {}, firstTimed: daysAgoStr(5),
     rows: [{ name: "Listening", rate: 94, change: null }, { name: "Picking", rate: 91, change: null }, { name: "Building", rate: 82, change: null }], best: [], counting: base.counting, recordEmpty: false,
-    totals: { since: "November", n: 4, ph: 61, ok: 54 }, trips: [], zero: false };
+    totals: { line: "Since Nov 10: 4 sessions, 61 exercises, 54 right." }, trips: [], zero: false };
   return { hero: { rate: 91, all: 90, n: 22, ph: 458 }, places: P({ counter: { score: 88, solid: true }, table: { score: 85 }, street: { score: 91 }, shop: { score: 79 }, paying: { score: 83 } }), week: week([14, 22, 0, 31, 9, 18, 27]), byDay: {}, firstTimed: daysAgoStr(27),
     rows: [{ name: "Listening", rate: 96, change: "steady" }, { name: "Picking", rate: 93, change: "up 4" }, { name: "Building", rate: 85, change: "down 3" }, { name: "Typing", rate: 88, change: "steady" }],
     best: [{ name: "Help", delta: 35000, ms: 161000, right: "23 of 23", date: "Oct 30" }, { name: "Counter", delta: 29000, ms: 252000, right: "30 of 30", date: "Oct 25" }, { name: "Street", delta: 20000, ms: 185000, right: "23 of 23", date: "Oct 28" }, { name: "Review", delta: 12000, ms: 80000, right: "12 of 12", date: "Oct 29" }, { name: "Counter words · Part 2", delta: -8000, ms: 122000, right: "14 of 14", date: "Oct 22" }],
-    counting: base.counting, recordEmpty: false, totals: { since: "July", n: 48, ph: 774, ok: 696 }, trips: [], zero: false };
+    counting: base.counting, recordEmpty: false, totals: { line: "48 sessions since July. 458 exercises since Oct 6, 417 right." }, trips: [], zero: false };
 }
