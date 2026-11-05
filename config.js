@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v595";
+const APP_BUILD = "v596";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -30,6 +30,7 @@ const STAGED = {
   "exchange-voices": "The exchange, heard (Tom 11/4): in They answer, your line is spoken first in your voice, then their reply in a second Spanish voice (a lower pitch where the phone has only one); slow slows the reply; the replay plays the exchange again",
   "review-places": "Review by place (Tom 11/4): a By place row on the Review sheet (the six places you have met, each with its Stats score) and the Learn tab's Topics view as the same six places; a tap reviews the place's words and sentences, weakest first",
   "resume": "Pause and resume (Tom 11/4): leaving a session mid-way offers Pause; Home's tile says Continue with where you were, until the day ends; Quit still starts it fresh",
+  "ceremony-glow": "The session's end (Tom 11/5, mock C): the app icon's own candle lights the top of the ceremony, strong and quick to fade, and the candle beneath stays lit so the ceremony sits on the tabs' ground, not black",
 };
 // RETIRED (Tom, 2026-11-02, v581): "learn-photo", the Learn tab under the photo (staged v580, one look): the photo marks the two tabs that look at the trip from above, Home and Stats; Learn stays as it was.
 // SHIPPED (Tom, 2026-10-28, v545): "sentences-2", Table sentences (fourteen in six frames, Para mí the table's frame, its card) and the Counter amendment (¿Me pone? ×2 with its card; the cortado Quiero and la cuenta out).

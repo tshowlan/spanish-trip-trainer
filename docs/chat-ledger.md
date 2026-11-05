@@ -339,3 +339,4 @@ The hear sessions' cards no longer hold their words back while the line plays (t
 - **11/4 (v594):** the words bubble fades over its last line and cuts a row mid-way when it overflows (Tom: option D, the fade); no words added.
 - **11/5 (v595):** the words bubble's fade lifts once the scroll reaches its end (Tom).
 - **11/5, MOCKED for Tom: the ceremony's glow** (dev/ceremony-glow-options.html): the wash stronger and lower (A), a gold aura behind the readiness dial with the arc glowing (B), the app icon's candle at the top (C), A and B together (D). Tom picks; chat may weigh in on whether the ceremony's light should match the icon's (C) or stay its own.
+- **11/5 (v596), the ceremony's glow STAGED `ceremony-glow`:** Tom chose C (the icon's candle at the top) and the ground fix (the candle stays lit, the tabs' ground). One light for the icon, the splash, and the session's end.

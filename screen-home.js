@@ -283,6 +283,7 @@ function sessionEndCeremony(home, data, reduced) {
   // `in-ceremony` that class means "visible", so the logo, the flame, and the language chip showed over the dials (Tom 10/29)
   document.querySelectorAll(".cer-back").forEach(n => n.classList.remove("cer-back"));
   document.body.classList.add("in-ceremony");
+  if (isStaged("ceremony-glow")) document.body.classList.add("cer-ground");   // the candle stays lit: the tabs' ground, not black (Tom 11/5)
   // hide the bar WITHOUT hideTabbar(): that helper also tears down the home atmo, which
   // must stay mounted (opacity-hidden) so the dissolve can refill it in place
   const bar = document.getElementById("tabbar"); if (bar) bar.classList.remove("show");
@@ -293,7 +294,7 @@ function sessionEndCeremony(home, data, reduced) {
   const hero = home.querySelector(".hero");
   const cardR = home.querySelector("#sc-readiness"), cardM = home.querySelector("#sc-momentum"), cardT = home.querySelector("#sc-retention");
   const timers = [];
-  const layer = el(`<div class="cer-layer">
+  const layer = el(`<div class="cer-layer${isStaged("ceremony-glow") ? " glow-c" : ""}">
     <div class="cer-tint"></div>
     <div class="cer-kicker">THAT'S THE SESSION</div>
     <div class="cer-panel">

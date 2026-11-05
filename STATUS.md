@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v596 (2026-11-05) — the ceremony's glow (STAGED `ceremony-glow`): the icon's candle, on the tabs' ground
+- Tom's pick from the mocks: C, the app icon's own light at the top of the ceremony (the splash and the icon share it). With it, the ground fix Tom asked for: the candle beneath stays lit during the ceremony, so it sits on the same ground as the tabs instead of near black. Light theme gets the candle at half strength. Dark-theme tint rules took a specificity bump so the staged class wins.
+
 ## v595 (2026-11-05) — the bubble's fade lifts at the end of the scroll
 - Tom: at the bottom of the list the fade still said "more below". The bubble watches its own scroll and drops the fade once the last row is fully in view.
 
