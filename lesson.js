@@ -2274,11 +2274,43 @@ function soundBackOnWhisper(q) {
 function parkEarSession() { if (!run || !run.lesson || lessonDone(run.lesson.id)) return; state.parkedEar = { id: run.lesson.id, day: dayKey() }; save(); }
 function leaveSession() { clearFooter(); (isStaged("learn-peek") && window._lessonFrom === "learn") ? renderLearn() : renderHome(); }
 /* The session sheet: quit + (when the escape fired) the sound-off reset point */
+/* PAUSE AND RESUME (STAGED resume, Tom 11/4): leaving a session parks it; Home's tile offers it back until the day ends. The beats are
+   kept with their items as ids and revived from the index, so the session resumes exactly where it stopped, same forms, same order. */
+function _serializeQs(qs) {
+  return JSON.stringify(qs, (k, v) => (v && typeof v === "object" && !Array.isArray(v) && typeof v.id === "string" && typeof v.es === "string") ? { __it: v.id } : v);
+}
+function _reviveQs(json) {
+  const qs = JSON.parse(json, (k, v) => (v && typeof v === "object" && v.__it) ? ((typeof ITEM_INDEX !== "undefined" && ITEM_INDEX[v.__it]) || null) : v);
+  return qs.filter(q => q && (!("item" in q) || q.item));
+}
+function pauseSession() {
+  if (!run || !run.qs || !run.qs.length) return false;
+  try {
+    const l = run.lesson || {};
+    state.paused = { day: dayKey(), lessonId: l.id, title: run.review ? "Review" : (l.title || "the session"), review: !!run.review, idx: run.idx, n: run.qs.length, wrong: run.wrong || 0, restored: run.restored || 0, pct: run.pct || 0,
+      items: (l.items || []).map(it => it.id).filter(Boolean), qs: _serializeQs(run.qs) };
+    save(); return true;
+  } catch (e) { console.warn("pause failed", e); return false; }
+}
+function resumeSession() {
+  const p = state.paused; if (!p) return;
+  let lesson = null;
+  if (p.review) lesson = { id: "__review__", topic: "Review", items: (p.items || []).map(id => ITEM_INDEX[id]).filter(Boolean) };
+  else for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) if (l.id === p.lessonId) lesson = l;
+  let qs = [];
+  try { qs = _reviveQs(p.qs); } catch (e) { qs = []; }
+  delete state.paused; save();
+  if (!lesson || !qs.length || p.idx >= qs.length) { toast("That session is gone. Start it fresh."); return renderHome(); }
+  run = { lesson, qs, idx: p.idx, wrong: p.wrong, restored: p.restored, answered: false, reasks: {}, pct: p.pct, review: p.review, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
+  renderQuestion();
+}
 function sessionSheet() {
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
+  const canPause = isStaged("resume") && run && run.qs && run.idx < run.qs.length - 1;
   const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div><div class="sheet"><div class="sheet-grab"></div>
-    <div class="sheet-title">Quit lesson?</div><div class="confirm-body">Your progress in it is lost.</div>
+    <div class="sheet-title">${canPause ? "Leave the session?" : "Quit lesson?"}</div><div class="confirm-body">${canPause ? "Pause it and it waits on Home until the day ends. Quit and it starts fresh next time." : "Your progress in it is lost."}</div>
     <button class="btn" id="cs-cancel">Keep going</button>
+    ${canPause ? `<button class="btn grey" id="cs-pause">Pause, come back later</button>` : ""}
     ${run && run.soundOff ? `<button class="btn grey" id="cs-sound">Turn sound back on</button>` : ""}
     <button class="confirm-ghost" id="cs-ok">Quit lesson</button></div></div>`);
   const close = () => { wrap.classList.remove("show"); setTimeout(() => wrap.remove(), 260); };
@@ -2288,6 +2320,8 @@ function sessionSheet() {
   wrap.querySelector("#cs-cancel").addEventListener("click", close);
   const sb = wrap.querySelector("#cs-sound");
   if (sb) sb.addEventListener("click", () => { close(); soundBackOn(); toast("Sound is back on"); });
+  const pb = wrap.querySelector("#cs-pause");
+  if (pb) pb.addEventListener("click", () => { close(); if (pauseSession()) { toast("Paused. It waits on Home."); leaveSession(); } else { toast("Could not pause this one"); } });
   wrap.querySelector("#cs-ok").addEventListener("click", () => { close(); if (earOn() && run && isEarLesson(run.lesson)) parkEarSession(); leaveSession(); });   // leave to where you came from (Tom 9/21); an ear session left early is saved for sound (Tom 9/26)   // leave to where you came from (Tom 9/21)
 }
 

@@ -198,7 +198,26 @@ function _journeyView(scroll) {
 
 // coverage display and topic-drill action are ONE surface: a row names the topic, shows why,
 // and IS the entry into Practice prefiltered to that scenario (decisions 2026-07-18).
+function _placesView(scroll) {   // STAGED review-places (Tom 11/4): Topics = the six places, each a review door
+  scroll.appendChild(el(`<div class="topics-intro">Your six places. Tap one to review it.</div>`));
+  (typeof STATS_PLACES !== "undefined" ? STATS_PLACES : []).forEach(pl => {
+    const st = statsPlace(pl), met = st.met.map(m => m.it), pct = st.notYet ? 0 : st.score;
+    const band = st.notYet ? "t-none" : pct >= 65 ? "t-strong" : pct >= 40 ? "t-fair" : "t-low";
+    const label = st.notYet ? "Not yet" : st.known ? "Known" : pct >= 65 ? "Strong" : pct >= 40 ? "Fair" : "Low";
+    const row = el(`<div class="topic ${band}" role="button">
+      <div class="tmain">
+        <div class="trow"><span class="tname">${pl.name}</span><span class="tpct">${st.notYet ? "" : pct + "%"}</span></div>
+        <div class="tbar"><i style="width:${pct}%"></i></div>
+        <div class="tsub">${label}${met.length ? ` \u00b7 ${met.length} met` : ""}</div>
+      </div>
+      <span class="chev">${icon("caret-right", 15)}</span>
+    </div>`);
+    if (met.length) row.addEventListener("click", () => startReview(met, { label: pl.name }));
+    scroll.appendChild(row);
+  });
+}
 function _topicsView(scroll) {
+  if (isStaged("review-places")) return _placesView(scroll);
   const cats = (typeof coverageCats === "function") ? coverageCats() : {};
   const keys = Object.keys(cats).filter(c => cats[c].seen > 0)
     .sort((a, b) => (cats[b].credit / cats[b].total) - (cats[a].credit / cats[a].total));

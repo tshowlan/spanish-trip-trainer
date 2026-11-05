@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v589";
+const APP_BUILD = "v590";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -28,6 +28,8 @@ const STAGED = {
   "stats": "The Stats tab (was Progress; chat 11/2, Tom's calls): the rate over the last 14 days in a card, the six places as squares with a score (the mean strength of every word and sentence the place carries; Not yet, Known, or lit Solid), minutes per day with the month behind, by exercise against your average, best sessions by time under your usual, totals, trips; the tab bar says Stats; Test Lab shows it at zero, one week, four weeks",
   "replay": "No door (Tom 11/3): a completed session's row opens its replay straight in; chapter-1 words come back in chapter-1 shapes (finish the sentence, listen and build, build the sentence, typed once climbed, the listening board to close) and, once solid, inside a met place sentence that carries them; the countdown is no longer a mode: inside 14 days the tile reads the learner as on any other day (the trip header counts the days)",
   "exchange-voices": "The exchange, heard (Tom 11/4): in They answer, your line is spoken first in your voice, then their reply in a second Spanish voice (a lower pitch where the phone has only one); slow slows the reply; the replay plays the exchange again",
+  "review-places": "Review by place (Tom 11/4): a By place row on the Review sheet (the six places you have met, each with its Stats score) and the Learn tab's Topics view as the same six places; a tap reviews the place's words and sentences, weakest first",
+  "resume": "Pause and resume (Tom 11/4): leaving a session mid-way offers Pause; Home's tile says Continue with where you were, until the day ends; Quit still starts it fresh",
 };
 // RETIRED (Tom, 2026-11-02, v581): "learn-photo", the Learn tab under the photo (staged v580, one look): the photo marks the two tabs that look at the trip from above, Home and Stats; Learn stays as it was.
 // SHIPPED (Tom, 2026-10-28, v545): "sentences-2", Table sentences (fourteen in six frames, Para mí the table's frame, its card) and the Counter amendment (¿Me pone? ×2 with its card; the cortado Quiero and la cuenta out).
