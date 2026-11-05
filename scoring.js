@@ -51,12 +51,13 @@ function coverageCats() {
   (typeof DECK !== "undefined" && DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
     const c = categoryOf(l.topic);
     const e = cats[c] || (cats[c] = { total: 0, done: 0, seen: 0, credit: 0 });
-    const ldone = lessonDone(l.id);
+    const ldone = lessonDone(l.id), lknown = !!(state.lessons && state.lessons[l.id] && state.lessons[l.id].known);
     if (ldone) e.done++;
     l.items.forEach(it => {
       e.total++;
       const s = (state.learn || {})[it.id];
-      if (s && s.exposures >= 1) { e.seen++; e.credit += Math.max(0.3, itemStrength(s) / 100); }        // drilled phrase
+      if (lknown) { e.seen++; e.credit += 1; }                                                            // KNOWN (chat 11/5): you can do the thing; full credit, no history
+      else if (s && s.exposures >= 1) { e.seen++; e.credit += Math.max(0.3, itemStrength(s) / 100); }   // drilled phrase
       else if (ldone) { e.seen++; e.credit += Math.max(0.3, lessonBaselineStrength(l.id) / 100); }       // taught via a completed lesson
       // unseen phrase → 0 credit (counts against Coverage, never against Retention)
     });
@@ -90,10 +91,13 @@ function recencyScore() {
    guesses, not measurements, so they count partially (0.3). K = 20 [tune]. */
 function retentionScore() {
   let sumD = 0, nD = 0, sumB = 0, nB = 0;
+  const entry = typeof isStaged === "function" && isStaged("retention-entry");   // a word enters Retention at its first review (chat 11/5)
   (typeof DECK !== "undefined" && DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
     const doneLesson = lessonDone(l.id);
+    if (state.lessons && state.lessons[l.id] && state.lessons[l.id].known) return;   // KNOWN sits out of Retention (chat 11/5)
     l.items.forEach(it => {
       const s = (state.learn || {})[it.id];
+      if (entry && s && s.exposures >= 1 && !s.reviewed) return;              // met, not yet reviewed: Coverage only until the app has asked once
       if (s && s.exposures >= 1) { sumD += itemStrength(s); nD++; }            // drilled: real reps
       else if (doneLesson) { sumB += lessonBaselineStrength(l.id); nB++; }     // taught, undrilled
     });
@@ -265,4 +269,11 @@ function computeScores() {
   s.pace = paceProjection(s.readiness);                        // attach pace once readiness is known
   _recordDaily(s);                                             // §7.2 daily history for trend charts
   return s;
+}
+// one-time, when retention-entry arrives: every word met before today has had its chance to be asked; it enters as reviewed
+function migrateRetentionEntry() {
+  if (!(typeof isStaged === "function" && isStaged("retention-entry")) || state.retentionEntryMigrated) return;
+  const today = todayStr();
+  Object.values(state.learn || {}).forEach(st => { if (st && st.exposures >= 1 && (st.lastSeen || "") < today) st.reviewed = true; });
+  state.retentionEntryMigrated = true; save();
 }

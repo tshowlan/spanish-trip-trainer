@@ -36,7 +36,7 @@ function _stLessons(base) {   // the deck's lessons for a base id: the id itself
 }
 function _stPlaceItems(p) {
   const lessons = p.lessons.flatMap(_stLessons), items = [], seen = new Set();
-  lessons.forEach(l => { if (l.sounds) return; (l.items || []).forEach(it => { if (it.card || !it.id || seen.has(it.id)) return; seen.add(it.id); items.push(it); }); });
+  lessons.forEach(l => { if (l.sounds) return; if (state.lessons[l.id] && state.lessons[l.id].known) return; (l.items || []).forEach(it => { if (it.card || !it.id || seen.has(it.id)) return; seen.add(it.id); items.push(it); }); });   // a Known session's items are not in the score (chat 11/5)
   return { lessons, items };
 }
 // a place's state: { score, known, solid, items, lessons } or { notYet: true }

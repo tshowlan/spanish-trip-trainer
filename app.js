@@ -9,6 +9,8 @@ migrateTrips();
 migrateScoring();
 migrateItemIds();     // remap SRS keys to lesson-independent ids (pack:slug) — before deck/scores read them
 rebuildDeck();
+if (typeof cleanKnownHistory === "function") cleanKnownHistory();   // Known is a flag (chat 11/5): the first Known's fabricated records go
+if (typeof migrateRetentionEntry === "function") migrateRetentionEntry();   // retention-entry: words met before today enter as reviewed
 migrateXpToFloor();   // one-time XP→legacy-tier-floor grandfather (§4.1); no-op once migrated
 checkTripCompletion();// §5.1: archive a trip whose date has passed (also runs tier eval)
 applyTierUpdate();    // evaluate status tier on app open (§2.2)

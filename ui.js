@@ -151,7 +151,7 @@ function audioControl(play, opts) {
   let slow = false, t;
   const pulse = ms => { speaker.classList.add("playing"); clearTimeout(t); t = setTimeout(() => speaker.classList.remove("playing"), ms || 1600); };
   const fire = () => { pulse(); play(slow); };
-  speaker.addEventListener("click", () => { haptic("press"); fire(); });
+  speaker.addEventListener("click", () => { haptic("press"); if (typeof run !== "undefined" && run) run.slotPlays = (run.slotPlays || 0) + 1; fire(); });   // a replay the learner asked for counts (the stats record); the autoplay does not
   if (opts.speed) {
     // A2: speed pill — 1x → 0.75x, gold while slowed, resets per item (a fresh control each render)
     const pill = el(`<button class="ac-speed" aria-label="Playback speed">1×</button>`);

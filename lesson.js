@@ -986,9 +986,10 @@ const PRACTICE_BASICS = new Set(["si", "no", "gracias", "por favor", "hola", "ad
 function _practicePick(pool, opts) {
   const now = Date.now();
   const cands = [];
+  const known = (typeof knownItemIds === "function") ? knownItemIds() : new Set();
   for (const it of (pool && pool.length ? pool : (ALL_ITEMS || []))) {
     const st = learnPeek(it); if (!st || !st.exposures) continue;
-    if (st.pinned) continue;                                       // KNOWN (Tom 10/29): a session marked known is never quizzed
+    if (known.has(it.id)) continue;                                // KNOWN (chat 11/5): a session marked known is never quizzed
     if (PRACTICE_BASICS.has(norm(it.es))) continue;              // basics never eat a depth slot
     const strength = itemStrength(st);
     const overdue = st.due ? Math.max(0, (now - new Date(st.due + "T00:00:00").getTime()) / 864e5) : 0;
@@ -1948,6 +1949,7 @@ function renderQuestion() {
   run.answered = false;
   run.slotT0 = Date.now();                              // per-slot timing telemetry (2026-07-22)
   run.t0 = run.t0 || Date.now();                        // the session's own clock (the stats record, chat 11/2)
+  run.slotPlays = 0;                                    // replays asked for before the answer (chat 11/5: first-hear counts for more, later; counted now, silently)
   // strength ring only when exactly one item is on stage (§3.7); multi-item boards
   // (pairs, match) use a collective whisper instead
   const sring = document.getElementById("q-sring");
@@ -4403,6 +4405,7 @@ function finishGrade(ok, item, extra, wrong, words) {
   if (!ok) { run.wrong++; if (run.missed) run.missed.set(id, item); }
   recordAnswer(id, ok, { mode: q && q.type, scaffolded: q && q.slow });
   if (q && q.credit) { const cid = itemId(q.credit); if (cid && cid !== id) recordAnswer(cid, ok, { mode: "in_sentence" }); }   // a chapter-1 word reviewed inside the sentence that carries it (STAGED replay)
+  if (run && run.review) { const mark = x => { const r = x && state.learn && state.learn[x]; if (r) r.reviewed = true; }; mark(id); if (q && q.credit) mark(itemId(q.credit)); }   // the word enters Retention at its first review (chat 11/5)
   if (q && q.type === "reply_hear" && q.es && q.item && typeof _replyKey === "function") { const sid = itemId(q.item), sr = sid && state.learn && state.learn[sid]; if (sr) { const h = sr.heard || [], k = _replyKey(q.es); if (!h.includes(k)) sr.heard = h.concat(k).slice(-12); } }   // the reply heard through this sentence (the floor's memory, chat 11/1)   // q.slow = used the 0.75× replay
   const restored = ok && wasFading;                    // correctly recalled a fading phrase → the sawtooth jump (§8.4)
   // Yours-now (§3.5): first cold production ever — typed/spoken only (tiles are scaffolding), once per item

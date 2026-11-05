@@ -95,6 +95,19 @@ function _lessonRow(l, isNext) {
 /* SWIPE TO RESET (Tom 10/19, STAGED "learn-reset-swipe"): drag a row to the left and a Reset action appears behind it; tap it and the
    session is as if never seen (the lesson mark gone, every one of its words back to zero exposures). A quick way to replay a session
    from the top. The swipe swallows the row's own tap; any tap elsewhere closes an open row. */
+// the fabricated history the first Known wrote (four seens, a streak of three, a year's interval, pinned) is cleaned once at boot:
+// a record that is nothing but that fabrication goes; a real record that was pinned loses the pin and comes due
+function cleanKnownHistory() {
+  let n = 0;
+  Object.entries(state.learn || {}).forEach(([id, st]) => {
+    if (!st || !st.pinned) return;
+    if (st.exposures === 4 && st.streak === 3 && st.interval === 365 && !st.lapses) delete state.learn[id];
+    else { delete st.pinned; st.interval = Math.min(st.interval || 7, 7); st.due = todayStr(); }
+    n++;
+  });
+  if (n) save();
+  return n;
+}
 /* KNOWN (Tom 10/29, STAGED "learn-known"): the swipe's first action. A session marked known counts as done, its words are pinned at
    full strength and never picked for review, and the row says KNOWN. Swipe again and the action reads Forget: the pin comes off and
    the words return to the review queue with their history. The finer entry point: a learner who already orders coffee marks Counter
@@ -103,14 +116,14 @@ function _markKnown(l, on) {
   const now = new Date().toISOString(), today = todayStr();
   const items = (l.items || []).concat((l.machines || []).flatMap(m => m.items || [])).filter(it => !it.card);
   state.learn = state.learn || {}; state.lessons = state.lessons || {};
+  // KNOWN IS A FLAG, NOT A HISTORY (chat 11/5): the session carries the flag; scoring and review read it (Coverage credit 1.0, out of
+  // Retention, never reviewed). The words' own records stay whatever they were. Remove Known clears the flag and nothing else.
   if (on) {
     if (!state.lessons[l.id]) state.lessons[l.id] = { stars: 2, at: now, known: true }; else state.lessons[l.id].known = true;
-    items.forEach(it => { const id = itemId(it); if (!id) return; const st = state.learn[id] || { exposures: 0, streak: 0, lapses: 0 };
-      state.learn[id] = Object.assign(st, { pinned: true, exposures: Math.max(4, st.exposures || 0), streak: Math.max(3, st.streak || 0), interval: 365, lastSeen: today, lastCorrect: today, due: _dateAdd(today, 365) }); });
   } else {
     const rec = state.lessons[l.id]; if (rec && rec.known) { if (rec.stars === 2 && !rec.played) delete state.lessons[l.id]; else delete rec.known; }
-    items.forEach(it => { const id = itemId(it); const st = id && state.learn[id]; if (!st || !st.pinned) return; delete st.pinned; st.interval = 7; st.due = today; });
   }
+  void items; void today;
   save();
   if (typeof cloudSync === "function") cloudSync().catch(err => console.warn("sync after known", err));
 }

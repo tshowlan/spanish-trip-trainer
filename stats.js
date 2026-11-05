@@ -45,6 +45,11 @@ function recordStat(q, ok, ms) {
   if (typeof run !== "undefined" && run && !run.statMeans) run.statMeans = _statMeans();   // the usual, fixed as the session starts (chat §8)
   const day = todayStr(), S = state.stats = state.stats || {}, d = S[day] = S[day] || {}, e = d[k] = d[k] || { n: 0, ok: 0, ms: 0 };
   e.n++; if (ok) e.ok++; if (ms != null && ms <= 180000) e.ms += ms;
+  if (k === "listen" && typeof run !== "undefined" && run) {   // the ear's hearings (chat 11/5): first-hear right, and replays beyond the first play
+    const replays = run.slotPlays || 0;                      // taps on the speaker after the first hearing
+    if (ok && replays === 0) e.fh = (e.fh || 0) + 1;
+    if (replays > 0) e.rp = (e.rp || 0) + replays;
+  }
   if (typeof run !== "undefined" && run) { run.statN = run.statN || {}; run.statN[k] = (run.statN[k] || 0) + 1; }
 }
 // at session end: the duration, and the expected time when every kind played had a usual (20 answers before it)

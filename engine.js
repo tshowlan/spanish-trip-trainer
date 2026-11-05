@@ -230,6 +230,12 @@ function rebuildDeck() {
 // phrases you've mastered as "incomplete" — no migration, nothing persisted, and it can't mark a
 // lesson falsely complete (all items correct ⇒ genuinely done). Works per active trip via DECK.
 function lessonDone(id) { return !!state.lessons[id] || lessonMastered(id); }
+// the items of every session marked Known (chat 11/5): Coverage credit 1.0, out of Retention, never reviewed, out of a place's score
+function knownItemIds() {
+  const out = new Set();
+  for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) if (state.lessons && state.lessons[l.id] && state.lessons[l.id].known) (l.items || []).forEach(it => { if (it.id) out.add(it.id); });
+  return out;
+}
 function lessonMastered(id) {
   for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) {
     if (l.id !== id) continue;
