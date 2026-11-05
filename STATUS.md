@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v593 (2026-11-04) — the played Sounds row wears Known's gold check
+- Tom: not a green check used once; the gold disc Known uses, without the tint or the K. The one-off green disc retired.
+
 ## v592 (2026-11-04) — the tile's words bubble stops above the tab bar and scrolls inside
 - Tom, on the bubble mocks: keep the bubble, never let it run under the tab bar, scroll inside it. The bubble's height is capped at the gap between its top and the tab bar (12px clear) and it scrolls inside; words and sentences alike.
 

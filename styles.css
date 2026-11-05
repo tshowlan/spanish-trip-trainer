@@ -2514,5 +2514,3 @@ html, body, button, input, textarea { font-variant-ligatures: no-common-ligature
 .presence { margin-top: 18px; } .whisper + .presence { margin-top: 10px; }
 /* the typed answer revealed in full (Tom 11/4): the input hides, a wrapping twin wears its state */
 .text-input.typed-hidden { display: none; } .text-input.typed-result { white-space: normal; overflow-wrap: anywhere; height: auto; line-height: 1.35; }
-/* a sounds session played: a quiet done check where the ring would be (Tom 11/4) */
-.done-disc { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--bg-elevated); color: var(--green); flex: none; }
