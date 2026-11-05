@@ -2080,6 +2080,16 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v591 (2026-11-04) — Tom's evening notes: eight fixes
+- **The exchange's breath.** 700 ms between your line and their reply, so two people are heard.
+- **Second chance retired** (STAGED replay): a miss is never re-served in the session; it comes back through review a day sooner (the SRS already sets a missed word's interval to one day).
+- **The month and the week count a session on the local day it was played.** Session stamps are UTC, so a 7 pm session landed on tomorrow's cell.
+- **A chapter session is done only by being played** (STAGED replay): words met in sentences or review no longer mark Counter words 2 or Words you'll hear as done, so the tile stops skipping them.
+- **The typed answer shows in full.** An input cannot wrap; on reveal a wrapping twin takes its place and its state.
+- **The English cue never names the Spanish answer.** "A caña, please." over "Una ___, por favor." now reads "A beer, please." (the word's own English stands in).
+- **The number chips** take the press class instead of :active (iOS kept :active until the next touch, so the grid shifted on every tap).
+- **Sounds you'll say** wears a done check on its Learn row once played. **The keypad's direction** reads Tap, not Say (nothing is spoken; chat's word to confirm).
+
 ## v590 (2026-11-04) — review by place (STAGED `review-places`) and pause-and-resume (STAGED `resume`)
 - **By place.** The Review sheet gains a By place row above By scenario; its sheet lists the six places with the Stats score and how many words and sentences there are to draw from; a place not met waits dim. The Learn tab's Topics view becomes the same six places as rows (the topic row dress, score bar, Not yet / Known / Strong / Fair / Low), each a review door. A tap runs the depth drill over the place's met items, weakest first. Copy is Code's draft for chat.
 - **Pause and resume.** The X's sheet, mid-session, now reads "Leave the session?" with Keep going, Pause (come back later), and Quit. Pause keeps the session's beats with their items as ids (`_serializeQs`), revived from the index on resume (`_reviveQs`), so it picks up at the same beat with the same forms. Home's tile puts a paused session first, "Continue: Counter sentences", "12 of 31 done", until the day ends; a new day drops it. Quit still starts fresh.

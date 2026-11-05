@@ -234,6 +234,7 @@ function lessonMastered(id) {
   for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) {
     if (l.id !== id) continue;
     if (l.noDerivedDone) return false;                  // a practice session over words met elsewhere is done only by being played
+    if (typeof isStaged === "function" && isStaged("replay") && st.id !== "sp-p1" && st.id !== "sp-p3") return false;   // the rebuilt chapters (Tom 11/4): a session is done only by being played; words met in sentences or review never mark it (Counter words 2 was skipped)
     return l.items.length > 0 && l.items.every(it => { const s = state.learn && state.learn[it.id]; return s && s.lastCorrect; });
   }
   return false;

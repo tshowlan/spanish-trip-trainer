@@ -25,6 +25,7 @@ function setHeroGround(pct) { try { localStorage.setItem("sts_hero_ground", Stri
 const STAT_KIND_ORDER = ["listen", "pick", "build", "type"];
 
 /* ---- helpers ---- */
+function _stDay(iso) { const d = new Date(iso); return isNaN(d) ? "" : dayStr(d); }   // the LOCAL day a session was played (its stamp is UTC: a 7pm session is not tomorrow's)
 function _stShortDate(iso) { const d = new Date(iso); return isNaN(d) ? "" : d.toLocaleDateString("en-US", { month: "short", day: "numeric" }); }
 function _stDur(ms) { const s = Math.round(ms / 1000); if (s < 60) return `${s} s`; const m = Math.floor(s / 60), r = s % 60; return r ? `${m} min ${r} s` : `${m} min`; }
 function _stHours(ms) { const m = Math.round(ms / 60000); if (m < 60) return `${m} min`; const h = Math.floor(m / 60), r = m % 60; return r ? `${h} h ${r} min` : `${h} h`; }
@@ -54,14 +55,14 @@ function statsData() {
   const sessions = (state.sessions || []).slice().sort((a, b) => (a.at || "") < (b.at || "") ? -1 : 1);
   const since14 = daysAgoStr(13), since56 = daysAgoStr(13 + 56);
   const sum = arr => arr.reduce((a, s) => ({ n: a.n + 1, ph: a.ph + (s.phrases || 0), ok: a.ok + (s.correct || 0) }), { n: 0, ph: 0, ok: 0 });
-  const recent = sessions.filter(s => (s.at || "").slice(0, 10) >= since14);
+  const recent = sessions.filter(s => _stDay(s.at) >= since14);
   const all = sum(sessions), win = sum(recent);
   const rate = a => a.ph ? Math.round(100 * a.ok / a.ph) : null;
   // places
   const places = STATS_PLACES.map(p => Object.assign({ key: p.key, name: p.name, icon: p.icon }, statsPlace(p)));
   // time: minutes per day from the sessions' durations
   const byDay = {}; let firstTimed = null;
-  sessions.forEach(s => { if (!s.ms) return; const d = (s.at || "").slice(0, 10); byDay[d] = (byDay[d] || 0) + s.ms; if (!firstTimed || d < firstTimed) firstTimed = d; });
+  sessions.forEach(s => { if (!s.ms) return; const d = _stDay(s.at); byDay[d] = (byDay[d] || 0) + s.ms; if (!firstTimed || d < firstTimed) firstTimed = d; });
   const week = []; for (let i = 6; i >= 0; i--) { const d = daysAgoStr(i); week.push({ day: d, ms: byDay[d] || 0, label: new Date(d + "T12:00:00").toLocaleDateString("en-US", { weekday: "short" }) }); }
   // by exercise: the window against the eight weeks before it
   const S = state.stats || {}; const kinds = {};

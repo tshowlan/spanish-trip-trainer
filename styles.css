@@ -2047,7 +2047,7 @@ img.scene-art { width: 286px; }
 .num-hand-label { margin: 16px 0 8px; }
 .num-chip { display: flex; align-items: baseline; gap: 10px; padding: 10px 14px; min-height: 46px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text);
   border-radius: var(--radius-sm); box-shadow: var(--shadow); cursor: pointer; font-family: var(--font-display); text-align: left; transition: transform .12s cubic-bezier(.34,1.56,.64,1), border-color 200ms; }
-.num-chip:active { transform: translateY(2px); box-shadow: var(--shadow-press); }
+.num-chip.press { transform: translateY(2px); box-shadow: var(--shadow-press); }   /* the press class, not :active (iOS keeps :active until the next touch: the grid shifted, Tom 11/4) */
 .num-chip .n { font-size: 19px; font-weight: 800; min-width: 30px; color: var(--accent); }
 .num-chip .w { font-size: 16px; font-weight: 500; }
 .num-chip.heard { border-color: var(--accent); }
@@ -2512,3 +2512,7 @@ body.home-lit .st-hero .st-cap, body.home-lit .st-hero .st-sub { color: rgba(255
 html, body, button, input, textarea { font-variant-ligatures: no-common-ligatures; }
 /* the destination's clock keeps the same distance from the Review row whether or not a whisper sits between (Tom 11/4) */
 .presence { margin-top: 18px; } .whisper + .presence { margin-top: 10px; }
+/* the typed answer revealed in full (Tom 11/4): the input hides, a wrapping twin wears its state */
+.text-input.typed-hidden { display: none; } .text-input.typed-result { white-space: normal; overflow-wrap: anywhere; height: auto; line-height: 1.35; }
+/* a sounds session played: a quiet done check where the ring would be (Tom 11/4) */
+.done-disc { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--bg-elevated); color: var(--green); flex: none; }

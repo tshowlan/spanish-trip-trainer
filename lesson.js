@@ -458,7 +458,7 @@ function renderReplyHear(q) {
   const said = q.es || item.es, meaning = q.en || item.en;
   // THE EXCHANGE, HEARD (STAGED exchange-voices, Tom 11/4): your line first in your voice, then their reply in another; slow slows the reply only
   const voices = !!(set && isStaged("exchange-voices"));
-  const hear = slow => { if (voices) speak(set.line, undefined, { onend: () => speak(said, slow ? 0.55 : undefined, { who: "them", queue: true }) }); else slow ? speak(said, 0.55) : speak(said); };
+  const hear = slow => { if (voices) speak(set.line, undefined, { onend: () => setTimeout(() => speak(said, slow ? 0.55 : undefined, { who: "them", queue: true }), 700) }); else slow ? speak(said, 0.55) : speak(said); };   // a breath between the two voices (Tom 11/4)
   const play = audioControl(hear, { speed: true });
   const stage = el(`<div class="listen-stage"></div>`);
   if (silent) stage.appendChild(el(`<div class="act-sit need you-said they-say"><span class="ys-label">${set ? "They say" : "The line"}</span><span class="ys-line">${said}</span></div>`));   // no sound: their line, labelled, under yours (Tom 10/26, mock A: the dialogue)
@@ -2741,7 +2741,12 @@ function renderWeld(q) {
     // standard resolution + correction). The cue chrome stays - the task is unchanged.
     const input = el(`<input class="text-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escribe aquí…">`);
     stage.appendChild(input);
-    if (anchored) { q.esOnStage = true; q.onResolve = () => { input.value = target; input.readOnly = true; input.blur(); }; }   // chapter 2's cold lap: the typed line is the es on stage (no-repeat), matured to the canonical form on resolve (Tom 10/25: the reveal doubled it and crowded the audio row)
+    if (anchored) { q.esOnStage = true; q.onResolve = () => {   // the right answer shown in full, wrapping (an input cannot wrap: Tom 11/4, the Table line cut off)
+      input.value = target; input.readOnly = true; input.blur();
+      const out = el(`<div class="text-input typed-result"></div>`); out.textContent = target; input.after(out); input.classList.add("typed-hidden");
+      const sync = () => { out.className = "text-input typed-result " + [...input.classList].filter(c => c !== "text-input" && c !== "typed-hidden").join(" "); };
+      sync(); requestAnimationFrame(() => requestAnimationFrame(sync)); setTimeout(sync, 400);
+    }; }   // chapter 2's cold lap: the typed line is the es on stage (no-repeat), matured to the canonical form on resolve (Tom 10/25: the reveal doubled it and crowded the audio row)
     if (anchored) { const topEl = body.querySelector(".top"); (topEl || body).appendChild(stage); body.classList.add("typed-lap"); }   // the field right under the English, in flow: when the keyboard opens the phone keeps the cue in view (Tom 10/25: the anchored seat scrolled it away)
     else body.appendChild(stage);
     setTimeout(() => input.focus(), 50);
@@ -3520,6 +3525,14 @@ function tableSituations(lesson) {
   shuffle((lesson.tables || []).slice()).forEach(tb => (tb.sits || []).forEach(s => out.push({ type: "sign_table", item: byDay(s.day), table: tb, sit: s, arc: true })));   // stories shuffled, beats in order (Tom 9/28)
   return out;
 }
+// an English context line that names the Spanish word itself ("A caña, please.") would give the blank away: the word's own English stands in (Tom 11/4)
+function _cueEnMasked(item) {
+  const en = item.contextEn || "", es = item.es || ""; if (!en || !es) return en;
+  const re = new RegExp("(^|[^\\p{L}])" + es.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?=$|[^\\p{L}])", "iu");
+  if (!re.test(en)) return en;
+  const gloss = String(item.en || "").split(/\s*\(/)[0].trim() || "___";
+  return en.replace(re, (m, pre) => pre + gloss);
+}
 function renderContextChoice(q) {
   const item = q.item, body = $("#qbody");
   const soundOff = run.soundOff || !("speechSynthesis" in window) || state.sound === false;
@@ -3535,7 +3548,7 @@ function renderContextChoice(q) {
     setTimeout(() => listenEscape($("#footer") || footer(``), q, { keep: true }), 0);   // "I can't listen right now" → the English-asked form
   } else {                                                                 // the English is the context (also the sound-off backup)
     top.appendChild(el(`<div class="direction">Fill in the blank</div>`));
-    top.appendChild(el(`<div class="conv-cuewrap"><div class="cue-meaning conv-cue">${item.contextEn}</div></div>`));
+    top.appendChild(el(`<div class="conv-cuewrap"><div class="cue-meaning conv-cue">${_cueEnMasked(item)}</div></div>`));
   }
   const span = _findSpan(item.contextEs, item.es) || [0, item.contextEs.length];
   const before = item.contextEs.slice(0, span[0]), after = item.contextEs.slice(span[1]);
@@ -3664,7 +3677,7 @@ function renderNumPad(q) {
   const item = q.item, body = $("#qbody"); _anchor(body);
   const top = el(`<div class="top"></div>`);
   if (q.reverse) {
-    top.appendChild(el(`<div class="direction">Say</div>`));
+    top.appendChild(el(`<div class="direction">Tap</div>`));
     top.appendChild(el(`<div class="conv-cuewrap"><div class="cue-meaning conv-cue">${item.en}</div></div>`));
   } else {
     top.appendChild(el(`<div class="direction">You hear</div>`));
@@ -4617,6 +4630,7 @@ function showCorrection(item, extra, wrong, words) {
 }
 // missed item → re-serve later in the session, one ladder rung easier (capped to avoid spirals)
 function requeueMiss(item, failedType) {
+  if (isStaged("replay")) return;                        // SECOND CHANCE RETIRED (Tom 11/4): a miss informs and comes back through review a day sooner, never re-served in the session
   const id = itemId(item); if (!id) return;
   run.reasks[id] = run.reasks[id] || 0;
   if (run.reasks[id] >= 2) return;                       // cap at 2 re-asks/item; M2 warm-up catches the rest
@@ -4705,5 +4719,5 @@ function finishReview() {
 
 /* the board tiles' press (Tom 10/19): a class set while the finger is down, cleared the moment it lifts or the touch is cancelled.
    iPhone's own :active stuck to a tapped tile until the next touch (the tile sat sunk while selected and popped up at the match). */
-document.addEventListener("pointerdown", e => { const c = e.target.closest && e.target.closest(".pcard"); if (c) c.classList.add("press"); }, { passive: true });
-["pointerup", "pointercancel"].forEach(ev => document.addEventListener(ev, () => document.querySelectorAll(".pcard.press").forEach(c => c.classList.remove("press")), { passive: true }));
+document.addEventListener("pointerdown", e => { const c = e.target.closest && e.target.closest(".pcard, .num-chip"); if (c) c.classList.add("press"); }, { passive: true });
+["pointerup", "pointercancel"].forEach(ev => document.addEventListener(ev, () => document.querySelectorAll(".pcard.press, .num-chip.press").forEach(c => c.classList.remove("press")), { passive: true }));

@@ -69,3 +69,4 @@
 - 11/3 (v587): the four chapter-2 rooms retire once the last place exists (sentences-3); review never serves the machine weld; the review tile's words bubble wraps.
 - 11/4 (v589): the exchange heard (STAGED `exchange-voices`): your line, then their reply in a second voice.
 - 11/4 (v590): review by place (STAGED `review-places`): a By place row on the Review sheet and Learn's Topics as the six places; pause and resume (STAGED `resume`): Pause on the X's sheet, Continue on Home's tile until the day ends.
+- 11/4 (v591): second chance retired and sessions done only by play (both under `replay`); the month counts local days; typed answers show in full; the English cue never names the answer; number chips stop shifting; Sounds you'll say gets its check; the keypad says Tap.
