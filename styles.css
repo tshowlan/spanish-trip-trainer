@@ -2517,9 +2517,8 @@ html, body, button, input, textarea { font-variant-ligatures: no-common-ligature
 /* the words bubble that overflows fades out over its last line (Tom 11/4, option D) */
 .home .tile-pop.overflowing { -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 40px), transparent 100%); mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 40px), transparent 100%); }
 .home .tile-pop.overflowing.at-end { -webkit-mask-image: none; mask-image: none; }   /* scrolled to the end: nothing more below, no fade */
-/* THE CEREMONY'S GLOW (STAGED ceremony-glow, Tom 11/5, mock C): the app icon's own candle at the top, strong and quick to fade; and the
-   candle stays lit beneath, so the ceremony sits on the tabs' ground instead of black */
-body.in-ceremony.cer-ground .tab-candle { opacity: 1; }
+/* THE CEREMONY'S GLOW (STAGED ceremony-glow, Tom 11/5, mock C): the app icon's own candle at the top, strong and quick to fade, on the tabs' navy ground */
+/* the candle stays hidden in the ceremony (Tom 11/5: the light comes from the top only, never the bottom-left corner); the ground is the tabs' navy */
 .cer-layer.glow-c .cer-tint, :root[data-theme="dark"] .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.9) 0%, rgba(207,116,48,.5) 22%, rgba(224,149,43,.18) 48%, rgba(230,198,42,.04) 72%, rgba(0,0,0,0) 90%); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.9) 0%, rgba(207,116,48,.5) 22%, rgba(224,149,43,.18) 48%, rgba(230,198,42,.04) 72%, rgba(0,0,0,0) 90%); } }
 :root[data-theme="light"] .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.45) 0%, rgba(207,116,48,.22) 22%, rgba(224,149,43,.08) 48%, rgba(0,0,0,0) 80%); }
