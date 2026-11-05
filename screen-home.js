@@ -824,8 +824,11 @@ function heroTile() {
       if (cut < 140) cut = padTop + rh * 2.5;
       maxH = Math.min(maxH, Math.round(cut));
       pop.classList.add("overflowing");
+      const atEnd = () => pop.classList.toggle("at-end", pop.scrollTop + pop.clientHeight >= pop.scrollHeight - 2);   // the fade lifts at the end of the scroll (Tom 11/5)
+      pop.addEventListener("scroll", atEnd, { passive: true }); pop._atEnd = atEnd;
     }
     pop.style.maxHeight = maxH + "px"; pop.style.overflowY = "auto"; pop.style.webkitOverflowScrolling = "touch";
+    if (pop._atEnd) pop._atEnd();   // judged once the height is capped, not before
     pill.classList.add("on"); pill.setAttribute("aria-expanded", "true");
     const close = ev => { if (pop.contains(ev.target) || pill.contains(ev.target)) return; pop.remove(); pill.classList.remove("on"); pill.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", close, true); };
     setTimeout(() => document.addEventListener("pointerdown", close, true), 0);
