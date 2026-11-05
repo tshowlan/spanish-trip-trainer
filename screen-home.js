@@ -813,6 +813,9 @@ function heroTile() {
     home.appendChild(pop);
     const hr = home.getBoundingClientRect(), pr = pill.getBoundingClientRect();
     pop.style.top = (pr.bottom - hr.top + 14) + "px"; pop.style.left = (pr.left - hr.left) + "px";
+    // the bubble never runs under the tab bar: it stops 12px above it and scrolls inside (Tom 11/4; a long list of sentences)
+    const tb = document.getElementById("tabbar"), tbTop = tb ? tb.getBoundingClientRect().top : innerHeight, popTop = pop.getBoundingClientRect().top;
+    pop.style.maxHeight = Math.max(140, Math.floor(tbTop - popTop - 12)) + "px"; pop.style.overflowY = "auto"; pop.style.webkitOverflowScrolling = "touch";
     pill.classList.add("on"); pill.setAttribute("aria-expanded", "true");
     const close = ev => { if (pop.contains(ev.target) || pill.contains(ev.target)) return; pop.remove(); pill.classList.remove("on"); pill.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", close, true); };
     setTimeout(() => document.addEventListener("pointerdown", close, true), 0);
