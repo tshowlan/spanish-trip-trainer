@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v598 (2026-11-05) — the still ceremony (STAGED `ceremony-still`)
+- Tom's recording: Bathroom words ended with all three dials up at once, Street words with the full performance. The difference was the July rule: when no dial's rounded number changed, the ceremony skipped Act 1 (a delta on a still dial reads as a contradiction). Bathroom words is five words, four of them signs, so nothing moved a point. Staged: the entrance runs the same either way; the ticks and deltas still wait for a change. The brisker dissolve for a still session stays.
+- For chat: a line for the still case ("Holding." or the like) under the facts, if the voice wants one; and Bathroom words reads thin (five items, four read-only signs): fold the four signs into Signs you'll read and seat El baño with the Table words?
+
 ## v597 (2026-11-05) — the ceremony's light from the top only
 - Tom: no light from the bottom-left corner. The candle stays hidden during the ceremony again; the icon's light at the top is the only light. The ground beneath is the tabs' navy (`--bg`), checked against the Learn tab.
 

@@ -289,7 +289,9 @@ function sessionEndCeremony(home, data, reduced) {
   const before = data.before, after = data.after, facts = data.facts || {};
   const moved = m => before[m] != null && after[m] != null && Math.round(before[m]) !== Math.round(after[m]);
   const anyMoved = ["readiness", "momentum", "retention"].some(moved);
-  const emptyish = reduced || !anyMoved;               // no isolated-performance beat (§6b cases)
+  // the still ceremony (STAGED ceremony-still, Tom 11/5): the dials perform the same entrance whether or not a number moved; only the
+  // ticks and deltas wait for a change. Before: a session that moved nothing skipped the performance (§6b), and the end felt broken.
+  const emptyish = reduced || (!anyMoved && !isStaged("ceremony-still"));   // no isolated-performance beat (§6b cases)
   const hero = home.querySelector(".hero");
   const cardR = home.querySelector("#sc-readiness"), cardM = home.querySelector("#sc-momentum"), cardT = home.querySelector("#sc-retention");
   const timers = [];
