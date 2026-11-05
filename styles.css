@@ -2514,3 +2514,5 @@ html, body, button, input, textarea { font-variant-ligatures: no-common-ligature
 .presence { margin-top: 18px; } .whisper + .presence { margin-top: 10px; }
 /* the typed answer revealed in full (Tom 11/4): the input hides, a wrapping twin wears its state */
 .text-input.typed-hidden { display: none; } .text-input.typed-result { white-space: normal; overflow-wrap: anywhere; height: auto; line-height: 1.35; }
+/* the words bubble that overflows fades out over its last line (Tom 11/4, option D) */
+.home .tile-pop.overflowing { -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 40px), transparent 100%); mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 40px), transparent 100%); }

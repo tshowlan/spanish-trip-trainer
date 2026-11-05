@@ -815,7 +815,17 @@ function heroTile() {
     pop.style.top = (pr.bottom - hr.top + 14) + "px"; pop.style.left = (pr.left - hr.left) + "px";
     // the bubble never runs under the tab bar: it stops 12px above it and scrolls inside (Tom 11/4; a long list of sentences)
     const tb = document.getElementById("tabbar"), tbTop = tb ? tb.getBoundingClientRect().top : innerHeight, popTop = pop.getBoundingClientRect().top;
-    pop.style.maxHeight = Math.max(140, Math.floor(tbTop - popTop - 12)) + "px"; pop.style.overflowY = "auto"; pop.style.webkitOverflowScrolling = "touch";
+    let maxH = Math.max(140, Math.floor(tbTop - popTop - 12));
+    // THE SCROLL HINT (Tom 11/4, option D): when the list overflows, the bubble's bottom fades and its height is set so a row is cut mid-way
+    const r0 = pop.querySelector(".pl-row");
+    if (r0 && pop.scrollHeight > maxH) {
+      const rh = r0.getBoundingClientRect().height || 28, padTop = parseFloat(getComputedStyle(pop).paddingTop) || 0;
+      let cut = padTop + Math.floor((maxH - padTop) / rh) * rh - rh / 2;   // the last visible row ends half-way
+      if (cut < 140) cut = padTop + rh * 2.5;
+      maxH = Math.min(maxH, Math.round(cut));
+      pop.classList.add("overflowing");
+    }
+    pop.style.maxHeight = maxH + "px"; pop.style.overflowY = "auto"; pop.style.webkitOverflowScrolling = "touch";
     pill.classList.add("on"); pill.setAttribute("aria-expanded", "true");
     const close = ev => { if (pop.contains(ev.target) || pill.contains(ev.target)) return; pop.remove(); pill.classList.remove("on"); pill.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", close, true); };
     setTimeout(() => document.addEventListener("pointerdown", close, true), 0);
