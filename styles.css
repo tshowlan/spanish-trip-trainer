@@ -2508,3 +2508,7 @@ body.home-lit .st-hero .st-cap, body.home-lit .st-hero .st-sub { color: rgba(255
 /* the tile's words bubble: long sentences wrap, the English on its own line at the right when it must (Tom 11/3) */
 .home .tile-pop { white-space: normal; }
 .tile-pop .pl-row { flex-wrap: wrap; } .tile-pop .pl-row b { flex: 1 1 auto; } .tile-pop .pl-row i { flex: 0 1 auto; max-width: 100%; }
+/* no ligatures anywhere (Tom 11/4: the joined f and i in 'fifty') */
+html, body, button, input, textarea { font-variant-ligatures: no-common-ligatures; }
+/* the destination's clock keeps the same distance from the Review row whether or not a whisper sits between (Tom 11/4) */
+.presence { margin-top: 18px; } .whisper + .presence { margin-top: 10px; }

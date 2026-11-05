@@ -752,7 +752,9 @@ function heroState() {
     const fad = fadingItems().filter(x => x.strength < 55).slice(0, 12).map(x => ITEM_INDEX[x.id]).filter(Boolean);
     if (fad.length) return { kind: "review", title: `${dv.fading} phrases are fading. Bring them back.`, sub: "Point today at review, not new content", pool: fad, run: () => startReview(fad) };
   }
-  if (backlog.length >= 15) {
+  // ONE SET A DAY (Tom 11/4, STAGED replay): once today's set is done the tile moves on; Practice still serves another; a queue of thirty earns a second set
+  const setDone = isStaged("replay") && state.reviewSetDay === todayStr() && backlog.length < 30;
+  if (backlog.length >= 15 && !setDone) {
     const portion = Math.min(8, backlog.length);   // mirrors the depth composer's set size
     return { kind: "review", title: `Bring back today's ${portion}`, sub: `${backlog.length} in the queue. A set a day works it down.`, pool: backlog, run: () => startReview(backlog) };
   }

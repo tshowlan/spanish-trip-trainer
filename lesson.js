@@ -522,6 +522,8 @@ function _hairlineWords(host, item) {
     while ((m = re.exec(text))) { const a = m.index, b = a + m[0].length; if (!marks.some(k => a < k.end && b > k.start)) { marks.push({ start: a, end: b, en: w[1] }); break; } }
   });
   marks.sort((a, b) => a.start - b.start);
+  // a mark keeps the punctuation glued to it (¿ before, ?!., after), so a line never breaks between a word and its question mark (Tom 11/4)
+  marks.forEach(k => { while (k.start > 0 && /[\u00bf\u00a1("\u00ab]/.test(text[k.start - 1])) k.start--; while (k.end < text.length && /[?!.,;:"\u00bb)]/.test(text[k.end])) k.end++; });
   const esc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
   let html = "", pos = 0;
   marks.forEach(k => { html += esc(text.slice(pos, k.start)) + `<span class="hl" data-en="${esc(k.en).replace(/"/g, "&quot;")}">${esc(text.slice(k.start, k.end))}</span>`; pos = k.end; });
@@ -1008,7 +1010,7 @@ function _sentenceReviewForms(it, st) {
   Object.assign(build, { place: it.place, arc: false, resNote: null });
   if (strength >= 40) Object.assign(build, { inputForm: "typed", cueRole: "Say it in Spanish", hint: null });
   forms.push(build);
-  if ((it.replies || []).length) { const r = _pickReply(it, _replyCtx((ALL_ITEMS || []).filter(x => x.sentence && x.place === it.place), 1)); forms.push({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place: it.place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]) }); }
+  if ((it.replies || []).length) { const rc = _replyCtx((ALL_ITEMS || []).filter(x => x.sentence && x.place === it.place), 1); if (_reviewHeard) rc.heard = _reviewHeard; const r = _pickReply(it, rc); forms.push({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place: it.place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]) }); }
   return forms.slice(0, strength < 55 ? 3 : 2);
 }
 /* THE REPLAY (Tom 11/3, STAGED replay): a completed session, tapped again, goes straight in. The door's three cases compose it:
@@ -1098,8 +1100,10 @@ function practicePickLine(picked) {
   if (!bits.length) bits.push("your weakest");
   return `${picked.length} items: ${bits.join(" + ")}`;
 }
+let _reviewHeard = null;   // the replies heard in this review's composition: never the same one twice in a play (Tom 11/4: Ahora mismo twice running)
 function _composeDepth(pool, opts) {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();
+  _reviewHeard = new Set();
   const picked = _practicePick(pool, opts);
   if (!picked.length) return [];
   state.practiceLine = practicePickLine(picked);
@@ -4657,6 +4661,7 @@ function _sessionEndBookkeeping(sessionRec, factsOverride) {
 /* pure-review completion: log the session for Momentum/Recency, but mark no lesson */
 function finishReview() {
   const now = new Date().toISOString();
+  state.reviewSetDay = todayStr();                      // today's set is done: the tile moves on (Tom 11/4, STAGED replay)
   const total = run.qs.length, correct = Math.max(0, total - run.wrong);
   _sessionEndBookkeeping({ at: now, lessonId: "__review__", category: "Review", phrases: total, correct });
 }

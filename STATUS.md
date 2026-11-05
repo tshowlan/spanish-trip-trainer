@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v588 (2026-11-04) — four small fixes and one set a day
+- The YOU SAID line's question mark no longer wraps alone: a hairline mark keeps the punctuation glued to it (¿ before, ?!., after).
+- A review never serves the same reply twice in one play: the exchange's "heard" memory is now one per review composition (it was one per sentence, so Ahora mismo came up twice running).
+- No ligatures anywhere (the joined f and i in "fifty").
+- The destination's clock line keeps the same distance from the Review row whether or not a whisper sits between.
+- ONE SET A DAY (STAGED `replay`, Tom): once a review has run today (`state.reviewSetDay`), the "Bring back today's 8" tile gives way to the next recommendation; Practice still serves another set; a queue of thirty earns a second set. Verified in the pane.
+
 ## v587 (2026-11-03) — the rooms retire; no "The weld" in review; the review bubble wraps
 - Tom met "THE WELD · The waiter passes close · SAY IT IN SPANISH" in a review: a machine weld over a ROOM item (room-asking-1, the old chapter-2 rooms, still seated after the places and still on Learn). The 10/24 ruling said the rooms retire with the last place; Paying exists (sentences-3), so the rooms now leave chapter 2 and the deck when sentences-3 is on (engine.js `_chapterFlowDeck`). Their phrases live on as place sentences; their history stays harmlessly on the records.
 - A framed phrase that still reaches review (the old chapters 3 and 4 carry frames) comes back as the sentence built from its English, anchored, typed once climbed (STAGED replay); the machine weld and its header are no longer served in review. The machine_drill renderer keeps its header for a machine session, if one is ever played.
