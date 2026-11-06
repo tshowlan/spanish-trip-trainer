@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## 2026-11-06 — handoff to chat (docs/chat-handoff-2026-11-06.md): short
+- Two asks (the taxi card's example line; where the intro cards live after the first meeting, two rulings), one confirmation (the door plates' act keyed to the intake's adjective-forms question), four to-knows (v607 ships and the still-staged list; the carded-frame fix; the ceremony's ground; the 11/05b rulings applied). Sent early and short per Tom's 11/5 cadence rule.
+
 ## v610 (2026-11-06) — the ceremony's ground stays the flat navy: A/B/C retired
 - Tom played the v609 options and Current still wins: the ground under the dials holds the flat navy for the whole ceremony, the top glow the light source, the corner candle waiting for Continue.
 - Removed: the `.cer-ambient` layer and its CSS, the `amb-a/b/c` and `lit` classes and timers in `sessionEndCeremony`, the `sts_cer_ground` key (cleared on the next lab play). The Test Lab row is now a single "Play the session's end" button with the pretend result (4 new, 6 stronger, 1 restored).
