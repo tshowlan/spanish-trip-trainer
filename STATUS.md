@@ -2080,6 +2080,11 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v610 (2026-11-06) — the ceremony's ground stays the flat navy: A/B/C retired
+- Tom played the v609 options and Current still wins: the ground under the dials holds the flat navy for the whole ceremony, the top glow the light source, the corner candle waiting for Continue.
+- Removed: the `.cer-ambient` layer and its CSS, the `amb-a/b/c` and `lit` classes and timers in `sessionEndCeremony`, the `sts_cer_ground` key (cleared on the next lab play). The Test Lab row is now a single "Play the session's end" button with the pretend result (4 new, 6 stronger, 1 restored).
+- Ruling recorded in docs/decisions.md.
+
 ## v609 (2026-11-05) — the ceremony's ground, read right: the ambient tone, not the photo
 - Tom's clarification of v608: not the photo. On Home the candle wash reaches the whole screen, so even away from the glow the ground is the navy warmed by a little gold; in the ceremony the candle is off and the ground is the flat navy. He wants the lower screen to move from that black to Home's ambient tone as the dials land, with the top glow staying the light source.
 - Built: a `.cer-ambient` fill under the tint, filling in over 2.2s once the ceremony is lit (as readiness begins to tick), draining over 2.2s on Continue as the candle breathes in. Three strengths from the Test Lab: A the wash's far tail (5% gold), B its middle (9%), C nearer the glow (14%); the top glow holds in all three; the photo and the corner candle stay off until Continue. The v608 photo variants are retired (their CSS and body classes gone).

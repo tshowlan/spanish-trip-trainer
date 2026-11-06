@@ -2516,15 +2516,4 @@ html, body, button, input, textarea { font-variant-ligatures: no-common-ligature
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.9) 0%, rgba(207,116,48,.5) 22%, rgba(224,149,43,.18) 48%, rgba(230,198,42,.04) 72%, rgba(0,0,0,0) 90%); } }
 :root[data-theme="light"] .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.45) 0%, rgba(207,116,48,.22) 22%, rgba(224,149,43,.08) 48%, rgba(0,0,0,0) 80%); }
 .band-chip.holding { color: var(--text-dim); background: var(--bg-elevated); border-color: transparent; }
-/* THE GROUND LIGHTENS (Tom 11/5, Test Lab options, played from the lab): under the dials the ceremony's ground is the flat navy (the candle is
-   off); on Home the candle wash reaches the whole screen, so even away from the glow the ground is that navy warmed by a little gold.
-   Once lit (as readiness begins to tick) the ambient fills in over 2.2s, so the dials land on Home's own ground tone; the top glow
-   stays the light source; the corner candle waits for Continue. A: the wash's far tail. B: its middle. C: nearer the glow. */
-.cer-layer .cer-ambient { position: absolute; inset: 0; opacity: 0; transition: opacity 2200ms cubic-bezier(.3,.05,.2,1); }
-.cer-layer.amb-a .cer-ambient { background: rgba(230,198,42,.05); }
-.cer-layer.amb-b .cer-ambient { background: rgba(230,198,42,.09); }
-.cer-layer.amb-c .cer-ambient { background: rgba(230,198,42,.14); }
-:root[data-theme="light"] .cer-layer .cer-ambient { background: transparent; }   /* the light theme's ground is already cream */
-.cer-layer.lit .cer-ambient { opacity: 1; }
-.cer-layer.dissolving .cer-ambient { opacity: 0; transition-duration: 2200ms; }   /* drains as the candle breathes in on the return, so the ground never dips back to black */
    /* the still ceremony: the dial's chip says Holding (Tom 11/5, option C) */
