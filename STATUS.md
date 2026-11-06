@@ -2080,6 +2080,14 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v605 (2026-11-05) — chat's evening rulings applied (docs/rulings-1105b.md)
+- **Paying:** ¿Todo bien? glossed "How was everything?" (replies are glossed by speech act). The Está bien así card's note says "hand over the money"; the sentence's own note dropped, so it shows once.
+- **Street:** the taxi card (Al hotel) leads its two a-lines, under `reply-sets` with them. The constitution's one-frame rule gains the taxi exception until chapter 3's transport session.
+- **The carded frame leads, for real:** the v601 rule never held. The ¿Está ___? card's key kept the slot's underscores, so it matched no frame, and the builds were shuffled after the ordering anyway. Now the slot and its punctuation drop from the key, a card may name its frame outright (`frame: "a"`), and the carded frames' builds are pulled to the front after the shuffle, in card order. Checked on all six place sessions: card(s), then that frame's build.
+- **Bathroom words:** aseos "restrooms" (Restrooms, to the right); servicios stays "bathrooms"; papel "toilet paper" with the context "No hay papel. / There's no toilet paper." and the tightened note.
+- **Signs you'll read:** Caballeros and Señoras are full plates (place line, wall, need, note, act). The act is keyed to a gender on the profile (`act.gender`, m / f) and skipped when the profile has none. **The intake asks no gender today**, so the act is dormant for every learner until it does; noted for chat in the ledger.
+- Chat's STATUS line (verbatim): 2026-11-05 (evening) — Chat: three asks and three confirmations answered (docs/rulings-1105b.md): the ¿Todo bien? gloss, the taxi card (block included), bathrooms/restrooms, the Está bien así card's note, the two door plates written, papel as toilet paper. Next for Code: apply; then Tom plays and ships by switch.
+
 ## v604 (2026-11-05) — Holding on the dial (option C)
 - Tom's pick of the four placements: when no dial moved, the readiness dial's band chip reads Holding for the ceremony, in the chip's own dress but dim, and returns to its band (Fair, Low) on Continue. The ledger row "Holding." retires.
 

@@ -247,7 +247,7 @@ function kitRungFor(lesson, item, pool, k) {
     const emph = earOn() ? lesson.emphasis : null;
     if (emph === "read" && platesOn(lesson)) {   // signs as signs: act (if the sign has a situation) · which sign (if it answers a need) · pick its meaning
       const pf = [];
-      if (item.act) pf.push(() => ({ type: "sign_act", item, pool, arc: true }));
+      if (item.act && (!item.act.gender || (state.profile && state.profile.gender === item.act.gender))) pf.push(() => ({ type: "sign_act", item, pool, arc: true }));   // a gendered act (the door plates, chat 11/5b) plays only for the learner it fits; none set, no act
       if (item.need) pf.push(() => ({ type: "sign_which", item, pool, arc: true }));
       pf.push(() => ({ type: "mc_es2en", item, pool, arc: true }));
       return pf[(k || 0) % pf.length]();
@@ -401,7 +401,7 @@ function composeSentences(lesson) {
   const frames0 = new Map();
   pool.forEach(it => { const k = it.frame || norm(it.es); if (!frames0.has(k)) frames0.set(k, []); frames0.get(k).push(it); });
   // a frame that was just introduced on a card leads the ladder (Tom 11/5: the ¿Está? card, then a taxi line, read as a jump); the rest keep the pack's order
-  const cardKeys = cards.map(c => norm(c.es).replace(/[\u00bf?\u00a1!]/g, "").trim()).filter(k => frames0.has(k));
+  const cardKeys = cards.map(c => c.frame || norm(c.es).replace(/[\u00bf?\u00a1!_,.]/g, "").trim()).filter(k => frames0.has(k));   // the slot and its punctuation drop (¿Está ___? is the frame esta); a card may name its frame outright (the taxi card: "Al hotel" leads the a-lines)
   const frames = new Map();
   cardKeys.forEach(k => frames.set(k, frames0.get(k)));
   frames0.forEach((list, k) => { if (!frames.has(k)) frames.set(k, list); });
@@ -429,7 +429,10 @@ function composeSentences(lesson) {
   exchanges.forEach(x => { const c = core(x.es); if ((used.get(c) || 0) > 1) { const alts = (x.item.replies || []).filter(r => !used.has(core(r[0]))); const alt = alts.length ? alts.sort((p, q) => (_replyFreq.get(core(p[0])) || 0) - (_replyFreq.get(core(q[0])) || 0))[0] : null; if (alt) { used.set(c, used.get(c) - 1); x.es = alt[0]; x.en = alt[1]; used.set(core(alt[0]), 1); } } });
   let exs = shuffle(exchanges);
   for (let t = 0; t < 60 && exs.some((q, i) => i > 0 && core(exs[i - 1].es) === core(q.es)); t++) exs = shuffle(exchanges);   // never the same reply, or its twin, twice in a row
-  noSeam(shuffle(builds)); noSeam(shuffle(ears)); noSeam(exs); noSeam(shuffle(picks)); noSeam(shuffle(typed));
+  // the carded frames' builds lead, in card order (the card, then its own line; chat 11/5b confirms); the rest shuffled
+  const bs = shuffle(builds), leadBuilds = [];
+  cardKeys.forEach(k => { const i = bs.findIndex(q => q.item && (q.item.frame || norm(q.item.es)) === k); if (i >= 0) leadBuilds.push(bs.splice(i, 1)[0]); });
+  noSeam(leadBuilds.concat(bs)); noSeam(shuffle(ears)); noSeam(exs); noSeam(shuffle(picks)); noSeam(shuffle(typed));
   return qs;
 }
 function composeReplies(lesson) {
