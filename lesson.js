@@ -301,12 +301,13 @@ function composeRoom(lesson) {
    per phrase, the FORMS ROTATING so nothing repeats -> the lap is the LISTENING board (every
    phrase once, by ear; the words board again when sound is off) -> the close in a scaffolded
    form. The weave is retired (Tom: no). */
-function composeKitInterleaved(lesson, newItems, reviewPool, rungCap) {
+function composeKitInterleaved(lesson, newItems, reviewPool, rungCap, opts) {
   const qs = [];
-  const pool = newItems.length ? newItems : (lesson.items || []);
+  const all = !!(opts && opts.all);                                                   // a replay (Tom 11/5): the whole session, cards only for words never met
+  const pool = all ? (lesson.items || []).filter(it => !it.card) : (newItems.length ? newItems : (lesson.items || []));
   const daysSet = platesOn(lesson) && lesson.tables;                                 // days: met as a set (Tom 9/28), no board
   if (daysSet) qs.push({ type: "days_set", items: pool.slice(), arc: true });
-  else pool.forEach(it => qs.push({ type: "present", item: it, arc: true }));           // 1. meet them all
+  else (all ? newItems : pool).forEach(it => qs.push({ type: "present", item: it, arc: true }));   // 1. meet them all (a replay meets only the new ones)
   if (pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });   // 2. the words board (the days keep it too, Tom 9/28)
   if (platesOn(lesson) && lesson.tables) tableSituations(lesson).forEach(s => qs.push(s));   // 3. days: the timetables, one situation each (Tom 9/26)
   else pool.forEach((it, i) => qs.push(kitRungFor(lesson, it, pool, i)));                // 3. one rung each, forms rotating
@@ -360,7 +361,7 @@ function _sentenceBuild(it, pool) {
   const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
   const tiles = tilesOf(it.es);
   const others = [...new Set(pool.filter(x => x !== it).flatMap(x => tilesOf(x.es)).filter(w => w && !tiles.includes(w)))];
-  return { type: "weld", item: it, pool, target: it.es, tiles, distractors: sample(others, Math.min(2, others.length)), targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint, resNote: (it.note && !((learnPeek(it) || {}).noteShown)) ? it.note : null };   // two strays in chapter 2's banks (Tom 10/25); a sentence's note rides its reveal (croissant's spelling, 10/25)
+  return { type: "weld", item: it, pool, target: it.es, tiles, distractors: sample(others, Math.min(2, others.length)), targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint, resNote: (it.note && (!((learnPeek(it) || {}).noteShown) || (((learnPeek(it) || {}).missRun || 0) >= 2 && ((learnPeek(it) || {}).missRun % 2 === 0)))) ? it.note : null };   // two strays in chapter 2's banks (Tom 10/25); a sentence's note rides its reveal (croissant's spelling, 10/25)
 }
 /* THE REPLY THAT IS THIS SENTENCE'S OWN (Tom 10/29: Un momento and Ahora mismo answered half of chapter 2). A sentence's three replies
    carry one or two stock answers (wait, right away, of course) beside one that only this ask gets (El hospital, todo recto; Son cinco;
@@ -834,6 +835,10 @@ function composeSession(lesson) {
 
   const qs = [];
 
+  // A SESSION OPENED AGAIN IS THE FULL RUNDOWN (Tom 11/5, STAGED replay): a chapter-one kit replays as the whole session in its own
+  // shapes, cards only for words it gained since, every word on the board and its rung, the listening board to close
+  if (isStaged("replay") && isStaged("journey-1") && lessonDone(lesson.id) && chapterOf(lesson) === 0 && !lesson.sounds && !lesson.numbers)
+    return _priceCloser(lesson, composeKitInterleaved(lesson, newItems, [], rungCap, { all: true }));
   // redo of a completed lesson → no new items to weave, just drill.
   // §4.1 replay rule holds by construction: presentation cards key on exposures === 0,
   // so replayed items enter at their current rung, never back at the card.
@@ -1028,12 +1033,9 @@ function _sentenceReviewForms(it, st) {
 function startReplay(lesson) {
   // chapter 2 (the asks, the places, the replies): the whole session again, in its own shape; the exchange's replies rotate (the
   // sentence's heard list first), a dietary line comes in its variant, no primer. The full session is the replay (Tom 11/3).
-  if (lesson.sentences || lesson.asks || lesson.replySet) return _startLessonProper(lesson);
-  const items = (lesson.items || []).filter(it => !it.card && exposuresOf(it) >= 1);
-  if (!items.length) return _startLessonProper(lesson);
-  const fading = items.filter(it => { const st = learnPeek(it); return st && itemStrength(st) < RETENTION_FADE; });
-  // chapter 1: every word of the session, weakest first, in chapter one's shapes; mostly faded starts scaffolded
-  startReview(items, { all: true, scaffoldFirst: fading.length > items.length * DOOR_GONE_FRAC, label: lesson.title });
+  // every kind (Tom 11/5): a session opened again from Learn is the full rundown, new words included (Bathroom words gained five and the
+  // replay served only the three already met). The depth drill over a session's words stays Practice's.
+  return _startLessonProper(lesson);
 }
 function _ch1LessonOf(it) {
   for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) if (!l.sounds && chapterOf(l) === 0 && (l.items || []).some(x => x.id === it.id)) return l;
