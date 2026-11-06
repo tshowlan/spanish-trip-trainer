@@ -136,14 +136,6 @@ function renderProfile() {
   wrap.appendChild(dietRow);
   // the intake's Known screen (chat 11/1, STAGED intake-known): a look without re-onboarding
   if (isStaged("intake-known")) { const kb = el(`<button class="btn-quiet" style="margin:0 0 10px">Show the intake's Known screen</button>`); kb.addEventListener("click", () => renderOnboarding({ screen: "known", preview: true })); wrap.appendChild(kb); }
-  // the photo's translucent wash under Spain and the dials (Tom 10/29, mock dev/trip-block-options-2.html): none, A, B, C
-  const washRow = el(`<div class="lab-row" style="display:block;margin:0 0 10px"><div class="lab-lbl" style="margin-bottom:6px">Home: Spain and the countdown (Halo: a dark glow hugging the letters, like the logo's white one; B and C: the photo settles into a wash)</div><div style="display:flex;flex-wrap:wrap;gap:6px"></div></div>`);
-  [["", "None"], ["wash-h1", "Halo"], ["wash-h2", "Halo, wider"], ["wash-b", "B"], ["wash-c", "C"]].forEach(([k, label]) => {
-    const b = el(`<button class="btn-quiet" style="margin:0">${label}</button>`);
-    b.addEventListener("click", () => { try { if (k) localStorage.setItem("sts_home_wash", k); else localStorage.removeItem("sts_home_wash"); } catch (e) {} toast(k ? `Wash ${label}: open Home` : "No wash"); });
-    washRow.lastElementChild.appendChild(b);
-  });
-  wrap.appendChild(washRow);
   // scene readiness readout (never trust self-reported success): each scene's due-mass vs the
   // bar it must clear today, plus a "Make ready" that puts its phrases due so the door can show
   const scRow = el(`<div class="lab-row"><div class="lab-lbl">Scenes: due-mass vs the bar (${sceneMassMin().toFixed(1)} today, tilt ${tiltShare().toFixed(2)}, staging ${stagingOn() ? "ON" : "off"})</div><div id="lab-scenes"></div></div>`);
@@ -208,17 +200,11 @@ function _labCard(wrap) {
       <button class="btn" id="lab-apply">Apply</button>
       <button class="btn grey" id="lab-restore" ${hasBackup ? "" : "disabled"}>Restore my real progress</button>
     </div>
-    <div class="set-d" style="margin-top:14px">Your measured exercise times (real medians from this device's play):</div>
-    <div class="lab-telem">${Object.keys(state.telem || {}).length
-      ? Object.entries(state.telem).sort((a, b) => b[1].n - a[1].n).map(([t, e]) => `${t}: ${(e.mean / 1000).toFixed(1)}s (x${e.n})`).join(" · ")
-      : "none yet - play a lesson and they accrue"}</div>
     ${isStaged("stats-record") ? `<div class="set-d" style="margin-top:14px">The stats record (answers per day per kind, with their times):</div>
     <div class="lab-telem">${typeof statLabLine === "function" ? statLabLine() : ""}</div>
     <div class="lab-btns"><button class="btn grey" id="lab-stats-clear">Clear my stats record</button></div>` : ""}
     ${isStaged("stats") ? `<div class="set-d" style="margin-top:14px">Show the Stats tab at a scripted state (a preview; your numbers are untouched):</div>
     <div class="lab-btns"><button class="btn grey" data-stats="zero">Zero</button><button class="btn grey" data-stats="week1">One week</button><button class="btn grey" data-stats="week4">Four weeks</button></div>` : ""}
-    ${isStaged("stats") ? `<div class="set-d" style="margin-top:14px">The Stats hero card over the photo: how much of the card's ground stays (solid, like the squares, is shipped; less is more see-through):</div>
-    <div class="lab-btns wrap">${[70, 55, 42, 30, 18, 0].map(n => `<button class="btn grey" data-hero="${n}">${n}%</button>`).join("")}<button class="btn grey full" data-hero="100">Solid, like the squares</button></div>` : ""}
     <div class="set-d" style="margin-top:14px">Make one lesson brand new again (primer + full first-pass arc on next entry):</div>
     <div class="lab-btns">
       <select id="lab-lesson" class="lab-select"></select>
@@ -230,7 +216,6 @@ function _labCard(wrap) {
   const clearBtn = lab.querySelector("#lab-stats-clear");
   if (clearBtn) clearBtn.addEventListener("click", () => { clearStats(); toast("Stats record cleared"); renderProfile(); });
   lab.querySelectorAll("[data-stats]").forEach(btn => btn.addEventListener("click", () => renderStats({ preview: btn.dataset.stats })));
-  lab.querySelectorAll("[data-hero]").forEach(btn => btn.addEventListener("click", () => { setHeroGround(+btn.dataset.hero); toast(`Hero card ground ${btn.dataset.hero}%`); renderStats({ preview: "week4" }); }));
   lab.querySelector("#lab-apply").addEventListener("click", () => {
     labApply({
       pct: +lab.querySelector("#lab-pct").value,

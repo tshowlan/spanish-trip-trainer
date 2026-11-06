@@ -1895,7 +1895,6 @@ body.in-ceremony .delta-whisper.show { opacity: 1; transform: none; }
 .lab-val { color: var(--text-dim); font-size: 13px; }
 .lab-btns { display: flex; gap: 10px; margin-top: 14px; }
 .lab-btns .btn { flex: 1; }
-.lab-btns.wrap { flex-wrap: wrap; } .lab-btns.wrap .btn { flex: 1 1 28%; } .lab-btns.wrap .btn.full { flex-basis: 100%; }   /* a row with more than four buttons wraps; a long label takes the whole line */
 .dial-delta.empty { visibility: hidden; }
 .lab-telem { font-size: 12px; color: var(--text-dim); line-height: 1.7; padding: 8px 10px; background: var(--bg-card); border-radius: 8px; }
 .lab-select { flex: 1.4; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 9px; font-size: 13px; font-family: var(--font-display); min-width: 0; }
@@ -2445,12 +2444,6 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
    countdown wear in black: a glow that hugs the letters and fades to nothing, no stripe, no block. H1 tight, H2 wider and deeper. B and C
    (the photo settling into a wash from the block down) stay in the lab for comparison. */
 /* v564 (Tom): a lighter grey and the least of it, the minimum shading that lifts the letters, not a dark cloud */
-body.home-lit.wash-h1 .trip { filter: drop-shadow(0 0 3px rgba(70,70,70,.75)) drop-shadow(0 0 9px rgba(50,50,50,.4)); }
-body.home-lit.wash-h2 .trip { filter: drop-shadow(0 0 4px rgba(70,70,70,.85)) drop-shadow(0 0 12px rgba(50,50,50,.5)); }
-body.home-lit.wash-h1 .trip .dest, body.home-lit.wash-h2 .trip .dest, body.home-lit.wash-h1 .trip .sub, body.home-lit.wash-h2 .trip .sub { text-shadow: none; }   /* the halo does the separating; the outline and the soft shadow step back */
-body.home-lit.wash-b .home::before, body.home-lit.wash-c .home::before { content: ""; position: absolute; left: 0; right: 0; z-index: -1; pointer-events: none; }
-body.home-lit.wash-b .home::before { top: -24px; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.30) 70px, rgba(0,0,0,.42) 100%); }
-body.home-lit.wash-c .home::before { top: -24px; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.20) 70px, rgba(0,0,0,.30) 100%); }
 
 /* ---------- STATS (the tab that was Progress; chat 11/2, Tom's calls; STAGED "stats") ---------- */
 .st-hero { text-align: center; background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); padding: 24px 16px 18px; margin-top: 6px; }

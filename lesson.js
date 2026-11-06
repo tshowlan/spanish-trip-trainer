@@ -247,7 +247,8 @@ function kitRungFor(lesson, item, pool, k) {
     const emph = earOn() ? lesson.emphasis : null;
     if (emph === "read" && platesOn(lesson)) {   // signs as signs: act (if the sign has a situation) · which sign (if it answers a need) · pick its meaning
       const pf = [];
-      if (item.act && (!item.act.gender || (state.profile && state.profile.gender === item.act.gender))) pf.push(() => ({ type: "sign_act", item, pool, arc: true }));   // a gendered act (the door plates, chat 11/5b) plays only for the learner it fits; none set, no act
+      const gender = state.profile ? ({ o: "m", a: "f" })[state.profile.grammar] : null;   // the intake's forms question (-o / -a / neutral) is its gender; neutral or unset means no act
+      if (item.act && (!item.act.gender || item.act.gender === gender)) pf.push(() => ({ type: "sign_act", item, pool, arc: true }));   // a gendered act (the door plates, chat 11/5b) plays only for the learner it fits
       if (item.need) pf.push(() => ({ type: "sign_which", item, pool, arc: true }));
       pf.push(() => ({ type: "mc_es2en", item, pool, arc: true }));
       return pf[(k || 0) % pf.length]();

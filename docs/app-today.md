@@ -34,7 +34,7 @@
 
 ## Profile
 - **Profile tab:** sync code, backup/account, appearance, sounds, reminders, trips, group, **Edit trip profile** (one screen, every selection editable in place; never re-runs the intake), reset.
-- **Test Lab (dev):** fabricate a user, reset a lesson to never-seen, start over as a fresh learner, measured exercise times, play any scene, **Staging switch** (nothing staged right now). With staging on, every lesson runner shows two small skip buttons (back / forward) beside the progress bar.
+- **Test Lab (dev):** fabricate a user, reset a lesson to never-seen, start over as a fresh learner, make the asks or the sentences due, pretend a dietary selection, play any scene, the stats record readout, the Stats previews, **Staging switch** with a row per staged feature (cleaned 11/5, v606: the settled option rows are gone). With staging on, every lesson runner shows two small skip buttons (back / forward) beside the progress bar.
 - **The phone held sideways:** an upright card ("Tripfluent works upright.") covers the app only while a phone is sideways; it is not on the page otherwise. (v342)
 - **Progress tab:** trend charts, coverage by topic. Untouched since July.
 
