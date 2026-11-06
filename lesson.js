@@ -2771,7 +2771,7 @@ function renderWeld(q) {
   const dressed = target.split(/\s+/);
   // authored tiles (scenes) may bind words ("la cuenta"); otherwise every word is a tile
   const seq = q.tiles ? q.tiles.map(t => t.toLowerCase()) : dressed.map(w => w.replace(/^[¿¡("«]+|[?!).,;:"»]+$/g, "").toLowerCase()).filter(Boolean);
-  let need = 0, wrongTaps = 0;
+  let need = 0, wrongTaps = 0; const wrongWords = [];
   const bankTiles = seq.concat((q.distractors || []).map(t => t.toLowerCase()));   // listen-and-build: a word that isn't said (Tom 9/12)
   shuffle(bankTiles.map((t, i) => ({ t, i }))).forEach(({ t }) => {
     const tile = el(`<button class="word">${t}</button>`);
@@ -2782,7 +2782,7 @@ function renderWeld(q) {
         ans.appendChild(el(`<span class="word">${seq[need]}</span>`));
         need++;
         if (need === seq.length) fuse();
-      } else { wrongTaps++; haptic("wrong"); tile.classList.add("vwrong"); setTimeout(() => tile.classList.remove("vwrong"), 900); }
+      } else { wrongTaps++; wrongWords.push(tile.textContent); haptic("wrong"); tile.classList.add("vwrong"); setTimeout(() => tile.classList.remove("vwrong"), 900); }
     });
     bank.appendChild(tile);
   });
@@ -2833,6 +2833,7 @@ function renderWeld(q) {
         dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
       }, 550);
     }
+    if (wrongTaps > 0) { const rn = _adverbOrderNote(item, wrongWords); if (rn) q.resNote = rn; }   // only the adverb went wrong: the note again (chat 11/5)
     if (!q.sceneLocal) recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });   // scene-local welds record nowhere (flagged in data)
     if (wrongTaps > 0) run.wrong++;
     q.esOnStage = true;
@@ -4374,6 +4375,20 @@ function _recordSlotTime(q, ok) {
 /* ----- grading + feedback ----- */
 function grade(ok, item) { finishGrade(ok, item, null); }
 // typed answers get typo/accent tolerance (edit distance ≤ 1, accent slips accepted)
+/* THE GRAMMAR RE-SHOW (chat 11/5, STAGED grammar-reshow): a build or a typed answer whose only miss is the adverb's position gets the
+   sentence's GOOD TO KNOW again, with one line above it naming the verb's rule. Only the two noted shapes (está + adverb, hay + adverb). */
+function _adverbOrderNote(item, wrongWords) {
+  if (!(typeof isStaged === "function" && isStaged("grammar-reshow"))) return null;
+  const note = item && item.note; if (!note || !/^With (est\u00e1|hay)/.test(note)) return null;
+  const adv = norm(item.es).split(" ").find(w => w === "lejos" || w === "cerca"); if (!adv) return null;
+  // in a build the slip shows as the adverb tapped early (hay: cerca before the thing) OR the next word tapped in its place (está: la before lejos)
+  const toks = norm(item.es).split(" ").filter(Boolean), after = toks[toks.indexOf(adv) + 1];
+  const allowed = new Set([adv, after].filter(Boolean));
+  const ws = (wrongWords || []).map(w => norm(String(w))).filter(Boolean);
+  if (!ws.length || ws.some(w => !allowed.has(w))) return null;       // another word was wrong too: not only the order
+  const line = /^With est\u00e1/.test(note) ? `Only the order was off. With est\u00e1, ${adv} comes first.` : `Only the order was off. With hay, ${adv} comes last.`;
+  return `${line}<br>${note}`;
+}
 function gradeTyped(raw, item) {
   // §4b.3: accept the canonical form OR any authored variant (same typo tolerance)
   let j = { ok: false }, words = null;
@@ -4390,6 +4405,9 @@ function gradeTyped(raw, item) {
     misses.forEach(m => { const e = extras.find(x => x.kind === "extra" && norm(x.typed) === norm(m.right)); if (e) { e.kind = "moved"; m.kind = "moved-slot"; moved.push(m.right); } else missing.push(m.right); });
   }
   const extra = j.accent ? "Almost: watch the accent." : (j.typo ? "Close: mind the spelling." : ([missing.length ? `${missing.length === 1 ? "One word missing" : "Missing"}: ${missing.join(", ")}.` : "", moved.length ? `Out of place: ${moved.join(", ")}.` : ""].join(" ").trim() || null));
+  if (!j.ok && words && moved.length === 1 && !missing.length && !words.some(w => w.kind === "extra")) {   // only the adverb out of place (chat 11/5)
+    const rn = _adverbOrderNote(item, moved); const qq = run && run.qs && run.qs[run.idx]; if (rn && qq) qq.resNote = rn;
+  }
   finishGrade(j.ok, item, extra, raw, words);          // pass the raw attempt (and its words) for the marked line
 }
 function finishGrade(ok, item, extra, wrong, words) {
@@ -4598,6 +4616,7 @@ function showCorrection(item, extra, wrong, words) {
     <div class="corr-sheet" role="dialog" aria-label="Correction">
       <div class="corr-grab"></div>
       ${wrong ? `<div class="corr-wrong${words && words.length ? " by-word" : ""}">${wrongHtml}</div>` : ""}
+      ${(run && run.qs && run.qs[run.idx] && run.qs[run.idx].resNote) ? `<div class="res-note gtk"><span class="cue-label note-label">Good to know</span>${run.qs[run.idx].resNote}</div>` : ""}
       <div class="corr-label">The phrase</div>
       <div class="corr-chunks">${pills}<button class="corr-audio" aria-label="Replay audio">${icon('speaker', 18)}</button></div>
       <div class="corr-trans">${item.en}</div>

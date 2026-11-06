@@ -72,3 +72,4 @@
 - 11/4 (v591): second chance retired and sessions done only by play (both under `replay`); the month counts local days; typed answers show in full; the English cue never names the answer; number chips stop shifting; Sounds you'll say gets its check; the keypad says Tap.
 - 11/5 (v599): chat's rulings part one: the tip line is Está bien así; the está/hay notes; Bathroom words rebuilt (eight items); Stats counts answers only on the hero and totals; the pause sheet says Keep going / Pause / Quit; By scenario retires; the still ceremony says Holding.
 - 11/5 (v600): chat's rulings part two: Known is a flag (Coverage yes, Retention and review no); a word enters Retention at its first review (STAGED `retention-entry`); the ear's hearings counted silently.
+- 11/5 (v601): the grammar note again on a misplaced lejos or cerca (STAGED `grammar-reshow`). Chat's 11/05 rulings are all applied.

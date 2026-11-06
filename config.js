@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v600";
+const APP_BUILD = "v601";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -33,6 +33,7 @@ const STAGED = {
   "ceremony-glow": "The session's end (Tom 11/5, mock C): the app icon's own candle lights the top of the ceremony, strong and quick to fade, on the tabs' navy ground; no light from the bottom-left corner",
   "ceremony-still": "The session's end when no dial moved (Tom 11/5): the dials still perform their entrance, readiness alone then the sides popping in; only the ticks and deltas wait for a change (before, the whole performance was skipped and the end felt broken)",
   "retention-entry": "Retention (chat 11/5): a word enters Retention the first time it is reviewed; until then it counts for Coverage only, so a session of new words no longer pulls Readiness down. Words met before this arrived enter as reviewed",
+  "grammar-reshow": "The grammar note again (chat 11/5): a build or a typed answer whose only miss is where lejos or cerca went shows the sentence's Good to know with one line above it, Only the order was off. With está, lejos comes first.",
 };
 // RETIRED (Tom, 2026-11-02, v581): "learn-photo", the Learn tab under the photo (staged v580, one look): the photo marks the two tabs that look at the trip from above, Home and Stats; Learn stays as it was.
 // SHIPPED (Tom, 2026-10-28, v545): "sentences-2", Table sentences (fourteen in six frames, Para mí the table's frame, its card) and the Counter amendment (¿Me pone? ×2 with its card; the cortado Quiero and la cuenta out).
