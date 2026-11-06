@@ -128,7 +128,7 @@ function _chapterFlowDeck(deck, rooms) {
   activePack().stages.forEach(st => st.lessons.forEach(l => (l.items || []).forEach(it => { const k = slug(it.es); if (!bySlug.has(k)) bySlug.set(k, it); })));
   const made = new Map();
   const mk = d => {
-    const k = slug(d.es); if (made.has(k)) return made.get(k);
+    const k = (d.card ? "card:" : "") + slug(d.es); if (made.has(k)) return made.get(k);   // a card is its own object, never the sentence that shares its phrase (Está bien así, 11/5)
     const base = Object.assign({}, bySlug.get(k) || {});
     delete base.note; delete base.anchor;                // margin notes were written for the phrase's OLD seat ("Pongo again..."); chapter one shows only what its own data says (Tom 9/20)
     const it = Object.assign({ tier: 1 }, base, d); made.set(k, it); return it;
@@ -175,7 +175,7 @@ function _chapterFlowDeck(deck, rooms) {
     }
     return d;
   };
-  const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { items: w.items.filter(live).map(variant).map(d => { const k = slug(d.es), own = { replies: (isStaged("reply-sets") && d.replies2) || d.replies, hint: d.hint, near: d.near, frame: d.frame, note: d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
+  const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { items: w.items.filter(live).map(variant).map(d => { const k = (d.card ? "card:" : "") + slug(d.es), own = { replies: (isStaged("reply-sets") && d.replies2) || d.replies, hint: d.hint, near: d.near, frame: d.frame, note: d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
   const order = flow.rooms || [];
   // THE ROOMS RETIRE WITH THE LAST PLACE (Tom 10/24 ruling; done 11/3 when Tom met a room's machine weld in review): once the Street,
   // Shop, Help, and Paying sessions exist (sentences-3), the four rooms leave chapter 2 and the deck; their phrases live on as place sentences

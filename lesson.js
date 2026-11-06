@@ -360,7 +360,7 @@ function _sentenceBuild(it, pool) {
   const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
   const tiles = tilesOf(it.es);
   const others = [...new Set(pool.filter(x => x !== it).flatMap(x => tilesOf(x.es)).filter(w => w && !tiles.includes(w)))];
-  return { type: "weld", item: it, pool, target: it.es, tiles, distractors: sample(others, Math.min(2, others.length)), targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint, resNote: it.note || null };   // two strays in chapter 2's banks (Tom 10/25); a sentence's note rides its reveal (croissant's spelling, 10/25)
+  return { type: "weld", item: it, pool, target: it.es, tiles, distractors: sample(others, Math.min(2, others.length)), targetEn: it.en, cueRole: "Build the sentence", cueMeaning: it.en, arc: true, inputForm: "tiles", contextBuild: true, noEn: true, hint: it.hint, resNote: (it.note && !((learnPeek(it) || {}).noteShown)) ? it.note : null };   // two strays in chapter 2's banks (Tom 10/25); a sentence's note rides its reveal (croissant's spelling, 10/25)
 }
 /* THE REPLY THAT IS THIS SENTENCE'S OWN (Tom 10/29: Un momento and Ahora mismo answered half of chapter 2). A sentence's three replies
    carry one or two stock answers (wait, right away, of course) beside one that only this ask gets (El hospital, todo recto; Son cinco;
@@ -397,8 +397,13 @@ function composeSentences(lesson) {
   const cards = (lesson.items || []).filter(it => it.card);   // a place frame's intro card (¿Me pone ___?, Tom 10/27): shown first, never a sentence of the ladder
   const pool = (lesson.items || []).filter(it => !it.card), place = lesson.place || "";
   // the frames: each ask's sentences, shuffled, so the beats spread across them (build one, hear another, answer a third)
+  const frames0 = new Map();
+  pool.forEach(it => { const k = it.frame || norm(it.es); if (!frames0.has(k)) frames0.set(k, []); frames0.get(k).push(it); });
+  // a frame that was just introduced on a card leads the ladder (Tom 11/5: the ¿Está? card, then a taxi line, read as a jump); the rest keep the pack's order
+  const cardKeys = cards.map(c => norm(c.es).replace(/[\u00bf?\u00a1!]/g, "").trim()).filter(k => frames0.has(k));
   const frames = new Map();
-  pool.forEach(it => { const k = it.frame || norm(it.es); if (!frames.has(k)) frames.set(k, []); frames.get(k).push(it); });
+  cardKeys.forEach(k => frames.set(k, frames0.get(k)));
+  frames0.forEach((list, k) => { if (!frames.has(k)) frames.set(k, list); });
   const builds = [], ears = [], exchanges = [], picks = [], typed = [];
   const ctx = _replyCtx(pool, Math.ceil(frames.size / 2));   // the floor's budget for this play
   frames.forEach(list => {
@@ -1011,7 +1016,7 @@ function _sentenceReviewForms(it, st) {
   const forms = [];
   if (strength < 55 && (it.near || []).length >= 2) forms.push({ type: "hear_pick", item: it, es: it.es, en: it.en, place: it.place, options: [it.en].concat(it.near.slice(0, 2)) });
   const build = _sentenceBuild(it, pool.length > 1 ? pool : [it]);
-  Object.assign(build, { place: it.place, arc: false, resNote: null });
+  Object.assign(build, { place: it.place, arc: false });   // the note rides a review build too, until it has been seen once (Tom 11/5)
   if (strength >= 40) Object.assign(build, { inputForm: "typed", cueRole: "Say it in Spanish", hint: null });
   forms.push(build);
   if ((it.replies || []).length) { const rc = _replyCtx((ALL_ITEMS || []).filter(x => x.sentence && x.place === it.place), 1); if (_reviewHeard) rc.heard = _reviewHeard; const r = _pickReply(it, rc); forms.push({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place: it.place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]) }); }
@@ -2189,7 +2194,8 @@ function mcOptions(item, es2en, siblings) {
     const short = n => n <= 3 ? 0 : 1;                                // a word and a two- or three-word phrase are one class ("card" beside "the check"); a sentence is another
     const tbs = short(wc(answer)), sameShape = x => short(wc(val(x))) === tbs;
     const picked = [];
-    const take = arr => { for (const x of shuffle(arr)) { const v = val(x); if (picked.length < 2 && v !== answer && !picked.includes(v)) picked.push(v); } };
+    const other = x => es2en ? x.es : x.en, otherAns = es2en ? item.es : item.en;   // the side not shown: two words that mean the same never share a pick (Tom 11/5: servicios and aseos)
+    const take = arr => { for (const x of shuffle(arr)) { const v = val(x); if (picked.length < 2 && v !== answer && !picked.includes(v) && norm(other(x) || "") !== norm(otherAns || "")) picked.push(v); } };
     [sibs.filter(x => sameTag(x) && sameShape(x)), sibs.filter(sameShape), all.filter(x => sameTag(x) && sameShape(x)), all.filter(sameShape),
      all.filter(sameTag), sibs, all].forEach(tier => { if (picked.length < 2) take(tier); });
     return { answer, options: shuffle([answer, ...picked]) };
@@ -3559,7 +3565,7 @@ function renderContextChoice(q) {
   const mount = el(`<div class="frame-mount ctx-mount">${before}<span class="slot"><span class="dashes">\u2013 \u2013 \u2013</span></span>${after}</div>`);
   top.appendChild(mount);
   body.appendChild(top);
-  const pool = (q.pool && q.pool.length ? q.pool : (run.lesson && run.lesson.items) || []).filter(x => x !== item && norm(x.es) !== norm(item.es));   // never fewer than three choices
+  const pool = (q.pool && q.pool.length ? q.pool : (run.lesson && run.lesson.items) || []).filter(x => x !== item && norm(x.es) !== norm(item.es) && norm(x.en || "") !== norm(item.en || ""));   // never fewer than three choices; never a second right answer (Tom 11/5)
   const opts = shuffle([item, ...sample(pool, Math.min(2, pool.length))]);
   const choices = el(`<div class="choices"></div>`);
   opts.forEach(opt => {
@@ -4497,6 +4503,7 @@ function resolveCorrect(item, q, info) {
   // YOURS NOW rides silent (Tom, 2026-08-15): the kicker is the whole message, the
   // explaining sentence dignified the moment (voice law 4). RESTORED keeps its note: it
   // carries information the kicker alone does not (that the item had faded).
+  if (q && q.resNote && q.item && q.resNote === q.item.note) { const stn = learnPeek(q.item); if (stn) stn.noteShown = true; }   // seen once: the first-meeting note retires for this word (q.item, not the resolved stub)
   const note = (q && q.resNote) ? `<div class="res-note gtk"><span class="cue-label note-label">Good to know</span>${q.resNote}</div>`   // the aside's one dress: a label over the line (Tom 10/25, mock B)
     : kick === "restored" ? `<div class="res-note">This one was fading. You brought it back.</div>` : "";
   // no-repeat (§3.7): the grown carries only what's MISSING from the screen. When the

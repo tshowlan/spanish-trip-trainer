@@ -2080,6 +2080,14 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v602 (2026-11-05) — Tom's play of the 11/05 run: six fixes
+- **Paying:** "Está bien así." gets a card beside ¿Me cobra?'s, shown first, the sentence still in the ladder (Quédese con la vuelta rides the card's note). "Son dos con cincuenta" is glossed "That's two fifty" like its siblings.
+- **Two right answers never sit together.** A pick whose unseen side matches the answer's (servicios and aseos, both "bathrooms") is skipped, in the meaning picks and in the fill's choices.
+- **The frame just introduced on a card leads the ladder** (the ¿Está? card was followed by the taxi line "Al hotel" and read as a jump).
+- **The sentence's Good to know rides a review build too,** the first time the learner meets it, then retires for that word (`noteShown`). Tom met the Street sentences in review and never saw the está note.
+- **papel** is glossed "paper (toilet paper)" with a note.
+- For chat (ledger): "¿Todo bien?" as the reply to asking for the check; a card for the taxi lines' frame (A ___, por favor); the Bathroom glosses; the Holding placement mocked for Tom.
+
 ## v601 (2026-11-05) — chat's 11/05 rulings, part three: the grammar note again (STAGED `grammar-reshow`)
 - The two Street sentences carry their GOOD TO KNOW (v599). Now, when a build's only wrong taps are the adverb, or a typed answer's only fault is that one moved word, and the word is lejos or cerca, the reveal shows the note again with chat's line above it: "Only the order was off. With está, lejos comes first." / "With hay, cerca comes last." Any other miss leaves the reveal as it was.
 
