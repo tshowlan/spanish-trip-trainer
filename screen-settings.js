@@ -106,9 +106,9 @@ function renderProfile() {
   wrap.appendChild(stg);
   // the session's end, played with a fabricated result (Tom 11/5): the ground options for the ceremony, each a click; the choice also
   // applies to the next real session's end until changed
-  const cerRow = el(`<div class="lab-row" style="display:block;margin:6px 0 10px"><div class="lab-lbl" style="margin-bottom:6px">Play the session's end (Current: the dark holds until Continue. A: the dark lightens to Home as the dials land, the top glow fading with it. B: the dark lightens, the glow holds until Continue.)</div><div style="display:flex;flex-wrap:wrap;gap:6px"></div></div>`);
+  const cerRow = el(`<div class="lab-row" style="display:block;margin:6px 0 10px"><div class="lab-lbl" style="margin-bottom:6px">Play the session's end. Current: the ground under the dials holds the flat navy. A, B, C: as the dials land, the ground warms to Home's own tone (the colour outside the candle's glow), the top glow staying the light source. A is the faintest, C the warmest.</div><div style="display:flex;flex-wrap:wrap;gap:6px"></div></div>`);
   const cerPick = (() => { try { return localStorage.getItem("sts_cer_ground") || ""; } catch (e) { return ""; } })();
-  [["", "Current"], ["a", "A"], ["b", "B"]].forEach(([k, label]) => {
+  [["", "Current"], ["a", "A"], ["b", "B"], ["c", "C"]].forEach(([k, label]) => {
     const b = el(`<button class="btn-quiet" style="margin:0${cerPick === k ? ";border-color:var(--accent-2)" : ""}">${label}</button>`);
     b.addEventListener("click", () => {
       try { if (k) localStorage.setItem("sts_cer_ground", k); else localStorage.removeItem("sts_cer_ground"); } catch (e) {}
