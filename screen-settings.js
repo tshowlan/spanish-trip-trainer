@@ -104,6 +104,21 @@ function renderProfile() {
     stg.querySelector("#lab-staged-list").appendChild(row);
   });
   wrap.appendChild(stg);
+  // the session's end, played with a fabricated result (Tom 11/5): the ground options for the ceremony, each a click; the choice also
+  // applies to the next real session's end until changed
+  const cerRow = el(`<div class="lab-row" style="display:block;margin:6px 0 10px"><div class="lab-lbl" style="margin-bottom:6px">Play the session's end (Current: the dark holds until Continue. A: the dark lightens to Home as the dials land, the top glow fading with it. B: the dark lightens, the glow holds until Continue.)</div><div style="display:flex;flex-wrap:wrap;gap:6px"></div></div>`);
+  const cerPick = (() => { try { return localStorage.getItem("sts_cer_ground") || ""; } catch (e) { return ""; } })();
+  [["", "Current"], ["a", "A"], ["b", "B"]].forEach(([k, label]) => {
+    const b = el(`<button class="btn-quiet" style="margin:0${cerPick === k ? ";border-color:var(--accent-2)" : ""}">${label}</button>`);
+    b.addEventListener("click", () => {
+      try { if (k) localStorage.setItem("sts_cer_ground", k); else localStorage.removeItem("sts_cer_ground"); } catch (e) {}
+      const s = state.scoresCache || computeScores();
+      const before = { readiness: Math.max(0, (s.readiness || 0) - 3), momentum: Math.max(0, (s.momentum || 0) - 6), retention: s.retention };
+      renderHome({ ceremony: { before, after: { readiness: s.readiness, momentum: s.momentum, retention: s.retention }, facts: { newN: 4, stronger: 6, restored: 1, soloed: 0 } } });
+    });
+    cerRow.lastElementChild.appendChild(b);
+  });
+  wrap.appendChild(cerRow);
   const fresh = el(`<button class="btn-quiet" style="margin:6px 0 10px">Start over as a fresh learner (keeps your profile)</button>`);
   fresh.addEventListener("click", () => { state.learn = {}; state.lessons = {}; state.chapterDoors = []; save(); rebuildDeck(); toast("Fresh learner: nothing met, nothing done"); renderProfile(); });
   wrap.appendChild(fresh);

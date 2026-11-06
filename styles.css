@@ -2515,4 +2515,14 @@ html, body, button, input, textarea { font-variant-ligatures: no-common-ligature
 .cer-layer.glow-c .cer-tint, :root[data-theme="dark"] .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.9) 0%, rgba(207,116,48,.5) 22%, rgba(224,149,43,.18) 48%, rgba(230,198,42,.04) 72%, rgba(0,0,0,0) 90%); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.9) 0%, rgba(207,116,48,.5) 22%, rgba(224,149,43,.18) 48%, rgba(230,198,42,.04) 72%, rgba(0,0,0,0) 90%); } }
 :root[data-theme="light"] .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.45) 0%, rgba(207,116,48,.22) 22%, rgba(224,149,43,.08) 48%, rgba(0,0,0,0) 80%); }
-.band-chip.holding { color: var(--text-dim); background: var(--bg-elevated); border-color: transparent; }   /* the still ceremony: the dial's chip says Holding (Tom 11/5, option C) */
+.band-chip.holding { color: var(--text-dim); background: var(--bg-elevated); border-color: transparent; }
+/* THE GROUND LIGHTENS (Tom 11/5, Test Lab options A and B, played from the lab): once the ceremony is lit (`body.cer-lighten`, set as
+   readiness begins to tick), the photo comes back over 2.2s so the ceremony ends on Home's own ground; the corner candle waits for
+   Continue as before. A: the top glow fades with the dark. B: the glow holds until Continue (its usual drain). */
+body.in-ceremony.cer-lighten .home-atmo { opacity: 1; transition: opacity 2200ms cubic-bezier(.3,.05,.2,1); }
+.cer-layer.lighten-a.lit .cer-tint { opacity: 0; transition: opacity 2200ms cubic-bezier(.3,.05,.2,1); }
+.cer-layer.lighten-a .cer-kicker, .cer-layer.lighten-b .cer-kicker { text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+.cer-layer.lighten-a .sfact, .cer-layer.lighten-b .sfact { text-shadow: 0 1px 8px rgba(0,0,0,.55); }
+/* the return: the photo is already up, so the formation never takes it down and back (no flash); the candle still breathes in last */
+body.arriving.cer-return.cer-lighten .home-atmo .atmo-photo { opacity: 1 !important; transform: none !important; transition: none !important; }
+   /* the still ceremony: the dial's chip says Holding (Tom 11/5, option C) */

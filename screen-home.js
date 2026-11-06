@@ -282,6 +282,10 @@ function sessionEndCeremony(home, data, reduced) {
   // `in-ceremony` that class means "visible", so the logo, the flame, and the language chip showed over the dials (Tom 10/29)
   document.querySelectorAll(".cer-back").forEach(n => n.classList.remove("cer-back"));
   document.body.classList.add("in-ceremony");
+  document.body.classList.remove("cer-lighten");        // a stale lightening from the last ceremony never carries over
+  // THE GROUND LIGHTENS (Tom 11/5, Test Lab options): the photo comes back during the dials' entrance, so the ceremony ends on Home's own
+  // ground; the corner candle still waits for Continue. A: the top glow fades with the dark. B: the glow holds until Continue.
+  const lighten = (() => { try { return localStorage.getItem("sts_cer_ground") || ""; } catch (e) { return ""; } })();
   // hide the bar WITHOUT hideTabbar(): that helper also tears down the home atmo, which
   // must stay mounted (opacity-hidden) so the dissolve can refill it in place
   const bar = document.getElementById("tabbar"); if (bar) bar.classList.remove("show");
@@ -318,6 +322,7 @@ function sessionEndCeremony(home, data, reduced) {
   const stillChip = (!anyMoved && isStaged("ceremony-still") && cardR) ? cardR.querySelector(".band-chip") : null;
   if (stillChip) { stillChip.dataset.band = stillChip.textContent; stillChip.classList.add("holding"); stillChip.textContent = "Holding"; }
   const unholding = () => { if (stillChip && stillChip.classList.contains("holding")) { stillChip.textContent = stillChip.dataset.band; stillChip.classList.remove("holding"); } };
+  if (lighten) layer.classList.add("lighten-" + lighten);
   document.body.appendChild(layer);
   place();
   requestAnimationFrame(place);                         // re-measure once layout has settled
@@ -346,8 +351,10 @@ function sessionEndCeremony(home, data, reduced) {
     // delta on a still dial reads as a contradiction — they arrive with home instead).
     // The ledger still writes itself, just without Act 1 to wait for.
     [cardM, cardT].forEach(c => { if (c) c.classList.remove("dial-pop"); });
+    if (lighten) timers.push(setTimeout(() => { document.body.classList.add("cer-lighten"); layer.classList.add("lit"); }, 300));
     act2(350);
   } else {
+    if (lighten) timers.push(setTimeout(() => { document.body.classList.add("cer-lighten"); layer.classList.add("lit"); }, 700));   // the dark thins as readiness ticks, gone as the sides land
     // Act 1, the performance: Readiness isolated ticking its delta, then the sides pop
     // into home's exact geometry and tick in turn (sequential composes)
     if (moved("readiness")) timers.push(setTimeout(() => _tickHomeDial(cardR, before.readiness, after.readiness, 900, applyBandFinal), 600));
@@ -400,9 +407,10 @@ function sessionEndCeremony(home, data, reduced) {
       back(".home-atmo, .topbar, .home > :not(.hero)");
       showTabbar("home");
       const dw = document.getElementById("dw-today"); if (dw) dw.classList.add("show");
-      setTimeout(() => { layer.remove(); document.body.classList.remove("in-ceremony"); maybeStatusMoment(); }, 250);
+      setTimeout(() => { layer.remove(); document.body.classList.remove("in-ceremony", "cer-lighten"); maybeStatusMoment(); }, 250);
       return;
     }
+    if (lighten) { document.body.classList.add("cer-lighten"); layer.classList.add("lit"); }   // an early Continue: the ground is simply there
     // THE RETURN IS THE ARRIVAL (Tom 10/29): Home comes back through the launch's own formation, twilight breathing, the dials the
     // still point (they never dim), the corner glow breathing in from the bottom left last. The ceremony's own hiding hands over to
     // the formation's (body.arriving hides the same pieces until arr-in), so nothing flashes between the two.
@@ -413,8 +421,8 @@ function sessionEndCeremony(home, data, reduced) {
       document.body.classList.remove("in-ceremony");
       showTabbar("home");
       const dw = document.getElementById("dw-today"); if (dw) dw.classList.add("show");
-      if (typeof runHomeFormation === "function") runHomeFormation(() => maybeStatusMoment());
-      else { document.body.classList.remove("arriving", "cer-return"); maybeStatusMoment(); }
+      if (typeof runHomeFormation === "function") runHomeFormation(() => { document.body.classList.remove("cer-lighten"); maybeStatusMoment(); });
+      else { document.body.classList.remove("arriving", "cer-return", "cer-lighten"); maybeStatusMoment(); }
     }, t0));
     timers.push(setTimeout(() => layer.remove(), t0 + 1300));   // the tint has drained (1200ms); the formation carries on beneath
   });
