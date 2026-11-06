@@ -2522,4 +2522,4 @@ html, body, button, input, textarea { font-variant-ligatures: no-common-ligature
 .cer-layer.glow-c .cer-tint, :root[data-theme="dark"] .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.9) 0%, rgba(207,116,48,.5) 22%, rgba(224,149,43,.18) 48%, rgba(230,198,42,.04) 72%, rgba(0,0,0,0) 90%); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.9) 0%, rgba(207,116,48,.5) 22%, rgba(224,149,43,.18) 48%, rgba(230,198,42,.04) 72%, rgba(0,0,0,0) 90%); } }
 :root[data-theme="light"] .cer-layer.glow-c .cer-tint { background: radial-gradient(70% 46% at 50% 0%, rgba(201,106,43,.45) 0%, rgba(207,116,48,.22) 22%, rgba(224,149,43,.08) 48%, rgba(0,0,0,0) 80%); }
-.sfact.sf-still { color: var(--text-dim); justify-content: center; }   /* the still ceremony's one word (chat 11/5) */
+.band-chip.holding { color: var(--text-dim); background: var(--bg-elevated); border-color: transparent; }   /* the still ceremony: the dial's chip says Holding (Tom 11/5, option C) */

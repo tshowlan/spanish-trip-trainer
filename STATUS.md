@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v604 (2026-11-05) — Holding on the dial (option C)
+- Tom's pick of the four placements: when no dial moved, the readiness dial's band chip reads Holding for the ceremony, in the chip's own dress but dim, and returns to its band (Fair, Low) on Continue. The ledger row "Holding." retires.
+
 ## v603 (2026-11-05) — a session opened again is the full rundown; the note comes back on repeated misses
 - Tom opened Bathroom words after it gained five words and got four exercises over the three he had met: the chapter-1 replay drilled met words only, and the session composer itself taught only the new words. Now a chapter-one session opened again composes as the whole session in its own shapes: cards only for the words it gained since, every word on the board and at its rung, the listening board to close (`composeKitInterleaved` with `all`). Chapter 2 sessions already replayed whole. Practice keeps the depth drill.
 - A sentence's Good to know shows again when the word has been missed twice in a row, and on every second miss after (`missRun`), on top of the first showing.

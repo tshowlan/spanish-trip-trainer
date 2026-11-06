@@ -299,7 +299,7 @@ function sessionEndCeremony(home, data, reduced) {
     <div class="cer-tint"></div>
     <div class="cer-kicker">THAT'S THE SESSION</div>
     <div class="cer-panel">
-      <div class="sfacts">${_sfactRows(facts)}${(!anyMoved && isStaged("ceremony-still")) ? `<div class="sfact sf-still"><span>Holding.</span></div>` : ""}</div>
+      <div class="sfacts">${_sfactRows(facts)}</div>
       <button class="btn cer-cont quiet">Continue</button>
     </div>
   </div>`);
@@ -315,6 +315,10 @@ function sessionEndCeremony(home, data, reduced) {
     layer.querySelector(".cer-kicker").style.height = Math.max(64, hr.top) + "px";
     layer.querySelector(".cer-panel").style.top = (hr.bottom + 6) + "px";
   };
+  // THE STILL CEREMONY says it on the dial (Tom 11/5, option C): the band chip reads Holding while nothing moved, and returns to its band on Continue
+  const stillChip = (!anyMoved && isStaged("ceremony-still") && cardR) ? cardR.querySelector(".band-chip") : null;
+  if (stillChip) { stillChip.dataset.band = stillChip.textContent; stillChip.classList.add("holding"); stillChip.textContent = "Holding"; }
+  const unholding = () => { if (stillChip && stillChip.classList.contains("holding")) { stillChip.textContent = stillChip.dataset.band; stillChip.classList.remove("holding"); } };
   document.body.appendChild(layer);
   place();
   requestAnimationFrame(place);                         // re-measure once layout has settled
@@ -388,7 +392,7 @@ function sessionEndCeremony(home, data, reduced) {
   // and home refills piece by piece
   layer.querySelector(".cer-cont").addEventListener("click", () => {
     if (layer.classList.contains("dissolving")) return;
-    snapFinal();
+    snapFinal(); unholding();
     layer.classList.add("dissolving");                  // ceremony copy 600ms; tint drains 1200ms
     const speed = emptyish ? 0.5 : 1;                   // empty-ish sessions get the brisker dissolve
     const at = ms => Math.round(ms * speed);
