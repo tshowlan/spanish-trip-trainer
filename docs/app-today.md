@@ -83,3 +83,4 @@
 - 11/6 (v615): the cards sheet groups its cards under one gold label per kind (Words, Phrases, Signs), Tom's pick E.
 - 11/6 (v616): word or phrase is read from the Spanish alone (cortado is a word; papel is a word even as toilet paper); the intro card's label and the cards sheet's groups both follow it.
 - 11/6 (v617): frame cards once on replay SHIPPED. STAGED board-split: a words or listening board holds at most eight pairs (ten plays as five and five), and the match tune climbs the major scale to the octave on the board's last match.
+- 11/6 (v618): the reply No, hoy no is glossed No, not today (under reply-sets).
