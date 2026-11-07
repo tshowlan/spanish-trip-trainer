@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The plan on Learn, round 5: the drifting pair (mock)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#05060d; --bg-card:rgba(38,36,26,0.72); --bg-elevated:rgba(48,45,32,0.55); --text:#f6f4ea; --text-dim:#a7a494; --accent:#e6c62a; --accent-2:#e0bf2e; --secondary:#7aa6db; --border:rgba(120,112,80,0.35); --solid-track:#55523f; --font-display:"Plus Jakarta Sans",system-ui,sans-serif; --font-text:"Inter",system-ui,sans-serif; --radius:16px; }
+body { background:#111; color:#ddd; font-family:-apple-system,system-ui,sans-serif; margin:0; padding:22px; }
+h1 { font-size:16px; margin:0 0 4px; color:#eee; }
+.sub { font-size:13px; color:#999; margin:0 0 16px; max-width:960px; line-height:1.5; }
+.row { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; }
+.cell { width:340px; display:flex; flex-direction:column; gap:8px; }
+.cap { font-size:12px; color:#aaa; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+.note { font-size:12px; color:#888; line-height:1.45; }
+.phone { width:340px; background:var(--bg); border-radius:22px; box-shadow:0 0 0 4px #2a2a2a; padding:18px 14px; box-sizing:border-box; font-family:var(--font-text); color:var(--text); }
+.list { display:flex; flex-direction:column; gap:8px; }
+.lesson { display:flex; align-items:center; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 0 12px 14px; }
+.ls-ring { display:block; flex:none; } .ls-ring .ls-bg { fill:none; stroke:var(--solid-track); stroke-width:4; } .ls-ring .ls-fg { fill:none; stroke-width:4; stroke-linecap:round; stroke:var(--secondary); }
+.caret-new { width:30px; height:30px; min-width:30px; border-radius:50%; background:var(--bg-elevated); display:inline-flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+.lmain { flex:1; min-width:0; } .lname { font-family:var(--font-display); font-size:14.5px; font-weight:600; } .lmeta { font-size:11px; color:var(--text-dim); margin-top:2px; }
+.next-tag { font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.05em; color:var(--accent-2); margin-left:7px; }
+.pk { width:46px; align-self:stretch; margin:-12px 0; border-left:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+.mark { position:relative; height:1px; background:var(--accent-2); margin:8px 0; opacity:.95; }
+.mark .lbl { position:absolute; right:0; top:50%; transform:translateY(-50%); font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.09em; color:var(--accent-2); background:var(--bg); padding-left:10px; }
+/* the open run: from the line's start to just before the label (BY TODAY leaves 64% of the line open, FOR THE TRIP 58%) */
+.mark .run { position:absolute; left:0; top:0; height:1px; width:64%; }
+.mark.trip .run { width:58%; }
+.mark .spk { position:absolute; top:50%; width:14px; height:14px; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; background:var(--bg); }
+.mark .spk svg { width:11px; height:11px; fill:var(--accent-2); animation: twinkle 4.5s ease-in-out infinite; }
+.mark.trip .spk svg { width:14px; height:14px; }
+.mark .spk:nth-of-type(2) svg { animation-delay: 2.25s; }
+@keyframes twinkle { 0%, 100% { opacity:.55; } 50% { opacity:1; } }
+/* positions are percentages OF THE RUN, so the left and right sparkles reach the same distance from their ends (6% in) */
+/* M1: crossing. Each sparkle travels the whole run; they pass in the middle. */
+@keyframes m1a { 0% { left:6%; } 50% { left:94%; } 100% { left:6%; } }
+@keyframes m1b { 0% { left:94%; } 50% { left:6%; } 100% { left:94%; } }
+.m1 .spk:nth-of-type(1) { animation: m1a 12s ease-in-out infinite; } .m1 .spk:nth-of-type(2) { animation: m1b 12s ease-in-out infinite; }
+/* M2: mirrored halves, never overlapping. Each keeps to its own half; at the closest they are a fifth of the run apart. */
+@keyframes m2a { 0% { left:6%; } 50% { left:40%; } 100% { left:6%; } }
+@keyframes m2b { 0% { left:94%; } 50% { left:60%; } 100% { left:94%; } }
+.m2 .spk:nth-of-type(1) { animation: m2a 9s ease-in-out infinite; } .m2 .spk:nth-of-type(2) { animation: m2b 9s ease-in-out infinite; }
+/* M3: in step, never overlapping. The pair slides together, a fixed gap between them, end to end. */
+@keyframes m3a { 0% { left:6%; } 50% { left:54%; } 100% { left:6%; } }
+@keyframes m3b { 0% { left:46%; } 50% { left:94%; } 100% { left:46%; } }
+.m3 .spk:nth-of-type(1) { animation: m3a 10s ease-in-out infinite; } .m3 .spk:nth-of-type(2) { animation: m3b 10s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .mark .spk, .mark .spk svg { animation: none !important; } .m1 .spk:nth-of-type(1), .m2 .spk:nth-of-type(1), .m3 .spk:nth-of-type(1) { left:17%; } .m1 .spk:nth-of-type(2), .m2 .spk:nth-of-type(2), .m3 .spk:nth-of-type(2) { left:83%; } }
+</style></head><body>
+<h1>The plan on Learn, round 5: the drifting pair, the right sparkle reaching the run's far end</h1>
+<p class="sub">The line's open run is everything before the label. Both sparkles now turn 6% in from their own end of that run, so the right one goes as far right as the left one goes left. Three motions: crossing, mirrored halves that never overlap, and in step with a fixed gap. Each sparkle twinkles softly out of step with the other. Moves only in a real browser; with reduced motion on, the pair holds still at 17% and 83% of the run.</p>
+<div class="row" id="grid"></div>
+<script>
+var SPK = '<svg viewBox="0 0 24 24"><path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z"/></svg>';
+const mark = (cls, trip) => `<div class="mark ${cls}${trip ? " trip" : ""}"><span class="run"><span class="spk">${SPK}</span><span class="spk">${SPK}</span></span><span class="lbl">${trip ? "FOR THE TRIP" : "BY TODAY"}</span></div>`;
+const rows = cls => `<div class="list">
+  <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+  ${mark(cls, false)}
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+  ${mark(cls, true)}
+  <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+</div>`;
+const cells = [
+  ["M1. Crossing", "m1", "Each sparkle travels the whole run, end to end, over twelve seconds; they pass each other in the middle. The fullest motion."],
+  ["M2. Mirrored halves, never overlapping", "m2", "Each keeps to its own half and turns back; at their closest they are a fifth of the run apart. Nine seconds a cycle. Code's pick: the line breathes in and out."],
+  ["M3. In step, a fixed gap", "m3", "The pair slides together from the left end to the right and back, the gap between them constant. Ten seconds a cycle. Reads as one thing moving, not two."]
+];
+document.getElementById("grid").innerHTML = cells.map(([cap, cls, note]) => `<div class="cell"><div class="cap">${cap}</div><div class="phone">${rows(cls)}</div><div class="note">${note}</div></div>`).join("");
+</script>
+</body></html>
