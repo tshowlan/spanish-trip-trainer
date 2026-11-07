@@ -56,4 +56,22 @@ function effectiveWeights(profile, categories) {
   cats.forEach(c => (w[c] /= total));
   return w;
 }
-if (typeof module !== "undefined") module.exports = { CONTENT_WEIGHTS, effectiveWeights };
+/* THE PLACE WEIGHTS (chat 11/7, STAGED "place-weights"): Coverage's demand weights re-mapped to seven groups that exist, derived from the four
+   dimensions (frequency, variance, stakes, production). The grouping is the Stats session-to-place mapping (Bathroom to Table, Days and
+   Signs to Everywhere... Signs rides Street in Stats, so here too); everything not in a place is Everywhere (chapter 1's everywhere sessions,
+   the eight asks, the generated allergy lesson rides Table as the dietary lesson does). A group with no items in the pack is dropped and
+   the rest renormalize. Re-ruled when chapter 3 lands (the hotel desk and transport take from Everywhere and Street). Config, not code. */
+const PLACE_WEIGHTS = { "Everywhere": 0.30, "Counter": 0.14, "Table": 0.14, "Paying": 0.12, "Street": 0.12, "Help": 0.10, "Shop": 0.08 };
+const PLACE_LESSONS = { "Counter": ["w-counter", "sent-counter"], "Table": ["w-table", "w-bathroom", "sent-table", "personal-allergies", "personal-dietary"], "Street": ["w-street", "w-signs", "sent-street"], "Shop": ["sent-shop"], "Help": ["w-help", "sent-help"], "Paying": ["w-paying", "sent-paying"] };
+function placeGroupOf(lesson) {
+  const id = (lesson && lesson.id) || "";
+  for (const g of Object.keys(PLACE_LESSONS)) if (PLACE_LESSONS[g].some(b => id === b || id.startsWith(b + "-"))) return g;
+  return "Everywhere";
+}
+function placeWeights(groups) {
+  const gs = (groups || []).filter(g => PLACE_WEIGHTS[g] != null);
+  const total = gs.reduce((a, g) => a + PLACE_WEIGHTS[g], 0) || 1;
+  const w = {}; gs.forEach(g => { w[g] = PLACE_WEIGHTS[g] / total; });
+  return w;
+}
+if (typeof module !== "undefined") module.exports = { CONTENT_WEIGHTS, effectiveWeights, PLACE_WEIGHTS, placeGroupOf, placeWeights };

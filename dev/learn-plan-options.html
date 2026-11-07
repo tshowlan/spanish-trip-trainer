@@ -1,0 +1,110 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The plan on Learn: two gold hairlines (mock)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#05060d; --bg-card:rgba(38,36,26,0.72); --bg-elevated:rgba(48,45,32,0.55); --text:#f6f4ea; --text-dim:#a7a494; --accent:#e6c62a; --accent-2:#e0bf2e; --green:#3fb56a; --secondary:#7aa6db; --border:rgba(120,112,80,0.35); --solid-track:#55523f; --font-display:"Plus Jakarta Sans",system-ui,sans-serif; --font-text:"Inter",system-ui,sans-serif; --radius:16px; }
+body { background:#111; color:#ddd; font-family:-apple-system,system-ui,sans-serif; margin:0; padding:22px; }
+h1 { font-size:16px; margin:0 0 4px; color:#eee; } h2 { font-size:13px; color:#bbb; margin:26px 0 10px; text-transform:uppercase; letter-spacing:.5px; }
+.sub { font-size:13px; color:#999; margin:0 0 16px; max-width:960px; line-height:1.5; }
+.row { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; }
+.cell { width:340px; display:flex; flex-direction:column; gap:8px; }
+.cap { font-size:12px; color:#aaa; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+.note { font-size:12px; color:#888; line-height:1.45; }
+.phone { width:340px; background:var(--bg); border-radius:22px; box-shadow:0 0 0 4px #2a2a2a; padding:18px 14px; box-sizing:border-box; font-family:var(--font-text); color:var(--text); }
+.chap-kicker { font-family:var(--font-display); font-size:10.5px; font-weight:600; letter-spacing:.07em; color:var(--accent-2); margin-bottom:3px; }
+.chap-row { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:12px; }
+.chap-title { font-family:var(--font-display); font-size:18px; font-weight:700; } .chap-whisper { font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--text-dim); }
+.list { display:flex; flex-direction:column; gap:8px; }
+.lesson { display:flex; align-items:center; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 0 12px 14px; }
+.ls-ring { display:block; flex:none; } .ls-ring .ls-bg { fill:none; stroke:var(--solid-track); stroke-width:4; } .ls-ring .ls-fg { fill:none; stroke-width:4; stroke-linecap:round; stroke:var(--secondary); }
+.caret-new { width:30px; height:30px; min-width:30px; border-radius:50%; background:var(--bg-elevated); display:inline-flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+.lmain { flex:1; min-width:0; } .lname { font-family:var(--font-display); font-size:14.5px; font-weight:600; } .lmeta { font-size:11px; color:var(--text-dim); margin-top:2px; }
+.next-tag { font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.05em; color:var(--accent-2); margin-left:7px; }
+.pk { width:46px; align-self:stretch; margin:-12px 0; border-left:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+.gap { height:14px; }
+/* the hairline: the app's thin gold rule between two rows with a right-aligned micro-caps label (chat's ruling) */
+.mark { position:relative; height:1px; background:var(--accent-2); margin:6px 0; opacity:.9; }
+.mark .lbl { position:absolute; right:0; top:-7px; transform:translateY(-100%); font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.09em; color:var(--accent-2); background:var(--bg); padding-left:8px; }
+/* B: the label sits on the line, right, on a navy tab */
+.optB .mark .lbl { top:50%; transform:translateY(-50%); padding:0 0 0 10px; }
+/* C: the label left, the line runs from it */
+.optC .mark .lbl { right:auto; left:0; top:50%; transform:translateY(-50%); padding:0 10px 0 0; }
+/* D: a dotted hairline, the label right */
+.optD .mark { background:none; border-top:1px dashed var(--accent-2); height:0; }
+.optD .mark .lbl { top:50%; transform:translateY(-50%); padding:0 0 0 10px; }
+</style></head><body>
+<h1>The plan on Learn: two gold hairlines across the chapter list (nothing built)</h1>
+<p class="sub">Chat's ruling (11/7): FOR THE TRIP sits under the goal's last session; BY TODAY sits under the session the pace says you should have finished by today. Behind, the BY TODAY line sits below your last played row and the gap is visible without a word; ahead, it sits above. No sentence, no colour change, nothing counts the gap. The line is the whole statement. Each is the app's thin gold rule with a right-aligned micro-caps label. A is that ruling as written; B, C, D are the same two lines in a different dress. The learner shown is five sessions behind, nine days out: BY TODAY sits after Paying words, their last played row is Numbers Part 2, FOR THE TRIP after Street words (nine sessions reach in nine days).</p>
+<div class="row">
+  <div class="cell"><div class="cap">A. The label above the line, right (chat's ruling)</div>
+    <div class="phone optA">
+      <div class="chap-kicker">CHAPTER 1</div><div class="chap-row"><span class="chap-title">The words that get you by</span><span class="chap-whisper">4 of 15</span></div>
+      <div class="list">
+        <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="18" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">First words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="30" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">First words · Part 2</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="40" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 1</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+        <div class="mark"><span class="lbl">BY TODAY</span></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+        <div class="mark"><span class="lbl">FOR THE TRIP</span></div>
+        <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      </div>
+    </div>
+    <div class="note">The micro-caps label floats just above the line at the right, in gold. Quiet enough to live between rows; the line reads first, the name second.</div>
+  </div>
+  <div class="cell"><div class="cap">B. The label on the line, right, breaking it</div>
+    <div class="phone optB">
+      <div class="chap-kicker">CHAPTER 1</div><div class="chap-row"><span class="chap-title">The words that get you by</span><span class="chap-whisper">4 of 15</span></div>
+      <div class="list">
+        <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+        <div class="mark"><span class="lbl">BY TODAY</span></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+        <div class="mark"><span class="lbl">FOR THE TRIP</span></div>
+        <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      </div>
+    </div>
+    <div class="note">The label sits in the line itself, the line stopping at it. One object, not two. Tighter between rows.</div>
+  </div>
+  <div class="cell"><div class="cap">C. The label on the line, left</div>
+    <div class="phone optC">
+      <div class="chap-kicker">CHAPTER 1</div><div class="chap-row"><span class="chap-title">The words that get you by</span><span class="chap-whisper">4 of 15</span></div>
+      <div class="list">
+        <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+        <div class="mark"><span class="lbl">BY TODAY</span></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+        <div class="mark"><span class="lbl">FOR THE TRIP</span></div>
+        <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      </div>
+    </div>
+    <div class="note">The label reads first, where the eye starts a row, and the line runs out from it to the edge. The chapter kicker above the list sits left too, so the labels line up with it.</div>
+  </div>
+  <div class="cell"><div class="cap">D. A dotted hairline, the label right</div>
+    <div class="phone optD">
+      <div class="chap-kicker">CHAPTER 1</div><div class="chap-row"><span class="chap-title">The words that get you by</span><span class="chap-whisper">4 of 15</span></div>
+      <div class="list">
+        <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+        <div class="mark"><span class="lbl">BY TODAY</span></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+        <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+        <div class="mark"><span class="lbl">FOR THE TRIP</span></div>
+        <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      </div>
+    </div>
+    <div class="note">The line dashed, so it reads as a mark rather than a divider: the list already uses solid hairlines inside drawers and sheets.</div>
+  </div>
+</div>
+</body></html>

@@ -58,7 +58,13 @@ function recordAnswer(id, ok, opts) {
     s.ease = Math.min(2.8, s.ease + 0.05);
   } else {
     s.streak = 0; s.lapses++; s.lastMiss = todayStr(); s.missRun = (s.missRun || 0) + 1;   // misses in a row (chat 11/2: three running puts a sentence first in review)
-    s.interval = 1; s.ease = Math.max(1.3, s.ease - 0.2);
+    // THE LAPSE RULE (Tom 11/7, chat confirmed, STAGED "lapse-rungs"): a miss divides the spacing by about five, two rungs of the ladder (85 to
+    // 16, 37 to 7, 16 to 3, 7 or less to 1), so a slip on a word you own reads as check it again, not start over; strength then reads off the
+    // new spacing from the day of the miss (lapseRef). The guard: two misses in a row go to one day. Before: every miss went to one day.
+    const twoRungs = isStaged("lapse-rungs") && s.missRun < 2 && s.interval > 7;
+    s.interval = twoRungs ? Math.max(1, Math.round(s.interval / 5)) : 1;
+    if (twoRungs) s.lapseRef = todayStr(); else delete s.lapseRef;
+    s.ease = Math.max(1.3, s.ease - 0.2);
   }
   s.due = _dateAdd(todayStr(), isStaged("due-cap") ? Math.min(s.interval, daysLeft) : s.interval);   // never schedule past the trip
 }
@@ -69,7 +75,8 @@ function recordAnswer(id, ok, opts) {
 function itemStrength(s) {
   if (!s || s.exposures < 1) return 0;
   const iv = Math.max(1, s.interval || 1);
-  const days = Math.max(0, _daysAgo(s.lastCorrect || s.lastSeen));
+  const ref = (s.lapseRef && s.lapseRef > (s.lastCorrect || "")) ? s.lapseRef : (s.lastCorrect || s.lastSeen);   // a two-rung lapse: the fade counts from the day of the miss (chat 11/7)
+  const days = Math.max(0, _daysAgo(ref));
   const recency = Math.exp(-days / iv);
   let maturity = iv / (iv + 5);                                   // 0 reps→low, grows as interval builds
   if (s.axes && s.axes.production) maturity += (1 - maturity) * 0.3;

@@ -49,6 +49,10 @@ Scenario rehearsal is the strongest prep for real performance — The Rehearsal'
 
 ### How six weeks moves a person (the arc)
 
+**The plan, said (chat, 2026-11-07).** The goal for a trip N days out is the first min(23, N) sessions of the two chapters, in their order; the pace spreads them to the trip at most one a day; the plan starts at the later of the day the date was set and 42 days out. It is said once at intake (one line by days out, no line says what you will not reach) and drawn on Learn as two gold hairlines across the chapter list, FOR THE TRIP under the goal's last session and BY TODAY under the pace's; behind or ahead is where the line sits, no sentence counts the gap. Home says nothing new. Readiness stays the snapshot composite; a projection to the trip day was declined (it reads 15 to 25 for three weeks of a steady journey).
+
+**The Learn row (chat, 2026-11-07).** A row's drawer ends in Read the cards, the session's cards read-only; the row body plays.
+
 **Week by week, the mix tilts.** Early: survival essentials first, then scenario waves in demand order — mostly MEETING new phrases. Middle: the machines arrive and multiply what a person can say (seven frames × everything they've learned); learning and composing run side by side. Late: **the tilt inverts** — the review room's share grows as the countdown falls, until the final week is mostly REHEARSAL: composed stretches of the actual trip, run end to end, everything the person owns arranged in the day-shapes they'll live. The countdown doesn't just pace the person; it changes what kind of app this is as the date approaches. Six weeks out, Tripfluent is a teacher. One week out, it's a training camp.
 
 ---

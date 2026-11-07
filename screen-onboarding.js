@@ -31,6 +31,22 @@ const PLACEMENT = [
   { es: "¿Dónde está el baño?", answer: "Where is the bathroom?", opts: ["Where is the bathroom?", "How do I get there?", "Is it far?", "What is this?"] }
 ];
 const daysUntil = d => Math.ceil((new Date(d + "T00:00:00") - new Date(todayStr() + "T00:00:00")) / 864e5);
+/* THE PLAN, SAID (chat 11/7, STAGED "the-plan"): one line when the date is set. The goal for a trip N days out is the first min(23, N) sessions
+   of the two chapters in order; the pace spreads them to the trip at most one a day. Numbers under ten in words, the rest in figures. No line
+   says what you will not reach. The Learn tab's two hairlines (FOR THE TRIP, BY TODAY) are the same plan drawn; mocked first (Tom 11/7). */
+const PLAN_SESSIONS = 23;
+const _numWord = n => (["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"][n] || String(n));
+function planLine(days) {
+  const weeks = Math.round(days / 7);
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  if (days >= 42) return weeks > 6
+    ? `${cap(_numWord(weeks))} weeks out. The words, then the sentences: four sessions a week gets you there with time to spare, and the review keeps it fresh.`
+    : "Six weeks out. The words, then the sentences: four sessions a week and you arrive with both.";
+  if (days >= 23) { const perWeek = Math.min(7, Math.ceil(PLAN_SESSIONS / Math.max(1, weeks))); return `${cap(_numWord(weeks))} weeks out. The words, then the sentences: ${_numWord(perWeek)} sessions a week and you arrive with both.`; }
+  if (days >= 16) return `${cap(_numWord(days))} days out. One session a day gets you the words and the first sentences.`;
+  if (days >= 8) return `${cap(_numWord(days))} days out. One session a day gets you the words that get you by.`;
+  return `${cap(_numWord(days))} day${days === 1 ? "" : "s"} out. One session a day: hello, thanks, and the numbers.`;
+}
 // §2.1: pull the account-scoped answers (skill level, dietary/allergies) from any prior trip profile,
 // so a returning user creating a new trip doesn't retake the quiz or re-declare their diet.
 function priorAccountAnswers() {
@@ -255,7 +271,7 @@ function renderOnboarding(opts) {
         <div class="onb-card plan">
           <div class="onb-emoji">${d.flag}</div>
           <h2>${days <= 0 ? "Your trip is here!" : cram ? `${days} days until ${d.label}, cram mode on` : `${weeks} weeks until ${d.label}`}</h2>
-          <p>Here's your trip-ready path: <b>~${sessions} sessions</b>, about <b>6 minutes a day</b>. By departure you'll be able to:</p>
+          ${isStaged("the-plan") && days > 0 ? `<p class="plan-line">${planLine(days)}</p><p>By departure you'll be able to:</p>` : `<p>Here's your trip-ready path: <b>~${sessions} sessions</b>, about <b>6 minutes a day</b>. By departure you'll be able to:</p>`}
           <ul class="plan-list">${outcomes.map(o => `<li>${o}</li>`).join("")}</ul>
           <p class="onb-dim">All in ${d.dialect}. Change anything later in Settings.</p>
         </div>`));

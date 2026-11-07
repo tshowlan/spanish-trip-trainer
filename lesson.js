@@ -2863,7 +2863,7 @@ function renderWeld(q) {
         dressed.forEach(t => ans.insertBefore(el(`<span class="word">${t}</span>`), sweepEl));
       }, 550);
     }
-    if (wrongTaps > 0) { const rn = _adverbOrderNote(item, wrongWords); if (rn) q.resNote = rn; }   // only the adverb went wrong: the note again (chat 11/5)
+    if (wrongTaps > 0) { const rn = _adverbOrderNote(item, wrongWords) || _dayArticleNote(item, wrongWords); if (rn) q.resNote = rn; }   // only the adverb went wrong: the note again (chat 11/5); only el before a day: its note (chat 11/7)
     if (!q.sceneLocal) recordAnswer(itemId(item), wrongTaps === 0, { mode: q.ves ? "stretch" : "weld" });   // scene-local welds record nowhere (flagged in data)
     if (wrongTaps > 0) run.wrong++;
     q.esOnStage = true;
@@ -4424,6 +4424,16 @@ function _adverbOrderNote(item, wrongWords) {
   const line = /^With est\u00e1/.test(note) ? `Only the order was off. With est\u00e1, ${adv} comes first.` : `Only the order was off. With hay, ${adv} comes last.`;
   return `${line}<br>${note}`;
 }
+/* THE MISSED EL BEFORE A DAY (chat 11/7, under grammar-reshow): "esta abierto domingo" is marked wrong (right), and the sheet now teaches: the
+   line "Only el was missing." above the Domingo plate's own note, the same string, so it is learned once. Only when el is the only miss. */
+const DAY_EL_NOTE = "On the sign it is just Domingo. When it says when, the day takes el: Cerrado el domingo, closed on Sunday.";
+function _dayArticleNote(item, wrongWords) {
+  if (!(typeof isStaged === "function" && isStaged("grammar-reshow"))) return null;
+  if (!item || !/\bel (lunes|martes|miércoles|jueves|viernes|sábado|domingo)\b/i.test(item.es || "")) return null;
+  const ws = (wrongWords || []).map(w => norm(String(w))).filter(Boolean);
+  if (!ws.length || ws.some(w => w !== "el")) return null;
+  return `Only el was missing.<br>${DAY_EL_NOTE}`;
+}
 function gradeTyped(raw, item) {
   // §4b.3: accept the canonical form OR any authored variant (same typo tolerance)
   let j = { ok: false }, words = null;
@@ -4442,6 +4452,8 @@ function gradeTyped(raw, item) {
   const extra = j.accent ? "Almost: watch the accent." : (j.typo ? "Close: mind the spelling." : ([missing.length ? `${missing.length === 1 ? "One word missing" : "Missing"}: ${missing.join(", ")}.` : "", moved.length ? `Out of place: ${moved.join(", ")}.` : ""].join(" ").trim() || null));
   if (!j.ok && words && moved.length === 1 && !missing.length && !words.some(w => w.kind === "extra")) {   // only the adverb out of place (chat 11/5)
     const rn = _adverbOrderNote(item, moved); const qq = run && run.qs && run.qs[run.idx]; if (rn && qq) qq.resNote = rn;
+  } else if (!j.ok && words && missing.length === 1 && !moved.length && !words.some(w => w.kind === "extra")) {   // only one word missing, and it is the el before a day (chat 11/7)
+    const rn = _dayArticleNote(item, missing); const qq = run && run.qs && run.qs[run.idx]; if (rn && qq) qq.resNote = rn;
   }
   finishGrade(j.ok, item, extra, raw, words);          // pass the raw attempt (and its words) for the marked line
 }

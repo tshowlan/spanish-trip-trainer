@@ -48,8 +48,9 @@ function momentumSpark() {
    lessons, seen phrases, credit sum}. */
 function coverageCats() {
   const cats = {};
+  const byPlace = typeof isStaged === "function" && isStaged("place-weights") && typeof placeGroupOf === "function";   // the seven groups that exist (chat 11/7)
   (typeof DECK !== "undefined" && DECK ? DECK.stages : []).forEach(st => st.lessons.forEach(l => {
-    const c = categoryOf(l.topic);
+    const c = byPlace ? placeGroupOf(l) : categoryOf(l.topic);
     const e = cats[c] || (cats[c] = { total: 0, done: 0, seen: 0, credit: 0 });
     const ldone = lessonDone(l.id), lknown = !!(state.lessons && state.lessons[l.id] && state.lessons[l.id].known);
     if (ldone) e.done++;
@@ -68,7 +69,8 @@ function coverageScore() {
   const cats = coverageCats(), keys = Object.keys(cats);
   if (!keys.length) return 0;
   const credit = c => cats[c].total ? cats[c].credit / cats[c].total : 0;                 // §1.2 categoryCredit
-  const w = (typeof effectiveWeights === "function") ? effectiveWeights(state.profile, keys) : null;
+  const byPlace = typeof isStaged === "function" && isStaged("place-weights") && typeof placeWeights === "function";
+  const w = byPlace ? placeWeights(keys) : (typeof effectiveWeights === "function") ? effectiveWeights(state.profile, keys) : null;   // place groups renormalize over the groups present (chat 11/7)
   if (w) {                                                                                  // demand-weighted
     const wsum = keys.reduce((a, c) => a + (w[c] || 0), 0) || 1;
     return Math.round(keys.reduce((a, c) => a + credit(c) * (w[c] || 0), 0) / wsum * 100);
