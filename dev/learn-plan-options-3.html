@@ -1,0 +1,75 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The plan on Learn, round 3: diamonds across the line (mock)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#05060d; --bg-card:rgba(38,36,26,0.72); --bg-elevated:rgba(48,45,32,0.55); --text:#f6f4ea; --text-dim:#a7a494; --accent:#e6c62a; --accent-2:#e0bf2e; --secondary:#7aa6db; --border:rgba(120,112,80,0.35); --solid-track:#55523f; --font-display:"Plus Jakarta Sans",system-ui,sans-serif; --font-text:"Inter",system-ui,sans-serif; --radius:16px; }
+body { background:#111; color:#ddd; font-family:-apple-system,system-ui,sans-serif; margin:0; padding:22px; }
+h1 { font-size:16px; margin:0 0 4px; color:#eee; }
+.sub { font-size:13px; color:#999; margin:0 0 16px; max-width:960px; line-height:1.5; }
+.row { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; }
+.cell { width:340px; display:flex; flex-direction:column; gap:8px; }
+.cap { font-size:12px; color:#aaa; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+.note { font-size:12px; color:#888; line-height:1.45; }
+.phone { width:340px; background:var(--bg); border-radius:22px; box-shadow:0 0 0 4px #2a2a2a; padding:18px 14px; box-sizing:border-box; font-family:var(--font-text); color:var(--text); }
+.list { display:flex; flex-direction:column; gap:8px; }
+.lesson { display:flex; align-items:center; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 0 12px 14px; }
+.ls-ring { display:block; flex:none; } .ls-ring .ls-bg { fill:none; stroke:var(--solid-track); stroke-width:4; } .ls-ring .ls-fg { fill:none; stroke-width:4; stroke-linecap:round; stroke:var(--secondary); }
+.caret-new { width:30px; height:30px; min-width:30px; border-radius:50%; background:var(--bg-elevated); display:inline-flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+.lmain { flex:1; min-width:0; } .lname { font-family:var(--font-display); font-size:14.5px; font-weight:600; } .lmeta { font-size:11px; color:var(--text-dim); margin-top:2px; }
+.next-tag { font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.05em; color:var(--accent-2); margin-left:7px; }
+.pk { width:46px; align-self:stretch; margin:-12px 0; border-left:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+/* B3's dress: the label on the line at the right, diamonds set into the line at even spacing (the label's width is left out of the spacing) */
+.mark { position:relative; height:1px; background:var(--accent-2); margin:8px 0; opacity:.95; }
+.mark .lbl { position:absolute; right:0; top:50%; transform:translateY(-50%); font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.09em; color:var(--accent-2); background:var(--bg); padding-left:10px; }
+.mark .dia { position:absolute; top:50%; width:7px; height:7px; background:var(--accent-2); transform:translate(-50%,-50%) rotate(45deg); box-shadow:0 0 0 3px var(--bg); }
+.mark.trip .dia { width:9px; height:9px; }
+.two .dia:nth-of-type(1) { left:28%; } .two .dia:nth-of-type(2) { left:56%; }
+.three .dia:nth-of-type(1) { left:19%; } .three .dia:nth-of-type(2) { left:40%; } .three .dia:nth-of-type(3) { left:61%; }
+.hollow .mark .dia { background:var(--bg); border:1.5px solid var(--accent-2); box-shadow:0 0 0 3px var(--bg); }
+</style></head><body>
+<h1>The plan on Learn, round 3: B3's dress with diamonds across the line</h1>
+<p class="sub">Tom: diamonds, two or three, evenly across the line, the label at the right as in B. Spaced over the line's open run (the label's width left out), FOR THE TRIP's diamonds one size up. Three cells: two diamonds, three diamonds, and three hollow ones in case the solid read heavy.</p>
+<div class="row">
+  <div class="cell"><div class="cap">D2. Two diamonds</div>
+    <div class="phone"><div class="list">
+      <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="mark two"><i class="dia"></i><i class="dia"></i><span class="lbl">BY TODAY</span></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+      <div class="mark two trip"><i class="dia"></i><i class="dia"></i><span class="lbl">FOR THE TRIP</span></div>
+      <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+    </div></div>
+    <div class="note">Two beads, thirds of the open run. Quieter; the line still reads first.</div>
+  </div>
+  <div class="cell"><div class="cap">D3. Three diamonds</div>
+    <div class="phone"><div class="list">
+      <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="mark three"><i class="dia"></i><i class="dia"></i><i class="dia"></i><span class="lbl">BY TODAY</span></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+      <div class="mark three trip"><i class="dia"></i><i class="dia"></i><i class="dia"></i><span class="lbl">FOR THE TRIP</span></div>
+      <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+    </div></div>
+    <div class="note">Three beads, quarters of the open run. The line reads as a strand; the words close it.</div>
+  </div>
+  <div class="cell hollow"><div class="cap">D3h. Three, hollow</div>
+    <div class="phone"><div class="list">
+      <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="mark three"><i class="dia"></i><i class="dia"></i><i class="dia"></i><span class="lbl">BY TODAY</span></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+      <div class="mark three trip"><i class="dia"></i><i class="dia"></i><i class="dia"></i><span class="lbl">FOR THE TRIP</span></div>
+      <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+    </div></div>
+    <div class="note">The same three, outlined instead of filled: lighter on the eye if the solid beads pull too much against the rows.</div>
+  </div>
+</div>
+</body></html>
