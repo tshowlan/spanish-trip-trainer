@@ -55,6 +55,13 @@ function _togglePeek(row, l) {
   const peek = l.sentences
     ? el(`<div class="lesson-peek"><div class="cue-label peek-label">About this session</div><div class="peek-line">${tidyBreaks(l.line || "")}</div>${(l.examples || []).length ? `<div class="peek-ex"><span class="ex-label">Examples</span>${l.examples.join(" \u00b7 ")}</div>` : ""}</div>`)
     : el(`<div class="lesson-peek">${l.line ? `<div class="cue-label peek-label">About this session</div><div class="peek-line">${tidyBreaks(l.line)}</div>` : ""}<div class="cue-label peek-label">${l.sounds ? "The sounds" : "The words"}</div><div class="peek-list">${groups}</div></div>`);   // no button: the row itself starts the lesson (option A, Tom 9/21)
+  // THE CARDS' HOME (chat 11/6, Tom's pick C of the mocks, STAGED "cards-sheet"): the drawer ends in one row, Read the cards, which opens
+  // a read-only sheet of the session's cards. The cards are a thing you read; the session is for doing. A Known row's drawer has it too.
+  if (isStaged("cards-sheet") && _sessionCards(l).length) {
+    const foot = el(`<button class="peek-foot">Read the cards ${icon("caret-right", 13)}</button>`);
+    foot.addEventListener("click", e => { e.stopPropagation(); openCardsSheet(l); });
+    peek.appendChild(foot);
+  }
   row.after(peek);
   requestAnimationFrame(() => {
     peek.classList.add("show");
@@ -65,6 +72,41 @@ function _togglePeek(row, l) {
     else if (pb.bottom > BOTTOM) dy = Math.min(pb.bottom - BOTTOM, rb.top - TOP);
     if (dy) try { window.scrollBy({ top: dy, behavior: "smooth" }); } catch (_) { window.scrollBy(0, dy); }
   });
+}
+// the session's cards: a word session's cards are its words; a sentence session's are its frame cards (sentences are not cards, chat 11/6);
+// a sounds session has none here (its sounds are not read this way)
+function _sessionCards(l) {
+  if (l.sounds) return [];
+  const items = (l.items || []).concat((l.machines || []).flatMap(m => m.items || []));
+  return l.sentences ? items.filter(it => it.card) : items;
+}
+// the sheet: title the session's name, one line, then each card in the present card's own dress, smaller: the Spanish headword, its gloss,
+// the context line with its English under it, the Good to know note where the card had one. A tap on the Spanish says it. No strength, no buttons.
+function openCardsSheet(l) {
+  const known = !!(state.lessons[l.id] && state.lessons[l.id].known);
+  const esc = s => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  const card = it => `<div class="cs-card">
+      <div class="cs-es" data-es="${esc(it.es)}">${esc(it.es)}</div>
+      <div class="cs-en">${esc(it.en)}</div>
+      ${it.contextEs ? `<div class="cs-ctx"><span class="es" data-es="${esc(it.contextEs)}">${esc(it.contextEs)}</span>${it.contextEn ? `<span class="en">${esc(it.contextEn)}</span>` : ""}</div>` : ""}
+      ${it.note ? `<div class="cue-label cs-label">Good to know</div><div class="cs-note">${esc(it.note)}</div>` : ""}
+    </div>`;
+  const wrap = el(`<div class="sheet-wrap">
+    <div class="sheet-backdrop"></div>
+    <div class="sheet cards-sheet">
+      <div class="sheet-grab"></div>
+      <div class="sheet-title">${esc(l.title)}</div>
+      <div class="sheet-role">${known ? "The cards. Marked Known, so they are not taught or reviewed." : "The cards, as you met them."}</div>
+      <div class="cs-list">${_sessionCards(l).map(card).join("")}</div>
+    </div>
+  </div>`);
+  wrap.querySelectorAll("[data-es]").forEach(n => n.addEventListener("click", () => {
+    speak(n.dataset.es);
+    n.classList.add("playing"); clearTimeout(n._t); n._t = setTimeout(() => n.classList.remove("playing"), 1200);
+  }));
+  document.body.appendChild(wrap);
+  requestAnimationFrame(() => wrap.classList.add("show"));
+  wrap.querySelector(".sheet-backdrop").addEventListener("click", closeSheet);
 }
 function _lessonRow(l, isNext) {
   const str = lessonStrength(l);   // the ring from the first play (Tom 10/20: the done-only rule of v470 was withdrawn minutes later)
