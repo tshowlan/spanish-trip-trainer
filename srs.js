@@ -51,13 +51,16 @@ function recordAnswer(id, ok, opts) {
     else if (m === "close" || m === "close_swap") { s.axes.production = 1; s.axes.cold = 1; }  // the close: cold typed reps (§7.1)
     else if (m === "reply") { s.axes.chained = 1; }                          // responded to a local's line (§7.1, lite)
     if (s.axes.production && s.axes.cold && s.axes.native && s.axes.chained) s.interval *= 2;  // graduated
-    s.interval = Math.min(s.interval, daysLeft);                  // never schedule past the trip
+    // THE TRIP CAPS THE DATE, NOT THE STRENGTH (Tom 11/6, STAGED "due-cap"): the interval is also the word's stability (itemStrength reads
+    // it), so capping it at the days left made every word's strength sink with the calendar in the last week (five days out, a perfect
+    // answer maxed at 50; the day before, 17). Now the interval grows freely and only the DUE date stays inside the trip.
+    if (!isStaged("due-cap")) s.interval = Math.min(s.interval, daysLeft);   // the old cap: never schedule past the trip
     s.ease = Math.min(2.8, s.ease + 0.05);
   } else {
     s.streak = 0; s.lapses++; s.lastMiss = todayStr(); s.missRun = (s.missRun || 0) + 1;   // misses in a row (chat 11/2: three running puts a sentence first in review)
     s.interval = 1; s.ease = Math.max(1.3, s.ease - 0.2);
   }
-  s.due = _dateAdd(todayStr(), s.interval);
+  s.due = _dateAdd(todayStr(), isStaged("due-cap") ? Math.min(s.interval, daysLeft) : s.interval);   // never schedule past the trip
 }
 // per-phrase strength (0-100) = maturity × recency.
 //   recency  : retrievability decaying from the LAST CORRECT recall over the item's stability

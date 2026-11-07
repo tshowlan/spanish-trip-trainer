@@ -84,3 +84,4 @@
 - 11/6 (v616): word or phrase is read from the Spanish alone (cortado is a word; papel is a word even as toilet paper); the intro card's label and the cards sheet's groups both follow it.
 - 11/6 (v617): frame cards once on replay SHIPPED. STAGED board-split: a words or listening board holds at most eight pairs (ten plays as five and five), and the match tune climbs the major scale to the octave on the board's last match.
 - 11/6 (v618): the reply No, hoy no is glossed No, not today (under reply-sets).
+- 11/6 (v619): Readiness repaired. The Test Lab's due buttons now set only the due date; the 38 sentences the 11/5 press sank are set back to answered 11/5 (once, at boot). STAGED old-chapters-off: the old chapters 3-4 leave the deck and Coverage. STAGED due-cap: the trip caps a word's review date, not its strength.

@@ -11,6 +11,7 @@ migrateItemIds();     // remap SRS keys to lesson-independent ids (pack:slug) �
 rebuildDeck();
 if (typeof cleanKnownHistory === "function") cleanKnownHistory();   // Known is a flag (chat 11/5): the first Known's fabricated records go
 if (typeof migrateRetentionEntry === "function") migrateRetentionEntry();   // retention-entry: words met before today enter as reviewed
+if (typeof repairLabDue1105 === "function") repairLabDue1105();             // one-time: the 11/5 lab press that sank the place sentences (Tom 11/6)
 migrateXpToFloor();   // one-time XP→legacy-tier-floor grandfather (§4.1); no-op once migrated
 checkTripCompletion();// §5.1: archive a trip whose date has passed (also runs tier eval)
 applyTierUpdate();    // evaluate status tier on app open (§2.2)

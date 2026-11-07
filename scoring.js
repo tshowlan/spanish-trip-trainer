@@ -270,6 +270,19 @@ function computeScores() {
   _recordDaily(s);                                             // §7.2 daily history for trend charts
   return s;
 }
+// one-time repair (Tom 11/6): the Test Lab's "Make the sentences due", pressed 11/5, rewrote every met place sentence as last answered on
+// 2026-10-31 on a two-day interval (no session ran that day) and Retention fell twenty points. Those records go back to answered 11/5, the
+// day the sessions were played, interval 3, due 11/8: a guess Tom accepted, since the true values are gone. Only the exact fingerprint moves.
+function repairLabDue1105() {
+  if (state.labDueRepaired) return 0;
+  let n = 0;
+  Object.values(state.learn || {}).forEach(st => {
+    if (!st || st.interval !== 2 || st.lastSeen !== "2026-10-31" || st.lastCorrect !== "2026-10-31" || st.due !== "2026-11-02") return;
+    st.lastSeen = "2026-11-05"; st.lastCorrect = "2026-11-05"; st.interval = 3; st.due = "2026-11-08"; n++;
+  });
+  state.labDueRepaired = true; save();
+  return n;
+}
 // one-time, when retention-entry arrives: every word met before today has had its chance to be asked; it enters as reviewed
 function migrateRetentionEntry() {
   if (!(typeof isStaged === "function" && isStaged("retention-entry")) || state.retentionEntryMigrated) return;

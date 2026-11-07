@@ -122,7 +122,9 @@ function renderProfile() {
   dueAsks.addEventListener("click", () => {
     const asks = (DECK ? DECK.stages : []).flatMap(st => st.lessons).filter(l => l.asks).flatMap(l => l.items || []);
     let n = 0;
-    asks.forEach(it => { if (!it.id) return; state.learn[it.id] = Object.assign(state.learn[it.id] || { exposures: 0, streak: 0, lapses: 0 }, { exposures: Math.max(2, (state.learn[it.id] || {}).exposures || 0), interval: 2, lastSeen: daysAgoStr(5), lastCorrect: daysAgoStr(5), due: daysAgoStr(3) }); n++; });
+    // the DUE date only (Tom 11/6): the old form also rewrote lastSeen, lastCorrect, and the interval, which is what strength reads, so one press
+    // sank every ask to nothing and Retention with it
+    asks.forEach(it => { if (!it.id) return; const st = state.learn[it.id]; if (!st || !st.exposures) return; st.due = daysAgoStr(1); n++; });
     save(); toast(n ? `${n} asks are due: open Review, Recommended` : "No asks met yet: play The asks first"); renderProfile();
   });
   wrap.appendChild(dueAsks);
@@ -131,7 +133,7 @@ function renderProfile() {
   dueSent.addEventListener("click", () => {
     const sents = (ALL_ITEMS || []).filter(it => it.sentence && it.id);
     let n = 0;
-    sents.forEach(it => { const st = state.learn[it.id]; if (!st || !st.exposures) return; state.learn[it.id] = Object.assign(st, { interval: 2, lastSeen: daysAgoStr(5), lastCorrect: daysAgoStr(5), due: daysAgoStr(3) }); n++; });
+    sents.forEach(it => { const st = state.learn[it.id]; if (!st || !st.exposures) return; st.due = daysAgoStr(1); n++; });   // the DUE date only (Tom 11/6; see the asks button)
     save(); toast(n ? `${n} sentences are due: open Practice` : "No place sentence met yet: play the Counter or the Table first"); renderProfile();
   });
   wrap.appendChild(dueSent);

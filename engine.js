@@ -186,6 +186,10 @@ function _chapterFlowDeck(deck, rooms) {
     { id: "sp-first-sentences", pass: 1, title: t[1] || "The sentences that get things done", blurb: b[1] || "", lessons: asks.concat(sentences, roomList) },   // the asks open the chapter, the rooms practice them
     Object.assign({}, old[1] || {}, { pass: 2, title: t[2] || "Sentences by place", blurb: b[2] || "", lessons: (old[1] ? old[1].lessons : []).concat(old[2] ? old[2].lessons : []) }),
   ].concat(old.slice(3).map((st, i) => Object.assign({}, st, { pass: 3 + i, title: i === 0 ? (t[3] || st.title) : st.title, blurb: i === 0 ? (b[3] || "") : st.blurb })));
+  // THE OLD CHAPTERS OFF (Tom 11/6, STAGED "old-chapters-off"): passes 2 and up are the old curriculum (Where's the loo, Taxi!, Dinner at
+  // Rosa's), 183 items shown as chapters 3 and 4 and counted against Coverage with no credit. Until chapter 3 is written they leave the
+  // deck: not on Learn, not in Coverage or Retention. A learner's history on their words keeps (state.learn is untouched).
+  if (typeof isStaged === "function" && isStaged("old-chapters-off")) deck.stages = deck.stages.filter(st => st.pass <= 1);
 }
 function rebuildDeck() {
   const p = state.profile;
