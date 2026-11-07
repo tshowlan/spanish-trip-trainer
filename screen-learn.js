@@ -85,18 +85,23 @@ function _sessionCards(l) {
 function openCardsSheet(l) {
   const known = !!(state.lessons[l.id] && state.lessons[l.id].known);
   const esc = s => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  // the intro card's own colour (Tom 11/6): its gold label on top (Word, Phrase, Sign: the present card's reading, without NEW) and the
+  // headword in the gold box the new piece wears; the Good to know label in full text colour, as on the card
+  const content = t => t.replace(/[¿?¡!.,]/g, "").trim().split(/\s+/).filter(w => w && !/^(el|la|los|las|un|una|unos|unas|the|a|an)$/i.test(w)).length;
+  const kind = it => platesOn(l) ? "Sign" : (content(it.es) <= 1 && content(it.en) <= 1) ? "Word" : "Phrase";
   const card = it => `<div class="cs-card">
+      <div class="present-label cs-kind">${kind(it)}</div>
       <div class="cs-es" data-es="${esc(it.es)}">${esc(it.es)}</div>
       <div class="cs-en">${esc(it.en)}</div>
       ${it.contextEs ? `<div class="cs-ctx"><span class="es" data-es="${esc(it.contextEs)}">${esc(it.contextEs)}</span>${it.contextEn ? `<span class="en">${esc(it.contextEn)}</span>` : ""}</div>` : ""}
-      ${it.note ? `<div class="cue-label cs-label">Good to know</div><div class="cs-note">${esc(it.note)}</div>` : ""}
+      ${it.note ? `<div class="cue-label note-label cs-label">Good to know</div><div class="cs-note">${esc(it.note)}</div>` : ""}
     </div>`;
   const wrap = el(`<div class="sheet-wrap">
     <div class="sheet-backdrop"></div>
     <div class="sheet cards-sheet">
       <div class="sheet-grab"></div>
       <div class="sheet-title">${esc(l.title)}</div>
-      <div class="sheet-role">${known ? "The cards. Marked Known, so they are not taught or reviewed." : "The cards, as you met them."}</div>
+      ${known ? `<div class="sheet-role">The cards. Marked Known, so they are not taught or reviewed.</div>` : ""}
       <div class="cs-list">${_sessionCards(l).map(card).join("")}</div>
     </div>
   </div>`);
