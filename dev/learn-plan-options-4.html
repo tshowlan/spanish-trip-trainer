@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The plan on Learn, round 4: where the two sparkles sit (mock)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#05060d; --bg-card:rgba(38,36,26,0.72); --bg-elevated:rgba(48,45,32,0.55); --text:#f6f4ea; --text-dim:#a7a494; --accent:#e6c62a; --accent-2:#e0bf2e; --secondary:#7aa6db; --border:rgba(120,112,80,0.35); --solid-track:#55523f; --font-display:"Plus Jakarta Sans",system-ui,sans-serif; --font-text:"Inter",system-ui,sans-serif; --radius:16px; }
+body { background:#111; color:#ddd; font-family:-apple-system,system-ui,sans-serif; margin:0; padding:22px; }
+h1 { font-size:16px; margin:0 0 4px; color:#eee; }
+.sub { font-size:13px; color:#999; margin:0 0 16px; max-width:960px; line-height:1.5; }
+.row { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; }
+.cell { width:340px; display:flex; flex-direction:column; gap:8px; }
+.cap { font-size:12px; color:#aaa; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+.note { font-size:12px; color:#888; line-height:1.45; }
+.phone { width:340px; background:var(--bg); border-radius:22px; box-shadow:0 0 0 4px #2a2a2a; padding:18px 14px; box-sizing:border-box; font-family:var(--font-text); color:var(--text); }
+.list { display:flex; flex-direction:column; gap:8px; }
+.lesson { display:flex; align-items:center; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 0 12px 14px; }
+.ls-ring { display:block; flex:none; } .ls-ring .ls-bg { fill:none; stroke:var(--solid-track); stroke-width:4; } .ls-ring .ls-fg { fill:none; stroke-width:4; stroke-linecap:round; stroke:var(--secondary); }
+.caret-new { width:30px; height:30px; min-width:30px; border-radius:50%; background:var(--bg-elevated); display:inline-flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+.lmain { flex:1; min-width:0; } .lname { font-family:var(--font-display); font-size:14.5px; font-weight:600; } .lmeta { font-size:11px; color:var(--text-dim); margin-top:2px; }
+.next-tag { font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.05em; color:var(--accent-2); margin-left:7px; }
+.pk { width:46px; align-self:stretch; margin:-12px 0; border-left:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+.mark { position:relative; height:1px; background:var(--accent-2); margin:8px 0; opacity:.95; }
+.mark .lbl { position:absolute; right:0; top:50%; transform:translateY(-50%); font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.09em; color:var(--accent-2); background:var(--bg); padding-left:10px; }
+.mark .spk { position:absolute; top:50%; width:14px; height:14px; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; background:var(--bg); }
+.mark .spk svg { width:11px; height:11px; fill:var(--accent-2); }
+.mark.trip .spk svg { width:14px; height:14px; }
+.pa .spk:nth-of-type(1) { left:17%; } .pa .spk:nth-of-type(2) { left:55%; }
+.pb .spk:nth-of-type(1) { left:8%; }  .pb .spk:nth-of-type(2) { left:62%; }
+.pc .spk:nth-of-type(1) { left:26%; } .pc .spk:nth-of-type(2) { left:46%; }
+.pd .spk:nth-of-type(1) { left:6%; }  .pd .spk:nth-of-type(2) { left:34%; }
+.pe .spk:nth-of-type(1) { left:38%; } .pe .spk:nth-of-type(2) { left:64%; }
+/* the drift: the two sparkles glide along the open run, out of phase, slow and easy, a twinkle on the turn */
+@keyframes driftA { 0% { left:12%; } 50% { left:40%; } 100% { left:12%; } }
+@keyframes driftB { 0% { left:58%; } 50% { left:30%; } 100% { left:58%; } }
+@keyframes twinkle { 0%, 100% { opacity:.55; } 50% { opacity:1; } }
+.pm .spk:nth-of-type(1) { animation: driftA 9s ease-in-out infinite; } .pm .spk:nth-of-type(2) { animation: driftB 9s ease-in-out infinite; }
+.pm .spk svg { animation: twinkle 4.5s ease-in-out infinite; }
+.pm .spk:nth-of-type(2) svg { animation-delay: 2.25s; }
+</style></head><body>
+<h1>The plan on Learn, round 4: where the two sparkles sit, and one that drifts</h1>
+<p class="sub">Five spacings of S2 (two of B3's four-point sparkles set into the line, the label at the right), then one where the pair glides slowly back and forth along the line, out of step with each other, with a soft twinkle. Percentages are of the whole line; the label takes the last fifth. The drift only moves in a real browser.</p>
+<div class="row" id="grid"></div>
+<script>
+const rows = (label, cls) => `<div class="list">
+  <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+  <div class="mark ${cls}"><span class="spk">${SPK}</span><span class="spk">${SPK}</span><span class="lbl">BY TODAY</span></div>
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+  <div class="mark ${cls} trip"><span class="spk">${SPK}</span><span class="spk">${SPK}</span><span class="lbl">FOR THE TRIP</span></div>
+  <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+</div>`;
+var SPK = '<svg viewBox="0 0 24 24"><path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z"/></svg>';
+const cells = [
+  ["S2a. 17 and 55: the pair from round three", "pa", "The reference. Wider than D2, closer than D2w."],
+  ["S2b. 8 and 62: wide, framing the run", "pb", "One near the start, one just before the words; the long run between them is the line."],
+  ["S2c. 26 and 46: a close pair, centred", "pc", "The two read as one mark, a pair of lights in the middle of the line."],
+  ["S2d. 6 and 34: both toward the left", "pd", "The lights sit at the line's start, the right half left clear up to the words; the line reads as leading to the name."],
+  ["S2e. 38 and 64: both toward the words", "pe", "The lights gather near the label, as if the words carried them; the left run stays plain."],
+  ["S2m. The pair drifts", "pm", "Each sparkle glides along the line over nine seconds, out of step with the other, and twinkles on the turn. Lives only in a real browser. The app would still this for anyone with reduced motion on, and it would be the only moving thing on Learn."]
+];
+document.getElementById("grid").innerHTML = cells.map(([cap, cls, note]) => `<div class="cell"><div class="cap">${cap}</div><div class="phone">${rows(cap, cls)}</div><div class="note">${note}</div></div>`).join("");
+</script>
+</body></html>
