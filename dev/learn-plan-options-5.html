@@ -20,8 +20,7 @@ h1 { font-size:16px; margin:0 0 4px; color:#eee; }
 .mark { position:relative; height:1px; background:var(--accent-2); margin:8px 0; opacity:.95; }
 .mark .lbl { position:absolute; right:0; top:50%; transform:translateY(-50%); font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.09em; color:var(--accent-2); background:var(--bg); padding-left:10px; }
 /* the open run: from the line's start to just before the label (BY TODAY leaves 64% of the line open, FOR THE TRIP 58%) */
-.mark .run { position:absolute; left:0; top:0; height:1px; width:64%; }
-.mark.trip .run { width:58%; }
+.mark .run { position:absolute; left:0; top:0; height:1px; width:64%; }   /* sized by script to end where the label begins */
 .mark .spk { position:absolute; top:50%; width:14px; height:14px; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; background:var(--bg); }
 .mark .spk svg { width:11px; height:11px; fill:var(--accent-2); animation: twinkle 4.5s ease-in-out infinite; }
 .mark.trip .spk svg { width:14px; height:14px; }
@@ -29,21 +28,21 @@ h1 { font-size:16px; margin:0 0 4px; color:#eee; }
 @keyframes twinkle { 0%, 100% { opacity:.55; } 50% { opacity:1; } }
 /* positions are percentages OF THE RUN, so the left and right sparkles reach the same distance from their ends (6% in) */
 /* M1: crossing. Each sparkle travels the whole run; they pass in the middle. */
-@keyframes m1a { 0% { left:6%; } 50% { left:94%; } 100% { left:6%; } }
-@keyframes m1b { 0% { left:94%; } 50% { left:6%; } 100% { left:94%; } }
+@keyframes m1a { 0% { left:4%; } 50% { left:96%; } 100% { left:4%; } }
+@keyframes m1b { 0% { left:96%; } 50% { left:4%; } 100% { left:96%; } }
 .m1 .spk:nth-of-type(1) { animation: m1a 12s ease-in-out infinite; } .m1 .spk:nth-of-type(2) { animation: m1b 12s ease-in-out infinite; }
 /* M2: mirrored halves, never overlapping. Each keeps to its own half; at the closest they are a fifth of the run apart. */
-@keyframes m2a { 0% { left:6%; } 50% { left:40%; } 100% { left:6%; } }
-@keyframes m2b { 0% { left:94%; } 50% { left:60%; } 100% { left:94%; } }
+@keyframes m2a { 0% { left:4%; } 50% { left:40%; } 100% { left:4%; } }
+@keyframes m2b { 0% { left:96%; } 50% { left:60%; } 100% { left:96%; } }
 .m2 .spk:nth-of-type(1) { animation: m2a 9s ease-in-out infinite; } .m2 .spk:nth-of-type(2) { animation: m2b 9s ease-in-out infinite; }
 /* M3: in step, never overlapping. The pair slides together, a fixed gap between them, end to end. */
-@keyframes m3a { 0% { left:6%; } 50% { left:54%; } 100% { left:6%; } }
-@keyframes m3b { 0% { left:46%; } 50% { left:94%; } 100% { left:46%; } }
+@keyframes m3a { 0% { left:4%; } 50% { left:56%; } 100% { left:4%; } }
+@keyframes m3b { 0% { left:44%; } 50% { left:96%; } 100% { left:44%; } }
 .m3 .spk:nth-of-type(1) { animation: m3a 10s ease-in-out infinite; } .m3 .spk:nth-of-type(2) { animation: m3b 10s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .mark .spk, .mark .spk svg { animation: none !important; } .m1 .spk:nth-of-type(1), .m2 .spk:nth-of-type(1), .m3 .spk:nth-of-type(1) { left:17%; } .m1 .spk:nth-of-type(2), .m2 .spk:nth-of-type(2), .m3 .spk:nth-of-type(2) { left:83%; } }
 </style></head><body>
 <h1>The plan on Learn, round 5: the drifting pair, the right sparkle reaching the run's far end</h1>
-<p class="sub">The line's open run is everything before the label. Both sparkles now turn 6% in from their own end of that run, so the right one goes as far right as the left one goes left. Three motions: crossing, mirrored halves that never overlap, and in step with a fixed gap. Each sparkle twinkles softly out of step with the other. Moves only in a real browser; with reduced motion on, the pair holds still at 17% and 83% of the run.</p>
+<p class="sub">The line's open run is everything before the label. Both sparkles turn 4% in from their own end of that run, the run measured to the label, so the right one goes as far right as the left one goes left. Three motions: crossing, mirrored halves that never overlap, and in step with a fixed gap. Each sparkle twinkles softly out of step with the other. Moves only in a real browser; with reduced motion on, the pair holds still at 17% and 83% of the run.</p>
 <div class="row" id="grid"></div>
 <script>
 var SPK = '<svg viewBox="0 0 24 24"><path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z"/></svg>';
@@ -64,5 +63,8 @@ const cells = [
   ["M3. In step, a fixed gap", "m3", "The pair slides together from the left end to the right and back, the gap between them constant. Ten seconds a cycle. Reads as one thing moving, not two."]
 ];
 document.getElementById("grid").innerHTML = cells.map(([cap, cls, note]) => `<div class="cell"><div class="cap">${cap}</div><div class="phone">${rows(cls)}</div><div class="note">${note}</div></div>`).join("");
+// the run ends exactly where the label begins, so 96% of the run is right beside the words on both lines
+const size = () => document.querySelectorAll(".mark").forEach(m => { const lbl = m.querySelector(".lbl"), run = m.querySelector(".run"); run.style.width = Math.max(40, m.clientWidth - lbl.offsetWidth - 2) + "px"; });
+size(); window.addEventListener("resize", size); document.fonts && document.fonts.ready.then(size);
 </script>
 </body></html>
