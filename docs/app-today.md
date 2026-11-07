@@ -80,3 +80,4 @@
 - 11/6 (v612): STAGED cards-sheet: a session's drawer ends in Read the cards, a read-only sheet of its cards (headword, gloss, context, note; tap the Spanish to hear it); word sessions list their words, sentence sessions their frame cards; a Known session's sheet says so.
 - 11/6 (v613): the cards sheet lists the cards with no line above them (the Known line stays); each card wears the intro card's gold label (Word, Phrase, Sign) and its headword in the gold box.
 - 11/6 (v614): the cards sheet's headword lost its gold box; a short sheet no longer scrolls the screen behind it (every sheet). The gold's home is mocked (dev/cards-sheet-gold-options.html), Tom picks.
+- 11/6 (v615): the cards sheet groups its cards under one gold label per kind (Words, Phrases, Signs), Tom's pick E.

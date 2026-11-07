@@ -2446,7 +2446,9 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
 .cards-sheet .sheet-role { margin-bottom: 4px; }
 .cs-card { padding: 14px 0 16px; border-bottom: 1px solid var(--border); }
 .cs-card:last-child { border-bottom: none; }
-.cs-kind { margin: 0 0 8px; }   /* the intro card's gold label, without NEW */
+.cs-sec { margin: 14px 0 0; }   /* the intro card's gold label, once per kind (Tom 11/6, pick E): Words, Phrases, Signs */
+.cs-sec:first-child { margin-top: 4px; }
+.cs-sec + .cs-card { padding-top: 10px; }
 .cs-es { font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--text); cursor: pointer; }   /* the gold box came off (Tom 11/6) */
 .cs-es.playing { color: var(--accent-2); }
 .cs-en { font-size: 15px; color: var(--text-dim); margin-top: 5px; }

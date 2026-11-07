@@ -90,19 +90,23 @@ function openCardsSheet(l) {
   const content = t => t.replace(/[¿?¡!.,]/g, "").trim().split(/\s+/).filter(w => w && !/^(el|la|los|las|un|una|unos|unas|the|a|an)$/i.test(w)).length;
   const kind = it => platesOn(l) ? "Sign" : (content(it.es) <= 1 && content(it.en) <= 1) ? "Word" : "Phrase";
   const card = it => `<div class="cs-card">
-      <div class="present-label cs-kind">${kind(it)}</div>
       <div class="cs-es" data-es="${esc(it.es)}">${esc(it.es)}</div>
       <div class="cs-en">${esc(it.en)}</div>
       ${it.contextEs ? `<div class="cs-ctx"><span class="es" data-es="${esc(it.contextEs)}">${esc(it.contextEs)}</span>${it.contextEn ? `<span class="en">${esc(it.contextEn)}</span>` : ""}</div>` : ""}
       ${it.note ? `<div class="cue-label note-label cs-label">Good to know</div><div class="cs-note">${esc(it.note)}</div>` : ""}
     </div>`;
+  // the label once per kind (Tom 11/6, pick E of the mocks): the words together, then the phrases, then the signs; the pack's order inside each
+  const groups = () => {
+    const all = _sessionCards(l), order = ["Word", "Phrase", "Sign"], plural = { Word: "Words", Phrase: "Phrases", Sign: "Signs" };
+    return order.map(k => { const list = all.filter(it => kind(it) === k); return list.length ? `<div class="present-label cs-sec">${plural[k]}</div>${list.map(card).join("")}` : ""; }).join("");
+  };
   const wrap = el(`<div class="sheet-wrap">
     <div class="sheet-backdrop"></div>
     <div class="sheet cards-sheet">
       <div class="sheet-grab"></div>
       <div class="sheet-title">${esc(l.title)}</div>
       ${known ? `<div class="sheet-role">The cards. Marked Known, so they are not taught or reviewed.</div>` : ""}
-      <div class="cs-list">${_sessionCards(l).map(card).join("")}</div>
+      <div class="cs-list">${groups()}</div>
     </div>
   </div>`);
   wrap.querySelectorAll("[data-es]").forEach(n => n.addEventListener("click", () => {
