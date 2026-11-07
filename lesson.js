@@ -420,7 +420,12 @@ function composeSentences(lesson) {
     const pk = [at(1), at(0), at(2)].find(x => (x.near || []).length >= 2); if (pk) picks.push({ type: "hear_pick", item: pk, es: pk.es, en: pk.en, place, options: [pk.en].concat(pk.near.slice(0, 2)), arc: true });
     typed.push(Object.assign(_sentenceBuild(at(s.length >= 3 ? 2 : 1), pool), { inputForm: "typed", cueRole: "Say it in Spanish", hint: null, arc: true, lap: true, resNote: null }));
   });
-  const qs = cards.map(it => ({ type: "present", item: it, arc: true }));
+  // the once rule (chat 11/6, STAGED "frame-cards-once"): a frame card shows the first time the session is played and not on replay, like a
+  // word session's cards; the replay opens on the frame's build (the card still leads its frame above). The gained-since exception stands:
+  // a card whose frame has no met sentence yet is new to this learner and shows. A card with no frame of its own (esto, Está bien así) is read on Learn.
+  const gainedSince = c => { const k = c.frame || norm(c.es).replace(/[¿?¡!_,.]/g, "").trim(); const list = frames0.get(k); return !!list && list.every(it => exposuresOf(it) === 0); };
+  const shownCards = (isStaged("frame-cards-once") && lessonDone(lesson.id)) ? cards.filter(gainedSince) : cards;
+  const qs = shownCards.map(it => ({ type: "present", item: it, arc: true }));
   const noSeam = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };
   // replies that are the same thing in different dress (Sí, claro / Claro; Sí, hay / No hay; Un momento / Sí, un momento) count as one:
   // the core is the reply without its yes or no. Each sentence prefers a reply no other exchange is using, and the order never puts

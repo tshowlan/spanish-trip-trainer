@@ -2080,6 +2080,12 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v611 (2026-11-06) — chat's 11/06 rulings: the taxi example line and the once rule applied; the cards' home MOCKED
+- 2026-11-06 — Chat: the 11/06 handoff answered (docs/rulings-1106.md): the taxi card's example line, the cards' home on Learn (the ring opens the session's cards sheet) with frame cards following the once rule, the door plates' key confirmed. Next for Code: apply; Tom ships by switch.
+- Applied: the taxi card's example line is "A la estación, por favor. / To the train station, please." (under `reply-sets`, as the card is). Frame cards once on replay, STAGED `frame-cards-once` (composeSentences: a done session shows only cards whose frame has no met sentence; the card still leads its frame). The door plates' key stands as built.
+- MOCKED, not built: dev/cards-home-options.html (Desktop copy cards-home-options.html). Chat placed the ring at the row's right edge; in the app the ring is at the LEFT and the right edge is the drawer's caret. A: the ring as the door (chat's ruling on the real row, an invisible third zone). B: the drawer grows into the cards (one door, no sheet). C: the drawer keeps its gist and ends in "Read the cards", opening chat's sheet (Code's pick). The sheet in two states (met; Known). Tom picks, then the build goes STAGED.
+- Decisions line added.
+
 ## 2026-11-06 — handoff to chat (docs/chat-handoff-2026-11-06.md): short
 - Two asks (the taxi card's example line; where the intro cards live after the first meeting, two rulings), one confirmation (the door plates' act keyed to the intake's adjective-forms question), four to-knows (v607 ships and the still-staged list; the carded-frame fix; the ceremony's ground; the 11/05b rulings applied). Sent early and short per Tom's 11/5 cadence rule.
 

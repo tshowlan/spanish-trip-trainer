@@ -1,0 +1,121 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The cards' home on Learn (mock)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#05060d; --bg-card:rgba(38,36,26,0.72); --bg-elevated:rgba(48,45,32,0.55); --text:#f6f4ea; --text-dim:#a7a494; --accent:#e6c62a; --accent-2:#e0bf2e; --green:#3fb56a; --secondary:#7aa6db; --border:rgba(120,112,80,0.35); --solid-track:#55523f; --font-display:"Plus Jakarta Sans",system-ui,sans-serif; --font-text:"Inter",system-ui,sans-serif; --radius:16px; }
+body { background:#111; color:#ddd; font-family:-apple-system,system-ui,sans-serif; margin:0; padding:22px; }
+h1 { font-size:16px; margin:0 0 4px; color:#eee; } h2 { font-size:13px; color:#bbb; margin:26px 0 10px; text-transform:uppercase; letter-spacing:.5px; }
+.sub { font-size:13px; color:#999; margin:0 0 16px; max-width:900px; line-height:1.5; }
+.row { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; }
+.cell { width:340px; display:flex; flex-direction:column; gap:8px; }
+.cap { font-size:12px; color:#aaa; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+.note { font-size:12px; color:#888; line-height:1.45; }
+.phone { width:340px; min-height:300px; background:var(--bg); border-radius:22px; box-shadow:0 0 0 4px #2a2a2a; padding:18px 14px; box-sizing:border-box; font-family:var(--font-text); color:var(--text); position:relative; overflow:hidden; }
+/* the Learn row, as built */
+.list { display:flex; flex-direction:column; gap:8px; }
+.lesson { display:flex; align-items:center; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 0 14px 16px; position:relative; }
+.lesson.known { background:color-mix(in srgb, var(--accent-2) 10%, var(--bg-card)); border-color:color-mix(in srgb, var(--accent-2) 45%, var(--border)); }
+.ls-ring { display:block; flex:none; } .ls-ring .ls-bg { fill:none; stroke:var(--solid-track); stroke-width:4; } .ls-ring .ls-fg { fill:none; stroke-width:4; stroke-linecap:round; stroke:var(--secondary); }
+.known-disc { width:30px; height:30px; border-radius:50%; background:var(--accent-2); color:#1a1600; display:inline-flex; align-items:center; justify-content:center; flex:none; font-weight:800; font-size:15px; }
+.lmain { flex:1; min-width:0; } .lname-row { display:flex; align-items:center; gap:7px; }
+.lname { font-family:var(--font-display); font-size:15px; font-weight:600; }
+.k-tag { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:7px; background:var(--accent-2); color:#1a1600; font-family:var(--font-display); font-weight:800; font-size:12px; }
+.lmeta { font-size:11px; color:var(--text-dim); margin-top:3px; }
+.pk-zone { align-self:stretch; width:52px; margin:-14px 0; flex:none; display:flex; align-items:center; justify-content:center; border-left:1px solid var(--border); color:var(--text-dim); }
+.pk-zone svg { width:15px; height:15px; }
+/* the ring as a door: the hit area is the full row height (chat) */
+.ring-door { align-self:stretch; margin:-14px 0 -14px -16px; padding:0 0 0 16px; display:flex; align-items:center; }
+.ring-door.hint { border-right:1px solid var(--border); padding-right:12px; }
+.ring-door.pressed { background:rgba(255,255,255,.05); border-radius:var(--radius) 0 0 var(--radius); }
+/* the drawer, as built */
+.lesson-peek { margin:-2px 0 10px; padding:4px 16px 14px 40px; }
+.cue-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.8px; color:var(--text-dim); margin:0 0 6px -12px; }
+.peek-item { display:flex; justify-content:space-between; align-items:baseline; gap:14px; padding:7px 0; border-bottom:1px solid var(--border); font-size:14px; }
+.peek-item:last-child { border-bottom:none; } .peek-item .es { font-family:var(--font-display); font-weight:600; } .peek-item .en { color:var(--text-dim); text-align:right; }
+.peek-line { font-size:14.5px; font-weight:500; line-height:1.45; margin:2px 0 12px; }
+.peek-ex { font-size:14px; margin:2px 0 6px; } .peek-ex .ex-label { display:block; font-family:var(--font-display); font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); margin:8px 0 3px; }
+.peek-foot { display:flex; align-items:center; justify-content:space-between; margin:12px 0 0 -12px; padding:10px 0 0; border-top:1px solid var(--border); font-size:13.5px; font-weight:600; color:var(--accent-2); font-family:var(--font-display); }
+/* the cards, in the card's own dress, read-only */
+.cardlist .c { padding:14px 0; border-bottom:1px solid var(--border); } .cardlist .c:last-child { border-bottom:none; }
+.c-es { font-family:var(--font-display); font-size:22px; font-weight:600; line-height:1.25; }
+.c-en { font-size:15px; color:var(--text-dim); margin-top:5px; }
+.c-ctx { font-size:14.5px; color:var(--text-dim); margin-top:10px; line-height:1.5; }
+.c-ctx .es { color:var(--text); font-family:var(--font-display); font-weight:500; border-bottom:1px dotted var(--text-dim); }
+.c-ctx .en { display:block; margin-top:2px; }
+.c-note { font-size:13px; color:var(--text-dim); margin-top:2px; line-height:1.4; }
+.c .cue-label { margin:10px 0 3px 0; }
+/* the sheet, as built */
+.sheet-backdrop { position:absolute; inset:0; background:rgba(5,5,5,.35); }
+.sheet { position:absolute; left:0; right:0; bottom:0; background:#201e18; border-radius:22px 22px 0 0; padding:12px 22px 24px; max-height:88%; overflow:hidden; box-shadow:0 -8px 30px rgba(0,0,0,.4); }
+.sheet-grab { width:40px; height:5px; border-radius:99px; background:var(--border); margin:2px auto 14px; }
+.sheet-title { font-family:var(--font-display); font-weight:800; font-size:20px; margin-bottom:4px; }
+.sheet-role { font-size:13px; color:var(--text-dim); line-height:1.45; margin:0 0 6px; }
+.sheet-cards .c { padding:12px 0; }
+.ghost { opacity:.35; }
+</style></head><body>
+<h1>Where the cards live after the first meeting: the Learn row's door and the cards sheet (nothing built)</h1>
+<p class="sub">Chat's ruling: the Learn row opens to a read-only sheet of the session's cards (headword, gloss, context with the English under it, the Good to know note; tap the Spanish to hear it). Chat named the ring as the door and placed it at the row's right edge. In the app the ring sits at the row's LEFT, and the right edge already holds the caret that opens the drawer ("what's inside"). So: A is chat's ruling on the real row, B and C use the door the row already has. The sheet is the same in all three. Dark theme, phone width.</p>
+
+<h2>The door</h2>
+<div class="row">
+  <div class="cell"><div class="cap">A. The ring is the door (chat's ruling, on the real row)</div>
+    <div class="phone"><div class="list">
+      <div class="lesson"><div class="ring-door pressed"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="22" transform="rotate(-90 18 18)"/></svg></div><div class="lmain"><div class="lname-row"><span class="lname">Counter words</span></div><div class="lmeta">13 words</div></div><div class="pk-zone"><svg viewBox="0 0 256 256" fill="currentColor"><path d="M96 48l80 80-80 80-14-14 66-66-66-66z"/></svg></div></div>
+      <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="60" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname-row"><span class="lname">Table words</span></div><div class="lmeta">14 words</div></div><div class="pk-zone"><svg viewBox="0 0 256 256" fill="currentColor"><path d="M96 48l80 80-80 80-14-14 66-66-66-66z"/></svg></div></div>
+      <div class="lesson known"><span class="known-disc">&#10003;</span><div class="lmain"><div class="lname-row"><span class="lname">Counter sentences</span><span class="k-tag">K</span></div><div class="lmeta">12 phrases</div></div><div class="pk-zone"><svg viewBox="0 0 256 256" fill="currentColor"><path d="M96 48l80 80-80 80-14-14 66-66-66-66z"/></svg></div></div>
+    </div></div>
+    <div class="note">The ring (or the Known check) is tapped, the full row height. The row body still starts the session; the caret still opens the drawer. The door is invisible: nothing on the row says the ring opens anything. Three zones on one row, two of them unmarked.</div>
+  </div>
+  <div class="cell"><div class="cap">B. The drawer grows into the cards (one door, no sheet)</div>
+    <div class="phone"><div class="list">
+      <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="22" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname-row"><span class="lname">Counter words</span></div><div class="lmeta">13 words</div></div><div class="pk-zone"><svg viewBox="0 0 256 256" fill="currentColor" style="transform:rotate(90deg)"><path d="M96 48l80 80-80 80-14-14 66-66-66-66z"/></svg></div></div>
+      <div class="lesson-peek"><div class="cue-label">About this session</div><div class="peek-line">Coffee, beer, wine, and how to order at a counter.</div><div class="cue-label">The cards</div>
+        <div class="cardlist">
+          <div class="c"><div class="c-es">café</div><div class="c-en">coffee</div><div class="c-ctx"><span class="es">Un café, por favor.</span><span class="en">A coffee, please.</span></div></div>
+          <div class="c"><div class="c-es">caña</div><div class="c-en">beer</div><div class="c-ctx"><span class="es">Una caña, por favor.</span><span class="en">A caña, please.</span></div><div class="cue-label">Good to know</div><div class="c-note">The usual order: a small draft. Un doble is bigger, una jarra a mug.</div></div>
+          <div class="c ghost"><div class="c-es">copa</div><div class="c-en">glass (of wine)</div></div>
+        </div></div>
+    </div></div>
+    <div class="note">The caret's drawer already lists the words with their gloss. Here each word becomes its card: context with the English under, the note where there is one. One door, no new surface, but thirteen cards make a long drawer inside the list, and the sentence sessions' drawer (the gist and four examples) would carry its one or two frame cards under the gist.</div>
+  </div>
+  <div class="cell"><div class="cap">C. The drawer keeps its gist and gains a foot: "Read the cards"</div>
+    <div class="phone"><div class="list">
+      <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="22" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname-row"><span class="lname">Counter words</span></div><div class="lmeta">13 words</div></div><div class="pk-zone"><svg viewBox="0 0 256 256" fill="currentColor" style="transform:rotate(90deg)"><path d="M96 48l80 80-80 80-14-14 66-66-66-66z"/></svg></div></div>
+      <div class="lesson-peek"><div class="cue-label">About this session</div><div class="peek-line">Coffee, beer, wine, and how to order at a counter.</div><div class="cue-label">The words</div>
+        <div class="peek-item"><span class="es">café</span><span class="en">coffee</span></div>
+        <div class="peek-item"><span class="es">cortado</span><span class="en">cortado (espresso with a little milk)</span></div>
+        <div class="peek-item"><span class="es">con leche</span><span class="en">with milk</span></div>
+        <div class="peek-item ghost"><span class="es">caña</span><span class="en">beer</span></div>
+        <div class="peek-foot"><span>Read the cards</span><span>&#8250;</span></div>
+      </div>
+    </div></div>
+    <div class="note">The drawer is unchanged (the gist, the word list) and ends in one row that opens the cards sheet below. The door is visible and named, the row stays three zones as today, and the sheet is chat's sheet. Code's pick.</div>
+  </div>
+</div>
+
+<h2>The sheet (the same in A, B as a drawer, and C)</h2>
+<div class="row">
+  <div class="cell"><div class="cap">S1. A session you met: Counter words</div>
+    <div class="phone" style="min-height:560px"><div class="list"><div class="lesson ghost"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="22" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname-row"><span class="lname">Counter words</span></div><div class="lmeta">13 words</div></div></div></div>
+      <div class="sheet-backdrop"></div>
+      <div class="sheet"><div class="sheet-grab"></div><div class="sheet-title">Counter words</div><div class="sheet-role">The cards, as you met them.</div>
+        <div class="cardlist sheet-cards">
+          <div class="c"><div class="c-es">café</div><div class="c-en">coffee</div><div class="c-ctx"><span class="es">Un café, por favor.</span><span class="en">A coffee, please.</span></div></div>
+          <div class="c"><div class="c-es">cortado</div><div class="c-en">cortado (espresso with a little milk)</div><div class="c-ctx"><span class="es">Un cortado, gracias.</span><span class="en">A cortado, thanks.</span></div></div>
+          <div class="c"><div class="c-es">caña</div><div class="c-en">beer</div><div class="c-ctx"><span class="es">Una caña, por favor.</span><span class="en">A caña, please.</span></div><div class="cue-label">Good to know</div><div class="c-note">The usual order: a small draft. Un doble is bigger, una jarra a mug.</div></div>
+          <div class="c ghost"><div class="c-es">copa</div><div class="c-en">glass (of wine)</div></div>
+        </div></div>
+    </div>
+    <div class="note">Title, one line, then the cards in the present card's own dress, smaller: Spanish headword, gloss, the context line with its English under it (tap the Spanish to hear it), the note where the card had one. No strength, no buttons. The sheet scrolls; the backdrop closes it.</div>
+  </div>
+  <div class="cell"><div class="cap">S2. A session marked Known: Counter sentences</div>
+    <div class="phone" style="min-height:560px"><div class="list"><div class="lesson known ghost"><span class="known-disc">&#10003;</span><div class="lmain"><div class="lname-row"><span class="lname">Counter sentences</span><span class="k-tag">K</span></div><div class="lmeta">12 phrases</div></div></div></div>
+      <div class="sheet-backdrop"></div>
+      <div class="sheet"><div class="sheet-grab"></div><div class="sheet-title">Counter sentences</div><div class="sheet-role">The cards. Marked Known, so they are not taught or reviewed.</div>
+        <div class="cardlist sheet-cards">
+          <div class="c"><div class="c-es">¿Me pone ___?</div><div class="c-en">Could you get me ___?</div><div class="c-ctx"><span class="es">¿Me pone una caña?</span><span class="en">Could you get me a beer?</span></div><div class="cue-label">Good to know</div><div class="c-note">An ask built for the bar. The barman asks you ¿Qué le pongo?, and ¿Me pone? is your side of the same verb.</div></div>
+        </div></div>
+    </div>
+    <div class="note">A sentence session's sheet lists its frame cards only (chat: sentences are not cards; the Stats place sheet lists them with their strength). The Counter has one; the Street would show ¿Está ___? and Al hotel; Paying ¿Me cobra? and Está bien así. A Known row today only toasts; with the door it also opens this.</div>
+  </div>
+</div>
+</body></html>
