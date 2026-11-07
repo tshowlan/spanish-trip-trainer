@@ -227,6 +227,42 @@ function _swipeReset(row, l) {
   });
 }
 
+/* THE PLAN DRAWN (chat 11/7 R1, Tom's pick T1 of six rounds of mocks, STAGED "the-plan"): two gold hairlines across the chapter list.
+   FOR THE TRIP sits under the goal's last session (the first min(23, N) sessions, N the days from the plan's start to the trip); BY TODAY
+   sits under the session the pace says you should have finished by today (the goal's sessions spread over the plan's days, rounded down,
+   capped at the goal). Behind, BY TODAY sits below your last played row; ahead, above; no sentence counts the gap. BY TODAY goes when it
+   reaches FOR THE TRIP; both go once the trip has passed. The plan starts at the later of the day the date was set and 42 days out.
+   The line's dress (Tom): two sparkles drift in from the line's ends, meet in the middle with a soft bloom, and part; the line is the
+   whole statement. Still for reduced motion. */
+const _SPARKLE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z"/></svg>';
+function _planStart(p) {
+  const trip = new Date(p.tripDate + "T00:00:00");
+  const sixWeeks = dayStr(new Date(trip.getTime() - 42 * 864e5));
+  const set = p.dateSetAt && p.dateSetAt < p.tripDate ? p.dateSetAt : sixWeeks;
+  return set > sixWeeks ? set : sixWeeks;
+}
+function _planMarks() {
+  if (!isStaged("the-plan") || typeof daysUntil !== "function") return null;
+  const p = state.profile || {}; if (!p.tripDate) return null;
+  if (daysUntil(p.tripDate) < 0) return null;                                              // both lines go once the trip has passed
+  const start = _planStart(p);
+  const day = s => new Date(s + "T00:00:00").getTime();
+  const daysTotal = Math.max(1, Math.round((day(p.tripDate) - day(start)) / 864e5));
+  const elapsed = Math.max(0, Math.round((day(todayStr()) - day(start)) / 864e5));
+  const lessons = (DECK ? DECK.stages : []).flatMap(st => st.lessons).filter(l => !l.bonus);
+  if (!lessons.length) return null;
+  const goalN = Math.min(typeof PLAN_SESSIONS !== "undefined" ? PLAN_SESSIONS : 23, lessons.length, daysTotal);
+  const paceN = Math.min(goalN, Math.floor(goalN / daysTotal * elapsed));
+  return { goalId: lessons[goalN - 1].id, paceId: paceN >= 1 && paceN < goalN ? lessons[paceN - 1].id : null, goalN, paceN, daysTotal, elapsed, start };
+}
+function _planMark(trip) {
+  return el(`<div class="plan-mark${trip ? " trip" : ""}" role="img" aria-label="${trip ? "For the trip" : "By today"}"><span class="run"><span class="spark"></span><span class="spk a">${_SPARKLE}</span><span class="spk b">${_SPARKLE}</span></span><span class="lbl">${trip ? "FOR THE TRIP" : "BY TODAY"}</span></div>`);
+}
+// the run (the moving part) ends where the label begins, so the sparkles turn right beside the words whatever the label's width
+function _sizePlanMarks() {
+  document.querySelectorAll(".plan-mark").forEach(m => { const lbl = m.querySelector(".lbl"), run = m.querySelector(".run"); if (lbl && run) run.style.width = Math.max(40, m.clientWidth - lbl.offsetWidth - 8) + "px"; });
+}
+if (typeof window !== "undefined") window.addEventListener("resize", _sizePlanMarks);
 // passes render as chapters (learning spec §1b.2); Stage 0 is Chapter 0 once content exists.
 // Later chapters SOFT-gate: dimmed with invitation copy, browsable, never barred.
 function _journeyView(scroll) {
@@ -234,6 +270,8 @@ function _journeyView(scroll) {
   const stages = (typeof DECK !== "undefined" && DECK) ? DECK.stages : [];
   let cur = stages.findIndex(st => st.lessons.some(l => !l.bonus && !lessonDone(l.id)));
   if (cur < 0) cur = stages.length - 1;
+  const marks = _planMarks();
+  if (marks) { setTimeout(_sizePlanMarks, 0); if (document.fonts && document.fonts.ready) document.fonts.ready.then(_sizePlanMarks); }
   stages.forEach((st, i) => {
     const visible = st.lessons.filter(l => !l.bonus);
     const done = visible.filter(l => lessonDone(l.id)).length;
@@ -251,7 +289,11 @@ function _journeyView(scroll) {
       const head = chap.querySelector(".chap-head"); head.style.cursor = "pointer";
       head.addEventListener("click", () => renderChapterDoor(i, () => renderLearn(), { cta: "Back to the list", back: () => renderLearn() }));
     }
-    st.lessons.forEach(l => chap.appendChild(_lessonRow(l, l.id === recId)));
+    st.lessons.forEach(l => {
+      chap.appendChild(_lessonRow(l, l.id === recId));
+      if (marks && marks.paceId === l.id) chap.appendChild(_planMark(false));   // BY TODAY under the pace's session
+      if (marks && marks.goalId === l.id) chap.appendChild(_planMark(true));    // FOR THE TRIP under the goal's last session
+    });
     if (locked && stages[cur]) {
       chap.appendChild(el(`<div class="lock-hint">${icon("lock-simple", 12)}<span>Best after ${stages[cur].title}. You can peek anytime.</span></div>`));
     }

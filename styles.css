@@ -2097,6 +2097,25 @@ img.scene-art { width: 286px; }
 .lesson .pk-zone .ph { transform: rotate(90deg); transition: transform 200ms cubic-bezier(.2,.7,.3,1); }      /* points down: there is more under here */
 .lesson.open .pk-zone .ph { transform: rotate(-90deg); }
 .lesson .pk-zone:active { background: color-mix(in srgb, var(--text) 6%, transparent); }
+/* THE PLAN DRAWN (chat 11/7, Tom's T1, STAGED "the-plan"): a gold hairline between two rows, the micro-caps label on the line at the right,
+   two sparkles drifting in from the ends to meet in the middle with a soft bloom, then parting; ten seconds a cycle. The run (the moving
+   part) is sized by script to end where the label begins. No solid boxes: the ground is a gradient, so the sparkles wear a thin halo in the
+   ground's colour instead. FOR THE TRIP's sparkles are a size up. Still for reduced motion. */
+.plan-mark { position: relative; height: 14px; margin: 4px 0; }
+.plan-mark .run { position: absolute; left: 0; top: 50%; height: 1px; width: 70%; background: var(--accent-2); opacity: .95; }
+.plan-mark .lbl { position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-family: var(--font-display); font-size: 9.5px; font-weight: 600; letter-spacing: .09em; color: var(--accent-2); white-space: nowrap; }
+.plan-mark .spk { position: absolute; top: 50%; width: 14px; height: 14px; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; }
+.plan-mark .spk svg { width: 11px; height: 11px; fill: var(--accent-2); stroke: var(--bg); stroke-width: 2.5; paint-order: stroke; overflow: visible; animation: plan-near 10s ease-in-out infinite; }
+.plan-mark.trip .spk svg { width: 14px; height: 14px; }
+.plan-mark .spk.a { animation: plan-meet-a 10s ease-in-out infinite; }
+.plan-mark .spk.b { animation: plan-meet-b 10s ease-in-out infinite; }
+.plan-mark .spark { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; border-radius: 50%; transform: translate(-50%, -50%) scale(.2); opacity: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(circle, rgba(230,198,42,.95) 0%, rgba(230,198,42,.45) 35%, rgba(230,198,42,0) 70%); animation: plan-bloom 10s ease-out infinite; }
+@keyframes plan-meet-a { 0% { left: 4%; } 50% { left: 48%; } 100% { left: 4%; } }
+@keyframes plan-meet-b { 0% { left: 96%; } 50% { left: 52%; } 100% { left: 96%; } }
+@keyframes plan-near { 0%, 100% { opacity: .6; } 50% { opacity: 1; } }
+@keyframes plan-bloom { 0%, 44% { opacity: 0; transform: translate(-50%, -50%) scale(.2); } 49% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 56% { opacity: 0; transform: translate(-50%, -50%) scale(1.9); } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .plan-mark .spk, .plan-mark .spk svg, .plan-mark .spark { animation: none !important; } .plan-mark .spk.a { left: 17%; } .plan-mark .spk.b { left: 83%; } .plan-mark .spark { display: none; } }
 .lesson-peek { margin: -2px 0 10px; padding: 4px 16px 14px 40px;   /* drawer option C (Tom 9/24): the line and the words 40px in, the labels 28px in, a 12px step above the words (option C2, Tom 9/24) */ opacity: 0; transform: translateY(-4px); transition: opacity 220ms cubic-bezier(.2,.7,.3,1), transform 220ms cubic-bezier(.2,.7,.3,1); }
 .lesson-peek.show { opacity: 1; transform: none; }
 .peek-list { display: grid; grid-template-columns: 1fr; gap: 0; }

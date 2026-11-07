@@ -288,7 +288,8 @@ function renderOnboarding(opts) {
       destination: draft.destination, tripDate: draft.date,
       tripType: draft.tripType, needs: draft.needs, allergies: draft.allergies,
       level: draft.level || "new", lodging: draft.lodging, transport: draft.transport,
-      home: (draft.home || "").trim(), grammar: draft.grammar || "neutral"
+      home: (draft.home || "").trim(), grammar: draft.grammar || "neutral",
+      dateSetAt: todayStr()   // the plan starts at the later of the date set and 42 days out (chat 11/7)
     };
     snapshotActive();                          // stash the trip we're leaving
     state.active = draft.destination;

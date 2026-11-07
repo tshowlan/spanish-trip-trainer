@@ -363,8 +363,9 @@ function renderProfileEdit() {
   const saveBtn = el(`<button class="btn" style="margin-top:22px">Save</button>`);
   saveBtn.addEventListener("click", () => {
     if (!d.needs.includes("allergies")) d.allergies = [];
+    const dateChanged = d.tripDate !== (state.profile || {}).tripDate;
     state.profile = Object.assign({}, state.profile || {}, { tripDate: d.tripDate, tripType: d.tripType, lodging: d.lodging, transport: d.transport,
-      needs: d.needs, allergies: d.allergies, home: d.home.trim(), grammar: d.grammar });
+      needs: d.needs, allergies: d.allergies, home: d.home.trim(), grammar: d.grammar }, dateChanged ? { dateSetAt: todayStr() } : {});   // the plan starts at the later of the date set and 42 days out (chat 11/7)
     save(); rebuildDeck(); save();
     toast("Profile saved. Your lessons follow it.");
     renderProfile();
