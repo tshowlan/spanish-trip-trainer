@@ -302,6 +302,14 @@ function composeRoom(lesson) {
    per phrase, the FORMS ROTATING so nothing repeats -> the lap is the LISTENING board (every
    phrase once, by ear; the words board again when sound is off) -> the close in a scaffolded
    form. The weave is retired (Tom: no). */
+/* BOARDS OF EIGHT AT MOST (Tom 11/6, STAGED "board-split"): a ten-pair board was too much to match, and the tune's last notes repeated.
+   A pool past eight pairs plays as two boards, the first half then the second, the pack's order kept; the tune then fits each board
+   (renderPairs). Off the switch: one board, whatever the size. */
+function boardsOf(items) {
+  if (!isStaged("board-split") || items.length <= 8) return [items];
+  const half = Math.ceil(items.length / 2);
+  return [items.slice(0, half), items.slice(half)];
+}
 function composeKitInterleaved(lesson, newItems, reviewPool, rungCap, opts) {
   const qs = [];
   const all = !!(opts && opts.all);                                                   // a replay (Tom 11/5): the whole session, cards only for words never met
@@ -309,7 +317,7 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap, opts) {
   const daysSet = platesOn(lesson) && lesson.tables;                                 // days: met as a set (Tom 9/28), no board
   if (daysSet) qs.push({ type: "days_set", items: pool.slice(), arc: true });
   else (all ? newItems : pool).forEach(it => qs.push({ type: "present", item: it, arc: true }));   // 1. meet them all (a replay meets only the new ones)
-  if (pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });   // 2. the words board (the days keep it too, Tom 9/28)
+  if (pool.length >= 3) boardsOf(pool.slice()).forEach(b => qs.push({ type: "pairs", mode: "text", items: b, arc: true }));   // 2. the words board (the days keep it too, Tom 9/28); two boards past eight pairs (staged)
   if (platesOn(lesson) && lesson.tables) tableSituations(lesson).forEach(s => qs.push(s));   // 3. days: the timetables, one situation each (Tom 9/26)
   else pool.forEach((it, i) => qs.push(kitRungFor(lesson, it, pool, i)));                // 3. one rung each, forms rotating
   const reviews = shuffle(reviewPool.map(it => reviewQuestion(it, reviewPool, rungCap)));
@@ -318,7 +326,7 @@ function composeKitInterleaved(lesson, newItems, reviewPool, rungCap, opts) {
   if (floor.lap === "scaffolded") {
     if (platesOn(lesson) && lesson.tables) qs.push({ type: "days_order", items: pool.slice(), arc: true, lap: true });           // days: put the week in order (Tom 9/28)
     else if (platesOn(lesson) && pool.some(it => it.wall)) qs.push({ type: "sign_wall", items: pool.slice(), arc: true, lap: true });   // signs: the wall (Tom 9/28)
-    else if (pool.length >= 3) qs.push(Object.assign({ type: "pairs", items: pool.slice(), arc: true, encoreFirst: !isStaged("pairs-chain"), lap: true }, (earOn() && lesson.emphasis === "read") ? { mode: "reverse" } : {}));   // 4. the final pass: hear them all (a read session: the board turned around, meaning to word). No lap chip (Tom 9/20: its words described the old typed lap, not a listening board)
+    else if (pool.length >= 3) boardsOf(pool.slice()).forEach((b, i) => qs.push(Object.assign({ type: "pairs", items: b, arc: true, encoreFirst: !isStaged("pairs-chain") && i === 0, lap: true }, (earOn() && lesson.emphasis === "read") ? { mode: "reverse" } : {})));   // 4. the final pass: hear them all (a read session: the board turned around, meaning to word). No lap chip (Tom 9/20: its words described the old typed lap, not a listening board)
   } else {
     shuffle(pool.slice(0, 7)).forEach((it, i) => qs.push({ type: "type_translation", item: it, arc: true, encoreFirst: i === 0, lap: true }));
   }
@@ -498,13 +506,13 @@ function renderReplyHear(q) {
 function composeAsks(lesson, newItems) {
   const pool = lesson.items || [], qs = [];
   (newItems.length ? newItems : []).forEach(it => qs.push({ type: "present", item: it, arc: true }));
-  if (newItems.length && pool.length >= 3) qs.push({ type: "pairs", mode: "text", items: pool.slice(), arc: true });
+  if (newItems.length && pool.length >= 3) boardsOf(pool.slice()).forEach(b => qs.push({ type: "pairs", mode: "text", items: b, arc: true }));
   const tilesOf = t => t.split(/\s+/).map(w => w.replace(/^[\u00bf\u00a1("\u00ab]+|[?!).,;:"\u00bb]+$/g, "").toLowerCase()).filter(Boolean);
   const which = k => shuffle(pool.filter(it => (it.sits || [])[k])).map(it => ({ type: "ask_which", item: it, pool, place: it.sits[k][0], sit: it.sits[k][1], arc: true }));
   const build = shuffle(pool.filter(it => it.contextEs)).map(it => _askBuild(it, pool));
   const add = block => { if (block.length > 1 && qs.length && qs[qs.length - 1].item === block[0].item) block.push(block.shift()); block.forEach(q => qs.push(q)); };   // no ask twice in a row across a seam
   add(which(0)); add(build); add(which(1));
-  if (pool.length >= 3) qs.push({ type: "pairs", items: pool.slice(), arc: true, encoreFirst: !isStaged("pairs-chain"), lap: true });   // the final pass: hear them all
+  if (pool.length >= 3) boardsOf(pool.slice()).forEach((b, i) => qs.push({ type: "pairs", items: b, arc: true, encoreFirst: !isStaged("pairs-chain") && i === 0, lap: true }));   // the final pass: hear them all
   return qs;
 }
 /* WHICH ONE DO YOU SAY? (the asks' own rung): a situation in plain English, the session's asks as the answers. Picking is knowing which
@@ -3887,7 +3895,12 @@ function renderPairs(q) {
       // the learner just HEARD the sound — replaying it slowed the board). Delta vs the pairs
       // artifact's "sound, meet spelling" caption: flag at next re-issue.
       haptic("correct");
-      playSound("correct", { rate: isStaged("pairs-chain") ? Math.pow(2, (Math.min(matched, 7) - 1) / 6) : Math.pow(2, Math.min(matched, 6) / 6) });   // the tune: whole tones, one per match. Staged (Tom 9/20): EIGHT notes, starting a tone lower, the octave on the 8th; boards past eight hold the octave
+      // the tune fits the board (Tom 11/6, STAGED "board-split"): the matches climb the major scale, spread over the board's length so the last
+      // match lands the octave whatever the size (five pairs: do mi sol la do; eight: the whole scale). Before: whole tones, the octave on
+      // the seventh match, every match past it holding the same note (a ten-pair board ended on four of them)
+      const SCALE = [0, 2, 4, 5, 7, 9, 11, 12], n = items.length;
+      const fitRate = n <= 1 ? 2 : Math.pow(2, SCALE[Math.round(Math.min(matched, n - 1) * 7 / (n - 1))] / 12);   // matched counts up after the ding: 0 on the first match, n-1 on the last
+      playSound("correct", { rate: isStaged("board-split") ? fitRate : isStaged("pairs-chain") ? Math.pow(2, (Math.min(matched, 7) - 1) / 6) : Math.pow(2, Math.min(matched, 6) / 6) });   // the tune: whole tones, one per match. Staged (Tom 9/20): EIGHT notes, starting a tone lower, the octave on the 8th; boards past eight hold the octave
       // a clean pair is a real review rep; a missed one records at low weight [tune]:
       // exposure only, so the slip neither advances nor resets the item (§5, artifact caption)
       const id = itemId(mi);

@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v616";
+const APP_BUILD = "v617";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -21,7 +21,8 @@ const STAGED = {
 // SHIPPED (Tom, 2026-11-05, v607): "learn-known", Learn tab: swipe a session row to the left and mark it Known (done, its words pinned at full strength and never reviewed); swipe again for Remove Known
   "reply-sets": "Chapter 2: every place sentence's replies rewritten by chat (11/1): three meanings, two the sentence's own, one stock reply at most; the exchange's floor (a stock reply owed to a place is heard once there, at most half of a play's exchanges, the rest in review); the Street's driver lines (Al hotel, A la estación), the Table's taxi line, the Shop's ¿Puedo pagar con tarjeta aquí?, chocolate's allergen variants",
   "cards-sheet": "Learn (chat 11/6, Tom's pick C): a session's drawer ends in Read the cards, opening a read-only sheet of its cards (headword, gloss, context with the English under, the Good to know note; tap the Spanish to hear it); a word session's cards are its words, a sentence session's its frame cards; a Known session's sheet says so",
-  "frame-cards-once": "Chapter 2 (chat 11/6): a place session's frame card shows the first time the session is played and not on replay, like a word session's cards; the replay opens on the frame's build. A card whose frame is still unmet shows (gained since)",
+// SHIPPED (Tom, 2026-11-06, v617): "frame-cards-once", Chapter 2 (chat 11/6): a place session's frame card shows the first time the session is played and not on replay, like a word session's cards; the replay opens on the frame's build. A card whose frame is still unmet shows (gained since)
+  "board-split": "A words or listening board holds at most eight pairs: ten splits into two boards of five (Tom 11/6: ten was too much to match). The tune fits the board: the matches climb the major scale and the last match lands the octave whatever the board's size (before: the eighth note held for every match past it)",
   "readiness-arc": "Home: the Trip Readiness sheet ends with the 30-day arc of the score (the chart Progress used to hold), under the driver bars",
   "intake-known": "The intake: the level quiz replaced by one screen, Already know some Spanish?, with the Known line and Got it (chat 11/1); Test Lab shows it",
   "sentence-review": "Review: a due place sentence (Counter, Table) comes back as itself, its place named: a meaning pick while weak, the build from its English or the typed lap once solid, then the exchange",
