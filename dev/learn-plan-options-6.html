@@ -26,7 +26,7 @@ h1 { font-size:16px; margin:0 0 4px; color:#eee; }
 /* the cycle is ten seconds: out at the ends, in to the middle at the half, where they touch edge to edge (48% and 52% of the run) and the spark happens */
 @keyframes meetA { 0% { left:4%; } 50% { left:48%; } 100% { left:4%; } }
 @keyframes meetB { 0% { left:96%; } 50% { left:52%; } 100% { left:96%; } }
-.mark .spk:nth-of-type(1) { animation: meetA 10s ease-in-out infinite; } .mark .spk:nth-of-type(2) { animation: meetB 10s ease-in-out infinite; }
+.mark .spk.a { animation: meetA 10s ease-in-out infinite; } .mark .spk.b { animation: meetB 10s ease-in-out infinite; }
 /* the sparkles brighten as they near each other, dim as they part */
 @keyframes near { 0%, 100% { opacity:.6; } 50% { opacity:1; } }
 .mark .spk svg { animation: near 10s ease-in-out infinite; }
@@ -46,14 +46,14 @@ h1 { font-size:16px; margin:0 0 4px; color:#eee; }
 .t3 .spark { animation: bloom 10s ease-out infinite; } .t3 .burst { animation: burst 10s ease-out infinite; }
 @keyframes lineflash { 0%, 46% { opacity:.95; } 50% { opacity:1; box-shadow:0 0 6px rgba(230,198,42,.55); } 58%, 100% { opacity:.95; box-shadow:none; } }
 .t3 .run { animation: lineflash 10s ease-out infinite; }
-@media (prefers-reduced-motion: reduce) { .mark .spk, .mark .spk svg, .mark .spark, .mark .burst, .mark .run { animation: none !important; } .mark .spk:nth-of-type(1) { left:17%; } .mark .spk:nth-of-type(2) { left:83%; } }
+@media (prefers-reduced-motion: reduce) { .mark .spk, .mark .spk svg, .mark .spark, .mark .burst, .mark .run { animation: none !important; } .mark .spk.a { left:17%; } .mark .spk.b { left:83%; } }
 </style></head><body>
 <h1>The plan on Learn, round 6: M2, the pair meeting in the middle with a spark</h1>
 <p class="sub">Tom's pick, M2, changed so the two sparkles come all the way in and touch at the run's middle, where a spark happens, then part again to their ends. Ten seconds a cycle; they brighten as they near and dim as they part. Three sparks: a soft bloom, a tiny burst of rays, and both with the line flashing. Moves only in a real browser; with reduced motion on, the pair holds still at 17% and 83%.</p>
 <div class="row" id="grid"></div>
 <script>
 var SPK = '<svg viewBox="0 0 24 24"><path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z"/></svg>';
-const mark = (cls, trip) => `<div class="mark ${cls}${trip ? " trip" : ""}"><span class="run"><span class="spark"></span><span class="burst"><i></i><i></i><i></i><i></i></span><span class="spk">${SPK}</span><span class="spk">${SPK}</span></span><span class="lbl">${trip ? "FOR THE TRIP" : "BY TODAY"}</span></div>`;
+const mark = (cls, trip) => `<div class="mark ${cls}${trip ? " trip" : ""}"><span class="run"><span class="spark"></span><span class="burst"><i></i><i></i><i></i><i></i></span><span class="spk a">${SPK}</span><span class="spk b">${SPK}</span></span><span class="lbl">${trip ? "FOR THE TRIP" : "BY TODAY"}</span></div>`;
 const rows = cls => `<div class="list">
   <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
   <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
