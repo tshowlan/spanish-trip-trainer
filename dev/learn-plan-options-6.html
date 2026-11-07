@@ -36,12 +36,16 @@ h1 { font-size:16px; margin:0 0 4px; color:#eee; }
   background: radial-gradient(circle, rgba(230,198,42,.95) 0%, rgba(230,198,42,.45) 35%, rgba(230,198,42,0) 70%); }
 @keyframes bloom { 0%, 44% { opacity:0; transform:translate(-50%,-50%) scale(.2); } 49% { opacity:1; transform:translate(-50%,-50%) scale(1); } 56% { opacity:0; transform:translate(-50%,-50%) scale(1.9); } 100% { opacity:0; } }
 .t1 .spark { animation: bloom 10s ease-out infinite; }
-/* T2: a tiny burst, four short rays flung out from the touch, then gone */
-.mark .burst { position:absolute; left:50%; top:50%; width:26px; height:26px; transform:translate(-50%,-50%); opacity:0; pointer-events:none; }
-.mark .burst i { position:absolute; left:50%; top:50%; width:1.5px; height:9px; background:var(--accent); transform-origin:50% 0; border-radius:1px; }
-.mark .burst i:nth-child(1) { transform:translate(-50%,0) rotate(45deg); } .mark .burst i:nth-child(2) { transform:translate(-50%,0) rotate(135deg); }
-.mark .burst i:nth-child(3) { transform:translate(-50%,0) rotate(225deg); } .mark .burst i:nth-child(4) { transform:translate(-50%,0) rotate(315deg); }
-@keyframes burst { 0%, 46% { opacity:0; transform:translate(-50%,-50%) scale(.3); } 50% { opacity:1; transform:translate(-50%,-50%) scale(1); } 57% { opacity:0; transform:translate(-50%,-50%) scale(1.6); } 100% { opacity:0; } }
+/* T2: a burst, eight rays of two lengths flung out from a bright core and gone */
+.mark .burst { position:absolute; left:50%; top:50%; width:30px; height:30px; transform:translate(-50%,-50%) scale(.3); opacity:0; pointer-events:none; }
+.mark .burst .core { position:absolute; left:50%; top:50%; width:5px; height:5px; border-radius:50%; background:#fff6c4; transform:translate(-50%,-50%); box-shadow:0 0 6px 2px rgba(230,198,42,.8); }
+.mark .burst i { position:absolute; left:50%; top:50%; width:1.5px; height:9px; margin-left:-.75px; background:linear-gradient(to bottom, rgba(230,198,42,1), rgba(230,198,42,0)); transform-origin:50% 0; border-radius:1px; }
+.mark .burst i:nth-child(2n) { height:6px; opacity:.8; }
+.mark .burst i:nth-child(1) { transform:rotate(0deg) translateY(4px); }   .mark .burst i:nth-child(2) { transform:rotate(45deg) translateY(4px); }
+.mark .burst i:nth-child(3) { transform:rotate(90deg) translateY(4px); }  .mark .burst i:nth-child(4) { transform:rotate(135deg) translateY(4px); }
+.mark .burst i:nth-child(5) { transform:rotate(180deg) translateY(4px); } .mark .burst i:nth-child(6) { transform:rotate(225deg) translateY(4px); }
+.mark .burst i:nth-child(7) { transform:rotate(270deg) translateY(4px); } .mark .burst i:nth-child(8) { transform:rotate(315deg) translateY(4px); }
+@keyframes burst { 0%, 46% { opacity:0; transform:translate(-50%,-50%) scale(.3); } 49% { opacity:1; transform:translate(-50%,-50%) scale(.9); } 53% { opacity:1; transform:translate(-50%,-50%) scale(1.5); } 58% { opacity:0; transform:translate(-50%,-50%) scale(2); } 100% { opacity:0; } }
 .t2 .burst { animation: burst 10s ease-out infinite; }
 /* T3: both: the bloom under a burst, and the line itself flashes a touch brighter at the meeting */
 .t3 .spark { animation: bloom 10s ease-out infinite; } .t3 .burst { animation: burst 10s ease-out infinite; }
@@ -54,7 +58,7 @@ h1 { font-size:16px; margin:0 0 4px; color:#eee; }
 <div class="row" id="grid"></div>
 <script>
 var SPK = '<svg viewBox="0 0 24 24"><path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z"/></svg>';
-const mark = (cls, trip) => `<div class="mark ${cls}${trip ? " trip" : ""}"><span class="run"><span class="spark"></span><span class="burst"><i></i><i></i><i></i><i></i></span><span class="spk a">${SPK}</span><span class="spk b">${SPK}</span></span><span class="lbl">${trip ? "FOR THE TRIP" : "BY TODAY"}</span></div>`;
+const mark = (cls, trip) => `<div class="mark ${cls}${trip ? " trip" : ""}"><span class="run"><span class="spark"></span><span class="burst"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><b class="core"></b></span><span class="spk a">${SPK}</span><span class="spk b">${SPK}</span></span><span class="lbl">${trip ? "FOR THE TRIP" : "BY TODAY"}</span></div>`;
 const rows = cls => `<div class="list">
   <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
   <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
@@ -67,7 +71,7 @@ const rows = cls => `<div class="list">
 </div>`;
 const cells = [
   ["T1. A soft bloom at the touch", "t1", "A round glow swells from the meeting point and fades, about a second. The gentlest: light, not fire. Code's pick."],
-  ["T2. A tiny burst of rays", "t2", "Four short rays flung out from the touch and gone. Reads as a strike, a spark in the plain sense."],
+  ["T2. A burst of rays", "t2", "A bright core and eight rays of two lengths flung outward from the touch, growing as they fade. A spark in the plain sense."],
   ["T3. Bloom and burst, the line flashing", "t3", "Both at once, and the line itself brightens for a beat at the meeting. The fullest."]
 ];
 document.getElementById("grid").innerHTML = cells.map(([cap, cls, note]) => `<div class="cell"><div class="cap">${cap}</div><div class="phone">${rows(cls)}</div><div class="note">${note}</div></div>`).join("");
