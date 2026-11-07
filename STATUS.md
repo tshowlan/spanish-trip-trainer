@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v614 (2026-11-06) — the gold box off the headword; a short sheet no longer scrolls the list behind it; the gold's home MOCKED
+- Tom: the gold square off the headword (done; the per-card label stays until he picks); the Word / Phrase label separates the cards but repeats, so other homes for the gold are mocked: dev/cards-sheet-gold-options.html (Desktop copy): A the headword in gold, B a gold rail at the card's left, C one gold label for the list and gold-tinted dividers, D the app's gold speaker glyph beside each headword (Code's pick: gold says tap to hear), E the label once per kind with the cards grouped.
+- BUG (Tom): a sheet with two cards does not scroll, and a drag on it scrolled the Learn list behind. Fix at the shared sheet rules, so every sheet gets it: `.sheet { overscroll-behavior: contain }` and `.sheet-backdrop { touch-action: none }`. Checked in the pane: a wheel over the short sheet and over the backdrop leaves the page's scroll where it was.
+
 ## v613 (2026-11-06) — the cards sheet in the intro card's colour; the met line dropped
 - Tom: no "The cards, as you met them." (just the list; the Known line stays, it says something), and the cards should look more like the intro cards. Each card now wears the intro card's gold label on top (Word, Phrase, or Sign: the present card's own reading, without NEW) and its headword in the gold box the new piece wears; the Good to know label in full text colour as on the card. Note: the reading is the card's, so cortado and copa say Phrase (their glosses carry a parenthesis), as their intro cards did.
 

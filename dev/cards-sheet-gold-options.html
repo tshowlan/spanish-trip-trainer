@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The cards sheet: where the gold goes (mock)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#05060d; --bg-card:rgba(38,36,26,0.72); --text:#f6f4ea; --text-dim:#a7a494; --accent:#e6c62a; --accent-2:#e0bf2e; --border:rgba(120,112,80,0.35); --font-display:"Plus Jakarta Sans",system-ui,sans-serif; --font-text:"Inter",system-ui,sans-serif; }
+body { background:#111; color:#ddd; font-family:-apple-system,system-ui,sans-serif; margin:0; padding:22px; }
+h1 { font-size:16px; margin:0 0 4px; color:#eee; }
+.sub { font-size:13px; color:#999; margin:0 0 16px; max-width:900px; line-height:1.5; }
+.row { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; }
+.cell { width:320px; display:flex; flex-direction:column; gap:8px; }
+.cap { font-size:12px; color:#aaa; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+.note { font-size:12px; color:#888; line-height:1.45; }
+.phone { width:320px; height:600px; background:var(--bg); border-radius:22px; box-shadow:0 0 0 4px #2a2a2a; box-sizing:border-box; font-family:var(--font-text); color:var(--text); position:relative; overflow:hidden; }
+.ghost { position:absolute; top:18px; left:14px; right:14px; opacity:.3; font-family:var(--font-display); font-weight:600; font-size:15px; }
+.ghost div { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:8px; }
+.sheet-backdrop { position:absolute; inset:0; background:rgba(5,5,5,.35); }
+.sheet { position:absolute; left:0; right:0; bottom:0; background:#201e18; border-radius:22px 22px 0 0; padding:12px 22px 24px; box-shadow:0 -8px 30px rgba(0,0,0,.4); }
+.sheet-grab { width:40px; height:5px; border-radius:99px; background:var(--border); margin:2px auto 14px; }
+.sheet-title { font-family:var(--font-display); font-weight:800; font-size:20px; margin-bottom:6px; }
+.c { padding:14px 0 16px; border-bottom:1px solid var(--border); } .c:last-child { border-bottom:none; }
+.es { font-family:var(--font-display); font-size:22px; font-weight:600; line-height:1.25; }
+.en { font-size:15px; color:var(--text-dim); margin-top:5px; }
+.ctx { font-size:14.5px; color:var(--text-dim); margin-top:10px; line-height:1.5; }
+.ctx .s { color:var(--text); font-family:var(--font-display); font-weight:500; border-bottom:1px dotted var(--text-dim); }
+.ctx .e { display:block; margin-top:2px; }
+.lbl { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.8px; margin:12px 0 3px; color:var(--text); }
+.nt { font-size:13px; color:var(--text-dim); line-height:1.4; }
+/* A: the headword in gold */
+.optA .es { color:var(--accent-2); }
+/* B: a gold rail at the card's left */
+.optB .c { border-left:3px solid var(--accent-2); padding-left:14px; }
+/* C: one gold label for the list, gold-tinted dividers */
+.optC .sec { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-2); margin:4px 0 2px; }
+.optC .c { border-bottom-color: color-mix(in srgb, var(--accent-2) 35%, transparent); }
+/* D: the gold sound glyph beside the headword */
+.optD .es { display:flex; align-items:center; gap:10px; }
+.optD .es svg { width:20px; height:20px; color:var(--accent-2); flex:none; }
+/* E: the gold label once per kind, the cards grouped under it */
+.optE .sec { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-2); margin:12px 0 0; }
+.optE .sec:first-of-type { margin-top:4px; }
+</style></head><body>
+<h1>The cards sheet: where the gold goes (nothing built; the box is already off)</h1>
+<p class="sub">Today each card carries the intro card's gold label (Word, Phrase) on top, which separates the cards but repeats. Five other places the gold can live, each with the label gone unless said. The headword stays plain text in all but A. Same three cards in each, dark theme.</p>
+<div class="row">
+  <div class="cell"><div class="cap">A. The headword in gold</div>
+    <div class="phone"><div class="ghost"><div>Paying words</div><div>Counter words · Part 1</div></div><div class="sheet-backdrop"></div>
+      <div class="sheet optA"><div class="sheet-grab"></div><div class="sheet-title">Counter words · Part 1</div>
+        <div class="c"><div class="es">café</div><div class="en">coffee</div><div class="ctx"><span class="s">Un café, por favor.</span><span class="e">A coffee, please.</span></div></div>
+        <div class="c"><div class="es">cortado</div><div class="en">cortado (espresso with a little milk)</div><div class="ctx"><span class="s">Un cortado, gracias.</span><span class="e">A cortado, thanks.</span></div></div>
+        <div class="c"><div class="es">caña</div><div class="en">beer</div><div class="ctx"><span class="s">Una caña, por favor.</span><span class="e">A caña, please.</span></div><div class="lbl">Good to know</div><div class="nt">The usual order: a small draft. Un doble is bigger, una jarra a mug.</div></div>
+      </div></div>
+    <div class="note">The Spanish you tap is gold, which is what gold means on the playing state already. The most colour of the five; the headwords become the sheet's rhythm.</div>
+  </div>
+  <div class="cell"><div class="cap">B. A gold rail at the card's left</div>
+    <div class="phone"><div class="ghost"><div>Paying words</div><div>Counter words · Part 1</div></div><div class="sheet-backdrop"></div>
+      <div class="sheet optB"><div class="sheet-grab"></div><div class="sheet-title">Counter words · Part 1</div>
+        <div class="c"><div class="es">café</div><div class="en">coffee</div><div class="ctx"><span class="s">Un café, por favor.</span><span class="e">A coffee, please.</span></div></div>
+        <div class="c"><div class="es">cortado</div><div class="en">cortado (espresso with a little milk)</div><div class="ctx"><span class="s">Un cortado, gracias.</span><span class="e">A cortado, thanks.</span></div></div>
+        <div class="c"><div class="es">caña</div><div class="en">beer</div><div class="ctx"><span class="s">Una caña, por favor.</span><span class="e">A caña, please.</span></div><div class="lbl">Good to know</div><div class="nt">The usual order: a small draft. Un doble is bigger, una jarra a mug.</div></div>
+      </div></div>
+    <div class="note">A thin gold line down each card's left edge: the cards read as cards, the text stays in its own colours. Quiet, and the same on every card.</div>
+  </div>
+  <div class="cell"><div class="cap">C. One gold label for the list, gold-tinted dividers</div>
+    <div class="phone"><div class="ghost"><div>Paying words</div><div>Counter words · Part 1</div></div><div class="sheet-backdrop"></div>
+      <div class="sheet optC"><div class="sheet-grab"></div><div class="sheet-title">Counter words · Part 1</div><div class="sec">The cards</div>
+        <div class="c"><div class="es">café</div><div class="en">coffee</div><div class="ctx"><span class="s">Un café, por favor.</span><span class="e">A coffee, please.</span></div></div>
+        <div class="c"><div class="es">cortado</div><div class="en">cortado (espresso with a little milk)</div><div class="ctx"><span class="s">Un cortado, gracias.</span><span class="e">A cortado, thanks.</span></div></div>
+        <div class="c"><div class="es">caña</div><div class="en">beer</div><div class="ctx"><span class="s">Una caña, por favor.</span><span class="e">A caña, please.</span></div><div class="lbl">Good to know</div><div class="nt">The usual order: a small draft. Un doble is bigger, una jarra a mug.</div></div>
+      </div></div>
+    <div class="note">The intro card's label once, for the whole list, and the hairlines between cards warmed to gold. The least colour; the label says what the list is instead of what each card is.</div>
+  </div>
+  <div class="cell"><div class="cap">D. The gold sound glyph beside the headword</div>
+    <div class="phone"><div class="ghost"><div>Paying words</div><div>Counter words · Part 1</div></div><div class="sheet-backdrop"></div>
+      <div class="sheet optD"><div class="sheet-grab"></div><div class="sheet-title">Counter words · Part 1</div>
+        <div class="c"><div class="es"><svg viewBox="0 0 256 256" fill="currentColor"><polygon points="120,56 76,96 40,96 40,160 76,160 120,200"/><path d="M156 100 a44 44 0 0 1 0 56" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/><path d="M184 80 a80 80 0 0 1 0 96" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/></svg>café</div><div class="en">coffee</div><div class="ctx"><span class="s">Un café, por favor.</span><span class="e">A coffee, please.</span></div></div>
+        <div class="c"><div class="es"><svg viewBox="0 0 256 256" fill="currentColor"><polygon points="120,56 76,96 40,96 40,160 76,160 120,200"/><path d="M156 100 a44 44 0 0 1 0 56" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/><path d="M184 80 a80 80 0 0 1 0 96" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/></svg>cortado</div><div class="en">cortado (espresso with a little milk)</div><div class="ctx"><span class="s">Un cortado, gracias.</span><span class="e">A cortado, thanks.</span></div></div>
+        <div class="c"><div class="es"><svg viewBox="0 0 256 256" fill="currentColor"><polygon points="120,56 76,96 40,96 40,160 76,160 120,200"/><path d="M156 100 a44 44 0 0 1 0 56" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/><path d="M184 80 a80 80 0 0 1 0 96" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/></svg>caña</div><div class="en">beer</div><div class="ctx"><span class="s">Una caña, por favor.</span><span class="e">A caña, please.</span></div><div class="lbl">Good to know</div><div class="nt">The usual order: a small draft. Un doble is bigger, una jarra a mug.</div></div>
+      </div></div>
+    <div class="note">The app's gold speaker glyph (the one flat cards carry) before each headword: the colour says tap to hear, which is the one thing the card does. Code's pick.</div>
+  </div>
+  <div class="cell"><div class="cap">E. The gold label once per kind, the cards grouped under it</div>
+    <div class="phone"><div class="ghost"><div>Paying words</div><div>Counter words · Part 1</div></div><div class="sheet-backdrop"></div>
+      <div class="sheet optE"><div class="sheet-grab"></div><div class="sheet-title">Counter words · Part 1</div><div class="sec">Words</div>
+        <div class="c"><div class="es">café</div><div class="en">coffee</div><div class="ctx"><span class="s">Un café, por favor.</span><span class="e">A coffee, please.</span></div></div>
+        <div class="c"><div class="es">caña</div><div class="en">beer</div><div class="ctx"><span class="s">Una caña, por favor.</span><span class="e">A caña, please.</span></div><div class="lbl">Good to know</div><div class="nt">The usual order: a small draft. Un doble is bigger, una jarra a mug.</div></div>
+        <div class="sec">Phrases</div>
+        <div class="c"><div class="es">para llevar</div><div class="en">to go / takeaway</div><div class="ctx"><span class="s">Para llevar, gracias.</span><span class="e">To go, thanks.</span></div></div>
+      </div></div>
+    <div class="note">Today's label kept but said once per group: the words together, then the phrases. The gold stays the intro card's, without the repeat. The pack's order gives way to the grouping.</div>
+  </div>
+</div>
+</body></html>

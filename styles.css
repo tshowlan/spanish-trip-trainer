@@ -1257,9 +1257,9 @@ body.in-runner .footer { background: transparent; border-top: none; }
 
 /* score detail sheet */
 .sheet-wrap { position: fixed; inset: 0; z-index: 60; }
-.sheet-backdrop { position: absolute; inset: 0; background: rgba(5,5,5,.35); opacity: 0; transition: opacity .25s; }
+.sheet-backdrop { position: absolute; inset: 0; background: rgba(5,5,5,.35); opacity: 0; transition: opacity .25s; touch-action: none; }   /* a drag on the backdrop never scrolls the screen behind (Tom 11/6) */
 .sheet { position: absolute; left: 0; right: 0; bottom: 0; max-width: 480px; margin: 0 auto; background: var(--bg-card);
-  max-height: 78vh; overflow-y: auto;   /* a long list must never swallow the backdrop — the tap-out escape stays reachable (backlog 7/24-5) */
+  max-height: 78vh; overflow-y: auto; overscroll-behavior: contain;   /* a long list must never swallow the backdrop — the tap-out escape stays reachable (backlog 7/24-5); a short sheet's drag stays on the sheet, never the list behind it (Tom 11/6: two cards, and the Learn list scrolled) */
   border-radius: 22px 22px 0 0; padding: 12px 22px calc(24px + env(safe-area-inset-bottom));
   transform: translateY(100%); transition: transform .3s cubic-bezier(.3,.7,.3,1); box-shadow: 0 -8px 30px rgba(28,39,94,.18); }
 .sheet-wrap.show .sheet-backdrop { opacity: 1; }
@@ -2447,10 +2447,9 @@ body.home-lit.photo-chips .stat.streak .flame svg { filter: drop-shadow(0 0 1.5p
 .cs-card { padding: 14px 0 16px; border-bottom: 1px solid var(--border); }
 .cs-card:last-child { border-bottom: none; }
 .cs-kind { margin: 0 0 8px; }   /* the intro card's gold label, without NEW */
-.cs-es { display: inline-block; font-family: var(--font-display); font-size: 21px; font-weight: 500; line-height: 1.25; color: var(--text); cursor: pointer;
-  background: color-mix(in srgb, var(--accent) 14%, var(--bg-card)); border: 1px solid var(--accent-2); border-radius: var(--radius-sm); padding: 8px 13px; }   /* the gold box the new piece wears on the card */
-.cs-es.playing { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
-.cs-en { font-size: 15px; color: var(--text-dim); margin-top: 8px; }
+.cs-es { font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--text); cursor: pointer; }   /* the gold box came off (Tom 11/6) */
+.cs-es.playing { color: var(--accent-2); }
+.cs-en { font-size: 15px; color: var(--text-dim); margin-top: 5px; }
 .cs-ctx { font-size: 14.5px; color: var(--text-dim); margin-top: 10px; line-height: 1.5; }
 .cs-ctx .es { color: var(--text); font-family: var(--font-display); font-weight: 500; cursor: pointer; border-bottom: 1px dotted var(--text-dim); }
 .cs-ctx .es.playing { color: var(--accent-2); border-bottom-color: var(--accent-2); }
