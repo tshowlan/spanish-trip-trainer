@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The plan on Learn, round 6: the pair meets with a spark (mock)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#05060d; --bg-card:rgba(38,36,26,0.72); --bg-elevated:rgba(48,45,32,0.55); --text:#f6f4ea; --text-dim:#a7a494; --accent:#e6c62a; --accent-2:#e0bf2e; --secondary:#7aa6db; --border:rgba(120,112,80,0.35); --solid-track:#55523f; --font-display:"Plus Jakarta Sans",system-ui,sans-serif; --font-text:"Inter",system-ui,sans-serif; --radius:16px; }
+body { background:#111; color:#ddd; font-family:-apple-system,system-ui,sans-serif; margin:0; padding:22px; }
+h1 { font-size:16px; margin:0 0 4px; color:#eee; }
+.sub { font-size:13px; color:#999; margin:0 0 16px; max-width:960px; line-height:1.5; }
+.row { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; }
+.cell { width:340px; display:flex; flex-direction:column; gap:8px; }
+.cap { font-size:12px; color:#aaa; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+.note { font-size:12px; color:#888; line-height:1.45; }
+.phone { width:340px; background:var(--bg); border-radius:22px; box-shadow:0 0 0 4px #2a2a2a; padding:18px 14px; box-sizing:border-box; font-family:var(--font-text); color:var(--text); }
+.list { display:flex; flex-direction:column; gap:8px; }
+.lesson { display:flex; align-items:center; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 0 12px 14px; }
+.ls-ring { display:block; flex:none; } .ls-ring .ls-bg { fill:none; stroke:var(--solid-track); stroke-width:4; } .ls-ring .ls-fg { fill:none; stroke-width:4; stroke-linecap:round; stroke:var(--secondary); }
+.caret-new { width:30px; height:30px; min-width:30px; border-radius:50%; background:var(--bg-elevated); display:inline-flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+.lmain { flex:1; min-width:0; } .lname { font-family:var(--font-display); font-size:14.5px; font-weight:600; } .lmeta { font-size:11px; color:var(--text-dim); margin-top:2px; }
+.next-tag { font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.05em; color:var(--accent-2); margin-left:7px; }
+.pk { width:46px; align-self:stretch; margin:-12px 0; border-left:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+.mark { position:relative; height:1px; background:var(--accent-2); margin:8px 0; opacity:.95; }
+.mark .lbl { position:absolute; right:0; top:50%; transform:translateY(-50%); font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.09em; color:var(--accent-2); background:var(--bg); padding-left:10px; }
+.mark .run { position:absolute; left:0; top:0; height:1px; width:64%; }   /* sized by script to end where the label begins */
+.mark .spk { position:absolute; top:50%; width:14px; height:14px; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; background:var(--bg); }
+.mark .spk svg { width:11px; height:11px; fill:var(--accent-2); }
+.mark.trip .spk svg { width:14px; height:14px; }
+/* the cycle is ten seconds: out at the ends, in to the middle at the half, where they touch edge to edge (48% and 52% of the run) and the spark happens */
+@keyframes meetA { 0% { left:4%; } 50% { left:48%; } 100% { left:4%; } }
+@keyframes meetB { 0% { left:96%; } 50% { left:52%; } 100% { left:96%; } }
+.mark .spk:nth-of-type(1) { animation: meetA 10s ease-in-out infinite; } .mark .spk:nth-of-type(2) { animation: meetB 10s ease-in-out infinite; }
+/* the sparkles brighten as they near each other, dim as they part */
+@keyframes near { 0%, 100% { opacity:.6; } 50% { opacity:1; } }
+.mark .spk svg { animation: near 10s ease-in-out infinite; }
+/* T1: a soft bloom at the touch, a round glow that swells and fades over about a second */
+.mark .spark { position:absolute; left:50%; top:50%; width:22px; height:22px; border-radius:50%; transform:translate(-50%,-50%) scale(.2); opacity:0; pointer-events:none;
+  background: radial-gradient(circle, rgba(230,198,42,.95) 0%, rgba(230,198,42,.45) 35%, rgba(230,198,42,0) 70%); }
+@keyframes bloom { 0%, 44% { opacity:0; transform:translate(-50%,-50%) scale(.2); } 49% { opacity:1; transform:translate(-50%,-50%) scale(1); } 56% { opacity:0; transform:translate(-50%,-50%) scale(1.9); } 100% { opacity:0; } }
+.t1 .spark { animation: bloom 10s ease-out infinite; }
+/* T2: a tiny burst, four short rays flung out from the touch, then gone */
+.mark .burst { position:absolute; left:50%; top:50%; width:26px; height:26px; transform:translate(-50%,-50%); opacity:0; pointer-events:none; }
+.mark .burst i { position:absolute; left:50%; top:50%; width:1.5px; height:9px; background:var(--accent); transform-origin:50% 0; border-radius:1px; }
+.mark .burst i:nth-child(1) { transform:translate(-50%,0) rotate(45deg); } .mark .burst i:nth-child(2) { transform:translate(-50%,0) rotate(135deg); }
+.mark .burst i:nth-child(3) { transform:translate(-50%,0) rotate(225deg); } .mark .burst i:nth-child(4) { transform:translate(-50%,0) rotate(315deg); }
+@keyframes burst { 0%, 46% { opacity:0; transform:translate(-50%,-50%) scale(.3); } 50% { opacity:1; transform:translate(-50%,-50%) scale(1); } 57% { opacity:0; transform:translate(-50%,-50%) scale(1.6); } 100% { opacity:0; } }
+.t2 .burst { animation: burst 10s ease-out infinite; }
+/* T3: both: the bloom under a burst, and the line itself flashes a touch brighter at the meeting */
+.t3 .spark { animation: bloom 10s ease-out infinite; } .t3 .burst { animation: burst 10s ease-out infinite; }
+@keyframes lineflash { 0%, 46% { opacity:.95; } 50% { opacity:1; box-shadow:0 0 6px rgba(230,198,42,.55); } 58%, 100% { opacity:.95; box-shadow:none; } }
+.t3 .run { animation: lineflash 10s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) { .mark .spk, .mark .spk svg, .mark .spark, .mark .burst, .mark .run { animation: none !important; } .mark .spk:nth-of-type(1) { left:17%; } .mark .spk:nth-of-type(2) { left:83%; } }
+</style></head><body>
+<h1>The plan on Learn, round 6: M2, the pair meeting in the middle with a spark</h1>
+<p class="sub">Tom's pick, M2, changed so the two sparkles come all the way in and touch at the run's middle, where a spark happens, then part again to their ends. Ten seconds a cycle; they brighten as they near and dim as they part. Three sparks: a soft bloom, a tiny burst of rays, and both with the line flashing. Moves only in a real browser; with reduced motion on, the pair holds still at 17% and 83%.</p>
+<div class="row" id="grid"></div>
+<script>
+var SPK = '<svg viewBox="0 0 24 24"><path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z"/></svg>';
+const mark = (cls, trip) => `<div class="mark ${cls}${trip ? " trip" : ""}"><span class="run"><span class="spark"></span><span class="burst"><i></i><i></i><i></i><i></i></span><span class="spk">${SPK}</span><span class="spk">${SPK}</span></span><span class="lbl">${trip ? "FOR THE TRIP" : "BY TODAY"}</span></div>`;
+const rows = cls => `<div class="list">
+  <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+  ${mark(cls, false)}
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+  <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+  ${mark(cls, true)}
+  <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+</div>`;
+const cells = [
+  ["T1. A soft bloom at the touch", "t1", "A round glow swells from the meeting point and fades, about a second. The gentlest: light, not fire. Code's pick."],
+  ["T2. A tiny burst of rays", "t2", "Four short rays flung out from the touch and gone. Reads as a strike, a spark in the plain sense."],
+  ["T3. Bloom and burst, the line flashing", "t3", "Both at once, and the line itself brightens for a beat at the meeting. The fullest."]
+];
+document.getElementById("grid").innerHTML = cells.map(([cap, cls, note]) => `<div class="cell"><div class="cap">${cap}</div><div class="phone">${rows(cls)}</div><div class="note">${note}</div></div>`).join("");
+const size = () => document.querySelectorAll(".mark").forEach(m => { const lbl = m.querySelector(".lbl"), run = m.querySelector(".run"); run.style.width = Math.max(40, m.clientWidth - lbl.offsetWidth - 2) + "px"; });
+size(); window.addEventListener("resize", size); document.fonts && document.fonts.ready.then(size);
+</script>
+</body></html>
