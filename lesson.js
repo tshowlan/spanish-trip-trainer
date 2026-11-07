@@ -2067,6 +2067,14 @@ function _presentCheck(item, chunked) {
   if (run.lesson && run.lesson.asks) return { es: null, correct: item.en, distract: _itemDistractor(item) };   // an ask against another ask
   return { es: null, correct: item.en, distract: _shapedDistractor(item) || _itemDistractor(item) };
 }
+// WORD, PHRASE, OR SIGN (Tom 10/3, amended 11/6): the Spanish decides. One content word of Spanish is a word, whatever the English gloss
+// needs to say (cortado is a word; papel is a word even glossed toilet paper); more is a phrase (con leche, para llevar, ¿Algo más?).
+// Articles do not count. A plated session's cards are signs. Read by the intro card's label and by Learn's cards sheet.
+function cardKind(item, lesson) {
+  if (platesOn(lesson)) return "Sign";
+  const n = (item.es || "").replace(/[¿?¡!.,]/g, "").trim().split(/\s+/).filter(w => w && !/^(el|la|los|las|un|una|unos|unas)$/i.test(w)).length;
+  return n <= 1 ? "Word" : "Phrase";
+}
 function renderPresent(q) {
   const item = q.item;
   const body = $("#qbody");
@@ -2078,10 +2086,7 @@ function renderPresent(q) {
   // no "New phrase" label on a re-teach — the "Second chance" chip already frames it
   if (!q.requeued) {
     const newCount = chunked ? item.chunks.filter(c => c[2] === "new").length : 0;
-    // word or phrase (Tom 10/3): one content word in BOTH languages is a word (la cuenta / the bill); anything more is a phrase
-    // (¿Algo más? / Anything else?). Articles do not count. Chunked cards are phrases by build.
-    const content = t => t.replace(/[¿?¡!.,]/g, "").trim().split(/\s+/).filter(w => !/^(el|la|los|las|un|una|unos|unas|the|a|an)$/i.test(w)).length;
-    const oneWord = content(item.es) <= 1 && content(item.en) <= 1;
+    const oneWord = cardKind(item, run.lesson) === "Word";   // Chunked cards are phrases by build.
     const label = platesOn(run.lesson) ? "NEW SIGN" : short && !chunked && oneWord ? "NEW WORD"
       : "NEW PHRASE" + (newCount === 1 ? " · ONE NEW PIECE" : "");
     body.appendChild(el(`<div class="present-label">${label}</div>`));

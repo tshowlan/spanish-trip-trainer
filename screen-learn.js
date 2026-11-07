@@ -87,8 +87,7 @@ function openCardsSheet(l) {
   const esc = s => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
   // the intro card's own colour (Tom 11/6): its gold label on top (Word, Phrase, Sign: the present card's reading, without NEW) and the
   // headword in the gold box the new piece wears; the Good to know label in full text colour, as on the card
-  const content = t => t.replace(/[¿?¡!.,]/g, "").trim().split(/\s+/).filter(w => w && !/^(el|la|los|las|un|una|unos|unas|the|a|an)$/i.test(w)).length;
-  const kind = it => platesOn(l) ? "Sign" : (content(it.es) <= 1 && content(it.en) <= 1) ? "Word" : "Phrase";
+  const kind = it => cardKind(it, l);   // the intro card's reading (lesson.js), the Spanish side deciding (Tom 11/6)
   const card = it => `<div class="cs-card">
       <div class="cs-es" data-es="${esc(it.es)}">${esc(it.es)}</div>
       <div class="cs-en">${esc(it.en)}</div>

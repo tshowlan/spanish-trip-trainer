@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v616 (2026-11-06) — word or phrase: the Spanish decides (Tom amends 10/3)
+- Tom: cortado is one word whatever the definition needs; papel glossed toilet paper is a word; a phrase is more an action. The reading now counts the Spanish side only (`cardKind(item, lesson)` in lesson.js: one content word is a Word, more a Phrase, a plated session's cards Signs; articles do not count), shared by the intro card's label and the cards sheet's grouping. Checked: Counter words Part 1 is six words and con leche; Part 2 vino, agua, tapa, then para llevar, ¿qué le pongo?, que aproveche; Bathroom words five words, then al fondo, solo clientes, fuera de servicio. The intro card for cortado now says NEW WORD.
+- TO KNOW: the rule is still a count. con leche and al fondo sit under Phrases because they are two words, not because they are actions; Tom's "a phrase is an action" would need a per-item mark to go further.
+
 ## v615 (2026-11-06) — the cards sheet's gold label once per kind (Tom's pick E)
 - The per-card Word / Phrase label is gone; the sheet groups its cards under one gold label per kind, Words, then Phrases, then Signs, the pack's order inside each (`groups()` in `openCardsSheet`; `.cs-sec`). Checked: Counter words Part 1 (four words, three phrases), Street sentences (Phrases: ¿Está ___?, Al hotel), Signs you'll read (Signs).
 - TO KNOW: the kind is the intro card's reading (one content word in both languages = a word), so cortado and copa sit under Phrases because their glosses carry a parenthesis. In the ledger for chat: a one-word gloss there, or count the Spanish side only.

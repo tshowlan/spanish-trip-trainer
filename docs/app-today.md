@@ -81,3 +81,4 @@
 - 11/6 (v613): the cards sheet lists the cards with no line above them (the Known line stays); each card wears the intro card's gold label (Word, Phrase, Sign) and its headword in the gold box.
 - 11/6 (v614): the cards sheet's headword lost its gold box; a short sheet no longer scrolls the screen behind it (every sheet). The gold's home is mocked (dev/cards-sheet-gold-options.html), Tom picks.
 - 11/6 (v615): the cards sheet groups its cards under one gold label per kind (Words, Phrases, Signs), Tom's pick E.
+- 11/6 (v616): word or phrase is read from the Spanish alone (cortado is a word; papel is a word even as toilet paper); the intro card's label and the cards sheet's groups both follow it.
