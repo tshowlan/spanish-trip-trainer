@@ -1,0 +1,93 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The plan on Learn, round 2: B with a mark in the line (mock)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#05060d; --bg-card:rgba(38,36,26,0.72); --bg-elevated:rgba(48,45,32,0.55); --text:#f6f4ea; --text-dim:#a7a494; --accent:#e6c62a; --accent-2:#e0bf2e; --secondary:#7aa6db; --border:rgba(120,112,80,0.35); --solid-track:#55523f; --font-display:"Plus Jakarta Sans",system-ui,sans-serif; --font-text:"Inter",system-ui,sans-serif; --radius:16px; }
+body { background:#111; color:#ddd; font-family:-apple-system,system-ui,sans-serif; margin:0; padding:22px; }
+h1 { font-size:16px; margin:0 0 4px; color:#eee; }
+.sub { font-size:13px; color:#999; margin:0 0 16px; max-width:960px; line-height:1.5; }
+.row { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; }
+.cell { width:340px; display:flex; flex-direction:column; gap:8px; }
+.cap { font-size:12px; color:#aaa; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+.note { font-size:12px; color:#888; line-height:1.45; }
+.phone { width:340px; background:var(--bg); border-radius:22px; box-shadow:0 0 0 4px #2a2a2a; padding:18px 14px; box-sizing:border-box; font-family:var(--font-text); color:var(--text); }
+.list { display:flex; flex-direction:column; gap:8px; }
+.lesson { display:flex; align-items:center; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 0 12px 14px; }
+.ls-ring { display:block; flex:none; } .ls-ring .ls-bg { fill:none; stroke:var(--solid-track); stroke-width:4; } .ls-ring .ls-fg { fill:none; stroke-width:4; stroke-linecap:round; stroke:var(--secondary); }
+.caret-new { width:30px; height:30px; min-width:30px; border-radius:50%; background:var(--bg-elevated); display:inline-flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+.lmain { flex:1; min-width:0; } .lname { font-family:var(--font-display); font-size:14.5px; font-weight:600; } .lmeta { font-size:11px; color:var(--text-dim); margin-top:2px; }
+.next-tag { font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.05em; color:var(--accent-2); margin-left:7px; }
+.pk { width:46px; align-self:stretch; margin:-12px 0; border-left:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; }
+/* B: the label on the line at the right, breaking it; now with a mark */
+.mark { position:relative; height:1px; background:var(--accent-2); margin:8px 0; opacity:.95; }
+.mark .lbl { position:absolute; right:0; top:50%; transform:translateY(-50%); display:flex; align-items:center; gap:6px; font-family:var(--font-display); font-size:9.5px; font-weight:600; letter-spacing:.09em; color:var(--accent-2); background:var(--bg); padding-left:10px; }
+.mark .lbl svg { width:12px; height:12px; fill:var(--accent-2); flex:none; }
+/* 3: a bead sits in the line's middle, the label stays right */
+.opt3 .mark .bead { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:18px; height:18px; display:flex; align-items:center; justify-content:center; background:var(--bg); }
+.opt3 .mark .bead svg { width:11px; height:11px; fill:var(--accent-2); }
+/* 4: the mark at the line's left end, the label right */
+.opt4 .mark .lead { position:absolute; left:0; top:50%; transform:translateY(-50%); background:var(--bg); padding-right:8px; display:flex; }
+.opt4 .mark .lead svg { width:13px; height:13px; fill:var(--accent-2); }
+/* the TRIP line a touch stronger in every option: the line itself the same, the mark a size up */
+.mark.trip .lbl svg { width:14px; height:14px; }
+</style></head><body>
+<h1>The plan on Learn, round 2: B (the label on the line) with a mark that says goal</h1>
+<p class="sub">Tom: B, with some kind of star graphic in the line so it reads as a special line, a line of achievement. Four marks, all in the app's gold, all on B's dress. The same list as round one: five sessions behind, nine days out. In each, FOR THE TRIP's mark is one size up from BY TODAY's, so the goal line reads a little stronger than the pace line; say if they should match.</p>
+<div class="row">
+  <div class="cell"><div class="cap">B1. A star beside the label</div>
+    <div class="phone opt1"><div class="list">
+      <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="mark"><span class="lbl"><svg viewBox="0 0 24 24"><polygon points="12,2 14.9,8.6 22,9.3 16.6,14.1 18.2,21.2 12,17.5 5.8,21.2 7.4,14.1 2,9.3 9.1,8.6"/></svg>BY TODAY</span></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+      <div class="mark trip"><span class="lbl"><svg viewBox="0 0 24 24"><polygon points="12,2 14.9,8.6 22,9.3 16.6,14.1 18.2,21.2 12,17.5 5.8,21.2 7.4,14.1 2,9.3 9.1,8.6"/></svg>FOR THE TRIP</span></div>
+      <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+    </div></div>
+    <div class="note">A filled five-point star before the words. The plainest reading of "goal." The app has avoided stars since the arcade stars were retired for the ring, so this brings one back on purpose.</div>
+  </div>
+  <div class="cell"><div class="cap">B2. A flag beside the label</div>
+    <div class="phone opt2"><div class="list">
+      <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="mark"><span class="lbl"><svg viewBox="0 0 24 24"><path d="M5 2.5v19h2v-7.2c3.2-1.6 6 1.4 9.6-.2 1-.4 1.4-.8 1.9-1.1V3.2c-.5.3-.9.7-1.9 1.1C13 5.9 10.2 2.9 7 4.5V2.5z"/></svg>BY TODAY</span></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+      <div class="mark trip"><span class="lbl"><svg viewBox="0 0 24 24"><path d="M5 2.5v19h2v-7.2c3.2-1.6 6 1.4 9.6-.2 1-.4 1.4-.8 1.9-1.1V3.2c-.5.3-.9.7-1.9 1.1C13 5.9 10.2 2.9 7 4.5V2.5z"/></svg>FOR THE TRIP</span></div>
+      <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+    </div></div>
+    <div class="note">A small flag: a finish line, a place to reach. Reads as the trip's marker more than a reward, which fits FOR THE TRIP best; BY TODAY wears the same flag smaller.</div>
+  </div>
+  <div class="cell"><div class="cap">B3. A sparkle bead in the line's middle</div>
+    <div class="phone opt3"><div class="list">
+      <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="mark"><span class="bead"><svg viewBox="0 0 24 24"><path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z"/></svg></span><span class="lbl">BY TODAY</span></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+      <div class="mark trip"><span class="bead"><svg viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z"/></svg></span><span class="lbl">FOR THE TRIP</span></div>
+      <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+    </div></div>
+    <div class="note">A four-point sparkle set into the line's centre, like a bead on a thread; the label keeps the right. The line reads as a thing with a middle, not a divider. The sparkle is the light the icon is made of.</div>
+  </div>
+  <div class="cell"><div class="cap">B4. A star at the line's left end, the label right</div>
+    <div class="phone opt4"><div class="list">
+      <div class="lesson"><svg class="ls-ring" viewBox="0 0 36 36" width="30" height="30"><circle class="ls-bg" cx="18" cy="18" r="15"/><circle class="ls-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="55" transform="rotate(-90 18 18)"/></svg><div class="lmain"><div class="lname">Numbers · Part 2</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Paying words<span class="next-tag">NEXT</span></div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+      <div class="mark"><span class="lead"><svg viewBox="0 0 24 24"><polygon points="12,2 14.9,8.6 22,9.3 16.6,14.1 18.2,21.2 12,17.5 5.8,21.2 7.4,14.1 2,9.3 9.1,8.6"/></svg></span><span class="lbl">BY TODAY</span></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 1</div><div class="lmeta">7 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Counter words · Part 2</div><div class="lmeta">6 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Table words</div><div class="lmeta">14 words</div></div><div class="pk">›</div></div>
+      <div class="lesson"><span class="caret-new">›</span><div class="lmain"><div class="lname">Street words</div><div class="lmeta">10 words</div></div><div class="pk">›</div></div>
+      <div class="mark trip"><span class="lead"><svg viewBox="0 0 24 24" style="width:15px;height:15px"><polygon points="12,2 14.9,8.6 22,9.3 16.6,14.1 18.2,21.2 12,17.5 5.8,21.2 7.4,14.1 2,9.3 9.1,8.6"/></svg></span><span class="lbl">FOR THE TRIP</span></div>
+      <div class="lesson" style="opacity:.55"><span class="caret-new">›</span><div class="lmain"><div class="lname">Bathroom words</div><div class="lmeta">8 words</div></div><div class="pk">›</div></div>
+    </div></div>
+    <div class="note">The star opens the line at the left, where the chapter kicker sits, and the words close it at the right. The line runs star to name, a ribbon with two ends.</div>
+  </div>
+</div>
+</body></html>
