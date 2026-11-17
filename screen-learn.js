@@ -251,7 +251,8 @@ function _planMarks() {
   const elapsed = Math.max(0, Math.round((day(todayStr()) - day(start)) / 864e5));
   const lessons = (DECK ? DECK.stages : []).flatMap(st => st.lessons).filter(l => !l.bonus);
   if (!lessons.length) return null;
-  const goalN = Math.min(typeof PLAN_SESSIONS !== "undefined" ? PLAN_SESSIONS : 23, lessons.length, daysTotal);
+  const knownN = lessons.filter(l => state.lessons[l.id] && state.lessons[l.id].known).length;   // a Known session costs no plan day: the goal extends by their number, capped at the whole (chat 11/16)
+  const goalN = Math.min(typeof PLAN_SESSIONS !== "undefined" ? PLAN_SESSIONS : 23, lessons.length, daysTotal + knownN);
   const paceN = Math.min(goalN, Math.floor(goalN / daysTotal * elapsed));
   return { goalId: lessons[goalN - 1].id, paceId: paceN >= 1 && paceN < goalN ? lessons[paceN - 1].id : null, goalN, paceN, daysTotal, elapsed, start };
 }

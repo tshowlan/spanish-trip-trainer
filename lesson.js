@@ -384,6 +384,8 @@ function _replyKey(es) { return norm(es).replace(/^(si|no)\s+/, ""); }
 function _placeHeard(items) { const h = new Set(); (items || []).forEach(x => { const st = state.learn && state.learn[itemId(x)]; ((st && st.heard) || []).forEach(k => h.add(k)); }); return h; }
 function _replyCtx(items, stockLeft) { const p = (typeof activePack === "function" && activePack()) || {}; return { heard: new Set(), placeHeard: _placeHeard(items), stockLeft, stock: new Set((p.stockReplies || []).map(_replyKey)) }; }
 function _pickReply(it, ctx) {
+  // a reply the sentence OWES its learner (chat 11/16: "Sí. ¿Quiere copia?" is the reason its batch exists): served the first time this sentence's exchange plays, until it has been heard once
+  if (it.owe) { const o = (it.replies || []).find(r => r[0] === it.owe), k = o && _replyKey(o[0]), st0 = state.learn && state.learn[itemId(it)]; if (o && !((st0 && st0.heard) || []).includes(k) && !(ctx && ctx.heard.has(k))) { if (ctx) ctx.heard.add(k); return o; } }
   if (!ctx || !isStaged("reply-sets")) return _rareReply(it);
   const rs = (it.replies || []).slice(); if (!rs.length) return null;
   if (!_replyFreq) _rareReply(it);                                                  // builds the frequency map
