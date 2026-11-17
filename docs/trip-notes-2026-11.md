@@ -36,7 +36,7 @@
 | 11 | Los postres; asked if I want the dessert menu | No postre anywhere. | 5 |
 | 12 | "Para compartir" on menus where I expected "tapas" | Only in the old tapas lesson (off the deck). | 3 |
 | 13 | "Do you need a copy?" (of the receipt), a lot | No copia, no recibo. Paying has no line about the receipt. | 1 |
-| 14 | "I have a gluten allergy" / "I'm celiac" | The asks carry "Tengo alergia a ___" for intake allergies; gluten-free is a need, not an allergy, so the slot never offers gluten. The sin gluten lines are there. No "Soy celíaco". | 2 |
+| 14 | "I have a gluten allergy" / "I'm celiac" | Corrected 11/16 after checking the deck a gluten-free learner gets: a generated session, Your Dietary Needs, sits LAST in chapter 2 with three lines (No puedo comer gluten; ¿Esto lleva gluten?; ¿Tienen algo sin gluten?). "Soy celíaco" exists only as a variant named in that first line's note; "Tengo alergia al gluten" does not exist; the allergy ask (Tengo alergia a ___) is offered only for intake allergies, and gluten-free is a need. So the gap is the line Tom wanted, where it sits (last), and its old exercise shape. | 2 |
 | 15 | Decline dessert nicely: "too full," and other colloquialisms | No. | 5 |
 | 16 | Tinto o blanco: forgot Spain says tinto | Heard only: "¿Tinto o blanco?" is one reply to the wine order. Neither is a taught word. | 7 |
 | 17 | Do we have "tomorrow"? | Only inside "hasta mañana". Not a taught word; hoy neither. | 7 |
