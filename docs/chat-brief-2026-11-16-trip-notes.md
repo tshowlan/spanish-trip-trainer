@@ -15,7 +15,13 @@
 
 **P2. Ordering for the table.** Tom ordered tapas for a group all week and the app only has Para mí, ___. Is "for us" a new place frame at the Table (Code's prompts: Para compartir, ___; Nos pone ___; Para nosotros, ___), a second frame beside Para mí, or sentences under an existing ask? The one-frame-per-place law is at stake, as it was with the taxi.
 
-**P3. How much Catalan.** Tom heard "bon dia" often and read Serveis and Lavabos on doors where the app taught Servicios and Aseos. Options: (a) Good to know notes only; (b) sign variants on the plates that have one (Sortida, Entrada, Obert, Tancat, Serveis, Lavabos) for learners whose destination is Barcelona or Catalonia; (c) also a few heard-only greetings in exercises (bon dia, adéu, gràcies, si us plau). The pack is "Spain"; this would be the first content keyed to a city. Tom's floor: at least a Good to know, and things people say in some exercises.
+**P3. Catalan as a layer over Spain, not part of it.** Tom heard "bon dia" often and read Serveis and Lavabos on doors where the app taught Servicios and Aseos. His framing (11/16): someone learning for Madrid should not get Catalan, so it should be modular, an add-on over the regular Spain lessons. Code agrees and the engine is already shaped for it: lessons gate on the profile (`requires`), items gate on it (`profile`, as the allergens do), and a session's line can vary by profile. What is missing is the answer to gate on: the intake asks the country, never where in it. So the proposal is:
+
+- **One new intake answer, "Where in Spain?"** (Barcelona and Catalonia / Madrid / Andalusia / somewhere else, or skip). It is the first content keyed to a region, and the same key later carries Basque signs for Bilbao or Valencian for Valencia without touching the engine.
+- **The layer is read and heard, never said.** The learner's mouth stays Castilian, which everyone in Barcelona understands; this is the register rule (the mouth keeps one form, the ear is told the other) applied to a second language. So: sign variants on the plates that have one (Sortida, Entrada, Obert, Tancat, Serveis, Lavabos, Empenyeu, Estireu), a handful of heard-only greetings in the hear sessions (bon dia, adéu, gràcies, si us plau, merci), and Good to know notes where the two differ.
+- **A learner without the answer gets none of it**, and the Spain pack stays one pack: a layer, never a fork.
+
+Rule on: the layer as a principle; the intake question and its options; what the layer holds (signs only, or signs and the heard greetings); and whether it is a few items inside existing sessions or one short session of its own ("Barcelona's signs").
 
 ## The nine batches
 

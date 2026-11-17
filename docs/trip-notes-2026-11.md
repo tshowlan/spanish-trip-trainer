@@ -15,7 +15,7 @@
 | 5 | Table: asking for another | 2, 3, 10, 19, 20 | a frame and 5 to 6 words | NOTED |
 | 6 | Small words that came up | 7, 8, 16, 17 | 6 to 7 words | NOTED |
 | 7 | Dietary: celiac | 14 | 1 to 2 lines, one engine rule | NOTED |
-| 8 | Barcelona's Catalan | 5, 6, 27 | notes, sign variants, a few heard words | NOTED |
+| 8 | Barcelona's Catalan, as a layer over Spain (Tom 11/16: modular, a Madrid learner gets none) | 5, 6, 27 | one intake answer (where in Spain), sign variants, a few heard words | NOTED |
 | 9 | Help: offering it | 4 | 1 to 2 lines | NOTED |
 | — | Parked for chapters 3 and 4 | 9, 24 | | PARKED |
 
