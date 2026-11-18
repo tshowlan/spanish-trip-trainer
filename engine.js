@@ -2,7 +2,7 @@
    Register a new destination = add a content_<cc>.js pack + an entry here +
    a DESTINATIONS entry. Each pack owns its scenarios, vocab, and TTS accent. */
 const CONTENT = {
-  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages, scenes: CURRICULUM.scenes || [], glueGloss: CURRICULUM.glueGloss || {}, dietarySlots: CURRICULUM.dietarySlots, stockReplies: CURRICULUM.stockReplies || {}, flow: CURRICULUM.flow || null },
+  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages, scenes: CURRICULUM.scenes || [], glueGloss: CURRICULUM.glueGloss || {}, agreementForms: CURRICULUM.agreementForms || {}, dietarySlots: CURRICULUM.dietarySlots, stockReplies: CURRICULUM.stockReplies || {}, flow: CURRICULUM.flow || null },
   mexico: { key: "mexico", dialect: "Mexican Spanish",   tts: "es-MX", stages: (typeof MEXICO_PACK !== "undefined" ? MEXICO_PACK.stages : CURRICULUM.stages), scenes: (typeof MEXICO_PACK !== "undefined" && MEXICO_PACK.scenes) || [] }
 };
 function activePack() { return CONTENT[state.active] || CONTENT.spain; }
@@ -63,7 +63,8 @@ function buildDietaryLesson(needs) {
     { es: "No como carne", en: "I don't eat meat", variants: ["Soy vegetariano", "Soy vegetariana"], note: "Also: soy vegetariano or vegetariana. No como carne works for everyone." },
     { es: "¿Esto lleva carne?", en: "Does this have meat?" },
     { es: "¿Tienen algo sin carne?", en: "Do you have anything without meat?" });
-  if (needs.includes("gluten_free")) items.push(
+  // the gluten lines live in Table words and Table sentences once trip-celiac is on (chat 11/17): the generated session keeps only vegetarian
+  if (needs.includes("gluten_free") && !(typeof isStaged === "function" && isStaged("trip-celiac"))) items.push(
     { es: "No puedo comer gluten", en: "I can't eat gluten", variants: ["Soy celíaco", "Soy celíaca"], note: "Also: soy celíaco or celíaca. No puedo comer gluten works for everyone." },
     { es: "¿Esto lleva gluten?", en: "Does this contain gluten?" },
     { es: "¿Tienen algo sin gluten?", en: "Do you have anything gluten-free?" });
@@ -133,12 +134,17 @@ function _chapterFlowDeck(deck, rooms) {
     delete base.note; delete base.anchor;                // margin notes were written for the phrase's OLD seat ("Pongo again..."); chapter one shows only what its own data says (Tom 9/20)
     const it = Object.assign({ tier: 1 }, base, d); made.set(k, it); return it;
   };
-  const fits = d => !d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : (p.needs || []).includes(d.profile.needs));
+  const fits = d => !d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : [].concat(d.profile.needs || []).some(n => (p.needs || []).includes(n)));   // a need may be one key or a list (gluten-free OR celiac, chat 11/17)
+  // THE AGREEMENT FORMS (chat 11/17, celiac): an item marked `forms: "<set>"` is rewritten for the learner's adjective answer from the pack's own
+  // table (`agreementForms[set].a` / `.neutral`: pairs replaced across every string of the item; -o is the form the pack writes). Pure data in the pack.
+  const formSets = activePack().agreementForms || {};
+  const form = d => { const g = ({ o: null, a: "a" })[p.grammar] === undefined ? "neutral" : ({ o: null, a: "a" })[p.grammar]; const reps = d.forms && g && formSets[d.forms] && formSets[d.forms][g]; return reps ? JSON.parse(reps.reduce((t, [a, b]) => t.split(a).join(b), JSON.stringify(d))) : d; };
   const numbersOn = typeof isStaged === "function" && isStaged("numbers-1");
   const partWord = t => (typeof isStaged === "function" && isStaged("learn-peek")) ? t.replace(/ ([\u00b7·]) (\d)$/, " $1 Part $2") : t;
-  const lineFor = w => (w.lineProfile && w.lineProfile.allergies && (p.allergies || []).length) ? w.lineProfile.allergies : w.line;   // profile-keyed lines (Table words)
+  const glutenNeed = typeof isStaged === "function" && isStaged("trip-celiac") && (p.needs || []).some(n => n === "gluten_free" || n === "celiac");
+  const lineFor = w => (w.lineProfile && w.lineProfile.allergies && ((p.allergies || []).length || glutenNeed)) ? w.lineProfile.allergies : w.line;   // profile-keyed lines (Table words)
   const live = d => (!d.staged || (typeof isStaged === "function" && isStaged(d.staged))) && !(d.until && typeof isStaged === "function" && isStaged(d.until));   // "until": the seat it gives up when a staged swap is on   // a session or a word may wait behind a switch (chapter-1-adds)
-  const words = flow.words.filter(w => (numbersOn || w.numbers !== "ear") && live(w)).map(w => Object.assign({}, w, { title: partWord(w.title), line: lineFor(w), primer: null })).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: !w.sounds, items: w.sounds ? w.items.slice() : w.items.filter(fits).filter(live).map(mk) }));   // a sounds session carries key sounds, not words
+  const words = flow.words.filter(w => (numbersOn || w.numbers !== "ear") && live(w)).map(w => Object.assign({}, w, { title: partWord(w.title), line: lineFor(w), primer: null })).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: !w.sounds, items: w.sounds ? w.items.slice() : w.items.filter(fits).filter(live).map(form).map(mk) }));   // a sounds session carries key sounds, not words
   const old = deck.stages;
   // no phrase is lost: what the old kit held that is not a word re-homes into a later lesson
   (old[0] ? old[0].lessons : []).filter(l => !l.machine).forEach(l => {
@@ -175,7 +181,7 @@ function _chapterFlowDeck(deck, rooms) {
     }
     return d;
   };
-  const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { line: (w.lineSwap && isStaged(w.lineSwap.staged)) ? w.lineSwap.line : w.line, items: w.items.filter(live).map(variant).map(d => {   /* a staged swap (the trip notes, 11/16): an item's `swap: { staged, replies, note, owe }` or a session's `lineSwap: { staged, line }` replaces those fields while its switch is on */ const k = (d.card ? "card:" : "") + slug(d.es), sw = (d.swap && isStaged(d.swap.staged)) ? d.swap : null, own = { replies: (sw && sw.replies) || (isStaged("reply-sets") && d.replies2) || d.replies, owe: (sw && sw.owe) || null, hint: d.hint, near: d.near, frame: d.frame, note: (sw && sw.note) || d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
+  const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { line: (w.lineSwap && isStaged(w.lineSwap.staged)) ? w.lineSwap.line : w.line, items: w.items.filter(live).filter(fits).map(form).map(variant).map(d => {   /* a staged swap (the trip notes, 11/16): an item's `swap: { staged, replies, note, owe }` or a session's `lineSwap: { staged, line }` replaces those fields while its switch is on */ const k = (d.card ? "card:" : "") + slug(d.es), sw = (d.swap && isStaged(d.swap.staged)) ? d.swap : null, own = { replies: (sw && sw.replies) || (isStaged("reply-sets") && d.replies2) || d.replies, owe: (sw && sw.owe) || null, hint: d.hint, near: d.near, frame: d.frame, note: (sw && sw.note) || d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
   const order = flow.rooms || [];
   // THE ROOMS RETIRE WITH THE LAST PLACE (Tom 10/24 ruling; done 11/3 when Tom met a room's machine weld in review): once the Street,
   // Shop, Help, and Paying sessions exist (sentences-3), the four rooms leave chapter 2 and the deck; their phrases live on as place sentences

@@ -20,10 +20,13 @@ const GRAMMAR_OPTIONS = [
   { key: "a",       label: "-a forms (alérgica, cansada)" },
   { key: "neutral", label: "Neutral where possible (tengo alergia)" }
 ];
-const NEEDS = [
-  ["gluten_free", "Gluten-free"], ["vegetarian", "Vegetarian / vegan"],
+// Celiac is its own answer beside Gluten-free (chat 11/17, STAGED "trip-celiac"): two different truths, two different lines. The app never puts
+// "I'm celiac" in the mouth of someone who is not, or leaves it out for someone who is. Celiac gets everything gluten-free gets, and its own.
+const NEEDS_ALL = [
+  ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["vegetarian", "Vegetarian / vegan"],
   ["allergies", "Food allergies"], ["chat", "Want to chat with locals"]
 ];
+const needsList = () => NEEDS_ALL.filter(n => n[0] !== "celiac" || (typeof isStaged === "function" && isStaged("trip-celiac")));
 const PLACEMENT = [
   { es: "Gracias", answer: "Thank you", opts: ["Thank you", "Goodbye", "Please", "Sorry"] },
   { es: "¿Cuánto cuesta?", answer: "How much is it?", opts: ["How much is it?", "Where is it?", "What time is it?", "What's your name?"] },
@@ -169,7 +172,7 @@ function renderOnboarding(opts) {
       wrap.appendChild(el(`<div class="onb-q">Anything we should tailor for?</div>`));
       wrap.appendChild(el(`<div class="onb-sub">Pick any. Dietary needs get their own safety phrases. It's our specialty.</div>`));
       const chips = el(`<div class="chips"></div>`);
-      NEEDS.forEach(([key, label]) => {
+      needsList().forEach(([key, label]) => {
         const on = draft.needs.includes(key);
         const chip = el(`<button class="chip ${on ? "on" : ""}"><span class="chip-l">${label}</span></button>`);
         chip.addEventListener("click", () => {
@@ -255,7 +258,7 @@ function renderOnboarding(opts) {
       const days = Math.max(0, daysUntil(draft.date));
       const weeks = Math.max(1, Math.round(days / 7));
       const cram = days > 0 && days < 14;
-      const dietary = draft.needs.includes("gluten_free") || draft.needs.includes("vegetarian") || draft.needs.includes("allergies");
+      const dietary = draft.needs.includes("gluten_free") || draft.needs.includes("celiac") || draft.needs.includes("vegetarian") || draft.needs.includes("allergies");
       const outcomes = [];
       if (dietary) outcomes.push("order food that's safe for your diet");
       outcomes.push("order food and drinks like a regular", "handle taxis and hotel check-in", "navigate markets and directions");

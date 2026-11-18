@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v623";
+const APP_BUILD = "v624";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -17,6 +17,7 @@ const APP_BUILD = "v623";
    changed, back to back, nothing recorded. `key` is the batch's switch; the pack marks its items with `staged: key` or `swap.staged: key`. */
 const TRIP_BATCHES = [
   { key: "trip-paying", label: "1 · Paying" },
+  { key: "trip-celiac", label: "2 · Celiac" },
 ];
 const STAGED = {
   "mic-check": "Say it: the microphone check (auto-listen after the word, the ring, the match). PARKED: on iPhone it leaves playback on the quiet earpiece; off until the native app can own the audio route (Tom 10/8)",
@@ -27,6 +28,7 @@ const STAGED = {
 // SHIPPED (Tom, 2026-11-17, v623): "reply-sets", Chapter 2: every place sentence's replies rewritten by chat (11/1): three meanings, two the sentence's own, one stock reply at most; the exchange's floor (a stock reply owed to a place is heard once there, at most half of a play's exchanges, the rest in review); the Street's driver lines (Al hotel, A la estación), the Table's taxi line, the Shop's ¿Puedo pagar con tarjeta aquí?, chocolate's allergen variants
 // SHIPPED (Tom, 2026-11-17, v623): "cards-sheet", Learn (chat 11/6, Tom's pick C): a session's drawer ends in Read the cards, opening a read-only sheet of its cards (headword, gloss, context with the English under, the Good to know note; tap the Spanish to hear it); a word session's cards are its words, a sentence session's its frame cards; a Known session's sheet says so
 // SHIPPED (Tom, 2026-11-06, v617): "frame-cards-once", Chapter 2 (chat 11/6): a place session's frame card shows the first time the session is played and not on replay, like a word session's cards; the replay opens on the frame's build. A card whose frame is still unmet shows (gained since)
+  "trip-celiac": "Trip notes, batch 2 (chat 11/17): Celiac is its own intake answer beside Gluten-free. Both get Lleva gluten (a card) and No puedo comer gluten in Table sentences; celiac also gets Soy celiaco in Table words and the cross-contamination question; the form follows your adjective answer; the old Your Dietary Needs session loses its gluten lines",
   "trip-paying": "Trip notes, batch 1 (Tom back from Barcelona, chat 11/16): Paying gains where you pay (a card and two sentences, Pago aqui; En caja is heard back) and the receipt copy question heard on the card sentence (Quiere copia), owed on the first play; the session line updated",
 // SHIPPED (Tom, 2026-11-17, v623): "lapse-rungs", A miss on a word you own costs two rungs, not everything (Tom 11/7, chat confirmed): the spacing divides by about five (85 days to 16), and the fade counts from the day of the miss; two misses in a row go to one day
 // SHIPPED (Tom, 2026-11-17, v623): "place-weights", Coverage's demand weights re-mapped to the seven groups that exist (chat 11/7): Everywhere 0.30, Counter 0.14, Table 0.14, Paying 0.12, Street 0.12, Help 0.10, Shop 0.08; a group with nothing in the pack is dropped and the rest renormalize

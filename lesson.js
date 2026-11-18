@@ -2320,13 +2320,16 @@ function startBatchPreview(key) {
   const deckLessons = (DECK ? DECK.stages : []).flatMap(st => st.lessons);
   const qs = [];
   raw.forEach(w => {
-    const l = deckLessons.find(x => x.id === w.id || x.id.startsWith(w.id + "-")); if (!l) return;
-    const pool = (l.items || []).filter(it => !it.card), place = l.place || "";
-    const find = d => (l.items || []).find(it => it.es === d.es && !!it.card === !!d.card);
-    const hear = (it, r) => ({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]), arc: true });
+    const ls = deckLessons.filter(x => x.id === w.id || x.id.startsWith(w.id + "-")); if (!ls.length) return;   // a session may be split into parts
+    // a deck item is matched by the pack item's identity: its id when the pack gives one, else its phrase; an item rewritten for the learner's
+    // adjective answer (forms) no longer shares the pack's phrase, so it is matched by its mark and its seat among the batch's items of that session
+    const marked = l => (l.items || []).filter(it => it.staged === key || (it.swap && it.swap.staged === key));
+    const find = d => { for (const l of ls) { const it = (l.items || []).find(x => x.es === d.es && !!x.card === !!d.card); if (it) return { l, it }; } if (d.forms) { const seat = w.items.filter(x => x.staged === key && x.forms && !!x.card === !!d.card).indexOf(d); for (const l of ls) { const c = marked(l).filter(x => x.forms && !!x.card === !!d.card)[seat]; if (c) return { l, it: c }; } } return null; };
     w.items.forEach(d => {
       const isNew = d.staged === key, changed = d.swap && d.swap.staged === key; if (!isNew && !changed) return;
-      const it = find(d); if (!it) return;
+      const hit = find(d); if (!hit) return;   // not in this learner's deck (profile-keyed: the Test Lab's dietary pretend shows the rest)
+      const l = hit.l, it = hit.it, pool = (l.items || []).filter(x => !x.card), place = l.place || "";
+      const hear = (it, r) => ({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]), arc: true });
       if (it.card || !l.sentences) { qs.push({ type: "present", item: it, arc: true }); if (!it.card && !l.sentences && typeof kitRungFor === "function") qs.push(kitRungFor(l, it, pool, 0)); return; }
       qs.push(_sentenceBuild(it, pool));
       const before = new Set(((d.replies2 || d.replies) || []).map(r => r[0]));

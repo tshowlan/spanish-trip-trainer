@@ -150,9 +150,20 @@ function renderProfile() {
   wrap.appendChild(dueSent);
   // pretend a dietary selection (Tom 10/28): to see the dietary variants without re-onboarding
   const dietRow = el(`<div class="lab-row" style="display:block;margin:0 0 10px"><div class="lab-lbl" style="margin-bottom:6px">Pretend a dietary selection (rebuilds the deck)</div><div style="display:flex;flex-wrap:wrap;gap:6px"></div></div>`);
-  [["", "None"], ["shellfish", "Shellfish"], ["nuts", "Nuts"], ["dairy", "Dairy"], ["eggs", "Eggs"], ["fish", "Fish"], ["vegetarian", "Vegetarian"]].forEach(([k, label]) => {
+  // the pretend writes the real profile, so the first press keeps your own selection and "Mine" puts it back (Tom's own gluten-free must survive a look at Celiac)
+  const DIET_NEEDS = ["vegetarian", "gluten_free", "celiac"];
+  const dietMine = () => { try { return JSON.parse(localStorage.getItem("sts_lab_diet") || "null"); } catch (e) { return null; } };
+  [["mine", "Mine"], ["", "None"], ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["vegetarian", "Vegetarian"], ["shellfish", "Shellfish"], ["nuts", "Nuts"], ["dairy", "Dairy"], ["eggs", "Eggs"], ["fish", "Fish"]].forEach(([k, label]) => {
     const b = el(`<button class="btn-quiet" style="margin:0">${label}</button>`);
-    b.addEventListener("click", () => { state.profile = state.profile || {}; if (k === "vegetarian") { state.profile.allergies = []; state.profile.needs = ["vegetarian"]; } else { state.profile.allergies = k ? [k] : []; state.profile.needs = (state.profile.needs || []).filter(n => n !== "vegetarian"); } save(); rebuildDeck(); toast(k ? `Pretending: ${label}` : "No dietary selection"); renderProfile(); });
+    b.addEventListener("click", () => {
+      state.profile = state.profile || {};
+      const p = state.profile, others = (p.needs || []).filter(n => !DIET_NEEDS.includes(n));
+      if (k === "mine") { const m = dietMine(); if (m) { p.allergies = m.allergies; p.needs = m.needs; try { localStorage.removeItem("sts_lab_diet"); } catch (e) {} } save(); rebuildDeck(); toast(m ? "Back to your own selection" : "Already your own selection"); return renderProfile(); }
+      if (!dietMine()) { try { localStorage.setItem("sts_lab_diet", JSON.stringify({ allergies: p.allergies || [], needs: p.needs || [] })); } catch (e) {} }
+      if (DIET_NEEDS.includes(k)) { p.allergies = []; p.needs = others.concat([k]); }
+      else { p.allergies = k ? [k] : []; p.needs = others; }
+      save(); rebuildDeck(); toast(k ? `Pretending: ${label}. Mine puts yours back.` : "Pretending: no dietary selection. Mine puts yours back."); renderProfile();
+    });
     dietRow.lastElementChild.appendChild(b);
   });
   wrap.appendChild(dietRow);
@@ -361,7 +372,7 @@ function renderProfileEdit() {
   chipRow(section("Kind of trip"), TRIP_TYPES.map(t => ({ key: t[0], label: t[1] })), tt, true);
   chipRow(section("Where you're staying", "Unlocks the host and check-out phrases you'll actually need."), LODGING_OPTIONS, d.lodging);
   chipRow(section("Getting around"), TRANSPORT_OPTIONS, d.transport);
-  chipRow(section("Anything to tailor for?"), NEEDS.map(n => ({ key: n[0], label: n[1] })), d.needs);
+  chipRow(section("Anything to tailor for?"), needsList().map(n => ({ key: n[0], label: n[1] })), d.needs);
   if (d.needs.includes("allergies")) chipRow(section("Which allergies?", "Your allergy lesson and the scenes' allergy beat follow this."), ALLERGENS.map(a => ({ key: a.key, label: a.en })), d.allergies);
   const homeSec = section("Where you're from", "Fills \"Soy de ___\" the way you'd say it to a stranger.");
   const home = el(`<input class="text-input" type="text" autocomplete="off" placeholder="New York" value="${d.home}">`);
