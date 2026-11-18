@@ -134,7 +134,19 @@ function _chapterFlowDeck(deck, rooms) {
     delete base.note; delete base.anchor;                // margin notes were written for the phrase's OLD seat ("Pongo again..."); chapter one shows only what its own data says (Tom 9/20)
     const it = Object.assign({ tier: 1 }, base, d); made.set(k, it); return it;
   };
-  const fits = d => !d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : [].concat(d.profile.needs || []).some(n => (p.needs || []).includes(n)));   // a need may be one key or a list (gluten-free OR celiac, chat 11/17)
+  // SIN GLUTEN IS FOR THOSE WHO NEED IT (Tom 11/17, under trip-celiac): the dietary carrier lines (marked `dietary`: the sentences the variants ride)
+  // reach only a learner whose own answer they can be said in, and the word sin gluten (`keyed: "gluten"`) only a
+  // gluten-free or celiac learner. Before, every learner got the word and five gluten sentences. Sin itself still reaches everyone through sin gas.
+  const celiacOn = typeof isStaged === "function" && isStaged("trip-celiac");
+  const glutenAnswer = (p.needs || []).some(n => n === "gluten_free" || n === "celiac");
+  // a carrier shows only in a form that is the learner's own: the gluten form to a gluten learner, or the slot form when the dietary variants are on
+  // and one applies to their answer (a shellfish learner never gets the gluten-free chocolate line, which has no shellfish form)
+  const slots0 = activePack().dietarySlots || {}, variantsOn = typeof isStaged === "function" && isStaged("dietary-variants");
+  const pick0 = (p.allergies || []).find(k => slots0[k]) || ((p.needs || []).includes("vegetarian") && slots0.vegetarian ? "vegetarian" : null);
+  const baseOwn = d => d.dietary.base === "vegetarian" ? (p.needs || []).includes("vegetarian") : glutenAnswer;   // whose answer the line's own base form is (the pack says: gluten unless marked)
+  const ownForm = d => baseOwn(d) || (variantsOn && !!pick0 && ((d.dietary.applies || []).includes(pick0) || !!(d.dietary.alt && (d.dietary.alt.applies || []).includes(pick0))));
+  const keyedOut = d => celiacOn && ((d.dietary && typeof d.dietary === "object" && !ownForm(d)) || (d.keyed === "gluten" && !glutenAnswer));
+  const fits = d => !keyedOut(d) && (!d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : [].concat(d.profile.needs || []).some(n => (p.needs || []).includes(n))));   // a need may be one key or a list (gluten-free OR celiac, chat 11/17)
   // THE AGREEMENT FORMS (chat 11/17, celiac): an item marked `forms: "<set>"` is rewritten for the learner's adjective answer from the pack's own
   // table (`agreementForms[set].a` / `.neutral`: pairs replaced across every string of the item; -o is the form the pack writes). Pure data in the pack.
   const formSets = activePack().agreementForms || {};
