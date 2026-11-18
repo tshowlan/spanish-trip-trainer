@@ -2306,7 +2306,37 @@ function soundBackOnWhisper(q) {
 }
 /* parking an ear session (Tom 9/26): leaving one before it is done saves it; the tile offers it first next new day */
 function parkEarSession() { if (!run || !run.lesson || lessonDone(run.lesson.id)) return; state.parkedEar = { id: run.lesson.id, day: dayKey() }; save(); }
-function leaveSession() { clearFooter(); (isStaged("learn-peek") && window._lessonFrom === "learn") ? renderLearn() : renderHome(); }
+function leaveSession() { clearFooter(); if (run && run.lab) { run = null; if (typeof showTabbar === "function") showTabbar("profile"); return renderProfile(); } (isStaged("learn-peek") && window._lessonFrom === "learn") ? renderLearn() : renderHome(); }
+/* THE BATCH PREVIEW (Tom 11/17, Test Lab): one trip-notes batch played by itself, so a batch is reviewed in succession and not hunted for
+   in situ. Only what the batch added or changed, in the pack's order: a new card as its card; a new sentence built once, then each of its
+   replies heard once; a changed sentence built once (its new note rides the build), then each reply the batch added heard once; a new word as
+   its card and one rung. Nothing is recorded (run.lab: no answers, no exposures, no heard marks, no session, no stats). The batch's switch
+   must be on (or shipped) for its items to be in the deck. */
+function startBatchPreview(key) {
+  if (!isStaged(key)) { toast("Turn staging on to play this batch."); return; }   // a batch still on its switch is not in the deck with staging off
+  const raw = [];   // the pack's own sessions that carry this batch's marks
+  const walk = o => { if (!o || typeof o !== "object") return; if (Array.isArray(o)) return o.forEach(walk); if (typeof o.id === "string" && Array.isArray(o.items) && o.items.some(d => d && (d.staged === key || (d.swap && d.swap.staged === key)))) raw.push(o); Object.values(o).forEach(walk); };
+  walk((typeof CONTENT !== "undefined" && CONTENT[state.active || "spain"]) || {});
+  const deckLessons = (DECK ? DECK.stages : []).flatMap(st => st.lessons);
+  const qs = [];
+  raw.forEach(w => {
+    const l = deckLessons.find(x => x.id === w.id || x.id.startsWith(w.id + "-")); if (!l) return;
+    const pool = (l.items || []).filter(it => !it.card), place = l.place || "";
+    const find = d => (l.items || []).find(it => it.es === d.es && !!it.card === !!d.card);
+    const hear = (it, r) => ({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]), arc: true });
+    w.items.forEach(d => {
+      const isNew = d.staged === key, changed = d.swap && d.swap.staged === key; if (!isNew && !changed) return;
+      const it = find(d); if (!it) return;
+      if (it.card || !l.sentences) { qs.push({ type: "present", item: it, arc: true }); if (!it.card && !l.sentences && typeof kitRungFor === "function") qs.push(kitRungFor(l, it, pool, 0)); return; }
+      qs.push(_sentenceBuild(it, pool));
+      const before = new Set(((d.replies2 || d.replies) || []).map(r => r[0]));
+      (it.replies || []).filter(r => isNew || !before.has(r[0])).forEach(r => qs.push(hear(it, r)));
+    });
+  });
+  if (!qs.length) { toast("Nothing to play: turn the batch's switch on first."); return; }
+  run = { lesson: { id: "__lab_batch__", topic: "Review", items: [] }, qs, idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: true, lab: true, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
+  renderQuestion();
+}
 /* The session sheet: quit + (when the escape fired) the sound-off reset point */
 /* PAUSE AND RESUME (STAGED resume, Tom 11/4): leaving a session parks it; Home's tile offers it back until the day ends. The beats are
    kept with their items as ids and revived from the index, so the session resumes exactly where it stopped, same forms, same order. */
@@ -2340,7 +2370,7 @@ function resumeSession() {
 }
 function sessionSheet() {
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
-  const canPause = isStaged("resume") && run && run.qs && run.idx < run.qs.length - 1;
+  const canPause = isStaged("resume") && run && !run.lab && run.qs && run.idx < run.qs.length - 1;   // a lab preview is never paused
   const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div><div class="sheet"><div class="sheet-grab"></div>
     <div class="sheet-title">${canPause ? "Leave the session?" : "Quit lesson?"}</div><div class="confirm-body">${canPause ? "Pause it and it waits on Home until the day ends. Quit, and next time it starts over." : "Your progress in it is lost."}</div>
     <button class="btn" id="cs-cancel">Keep going</button>
@@ -4472,8 +4502,8 @@ function finishGrade(ok, item, extra, wrong, words) {
   if (!ok) { run.wrong++; if (run.missed) run.missed.set(id, item); }
   recordAnswer(id, ok, { mode: q && q.type, scaffolded: q && q.slow });
   if (q && q.credit) { const cid = itemId(q.credit); if (cid && cid !== id) recordAnswer(cid, ok, { mode: "in_sentence" }); }   // a chapter-1 word reviewed inside the sentence that carries it (STAGED replay)
-  if (run && run.review) { const mark = x => { const r = x && state.learn && state.learn[x]; if (r) r.reviewed = true; }; mark(id); if (q && q.credit) mark(itemId(q.credit)); }   // the word enters Retention at its first review (chat 11/5)
-  if (q && q.type === "reply_hear" && q.es && q.item && typeof _replyKey === "function") { const sid = itemId(q.item), sr = sid && state.learn && state.learn[sid]; if (sr) { const h = sr.heard || [], k = _replyKey(q.es); if (!h.includes(k)) sr.heard = h.concat(k).slice(-12); } }   // the reply heard through this sentence (the floor's memory, chat 11/1)   // q.slow = used the 0.75× replay
+  if (run && run.review && !run.lab) { const mark = x => { const r = x && state.learn && state.learn[x]; if (r) r.reviewed = true; }; mark(id); if (q && q.credit) mark(itemId(q.credit)); }   // the word enters Retention at its first review (chat 11/5)
+  if (q && q.type === "reply_hear" && q.es && q.item && typeof _replyKey === "function" && !(run && run.lab)) { const sid = itemId(q.item), sr = sid && state.learn && state.learn[sid]; if (sr) { const h = sr.heard || [], k = _replyKey(q.es); if (!h.includes(k)) sr.heard = h.concat(k).slice(-12); } }   // the reply heard through this sentence (the floor's memory, chat 11/1)   // q.slow = used the 0.75× replay
   const restored = ok && wasFading;                    // correctly recalled a fading phrase → the sawtooth jump (§8.4)
   // Yours-now (§3.5): first cold production ever — typed/spoken only (tiles are scaffolding), once per item
   const post = id && state.learn && state.learn[id];
@@ -4734,6 +4764,7 @@ function next() {
 /* ----- completion ----- */
 function finishLesson() {
   clearFooter();
+  if (run.lab) { run = null; if (typeof showTabbar === "function") showTabbar("profile"); renderProfile(); toast("That is the whole batch. Nothing was recorded."); return; }   // the batch preview ends where it began
   const lesson = run.lesson;
   if (run.review) return finishReview();               // pure-review session: no lesson to mark
   const stars = run.wrong === 0 ? 3 : run.wrong <= 2 ? 2 : 1;

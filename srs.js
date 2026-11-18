@@ -19,7 +19,9 @@ function exposuresOf(item) {
   return s ? s.exposures : 0;
 }
 // presentation card / passive view: counts as exposure, no grading effect
+const _labRun = () => typeof run !== "undefined" && !!run && !!run.lab;   // a Test Lab preview records nothing (Tom 11/17: the batch preview)
 function recordExposure(id) {
+  if (_labRun()) return;
   const s = learnState(id); if (!s) return;
   s.exposures++; s.lastSeen = todayStr();
 }
@@ -33,6 +35,7 @@ function _dateAdd(dateStr, days) {
 // graded answer: advance exposure + streak/lapse + SM-2-lite interval/ease/due + mastery axes.
 // opts.mode is the exercise type, used to set the production/cold/native axes.
 function recordAnswer(id, ok, opts) {
+  if (_labRun()) return;
   const s = learnState(id); if (!s) return;
   if (s.ease == null) s.ease = 2.3;
   if (s.interval == null) s.interval = 0;

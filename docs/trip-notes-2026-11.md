@@ -2,6 +2,8 @@
 
 *Thirty notes from the trip the app was built for. Each is numbered, checked against the pack as it stands (v621; chapters 1 and 2 are the live deck), and placed in a batch. One batch is one theme, one surface, one writing job for chat, one switch, one play by Tom. A batch ships or is declined before the next is built.*
 
+**To review a batch:** Settings, Test Lab, Trip batches: one button per batch plays only what it added or changed, back to back, nothing recorded (v623).
+
 **Status key:** NOTED (here only) → WITH CHAT (in a handoff) → RULED → STAGED → SHIPPED, or DECLINED / PARKED.
 
 ## The batches, in chat's order (ruled 2026-11-16, docs/rulings-1116.md)

@@ -113,6 +113,17 @@ function renderProfile() {
     renderHome({ ceremony: { before, after: { readiness: s.readiness, momentum: s.momentum, retention: s.retention }, facts: { newN: 4, stronger: 6, restored: 1, soloed: 0 } } });
   });
   wrap.appendChild(cerBtn);
+  // THE TRIP BATCHES (Tom 11/17): play one batch by itself, only what it added or changed, nothing recorded
+  if (typeof TRIP_BATCHES !== "undefined" && TRIP_BATCHES.length) {
+    const tb = el(`<div class="lab-row" style="display:block;margin:6px 0 10px"><div class="lab-lbl" style="margin-bottom:6px">Trip batches: play only what a batch added or changed, back to back. Nothing is recorded. A batch still on its switch needs staging on.</div><div style="display:flex;flex-wrap:wrap;gap:6px"></div></div>`);
+    TRIP_BATCHES.forEach(b => {
+      const live = isStaged(b.key), waiting = (b.key in STAGED);
+      const btn = el(`<button class="btn-quiet" style="margin:0${live ? "" : ";opacity:.5"}">${b.label}${waiting ? "" : " (shipped)"}</button>`);
+      btn.addEventListener("click", () => startBatchPreview(b.key));
+      tb.lastElementChild.appendChild(btn);
+    });
+    wrap.appendChild(tb);
+  }
   const fresh = el(`<button class="btn-quiet" style="margin:6px 0 10px">Start over as a fresh learner (keeps your profile)</button>`);
   fresh.addEventListener("click", () => { state.learn = {}; state.lessons = {}; state.chapterDoors = []; save(); rebuildDeck(); toast("Fresh learner: nothing met, nothing done"); renderProfile(); });
   wrap.appendChild(fresh);
@@ -145,8 +156,6 @@ function renderProfile() {
     dietRow.lastElementChild.appendChild(b);
   });
   wrap.appendChild(dietRow);
-  // the intake's Known screen (chat 11/1, STAGED intake-known): a look without re-onboarding
-  if (isStaged("intake-known")) { const kb = el(`<button class="btn-quiet" style="margin:0 0 10px">Show the intake's Known screen</button>`); kb.addEventListener("click", () => renderOnboarding({ screen: "known", preview: true })); wrap.appendChild(kb); }
   // scene readiness readout (never trust self-reported success): each scene's due-mass vs the
   // bar it must clear today, plus a "Make ready" that puts its phrases due so the door can show
   const scRow = el(`<div class="lab-row"><div class="lab-lbl">Scenes: due-mass vs the bar (${sceneMassMin().toFixed(1)} today, tilt ${tiltShare().toFixed(2)}, staging ${stagingOn() ? "ON" : "off"})</div><div id="lab-scenes"></div></div>`);

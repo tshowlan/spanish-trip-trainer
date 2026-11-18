@@ -320,3 +320,4 @@ luminous law.)
 - 2026-11-16 — (chat) Trip-notes batch order: Paying, celiac, the three Table batches (ordering, another, the end), the Street, small words, Catalan, Help. One batch, one switch, one play.
 - 2026-11-16 — (chat) Paying gains ¿Pago aquí? (card and two sentences) and the heard ¿Quiere copia? on the card sentence.
 - 2026-11-16 — (chat) Coverage measures the whole deck on every trip length; Known sessions count as done and extend the goal.
+- 2026-11-17 — (Tom) Sixteen switches shipped (v623), reply-sets trimmed of the retired taxi card first. Old chapters 3 and 4 are off the deck, not deleted: the pack keeps them as reference. A trip batch is reviewed by itself from the Test Lab (only what it added or changed, nothing recorded) before Tom ships or declines it.
