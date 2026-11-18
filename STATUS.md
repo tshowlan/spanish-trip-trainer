@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## 2026-11-17 — handoff to chat: trip batch 2, celiac (docs/chat-handoff-2026-11-17-celiac.md)
+- Written ahead of batch 1's ship (chat may write one batch ahead; nothing is built until Tom ships or declines Paying). Five asks: the line and its card; where it sits (today the generated session Your Dietary Needs is the last row of chapter 2); the shape; whether the gluten-free need fills the allergy ask's slot; vegetarian with it or later.
+
 ## v623 (2026-11-17) — SIXTEEN SWITCHES SHIPPED on Tom's word; the Test Lab's batch preview
 - SHIPPED (the config comment lines): due-cap, old-chapters-off, place-weights, lapse-rungs, retention-entry, board-split, cards-sheet, ceremony-glow, ceremony-still, readiness-arc, intake-known, sentence-review, sheet-rows, grammar-reshow, the-plan, and reply-sets TRIMMED first: the Al hotel taxi card and its two a-lines are deleted (chat retired them 11/16, P1), the two other `staged: "reply-sets"` marks collapsed. Old chapters 3 and 4 are off the deck, not deleted: every line stays in curriculum.js as reference for chapter 3, and learners' history on their words keeps.
 - STILL STAGED (four): trip-paying (awaiting Tom's play), dietary-variants (ships with the celiac batch), mic-check and learn-reset-swipe (lab only).
