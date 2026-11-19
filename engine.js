@@ -113,12 +113,19 @@ function _journeyOneDeck(deck) {
 function _splitKit(l) {                                  // ruling 4: kits over 8 phrases run as halves
   if (l.noSplit || (l.numbers && typeof isStaged === "function" && isStaged("numbers-1"))) return [l];   // the pack may keep a session whole; numbers are met as a set
   if (l.chain || l.machine || l.machines || !(l.items || []).length || l.items.length <= 8) return [l];
-  const h = l.splitAt || Math.ceil(l.items.length / 2);      // the pack may name the cut, so a pair is never split
+  // WHOLE UP TO THE PACK'S NUMBER, THEN CUT WHERE IT MEANS SOMETHING (Tom 11/18, under trip-celiac): Table words with one dietary word was nine and
+  // split 5 and 4 down the middle (two table words and two dietary ones in a four-word Part 2). A session marked `splitOver: N` stays one
+  // session up to N words (Street words is whole at ten, Tom 9/20); past N, Part 1 is the session's own words and Part 2 the learner's
+  // dietary ones, the words that keep you safe.
+  const keyed = !!l.splitOver && typeof isStaged === "function" && isStaged("trip-celiac");
+  if (keyed && l.items.length <= l.splitOver) return [l];
+  let items = l.items, h = l.splitAt || Math.ceil(l.items.length / 2);      // the pack may name the cut, so a pair is never split
+  if (keyed) { const own = l.items.filter(i => !i.diet), diet = l.items.filter(i => i.diet); if (own.length && diet.length) { items = own.concat(diet); h = own.length; } }
   const t = l.title.replace(/ [\u00b7·] (Part )?\d$/, "");   // a titled half never reads "· 1 · 1"
   const P = (typeof isStaged === "function" && isStaged("learn-peek")) ? "Part " : "";   // "First words · Part 1" (Tom 9/21: the bare digit said too little)
   const L = l.lines || [];
-  return [Object.assign({}, l, { id: l.id + "-1", title: t + " \u00b7 " + P + "1", items: l.items.slice(0, h), line: L[0] || l.line }),
-          Object.assign({}, l, { id: l.id + "-2", title: t + " \u00b7 " + P + "2", items: l.items.slice(h), primer: null, line: L[1] || l.line })];
+  return [Object.assign({}, l, { id: l.id + "-1", title: t + " \u00b7 " + P + "1", items: items.slice(0, h), line: L[0] || l.line }),
+          Object.assign({}, l, { id: l.id + "-2", title: t + " \u00b7 " + P + "2", items: items.slice(h), primer: null, line: L[1] || l.line })];
 }
 /* THE CHAPTER FLOW (Tom 2026-09-16/17, chat's pass 9/17; STAGED "chapter-flow"). Arranges the pack's `flow`
    data: stage 0 = THE WORDS (the pack's word sessions; a word that already lives in the pack REUSES that

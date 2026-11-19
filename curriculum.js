@@ -819,7 +819,7 @@ const CURRICULUM = {
         { es: "para llevar", en: "to go / takeaway", tags: ["food"], contextEs: "Para llevar, gracias.", contextEn: "To go, thanks." },
         { es: "¿qué le pongo?", en: "what'll it be?", hear: true, tags: ["service"], contextEs: "¿Qué le pongo? Un café.", contextEn: "What'll it be? A coffee." },
         { es: "que aproveche", en: "enjoy your meal", hear: true, tags: ["service"], contextEs: "Que aproveche. Gracias.", contextEn: "Enjoy. Thanks." } ] },
-      { id: "w-table", topic: "Core table", title: "Table words", line: "The table, the menu, the bread, and the water.", lineProfile: { allergies: "The table, the menu, and the words that keep you safe." }, items: [
+      { id: "w-table", topic: "Core table", title: "Table words", splitOver: 10, line: "The table, the menu, the bread, and the water.", lineProfile: { allergies: "The table, the menu, and the words that keep you safe." }, items: [
         { es: "mesa", en: "table", tags: ["restaurant"], contextEs: "Una mesa para dos.", contextEn: "A table for two." },
         { es: "la carta", en: "the menu", tags: ["restaurant"], contextEs: "La carta, por favor.", contextEn: "The menu, please." },
         { es: "pan", en: "bread", tags: ["food"], contextEs: "Pan, gracias.", contextEn: "Bread, thanks." },
