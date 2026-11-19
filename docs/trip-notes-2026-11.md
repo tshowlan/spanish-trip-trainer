@@ -12,6 +12,7 @@
 |---|---|---|---|---|
 | 1 | Paying: where you pay, and the copy | 13, 22 | a card, two sentences, one heard reply | **STAGED** `trip-paying` (v622) |
 | 2 | Dietary: celiac | 14 | the Celiac chip, one word, a card and four sentences, forms by adjective answer | **STAGED** `trip-celiac` (v624) |
+| 2b | Dietary: the allergy and vegetarian lines in chapter 2's shape (Tom 11/18: the generated session plays chapter 1's exercises and sits last) | 14, played | retire the generated session; three keyed Table sentences per allergen | **WITH CHAT** (docs/chat-handoff-2026-11-18-allergies.md) |
 | 3 | Table: ordering for the table (Para compartir, Queremos, who takes the order) | 12, 18, 25 | premise RULED (P2) | NOTED |
 | 4 | Table: asking for another | 2, 3, 10, 19, 20 | a frame and 5 to 6 words | NOTED |
 | 5 | Table: the end of the meal | 11, 15, 21, 26 | 4 to 5 lines, heard and said | NOTED |
