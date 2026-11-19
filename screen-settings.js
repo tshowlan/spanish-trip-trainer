@@ -172,6 +172,16 @@ function renderProfile() {
     });
     dietRow.lastElementChild.appendChild(b);
   });
+  // WHAT THE SELECTION DOES, READ FROM THE DECK (never trust a toast: Tom 11/18 saw only one button "working"): the allergy session's own lines,
+  // the Table word it adds, and how many dietary sentences the place sessions carry and in which form
+  (() => {
+    const all = (DECK ? DECK.stages : []).flatMap(st => st.lessons);
+    const gen = all.filter(l => /^personal-/.test(l.id)).map(l => `${l.title}: ${l.items.map(x => x.es).join(" \u00b7 ")}`);
+    const tw = all.filter(l => l.id === "w-table" || l.id.startsWith("w-table-")).flatMap(l => l.items || []).filter(i => i.profile || i.keyed).map(i => i.es);
+    const diet = all.filter(l => l.sentences).flatMap(l => l.items || []).filter(i => !i.card && (/\bsin /.test(i.es) && !/sin gas/.test(i.es) || /gluten|cel[i\u00ed]a|contaminaci/.test(i.es))).map(i => i.es);
+    const line = (k, v) => `<div style="margin-top:4px"><b>${k}</b> ${v}</div>`;
+    dietRow.appendChild(el(`<div class="lab-lbl" style="margin-top:8px;line-height:1.45">${line("Generated sessions:", gen.length ? gen.join("<br>") : "none")}${line("Table words adds:", tw.length ? tw.join(", ") : "nothing")}${line(`Dietary sentences (${diet.length}):`, diet.length ? diet.join(" \u00b7 ") : "none")}</div>`));
+  })();
   wrap.appendChild(dietRow);
   // scene readiness readout (never trust self-reported success): each scene's due-mass vs the
   // bar it must clear today, plus a "Make ready" that puts its phrases due so the door can show

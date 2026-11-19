@@ -37,8 +37,8 @@ function chosenVariants(item) {
   });
 }
 function buildAllergyLesson(keys) {
-  const items = [{ es: "Tengo una alergia", en: "I have an allergy" }];
-  const own = typeof isStaged === "function" && isStaged("trip-celiac");   // the batch's two fixes ride its switch
+  const own = typeof isStaged === "function" && isStaged("trip-celiac");   // the batch's fixes ride its switch
+  const items = own ? [] : [{ es: "Tengo una alergia", en: "I have an allergy" }];   // nobody says "I have an allergy" and stops (Tom 11/18): the session is the learner's own allergy, named
   if (own) keys = keys.filter(k => k !== "gluten");                        // gluten never fills the Tengo alergia a ___ slot (chat 11/17): it has its own lines
   keys.forEach(k => {
     const a = ALLERGENS.find(x => x.key === k);
