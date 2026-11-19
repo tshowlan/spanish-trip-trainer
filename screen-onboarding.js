@@ -23,11 +23,11 @@ const GRAMMAR_OPTIONS = [
 // Celiac is its own answer beside Gluten-free (chat 11/17, STAGED "trip-celiac"): two different truths, two different lines. The app never puts
 // "I'm celiac" in the mouth of someone who is not, or leaves it out for someone who is. Celiac gets everything gluten-free gets, and its own.
 const NEEDS_ALL = [
-  ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["vegetarian", "Vegetarian / vegan"],
+  ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["lactose_free", "Lactose-free"], ["vegetarian", "Vegetarian / vegan"],   // Lactose-free (chat 11/18, Tom to confirm): two truths, two words, as with celiac; a dairy ALLERGY is lácteos
   ["allergies", "Food allergies"], ["chat", "Want to chat with locals"]
 ];
 const allergenList = () => ALLERGENS.filter(a => a.key !== "gluten" || !(typeof isStaged === "function" && isStaged("trip-celiac")));   // gluten is the Gluten-free and Celiac chips' business (chat 11/17)
-const needsList = () => NEEDS_ALL.filter(n => n[0] !== "celiac" || (typeof isStaged === "function" && isStaged("trip-celiac")));
+const needsList = () => NEEDS_ALL.filter(n => (n[0] !== "celiac" && n[0] !== "lactose_free") || (typeof isStaged === "function" && isStaged("trip-celiac")));
 const PLACEMENT = [
   { es: "Gracias", answer: "Thank you", opts: ["Thank you", "Goodbye", "Please", "Sorry"] },
   { es: "¿Cuánto cuesta?", answer: "How much is it?", opts: ["How much is it?", "Where is it?", "What time is it?", "What's your name?"] },
@@ -259,7 +259,7 @@ function renderOnboarding(opts) {
       const days = Math.max(0, daysUntil(draft.date));
       const weeks = Math.max(1, Math.round(days / 7));
       const cram = days > 0 && days < 14;
-      const dietary = draft.needs.includes("gluten_free") || draft.needs.includes("celiac") || draft.needs.includes("vegetarian") || draft.needs.includes("allergies");
+      const dietary = draft.needs.includes("gluten_free") || draft.needs.includes("celiac") || draft.needs.includes("lactose_free") || draft.needs.includes("vegetarian") || draft.needs.includes("allergies");
       const outcomes = [];
       if (dietary) outcomes.push("order food that's safe for your diet");
       outcomes.push("order food and drinks like a regular", "handle taxis and hotel check-in", "navigate markets and directions");

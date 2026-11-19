@@ -320,7 +320,33 @@ function _placesView(scroll) {   // STAGED review-places (Tom 11/4): Topics = th
     </div>`);
     if (met.length) row.addEventListener("click", () => startReview(met, { label: pl.name }));
     scroll.appendChild(row);
-  });
+  });  // YOUR DIETARY LINES (Tom 11/18, under trip-celiac): the lines keyed to this learner's dietary answer are woven into Table words and Table
+  // sentences (chat's seating), so nothing on Learn said "these are yours". One row here gathers them: read them all in one place, and review
+  // them before a meal. A learner with no dietary answer has no such row. The row's words are Code's draft (ledger).
+  if (isStaged("trip-celiac")) {
+    const key = it => norm(it.es).replace(/[.?!\u00bf\u00a1]/g, "").trim(), seen = new Set();
+    const all = (ALL_ITEMS || []).filter(it => it.diet);
+    const lines = all.filter(it => { const k = key(it); if (seen.has(k)) return false; seen.add(k); return true; });   // a card and its sentence are one line (the card comes first and carries the note)
+    if (lines.length) {
+      const sent = all.filter(it => !it.card), met = sent.filter(it => { const s = state.learn && state.learn[it.id]; return s && s.exposures >= 1; });
+      const pct = met.length ? Math.round(met.reduce((a, it) => a + itemStrength(state.learn[it.id]), 0) / met.length) : 0;
+      const band = !met.length ? "t-none" : pct >= 65 ? "t-strong" : pct >= 40 ? "t-fair" : "t-low";
+      const row = el(`<div class="topic ${band}" role="button">
+        <div class="tmain">
+          <div class="trow"><span class="tname">Your dietary lines</span><span class="tpct">${met.length ? pct + "%" : ""}</span></div>
+          <div class="tbar"><i style="width:${pct}%"></i></div>
+          <div class="tsub">${lines.length} line${lines.length === 1 ? "" : "s"}${met.length ? ` \u00b7 ${met.length} met` : " \u00b7 not met yet"}</div>
+        </div>
+        <span class="chev">${icon("caret-right", 15)}</span>
+      </div>`);
+      row.addEventListener("click", () => {
+        openCardsSheet({ id: "__diet__", title: "Your dietary lines", items: lines });
+        const sheet = document.querySelector(".cards-sheet");
+        if (sheet && met.length) { const b = el(`<button class="btn" style="margin-top:14px">Review these</button>`); b.addEventListener("click", () => { closeSheet(); startReview(met, { label: "Your dietary lines" }); }); sheet.appendChild(b); }
+      });
+      scroll.appendChild(row);
+    }
+  }
 }
 function _topicsView(scroll) {
   if (isStaged("review-places")) return _placesView(scroll);

@@ -151,13 +151,13 @@ function renderProfile() {
   // pretend a dietary selection (Tom 10/28): to see the dietary variants without re-onboarding
   const dietRow = el(`<div class="lab-row" style="display:block;margin:0 0 10px"><div class="lab-lbl" style="margin-bottom:6px">Pretend a dietary selection (rebuilds the deck)</div><div style="display:flex;flex-wrap:wrap;gap:6px"></div></div>`);
   // the pretend writes the real profile, so the first press keeps your own selection and "Mine" puts it back (Tom's own gluten-free must survive a look at Celiac)
-  const DIET_NEEDS = ["vegetarian", "gluten_free", "celiac"];
+  const DIET_NEEDS = ["vegetarian", "gluten_free", "celiac", "lactose_free"];
   const dietMine = () => { try { return JSON.parse(localStorage.getItem("sts_lab_diet") || "null"); } catch (e) { return null; } };
   // TWO AXES (Tom 11/18: an allergy button cleared his gluten-free and the dietary session vanished): a need button sets the dietary need and
   // leaves the allergy; an allergy button sets the allergy and leaves the need; None clears both; Mine puts your own back. The label says what is on.
   const dietNow = () => { const p = state.profile || {}; const n = (p.needs || []).filter(x => DIET_NEEDS.includes(x)).map(x => x.replace("_", "-")), al = (p.allergies || []); return n.concat(al).join(" + ") || "no dietary selection"; };
   dietRow.querySelector(".lab-lbl").textContent = `Pretend a dietary selection (rebuilds the deck). Now: ${dietNow()}${dietMine() ? " (pretending; Mine puts yours back)" : ""}`;
-  [["mine", "Mine"], ["", "None"], ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["vegetarian", "Vegetarian"], ["no_allergy", "No allergy"], ["shellfish", "Shellfish"], ["nuts", "Nuts"], ["dairy", "Dairy"], ["eggs", "Eggs"], ["fish", "Fish"]].forEach(([k, label]) => {
+  [["mine", "Mine"], ["", "None"], ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["lactose_free", "Lactose-free"], ["vegetarian", "Vegetarian"], ["no_allergy", "No allergy"], ["shellfish", "Shellfish"], ["nuts", "Nuts"], ["dairy", "Dairy"], ["eggs", "Eggs"], ["fish", "Fish"]].forEach(([k, label]) => {
     const b = el(`<button class="btn-quiet" style="margin:0">${label}</button>`);
     b.addEventListener("click", () => {
       state.profile = state.profile || {};
@@ -177,8 +177,8 @@ function renderProfile() {
   (() => {
     const all = (DECK ? DECK.stages : []).flatMap(st => st.lessons);
     const gen = all.filter(l => /^personal-/.test(l.id)).map(l => `${l.title}: ${l.items.map(x => x.es).join(" \u00b7 ")}`);
-    const tw = all.filter(l => l.id === "w-table" || l.id.startsWith("w-table-")).flatMap(l => l.items || []).filter(i => i.profile || i.keyed).map(i => i.es);
-    const diet = all.filter(l => l.sentences).flatMap(l => l.items || []).filter(i => !i.card && (/\bsin /.test(i.es) && !/sin gas/.test(i.es) || /gluten|cel[i\u00ed]a|contaminaci/.test(i.es))).map(i => i.es);
+    const tw = all.filter(l => l.id === "w-table" || l.id.startsWith("w-table-")).flatMap(l => l.items || []).filter(i => i.diet).map(i => i.es);
+    const diet = all.filter(l => l.sentences).flatMap(l => l.items || []).filter(i => !i.card && i.diet).map(i => i.es);
     const line = (k, v) => `<div style="margin-top:4px"><b>${k}</b> ${v}</div>`;
     dietRow.appendChild(el(`<div class="lab-lbl" style="margin-top:8px;line-height:1.45">${line("Generated sessions:", gen.length ? gen.join("<br>") : "none")}${line("Table words adds:", tw.length ? tw.join(", ") : "nothing")}${line(`Dietary sentences (${diet.length}):`, diet.length ? diet.join(" \u00b7 ") : "none")}</div>`));
   })();
