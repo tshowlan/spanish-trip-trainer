@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## 2026-11-19 — brief for chat: the dietary lines, allergy by allergy (docs/chat-brief-2026-11-19-dietary-by-allergy.md)
+- Tom, reading the generated list: the trazas note's "label" is ambiguous; "only with meat" answers a dairy question; do we need "tapas without peanuts" at all; is "traces of fish" a real question. The root: one set of sin ___ carriers written for gluten takes every answer's word. Code's reasoning by answer (to verify): three tiers (sweeping: gluten, celiac, vegetarian; one sweeping line: shellfish, fish, dairy; specific only: eggs, nuts, peanuts, soy); one sweeping ask real for all (the allergen menu); replies per line; where each allergen hides as its card's note (romesco and picada for nuts in Catalonia); the kitchen question by cluster (trazas for nuts and peanuts, the shared oil for fish and shellfish, cross-contamination for gluten); the trazas note reworded as packaging, voluntary; leche sin lactosa and cerveza sin gluten. Seven rulings wanted. Replaces asks 8 and 9 of the 11/18 follow-ups note. Nothing built.
+
 ## 2026-11-18 (later) — handoff to chat: five dietary follow-ups (docs/chat-handoff-2026-11-18b-dietary-followups.md)
 - From Tom's review of the generated list: the ¿Lleva ___? card note's wording; a shared-fryer line for celiac. From the build: confirm the Tengo alergia card; the Lactose-free and Dairy labels; the Topics row's name. Nothing built.
 
