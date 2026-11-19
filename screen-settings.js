@@ -153,16 +153,22 @@ function renderProfile() {
   // the pretend writes the real profile, so the first press keeps your own selection and "Mine" puts it back (Tom's own gluten-free must survive a look at Celiac)
   const DIET_NEEDS = ["vegetarian", "gluten_free", "celiac"];
   const dietMine = () => { try { return JSON.parse(localStorage.getItem("sts_lab_diet") || "null"); } catch (e) { return null; } };
-  [["mine", "Mine"], ["", "None"], ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["vegetarian", "Vegetarian"], ["shellfish", "Shellfish"], ["nuts", "Nuts"], ["dairy", "Dairy"], ["eggs", "Eggs"], ["fish", "Fish"]].forEach(([k, label]) => {
+  // TWO AXES (Tom 11/18: an allergy button cleared his gluten-free and the dietary session vanished): a need button sets the dietary need and
+  // leaves the allergy; an allergy button sets the allergy and leaves the need; None clears both; Mine puts your own back. The label says what is on.
+  const dietNow = () => { const p = state.profile || {}; const n = (p.needs || []).filter(x => DIET_NEEDS.includes(x)).map(x => x.replace("_", "-")), al = (p.allergies || []); return n.concat(al).join(" + ") || "no dietary selection"; };
+  dietRow.querySelector(".lab-lbl").textContent = `Pretend a dietary selection (rebuilds the deck). Now: ${dietNow()}${dietMine() ? " (pretending; Mine puts yours back)" : ""}`;
+  [["mine", "Mine"], ["", "None"], ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["vegetarian", "Vegetarian"], ["no_allergy", "No allergy"], ["shellfish", "Shellfish"], ["nuts", "Nuts"], ["dairy", "Dairy"], ["eggs", "Eggs"], ["fish", "Fish"]].forEach(([k, label]) => {
     const b = el(`<button class="btn-quiet" style="margin:0">${label}</button>`);
     b.addEventListener("click", () => {
       state.profile = state.profile || {};
       const p = state.profile, others = (p.needs || []).filter(n => !DIET_NEEDS.includes(n));
       if (k === "mine") { const m = dietMine(); if (m) { p.allergies = m.allergies; p.needs = m.needs; try { localStorage.removeItem("sts_lab_diet"); } catch (e) {} } save(); rebuildDeck(); toast(m ? "Back to your own selection" : "Already your own selection"); return renderProfile(); }
       if (!dietMine()) { try { localStorage.setItem("sts_lab_diet", JSON.stringify({ allergies: p.allergies || [], needs: p.needs || [] })); } catch (e) {} }
-      if (DIET_NEEDS.includes(k)) { p.allergies = []; p.needs = others.concat([k]); }
-      else { p.allergies = k ? [k] : []; p.needs = others; }
-      save(); rebuildDeck(); toast(k ? `Pretending: ${label}. Mine puts yours back.` : "Pretending: no dietary selection. Mine puts yours back."); renderProfile();
+      if (k === "") { p.allergies = []; p.needs = others; }
+      else if (DIET_NEEDS.includes(k)) p.needs = others.concat([k]);            // the need changes; the allergy stays
+      else if (k === "no_allergy") p.allergies = [];
+      else p.allergies = [k];                                                   // the allergy changes; the need stays
+      save(); rebuildDeck(); toast(`Pretending: ${dietNow()}. Mine puts yours back.`); renderProfile();
     });
     dietRow.lastElementChild.appendChild(b);
   });
@@ -373,7 +379,7 @@ function renderProfileEdit() {
   chipRow(section("Where you're staying", "Unlocks the host and check-out phrases you'll actually need."), LODGING_OPTIONS, d.lodging);
   chipRow(section("Getting around"), TRANSPORT_OPTIONS, d.transport);
   chipRow(section("Anything to tailor for?"), needsList().map(n => ({ key: n[0], label: n[1] })), d.needs);
-  if (d.needs.includes("allergies")) chipRow(section("Which allergies?", "Your allergy lesson and the scenes' allergy beat follow this."), ALLERGENS.map(a => ({ key: a.key, label: a.en })), d.allergies);
+  if (d.needs.includes("allergies")) chipRow(section("Which allergies?", "Your allergy lesson and the scenes' allergy beat follow this."), allergenList().map(a => ({ key: a.key, label: a.en })), d.allergies);
   const homeSec = section("Where you're from", "Fills \"Soy de ___\" the way you'd say it to a stranger.");
   const home = el(`<input class="text-input" type="text" autocomplete="off" placeholder="New York" value="${d.home}">`);
   home.addEventListener("input", () => { d.home = home.value; });

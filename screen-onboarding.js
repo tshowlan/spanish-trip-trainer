@@ -26,6 +26,7 @@ const NEEDS_ALL = [
   ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["vegetarian", "Vegetarian / vegan"],
   ["allergies", "Food allergies"], ["chat", "Want to chat with locals"]
 ];
+const allergenList = () => ALLERGENS.filter(a => a.key !== "gluten" || !(typeof isStaged === "function" && isStaged("trip-celiac")));   // gluten is the Gluten-free and Celiac chips' business (chat 11/17)
 const needsList = () => NEEDS_ALL.filter(n => n[0] !== "celiac" || (typeof isStaged === "function" && isStaged("trip-celiac")));
 const PLACEMENT = [
   { es: "Gracias", answer: "Thank you", opts: ["Thank you", "Goodbye", "Please", "Sorry"] },
@@ -189,7 +190,7 @@ function renderOnboarding(opts) {
       wrap.appendChild(el(`<div class="onb-q">Which allergies?</div>`));
       wrap.appendChild(el(`<div class="onb-sub">We'll drill the exact phrases to keep you safe at the table.</div>`));
       const chips = el(`<div class="chips"></div>`);
-      ALLERGENS.forEach(a => {
+      allergenList().forEach(a => {
         const on = draft.allergies.includes(a.key);
         const chip = el(`<button class="chip ${on ? "on" : ""}"><span class="chip-l">${a.en[0].toUpperCase() + a.en.slice(1)}</span></button>`);
         chip.addEventListener("click", () => {

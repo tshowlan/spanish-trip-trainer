@@ -38,6 +38,8 @@ function chosenVariants(item) {
 }
 function buildAllergyLesson(keys) {
   const items = [{ es: "Tengo una alergia", en: "I have an allergy" }];
+  const own = typeof isStaged === "function" && isStaged("trip-celiac");   // the batch's two fixes ride its switch
+  if (own) keys = keys.filter(k => k !== "gluten");                        // gluten never fills the Tengo alergia a ___ slot (chat 11/17): it has its own lines
   keys.forEach(k => {
     const a = ALLERGENS.find(x => x.key === k);
     // NEUTRAL PRIMARY, CHOSEN VARIANT (2026-09-06): one automatic form under stress, safety-grade;
@@ -48,8 +50,12 @@ function buildAllergyLesson(keys) {
       items.push({ es: `Tengo alergia ${a.frag}`, en: `I have an allergy to ${a.en}`, variants: [`Soy alérgico ${a.frag}`, `Soy alérgica ${a.frag}`], note });
     }
   });
-  items.push({ es: "¿Esto lleva frutos secos?", en: "Does this contain nuts?" });
-  items.push({ es: "Sin frutos secos, por favor", en: "Without nuts, please" });
+  // THE QUESTION AND THE REFUSAL NAME THE LEARNER'S OWN ALLERGEN (found 11/18): they were written with nuts in them for every learner, so a
+  // shellfish learner was taught to ask whether a dish contains nuts. The noun is the allergen's own (its frag without the a/al).
+  const named = own ? keys.map(k => ALLERGENS.find(x => x.key === k)).filter(Boolean) : [];
+  if (named.length) named.forEach(a => { const noun = a.frag.replace(/^(al|a los|a las|a la)\s+/, ""); items.push({ es: `¿Esto lleva ${noun}?`, en: `Does this contain ${a.en}?` }); items.push({ es: `Sin ${noun}, por favor`, en: `Without ${a.en}, please` }); });
+  else if (!own) { items.push({ es: "¿Esto lleva frutos secos?", en: "Does this contain nuts?" }); items.push({ es: "Sin frutos secos, por favor", en: "Without nuts, please" }); }
+  if (own && !named.length) return null;   // only gluten was chosen as an allergy: nothing left to say here, its lines live at the Table
   return {
     id: "personal-allergies", topic: "Your group · Allergies", title: "Your Allergies",
     reward: "Crucial unlock: you can warn a waiter before disaster. Safety first, tapas second.",
@@ -138,7 +144,8 @@ function _chapterFlowDeck(deck, rooms) {
   // reach only a learner whose own answer they can be said in, and the word sin gluten (`keyed: "gluten"`) only a
   // gluten-free or celiac learner. Before, every learner got the word and five gluten sentences. Sin itself still reaches everyone through sin gas.
   const celiacOn = typeof isStaged === "function" && isStaged("trip-celiac");
-  const glutenAnswer = (p.needs || []).some(n => n === "gluten_free" || n === "celiac");
+  const needsEff = (p.needs || []).concat(celiacOn && (p.allergies || []).includes("gluten") ? ["gluten_free"] : []);   // gluten chosen under allergies, before the Celiac chip existed, counts as the gluten-free need
+  const glutenAnswer = needsEff.some(n => n === "gluten_free" || n === "celiac");   // a learner who chose gluten under allergies before the Celiac chip existed is a gluten learner
   // a carrier shows only in a form that is the learner's own: the gluten form to a gluten learner, or the slot form when the dietary variants are on
   // and one applies to their answer (a shellfish learner never gets the gluten-free chocolate line, which has no shellfish form)
   const slots0 = activePack().dietarySlots || {}, variantsOn = typeof isStaged === "function" && isStaged("dietary-variants");
@@ -146,14 +153,14 @@ function _chapterFlowDeck(deck, rooms) {
   const baseOwn = d => d.dietary.base === "vegetarian" ? (p.needs || []).includes("vegetarian") : glutenAnswer;   // whose answer the line's own base form is (the pack says: gluten unless marked)
   const ownForm = d => baseOwn(d) || (variantsOn && !!pick0 && ((d.dietary.applies || []).includes(pick0) || !!(d.dietary.alt && (d.dietary.alt.applies || []).includes(pick0))));
   const keyedOut = d => celiacOn && ((d.dietary && typeof d.dietary === "object" && !ownForm(d)) || (d.keyed === "gluten" && !glutenAnswer));
-  const fits = d => !keyedOut(d) && (!d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : [].concat(d.profile.needs || []).some(n => (p.needs || []).includes(n))));   // a need may be one key or a list (gluten-free OR celiac, chat 11/17)
+  const fits = d => !keyedOut(d) && (!d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : [].concat(d.profile.needs || []).some(n => needsEff.includes(n))));   // a need may be one key or a list (gluten-free OR celiac, chat 11/17)
   // THE AGREEMENT FORMS (chat 11/17, celiac): an item marked `forms: "<set>"` is rewritten for the learner's adjective answer from the pack's own
   // table (`agreementForms[set].a` / `.neutral`: pairs replaced across every string of the item; -o is the form the pack writes). Pure data in the pack.
   const formSets = activePack().agreementForms || {};
   const form = d => { const g = ({ o: null, a: "a" })[p.grammar] === undefined ? "neutral" : ({ o: null, a: "a" })[p.grammar]; const reps = d.forms && g && formSets[d.forms] && formSets[d.forms][g]; return reps ? JSON.parse(reps.reduce((t, [a, b]) => t.split(a).join(b), JSON.stringify(d))) : d; };
   const numbersOn = typeof isStaged === "function" && isStaged("numbers-1");
   const partWord = t => (typeof isStaged === "function" && isStaged("learn-peek")) ? t.replace(/ ([\u00b7·]) (\d)$/, " $1 Part $2") : t;
-  const glutenNeed = typeof isStaged === "function" && isStaged("trip-celiac") && (p.needs || []).some(n => n === "gluten_free" || n === "celiac");
+  const glutenNeed = celiacOn && glutenAnswer;
   const lineFor = w => (w.lineProfile && w.lineProfile.allergies && ((p.allergies || []).length || glutenNeed)) ? w.lineProfile.allergies : w.line;   // profile-keyed lines (Table words)
   const live = d => (!d.staged || (typeof isStaged === "function" && isStaged(d.staged))) && !(d.until && typeof isStaged === "function" && isStaged(d.until));   // "until": the seat it gives up when a staged swap is on   // a session or a word may wait behind a switch (chapter-1-adds)
   const words = flow.words.filter(w => (numbersOn || w.numbers !== "ear") && live(w)).map(w => Object.assign({}, w, { title: partWord(w.title), line: lineFor(w), primer: null })).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: !w.sounds, items: w.sounds ? w.items.slice() : w.items.filter(fits).filter(live).map(form).map(mk) }));   // a sounds session carries key sounds, not words
@@ -219,7 +226,7 @@ function rebuildDeck() {
   if (p && p.allergies && p.allergies.length && DECK.stages[0]) {
     const flowOn = DECK.stages[1] && DECK.stages[1].id === "sp-first-sentences";   // chapter flow: the safety lesson follows the rooms until The asks carries its frame
     const s0 = flowOn ? DECK.stages[1] : DECK.stages[0];                 // inject the personalized allergy lesson early
-    s0.lessons.splice(flowOn ? s0.lessons.length : Math.min(1, s0.lessons.length), 0, buildAllergyLesson(p.allergies));
+    const al = buildAllergyLesson(p.allergies); if (al) s0.lessons.splice(flowOn ? s0.lessons.length : Math.min(1, s0.lessons.length), 0, al);
   }
   if (p && p.needs && (p.needs.includes("vegetarian") || p.needs.includes("gluten_free")) && DECK.stages[0]) {
     const dl = buildDietaryLesson(p.needs);    // veg / gluten-free safety lesson, right after allergies
