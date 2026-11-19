@@ -2080,6 +2080,9 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## 2026-11-18 (later) — handoff to chat: five dietary follow-ups (docs/chat-handoff-2026-11-18b-dietary-followups.md)
+- From Tom's review of the generated list: the ¿Lleva ___? card note's wording; a shared-fryer line for celiac. From the build: confirm the Tengo alergia card; the Lactose-free and Dairy labels; the Topics row's name. Nothing built.
+
 ## 2026-11-18 — the dietary lines review for Tom (docs/dietary-lines-review-2026-11-18.md)
 - Tom asked for every phrase by allergy with its description and Good to know, to review at once. Generated from the real engine (tools/dietary-lines-review.js: loads the modules in a node sandbox, sets one dietary answer at a time, reads the deck), so it is what each learner is served: thirteen sections (Gluten-free, Celiac with its -a and neutral forms, Lactose-free, Vegetarian with forms, the seven allergies, three allergies together, celiac with an allergy), each with the chapter-1 word, the cards, the sentences with all three replies, the notes, and the sin lines by session. Rerun the tool after any copy change.
 
