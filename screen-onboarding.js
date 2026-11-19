@@ -23,7 +23,7 @@ const GRAMMAR_OPTIONS = [
 // Celiac is its own answer beside Gluten-free (chat 11/17, STAGED "trip-celiac"): two different truths, two different lines. The app never puts
 // "I'm celiac" in the mouth of someone who is not, or leaves it out for someone who is. Celiac gets everything gluten-free gets, and its own.
 const NEEDS_ALL = [
-  ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["lactose_free", "Lactose-free"], ["vegetarian", "Vegetarian / vegan"],   // Lactose-free (chat 11/18, Tom to confirm): two truths, two words, as with celiac; a dairy ALLERGY is lácteos
+  ["gluten_free", "Gluten-free"], ["celiac", "Celiac"], ["lactose_free", "Lactose-free"], ["vegetarian", "Vegetarian / vegan"],   // Lactose-free (chat 11/18, Tom confirmed 11/18): its own chip for the intolerance; two truths, two words, as with celiac. A dairy ALLERGY is lácteos, chosen under Food allergies
   ["allergies", "Food allergies"], ["chat", "Want to chat with locals"]
 ];
 const allergenList = () => ALLERGENS.filter(a => a.key !== "gluten" || !(typeof isStaged === "function" && isStaged("trip-celiac")));   // gluten is the Gluten-free and Celiac chips' business (chat 11/17)

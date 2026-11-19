@@ -328,3 +328,4 @@ luminous law.)
 - 2026-11-18 — (chat) Several allergies: the declaring line names all; ¿Lleva ___? exists per allergen; the other two lines use the first.
 - 2026-11-18 — (Tom) The dietary lines stay woven into Table words and Table sentences (chat's seating); Learn's Topics gains one row, Your dietary lines, that gathers a learner's own to read and review. The primary allergy is the first one the learner chose; no extra question. The Lactose-free chip is built under trip-celiac pending Tom's yes.
 - 2026-11-18 — (Tom) Table words stays whole up to ten words, as Street words does; past ten it cuts between the table's own words and the learner's dietary words, never down the middle.
+- 2026-11-18 — (Tom) Lactose intolerance gets its own intake chip, Lactose-free, beside Gluten-free and Celiac (sin lactosa); a dairy allergy is Dairy under Food allergies (lácteos). Two conditions, two words, never one selection.
