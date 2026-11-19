@@ -2,7 +2,7 @@
    Register a new destination = add a content_<cc>.js pack + an entry here +
    a DESTINATIONS entry. Each pack owns its scenarios, vocab, and TTS accent. */
 const CONTENT = {
-  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages, scenes: CURRICULUM.scenes || [], glueGloss: CURRICULUM.glueGloss || {}, agreementForms: CURRICULUM.agreementForms || {}, allergySlots: CURRICULUM.allergySlots || {}, dietarySlotsTrip: CURRICULUM.dietarySlotsTrip || {}, dietarySlots: CURRICULUM.dietarySlots, stockReplies: CURRICULUM.stockReplies || {}, flow: CURRICULUM.flow || null },
+  spain:  { key: "spain",  dialect: "Castilian Spanish", tts: "es-ES", stages: CURRICULUM.stages, scenes: CURRICULUM.scenes || [], glueGloss: CURRICULUM.glueGloss || {}, agreementForms: CURRICULUM.agreementForms || {}, allergySlots: CURRICULUM.allergySlots || {}, dietarySlots: CURRICULUM.dietarySlots, stockReplies: CURRICULUM.stockReplies || {}, flow: CURRICULUM.flow || null },
   mexico: { key: "mexico", dialect: "Mexican Spanish",   tts: "es-MX", stages: (typeof MEXICO_PACK !== "undefined" ? MEXICO_PACK.stages : CURRICULUM.stages), scenes: (typeof MEXICO_PACK !== "undefined" && MEXICO_PACK.scenes) || [] }
 };
 function activePack() { return CONTENT[state.active] || CONTENT.spain; }
@@ -150,18 +150,17 @@ function _chapterFlowDeck(deck, rooms) {
   const celiacOn = typeof isStaged === "function" && isStaged("trip-celiac");
   const needsEff = (p.needs || []).concat(celiacOn && (p.allergies || []).includes("gluten") ? ["gluten_free"] : []);   // gluten chosen under allergies, before the Celiac chip existed, counts as the gluten-free need
   const glutenAnswer = needsEff.some(n => n === "gluten_free" || n === "celiac");   // a learner who chose gluten under allergies before the Celiac chip existed is a gluten learner
-  // a carrier shows only in a form that is the learner's own: the gluten form to a gluten learner, or the slot form when the dietary variants are on
-  // and one applies to their answer (a shellfish learner never gets the gluten-free chocolate line, which has no shellfish form)
-  // the slot words: under the switch the pack's trip table overrides (chat 11/18: dairy as an allergy is lácteos, never lactosa: sin lactosa still
-  // has the milk protein; lactosa belongs to the Lactose-free need, which rides the forms written for dairy)
-  const slots0 = Object.assign({}, activePack().dietarySlots || {}, celiacOn ? (activePack().dietarySlotsTrip || {}) : {}), variantsOn = typeof isStaged === "function" && isStaged("dietary-variants");
+  // THE SWEEP RULE (chat 11/19, supersedes the 10/28 carrier rules): a "sin ___" line exists only where Spain itself labels food that way. Under the
+  // switch the old carriers (marked `dietary`) are the gluten learner's own lines and nothing is slot-swapped any more: lactose and vegetarian have
+  // their own written lines, and an allergy has none (its sweep is the allergen menu). Off the switch the 10/28 variants behave as they did.
+  const realAllergies = (p.allergies || []).filter(k => !(celiacOn && k === "gluten"));
+  const slots0 = activePack().dietarySlots || {}, variantsOn = !celiacOn && typeof isStaged === "function" && isStaged("dietary-variants");
   const lactoseNeed = celiacOn && (p.needs || []).includes("lactose_free");
-  const pick0 = (p.allergies || []).find(k => slots0[k] && k !== "lactose_free") || ((p.needs || []).includes("vegetarian") && slots0.vegetarian ? "vegetarian" : null) || (lactoseNeed && slots0.lactose_free ? "lactose_free" : null);
-  const ap = k => k === "lactose_free" ? "dairy" : k;   // whose `applies` lists a pick reads
-  const baseOwn = d => d.dietary.base === "vegetarian" ? (p.needs || []).includes("vegetarian") : glutenAnswer;   // whose answer the line's own base form is (the pack says: gluten unless marked)
-  const ownForm = d => baseOwn(d) || (variantsOn && !!pick0 && ((d.dietary.applies || []).includes(ap(pick0)) || !!(d.dietary.alt && (d.dietary.alt.applies || []).includes(ap(pick0)))));
-  const keyedOut = d => celiacOn && ((d.dietary && typeof d.dietary === "object" && !ownForm(d)) || (d.keyed === "gluten" && !glutenAnswer));
-  const fits = d => !keyedOut(d) && (!d.profile || (d.profile.allergies ? (p.allergies || []).includes(d.profile.allergies) : [].concat(d.profile.needs || []).some(n => needsEff.includes(n))));   // a need may be one key or a list (gluten-free OR celiac, chat 11/17)
+  const pick0 = (p.allergies || []).find(k => slots0[k]) || ((p.needs || []).includes("vegetarian") && slots0.vegetarian ? "vegetarian" : null);
+  const keyedOut = d => celiacOn && (((d.dietary && typeof d.dietary === "object") || d.keyed === "gluten") && !glutenAnswer);
+  // who an item is for: any of its keys matching (`allergies` and `needs` take one key or a list; `anyAllergy` is any real allergy at all)
+  const fitsProfile = pr => { const A = p.allergies || []; return (pr.allergies ? [].concat(pr.allergies).some(k => A.includes(k)) : false) || (pr.needs ? [].concat(pr.needs).some(n => needsEff.includes(n)) : false) || (pr.anyAllergy ? realAllergies.length > 0 : false); };
+  const fits = d => !keyedOut(d) && (!d.profile || fitsProfile(d.profile));
   // THE AGREEMENT FORMS (chat 11/17, celiac): an item marked `forms: "<set>"` is rewritten for the learner's adjective answer from the pack's own
   // table (`agreementForms[set].a` / `.neutral`: pairs replaced across every string of the item; -o is the form the pack writes). Pure data in the pack.
   const formSets = activePack().agreementForms || {};
@@ -171,13 +170,13 @@ function _chapterFlowDeck(deck, rooms) {
   // each: one item per allergen (¿Lleva ___?). all: one item naming every allergy (the declaring line: y for two, commas then y for more;
   // English with the Oxford comma). first: the primary only. A learner with no allergy gets none. Gluten is never an allergy here.
   const aSlots = activePack().allergySlots || {};
-  const myAllergies = celiacOn ? (p.allergies || []).filter(k => aSlots[k]) : [];
+  const myAllergies = celiacOn ? realAllergies.filter(k => aSlots[k]) : [];
   const joinEs = xs => xs.length <= 1 ? (xs[0] || "") : xs.slice(0, -1).join(", ") + " y " + xs[xs.length - 1];
   const joinEn = xs => xs.length <= 2 ? xs.join(" and ") : xs.slice(0, -1).join(", ") + ", and " + xs[xs.length - 1];
   const fillAllergy = (d, k) => {
     const sl = aSlots[k], map = { "{es}": sl.es, "{a}": sl.a, "{en}": sl.en, "{other}": sl.other || "", "{allA}": joinEs(myAllergies.map(x => aSlots[x].a)), "{allEn}": joinEn(myAllergies.map(x => aSlots[x].en)) };
     const o = JSON.parse(Object.keys(map).reduce((t, ph) => t.split(ph).join(map[ph]), JSON.stringify(d)));
-    if (sl.note && d.slotNote) o.note = sl.note;   // an allergen's own Good to know (dairy: sin lactosa still has the milk)
+    if (d.slotNote) { if (sl.hide) o.note = sl.hide; else delete o.note; }   // where this allergen hides, when the pack is certain of it (chat 11/19)
     delete o.allergy; delete o.slotNote; o.diet = true; o.fresh = true; return o;   // fresh: its own item, never the old pack's line that shares the phrase (that one kept its old English)
   };
   const expand = d => !d.allergy ? [d] : !myAllergies.length ? [] : d.allergy === "each" ? myAllergies.map(k => fillAllergy(d, k)) : [fillAllergy(d, myAllergies[0])];
@@ -208,7 +207,7 @@ function _chapterFlowDeck(deck, rooms) {
   // mechanically, replies stay. A near miss that would equal the variant's own English flips from "without" to "with". The variant is its own
   // item (its own id and history). Everyone else gets the base line.
   const slots = slots0, pick = pick0;
-  const dietaryOn = typeof isStaged === "function" && isStaged("dietary-variants");
+  const dietaryOn = variantsOn;   // the 10/28 slot swap: off under trip-celiac (chat 11/19 superseded it)
   const variant = d => {
     if (!dietaryOn || !d.dietary || !pick) return d;
     const [es, en] = slots[pick]; const sp = d.dietary;
@@ -218,12 +217,12 @@ function _chapterFlowDeck(deck, rooms) {
     const notNoun = /^(on|in|at|for|to|here|today|please|with|or|and|from)$/i;   // "gluten-free on the menu" is not "gluten-free bread"
     const swapEn = t => t.replace(pre, (m, noun) => notNoun.test(noun) ? m : `${noun} without ${en}`).replace(sp.en, `without ${en}`).replace(/without milk/g, `with ${en}`);
     const swapEs = t => t.replace(sp.es, `sin ${es}`);
-    if (sp.applies.includes(ap(pick))) {
+    if (sp.applies.includes(pick)) {
       const v = Object.assign({}, d, { es: swapEs(d.es), en: swapEn(d.en), hint: (d.hint || []).map(h => [swapEn(h[0]), swapEs(h[1])]), near: (d.near || []).map(n => swapEn(n)) });
       v.near = v.near.map(n => n === v.en ? n.replace(`without ${en}`, `with ${en}`) : n);
       delete v.dietary; return v;
     }
-    if (sp.alt && sp.alt.applies.includes(ap(pick))) {
+    if (sp.alt && sp.alt.applies.includes(pick)) {
       const fill = t => t.replace(/___/g, "\u0000").split("\u0000");   // placeholder → the slot word, es or en by field
       const v = Object.assign({}, d, { es: sp.alt.es.replace(/___/g, es), en: sp.alt.en.replace(/___/g, en), hint: sp.alt.hint.map(h => [h[0].replace(/___/g, en), h[1].replace(/___/g, es)]), near: sp.alt.near.map(n => n.replace(/___/g, en)) });
       delete v.dietary; return v;

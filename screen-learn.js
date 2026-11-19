@@ -335,7 +335,7 @@ function _placesView(scroll) {   // STAGED review-places (Tom 11/4): Topics = th
         <div class="tmain">
           <div class="trow"><span class="tname">Your dietary lines</span><span class="tpct">${met.length ? pct + "%" : ""}</span></div>
           <div class="tbar"><i style="width:${pct}%"></i></div>
-          <div class="tsub">${lines.length} line${lines.length === 1 ? "" : "s"}${met.length ? ` \u00b7 ${met.length} met` : " \u00b7 not met yet"}</div>
+          <div class="tsub">${lines.length} line${lines.length === 1 ? "" : "s"}${met.length ? ` \u00b7 ${met.length} met` : " \u00b7 none met yet"}</div>
         </div>
         <span class="chev">${icon("caret-right", 15)}</span>
       </div>`);

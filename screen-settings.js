@@ -365,13 +365,13 @@ function renderProfileEdit() {
   wrap.appendChild(el(`<p class="onb-dim">Change anything here. Your lessons follow your answers.</p>`));
   const di = destInfo(p.destination);
   const section = (title, sub) => { const sec = el(`<div class="pe-section"><div class="pe-t">${title}</div>${sub ? `<div class="pe-s">${sub}</div>` : ""}</div>`); wrap.appendChild(sec); return sec; };
-  const chipRow = (sec, opts, arr, single) => {
+  const chipRow = (sec, opts, arr, single, onOn) => {   // onOn(key): after a chip is switched on (the dietary pairs are exclusive, chat 11/19)
     const chips = el(`<div class="chips"></div>`);
     opts.forEach(o => {
       const on = single ? arr.value === o.key : arr.includes(o.key);
       const chip = el(`<button class="chip ${on ? "on" : ""}"><span class="chip-l">${o.label}</span></button>`);
       chip.addEventListener("click", () => {
-        if (single) arr.value = o.key; else { const i = arr.indexOf(o.key); i >= 0 ? arr.splice(i, 1) : arr.push(o.key); }
+        if (single) arr.value = o.key; else { const i = arr.indexOf(o.key); if (i >= 0) arr.splice(i, 1); else { arr.push(o.key); if (onOn) onOn(o.key); } }
         renderProfileEditFrom(d);
       });
       chips.appendChild(chip);
@@ -388,8 +388,8 @@ function renderProfileEdit() {
   chipRow(section("Kind of trip"), TRIP_TYPES.map(t => ({ key: t[0], label: t[1] })), tt, true);
   chipRow(section("Where you're staying", "Unlocks the host and check-out phrases you'll actually need."), LODGING_OPTIONS, d.lodging);
   chipRow(section("Getting around"), TRANSPORT_OPTIONS, d.transport);
-  chipRow(section("Anything to tailor for?"), needsList().map(n => ({ key: n[0], label: n[1] })), d.needs);
-  if (d.needs.includes("allergies")) chipRow(section("Which allergies?", "Your allergy lesson and the scenes' allergy beat follow this."), allergenList().map(a => ({ key: a.key, label: a.en })), d.allergies);
+  chipRow(section("Anything to tailor for?"), needsList().map(n => ({ key: n[0], label: n[1] })), d.needs, false, k => dietExclusive(d.needs, d.allergies, k, false));
+  if (d.needs.includes("allergies")) chipRow(section("Which allergies?", "Your allergy lesson and the scenes' allergy beat follow this."), allergenList().map(a => ({ key: a.key, label: allergenLabel(a) })), d.allergies, false, k => dietExclusive(d.needs, d.allergies, k, true));
   const homeSec = section("Where you're from", "Fills \"Soy de ___\" the way you'd say it to a stranger.");
   const home = el(`<input class="text-input" type="text" autocomplete="off" placeholder="New York" value="${d.home}">`);
   home.addEventListener("input", () => { d.home = home.value; });

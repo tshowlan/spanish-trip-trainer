@@ -27,7 +27,20 @@ const NEEDS_ALL = [
   ["allergies", "Food allergies"], ["chat", "Want to chat with locals"]
 ];
 const allergenList = () => ALLERGENS.filter(a => a.key !== "gluten" || !(typeof isStaged === "function" && isStaged("trip-celiac")));   // gluten is the Gluten-free and Celiac chips' business (chat 11/17)
-const needsList = () => NEEDS_ALL.filter(n => (n[0] !== "celiac" && n[0] !== "lactose_free") || (typeof isStaged === "function" && isStaged("trip-celiac")));
+// NAME THE CONDITION, NOT THE PRODUCT (chat 11/19, under trip-celiac), and the two pairs are exclusive: Celiac / Gluten-free, not celiac, and
+// Milk allergy / Lactose intolerant. Choosing one of a pair clears the other.
+const _celiacOn = () => typeof isStaged === "function" && isStaged("trip-celiac");
+const NEED_LABELS_TRIP = { gluten_free: "Gluten-free, not celiac", lactose_free: "Lactose intolerant" };
+const needsList = () => NEEDS_ALL.filter(n => (n[0] !== "celiac" && n[0] !== "lactose_free") || _celiacOn()).map(n => [n[0], (_celiacOn() && NEED_LABELS_TRIP[n[0]]) || n[1]]);
+const allergenLabel = a => (_celiacOn() && a.key === "dairy") ? "Milk allergy" : a.en[0].toUpperCase() + a.en.slice(1);
+function dietExclusive(needs, allergies, key, isAllergy) {   // call after `key` was switched ON
+  if (!_celiacOn()) return;
+  const drop = (arr, k) => { const i = arr.indexOf(k); if (i >= 0) arr.splice(i, 1); };
+  if (!isAllergy && key === "celiac") drop(needs, "gluten_free");
+  if (!isAllergy && key === "gluten_free") drop(needs, "celiac");
+  if (!isAllergy && key === "lactose_free") drop(allergies, "dairy");
+  if (isAllergy && key === "dairy") drop(needs, "lactose_free");
+}
 const PLACEMENT = [
   { es: "Gracias", answer: "Thank you", opts: ["Thank you", "Goodbye", "Please", "Sorry"] },
   { es: "¿Cuánto cuesta?", answer: "How much is it?", opts: ["How much is it?", "Where is it?", "What time is it?", "What's your name?"] },
@@ -177,7 +190,7 @@ function renderOnboarding(opts) {
         const on = draft.needs.includes(key);
         const chip = el(`<button class="chip ${on ? "on" : ""}"><span class="chip-l">${label}</span></button>`);
         chip.addEventListener("click", () => {
-          const i = draft.needs.indexOf(key); i >= 0 ? draft.needs.splice(i, 1) : draft.needs.push(key); render();
+          const i = draft.needs.indexOf(key); if (i >= 0) draft.needs.splice(i, 1); else { draft.needs.push(key); dietExclusive(draft.needs, draft.allergies, key, false); } render();
         });
         chips.appendChild(chip);
       });
@@ -192,9 +205,9 @@ function renderOnboarding(opts) {
       const chips = el(`<div class="chips"></div>`);
       allergenList().forEach(a => {
         const on = draft.allergies.includes(a.key);
-        const chip = el(`<button class="chip ${on ? "on" : ""}"><span class="chip-l">${a.en[0].toUpperCase() + a.en.slice(1)}</span></button>`);
+        const chip = el(`<button class="chip ${on ? "on" : ""}"><span class="chip-l">${allergenLabel(a)}</span></button>`);
         chip.addEventListener("click", () => {
-          const i = draft.allergies.indexOf(a.key); i >= 0 ? draft.allergies.splice(i, 1) : draft.allergies.push(a.key); render();
+          const i = draft.allergies.indexOf(a.key); if (i >= 0) draft.allergies.splice(i, 1); else { draft.allergies.push(a.key); dietExclusive(draft.needs, draft.allergies, a.key, true); } render();
         });
         chips.appendChild(chip);
       });
