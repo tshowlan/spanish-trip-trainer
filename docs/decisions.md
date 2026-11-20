@@ -337,3 +337,4 @@ luminous law.)
 - 2026-11-20 — (chat) Rule for dietary Good to knows: teach a Spanish word, say something true of Spain in particular, or vouch for the phrase; never explain the condition; unsourced notes are cut.
 - 2026-11-20 — (chat) The fryer line is ¿La freidora es compartida? (the form Spanish celiac guides use); exclusiva and aparte are heard in the reply and named in the note. Replaces ¿Tiene freidora aparte?.
 - 2026-11-20 — (chat) A learner with four or more keyed Table sentences gets them as Table sentences · Part 2; fewer stay woven.
+- 2026-11-20 — (chat, on Tom's ask) A near miss (a wrong answer in the listen-and-pick exercise) must still be something a diner could plausibly ask. No prep line is added for celiac: ¿Hay contaminación cruzada? covers it. If one is wanted later, the sourced form is ¿Me lo pueden hacer aparte?, not preparar.

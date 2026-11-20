@@ -1,6 +1,6 @@
 # Tripfluent: only what changed in the last round (for Tom's review)
 
-*The dietary lines at v632, compared with the list you read before. Three things changed: one sentence, eight notes, and one new row on Learn. Every "Now" below is copied from the app's own generated list. Everything not on this page is unchanged.*
+*The dietary lines at v632, compared with the list you read before. Three things changed: one sentence, eight notes, and one new row on Learn. A fourth, small one came after (section 4, v633). Every "Now" below is copied from the app's own generated list. Everything not on this page is unchanged.*
 
 ---
 
@@ -13,7 +13,7 @@
 | You say | ¿Tiene freidora aparte? | **¿La freidora es compartida?** |
 | English | Do you have a separate fryer? | **Is the fryer shared?** |
 | Built from | Do you have = tiene · a separate = aparte · fryer? = freidora | **Is = es · the fryer = la freidora · shared? = compartida** |
-| Wrong answers offered | Do you have a separate table? · Is there cross-contamination? | **Is the fryer separate? · Is the kitchen shared?** |
+| Wrong answers offered | Do you have a separate table? · Is there cross-contamination? | **Is the fryer separate? · Is the grill shared?** (the grill replaced the kitchen at v633, see section 4) |
 | You hear back | Sí, tenemos dos (Yes, we have two) · No, es la misma (No, it's the same one) · Lo pregunto en cocina (I'll ask the kitchen) | **Sí, es la misma (Yes, it's the same one) · No, tenemos una exclusiva (No, we have a dedicated one) · Lo pregunto en cocina (I'll ask the kitchen)** |
 | Good to know | Freidora is the fryer and aparte is separate. Food fried in shared oil picks up what was fried before it. | **Compartida is shared. The answer you want is No, with exclusiva, a fryer used for nothing else, or aparte, separate.** |
 
@@ -59,3 +59,18 @@ The cards ("¿Lleva ___?" and "Tengo alergia…") now open Part 2 instead of Par
 Two things here are mine, not chat's, so look at them with a critical eye:
 - **The order inside Part 2:** the declaring line first, then "¿Lleva…?", then the rest.
 - **The examples line:** I built it from one or two words I chose per sentence.
+
+---
+
+## 4. Added later (v633): two wrong answers swapped
+
+Your note on "Is the kitchen shared?" went to chat. Chat agreed and found the same flaw in a second line. These are only the wrong answers in the listen-and-pick exercise; nothing the learner says changed.
+
+| On this line | Who sees it | Was | Now |
+|---|---|---|---|
+| ¿La freidora es compartida? | celiac, fish allergy, shellfish allergy | Is the fryer separate? · Is the kitchen shared? | Is the fryer separate? · **Is the grill shared?** |
+| ¿Hay contaminación cruzada? | celiac, every allergy | Is there an allergen menu? · Is there a separate kitchen? | Is there an allergen menu? · **Is there a separate fryer?** |
+
+**The rule from here (chat):** a wrong answer must still be something a diner could plausibly ask.
+
+**No prep line was added.** You said you mention the allergy, ask about the fryer, and cross-contamination comes up in talk, so the set already matches what you do.

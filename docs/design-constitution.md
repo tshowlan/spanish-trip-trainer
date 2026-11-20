@@ -55,6 +55,8 @@ Scenario rehearsal is the strongest prep for real performance — The Rehearsal'
 
 **A dietary Good to know (Tom's test, chat 2026-11-20).** It does one of three things: it teaches a Spanish word, it says something true of Spain in particular, or it vouches that this is the phrase said here. It never explains the learner's condition to them. A note that cannot be sourced is cut, not softened. The dietary lines themselves follow one rule (chat 2026-11-19): a "sin ___" line exists only where Spain itself labels food that way (sin gluten, sin lactosa, vegetariano); an allergy's sweep is the allergen menu. Every medical answer makes four moves: say it, ask about this dish, ask for the document, ask about the kitchen.
 
+**A near miss (chat 2026-11-20, on Tom's ask).** A wrong answer offered beside the right one must still be something a diner could plausibly ask. "Is the kitchen shared?" failed it; "Is the grill shared?" passes.
+
 **The Learn row (chat, 2026-11-07).** A row's drawer ends in Read the cards, the session's cards read-only; the row body plays.
 
 **Week by week, the mix tilts.** Early: survival essentials first, then scenario waves in demand order — mostly MEETING new phrases. Middle: the machines arrive and multiply what a person can say (seven frames × everything they've learned); learning and composing run side by side. Late: **the tilt inverts** — the review room's share grows as the countdown falls, until the final week is mostly REHEARSAL: composed stretches of the actual trip, run end to end, everything the person owns arranged in the day-shapes they'll live. The countdown doesn't just pace the person; it changes what kind of app this is as the date approaches. Six weeks out, Tripfluent is a teacher. One week out, it's a training camp.

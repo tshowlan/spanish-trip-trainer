@@ -2080,6 +2080,14 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v633 (2026-11-20) — two near misses swapped (chat, on Tom's ask), under `trip-celiac`
+- Tom, reading the changes-only list: the fryer sentence's wrong answer "Is the kitchen shared?" reads as an untenable demand (nobody asks for a separate kitchen). Chat agreed and found the same flaw in its own line.
+- ¿La freidora es compartida?: "Is the kitchen shared?" becomes "Is the grill shared?". ¿Hay contaminación cruzada?: "Is there a separate kitchen?" becomes "Is there a separate fryer?". Copy only; no engine change.
+- RULE (chat, into the constitution and decisions): a near miss must still be something a diner could plausibly ask.
+- NO PREP LINE: the cross-contamination question covers it, and Tom does not ask for a dish to be made apart (he says the allergy, asks about the fryer, and cross-contamination comes up in talk). If one is ever wanted, the sourced form is ¿Me lo pueden hacer aparte? (the Madrid celiac association's verb is hacer), not Code's preparar draft.
+- The list regenerated (docs/dietary-lines-review-2026-11-20.md) and the changes-only doc gained a section 4. Chat's reply recorded in docs/rulings-1120b-near-misses.md.
+- Next: Tom's ship or decline on trip-paying and trip-celiac; then the Table ordering handoff.
+
 ## v632 (2026-11-20) — the dietary notes re-vetted, the fryer line in Tom's form, the Table's Part 2 (docs/rulings-1120-good-to-knows.md), under `trip-celiac`
 - 2026-11-20 — Chat: dietary Good to knows vetted against Tom's test (docs/rulings-1120-good-to-knows.md): the rule, four rewrites, three small fixes among the ten that pass, the fryer sentence changed to ¿La freidora es compartida? with sources, the Table split rule (Part 2 for four or more keyed lines). Next: Code applies under `trip-celiac`; Tom reviews the regenerated list and ships batches 1 and 2 together or separately.
 - THE FRYER: ¿La freidora es compartida? replaces ¿Tiene freidora aparte? for celiac, fish, and shellfish (compartida is the form Spanish celiac guides use and the way Tom asks; exclusiva and aparte are heard in the reply and named in the note). Sí is now the warning on all three kitchen questions.
