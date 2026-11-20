@@ -2080,6 +2080,17 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v637 (2026-11-20) — trip batch 3, ordering for the table, STAGED `trip-table-order` (docs/rulings-1120-table-ordering.md)
+- 2026-11-20 — Chat: trip batch 3 ruled and written (docs/rulings-1120-table-ordering.md): the Para compartir card and two sentences, Queremos (card, two converted lines), ¿Puedo pedir?, the size rule (sixteen), the dietary row renamed "Your table lines", new line and examples. The Table's taxi line is cut. Next: Code stages `trip-table-order`; Tom plays; then batch 4 (asking for another) with the Table's split.
+- BUILT as written (the final file: ¿Media o entera? kept on Tom's word, Croquetas no quedan out, the taxi line cut): the Para compartir card and its two sentences; the Queremos card and two lines, the Table's two Quiero lines carrying `until`; Perdón, ¿puedo pedir? under puedo; Necesito un taxi carrying `until`; the session's line and examples through `lineSwap` (which now carries `examples` too). Fifteen sentences, three cards.
+- The Queremos agua line keeps its SHIPPED reply set (¿Una o dos? · Sí, ahora · Marchando), as the ruling says where the sets differ; chat's ¿Grande o pequeña? and ¿Fría o del tiempo? are not used.
+- The two new cards carry the composer's frame tags (para compartir, queremos), as the pago card did, so each leads its sentences.
+- THE DIETARY ROW'S NAME: the pack names it (`dietPart.named: { staged, title }`); under the switch the session keeps the title Table sentences and the learner's own row is Your table lines, after it. Its id (sent-table-2), line, and examples stand. tools/dietary-lines-review.js finds the row by id now, not by "Part 2".
+- FLAG FOR CHAT BEFORE SHIP: the sixteen ceiling is broken for one learner. A vegetarian's three Table lines stay woven (under the four a row needs), so their Table is EIGHTEEN (sixteen today). Lactose is sixteen exactly; everyone else fifteen. Built as ruled, not worked around.
+- Checked: every session of 23 profiles against v636: staging off identical (the live app is untouched); staging on differs only in the Table session and the dietary row's title. In the pane: the batch button plays the two cards and five sentences (22 beats), the Para compartir card shows its note, Learn's rows read Table sentences and Your table lines with the new line and examples.
+- docs/table-ordering-changes-review-2026-11-20.md: the Was/Now page for Tom.
+- Next: Tom plays "3 · Ordering for the table"; chat rules the vegetarian eighteen; ship; then batch 4 (asking for another) with the Table's split along the meal.
+
 ## 2026-11-20 (later) — handoff to chat: trip batch 3, ordering for the table (docs/chat-handoff-2026-11-20-table-ordering.md)
 - Six asks on the ruled premise P2 (Para ___, with compartir; Queremos under Quiero; "Can I order from you?" under ¿Puedo?), plus the Table's size across the three Table batches and the Part 2 title the dietary row now holds. Nothing built.
 - Next: chat's reply; build STAGED `trip-table-order`; Tom plays it.

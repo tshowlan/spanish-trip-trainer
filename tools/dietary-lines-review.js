@@ -18,7 +18,7 @@ const read = (needs, allergies, grammar) => JSON.parse(run(`(() => {
   const out = { words: [], cards: [], lines: [] };
   DECK.stages.forEach(st => st.lessons.forEach(l => (l.items || []).forEach(it => {
     if (!it.diet) return;
-    const row = { where: l.title, es: it.es, en: it.en, ctxEs: it.contextEs || "", ctxEn: it.contextEn || "", note: it.note || "", words: it.words || null, replies: it.replies || [], hint: it.hint || [], near: it.near || [], line: l.line || "", examples: l.examples || [] };
+    const row = { where: l.title, ownRow: /-2$/.test(l.id) && !!l.dietPart, es: it.es, en: it.en, ctxEs: it.contextEs || "", ctxEn: it.contextEn || "", note: it.note || "", words: it.words || null, replies: it.replies || [], hint: it.hint || [], near: it.near || [], line: l.line || "", examples: l.examples || [] };
     if (!l.sentences) out.words.push(row); else if (it.card) out.cards.push(row); else out.lines.push(row);
   })));
   return JSON.stringify(out);
@@ -31,7 +31,7 @@ const section = (title, who, d, extra) => {
   if (d.words.length) { m += `**The word (chapter 1, ${d.words[0].where}):**\n\n| Spanish | English | Example | Good to know |\n|---|---|---|---|\n`; d.words.forEach(w => { m += `| ${esc(w.es)} | ${esc(w.en)} | ${esc(w.ctxEs)} / ${esc(w.ctxEn)} | ${esc(w.note) || "(none)"} |\n`; }); m += "\n"; }
   if (d.cards.length) { m += `**The cards (met once, at the Table):**\n\n| Card | English | Word by word | Example | Good to know |\n|---|---|---|---|---|\n`; d.cards.forEach(c => { m += `| ${esc(c.es)} | ${esc(c.en)} | ${(c.words || []).map(w => `${esc(w[0])} = ${esc(w[1])}`).join("; ")} | ${esc(c.ctxEs)} / ${esc(c.ctxEn)} | ${esc(c.note) || "(none)"} |\n`; }); m += "\n"; }
   const places = []; d.lines.forEach(s => { if (!places.includes(s.where)) places.push(s.where); });
-  places.forEach(pl => { const rows = d.lines.filter(s => s.where === pl); const own = / Part 2$/.test(pl) ? `\n\n*The row's line: "${rows[0].line}" Examples: ${rows[0].examples.join(" · ")}*` : ""; m += `**${pl}:**${own}\n\n| You say | English | Built from (the hint) | Near misses | You hear back | Good to know |\n|---|---|---|---|---|---|\n`; rows.forEach(s => { m += `| ${esc(s.es)} | ${esc(s.en)} | ${s.hint.map(h => `${esc(h[0])} = ${esc(h[1])}`).join("<br>")} | ${s.near.map(esc).join("<br>")} | ${s.replies.map(r => `${esc(r[0])} (${esc(r[1])})`).join("<br>")} | ${esc(s.note) || "(none)"} |\n`; }); m += "\n"; });
+  places.forEach(pl => { const rows = d.lines.filter(s => s.where === pl); const own = rows[0].ownRow ? `\n\n*The row's line: "${rows[0].line}" Examples: ${rows[0].examples.join(" · ")}*` : ""; m += `**${pl}:**${own}\n\n| You say | English | Built from (the hint) | Near misses | You hear back | Good to know |\n|---|---|---|---|---|---|\n`; rows.forEach(s => { m += `| ${esc(s.es)} | ${esc(s.en)} | ${s.hint.map(h => `${esc(h[0])} = ${esc(h[1])}`).join("<br>")} | ${s.near.map(esc).join("<br>")} | ${s.replies.map(r => `${esc(r[0])} (${esc(r[1])})`).join("<br>")} | ${esc(s.note) || "(none)"} |\n`; }); m += "\n"; });
   if (extra) m += extra + "\n\n";
   return m;
 };
