@@ -2080,6 +2080,14 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v635 (2026-11-20) — Paying revised before it ships (docs/rulings-1120-paying.md), under `trip-paying`
+- 2026-11-20 — Chat: Paying revised before ship (docs/rulings-1120-paying.md): caja said and barra heard, the card's note and context, new near misses, the two ¿Cuánto cuesta? lines swapped for the total. Next: Code rebuilds under `trip-paying`; Tom plays and ships.
+- BUILT as written: the ¿Pago aquí? card (context ¿Pago aquí o en caja?; the note says what aquí carries); ¿Pago aquí? (near misses "Do I pay now?", "Do I pay at the register?"; En la barra now a reply); the second sentence is ¿Pago aquí o en caja?; ¿Cuánto cuesta la copa de vino? and ¿Cuánto cuesta la tapa? carry `until: "trip-paying"` and give their seats to ¿Cuánto es? and ¿Cuánto es todo, por favor? (frame tag "cuanto es", composer-only, no card, one note).
+- DEVIATION, chat to know: Paying is THIRTEEN sentences, not fourteen. Chat counted ¿Puedo? ×2; the session holds one (¿Puedo pagar la cuenta con tarjeta?). Nothing ruled is missing.
+- Checked: every session of 23 profiles against v634: with staging off the deck is identical (the live app is untouched); with staging on only Paying differs. The batch preview plays the card, both pago sentences, the copy sentence, and the two total sentences (19 beats), and the card shows the new context and note in the pane.
+- docs/paying-changes-review-2026-11-20.md: the Was/Now page for Tom.
+- Next: Tom plays "1 · Paying" and says ship or sends notes; then the Table ordering handoff.
+
 ## 2026-11-20 (later) — handoff to chat: Paying, before it ships (docs/chat-handoff-2026-11-20-paying.md)
 - Tom played batch 1 and asked: is "at the bar" the front register (no: la barra is the bar counter, la caja the register); does aquí mean the table (it is wherever you are); and the older line ¿Cuánto cuesta la tapa? is odd (prices are on the menu). Four asks to chat with Code's drafts; nothing built. `trip-paying` stays staged.
 - Next: chat's reply; build under `trip-paying`; Tom plays it; then the Table ordering handoff.
