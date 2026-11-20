@@ -52,5 +52,5 @@ The two new sentences in full:
 
 ## Two things to know
 
-- **Chat could not find a source quoting a diner asking "¿Pago aquí o en caja?" word for word.** The words (en caja, en la barra) are sourced from Spanish reporting; the sentence is built from them. Chat's ask: if it sounds off when you play it, say so.
-- **The count is thirteen sentences, not the fourteen chat wrote.** Chat counted two "¿Puedo?" lines in Paying; there is one (the second moved to the Shop earlier). Nothing is missing from what chat ruled; I told chat in the ledger.
+- **Chat could not find a source quoting a diner asking "¿Pago aquí o en caja?" word for word.** The words (en caja, en barra) are sourced from Spanish reporting; the sentence is built from them. Chat's ask: if it sounds off when you play it, say so.
+- **The count is thirteen sentences, not the fourteen chat wrote.** Chat counted two "¿Puedo?" lines in Paying; there is one. The other "can I pay" lines sit in the Counter and Shop sessions. Nothing is missing from what chat ruled; I told chat in the ledger.
