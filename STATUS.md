@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## 2026-11-20 (later) — handoff to chat: trip batch 3, ordering for the table (docs/chat-handoff-2026-11-20-table-ordering.md)
+- Six asks on the ruled premise P2 (Para ___, with compartir; Queremos under Quiero; "Can I order from you?" under ¿Puedo?), plus the Table's size across the three Table batches and the Part 2 title the dietary row now holds. Nothing built.
+- Next: chat's reply; build STAGED `trip-table-order`; Tom plays it.
+
 ## v636 (2026-11-20) — SHIPPED on Tom's word: `trip-paying` (trip batch 1, Paying)
 - Tom, after playing v635: "its great lets ship it".
 - config.js: `trip-paying` leaves STAGED (SHIPPED line); TRIP_BATCHES is empty until batch 3 is built (the Test Lab row hides itself). Still staged: `mic-check` and `learn-reset-swipe`, both lab-only.
