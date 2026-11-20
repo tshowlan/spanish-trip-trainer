@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## 2026-11-20 (later) — handoff to chat: Paying, before it ships (docs/chat-handoff-2026-11-20-paying.md)
+- Tom played batch 1 and asked: is "at the bar" the front register (no: la barra is the bar counter, la caja the register); does aquí mean the table (it is wherever you are); and the older line ¿Cuánto cuesta la tapa? is odd (prices are on the menu). Four asks to chat with Code's drafts; nothing built. `trip-paying` stays staged.
+- Next: chat's reply; build under `trip-paying`; Tom plays it; then the Table ordering handoff.
+
 ## v634 (2026-11-20) — SHIPPED on Tom's word: `trip-celiac` (trip batches 2 and 2b, the dietary lines); `dietary-variants` DECLINED and removed
 - Tom, after the changes-only list and the two near-miss swaps: "i think we are good to go here now". Read as the dietary lines (the thread he was in). **`trip-paying` stays STAGED: his word did not name it; asked.**
 - config.js: `trip-celiac` leaves STAGED (SHIPPED line), `dietary-variants` leaves as DECLINED, TRIP_BATCHES holds Paying only.
