@@ -2080,6 +2080,14 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v636 (2026-11-20) — SHIPPED on Tom's word: `trip-paying` (trip batch 1, Paying)
+- Tom, after playing v635: "its great lets ship it".
+- config.js: `trip-paying` leaves STAGED (SHIPPED line); TRIP_BATCHES is empty until batch 3 is built (the Test Lab row hides itself). Still staged: `mic-check` and `learn-reset-swipe`, both lab-only.
+- curriculum.js collapsed: five `staged` marks dropped; the session's line is the new one; the copy reply (¿Quiere copia?), its note, and its owed mark sit on the card sentence itself; the two menu-price lines (¿Cuánto cuesta la copa de vino?, ¿Cuánto cuesta la tapa?) are gone from Paying. A learner's history on those two phrases stays in their state, unused.
+- engine.js: a sentence's owed reply is read from the item (`d.owe`) as well as from a staged swap.
+- CHECKED: every session of 23 profiles: with staging off the deck now equals what Tom played with staging on at v635; with staging on, unchanged. In the pane with staging off: Paying's thirteen sentences in order, the new line.
+- Batches 1, 2, and 2b of the trip notes are live. Next: the handoff for batch 3, Table: ordering for the table.
+
 ## v635 (2026-11-20) — Paying revised before it ships (docs/rulings-1120-paying.md), under `trip-paying`
 - 2026-11-20 — Chat: Paying revised before ship (docs/rulings-1120-paying.md): caja said and barra heard, the card's note and context, new near misses, the two ¿Cuánto cuesta? lines swapped for the total. Next: Code rebuilds under `trip-paying`; Tom plays and ships.
 - BUILT as written: the ¿Pago aquí? card (context ¿Pago aquí o en caja?; the note says what aquí carries); ¿Pago aquí? (near misses "Do I pay now?", "Do I pay at the register?"; En la barra now a reply); the second sentence is ¿Pago aquí o en caja?; ¿Cuánto cuesta la copa de vino? and ¿Cuánto cuesta la tapa? carry `until: "trip-paying"` and give their seats to ¿Cuánto es? and ¿Cuánto es todo, por favor? (frame tag "cuanto es", composer-only, no card, one note).

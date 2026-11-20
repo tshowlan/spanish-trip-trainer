@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v635";
+const APP_BUILD = "v636";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -16,7 +16,6 @@ const APP_BUILD = "v635";
 /* THE TRIP BATCHES (Tom 11/17): one line per trip-notes batch, in order. The Test Lab plays a batch by itself: only what it added or
    changed, back to back, nothing recorded. `key` is the batch's switch; the pack marks its items with `staged: key` or `swap.staged: key`. */
 const TRIP_BATCHES = [
-  { key: "trip-paying", label: "1 · Paying" },
 ];
 const STAGED = {
   "mic-check": "Say it: the microphone check (auto-listen after the word, the ring, the match). PARKED: on iPhone it leaves playback on the quiet earpiece; off until the native app can own the audio route (Tom 10/8)",
@@ -28,7 +27,7 @@ const STAGED = {
 // SHIPPED (Tom, 2026-11-17, v623): "cards-sheet", Learn (chat 11/6, Tom's pick C): a session's drawer ends in Read the cards, opening a read-only sheet of its cards (headword, gloss, context with the English under, the Good to know note; tap the Spanish to hear it); a word session's cards are its words, a sentence session's its frame cards; a Known session's sheet says so
 // SHIPPED (Tom, 2026-11-06, v617): "frame-cards-once", Chapter 2 (chat 11/6): a place session's frame card shows the first time the session is played and not on replay, like a word session's cards; the replay opens on the frame's build. A card whose frame is still unmet shows (gained since)
 // SHIPPED (Tom, 2026-11-20, v634): "trip-celiac", Trip notes, batches 2 and 2b, re-cut by chat 11/19: your dietary lines, answer by answer, woven into Table words and the Counter, Table, and Shop sentences. Sin lines only where Spain labels food that way: sin gluten (celiac; gluten-free, not celiac), sin lactosa (lactose intolerant), vegetariano. An allergy gets Tengo alergia (naming every one), Lleva (each), the allergen menu, the cross-contamination question, and the fryer for fish and shellfish. Celiac also gets the fryer and gluten-free beer; lactose gets lactose-free milk. Cookies replace chocolate in the Shop. Intake: Celiac or Gluten-free, not celiac; Milk allergy or Lactose intolerant. The old generated sessions are gone. Learn, Topics: Your dietary lines
-  "trip-paying": "Trip notes, batch 1 (Tom back from Barcelona, chat 11/16, revised 11/20): Paying gains where you pay (a card and two sentences: Pago aqui, and Pago aqui o en caja; En la barra is heard back) and the receipt copy question heard on the card sentence (Quiere copia), owed on the first play; the two menu-price lines (the tapa, the glass of wine) give their seats to the total (Cuanto es; Cuanto es todo, por favor); the session line updated",
+// SHIPPED (Tom, 2026-11-20, v636): "trip-paying", Trip notes, batch 1 (Tom back from Barcelona, chat 11/16, revised 11/20): Paying gains where you pay (a card and two sentences: Pago aqui, and Pago aqui o en caja; En la barra is heard back) and the receipt copy question heard on the card sentence (Quiere copia), owed on the first play; the two menu-price lines (the tapa, the glass of wine) give their seats to the total (Cuanto es; Cuanto es todo, por favor); the session line updated
 // SHIPPED (Tom, 2026-11-17, v623): "lapse-rungs", A miss on a word you own costs two rungs, not everything (Tom 11/7, chat confirmed): the spacing divides by about five (85 days to 16), and the fade counts from the day of the miss; two misses in a row go to one day
 // SHIPPED (Tom, 2026-11-17, v623): "place-weights", Coverage's demand weights re-mapped to the seven groups that exist (chat 11/7): Everywhere 0.30, Counter 0.14, Table 0.14, Paying 0.12, Street 0.12, Help 0.10, Shop 0.08; a group with nothing in the pack is dropped and the rest renormalize
 // SHIPPED (Tom, 2026-11-17, v623): "the-plan", The plan, said (chat 11/7): one line at intake when the date is set (the goal is the first 23 sessions of the two chapters, or as many as one a day reaches; the pace spreads them to the trip). The Learn tab's two gold hairlines, FOR THE TRIP and BY TODAY, follow once Tom has seen the mock
