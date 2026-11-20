@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v633";
+const APP_BUILD = "v634";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -17,18 +17,17 @@ const APP_BUILD = "v633";
    changed, back to back, nothing recorded. `key` is the batch's switch; the pack marks its items with `staged: key` or `swap.staged: key`. */
 const TRIP_BATCHES = [
   { key: "trip-paying", label: "1 · Paying" },
-  { key: "trip-celiac", label: "2 · Celiac" },
 ];
 const STAGED = {
   "mic-check": "Say it: the microphone check (auto-listen after the word, the ring, the match). PARKED: on iPhone it leaves playback on the quiet earpiece; off until the native app can own the audio route (Tom 10/8)",
   "learn-reset-swipe": "Learn tab: swipe a session row to the left and tap Reset to make it never seen (the lesson mark and its words' history cleared)",
 // SHIPPED (Tom, 2026-11-05, v607): "sentences-3", Chapter 2: Street, Shop, Help, and Paying sentences (chat 10/28), with their place frames' cards: \u00bfEst\u00e1? (Street), esto (Shop), Llame a (Help), \u00bfMe cobra? (Paying)
-  "dietary-variants": "A dietary line (sin gluten, sin carne) served with your own allergy or need in the slot (marisco, frutos secos, lactosa...), the base line for everyone else",
+// DECLINED (Tom and chat, 2026-11-20, v634): "dietary-variants", A dietary line (sin gluten, sin carne) served with your own allergy or need in the slot (marisco, frutos secos, lactosa...), the base line for everyone else. Superseded by chat's 11/19 re-cut (a sin line only where Spain labels food that way); the code and the slot table are removed
 // SHIPPED (Tom, 2026-11-05, v607): "learn-known", Learn tab: swipe a session row to the left and mark it Known (done, its words pinned at full strength and never reviewed); swipe again for Remove Known
 // SHIPPED (Tom, 2026-11-17, v623): "reply-sets", Chapter 2: every place sentence's replies rewritten by chat (11/1): three meanings, two the sentence's own, one stock reply at most; the exchange's floor (a stock reply owed to a place is heard once there, at most half of a play's exchanges, the rest in review); the Street's driver lines (Al hotel, A la estación), the Table's taxi line, the Shop's ¿Puedo pagar con tarjeta aquí?, chocolate's allergen variants
 // SHIPPED (Tom, 2026-11-17, v623): "cards-sheet", Learn (chat 11/6, Tom's pick C): a session's drawer ends in Read the cards, opening a read-only sheet of its cards (headword, gloss, context with the English under, the Good to know note; tap the Spanish to hear it); a word session's cards are its words, a sentence session's its frame cards; a Known session's sheet says so
 // SHIPPED (Tom, 2026-11-06, v617): "frame-cards-once", Chapter 2 (chat 11/6): a place session's frame card shows the first time the session is played and not on replay, like a word session's cards; the replay opens on the frame's build. A card whose frame is still unmet shows (gained since)
-  "trip-celiac": "Trip notes, batches 2 and 2b, re-cut by chat 11/19: your dietary lines, answer by answer, woven into Table words and the Counter, Table, and Shop sentences. Sin lines only where Spain labels food that way: sin gluten (celiac; gluten-free, not celiac), sin lactosa (lactose intolerant), vegetariano. An allergy gets Tengo alergia (naming every one), Lleva (each), the allergen menu, the cross-contamination question, and the fryer for fish and shellfish. Celiac also gets the fryer and gluten-free beer; lactose gets lactose-free milk. Cookies replace chocolate in the Shop. Intake: Celiac or Gluten-free, not celiac; Milk allergy or Lactose intolerant. The old generated sessions are gone. Learn, Topics: Your dietary lines",
+// SHIPPED (Tom, 2026-11-20, v634): "trip-celiac", Trip notes, batches 2 and 2b, re-cut by chat 11/19: your dietary lines, answer by answer, woven into Table words and the Counter, Table, and Shop sentences. Sin lines only where Spain labels food that way: sin gluten (celiac; gluten-free, not celiac), sin lactosa (lactose intolerant), vegetariano. An allergy gets Tengo alergia (naming every one), Lleva (each), the allergen menu, the cross-contamination question, and the fryer for fish and shellfish. Celiac also gets the fryer and gluten-free beer; lactose gets lactose-free milk. Cookies replace chocolate in the Shop. Intake: Celiac or Gluten-free, not celiac; Milk allergy or Lactose intolerant. The old generated sessions are gone. Learn, Topics: Your dietary lines
   "trip-paying": "Trip notes, batch 1 (Tom back from Barcelona, chat 11/16): Paying gains where you pay (a card and two sentences, Pago aqui; En caja is heard back) and the receipt copy question heard on the card sentence (Quiere copia), owed on the first play; the session line updated",
 // SHIPPED (Tom, 2026-11-17, v623): "lapse-rungs", A miss on a word you own costs two rungs, not everything (Tom 11/7, chat confirmed): the spacing divides by about five (85 days to 16), and the fade counts from the day of the miss; two misses in a row go to one day
 // SHIPPED (Tom, 2026-11-17, v623): "place-weights", Coverage's demand weights re-mapped to the seven groups that exist (chat 11/7): Everywhere 0.30, Counter 0.14, Table 0.14, Paying 0.12, Street 0.12, Help 0.10, Shop 0.08; a group with nothing in the pack is dropped and the rest renormalize

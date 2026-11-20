@@ -2080,6 +2080,16 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v634 (2026-11-20) — SHIPPED on Tom's word: `trip-celiac` (trip batches 2 and 2b, the dietary lines); `dietary-variants` DECLINED and removed
+- Tom, after the changes-only list and the two near-miss swaps: "i think we are good to go here now". Read as the dietary lines (the thread he was in). **`trip-paying` stays STAGED: his word did not name it; asked.**
+- config.js: `trip-celiac` leaves STAGED (SHIPPED line), `dietary-variants` leaves as DECLINED, TRIP_BATCHES holds Paying only.
+- curriculum.js collapsed: 26 `staged: "trip-celiac"` marks dropped; the two staged reply swaps (¿Tiene algo sin gluten?, ¿Hay algo sin gluten en la carta?) became those lines' replies; the three `until` seats left (lactosa as the dairy allergy's word, ¿Hay tapas sin carne?, ¿Tiene chocolate sin gluten?); the three gluten carriers' `dietary: {...}` mark (the declined variants' data) became `keyed: "gluten"`; the `dietarySlots` table removed.
+- engine.js: the variant generator and its plumbing removed; `keyedOut` and `dietMark` read `keyed`. The engine's other `isStaged("trip-celiac")` reads stay, as with every shipped switch (an unknown key reads true).
+- MEXICO KEPT WHOLE (Code's call, found in the ship check): under the switch the generated Your Allergies and Your Dietary Needs sessions were retired for every pack, which would have taken them from a Mexico learner with nothing in their place. They are now retired only for a pack that writes its own lines (one with `allergySlots`: Spain). Mexico's live deck is unchanged by this ship. Catch-up, not now: Mexico's intake shows the Celiac and Lactose intolerant chips, which give a Mexico learner no lines.
+- CHECKED: every item of every session for 23 profiles (19 Spain, 4 Mexico), before and after: Spain with staging on is identical; Spain with staging OFF now equals what staging on showed, apart from Paying (still staged); Mexico is identical with staging on or off. In the pane with staging off: celiac gets Table sentences Part 1 (13) and Part 2 (6), a fish allergy Part 2 (5), no answer one Table session (13), the intake chips as ruled.
+- The list regenerated at v634 (same lines as v633). CLAUDE.md's module map updated.
+- Next: Tom's word on `trip-paying`; then the handoff for trip batch 3, Table: ordering for the table.
+
 ## v633 (2026-11-20) — two near misses swapped (chat, on Tom's ask), under `trip-celiac`
 - Tom, reading the changes-only list: the fryer sentence's wrong answer "Is the kitchen shared?" reads as an untenable demand (nobody asks for a separate kitchen). Chat agreed and found the same flaw in its own line.
 - ¿La freidora es compartida?: "Is the kitchen shared?" becomes "Is the grill shared?". ¿Hay contaminación cruzada?: "Is there a separate kitchen?" becomes "Is there a separate fryer?". Copy only; no engine change.

@@ -24,7 +24,7 @@ Momentum, Retention), deliberately anti-Duolingo.
 ## Module map (current)
 - `state.js` — `DEFAULT_STATE`, `STORE_KEY`, `DEST_FIELDS` (per-trip snapshot fields), load/save.
 - `engine.js` — content registry `CONTENT` (country → pack), `activePack()`, `rebuildDeck()` (filters
-  `requires` lessons, injects generated allergy + dietary lessons), `meetsReq()`, `buildAllergyLesson()`,
+  `requires` lessons, injects generated allergy + dietary lessons only for a pack without its own dietary lines: Mexico; Spain's are keyed pack lines since v634), `meetsReq()`, `buildAllergyLesson()`,
   `buildDietaryLesson()`, item-id normalize pass. (`seedPlacement` retired 2026-10-31: Known on the Learn tab replaces it.)
 - `srs.js` — exposure ladder + SM-2-lite scheduler. `chooseType()` (+ `opts.prefer` for §8.5 rhythm),
   `recordAnswer()`/`recordExposure()`, `itemStrength()`, mastery axes {production, cold, native, chained}.

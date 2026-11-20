@@ -1,6 +1,6 @@
 # Tripfluent: every dietary line, by answer (for Tom's review)
 
-*Generated from the app's own engine at v633, with the celiac switch on. Each section is exactly what a learner with that one answer is served: the word in chapter 1, the cards, and every sentence by session with all three replies and its Good to know. Nothing here is retold from memory. Mark it up and send it back; the copy is chat's, so wording changes go through chat.*
+*Generated from the app's own engine at v634 (the dietary lines shipped at v634). Each section is exactly what a learner with that one answer is served: the word in chapter 1, the cards, and every sentence by session with all three replies and its Good to know. Nothing here is retold from memory. Mark it up and send it back; the copy is chat's, so wording changes go through chat.*
 
 *A learner with no dietary answer gets none of this.*
 
