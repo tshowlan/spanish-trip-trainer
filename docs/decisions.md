@@ -334,3 +334,6 @@ luminous law.)
 - 2026-11-19 — (chat) Carrier replies never name a dish. The Shop's dietary product is galletas. Vegetarian's sentences use vegetariano, agreeing with the noun, never the learner.
 - 2026-11-19 — (chat) Hiding places are taught as menu words in the ¿Lleva ___? sentence's note, two at most, only where certain.
 - 2026-11-19 — (chat) Intake: Celiac / Gluten-free, not celiac and Milk allergy / Lactose intolerant as exclusive pairs. The allergy list stays at seven.
+- 2026-11-20 — (chat) Rule for dietary Good to knows: teach a Spanish word, say something true of Spain in particular, or vouch for the phrase; never explain the condition; unsourced notes are cut.
+- 2026-11-20 — (chat) The fryer line is ¿La freidora es compartida? (the form Spanish celiac guides use); exclusiva and aparte are heard in the reply and named in the note. Replaces ¿Tiene freidora aparte?.
+- 2026-11-20 — (chat) A learner with four or more keyed Table sentences gets them as Table sentences · Part 2; fewer stay woven.
