@@ -21,7 +21,7 @@ What the pack holds today: no otro or otra in chapters 1 and 2; no tenedor, cuch
 
 ## The Table today (fifteen sentences, three cards)
 
-¿Hay? ×2 (mesa fuera para cuatro; pan para la mesa) · ¿Me puede traer? ×3 (la carta; un plato para el pan; la cuenta) · Para mí ×2 · Para compartir ×2 · Queremos ×2 (agua sin gas para la mesa; dos copas de vino) · ¿Tiene? ×2 (la carta en inglés; agua con gas) · ¿Puedo? ×1 (Perdón, ¿puedo pedir?) · ¿Dónde está? ×1 (el baño). Table words (seven for everyone): mesa, la carta, pan, plato, sin gas, dentro, fuera; a dietary learner has up to three more.
+¿Hay? ×2 (mesa fuera para cuatro; pan para la mesa) · ¿Me puede traer? ×3 (la carta; un plato para el pan; la cuenta) · Para mí ×2 · Para compartir ×2 · Queremos ×2 (agua sin gas para la mesa; dos copas de vino) · ¿Tiene? ×2 (la carta en inglés; agua con gas) · ¿Puedo? ×1 (Perdón, ¿puedo pedir?) · ¿Dónde está? ×1 (el baño). Table words (seven for everyone): mesa, la carta, pan, plato, sin gas, dentro, fuera; a dietary learner has more (a celiac learner has nine).
 
 ## Asks
 
