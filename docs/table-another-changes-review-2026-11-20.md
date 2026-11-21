@@ -96,13 +96,20 @@ Each is built from "Could you = puede · bring = traer · me = me" plus the piec
 
 Chat says every reply in this batch is its own writing, not sourced word for word. The ones to listen to hardest: "¿Se ha caído?", "Vale, uno limpio", "¿Con hielo?", "¿Grande o pequeña?", "¿Cuántos faltan?", and whether "Perdón, falta un vaso." is how you would say it.
 
-## Things that are mine, not chat's (flagged to chat)
+## 9. Added 11/21 (v641): chat's answers, and two small builds that ride this batch
 
-- **The two lines for the Table words parts.** Chat named what each part is about but did not write their lines. Part 1 keeps the old line; Part 2's two lines (section 2) are my drafts.
-- **"glass (for water)"** as the English for vaso, to sit beside copa's "glass (of wine)".
-- **Where the otro card sits:** before the fork line, so the card leads a sentence of its own.
+**Chat passed my three choices:** the lines under the two Table words parts, "glass (for water)" for vaso, and the otro card leading an otro line.
 
-## Two side effects to know
+**The plan now counts your real sessions.** The goal used to be fixed at 23. It is now however many sessions chapters 1 and 2 hold for you: 25 with this batch (26 for a learner with a row of their own).
 
-- **The deck is now 25 sessions** for a learner with no dietary answer (it was 23). The plan on Learn still counts the first 23 as the goal for the trip. Whether the goal should become 25 is a question I put to chat.
-- **The wine list line sits inside Part 1, which shows as done for you.** Nothing on the row says a new line arrived. You meet it by replaying Part 1 (or in the batch preview).
+| | Was | Now |
+|---|---|---|
+| The goal on Learn (FOR THE TRIP) | the first 23 sessions | **all 25** (still capped by the days you have) |
+| The intake line, six weeks out | "...four sessions a week and you arrive with both." | "...**five** sessions a week and you arrive with both." |
+| The intake line, four weeks out | "...six sessions a week..." | "...**seven** sessions a week..." |
+
+**A finished row that holds a line you have never been shown now says so.** The row's count gains "· 1 new" in gold, and tapping it replays the session with that line first. For you, Table sentences · Part 1 will read "12 phrases · 1 new" because of the wine list line.
+
+**One thing I found and fixed.** A session plays at most three sentences of one kind per play. The four "another" lines were grouped with the plate and check lines, six in all, so three were skipped every play and the otro card was sometimes followed by the plate line. The four "another" lines are now their own group: the card is always followed by one of them, and one of the four waits for your next play. After your first play of Part 2 its row will say "1 new"; tapping it opens on the line that waited.
+
+**To know when this ships:** the "new" mark is true for any finished row with a line you were never shown, not only for lines a batch added. Help sentences has four lines of one kind, so one has always waited after a first play. If that is your state, the Help row will say "1 new".

@@ -120,6 +120,7 @@ function _lessonRow(l, isNext) {
   const str = lessonStrength(l);   // the ring from the first play (Tom 10/20: the done-only rule of v470 was withdrawn minutes later)
   const fading = lessonDone(l.id) ? lessonFadingCount(l) : 0;
   const beat = _lessonBeat(l);
+  const newN = (typeof lessonNewCount === "function") ? lessonNewCount(l) : 0;   // a done row with an unmet line says so (chat 11/20e A3)
   const meta = _isMachine(l) ? `Pattern · ${(l.items || []).length} fillers`
     : l.chain ? "Conversation" : `${(l.items || []).filter(it => !it.card).length} ${l.sounds ? "sounds" : l.wordsSession ? "words" : "phrases"}`;
   const earTag = (typeof earOn === "function" && earOn() && isEarLesson(l)) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for sound" : "Best with sound"}</span>` : isSpeakLesson(l) ? ` \u00b7 <span class="ear-tag">${state.parkedEar && state.parkedEar.id === l.id ? "Saved for speaking" : "Best said out loud"}</span>` : "";   // R2 (Tom 9/26)
@@ -129,7 +130,7 @@ function _lessonRow(l, isNext) {
     <div class="lmain">
       <div class="lname-row"><span class="lname">${l.title}</span>${isNext ? `<span class="next-tag">NEXT</span>` : ""}${l.bonus ? `<span class="bonus-tag">BONUS</span>` : ""}${isKnownRow ? `<span class="k-tag" aria-label="Known">K</span>` : ""}</div>
       ${beat && !l.line ? `<div class="lbeat">${beat}</div>` : ""}
-      <div class="lmeta">${meta}${earTag}${fading ? ` · <span class="fading">${fading} to review</span>` : ""}</div>
+      <div class="lmeta">${meta}${earTag}${fading ? ` · <span class="fading">${fading} to review</span>` : ""}${newN ? ` · <span class="newn">${newN} new</span>` : ""}</div>
     </div>
     ${isStaged("learn-peek") ? `<button class="pk-zone" aria-label="See what's inside">${icon("caret-right", 15)}</button>` : `<span class="chev">${icon("caret-right", 15)}</span>`}
   </div>`);
@@ -252,7 +253,7 @@ function _planMarks() {
   const lessons = (DECK ? DECK.stages : []).flatMap(st => st.lessons).filter(l => !l.bonus);
   if (!lessons.length) return null;
   const knownN = lessons.filter(l => state.lessons[l.id] && state.lessons[l.id].known).length;   // a Known session costs no plan day: the goal extends by their number, capped at the whole (chat 11/16)
-  const goalN = Math.min(typeof PLAN_SESSIONS !== "undefined" ? PLAN_SESSIONS : 23, lessons.length, daysTotal + knownN);
+  const goalN = Math.min(typeof planSessions === "function" ? planSessions() : 23, lessons.length, daysTotal + knownN);   // the goal is the deck's chapters 1 and 2 (chat 11/20e), capped by the days
   const paceN = Math.min(goalN, Math.floor(goalN / daysTotal * elapsed));
   return { goalId: lessons[goalN - 1].id, paceId: paceN >= 1 && paceN < goalN ? lessons[paceN - 1].id : null, goalN, paceN, daysTotal, elapsed, start };
 }

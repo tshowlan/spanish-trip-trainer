@@ -198,7 +198,7 @@ Scenario rehearsal is the strongest prep for real performance — The Rehearsal'
 
 **The plan's goal is chapters 1 and 2.** Chapters 3 and 4 sit beyond the FOR THE TRIP line.
 
-*Standing beside older law: THE FIRST BUILD: THE SCENES and THE STRUCTURAL RULING: TWO TRACKS above describe scenes with a cast and as a track of their own. This section is the later ruling. The 11/20 ruling it rests on (rulings-1120e-chapters.md) has not reached the repo, so those two sections are not yet moved to the graveyard (Code, 11/21).*
+*Standing beside older law (Code, 11/21): THE FIRST BUILD: THE SCENES and THE STRUCTURAL RULING: TWO TRACKS above describe scenes with a cast and as a track of their own. This section is the later ruling (docs/rulings-1120e-chapters.md, Part B1 and B2, accepted by Tom in the framework). What is retired is the cast: named, recurring people, the arcs between them, "cast met first", first names; the other speaker is a role. What stands is the scenes' craft: the place and the time of day, the one-line beats, the stanza form, the overheard line, the narrative italic, the End Scene label, the door. The five written scenes stay as they are until composed visits can replace them; no new cast scenes are written.*
 
 ## Color & light
 
@@ -623,6 +623,8 @@ updates: machines, frames, slots, patterns, asks.
 
 ## Graveyard (superseded, dated — never silently deleted)
 
+- 2026-11-21 — The scenes' cast (Marina, Toni, Rosa, Andrés, Pau, Montse: named, recurring people and the arcs between them; "cast met first"; first names) and scenes as a second track beside Learn. Superseded by THE FOUR CHAPTERS: scenes are the form review takes, composed visits made of the learner's own due lines, the other speaker a role (chat 11/20, Tom 11/21). The scene craft laws stand. Andrés' taxi, never shipped, is released.
+- 2026-11-21 — The plan's goal as a fixed 23 sessions (chat 11/7). The goal is counted from the learner's deck (chat 11/20).
 - 2026-07-24 — The silhouette and bubble stage options (listening family r5-r11, retired r12 by
   Tom's elimination; the silhouette's structure-preview idea may return as exercise content, not ground).
 - 2026-07-24 — The register concept (per-type field volumes, killed by Tom's "what's the point of

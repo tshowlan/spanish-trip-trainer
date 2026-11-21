@@ -420,6 +420,7 @@ function composeSentences(lesson) {
   const ctx = _replyCtx(pool, Math.ceil(frames.size / 2));   // the floor's budget for this play
   frames.forEach(list => {
     const s = shuffle(list.slice()), at = i => s[i % s.length];
+    if (isStaged("trip-table-another")) s.sort((a, b) => (exposuresOf(a) ? 1 : 0) - (exposuresOf(b) ? 1 : 0));   // a play serves three sentences of a tag: the unmet ones first, so a line that waited (or arrived since) is in this play (11/21, with the row's "N new")
     builds.push(_sentenceBuild(at(0), pool));
     if (s.length < 2) {   // a frame with ONE sentence (the Table's ¿Puedo?, ¿Dónde está?): build it and answer it, no ear or typed lap, so no sentence runs five times (Tom's rule 10/25: no sentence more than twice)
       const ex1 = at(0); if ((ex1.replies || []).length) { const r = _pickReply(ex1, ctx); exchanges.push({ type: "reply_hear", item: ex1, es: r[0], en: r[1], set: { ask: ex1.es, line: ex1.es, place, replies: ex1.replies.map(x => x[0]) }, options: ex1.replies.map(x => x[1]), arc: true }); }
@@ -1154,6 +1155,19 @@ function composeReview() { return _composeDepth(null); }
 
 
 let run = null;
+/* A DONE ROW WITH AN UNMET LINE SAYS SO, AND PLAYS IT FIRST (chat 11/20e A3, rides trip-table-another): a batch that adds a line to a session the
+   learner already finished used to land silently (the wine list in Table sentences, Part 1). The Learn row's count gains "· 1 new", and the
+   replay opens on the new line's beats, the rest after in their own order. Not for a Known row (its words are pinned), nor sounds or numbers. */
+function lessonNewCount(l) {
+  if (!(typeof isStaged === "function" && isStaged("trip-table-another")) || !l || l.sounds || l.numbers || l.machine || l.chain) return 0;
+  if (!state.lessons || !state.lessons[l.id] || state.lessons[l.id].known) return 0;   // played, and not marked Known
+  return (l.items || []).filter(it => !it.card && exposuresOf(it) === 0).length;
+}
+function _newFirst(lesson, qs) {
+  if (!lessonNewCount(lesson)) return qs;
+  const fresh = q => !!(q && q.item && !q.item.card && exposuresOf(q.item) === 0);
+  return qs.filter(fresh).concat(qs.filter(q => !fresh(q)));
+}
 function startLesson(lesson) {
   if (lesson.chain) return renderChain(lesson);   // M4 boss lesson — a chat-style dialogue (§7.5)
   // THE RETURN DOOR (depth ruling 5): a completed lesson greets before it drills. NO DOOR (Tom 11/3, STAGED replay): the row's
@@ -1205,7 +1219,7 @@ function _startLessonProper(lesson) {
   if (ci != null) return renderChapterDoor(ci, () => _startLessonProper(lesson));
   // Compose FIRST (so the primer's guess item is still "new" here and stays in the session),
   // then run the primer on a first pass before the lesson proper. Replays/reviews skip straight in.
-  run = { lesson, qs: composeSession(lesson), idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
+  run = { lesson, qs: _newFirst(lesson, composeSession(lesson)), idx: 0, wrong: 0, restored: 0, answered: false, reasks: {}, pct: 0, review: false, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   // chains may skip the guess moment (nothing new to guess, ruling 2026-07-24) but keep the scene
   if (!lessonDone(lesson.id) && lesson.primer && (lesson.primer.guessItem || lesson.primer.scene)) renderPrimer(lesson, renderQuestion);
   else renderQuestion();

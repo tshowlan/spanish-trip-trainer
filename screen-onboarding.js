@@ -51,15 +51,23 @@ const daysUntil = d => Math.ceil((new Date(d + "T00:00:00") - new Date(todayStr(
 /* THE PLAN, SAID (chat 11/7, STAGED "the-plan"): one line when the date is set. The goal for a trip N days out is the first min(23, N) sessions
    of the two chapters in order; the pace spreads them to the trip at most one a day. Numbers under ten in words, the rest in figures. No line
    says what you will not reach. The Learn tab's two hairlines (FOR THE TRIP, BY TODAY) are the same plan drawn; mocked first (Tom 11/7). */
-const PLAN_SESSIONS = 23;
+const PLAN_SESSIONS = 23;   // the fallback only: used while the derived goal is still on its switch, or when no deck is built yet
+// THE GOAL IS THE DECK (chat 11/20e A3, rides trip-table-another): every session of chapters 1 and 2 this learner is served, never a number in
+// the code (25 once the Table is in two, 26 with a row of their own). The days still cap it on Learn, and the pace is the goal over the weeks.
+function planSessions() {
+  if (!(typeof isStaged === "function" && isStaged("trip-table-another"))) return PLAN_SESSIONS;
+  const n = (typeof DECK !== "undefined" && DECK ? DECK.stages : []).filter(st => st.pass == null || st.pass <= 1).flatMap(st => st.lessons).filter(l => !l.bonus).length;
+  return n || PLAN_SESSIONS;
+}
 const _numWord = n => (["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"][n] || String(n));
 function planLine(days) {
   const weeks = Math.round(days / 7);
   const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  const goal = planSessions(), six = _numWord(Math.min(7, Math.ceil(goal / 6)));   // the six-week pace: the goal over six weeks, rounded up (four at 23 sessions, five at 25)
   if (days >= 42) return weeks > 6
-    ? `${cap(_numWord(weeks))} weeks out. The words, then the sentences: four sessions a week gets you there with time to spare, and the review keeps it fresh.`
-    : "Six weeks out. The words, then the sentences: four sessions a week and you arrive with both.";
-  if (days >= 23) { const perWeek = Math.min(7, Math.ceil(PLAN_SESSIONS / Math.max(1, weeks))); return `${cap(_numWord(weeks))} weeks out. The words, then the sentences: ${_numWord(perWeek)} sessions a week and you arrive with both.`; }
+    ? `${cap(_numWord(weeks))} weeks out. The words, then the sentences: ${six} sessions a week gets you there with time to spare, and the review keeps it fresh.`
+    : `Six weeks out. The words, then the sentences: ${six} sessions a week and you arrive with both.`;
+  if (days >= 23) { const perWeek = Math.min(7, Math.ceil(goal / Math.max(1, weeks))); return `${cap(_numWord(weeks))} weeks out. The words, then the sentences: ${_numWord(perWeek)} sessions a week and you arrive with both.`; }
   if (days >= 16) return `${cap(_numWord(days))} days out. One session a day gets you the words and the first sentences.`;
   if (days >= 8) return `${cap(_numWord(days))} days out. One session a day gets you the words that get you by.`;
   return `${cap(_numWord(days))} day${days === 1 ? "" : "s"} out. One session a day: hello, thanks, and the numbers.`;

@@ -354,8 +354,13 @@ luminous law.)
 - 2026-11-20 — (chat) Otro is a fill inside ¿Me puede traer?, taught with one card of the word; its note carries otra and "never un otro."
 - 2026-11-20 — (chat) Table words gains vaso, botella, tenedor, cuchillo and splits by sense: Part 1 getting seated (six), Part 2 what is on the table (five, then the learner's dietary words). Dietary words no longer run alone.
 - 2026-11-20 — (chat) Table sentences splits along the meal. Part 1 (twelve): the table, the menu, the wine list, ordering. Part 2 (ten): bread, another, the menu again, what is missing, the bathroom, the check. A learner who finished the Table before the split keeps Part 1 as done and meets Part 2 as new, with old lines keeping their records.
+- 2026-11-20 — (chat) Chapter 2's boundary is need: a line is chapter 2 if the trip goes wrong without it, which is also what the plan's goal means. Dietary lines and transport are chapter 2 by the test. Sketch B (by size) is declined. (The hotel desk, named here as chapter 2, was removed on 11/21: reception speaks English.)
+- 2026-11-20 — (chat) The plan's goal and pace derive from the deck (every chapter 1 and 2 session the learner is served), never a constant.
+- 2026-11-20 — (chat) A done row with an unmet line shows "· 1 new" and plays that line first.
+- 2026-11-20 — (chat) The shipped blurbs for chapters 3 and 4 come down until their purpose is ruled.
 - 2026-11-21 — (chat, Tom) The four chapters: 1 words; 2 one ask and one answer for what you need (the plan ends here); 3 one line that makes it yours or gracious, at places with a choice; 4 tasks, jobs that take several dependent turns. Scenes are composed visits inside review, not a chapter.
 - 2026-11-21 — (chat, Tom) Tests, in order: a word or sign (1); the trip goes wrong without it, or it is safety (2); one line with a short answer (3); several dependent turns (4).
 - 2026-11-21 — (chat, Tom) Numbers get two chapter 2 sessions, moved up: Prices you'll hear (teens, tens, compounds) before Paying, and The hour with ¿A qué hora? before the Shop.
 - 2026-11-21 — (chat, Tom) The app teaches for the places where English runs out. The hotel desk gets no session and no task (amends 11/20); a chapter 4 task must pass that filter.
 - 2026-11-21 — (chat, Tom) Sin azúcar, "too full", "is it sweet?", asking where to throw something away, and the bigger thank-yous and superlatives (taught as muy + a word and the -ísimo ending) are chapter 3.
+- 2026-11-21 — (Code, found in test) A place session plays at most three sentences of one composer tag per play. A play takes a tag's unmet sentences first; a word taught as a fill (otro) may carry a composer-only tag so its card leads its own lines.

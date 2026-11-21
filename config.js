@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v640";
+const APP_BUILD = "v641";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -19,7 +19,7 @@ const TRIP_BATCHES = [
   { key: "trip-table-another", label: "4 · Asking for another" },
 ];
 const STAGED = {
-  "trip-table-another": "Trip notes, batch 4 (chat 11/20): asking for another, and the Table in two. Table words gains vaso, botella, tenedor, cuchillo and splits by sense (Part 1 getting seated, Part 2 what is on the table, then your dietary words). Table sentences gains the otro card and four lines (another fork, glass, bottle of water; the menu again), the Falta un vaso card and two lines (something is missing), and the wine list; it splits along the meal (Part 1 arriving and ordering, twelve; Part 2 the meal and its end, ten), each with its own line. Your table lines follows",
+  "trip-table-another": "Trip notes, batch 4 (chat 11/20): asking for another, and the Table in two. Table words gains vaso, botella, tenedor, cuchillo and splits by sense (Part 1 getting seated, Part 2 what is on the table, then your dietary words). Table sentences gains the otro card and four lines (another fork, glass, bottle of water; the menu again), the Falta un vaso card and two lines (something is missing), and the wine list; it splits along the meal (Part 1 arriving and ordering, twelve; Part 2 the meal and its end, ten), each with its own line. Your table lines follows. With it (chat 11/20): the plan's goal is counted from your deck, not fixed at 23; a finished row that gained a line shows N new and plays it first",
 // SHIPPED (Tom, 2026-11-20, v639): "trip-table-order", Trip notes, batch 3 (chat 11/20): ordering for the table. The Table gains the Para compartir card and two sentences (heard back: one portion or two; it comes with three, shall I make it four; half or full), Queremos (a card; the two Quiero lines become Queremos lines), and Perdon, puedo pedir. The taxi line leaves the Table. Fifteen sentences. New line and examples. The dietary row is named Your table lines, and two or more own lines earn it (was four). Revised 11/20: Si ahora and Vale ahora replaced by vale forms on the bread, menu, water, and police lines; the wine line asks Rioja o Ribera
   "mic-check": "Say it: the microphone check (auto-listen after the word, the ring, the match). PARKED: on iPhone it leaves playback on the quiet earpiece; off until the native app can own the audio route (Tom 10/8)",
   "learn-reset-swipe": "Learn tab: swipe a session row to the left and tap Reset to make it never seen (the lesson mark and its words' history cleared)",
