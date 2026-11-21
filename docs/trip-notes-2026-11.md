@@ -15,12 +15,15 @@
 | 2b | Dietary, re-cut answer by answer (chat 11/19, 11/20): sin lines only where Spain labels food that way; allergies get the allergen menu, one kitchen question, the fryer (¿La freidora es compartida?); notes pass Tom's test; near misses a diner could really ask (v633); your own Table lines as Table sentences · Part 2 | 14, Tom's review of the generated list | chat has read the full list and has no other changes | **SHIPPED** v634 (2026-11-20) with batch 2; `dietary-variants` declined and removed |
 | 3 | Table: ordering for the table (Para compartir, Queremos, who takes the order) | 12, 18, 25 | premise RULED (P2) | **SHIPPED** v639 (2026-11-20): staged v637, revised v638 on Tom's play (vale for Sí, ahora; ¿Rioja o Ribera?; two or more own lines earn Your table lines) |
 | 4 | Table: asking for another | 2, 3, 10, 19, 20 | a frame and 5 to 6 words | **STAGED** `trip-table-another` (v640), ruled 11/20 (docs/rulings-1120d-table-another.md): four words, otro, falta (note 10 in Tom's words), the wine list, Table words and Table sentences each in two parts |
-| 5 | Table: the end of the meal | 11, 15, 21, 26 | 4 to 5 lines, heard and said | NOTED |
-| 6 | The Street, for a phone in your hand | 1, 23, 28, 29, 30 | premise RULED (P1): three cuts, pointing lines, the taxi card retired | NOTED |
-| 7 | Small words that came up | 7, 8, 16, 17 | 6 to 7 words | NOTED |
+| 5 | Table: the end of the meal, chapter 2's part (the dessert question understood, a plain no, done, the plate taken, the dessert carrier for dietary learners) | 11, 15 (the plain no), 21, 26 | 4 to 5 lines, heard and said | **WITH CHAT** 11/21 (docs/chat-handoff-2026-11-21-table-end.md) |
+| N | **Numbers in chapter 2** (framework 11/21, moved up to third): Prices you'll hear, before Paying; The hour with ¿A qué hora?, before the Shop | (not a trip note; Tom's word 11/21) | two ear sessions | **WITH CHAT** 11/21 (docs/chat-brief-2026-11-21-numbers.md) |
+| 6 | The Street, for a phone in your hand | 1, 23, 28, 29, 30 | premise RULED (P1): three cuts, pointing lines, the driver's line, and the ride pick-up line (11/21) | NOTED  |
+| 7 | Small words that came up: bolsa and asking for one; tinto and blanco as said words; hoy and mañana | 7, 16, 17 | 5 to 6 words | NOTED  |
 | 8 | Barcelona's Catalan, a layer over Spain | 5, 6, 27 | premise RULED (P3): the intake's Where in Spain?, sign faces, heard greetings; word list verified with the batch | NOTED |
 | 9 | Help: offering it | 4 | 1 to 2 lines | NOTED |
-| — | Parked for chapters 3 and 4 | 9, 24 | | PARKED |
+| — | Moved to chapter 3 by the framework's tests (11/21) | 8 (sin azúcar, sin leche), 9 (where to throw something away), 15 ("too full" and the colourful declines), 24 ("is it sweet?") | | CHAPTER 3 |
+
+**Chapter 2's remaining work, in the framework's order (chat 11/21, docs/chapter-framework-1121.md):** batch 4 (staged) · batch 5, the end of the meal · Numbers · batch 6, the Street · batch 7, small words · batch 9, Help · batch 8, Catalan · the third turn (to design: when the reply is a question, the learner answers it) · visits in review (to design). One candidate open with Tom: "Más despacio, por favor" and "¿Puede repetir?" for chapter 2.
 
 ## Every note
 

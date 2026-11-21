@@ -179,6 +179,27 @@ Scenario rehearsal is the strongest prep for real performance — The Rehearsal'
 
 ---
 
+### THE FOUR CHAPTERS (chat with Tom, 2026-11-21; docs/chapter-framework-1121.md)
+
+| | Name | The unit | The learner | What comes back | On the plan |
+|---|---|---|---|---|---|
+| 1 | The words that get you by | a word | says, hears, or reads it | | yes |
+| 2 | The sentences that get things done | one ask, one answer | asks for what they need | one of a few answers | yes |
+| 3 | *(working)* The sentences that make it yours | one line | says how they want it, asks a simple question, is gracious | "vale," a short answer, a suggestion | no |
+| 4 | *(working)* The conversations that get it sorted | a task | gets a job done over several turns | questions they must answer to move on | no |
+
+**Scenes are not a chapter.** They are the form review takes: a composed visit to a place, made of the learner's own due lines in the order they happen. No cast; the other speaker is a role; the learner's trip is the story (ruled 11/20, Tom aligned).
+
+**The tests, asked in this order.** 1. Is it a single word or sign? Chapter 1. 2. Does the trip go wrong without it? Chapter 2. (You do not get the thing, you cannot pay, you eat what you must not, you do not understand what stands between you and the thing.) Safety lines are chapter 2 whatever else is true. 3. Is it one line, with a short answer? Chapter 3. It makes the trip more yours or more gracious, and the trip is fine without it. 4. Does it take several turns, each depending on the last? Chapter 4.
+
+**Chapter 3's moves.** How I want it; a simple question; for whom; the kind no, the kind word, and the small courtesy. The first three exist only where there is a choice (the Counter, the Table, the Shop; never the taxi, never Help). Courtesy can happen anywhere. A superlative is taught as a pattern the learner can reuse (muy + a word, the -ísimo ending), not a phrase list.
+
+**Chapter 4's unit is the task, and a task earns a place only where English runs out** (Tom, 11/21). The app teaches for the places that do not speak English: the hotel desk gets no session and no task.
+
+**The plan's goal is chapters 1 and 2.** Chapters 3 and 4 sit beyond the FOR THE TRIP line.
+
+*Standing beside older law: THE FIRST BUILD: THE SCENES and THE STRUCTURAL RULING: TWO TRACKS above describe scenes with a cast and as a track of their own. This section is the later ruling. The 11/20 ruling it rests on (rulings-1120e-chapters.md) has not reached the repo, so those two sections are not yet moved to the graveyard (Code, 11/21).*
+
 ## Color & light
 
 - **Gold is the app's light.** Gold marks what is lit / current / alive: the flame, audio glyphs,
