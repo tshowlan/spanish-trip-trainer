@@ -2080,6 +2080,10 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## 2026-11-20 (later) — handoff to chat: trip batch 4, asking for another, and the Table's split (docs/chat-handoff-2026-11-20-table-another.md)
+- Six asks from Tom's notes 2, 3, 10, 19, 20 on the rulings already standing (sixteen, the split along the meal, vale before Ahora mismo). Engine work it will need: a sentence session split by a mark on its lines. Nothing built.
+- Next: chat's reply (and Tom's word on note 10); build STAGED `trip-table-another`; Tom plays it.
+
 ## v639 (2026-11-20) — SHIPPED on Tom's word: `trip-table-order` (trip batch 3, ordering for the table); the batch preview names each line's session
 - Tom, after playing v638: "I like the batch lets ship it".
 - config.js: `trip-table-order` leaves STAGED (SHIPPED line); TRIP_BATCHES is empty until batch 4 is built. Still staged: `mic-check`, `learn-reset-swipe` (lab-only).
