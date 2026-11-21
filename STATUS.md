@@ -2080,6 +2080,16 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v639 (2026-11-20) — SHIPPED on Tom's word: `trip-table-order` (trip batch 3, ordering for the table); the batch preview names each line's session
+- Tom, after playing v638: "I like the batch lets ship it".
+- config.js: `trip-table-order` leaves STAGED (SHIPPED line); TRIP_BATCHES is empty until batch 4 is built. Still staged: `mic-check`, `learn-reset-swipe` (lab-only).
+- curriculum.js collapsed: seven `staged` marks dropped; the Table's line and examples are the new ones; `dietPart: { min: 2, title: "Your table lines", line }`; the three vale reply swaps (bread, menu, Help's police line) are those lines' replies; the three `until` seats left (Quiero agua sin gas para la mesa, Quiero una tapa para dos, Necesito un taxi). "Sí, ahora" and "Vale, ahora" are nowhere in the pack.
+- engine.js: the dietary row's name and number are read straight from the pack (`dietPart.title`, `dietPart.min`); the staged `named` form is gone. `lineSwap` may still carry `examples` for a later batch.
+- THE BATCH PREVIEW NAMES THE SESSION (Tom 11/20: the police line came up in the Table's batch): each beat of a Test Lab batch shows "From <session>" under the progress bar (lesson.js `labFrom`, styles.css `.lab-from`). Lab runs only. Checked in the pane on batch 3 before the collapse: "From Table sentences", "From Help sentences".
+- CHECKED: every session of 23 profiles: with staging off the deck now equals what Tom played with staging on at v638; with staging on, unchanged.
+- LIVE NOW for everyone on Spain: Table sentences at fifteen with three cards (Para mí, Para compartir, Queremos); Your table lines for a learner with two or more Table lines of their own (was Table sentences · Part 2, at four or more); vale replies on the bread, menu, and police lines.
+- Next: the handoff for trip batch 4, Table: asking for another, which carries the Table's split along the meal.
+
 ## v638 (2026-11-20) — batch 3 before it ships: chat's three answers applied (docs/rulings-1120c-batch3-before-ship.md), under `trip-table-order`
 - 2026-11-20 — Chat: batch 3's three pre-ship asks answered (docs/rulings-1120c-batch3-before-ship.md): the row rule (two or more own Table lines), Sí, ahora replaced by vale forms on four lines, ¿De la casa? replaced by ¿Rioja o Ribera?. Next: Code applies; Tom plays and ships `trip-table-order`; then batch 4 (asking for another) with the Table's split.
 - THE ROW RULE: two or more own Table lines earn "Your table lines" (the pack's `dietPart.named.min: 2`, read by the engine while the name's switch is on; four stands off the switch). Vegetarian: Table 15 and a three-line row with the ¿Lleva carne? card. Lactose: woven, 16. Everyone else as before.

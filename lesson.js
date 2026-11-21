@@ -1962,6 +1962,10 @@ function renderQuestion() {
     wrap.addEventListener("pointerdown", e => { if (e.target.closest(".choice,.word,.tile")) haptic("press"); });
     wrap.querySelector("#quit").addEventListener("click", sessionSheet);
   }
+  // THE BATCH PREVIEW SAYS WHERE A LINE LIVES (Tom 11/20): a Test Lab batch plays lines from more than one session back to back (the Table's
+  // batch carried one Help reply), so each beat is labelled with its session. Lab runs only; a learner never sees it.
+  { const old = wrap.querySelector("#lab-from"); if (old) old.remove();
+    if (run.lab && q && q.labFrom) { const tag = el(`<div id="lab-from" class="lab-from"></div>`); tag.textContent = "From " + q.labFrom; wrap.insertBefore(tag, wrap.querySelector("#qbody")); } }
   // tap guard (backlog 7/26-3): a fast Continue tap was landing on the NEXT exercise's
   // options — a fresh question swallows input for its first 300ms [tune], capture-phase
   run.guardT = Date.now() + 300;
@@ -2330,11 +2334,12 @@ function startBatchPreview(key) {
       const isNew = d.staged === key, changed = d.swap && d.swap.staged === key; if (!isNew && !changed) return;
       finds(d).forEach(({ l, it }) => {   // none: not in this learner's deck (profile-keyed: the Test Lab's dietary pretend shows the rest)
         const pool = (l.items || []).filter(x => !x.card), place = l.place || "";
+        const add = q => { if (q) q.labFrom = l.title; qs.push(q); };   // each beat says which session it is from (Tom 11/20: a batch may touch more than one)
         const hear = (it, r) => ({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]), arc: true });
-        if (it.card || !l.sentences) { qs.push({ type: "present", item: it, arc: true }); if (!it.card && !l.sentences && typeof kitRungFor === "function") qs.push(kitRungFor(l, it, pool, 0)); return; }
-        qs.push(_sentenceBuild(it, pool));
+        if (it.card || !l.sentences) { add({ type: "present", item: it, arc: true }); if (!it.card && !l.sentences && typeof kitRungFor === "function") add(kitRungFor(l, it, pool, 0)); return; }
+        add(_sentenceBuild(it, pool));
         const before = new Set(((d.replies2 || d.replies) || []).map(r => r[0]));
-        (it.replies || []).filter(r => isNew || !before.has(r[0])).forEach(r => qs.push(hear(it, r)));
+        (it.replies || []).filter(r => isNew || !before.has(r[0])).forEach(r => add(hear(it, r)));
       });
     });
   });

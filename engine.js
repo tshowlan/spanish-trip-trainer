@@ -209,8 +209,7 @@ function _chapterFlowDeck(deck, rooms) {
   const dietSplit = w => {
     if (!celiacOn || !w.dietPart) return [w];
     const own = w.items.filter(it => it.diet), rest = w.items.filter(it => !it.diet);
-    const nm0 = w.dietPart.named && isStaged(w.dietPart.named.staged) ? w.dietPart.named : null;   // the row rule may change with the name (chat 11/20c: two or more, not four)
-    if (own.filter(it => !it.card).length < ((nm0 && nm0.min) || w.dietPart.min) || !rest.length) return [w];
+    if (own.filter(it => !it.card).length < w.dietPart.min || !rest.length) return [w];   // the pack's number (the Table: two or more, chat 11/20c)
     // the four moves' order inside Part 2: say it (the declaring line and its card), ask the dish (¿Lleva?), then the rest as the pack has them
     const leadFrames = new Set(own.filter(it => it.exLead).map(it => it.frame));
     const rank = it => (it.exLead || (it.card && leadFrames.has(it.frame))) ? 0 : it.frame === "lleva" ? 1 : 2;
@@ -218,9 +217,9 @@ function _chapterFlowDeck(deck, rooms) {
     const exOf = list => list.flatMap(it => [].concat(it.ex || []));
     const examples = [...new Set(exOf(own.filter(it => it.exLead)).concat(exOf(own.filter(it => !it.exLead))))].slice(0, 6);
     const base = w.title.replace(/ [\u00b7·] (Part )?\d$/, "");
-    // THE ROW'S NAME (chat 11/20, batch 3): the numbered parts are everyone's, so a pack may name the learner's own row (`dietPart.named: { staged, title }`).
+    // THE ROW'S NAME (chat 11/20, batch 3): the numbered parts are everyone's, so a pack may name the learner's own row (`dietPart.title`).
     // Named, the session keeps its own title and the row carries the name, after it.
-    const named = (w.dietPart.named && isStaged(w.dietPart.named.staged)) ? w.dietPart.named.title : null;
+    const named = w.dietPart.title || null;
     return [Object.assign({}, w, { title: named ? w.title : base + " \u00b7 Part 1", items: rest }),
             Object.assign({}, w, { id: w.id + "-2", title: named || base + " \u00b7 Part 2", items: own, line: w.dietPart.line, examples, primer: null })];
   };

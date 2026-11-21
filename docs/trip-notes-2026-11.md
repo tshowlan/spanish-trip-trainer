@@ -2,7 +2,7 @@
 
 *Thirty notes from the trip the app was built for. Each is numbered, checked against the pack as it stands (v621; chapters 1 and 2 are the live deck), and placed in a batch. One batch is one theme, one surface, one writing job for chat, one switch, one play by Tom. A batch ships or is declined before the next is built.*
 
-**To review a batch:** Settings, Test Lab, Trip batches: one button per batch plays only what it added or changed, back to back, nothing recorded (v623). After each round Code also writes a changes-only Was/Now page (Tom 11/20).
+**To review a batch:** Settings, Test Lab, Trip batches: one button per batch plays only what it added or changed, back to back, nothing recorded (v623). Each line in the preview says which session it is from (v639). After each round Code also writes a changes-only Was/Now page (Tom 11/20).
 
 **Status key:** NOTED (here only) → WITH CHAT (in a handoff) → RULED → STAGED → SHIPPED, or DECLINED / PARKED.
 
@@ -13,7 +13,7 @@
 | 1 | Paying: where you pay, and the copy | 13, 22 | a card, two sentences, one heard reply | **SHIPPED** v636 (2026-11-20): staged v622, revised by chat 11/20 (caja said, barra heard; the total for the two menu-price lines) |
 | 2 | Dietary: celiac | 14 | the Celiac chip, one word, a card and four sentences, forms by adjective answer | **SHIPPED** v634 (2026-11-20), staged v624 |
 | 2b | Dietary, re-cut answer by answer (chat 11/19, 11/20): sin lines only where Spain labels food that way; allergies get the allergen menu, one kitchen question, the fryer (¿La freidora es compartida?); notes pass Tom's test; near misses a diner could really ask (v633); your own Table lines as Table sentences · Part 2 | 14, Tom's review of the generated list | chat has read the full list and has no other changes | **SHIPPED** v634 (2026-11-20) with batch 2; `dietary-variants` declined and removed |
-| 3 | Table: ordering for the table (Para compartir, Queremos, who takes the order) | 12, 18, 25 | premise RULED (P2) | **STAGED** `trip-table-order` (v637), ruled 11/20 (docs/rulings-1120-table-ordering.md); revised v638 on Tom's play (vale for Sí, ahora; ¿Rioja o Ribera?; two or more own lines earn Your table lines: docs/rulings-1120c-batch3-before-ship.md); Tom plays and ships |
+| 3 | Table: ordering for the table (Para compartir, Queremos, who takes the order) | 12, 18, 25 | premise RULED (P2) | **SHIPPED** v639 (2026-11-20): staged v637, revised v638 on Tom's play (vale for Sí, ahora; ¿Rioja o Ribera?; two or more own lines earn Your table lines) |
 | 4 | Table: asking for another | 2, 3, 10, 19, 20 | a frame and 5 to 6 words | NOTED |
 | 5 | Table: the end of the meal | 11, 15, 21, 26 | 4 to 5 lines, heard and said | NOTED |
 | 6 | The Street, for a phone in your hand | 1, 23, 28, 29, 30 | premise RULED (P1): three cuts, pointing lines, the taxi card retired | NOTED |

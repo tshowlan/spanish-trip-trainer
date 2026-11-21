@@ -349,3 +349,4 @@ luminous law.)
 - 2026-11-20 — (chat, on Tom's ear) "Sí, ahora" and "Vale, ahora" are removed (unsourced; Tom did not hear them); vale forms replace them. Vale stays off the stock list and is spread across forms. From here a waiter's plain acknowledgement is a vale form before another Ahora mismo.
 - 2026-11-20 — (chat) The wine line's follow-up is ¿Rioja o Ribera? (sourced as the classic bar question); ¿De la casa? is removed as a waiter's reply.
 - 2026-11-20 — (chat) Constitution: a question is taught only where its answer is not already in front of the learner.
+- 2026-11-20 — (Tom) Ordering for the table SHIPPED (trip-table-order, v639), as revised by chat the same day. From here the Test Lab's batch preview names the session each line is from.
