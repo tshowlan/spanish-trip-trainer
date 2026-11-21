@@ -2080,6 +2080,15 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v638 (2026-11-20) — batch 3 before it ships: chat's three answers applied (docs/rulings-1120c-batch3-before-ship.md), under `trip-table-order`
+- 2026-11-20 — Chat: batch 3's three pre-ship asks answered (docs/rulings-1120c-batch3-before-ship.md): the row rule (two or more own Table lines), Sí, ahora replaced by vale forms on four lines, ¿De la casa? replaced by ¿Rioja o Ribera?. Next: Code applies; Tom plays and ships `trip-table-order`; then batch 4 (asking for another) with the Table's split.
+- THE ROW RULE: two or more own Table lines earn "Your table lines" (the pack's `dietPart.named.min: 2`, read by the engine while the name's switch is on; four stands off the switch). Vegetarian: Table 15 and a three-line row with the ¿Lleva carne? card. Lactose: woven, 16. Everyone else as before.
+- VALE FOR AHORA: staged reply swaps on three LIVE lines (¿Hay pan para la mesa? → Vale; ¿Me puede traer la carta, por favor? → Vale, un segundo; Help's Llame a la policía, por favor. → Vale, ya llamo), and the staged Queremos water line reads ¿Una o dos? · Vale · Marchando. They change for everyone at ship. stockReplies untouched; Ahora mismo untouched.
+- THE WINE LINE: ¿Tinto o blanco? · ¿Rioja o Ribera? · Muy bien, with the note; ¿De la casa? gone.
+- The price rule entered the constitution in chat's words. Paying at thirteen confirmed by chat.
+- Checked: every session of 23 profiles against v637: staging off identical; staging on differs only in the Table session, the dietary row, and Help sentences.
+- Next: Tom plays "3 · Ordering for the table" (it now also plays the bread, menu, and police lines) and ships; then batch 4.
+
 ## v637 (2026-11-20) — trip batch 3, ordering for the table, STAGED `trip-table-order` (docs/rulings-1120-table-ordering.md)
 - 2026-11-20 — Chat: trip batch 3 ruled and written (docs/rulings-1120-table-ordering.md): the Para compartir card and two sentences, Queremos (card, two converted lines), ¿Puedo pedir?, the size rule (sixteen), the dietary row renamed "Your table lines", new line and examples. The Table's taxi line is cut. Next: Code stages `trip-table-order`; Tom plays; then batch 4 (asking for another) with the Table's split.
 - BUILT as written (the final file: ¿Media o entera? kept on Tom's word, Croquetas no quedan out, the taxi line cut): the Para compartir card and its two sentences; the Queremos card and two lines, the Table's two Quiero lines carrying `until`; Perdón, ¿puedo pedir? under puedo; Necesito un taxi carrying `until`; the session's line and examples through `lineSwap` (which now carries `examples` too). Fifteen sentences, three cards.

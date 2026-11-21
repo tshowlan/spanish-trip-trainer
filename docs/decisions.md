@@ -345,3 +345,7 @@ luminous law.)
 - 2026-11-20 — (chat, Tom) "Necesito un taxi, por favor." leaves the Table under the phone premise; it returns with chapter 3's hotel desk.
 - 2026-11-20 — (chat) A sentence session may hold sixteen; the seventeenth splits it. The Table splits with batch 4 along the meal (arriving and ordering; the meal and its end). The dietary row is renamed "Your table lines" and sits after the numbered parts.
 - 2026-11-20 — (Tom) On the croquetas line the replies are the two he heard (one portion or two; it comes with three, shall I make it four) and ¿Media o entera?, kept because the ración is how Spain sells sharing plates.
+- 2026-11-20 — (chat) A learner with two or more Table lines of their own gets them as "Your table lines"; one line stays woven (replaces the four-or-more threshold).
+- 2026-11-20 — (chat, on Tom's ear) "Sí, ahora" and "Vale, ahora" are removed (unsourced; Tom did not hear them); vale forms replace them. Vale stays off the stock list and is spread across forms. From here a waiter's plain acknowledgement is a vale form before another Ahora mismo.
+- 2026-11-20 — (chat) The wine line's follow-up is ¿Rioja o Ribera? (sourced as the classic bar question); ¿De la casa? is removed as a waiter's reply.
+- 2026-11-20 — (chat) Constitution: a question is taught only where its answer is not already in front of the learner.

@@ -209,7 +209,8 @@ function _chapterFlowDeck(deck, rooms) {
   const dietSplit = w => {
     if (!celiacOn || !w.dietPart) return [w];
     const own = w.items.filter(it => it.diet), rest = w.items.filter(it => !it.diet);
-    if (own.filter(it => !it.card).length < w.dietPart.min || !rest.length) return [w];
+    const nm0 = w.dietPart.named && isStaged(w.dietPart.named.staged) ? w.dietPart.named : null;   // the row rule may change with the name (chat 11/20c: two or more, not four)
+    if (own.filter(it => !it.card).length < ((nm0 && nm0.min) || w.dietPart.min) || !rest.length) return [w];
     // the four moves' order inside Part 2: say it (the declaring line and its card), ask the dish (¿Lleva?), then the rest as the pack has them
     const leadFrames = new Set(own.filter(it => it.exLead).map(it => it.frame));
     const rank = it => (it.exLead || (it.card && leadFrames.has(it.frame))) ? 0 : it.frame === "lleva" ? 1 : 2;

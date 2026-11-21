@@ -57,6 +57,8 @@ Scenario rehearsal is the strongest prep for real performance — The Rehearsal'
 
 **A near miss (chat 2026-11-20, on Tom's ask).** A wrong answer offered beside the right one must still be something a diner could plausibly ask. "Is the kitchen shared?" failed it; "Is the grill shared?" passes.
 
+**What is asked (chat 2026-11-20, on Tom's ask).** A question is taught only where its answer is not already in front of the learner. A price on the menu, a sign on the door, and a word on the plate are read, not asked.
+
 **The Learn row (chat, 2026-11-07).** A row's drawer ends in Read the cards, the session's cards read-only; the row body plays.
 
 **Week by week, the mix tilts.** Early: survival essentials first, then scenario waves in demand order — mostly MEETING new phrases. Middle: the machines arrive and multiply what a person can say (seven frames × everything they've learned); learning and composing run side by side. Late: **the tilt inverts** — the review room's share grows as the countdown falls, until the final week is mostly REHEARSAL: composed stretches of the actual trip, run end to end, everything the person owns arranged in the day-shapes they'll live. The countdown doesn't just pace the person; it changes what kind of app this is as the date approaches. Six weeks out, Tripfluent is a teacher. One week out, it's a training camp.

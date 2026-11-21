@@ -38,10 +38,10 @@ The first two croquetas replies are the ones you heard on the trip, in chat's Sp
 |---|---|
 | Quiero agua sin gas para la mesa, por favor. (I want still water for the table, please.) | **Queremos agua sin gas para la mesa, por favor.** (We want still water for the table, please.) |
 | Wrong answers: I want sparkling water for the table, please. · Is there still water for the table? | Wrong answers: **I want still water, please. · We want sparkling water for the table, please.** |
-| You hear back: ¿Una o dos? · Sí, ahora · Marchando | Unchanged (chat said to keep the shipped replies) |
+| You hear back: ¿Una o dos? · Sí, ahora · Marchando | ¿Una o dos? · **Vale** (Okay) · Marchando (see section 7) |
 | Quiero una tapa para dos. (I want a tapa for two.) | **Queremos dos copas de vino.** (We want two glasses of wine.) |
 | Wrong answers: I want a tapa to go. · Do you have a tapa for two? | Wrong answers: **I want a glass of wine. · We want two beers.** |
-| You hear back: ¿Cuál? · ¿De jamón? · ¿Algo más? | You hear back: **¿Tinto o blanco?** (Red or white?) · **Muy bien** (Very good) · **¿De la casa?** (The house wine?) |
+| You hear back: ¿Cuál? · ¿De jamón? · ¿Algo más? | You hear back: **¿Tinto o blanco?** (Red or white?) · **¿Rioja o Ribera?** (Rioja or Ribera?) · **Muy bien** (Very good) (see section 7) |
 
 ## 4. New sentence: "Can I order from you?"
 
@@ -72,6 +72,36 @@ The first two croquetas replies are the ones you heard on the trip, in chat's Sp
 - **Queremos** is correct; whether it is what you would reach for is your call.
 - **¿Media o entera?** as three words is chat's; the portions behind it are verified.
 
-## One thing that needs a ruling before this ships
+---
 
-Chat set a ceiling: a sentence session holds sixteen. A **vegetarian** learner has three Table lines of their own, which is under the four needed for their own row, so they stay woven in. That makes their Table **eighteen** sentences (it is sixteen today). A lactose-intolerant learner lands on sixteen exactly. Everyone else is at fifteen. I built it as ruled and flagged it to chat; the two ways out are to give the vegetarian lines their own row now, or to accept eighteen until the next batch splits the Table.
+## 7. Added after your play (v638): chat's answers to your three questions
+
+**"Sí, ahora" is out; vale takes its place.** Chat could not source it, and you heard vale all week. Three of these four lines are already live, so they change for everyone when this ships.
+
+| Line | Was | Now |
+|---|---|---|
+| ¿Hay pan para la mesa? (live) | Sí, ahora (Yes, now) | **Vale** (Okay) |
+| ¿Me puede traer la carta, por favor? (live) | Sí, ahora (Yes, now) | **Vale, un segundo** (Okay, one second) |
+| Queremos agua sin gas para la mesa, por favor. (this batch) | Sí, ahora (Yes, now) | **Vale** (Okay) |
+| Llame a la policía, por favor. (live, in Help) | Vale, ahora (Okay, now) | **Vale, ya llamo** (Okay, I'm calling now) |
+
+"Ahora mismo" (Right away) is not cut anywhere. Chat's rule from here: when a waiter simply acknowledges, the reply is a vale form before it is another "Ahora mismo".
+
+**"¿De la casa?" is out; "¿Rioja o Ribera?" is in.**
+
+| | Was | Now |
+|---|---|---|
+| Queremos dos copas de vino. You hear back | ¿Tinto o blanco? · Muy bien · ¿De la casa? | ¿Tinto o blanco? · **¿Rioja o Ribera?** (Rioja or Ribera?) · Muy bien |
+| Good to know | (none) | **Rioja and Ribera are the two red wine regions nearly every bar pours. Asked ¿Rioja o Ribera?, either answer gets you a glass of red.** |
+
+For your ear: this is documented for Spain at large. A Barcelona bar may as easily have offered a Catalan red by name. If that is what you heard, the reply changes to match.
+
+**The vegetarian eighteen is solved by a simpler rule.** Two or more Table lines of your own now earn the "Your table lines" row (it was four).
+
+| Learner | Was (v637) | Now |
+|---|---|---|
+| Vegetarian | Table sentences, 18 | **Table sentences, 15, plus Your table lines (3 sentences and the ¿Lleva carne? card)** |
+| Lactose intolerant | Table sentences, 16 | Unchanged: one line stays woven |
+| Celiac, gluten-free, any allergy | Table sentences 15, plus Your table lines | Unchanged |
+
+**The batch button** now also plays the bread, menu, and police lines, since their replies changed.
