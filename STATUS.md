@@ -2080,6 +2080,20 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v640 (2026-11-20) — trip batch 4, asking for another and the Table in two, STAGED `trip-table-another` (docs/rulings-1120d-table-another.md)
+- 2026-11-20 — Chat: trip batch 4 ruled and written (docs/rulings-1120d-table-another.md): the otro card, four Table words and the words split, seven sentences including the two falta lines (Tom's reading of note 10), the Table's split with every line assigned, lines and examples for both parts, done-state for existing learners. Next: Code stages `trip-table-another`; Tom plays; then batch 5 (the end of the meal).
+- BUILT as written (the final file, falta in): Table words gains vaso (with its note), botella, tenedor, cuchillo; the otro card and four lines; the Falta un vaso card and two lines; ¿Tiene carta de vinos?.
+- TWO SPLITS, both by a mark on the line (`part: 2`) and a session-level `parts`, read only while the switch is on:
+  - words (`_splitKit`): Table words · Part 1 (six, id `w-table` kept) and Part 2 (five, then the learner's dietary words; id `w-table-2`).
+  - sentences (`partSplit`, after `dietSplit`): Table sentences · Part 1 (twelve, cards Para mí, Para compartir, Queremos; id `sent-table` kept) and Part 2 (ten, cards otro and Falta un vaso; id `sent-table-p2`, since `sent-table-2` is Your table lines). Order on Learn: Part 1, Part 2, Your table lines.
+- DONE-STATE as ruled: Part 1 of each keeps the id, so a learner who finished the Table keeps it done; Part 2 of each is new, old lines keeping their records. Checked in the pane.
+- CODE'S OWN, flagged to chat: the two lines for the Table words parts (chat named the senses, wrote no lines); vaso glossed "glass (for water)"; the otro card carries the ask's frame tag and sits before the plate line so it leads an otro line.
+- SIDE EFFECTS, flagged: the deck is 25 sessions (26 with an own row) and PLAN_SESSIONS is still 23; ¿Tiene carta de vinos? lands in a Part 1 that shows done, with no mark on the row; a learner who had the old over-ten words split (ids w-table-1 and w-table-2) is a rare unhandled case.
+- Checked: every session of 23 profiles against v639: staging off identical; staging on differs only in the Table's word and sentence sessions. Lactose's woven line is Part 1's thirteenth. In the pane: the batch button plays 38 beats labelled by session; Part 2 opens on its two cards, then an otro line.
+- docs/table-another-changes-review-2026-11-20.md: the Was/Now page for Tom.
+- ALSO OPEN (Tom, 11/20): what chapters 3 and 4 are for, so the trip batches do not leak into them. Logged for chat with Code's read (ledger).
+- Next: Tom plays "4 · Asking for another"; ship; then batch 5 (the end of the meal), which the chapter question touches (declining dessert).
+
 ## 2026-11-20 (later) — handoff to chat: trip batch 4, asking for another, and the Table's split (docs/chat-handoff-2026-11-20-table-another.md)
 - Six asks from Tom's notes 2, 3, 10, 19, 20 on the rulings already standing (sixteen, the split along the meal, vale before Ahora mismo). Engine work it will need: a sentence session split by a mark on its lines. Nothing built.
 - Next: chat's reply (and Tom's word on note 10); build STAGED `trip-table-another`; Tom plays it.

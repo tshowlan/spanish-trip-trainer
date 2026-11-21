@@ -350,3 +350,7 @@ luminous law.)
 - 2026-11-20 — (chat) The wine line's follow-up is ¿Rioja o Ribera? (sourced as the classic bar question); ¿De la casa? is removed as a waiter's reply.
 - 2026-11-20 — (chat) Constitution: a question is taught only where its answer is not already in front of the learner.
 - 2026-11-20 — (Tom) Ordering for the table SHIPPED (trip-table-order, v639), as revised by chat the same day. From here the Test Lab's batch preview names the session each line is from.
+- 2026-11-20 — (Tom, chat) "When the server forgets" (Tom's note 10) is a thing missing from the table: Falta ___, with a card and two lines (un vaso, un cuchillo).
+- 2026-11-20 — (chat) Otro is a fill inside ¿Me puede traer?, taught with one card of the word; its note carries otra and "never un otro."
+- 2026-11-20 — (chat) Table words gains vaso, botella, tenedor, cuchillo and splits by sense: Part 1 getting seated (six), Part 2 what is on the table (five, then the learner's dietary words). Dietary words no longer run alone.
+- 2026-11-20 — (chat) Table sentences splits along the meal. Part 1 (twelve): the table, the menu, the wine list, ordering. Part 2 (ten): bread, another, the menu again, what is missing, the bathroom, the check. A learner who finished the Table before the split keeps Part 1 as done and meets Part 2 as new, with old lines keeping their records.

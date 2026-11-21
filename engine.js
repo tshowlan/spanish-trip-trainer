@@ -112,6 +112,14 @@ function _journeyOneDeck(deck) {
   s0.lessons = out;
 }
 function _splitKit(l) {                                  // ruling 4: kits over 8 phrases run as halves
+  // SPLIT BY SENSE (chat 11/20d, trip batch 4): a WORD session marked `parts: { staged, lines: [one, two], dietLine }` whose words carry `part: 2` is
+  // cut where it means something, not down the middle: Part 1 is the unmarked words, Part 2 the marked ones, then the learner's dietary words
+  // (they no longer run alone). Part 1 KEEPS the session's id, so a learner who finished it before the split keeps it done; Part 2 (id + "-2") is new.
+  { const ps = (l.parts && l.wordsSession && typeof isStaged === "function" && isStaged(l.parts.staged)) ? l.parts : null;
+    if (ps) { const two = l.items.filter(i => i.part === 2), diet = l.items.filter(i => i.diet && i.part !== 2), one = l.items.filter(i => i.part !== 2 && !i.diet);
+      if (one.length && two.length) { const t0 = l.title.replace(/ [\u00b7·] (Part )?\d$/, "");
+        return [Object.assign({}, l, { title: t0 + " \u00b7 Part 1", items: one, line: ps.lines[0] || l.line, parts: null }),
+                Object.assign({}, l, { id: l.id + "-2", title: t0 + " \u00b7 Part 2", items: two.concat(diet), primer: null, line: (diet.length && ps.dietLine) || ps.lines[1] || l.line, parts: null })]; } } }
   if (l.noSplit || (l.numbers && typeof isStaged === "function" && isStaged("numbers-1"))) return [l];   // the pack may keep a session whole; numbers are met as a set
   if (l.chain || l.machine || l.machines || !(l.items || []).length || l.items.length <= 8) return [l];
   // WHOLE UP TO THE PACK'S NUMBER, THEN CUT WHERE IT MEANS SOMETHING (Tom 11/18, under trip-celiac): Table words with one dietary word was nine and
@@ -201,7 +209,7 @@ function _chapterFlowDeck(deck, rooms) {
   // a word met in chapter one IS the same item when a later lesson carries it (one identity, one history)
   old.slice(1).forEach(st => st.lessons.forEach(l => { l.items = (l.items || []).map(it => made.get(slug(it.es)) || it); }));
   const asks = (flow.asks || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, asks: true, items: w.items.filter(live).map(d => (w.replySet && made.has(slug(d.es))) ? made.get(slug(d.es)) : Object.assign({ tier: 1 }, d)) }));
-  const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { line: (w.lineSwap && isStaged(w.lineSwap.staged)) ? w.lineSwap.line : w.line, examples: (w.lineSwap && isStaged(w.lineSwap.staged) && w.lineSwap.examples) || w.examples, items: w.items.filter(live).flatMap(expand).filter(cardMine).filter(fits).map(form).map(dietMark).map(d => {   /* a staged swap (the trip notes, 11/16): an item's `swap: { staged, replies, note, owe }` or a session's `lineSwap: { staged, line }` replaces those fields while its switch is on */ const k = (d.card ? "card:" : "") + slug(d.es), sw = (d.swap && isStaged(d.swap.staged)) ? d.swap : null, own = { replies: (sw && sw.replies) || (isStaged("reply-sets") && d.replies2) || d.replies, owe: (sw && sw.owe) || d.owe || null, diet: !!d.diet, tid: d.tid || null, ex: d.ex || null, exLead: !!d.exLead, hint: d.hint, near: d.near, frame: d.frame, note: (sw && sw.note) || d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = !d.fresh && bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
+  const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { line: (w.lineSwap && isStaged(w.lineSwap.staged)) ? w.lineSwap.line : w.line, examples: (w.lineSwap && isStaged(w.lineSwap.staged) && w.lineSwap.examples) || w.examples, items: w.items.filter(live).flatMap(expand).filter(cardMine).filter(fits).map(form).map(dietMark).map(d => {   /* a staged swap (the trip notes, 11/16): an item's `swap: { staged, replies, note, owe }` or a session's `lineSwap: { staged, line }` replaces those fields while its switch is on */ const k = (d.card ? "card:" : "") + slug(d.es), sw = (d.swap && isStaged(d.swap.staged)) ? d.swap : null, own = { replies: (sw && sw.replies) || (isStaged("reply-sets") && d.replies2) || d.replies, owe: (sw && sw.owe) || d.owe || null, diet: !!d.diet, tid: d.tid || null, part: d.part || null, ex: d.ex || null, exLead: !!d.exLead, hint: d.hint, near: d.near, frame: d.frame, note: (sw && sw.note) || d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = !d.fresh && bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
   // THE TABLE'S PART 2 (chat 11/20, under trip-celiac; the rule Tom set for Table words): a session marked `dietPart: { min, line }` whose learner
   // has `min` or more of their own keyed sentences in it runs as two rows: Part 1 is everyone's session, Part 2 the learner's own lines alone, with
   // their cards opening it. Fewer stay woven in. Part 1 keeps the session's id (its history and Stats place); Part 2 is id + "-2". The row's
@@ -221,7 +229,20 @@ function _chapterFlowDeck(deck, rooms) {
     // Named, the session keeps its own title and the row carries the name, after it.
     const named = w.dietPart.title || null;
     return [Object.assign({}, w, { title: named ? w.title : base + " \u00b7 Part 1", items: rest }),
-            Object.assign({}, w, { id: w.id + "-2", title: named || base + " \u00b7 Part 2", items: own, line: w.dietPart.line, examples, primer: null })];
+            Object.assign({}, w, { id: w.id + "-2", title: named || base + " \u00b7 Part 2", items: own, line: w.dietPart.line, examples, primer: null, parts: null })];
+  };
+  // THE TABLE SPLITS ALONG THE MEAL (chat 11/20, 11/20d): a SENTENCE session marked `parts: { staged, id2, one: { line, examples }, two: { line, examples } }`
+  // whose lines carry `part: 2` runs as two rows, each with its own line, examples, and cards. Part 1 keeps the session's id (a learner who
+  // finished it keeps it done, its new lines gained since); Part 2 is new to everyone, its old lines keeping their records. It runs after dietSplit,
+  // so the order on Learn is Part 1, Part 2, then the learner's own row.
+  const partSplit = w => {
+    const ps = (w.parts && typeof isStaged === "function" && isStaged(w.parts.staged)) ? w.parts : null;
+    if (!ps) return [w];
+    const two = w.items.filter(it => it.part === 2), one = w.items.filter(it => it.part !== 2);
+    if (!one.length || !two.length) return [w];
+    const base = w.title.replace(/ [\u00b7·] (Part )?\d$/, "");
+    return [Object.assign({}, w, { title: base + " \u00b7 Part 1", items: one, line: ps.one.line, examples: ps.one.examples, parts: null }),
+            Object.assign({}, w, { id: ps.id2 || w.id + "-p2", title: base + " \u00b7 Part 2", items: two, line: ps.two.line, examples: ps.two.examples, primer: null, parts: null, dietPart: null })];
   };
   const order = flow.rooms || [];
   // THE ROOMS RETIRE WITH THE LAST PLACE (Tom 10/24 ruling; done 11/3 when Tom met a room's machine weld in review): once the Street,
@@ -230,7 +251,7 @@ function _chapterFlowDeck(deck, rooms) {
   const t = flow.chapters || [], b = flow.blurbs || [];
   deck.stages = [
     Object.assign({}, old[0], { pass: 0, title: t[0] || "The words", blurb: b[0] || "", lessons: words }),
-    { id: "sp-first-sentences", pass: 1, title: t[1] || "The sentences that get things done", blurb: b[1] || "", lessons: asks.concat(sentences.flatMap(dietSplit), roomList) },   // the asks open the chapter, the rooms practice them
+    { id: "sp-first-sentences", pass: 1, title: t[1] || "The sentences that get things done", blurb: b[1] || "", lessons: asks.concat(sentences.flatMap(dietSplit).flatMap(partSplit), roomList) },   // the asks open the chapter, the rooms practice them
     Object.assign({}, old[1] || {}, { pass: 2, title: t[2] || "Sentences by place", blurb: b[2] || "", lessons: (old[1] ? old[1].lessons : []).concat(old[2] ? old[2].lessons : []) }),
   ].concat(old.slice(3).map((st, i) => Object.assign({}, st, { pass: 3 + i, title: i === 0 ? (t[3] || st.title) : st.title, blurb: i === 0 ? (b[3] || "") : st.blurb })));
   // THE OLD CHAPTERS OFF (Tom 11/6, STAGED "old-chapters-off"): passes 2 and up are the old curriculum (Where's the loo, Taxi!, Dinner at
