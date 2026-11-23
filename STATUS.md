@@ -2080,6 +2080,12 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v642 (2026-11-23) — Test Lab: the batch preview's session label hangs under the progress bar
+- Tom's screenshot: "FROM TABLE WORDS · PART 2" sat on top of the exercise's first line ("BUILD THE SENTENCE"). Cause: the label was in the flow above the exercise, but an anchored exercise's first line is placed from the screen (16dvh), not from what is above it, so on a phone the two met. It did not show in the pane at desktop height.
+- Fix: the label is out of the flow, centred under the progress bar, placed from the bar's own box (13px under it), 10px type, taps pass through it. Its CSS selector has to outrank the field rule `.runner > *:not(.facet-bg) { position: relative }`, which had silently kept a first attempt in the flow.
+- Checked at phone size (375x812) on all 38 beats of batch 4 (present, build, hear-the-reply): no overlap with any exercise text, the ring, the close button, the test arrows, or the Stronger whisper; at least 17px clear above the exercise's first line.
+- Lab runs only; nothing a learner sees changed. `trip-table-another` is still staged.
+
 ## v641 (2026-11-21) — rulings-1120e received: the plan counted from the deck, "N new" on a done row (both ride `trip-table-another`); the otro lines get their own composer tag
 - 2026-11-20 — Chat: the chapter test ruled (docs/rulings-1120e-chapters.md): chapter 2 is need, batch 5 splits on it, places stay chapter 2, plan goal derived from the deck, "· 1 new" on done rows, v640's three flags passed. Proposed and with Tom: scenes become composed visits inside review (roles, no cast); chapter 3 answering what you are asked, chapter 4 making it yours. Next: Tom plays and ships batch 4; batch 5's handoff can be written; the chapter 3 brief waits on Tom's answer to Part B.
 - The file reached Code on 11/21, after the framework that replaces its Part B and amends Part A (the hotel desk). Part A built:

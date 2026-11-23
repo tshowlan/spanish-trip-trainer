@@ -1979,7 +1979,11 @@ function renderQuestion() {
   // THE BATCH PREVIEW SAYS WHERE A LINE LIVES (Tom 11/20): a Test Lab batch plays lines from more than one session back to back (the Table's
   // batch carried one Help reply), so each beat is labelled with its session. Lab runs only; a learner never sees it.
   { const old = wrap.querySelector("#lab-from"); if (old) old.remove();
-    if (run.lab && q && q.labFrom) { const tag = el(`<div id="lab-from" class="lab-from"></div>`); tag.textContent = "From " + q.labFrom; wrap.insertBefore(tag, wrap.querySelector("#qbody")); } }
+    // It hangs just under the progress bar, out of the flow (Tom 11/23: in the flow it pushed nothing down and sat on the exercise's first line,
+    // which is anchored to the screen, not to what is above it). Placed from the bar's own box, so it follows the bar on any phone.
+    if (run.lab && q && q.labFrom) { const tag = el(`<div id="lab-from" class="lab-from"></div>`); tag.textContent = "From " + q.labFrom; wrap.appendChild(tag);
+      const bar = wrap.querySelector(".pbar"), b = bar && bar.getBoundingClientRect(), w = wrap.getBoundingClientRect();
+      if (b && b.width) { tag.style.top = Math.round(b.bottom - w.top + 13) + "px";   /* 13: clear of the ring and the close button, whose boxes hang lower than the bar */ tag.style.left = Math.round(b.left - w.left + b.width / 2) + "px"; } } }
   // tap guard (backlog 7/26-3): a fast Continue tap was landing on the NEXT exercise's
   // options — a fresh question swallows input for its first 300ms [tune], capture-phase
   run.guardT = Date.now() + 300;
