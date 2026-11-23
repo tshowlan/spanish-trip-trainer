@@ -2093,8 +2093,37 @@ function _shapedDistractor(item) {
   const all = (ALL_ITEMS || []).filter(x => x !== item && !x.card).map(x => x.en).filter(fits);   // the asks included: a frame with a slot wants another frame with a slot
   return all.length ? sample(all, 1)[0] : null;
 }
+/* ONE FIXED, RELATED OPTION (Tom 11/23, STAGED "card-pair": "another" against "Wednesday" took him out of it, and the pair changed every time).
+   The card's wrong meaning is now the same one each time, and near the right one: (1) the pack's own word for it (`wrong`), where the card has
+   no relative in its session; (2) else the next item in its own session of the same kind (a card beside a card, a word beside a word) and the
+   same shape, never one that all but repeats the right answer ("Will you charge me, please?" against "Will you charge me?"); (3) else the old
+   pick. In a Test Lab batch the card's own session is used, so the preview shows what the session shows. Of 118 cards, 16 had no relative
+   and drew from the whole course; those carry `wrong` (Code's drafts, with chat). */
+function _homeLesson(item) {
+  if (run && run.lesson && !run.lab) return run.lesson;
+  for (const st of (DECK ? DECK.stages : [])) for (const l of st.lessons) if ((l.items || []).includes(item)) return l;
+  return run && run.lesson;
+}
+function _pairedDistractor(item) {
+  if (item.wrong) return item.wrong;
+  const l = _homeLesson(item), items = (l && l.items) || [], en = item.en || "";
+  const wc = t => t.trim().split(/\s+/).length, shape = t => ({ w: wc(t), slot: /___/.test(t), q: /\?\s*$/.test(t) }), tgt = shape(en);
+  const plain = t => norm(t).replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim(), pe = plain(en);
+  const twin = t => { const p = plain(t); return !p || p === pe || p.includes(pe) || pe.includes(p); };
+  const fits = t => { if (!t || twin(t)) return false; const sh = shape(t); if (sh.slot !== tgt.slot || sh.q !== tgt.q) return false; if (tgt.slot) return true; return tgt.w <= 2 ? sh.w <= 2 : Math.abs(sh.w - tgt.w) <= 1; };
+  // the session's order, nearest first: the one after it, the one before, two after, two before... The same neighbour every time, and the
+  // closest in the list (Buenas tardes against Buenos días, not against Por favor four rows on).
+  const i = items.indexOf(item), after = [];
+  if (i < 0) after.push(...items); else for (let d = 1; d < items.length; d++) { if (items[i + d]) after.push(items[i + d]); if (items[i - d]) after.push(items[i - d]); }
+  const kin = after.filter(x => !!x.card === !!item.card), rest = after.filter(x => !!x.card !== !!item.card);
+  const hit = kin.concat(rest).map(x => x.en).find(fits);
+  if (hit) return hit;
+  if (l && l.asks) { const sib = kin.map(x => x.en).find(t => t && !twin(t)); if (sib) return sib; }   // an ask's wrong option stays another ask, whatever its shape
+  return null;
+}
 function _presentCheck(item, chunked) {
   const nc = chunked ? (item.chunks.find(c => c[2] === "new") || null) : null;
+  if (!nc && isStaged("card-pair")) { const d = _pairedDistractor(item); if (d) return { es: null, correct: item.en, distract: d }; }
   if (nc) return { es: nc[0], correct: nc[1], distract: _glossDistractor(nc[1]) || _itemDistractor(item) };
   if (run.lesson && run.lesson.asks) return { es: null, correct: item.en, distract: _itemDistractor(item) };   // an ask against another ask
   return { es: null, correct: item.en, distract: _shapedDistractor(item) || _itemDistractor(item) };
