@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v645";
+const APP_BUILD = "v646";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -16,9 +16,12 @@ const APP_BUILD = "v645";
 /* THE TRIP BATCHES (Tom 11/17): one line per trip-notes batch, in order. The Test Lab plays a batch by itself: only what it added or
    changed, back to back, nothing recorded. `key` is the batch's switch; the pack marks its items with `staged: key` or `swap.staged: key`. */
 const TRIP_BATCHES = [
+  { key: "trip-table-end", label: "5 · The end of the meal" },
 ];
 const STAGED = {
-  "card-pair": "Intro cards: the second meaning on a card is the same one every time and close to the right one (the next word or card of its own session, or the pack's own word for it where it has no relative: another against the same, not against Wednesday). Ninety cards carry a written one (chat 11/23: la cuenta against the menu, el hotel against the hospital; eight dietary words are Code's drafts)",
+  "trip-table-end": "Trip notes, batch 5 (chat 11/23): the end of the meal. Table words · Part 2 gains postre (its example is the waiter's question, ¿Quieren postre o café?). Table sentences · Part 2 gains one line, Ya he terminado, gracias (heard back: I'll take your plate; shall I bring the dessert menu, always on the first play; a coffee?). Gluten and lactose learners get a dessert line in Your table lines",
+  "three-to-a-tag": "No more than three lines of one kind in a session, so one play reaches every line (chat 11/23): Help loses Necesito un hospital, por favor (the hospital keeps two lines); your own dietary lines at the Counter no longer crowd its ¿Tiene? lines; the cross-contamination question sits with the fryer question",
+  "card-pair": "Intro cards: the second meaning on a card is the same one every time and close to the right one (the next word or card of its own session, or the pack's own word for it where it has no relative: another against the same, not against Wednesday). Ninety cards carry a written one (chat 11/23: la cuenta against the menu, el hotel against the hospital; the eight dietary pairs passed, four more written: mesa against the bar, la llave against the door)",
 // SHIPPED (Tom, 2026-11-23, v645): "trip-table-another", Trip notes, batch 4 (chat 11/20): asking for another, and the Table in two. Table words gains vaso, botella, tenedor, cuchillo and splits by sense (Part 1 getting seated, Part 2 what is on the table, then your dietary words). Table sentences gains the otro card and four lines (another fork, glass, bottle of water; the menu again), the Falta un vaso card and two lines (something is missing), and the wine list; it splits along the meal (Part 1 arriving and ordering, twelve; Part 2 the meal and its end, ten), each with its own line. Your table lines follows. With it (chat 11/20): the plan's goal is counted from your deck, not fixed at 23; a finished row that gained a line shows N new and plays it first. Chat 11/23: Vale, ya le traigo otro replaces Vale, uno limpio, and four bare Vale replies are varied
 // SHIPPED (Tom, 2026-11-20, v639): "trip-table-order", Trip notes, batch 3 (chat 11/20): ordering for the table. The Table gains the Para compartir card and two sentences (heard back: one portion or two; it comes with three, shall I make it four; half or full), Queremos (a card; the two Quiero lines become Queremos lines), and Perdon, puedo pedir. The taxi line leaves the Table. Fifteen sentences. New line and examples. The dietary row is named Your table lines, and two or more own lines earn it (was four). Revised 11/20: Si ahora and Vale ahora replaced by vale forms on the bread, menu, water, and police lines; the wine line asks Rioja o Ribera
   "mic-check": "Say it: the microphone check (auto-listen after the word, the ring, the match). PARKED: on iPhone it leaves playback on the quiet earpiece; off until the native app can own the audio route (Tom 10/8)",

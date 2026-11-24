@@ -63,6 +63,8 @@ Scenario rehearsal is the strongest prep for real performance — The Rehearsal'
 
 **Three to a tag (chat 2026-11-23).** No composer tag holds more than three lines in a session, so one play can reach every line. A fourth is retagged or trimmed. "· N new" counts any line never shown.
 
+**A learner's own lines are counted apart (chat 2026-11-23, sharpening three to a tag).** A learner's own dietary lines never share a composer tag with the session's lines: each dietary answer's lines carry a composer-only tag of their own (`ctag`). The frame taught is still ¿Tiene? or ¿Hay?; only the composer's count changes.
+
 **The Learn row (chat, 2026-11-07).** A row's drawer ends in Read the cards, the session's cards read-only; the row body plays.
 
 **Week by week, the mix tilts.** Early: survival essentials first, then scenario waves in demand order — mostly MEETING new phrases. Middle: the machines arrive and multiply what a person can say (seven frames × everything they've learned); learning and composing run side by side. Late: **the tilt inverts** — the review room's share grows as the countdown falls, until the final week is mostly REHEARSAL: composed stretches of the actual trip, run end to end, everything the person owns arranged in the day-shapes they'll live. The countdown doesn't just pace the person; it changes what kind of app this is as the date approaches. Six weeks out, Tripfluent is a teacher. One week out, it's a training camp.

@@ -410,7 +410,7 @@ function composeSentences(lesson) {
   const pool = (lesson.items || []).filter(it => !it.card), place = lesson.place || "";
   // the frames: each ask's sentences, shuffled, so the beats spread across them (build one, hear another, answer a third)
   const frames0 = new Map();
-  pool.forEach(it => { const k = it.frame || norm(it.es); if (!frames0.has(k)) frames0.set(k, []); frames0.get(k).push(it); });
+  pool.forEach(it => { const k = it.ctag || it.frame || norm(it.es); if (!frames0.has(k)) frames0.set(k, []); frames0.get(k).push(it); });   // ctag (chat 11/23d): a composer-only tag. A learner's own dietary lines never count against the session's frame; the frame taught is unchanged
   // a frame that was just introduced on a card leads the ladder (Tom 11/5: the ¿Está? card, then a taxi line, read as a jump); the rest keep the pack's order
   const cardKeys = cards.map(c => c.frame || norm(c.es).replace(/[\u00bf?\u00a1!_,.]/g, "").trim()).filter(k => frames0.has(k));   // the slot and its punctuation drop (¿Está ___? is the frame esta); a card may name its frame outright (the taxi card: "Al hotel" leads the a-lines)
   const frames = new Map();
@@ -448,7 +448,7 @@ function composeSentences(lesson) {
   for (let t = 0; t < 60 && exs.some((q, i) => i > 0 && core(exs[i - 1].es) === core(q.es)); t++) exs = shuffle(exchanges);   // never the same reply, or its twin, twice in a row
   // the carded frames' builds lead, in card order (the card, then its own line; chat 11/5b confirms); the rest shuffled
   const bs = shuffle(builds), leadBuilds = [];
-  cardKeys.forEach(k => { const i = bs.findIndex(q => q.item && (q.item.frame || norm(q.item.es)) === k); if (i >= 0) leadBuilds.push(bs.splice(i, 1)[0]); });
+  cardKeys.forEach(k => { const i = bs.findIndex(q => q.item && (q.item.ctag || q.item.frame || norm(q.item.es)) === k); if (i >= 0) leadBuilds.push(bs.splice(i, 1)[0]); });
   noSeam(leadBuilds.concat(bs)); noSeam(shuffle(ears)); noSeam(exs); noSeam(shuffle(picks)); noSeam(shuffle(typed));
   return qs;
 }

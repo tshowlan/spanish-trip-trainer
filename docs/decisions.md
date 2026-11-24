@@ -368,3 +368,12 @@ luminous law.)
 - 2026-11-23 — (chat) No composer tag holds more than three lines in a session, so one play can reach every line. "· N new" counts any line never shown.
 - 2026-11-23 — (chat) "Vale, uno limpio" is replaced by "Vale, ya le traigo otro"; bare Vale stays on two lines and is varied on four.
 - 2026-11-23 — (Code, found in test) A dietary word carries a written second option: its neighbours depend on the learner's answers, so the fallback is not the same for everyone and can reach the cutlery. Eight drafts with chat.
+- 2026-11-23 — (chat) The end of the meal is taught as recognition: postre is a Table word whose context is the waiter's question; "Ya he terminado, gracias." is the one said line, with the dessert-menu question owed on its first play. No new line for the plain no. The batch does not wait for the third turn.
+- 2026-11-23 — (chat) The dessert carrier is ¿Tiene postres sin gluten? / sin lactosa?, in Your table lines. Table words · Part 2 may hold nine.
+- 2026-11-23 — (chat) Chapter 2's numbers are three sessions: Prices you'll hear · Part 1 (the tens, y, con), · Part 2 (once to quince; the other teens, the twenties, and ciento by ear), and The hour (a las, a la una, y media). Quarters and the 24-hour clock said aloud are out of chapter 2.
+- 2026-11-23 — (chat) A two-part number is entered with one separator key in the pad's bottom-left corner: a comma for prices, a colon for the hour. Amends 9/20 §7 (ordered taps). The Numbermachine build conveyor stays parked.
+- 2026-11-23 — (chat, Tom) ¿A qué hora ___? returns as a place-frame card in Shop sentences with two lines (cierra; abre la farmacia). Its only fills in chapter 2 are abre and cierra; a kitchen-hours line is out (Tom did not meet a closed kitchen).
+- 2026-11-23 — (chat) A reply may speak only numbers its session's seat has met. Paying's two total lines take real prices.
+- 2026-11-23 — (chat) A learner's own dietary lines carry composer-only tags of their own and never count against a session's frame tag. "Necesito un hospital, por favor." is cut from Help (four under one tag; the hospital keeps two lines).
+- 2026-11-23 — (chat) Code's eight dietary pairs pass. Four fallback pairs are written: mesa / the bar, todo recto / to the left, el metro / the bus, la llave / the door.
+- 2026-11-23 — (Tom) Batch 4 shipped (v645). The card fix stays staged until Tom names it.
