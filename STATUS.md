@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v648 (2026-11-23) — `note-spanish` is now italic in the note's grey (Tom's pick, mock B), still STAGED, postre card only
+- Tom: "if we use italics here in addition to stories its fine, im thinking B."
+- `.note-es { font-style: italic }` and nothing else: the note's colour and weight are inherited. The constitution's NARRATIVE IS ITALIC law carries Tom's amendment; decisions.md has the line.
+- OPEN: fonts.css has no italic Inter, so the browser slants the regular face and the gap after a phrase is tight ("gracias is"). A true italic needs a font file brought into fonts/ (asked of Tom; nothing downloaded).
+- Checked in the pane on the postre card at phone width: both phrases italic, same grey (rgb 167 164 148) and weight 400 as the sentence around them.
+- Next on Tom's word: the font file; then the other thirty-one notes marked, staged under the same switch.
+
 ## 2026-11-23 — MOCK for Tom: six treatments for the Spanish inside a Good to know (design/note-spanish-options.html), no app change
 - Tom on v647's postre card: "the bold white is speaking too loudly"; asked for options, naming italic in the regular grey and single quotation marks.
 - Six, each on three real notes (the postre card, one Spanish word, several phrases), in the live label and note classes: A bold and bright (v647) · B italic, same grey · C single quotation marks · D same grey at weight 600 (Code's pick) · E the text colour at normal weight · F a 40% mix at weight 500.

@@ -458,7 +458,7 @@ function tidyBreaks(s) {
 }
 
 /* SPANISH INSIDE A GOOD TO KNOW (Tom 11/23, STAGED "note-spanish"): a note may mark its Spanish with [[double brackets]]. With the switch on the
-   marked words render in the full text colour at a stronger weight (upright: italic is narrative's, gold is "new"); with it off the marks drop
+   marked words render italic in the note's own grey (Tom's pick, mock B: the bold white spoke too loudly); with it off the marks drop
    and the note reads as it always has. Every place a note is shown calls this. Tom's case: "No, gracias is a full answer" blurred at the comma. */
 function noteHtml(s) {
   const on = typeof isStaged === "function" && isStaged("note-spanish");

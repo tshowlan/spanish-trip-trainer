@@ -128,6 +128,7 @@ Scenario rehearsal is the strongest prep for real performance — The Rehearsal'
   sitting, during the make, before the check); they may be the exercise.
 - **NARRATIVE IS ITALIC** (2026-08-31): every context line, verse, and finale renders in the display
   face's true italic (Plus Jakarta Sans italic axes self-hosted); Spanish, cues, and asks stay upright.
+  **Amended by Tom, 2026-11-23:** inside a Good to know, the Spanish is italic too, in the note's own grey and weight (no quotation marks, no bold, no change of colour). Everywhere else Spanish stays upright. Staged `note-spanish` until Tom ships it; the note face (Inter) has no true italic in fonts.css yet.
 - **THE END LABEL mirrors the door** (2026-08-31): "END SCENE: CAFÉ · MORNING" (micro-caps) replaces
   "That's the scene"; the ledger keeps the numbers.
 - **THE SCOPE CEILING** (Tom, verbatim, 2026-09-03): a 3-sentence conversation with a stranger is the

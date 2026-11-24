@@ -377,3 +377,4 @@ luminous law.)
 - 2026-11-23 — (chat) A learner's own dietary lines carry composer-only tags of their own and never count against a session's frame tag. "Necesito un hospital, por favor." is cut from Help (four under one tag; the hospital keeps two lines).
 - 2026-11-23 — (chat) Code's eight dietary pairs pass. Four fallback pairs are written: mesa / the bar, todo recto / to the left, el metro / the bus, la llave / the door.
 - 2026-11-23 — (Tom) Batch 4 shipped (v645). The card fix stays staged until Tom names it.
+- 2026-11-23 — (Tom) The Spanish inside a Good to know is italic, in the note's own grey. Chosen from six mocked treatments after bold white "spoke too loudly"; italics now serve notes as well as narrative. No quotation marks around Spanish in notes.
