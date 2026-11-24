@@ -2186,7 +2186,7 @@ function renderPresent(q) {
       <div class="present-es">${item.es}</div>
       <div class="present-en">${item.en}</div>
       ${ctx}
-      ${item.note ? `<div class="cue-label note-label">Good to know</div><div class="present-note">${item.note}</div>` : ""}
+      ${item.note ? `<div class="cue-label note-label">Good to know</div><div class="present-note">${noteHtml(item.note)}</div>` : ""}
       ${item.anchor ? `<div class="present-anchor"><span class="lead">Think:</span> ${item.anchor}</div>` : ""}
     </div>`);
     const ctxEs = card.querySelector(".present-ctx .es");
@@ -4634,7 +4634,7 @@ function resolveCorrect(item, q, info) {
   // explaining sentence dignified the moment (voice law 4). RESTORED keeps its note: it
   // carries information the kicker alone does not (that the item had faded).
   if (q && q.resNote && q.item && q.resNote === q.item.note) { const stn = learnPeek(q.item); if (stn) stn.noteShown = true; }   // seen once: the first-meeting note retires for this word (q.item, not the resolved stub)
-  const note = (q && q.resNote) ? `<div class="res-note gtk"><span class="cue-label note-label">Good to know</span>${q.resNote}</div>`   // the aside's one dress: a label over the line (Tom 10/25, mock B)
+  const note = (q && q.resNote) ? `<div class="res-note gtk"><span class="cue-label note-label">Good to know</span>${noteHtml(q.resNote)}</div>`   // the aside's one dress: a label over the line (Tom 10/25, mock B)
     : kick === "restored" ? `<div class="res-note">This one was fading. You brought it back.</div>` : "";
   // no-repeat (§3.7): the grown carries only what's MISSING from the screen. When the
   // exercise's own sentence completed in place (fused row, filled blank, typed close),
@@ -4753,7 +4753,7 @@ function showCorrection(item, extra, wrong, words) {
     <div class="corr-sheet" role="dialog" aria-label="Correction">
       <div class="corr-grab"></div>
       ${wrong ? `<div class="corr-wrong${words && words.length ? " by-word" : ""}">${wrongHtml}</div>` : ""}
-      ${(run && run.qs && run.qs[run.idx] && run.qs[run.idx].resNote) ? `<div class="res-note gtk"><span class="cue-label note-label">Good to know</span>${run.qs[run.idx].resNote}</div>` : ""}
+      ${(run && run.qs && run.qs[run.idx] && run.qs[run.idx].resNote) ? `<div class="res-note gtk"><span class="cue-label note-label">Good to know</span>${noteHtml(run.qs[run.idx].resNote)}</div>` : ""}
       <div class="corr-label">The phrase</div>
       <div class="corr-chunks">${pills}<button class="corr-audio" aria-label="Replay audio">${icon('speaker', 18)}</button></div>
       <div class="corr-trans">${item.en}</div>

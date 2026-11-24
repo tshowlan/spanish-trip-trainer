@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v646";
+const APP_BUILD = "v647";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -19,6 +19,7 @@ const TRIP_BATCHES = [
   { key: "trip-table-end", label: "5 · The end of the meal" },
 ];
 const STAGED = {
+  "note-spanish": "Good to know: the Spanish inside a note stands out from the English around it (the full text colour, a little bolder, no quotation marks). Marked on the postre card only, for Tom to judge before the other thirty-one notes are marked",
   "trip-table-end": "Trip notes, batch 5 (chat 11/23): the end of the meal. Table words · Part 2 gains postre (its example is the waiter's question, ¿Quieren postre o café?). Table sentences · Part 2 gains one line, Ya he terminado, gracias (heard back: I'll take your plate; shall I bring the dessert menu, always on the first play; a coffee?). Gluten and lactose learners get a dessert line in Your table lines",
   "three-to-a-tag": "No more than three lines of one kind in a session, so one play reaches every line (chat 11/23): Help loses Necesito un hospital, por favor (the hospital keeps two lines); your own dietary lines at the Counter no longer crowd its ¿Tiene? lines; the cross-contamination question sits with the fryer question",
   "card-pair": "Intro cards: the second meaning on a card is the same one every time and close to the right one (the next word or card of its own session, or the pack's own word for it where it has no relative: another against the same, not against Wednesday). Ninety cards carry a written one (chat 11/23: la cuenta against the menu, el hotel against the hospital; the eight dietary pairs passed, four more written: mesa against the bar, la llave against the door)",

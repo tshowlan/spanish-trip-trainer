@@ -92,7 +92,7 @@ function openCardsSheet(l) {
       <div class="cs-es" data-es="${esc(it.es)}">${esc(it.es)}</div>
       <div class="cs-en">${esc(it.en)}</div>
       ${it.contextEs ? `<div class="cs-ctx"><span class="es" data-es="${esc(it.contextEs)}">${esc(it.contextEs)}</span>${it.contextEn ? `<span class="en">${esc(it.contextEn)}</span>` : ""}</div>` : ""}
-      ${it.note ? `<div class="cue-label note-label cs-label">Good to know</div><div class="cs-note">${esc(it.note)}</div>` : ""}
+      ${it.note ? `<div class="cue-label note-label cs-label">Good to know</div><div class="cs-note">${noteHtml(esc(it.note))}</div>` : ""}
     </div>`;
   // the label once per kind (Tom 11/6, pick E of the mocks): the words together, then the phrases, then the signs; the pack's order inside each
   const groups = () => {

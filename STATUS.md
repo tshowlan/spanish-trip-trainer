@@ -2080,6 +2080,14 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v647 (2026-11-23) — STAGED `note-spanish`: the Spanish inside a Good to know stands out (Tom, reading the postre card)
+- Tom: should "No, gracias" carry quotation marks in the postre note, should "full answer" be "complete answer", and are the notes consistent?
+- MEASURED FIRST (scratch notes.js, chapters 1 and 2, four profiles): 49 notes, 32 with Spanish, 31 of those bare; the one pair of quotation marks is around English ("how was it"). The rule today is no quotes. The postre note blurs because its phrase holds a comma.
+- Tom chose a style over quotes, to try inside batch 5. BUILT: a note marks its Spanish with [[double brackets]]; `noteHtml()` (ui.js) renders them as `.note-es` (the full text colour, weight 600, upright) while `note-spanish` is on and drops the marks while it is off. Called at the three places a note shows: the intro card, the answer's Good to know, and Learn's cards sheet.
+- THE POSTRE NOTE (staged with batch 5): "You will hear this more than you say it. [[No, gracias]] is a complete answer. The dessert menu is [[la carta de postres]]." "Complete" for "full" is Tom's; with chat.
+- Only the postre note is marked. If Tom keeps it, the other thirty-one are marked next (a content pass, staged under the same switch).
+- Checked in the pane at phone width on the postre card: both phrases render bold in the label's colour; with staging off the same note reads plain with no brackets. Decks: staging off identical to v646; staging on, the one note.
+
 ## 2026-11-23 — MOCK for Tom: the corner key (design/numbers-corner-key.html), no app change
 - Chat's rulings-1123c C and D: one separator key in the pad's empty bottom-left corner, a comma for prices and a colon for the hour. The mock uses the live styles.css keys and readout; both pads take taps (12,50 and 8:30).
 - The corner is free on every number screen today (digits, word keys, runs with delete).

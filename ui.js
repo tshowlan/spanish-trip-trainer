@@ -456,3 +456,11 @@ function initPortraitOnly() {
 function tidyBreaks(s) {
   return String(s || "").replace(/(^|\s)(a|an|the|of|to|and|or|in|on|at)\s(?=\S)/gi, (m, pre, w) => `${pre}${w}\u00a0`);
 }
+
+/* SPANISH INSIDE A GOOD TO KNOW (Tom 11/23, STAGED "note-spanish"): a note may mark its Spanish with [[double brackets]]. With the switch on the
+   marked words render in the full text colour at a stronger weight (upright: italic is narrative's, gold is "new"); with it off the marks drop
+   and the note reads as it always has. Every place a note is shown calls this. Tom's case: "No, gracias is a full answer" blurred at the comma. */
+function noteHtml(s) {
+  const on = typeof isStaged === "function" && isStaged("note-spanish");
+  return String(s == null ? "" : s).replace(/\[\[(.+?)\]\]/g, on ? '<span class="note-es">$1</span>' : "$1");
+}
