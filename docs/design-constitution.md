@@ -63,6 +63,12 @@ Scenario rehearsal is the strongest prep for real performance — The Rehearsal'
 
 **Three to a tag (chat 2026-11-23).** No composer tag holds more than three lines in a session, so one play can reach every line. A fourth is retagged or trimmed. "· N new" counts any line never shown.
 
+**What earns a card (chat 2026-11-24, on Tom's question; amends 11/23b).** A fixed line that belongs to no frame gets a card (Ya he terminado, Está bien así., ¿Me cobra?). A new word that rides a frame the learner owns rides the hint (pedir inside ¿Puedo ___?). A form the learner only hears never gets a card: at most one sentence in a note ties it to the verb the learner already says (¿Quieren? on the Queremos card; traigo on the ¿Me puede traer? card).
+
+**One-off forms (chat with Tom, 2026-11-24).** The app prepares a traveler for what they will meet; it does not teach every way to say a thing. Before a line brings a new sentence form: (1) can the learner do the job with a form they own? Then use that. (2) If not, is the phrase worth owning by itself? Then it is a fixed phrase on a card, never grammar, logged with its reason. (3) A later chapter may reuse a logged form where its own content calls for it; no chapter is written to justify one, and a one-off may stay one for good. The register lives in docs/chapter-framework-1121.md, and Code keeps it complete from the pack.
+
+**A row needs three (chat 2026-11-24; replaces "two or more", 11/20c).** A learner's own row at a place (Your table lines) needs three lines of their own. One or two stay woven into the place's session. ¿Lleva ___? is capped at three lines for a learner's allergies (their first three, in the order they chose); the declaring line still names every allergy.
+
 **A learner's own lines are counted apart (chat 2026-11-23, sharpening three to a tag).** A learner's own dietary lines never share a composer tag with the session's lines: each dietary answer's lines carry a composer-only tag of their own (`ctag`). The frame taught is still ¿Tiene? or ¿Hay?; only the composer's count changes.
 
 **The Learn row (chat, 2026-11-07).** A row's drawer ends in Read the cards, the session's cards read-only; the row body plays.

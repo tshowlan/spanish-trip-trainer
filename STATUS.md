@@ -2080,6 +2080,15 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v650 (2026-11-24) — chat's 11/24 rulings BUILT STAGED: a card for Ya he terminado, two tying sentences, a row needs three, ¿Lleva? capped; the one-off forms register
+- Chat: docs/rulings-1124-forms.md; the framework file resent with ONE-OFF FORMS (a register, not a debt, on Tom's clarification) and committed as sent, then extended.
+- BUILT under `trip-table-end`: (a) the Ya he terminado card (frame `terminado`, pair "I'm ready to order") leading its one line; the line's note moved to the card. (b) Queremos card note gains the waiter's side (¿Quiere? / ¿Quieren?), as a staged swap on a live card. (c) ¿Me puede traer? card note gains traigo, as a staged swap; the asks mapping in engine.js now reads `swap.note` (it read no swaps before).
+- BUILT: `dietPart.min` 2 to 3 for the Table (no live learner has exactly two own lines, so nothing changes with staging off; with batch 5 on, the lactose learner's two lines stay woven: the carta line in Part 1, the dessert line in Part 2 right after the done line).
+- BUILT under `three-to-a-tag`: the ¿Lleva ___? template takes `cap: { staged, n: 3 }`; engine.js fills the first three allergies only.
+- Checked: 23 profiles, staging off identical to v649; staging on shows only the ruled differences. Composer: every line plays on a first play in the four changed sessions, the dessert-menu reply is heard. Pair audit: 96 written, 48 fallback, none missing. The card seen in the pane at phone size.
+- OPEN, with chat (ledger): mixed learners still pass three under `lleva` (a celiac vegetarian with two allergies holds four; the cap covers allergies only, as written). The register's fifteen added rows need chat's "why".
+- NEXT: Tom plays batch 5 and names what ships; the corner-key picks; numbers build.
+
 ## v649 (2026-11-24) — `note-spanish` REMOVED on Tom's word; three batch 5 questions answered and sent to chat
 - Tom: "let's remove the italics from the Spanish in the good to knows, I don't think we need it after all."
 - REMOVED, not switched off: the STAGED entry, `noteHtml()` (ui.js), `.note-es` (styles.css), the four call sites (lesson.js x3, screen-learn.js), and the [[ ]] marks on the postre note. Those four files are byte-identical to before v647. Kept: "complete answer" on the postre note (staged with batch 5). The constitution's amendment is withdrawn; design/note-spanish-options.html stays as the record.

@@ -379,3 +379,8 @@ luminous law.)
 - 2026-11-23 — (Tom) Batch 4 shipped (v645). The card fix stays staged until Tom names it.
 - 2026-11-23 — (Tom) The Spanish inside a Good to know is italic, in the note's own grey. Chosen from six mocked treatments after bold white "spoke too loudly"; italics now serve notes as well as narrative. No quotation marks around Spanish in notes.
 - 2026-11-24 — (Tom) Withdrawn: the Spanish inside a Good to know is NOT styled. No italics, no bold, no quotation marks; a note reads as it always has (v647-648 removed at v649). "Complete answer" on the postre note stays.
+- 2026-11-24 — (chat) A fixed line that belongs to no frame gets a card; a new word riding an owned frame rides the hint. Ya he terminado gets a card (amends 11/23b).
+- 2026-11-24 — (chat, Tom) One-off forms: a new sentence form is used only when no owned form does the job and the phrase is worth owning alone; it is taught as a fixed phrase and logged with its reason. Nothing logged has to be built on (Tom: "we shouldn't force to learn specific phrases to just build on them"). The register lives in docs/chapter-framework-1121.md.
+- 2026-11-24 — (chat) Your table lines needs three lines; one or two stay woven (replaces two or more, and 11/23b's row of two). ¿Lleva ___? is capped at three lines per learner.
+- 2026-11-24 — (chat, pending Tom's pick on the mock) In Prices you'll hear and The hour the readout starts empty: a readout never shows the shape of an answer the ear is being tested on. Chapter 1's Numbers keep their dashes.
+- 2026-11-24 — (chat) quieren and traigo get no card: one sentence each on the Queremos card and the ¿Me puede traer? card. "Complete answer" passes.

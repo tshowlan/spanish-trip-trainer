@@ -174,7 +174,7 @@ function _chapterFlowDeck(deck, rooms) {
   const form = d => { const g = ({ o: null, a: "a" })[p.grammar] === undefined ? "neutral" : ({ o: null, a: "a" })[p.grammar]; const reps = d.forms && g && formSets[d.forms] && formSets[d.forms][g]; return reps ? JSON.parse(reps.reduce((t, [a, b]) => t.split(a).join(b), JSON.stringify(d))) : d; };
   // THE ALLERGY LINES (chat 11/18, batch 2b): the pack writes them once as templates in Table sentences (`allergy: "each" | "all" | "first"`) and
   // this fills them from the pack's allergySlots for the learner's own allergies, in the order they chose them (the first is the primary).
-  // each: one item per allergen (¿Lleva ___?). all: one item naming every allergy (the declaring line: y for two, commas then y for more;
+  // each: one item per allergen (¿Lleva ___?), the first `cap.n` of them when the pack caps it (chat 11/24: three; the declaring line names them all). all: one item naming every allergy (the declaring line: y for two, commas then y for more;
   // English with the Oxford comma). first: the primary only. A learner with no allergy gets none. Gluten is never an allergy here.
   const aSlots = activePack().allergySlots || {};
   const myAllergies = celiacOn ? realAllergies.filter(k => aSlots[k]) : [];
@@ -186,7 +186,7 @@ function _chapterFlowDeck(deck, rooms) {
     if (d.slotNote) { if (sl.hide) o.note = sl.hide; else delete o.note; }   // where this allergen hides, when the pack is certain of it (chat 11/19)
     delete o.allergy; delete o.slotNote; o.diet = true; o.fresh = true; return o;   // fresh: its own item, never the old pack's line that shares the phrase (that one kept its old English)
   };
-  const expand = d => !d.allergy ? [d] : !myAllergies.length ? [] : d.allergy === "each" ? myAllergies.map(k => fillAllergy(d, k)) : [fillAllergy(d, myAllergies[0])];
+  const expand = d => !d.allergy ? [d] : !myAllergies.length ? [] : d.allergy === "each" ? myAllergies.slice(0, (d.cap && typeof isStaged === "function" && isStaged(d.cap.staged)) ? d.cap.n : undefined).map(k => fillAllergy(d, k)) : [fillAllergy(d, myAllergies[0])];
   // ONE ¿Lleva ___? CARD PER LEARNER (chat 11/18): the slot is their first dietary answer in the intake's order (the needs, then the allergies)
   const firstDiet = !celiacOn ? null : glutenAnswer ? "gluten" : (p.needs || []).includes("vegetarian") ? "vegetarian" : myAllergies.length ? "allergy" : null;
   const cardMine = d => !d.llevaCard || d.llevaCard === firstDiet;
@@ -208,7 +208,7 @@ function _chapterFlowDeck(deck, rooms) {
   });
   // a word met in chapter one IS the same item when a later lesson carries it (one identity, one history)
   old.slice(1).forEach(st => st.lessons.forEach(l => { l.items = (l.items || []).map(it => made.get(slug(it.es)) || it); }));
-  const asks = (flow.asks || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, asks: true, items: w.items.filter(live).map(d => (w.replySet && made.has(slug(d.es))) ? made.get(slug(d.es)) : Object.assign({ tier: 1 }, d)) }));
+  const asks = (flow.asks || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { wordsSession: true, asks: true, items: w.items.filter(live).map(d => (w.replySet && made.has(slug(d.es))) ? made.get(slug(d.es)) : Object.assign({ tier: 1 }, d, (d.swap && isStaged(d.swap.staged) && d.swap.note) ? { note: d.swap.note } : {})) }));   // an ask's card may carry a staged note swap, as a sentence's does
   const sentences = (flow.sentences || []).filter(live).map(w => Object.assign({ primer: null, replies: [] }, w, { line: (w.lineSwap && isStaged(w.lineSwap.staged)) ? w.lineSwap.line : w.line, examples: (w.lineSwap && isStaged(w.lineSwap.staged) && w.lineSwap.examples) || w.examples, items: w.items.filter(live).flatMap(expand).filter(cardMine).filter(fits).map(form).map(dietMark).map(d => {   /* a staged swap (the trip notes, 11/16): an item's `swap: { staged, replies, note, owe }` or a session's `lineSwap: { staged, line }` replaces those fields while its switch is on */ const k = (d.card ? "card:" : "") + slug(d.es), sw = (d.swap && isStaged(d.swap.staged)) ? d.swap : null, own = { ...(d.wrong ? { wrong: d.wrong } : {}), replies: (sw && sw.replies) || (isStaged("reply-sets") && d.replies2) || d.replies, owe: (sw && sw.owe) || d.owe || null, diet: !!d.diet, tid: d.tid || null, part: d.part || null, ctag: (sw && sw.ctag) || d.ctag || null, ex: d.ex || null, exLead: !!d.exLead, hint: d.hint, near: d.near, frame: d.frame, note: (sw && sw.note) || d.note || null, place: w.place || null, sentence: !d.card }; if (made.has(k)) return Object.assign(made.get(k), own); const ex = !d.fresh && bySlug.get(k); if (ex) return Object.assign(ex, own); return Object.assign(mk(d), own, { tier: 1 }); }) }));   // a new sentence carries its place too   // the session's own fields (its frame, near misses, replies, hint) ride on the reused object   // sentences by place (Tom 10/24): a sentence the pack already holds IS that item (the object itself, one id, one history)
   // THE TABLE'S PART 2 (chat 11/20, under trip-celiac; the rule Tom set for Table words): a session marked `dietPart: { min, line }` whose learner
   // has `min` or more of their own keyed sentences in it runs as two rows: Part 1 is everyone's session, Part 2 the learner's own lines alone, with
@@ -217,7 +217,7 @@ function _chapterFlowDeck(deck, rooms) {
   const dietSplit = w => {
     if (!celiacOn || !w.dietPart) return [w];
     const own = w.items.filter(it => it.diet), rest = w.items.filter(it => !it.diet);
-    if (own.filter(it => !it.card).length < w.dietPart.min || !rest.length) return [w];   // the pack's number (the Table: two or more, chat 11/20c)
+    if (own.filter(it => !it.card).length < w.dietPart.min || !rest.length) return [w];   // the pack's number (the Table: three, chat 11/24; one or two own lines stay woven. Was two or more, 11/20c)
     // the four moves' order inside Part 2: say it (the declaring line and its card), ask the dish (¿Lleva?), then the rest as the pack has them
     const leadFrames = new Set(own.filter(it => it.exLead).map(it => it.frame));
     const rank = it => (it.exLead || (it.card && leadFrames.has(it.frame))) ? 0 : it.frame === "lleva" ? 1 : 2;
