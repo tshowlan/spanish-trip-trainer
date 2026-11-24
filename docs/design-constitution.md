@@ -59,6 +59,10 @@ Scenario rehearsal is the strongest prep for real performance — The Rehearsal'
 
 **What is asked (chat 2026-11-20, on Tom's ask).** A question is taught only where its answer is not already in front of the learner. A price on the menu, a sign on the door, and a word on the plate are read, not asked.
 
+**A card's second option (chat 2026-11-23, on Tom's ask).** An introduction is never a test, so the pair is part of the card: its job is to make the learner read the meaning by setting it against the one thing it could be mistaken for. Five rules: (1) one step away: the opposite, the pair, or what an English speaker really confuses it with (la carta and la cuenta, hotel and hospital, lleva and tiene); (2) clearly wrong: never a near-synonym, never the same intent with the polarity flipped; (3) the same kind and shape as the right meaning; (4) the same every time; (5) written wins, and the neighbour rule is the fallback for cards nobody has written yet, every fallback listed so it gets read.
+
+**Three to a tag (chat 2026-11-23).** No composer tag holds more than three lines in a session, so one play can reach every line. A fourth is retagged or trimmed. "· N new" counts any line never shown.
+
 **The Learn row (chat, 2026-11-07).** A row's drawer ends in Read the cards, the session's cards read-only; the row body plays.
 
 **Week by week, the mix tilts.** Early: survival essentials first, then scenario waves in demand order — mostly MEETING new phrases. Middle: the machines arrive and multiply what a person can say (seven frames × everything they've learned); learning and composing run side by side. Late: **the tilt inverts** — the review room's share grows as the countdown falls, until the final week is mostly REHEARSAL: composed stretches of the actual trip, run end to end, everything the person owns arranged in the day-shapes they'll live. The countdown doesn't just pace the person; it changes what kind of app this is as the date approaches. Six weeks out, Tripfluent is a teacher. One week out, it's a training camp.

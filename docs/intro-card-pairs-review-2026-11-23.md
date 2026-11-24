@@ -1,87 +1,171 @@
-# Tripfluent: the second option on intro cards (for Tom's review)
+# Tripfluent: the second option on intro cards (every pair, v644)
 
-*Built at v643 behind the switch "card-pair". Every pair below is read from the app with the switch on. Nothing changes for anyone until you ship it.*
+*Read from the app with the switch "card-pair" on, across twenty dietary set-ups. 142 cards: 90 written, 52 on the fallback (the nearest similar word in the session). Chat's five rules (11/23): one step away · clearly wrong · same kind and shape · the same every time · written beats the fallback.*
 
-## What was wrong
+## 1. Written by chat (forty-eight, 11/23)
 
-Every intro card ends with "Tap the meaning" and two options: the right meaning and one other. The other one was picked at random each time, from words of the same length:
+| Session | Card | Right meaning | Second option |
+|---|---|---|---|
+| First words · Part 1 | Hola | Hello | **Goodbye** |
+| First words · Part 2 | Perdón | Excuse me / Sorry | **Thank you** |
+|  | No | No | **Yes** |
+|  | Vale | Okay | **Sorry** |
+|  | Muy bien | Very well | **Not well** |
+|  | Hasta luego | See you later | **See you tomorrow** |
+|  | No entiendo | I don't understand | **I don't know** |
+| Words you'll hear | ¿Qué tal? | How's it going? | **What would you like?** |
+| Paying words | la cuenta | the check | **the menu** |
+|  | efectivo | cash | **card** |
+| Counter words · Part 1 | café | coffee | **tea** |
+|  | con leche | with milk | **without milk** |
+|  | té | tea | **coffee** |
+|  | caña | beer | **wine** |
+|  | copa | glass (of wine) | **bottle (of wine)** |
+| Counter words · Part 2 | tapa | tapa (small plate) | **main course (large plate)** |
+|  | para llevar | to go / takeaway | **to eat here** |
+|  | que aproveche | enjoy your meal | **cheers** |
+| Table words · Part 1 | la carta | the menu | **the check** |
+|  | pan | bread | **plate** |
+|  | sin gas | still (no bubbles) | **sparkling (with bubbles)** |
+| Table words · Part 2 | botella | bottle | **glass (for water)** |
+| Street words | a la izquierda | to the left | **to the right** |
+|  | cerca | near / close | **far** |
+|  | lejos | far | **near** |
+|  | la farmacia | the pharmacy | **the hospital** |
+|  | taxi | taxi | **the metro** |
+|  | el hotel | the hotel | **the hospital** |
+| Bathroom words | servicios | bathrooms | **the key** |
+|  | aseos | restrooms | **out of order** |
+|  | baño | bathroom | **toilet paper** |
+|  | al fondo | at the back | **to the right** |
+|  | papel | toilet paper | **the key** |
+|  | solo clientes | customers only | **out of order** |
+| Signs you'll read | Entrada | Entrance | **Exit** |
+|  | Tirar | Pull | **Push** |
+| Help words | hospital | hospital | **pharmacy** |
+|  | policía | police | **doctor** |
+|  | emergencia | emergency | **help** |
+|  | urgente | urgent | **later** |
+| The asks · Part 1 | Quiero ___ | I want ___ | **I need ___** |
+| The asks · Part 2 | Necesito ___ | I need ___ | **I want ___** |
+| Paying sentences | Está bien así. | That's fine as it is. | **That's not right.** |
+| Table words · Part 2 | sin gluten | gluten-free | **lactose-free** |
+|  | Soy celíaco (or celíaca) | I'm celiac | **I'm vegetarian** |
+|  | lactosa | lactose | **gluten** |
+|  | marisco | shellfish | **fish** |
+|  | pescado | fish | **shellfish** |
 
-- **For 102 of the 118 cards** it came from the card's own session, so it was loosely related but different on every play.
-- **For 16 cards** nothing in their session matched, so it came from anywhere in the course. That is where "another" against "Wednesday" came from.
+## 2. Written by Code and passed by chat (eighteen cards, 11/23)
 
-## What it does now
+The allergy card is one card with the learner's own word, so it shows here once per allergy.
 
-One option per card, the same every time:
+| Session | Card | Right meaning | Second option |
+|---|---|---|---|
+| First words · Part 1 | Buenas noches | Good evening / night | **Good morning** |
+| First words · Part 2 | ¿Inglés? | English? | **Spanish?** |
+| Words you'll hear | Dígame | Go ahead / Tell me | **Wait a moment** |
+| Paying words | ¿cuánto? | how much? | **what time?** |
+| Counter words · Part 1 | cortado | cortado (espresso with a little milk) | **latte (coffee with a lot of milk)** |
+| Counter words · Part 2 | ¿qué le pongo? | what'll it be? | **anything else?** |
+| Signs you'll read | Caballeros | Men | **Women** |
+|  | Señoras | Women | **Men** |
+| Counter sentences | ¿Me pone ___? | Could you get me ___? | **Do you have ___?** |
+| Table sentences · Part 1 | Para mí, ___ | For me, ___ | **To go, ___** |
+|  | Para compartir | To share | **For me** |
+|  | Queremos | We want | **I want** |
+| Table sentences · Part 2 | otro | another | **the same** |
+|  | Falta un vaso | A glass is missing | **A glass is dirty** |
+| Street sentences | ¿Está ___? | Is it ___? | **Where is ___?** |
+| Shop sentences | esto | this | **that** |
+| Help sentences | Llame a ___ | Call ___ | **I need ___** |
+| Your table lines | Tengo alergia al marisco | I'm allergic to shellfish | **I don't like shellfish** |
+|  | Tengo alergia al pescado | I'm allergic to fish | **I don't like fish** |
+|  | Tengo alergia a los lácteos | I'm allergic to dairy | **I don't like dairy** |
+|  | Tengo alergia a los frutos secos | I'm allergic to nuts | **I don't like nuts** |
+|  | Tengo alergia al huevo | I'm allergic to egg | **I don't like egg** |
+|  | Tengo alergia a los cacahuetes | I'm allergic to peanuts | **I don't like peanuts** |
+|  | Tengo alergia a la soja | I'm allergic to soy | **I don't like soy** |
 
-1. If the card has a written one (the tables below), that is used.
-2. Otherwise it is the nearest word or card in the same session with the same shape: the one after it, then the one before, and so on.
+## 3. The ¿Lleva ___? cards (chat's rewrite: lleva against tiene)
 
-It never offers something that all but repeats the right answer ("Will you charge me, please?" against "Will you charge me?" was possible before). The Test Lab batch preview now shows the same pair the real session shows.
+| Session | Card | Right meaning | Second option |
+|---|---|---|---|
+| Your table lines | ¿Lleva gluten? | Does it have gluten? | **Do you have gluten?** |
+|  | ¿Lleva carne? | Does it have meat? | **Do you have meat?** |
+|  | ¿Lleva marisco? | Does it have shellfish? | **Do you have shellfish?** |
+|  | ¿Lleva pescado? | Does it have fish? | **Do you have fish?** |
+|  | ¿Lleva lácteos? | Does it have dairy? | **Do you have dairy?** |
+|  | ¿Lleva frutos secos? | Does it have nuts? | **Do you have nuts?** |
+|  | ¿Lleva huevo? | Does it have egg? | **Do you have egg?** |
+|  | ¿Lleva cacahuetes? | Does it have peanuts? | **Do you have peanuts?** |
+|  | ¿Lleva soja? | Does it have soy? | **Do you have soy?** |
 
-## 1. The nineteen written by me (drafts: chat passes or rewrites each)
+## 4. Written by Code, not yet read by chat (drafts, 11/23)
 
-| Session | Card | Right meaning | Was (examples of what could appear) | Now |
-|---|---|---|---|---|
-| First words · Part 1 | Buenas noches | Good evening / night | enjoy your meal · out of order | **Good morning** |
-| First words · Part 2 | ¿Inglés? | English? | how much? · Everything okay? | **Spanish?** |
-| Words you'll hear | Dígame | Go ahead / Tell me | I need the police. · cortado | **Wait a moment** |
-| Paying words | ¿cuánto? | how much? | English? · Anything else? | **what time?** |
-| Counter words · Part 1 | cortado | cortado (espresso with a little milk) | I need a doctor. Urgent. | **latte (coffee with a lot of milk)** |
-| Counter words · Part 2 | ¿qué le pongo? | what'll it be? | Where is the police? | **anything else?** |
-| Signs you'll read | Caballeros | Men | Closed | **Women** |
-| Signs you'll read | Señoras | Women | Closed | **Men** |
-| Counter sentences | ¿Me pone ___? | Could you get me ___? | Could you bring me ___? · Where is ___? | **Do you have ___?** |
-| Table sentences · Part 1 | Para mí, ___ | For me, ___ | I need ___ · I want ___ | **To go, ___** |
-| Table sentences · Part 1 | Para compartir | To share | bread · toilet paper · two | **For me** |
-| Table sentences · Part 1 | Queremos | We want | knife · ten · police | **I want** |
-| Table sentences · Part 2 | otro | another | Sunday · fork · urgent | **the same** |
-| Table sentences · Part 2 | Falta un vaso | A glass is missing | I need a doctor. Urgent. | **A glass is dirty** |
-| Street sentences | ¿Está ___? | Is it ___? | Can I ___? · How much is ___? | **Where is ___?** |
-| Shop sentences | esto | this | outside · coffee · the metro | **that** |
-| Help sentences | Llame a ___ | Call ___ | I want ___ | **I need ___** |
-| Your table lines | Tengo alergia al marisco (each allergy) | I'm allergic to shellfish | to the left · I want two beers. | **I don't like shellfish** |
-| Your table lines | ¿Lleva carne? | Does it have meat? | Can I pay in cash? | **Is it vegetarian?** |
+| Session | Card | Right meaning | Second option |
+|---|---|---|---|
+| Table words · Part 2 | cuchillo | knife | **fork** |
+|  | carne | meat | **fish** |
+|  | vegetariano | vegetarian | **vegan** |
+|  | lácteos | dairy | **egg** |
+|  | frutos secos | nuts | **dried fruit** |
+|  | huevo | egg | **dairy** |
+|  | cacahuetes | peanuts | **almonds** |
+|  | soja | soy | **peanuts** |
 
-## 2. The rest: the nearest neighbour in the same session
+## 5. On the fallback: the nearest similar word (chat read these at v643 and let them stand)
 
-These are picked by rule, not written. Mark any that read wrong and chat will write one for it.
-
-**Ones I would look at first** (related, but a written option would be better):
-
-| Card | Right meaning | Now |
-|---|---|---|
-| Perdón | Excuse me / Sorry | See you later |
-| Hasta luego | See you later | I don't understand |
-| No | No | Okay |
-| la cuenta | the check | card |
-| café | coffee | with milk |
-| con leche | with milk | juice |
-| copa | glass (of wine) | with milk |
-| que aproveche | enjoy your meal | to go / takeaway |
-| sin gas | still (no bubbles) | the menu |
-| cerca | near / close | straight ahead |
-| lejos | far | the pharmacy |
-| al fondo | at the back | the key |
-| Entrada | Entrance | Push |
-| Tirar | Pull | Open |
-| Soy celíaco | I'm celiac | shellfish |
-| lactosa | lactose | meat |
-
-**All of them, by session:**
-
-- **First words · Part 1:** Hola: Hello / Good morning · Buenos días: Good morning / Good afternoon · Buenas tardes: Good afternoon / Good morning · Por favor: Please / Thank you · Gracias: Thank you / You're welcome · De nada: You're welcome / Thank you
-- **First words · Part 2:** Perdón: Excuse me / Sorry, against See you later · Sí: Yes / No · No: No / Okay · Vale: Okay / Very well · Muy bien: Very well / Okay · Hasta luego: See you later / I don't understand · No entiendo: I don't understand / See you later
-- **Words you'll hear:** Aquí tiene: Here you go / One moment · Un momento: One moment / Right away · ¿Algo más?: Anything else? / Everything okay? · ¿Todo bien?: Everything okay? / Anything else? · Ahora mismo: Right away / One moment · ¿Qué tal?: How's it going? / Everything okay?
-- **Paying words:** la cuenta: the check / card · tarjeta: card / cash · efectivo: cash / the change · el cambio: the change / the tip · la propina: the tip / the change
-- **Counter words · Part 1:** café: coffee / with milk · con leche: with milk / juice · zumo: juice / tea · té: tea / beer · caña: beer / tea · copa: glass (of wine) / with milk
-- **Counter words · Part 2:** vino: wine / water · agua: water / wine · tapa: tapa (small plate) / to go · para llevar: to go / tapa (small plate) · que aproveche: enjoy your meal / to go
-- **Table words · Part 1:** mesa: table / the menu · la carta: the menu / bread · pan: bread / the menu · sin gas: still (no bubbles) / the menu · dentro: inside / outside · fuera: outside / inside
-- **Table words · Part 2:** plato: plate / glass (for water) · vaso: glass (for water) / plate · botella: bottle / fork · tenedor: fork / knife · cuchillo: knife / fork · dietary words pair with each other (gluten-free / I'm celiac · nuts / egg · fish / soy · meat / vegetarian)
-- **Street words:** a la derecha: to the right / to the left · a la izquierda: to the left / straight ahead · todo recto: straight ahead / far · cerca: near / straight ahead · lejos: far / the pharmacy · la farmacia: the pharmacy / far · la estación: the train station / the metro · el metro: the metro / taxi · taxi: taxi / the hotel · el hotel: the hotel / taxi
-- **Bathroom words:** servicios: bathrooms / restrooms · aseos: restrooms / bathroom · baño: bathroom / restrooms · al fondo: at the back / the key · la llave: the key / toilet paper · papel: toilet paper / customers only · solo clientes: customers only / toilet paper · fuera de servicio: out of order / customers only
-- **Signs you'll read:** Salida: Exit / Entrance · Entrada: Entrance / Push · Empujar: Push / Pull · Tirar: Pull / Open · Abierto: Open / Closed · Cerrado: Closed / Open · Libre: Free / Occupied · Ocupado: Occupied / Free
-- **Days you'll read:** each day against the next (Sunday against Saturday)
-- **Help words:** ayuda: help / doctor · médico: doctor / hospital · hospital: hospital / police · policía: police / emergency · emergencia: emergency / urgent · urgente: urgent / emergency
-- **The asks:** I want ___ / Could you bring me ___? · Could you bring me ___? / Where is ___? · Where is ___? / How much is ___? · How much is ___? / Where is ___? · I need ___ / Is there ___? · Is there ___? / Do you have ___? · Do you have ___? / Can I ___? · Can I ___? / Do you have ___?
-- **Paying sentences (cards):** ¿Me cobra?: Will you charge me? / Do I pay here? · ¿Pago aquí?: Do I pay here? / Will you charge me? · Está bien así.: That's fine as it is. / I want the check, please.
-- **Your table lines (cards):** ¿Lleva gluten?: Does it have gluten? / Does it have shellfish? (or the learner's next line) · ¿Lleva frutos secos?: Does it have nuts? / Does it have egg?
+| Session | Card | Right meaning | Second option |
+|---|---|---|---|
+| First words · Part 1 | Buenos días | Good morning | **Good afternoon** |
+|  | Buenas tardes | Good afternoon | **Good morning** |
+|  | Por favor | Please | **Thank you** |
+|  | Gracias | Thank you | **You're welcome** |
+|  | De nada | You're welcome | **Thank you** |
+| First words · Part 2 | Sí | Yes | **No** |
+| Words you'll hear | Aquí tiene | Here you go | **One moment** |
+|  | Un momento | One moment | **Right away** |
+|  | ¿Algo más? | Anything else? | **Everything okay?** |
+|  | ¿Todo bien? | Everything okay? | **Anything else?** |
+|  | Ahora mismo | Right away | **One moment** |
+| Paying words | tarjeta | card | **cash** |
+|  | el cambio | the change | **the tip** |
+|  | la propina | the tip | **the change** |
+| Counter words · Part 1 | zumo | juice | **tea** |
+| Counter words · Part 2 | vino | wine | **water** |
+|  | agua | water | **wine** |
+| Table words · Part 1 | mesa | table | **the menu** |
+|  | dentro | inside | **outside** |
+|  | fuera | outside | **inside** |
+| Table words · Part 2 | plato | plate / dish | **glass (for water)** |
+|  | vaso | glass (for water) | **plate / dish** |
+|  | tenedor | fork | **knife** |
+| Street words | a la derecha | to the right | **to the left** |
+|  | todo recto | straight ahead | **far** |
+|  | la estación | the train station | **the metro** |
+|  | el metro | the metro | **taxi** |
+| Bathroom words | la llave | the key | **toilet paper** |
+|  | fuera de servicio | out of order | **customers only** |
+| Signs you'll read | Salida | Exit | **Entrance** |
+|  | Empujar | Push | **Pull** |
+|  | Abierto | Open | **Closed** |
+|  | Cerrado | Closed | **Open** |
+|  | Libre | Free / vacant | **Occupied / taken** |
+|  | Ocupado | Occupied / taken | **Free / vacant** |
+| Days you'll read | Lunes | Monday | **Tuesday** |
+|  | Martes | Tuesday | **Wednesday** |
+|  | Miércoles | Wednesday | **Thursday** |
+|  | Jueves | Thursday | **Friday** |
+|  | Viernes | Friday | **Saturday** |
+|  | Sábado | Saturday | **Sunday** |
+|  | Domingo | Sunday | **Saturday** |
+| Help words | ayuda | help | **doctor** |
+|  | médico | doctor | **hospital** |
+| The asks · Part 1 | ¿Me puede traer ___? | Could you bring me ___? | **Where is ___?** |
+|  | ¿Dónde está ___? | Where is ___? | **How much is ___?** |
+|  | ¿Cuánto cuesta ___? | How much is ___? | **Where is ___?** |
+| The asks · Part 2 | ¿Hay ___? | Is there ___? | **Do you have ___?** |
+|  | ¿Tiene ___? | Do you have ___? | **Can I ___?** |
+|  | ¿Puedo ___? | Can I ___? | **Do you have ___?** |
+| Paying sentences | ¿Me cobra? | Will you charge me? | **Do I pay here?** |
+|  | ¿Pago aquí? | Do I pay here? | **Will you charge me?** |

@@ -364,3 +364,7 @@ luminous law.)
 - 2026-11-21 — (chat, Tom) The app teaches for the places where English runs out. The hotel desk gets no session and no task (amends 11/20); a chapter 4 task must pass that filter.
 - 2026-11-21 — (chat, Tom) Sin azúcar, "too full", "is it sweet?", asking where to throw something away, and the bigger thank-yous and superlatives (taught as muy + a word and the -ísimo ending) are chapter 3.
 - 2026-11-21 — (Code, found in test) A place session plays at most three sentences of one composer tag per play. A play takes a tag's unmet sentences first; a word taught as a fill (otro) may carry a composer-only tag so its card leads its own lines.
+- 2026-11-23 — (chat) An intro card's second option is fixed per card and written to five rules: one step away, clearly wrong (no near-synonym, no flipped polarity), same kind and shape, the same every time, written over the neighbour rule.
+- 2026-11-23 — (chat) No composer tag holds more than three lines in a session, so one play can reach every line. "· N new" counts any line never shown.
+- 2026-11-23 — (chat) "Vale, uno limpio" is replaced by "Vale, ya le traigo otro"; bare Vale stays on two lines and is varied on four.
+- 2026-11-23 — (Code, found in test) A dietary word carries a written second option: its neighbours depend on the learner's answers, so the fallback is not the same for everyone and can reach the cutlery. Eight drafts with chat.
