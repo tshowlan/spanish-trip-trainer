@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tripfluent: Spanish inside a Good to know (options for Tom, 2026-11-23)</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* MOCK ONLY. The label and the note are the live classes from styles.css (.cue-label.note-label, .present-note); only mk- and o- classes are new. */
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-text, system-ui, sans-serif); }
+  .mk-page { max-width: 560px; margin: 0 auto; padding: 22px 18px 70px; }
+  .mk-h1 { font-family: var(--font-display); font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+  .mk-lede { color: var(--text-dim); font-size: 15px; line-height: 1.5; margin: 0 0 8px; }
+  .mk-opt { border: 1px solid var(--border); border-radius: 18px; padding: 16px 16px 18px; margin-top: 18px; }
+  .mk-tag { font-size: 11px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--accent-2, var(--accent)); }
+  .mk-why { color: var(--text-dim); font-size: 13px; line-height: 1.45; margin: 4px 0 2px; opacity: .85; }
+  .mk-opt .note-label { margin-top: 14px; }
+  .mk-opt .present-note + .note-label { margin-top: 16px; }
+  /* the six treatments */
+  .o-a .s { color: var(--text); font-weight: 600; }
+  .o-b .s { font-style: italic; }
+  .o-c .s::before { content: "\2018"; } .o-c .s::after { content: "\2019"; }
+  .o-d .s { font-weight: 600; }
+  .o-e .s { color: var(--text); }
+  .o-f .s { color: color-mix(in srgb, var(--text) 40%, var(--text-dim)); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="mk-page">
+  <h1 class="mk-h1">Spanish inside a Good to know</h1>
+  <p class="mk-lede">Six ways to set the Spanish apart, each shown on three real notes: the postre card, a note with one Spanish word, and a note with several. The label and the grey are the live ones. Option A is what you have now.</p>
+  <div id="opts"></div>
+</div>
+<script>
+(function () {
+  var notes = [
+    "You will hear this more than you say it. [[No, gracias]] is a complete answer. The dessert menu is [[la carta de postres]].",
+    "[[Quiero]] is not rude in Spain. Add [[por favor]] and it is exactly what a local says.",
+    "An ask built for the bar. The barman asks you [[¿Qué le pongo?]], and [[¿Me pone?]] is your side of the same verb."
+  ];
+  var opts = [
+    ["a", "A. Bold and bright (now)", "The loudest. You said it speaks too loudly."],
+    ["b", "B. Italic, same grey", "Quiet and familiar from books. Two catches: the app's rule today is that italics are for story lines and Spanish stays upright, and this font has no true italic in the app yet, so what you see is the browser slanting it. If you pick this I add the real one."],
+    ["c", "C. Single quotation marks, same grey", "No new styling to learn. Adds marks to every note, and a phrase that ends a sentence gets a mark and a full stop together."],
+    ["d", "D. Same grey, a little bolder (my pick)", "The colour does not change, only the weight. The quietest option that keeps the Spanish upright."],
+    ["e", "E. Brighter, not bold", "The label's colour at normal weight."],
+    ["f", "F. Halfway", "A touch brighter and a touch heavier than the grey. Between D and E."]
+  ];
+  var root = document.getElementById("opts");
+  opts.forEach(function (o) {
+    var h = '<div class="mk-opt o-' + o[0] + '"><div class="mk-tag">' + o[1] + '</div><div class="mk-why">' + o[2] + '</div>';
+    notes.forEach(function (n) { h += '<div class="cue-label note-label">Good to know</div><div class="present-note">' + n.replace(/\[\[(.+?)\]\]/g, '<span class="s">$1</span>') + '</div>'; });
+    root.insertAdjacentHTML("beforeend", h + "</div>");
+  });
+})();
+</script>
+</body>
+</html>

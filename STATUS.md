@@ -2080,6 +2080,12 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## 2026-11-23 — MOCK for Tom: six treatments for the Spanish inside a Good to know (design/note-spanish-options.html), no app change
+- Tom on v647's postre card: "the bold white is speaking too loudly"; asked for options, naming italic in the regular grey and single quotation marks.
+- Six, each on three real notes (the postre card, one Spanish word, several phrases), in the live label and note classes: A bold and bright (v647) · B italic, same grey · C single quotation marks · D same grey at weight 600 (Code's pick) · E the text colour at normal weight · F a 40% mix at weight 500.
+- TO KNOW on B: the constitution keeps italic for narrative and Spanish upright (2026-08-31), and fonts.css carries no italic Inter, so the mock shows the browser's slant. Both said on the mock.
+- The app still shows A on the postre card (staged) until Tom picks. Both mocks now load fonts.css so they render in the app's own faces.
+
 ## v647 (2026-11-23) — STAGED `note-spanish`: the Spanish inside a Good to know stands out (Tom, reading the postre card)
 - Tom: should "No, gracias" carry quotation marks in the postre note, should "full answer" be "complete answer", and are the notes consistent?
 - MEASURED FIRST (scratch notes.js, chapters 1 and 2, four profiles): 49 notes, 32 with Spanish, 31 of those bare; the one pair of quotation marks is around English ("how was it"). The rule today is no quotes. The postre note blurs because its phrase holds a comma.
