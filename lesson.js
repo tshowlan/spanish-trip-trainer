@@ -484,7 +484,10 @@ function renderReplyHear(q) {
   const said = q.es || item.es, meaning = q.en || item.en;
   // THE EXCHANGE, HEARD (STAGED exchange-voices, Tom 11/4): your line first in your voice, then their reply in another; slow slows the reply only
   const voices = !!(set && isStaged("exchange-voices"));
-  const hear = slow => { if (voices) speak(set.line, undefined, { onend: () => setTimeout(() => speak(said, slow ? 0.55 : undefined, { who: "them", queue: true }), 700) }); else slow ? speak(said, 0.55) : speak(said); };   // a breath between the two voices (Tom 11/4)
+  // THE REPLY STAYS ON ITS OWN SCREEN (Tom 11/24, STAGED "reply-stays"): your line's end handler also fires when the line is CUT (the next screen's
+  // autoplay cancels it), so the reply was spoken 700ms later over whatever came next ("ya he terminado", then "tinto o blanco"). The reply now
+  // speaks only while this beat is still the one on screen, and only for the latest tap (two taps no longer say it twice).
+  const hear = slow => { if (voices) { const tok = q._hearTok = (q._hearTok || 0) + 1; speak(set.line, undefined, { onend: () => setTimeout(() => { if (isStaged("reply-stays") && (!run || !run.qs || run.qs[run.idx] !== q || q._hearTok !== tok)) return; speak(said, slow ? 0.55 : undefined, { who: "them", queue: true }); }, 700) }); } else slow ? speak(said, 0.55) : speak(said); };   // a breath between the two voices (Tom 11/4)
   const play = audioControl(hear, { speed: true });
   const stage = el(`<div class="listen-stage"></div>`);
   if (silent) stage.appendChild(el(`<div class="act-sit need you-said they-say"><span class="ys-label">${set ? "They say" : "The line"}</span><span class="ys-line">${said}</span></div>`));   // no sound: their line, labelled, under yours (Tom 10/26, mock A: the dialogue)
@@ -2383,7 +2386,7 @@ function startBatchPreview(key) {
         const pool = (l.items || []).filter(x => !x.card), place = l.place || "";
         const add = q => { if (q) q.labFrom = l.title; qs.push(q); };   // each beat says which session it is from (Tom 11/20: a batch may touch more than one)
         const hear = (it, r) => ({ type: "reply_hear", item: it, es: r[0], en: r[1], set: { ask: it.es, line: it.es, place, replies: it.replies.map(x => x[0]) }, options: it.replies.map(x => x[1]), arc: true });
-        if (it.card || !l.sentences) { add({ type: "present", item: it, arc: true }); if (!it.card && !l.sentences && typeof kitRungFor === "function") add(kitRungFor(l, it, pool, 0)); return; }
+        if (it.card || !l.sentences) { add({ type: "present", item: it, arc: true }); if (!it.card && !l.sentences) { if (l.asks) { if (isNew && it.contextEs) add(_askBuild(it, pool)); } else if (typeof kitRungFor === "function") add(kitRungFor(l, it, pool, 0)); } return; }   // an ask plays in the asks' own shape (its sentence built), never the word rung's fallback, which showed the slot as a tile (Tom 11/24); a changed note alone is the card alone
         add(_sentenceBuild(it, pool));
         const before = new Set(((d.replies2 || d.replies) || []).map(r => r[0]));
         (it.replies || []).filter(r => isNew || !before.has(r[0])).forEach(r => add(hear(it, r)));

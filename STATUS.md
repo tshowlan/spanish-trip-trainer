@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v652 (2026-11-24) — STAGED `reply-stays`: a reply no longer speaks over the next screen; the Test Lab plays an ask as an ask
+- Tom, playing batch 5: "The autoplay sound for ya he terminado card said ya he terminado then said tinto o blanco too", and a build exercise for ¿Me puede traer ___? that "looks like an old version".
+- MEASURED (speak() logged in the pane, staging off = live): in They answer, your line is spoken with an end handler that speaks the reply 700ms later. The handler also fires when the line is CUT. Move on before your line finishes and the next screen's autoplay cuts it: at 855ms the card says "Ya he terminado", at 1557ms "¿Tinto o blanco?" is queued behind it. LIVE since exchange-voices shipped (v607), for every learner who answers before their own line ends (easy on a line's third reply, known by elimination).
+- FIX, STAGED `reply-stays` (lesson.js, the hear closure): the reply speaks only if its beat is still on screen and only for the latest tap. Checked with the switch on: move on early = the card alone speaks; stay = line, then reply at 3.1s, as before. Switch off = unchanged.
+- THE BUILD: Test Lab only, never in a session. The batch preview sent every non-sentence item through the word rung, and an ask (first one ever in a batch, via the v650 note swap) fell to that rung's fallback form, which shows the slot as a tile. The preview now plays an ask in the asks' own shape (`_askBuild`, its sentence) when the ask is new, and the card alone when only its note changed.
+- NEXT: Tom plays batch 5; ships what he names.
+
 ## v651 (2026-11-24) — Falta stays (Tom) and gains a third line, STAGED; the register is re-scoped to sentence structures
 - Chat: docs/rulings-1124b-register.md (the ¿Lleva? cap for mixed learners waved through; the register graded) and docs/rulings-1124c-falta.md, which replaces 1124b's section 2 on Tom's two rulings. The framework file is committed as resent: NEW SENTENCE STRUCTURES, seven rows.
 - Tom: "being able to clarify something is missing from an order is important vs ordering a new one... The intention of the rule was more so for sentence structure. Not specific verbs/adjectives."
