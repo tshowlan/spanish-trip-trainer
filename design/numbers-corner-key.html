@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tripfluent: the corner key (mock for Tom, 2026-11-23)</title>
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* MOCK ONLY (chat's rulings-1123c, C and D). The keys, the readout, and the colours are the live ones from styles.css; only mk- classes are new. */
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-text, system-ui, sans-serif); }
+  .mk-page { max-width: 760px; margin: 0 auto; padding: 22px 16px 60px; }
+  .mk-h1 { font-family: var(--font-display); font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+  .mk-lede { color: var(--text-dim); font-size: 15px; line-height: 1.5; margin: 0 0 22px; }
+  .mk-h2 { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin: 34px 0 4px; }
+  .mk-sub { color: var(--text-dim); font-size: 14px; line-height: 1.5; margin: 0 0 14px; }
+  .mk-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+  .mk-phone { border: 1px solid var(--border); border-radius: 22px; padding: 18px 16px 16px; background: var(--bg); min-width: 0; }
+  .mk-tag { font-size: 11px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--accent-2, var(--accent)); margin-bottom: 12px; }
+  .mk-dir { color: var(--text-dim); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+  .mk-cue { font-family: var(--font-display); font-size: 23px; font-weight: 700; line-height: 1.3; }
+  .mk-listen { display: flex; align-items: center; gap: 12px; margin: 10px 0 0; color: var(--text-dim); font-size: 13px; }
+  .mk-play { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-card); box-shadow: var(--shadow); color: var(--text); font-size: 17px; cursor: pointer; }
+  .mk-said { font-style: italic; }
+  .mk-phone .num-echo { min-height: 44px; margin: 14px 0 16px; align-items: baseline; gap: 4px; }
+  .mk-phone .num-echo .eur, .mk-phone .num-echo .ph { color: var(--text-dim); opacity: .55; }
+  .mk-phone .num-echo .sep { color: var(--accent-2, var(--accent)); }
+  .mk-phone .nkey.sepkey { font-size: 30px; font-weight: 700; line-height: 1; }
+  .mk-phone .nkey.sepkey .g { display: inline-block; }
+  .mk-phone .nkey.sepkey .g.comma { transform: translateY(-9px); }   /* a comma hangs below the line: lifted to sit in the key's middle */
+  .mk-phone .num-echo .rv { font-size: 20px; }
+  .mk-phone .nkey.sepkey.gold { color: var(--accent-2, var(--accent)); border-color: var(--accent); }
+  .mk-note { color: var(--text-dim); font-size: 13px; line-height: 1.45; margin-top: 12px; }
+  .mk-list { margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.6; }
+  .mk-list li { margin-bottom: 6px; }
+  .mk-pick { border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-top: 12px; background: var(--bg-card); }
+  .mk-pick b { font-family: var(--font-display); }
+  .mk-reset { margin-top: 12px; background: none; border: 0; color: var(--text-dim); font-size: 13px; text-decoration: underline; cursor: pointer; padding: 0; }
+</style>
+</head>
+<body>
+<div class="mk-page">
+  <h1 class="mk-h1">The corner key</h1>
+  <p class="mk-lede">A mock for you to tap, not the app. Chat ruled one new key in the keypad's empty bottom-left corner: a comma in the price sessions and a colon in The hour. The keys and colours below are the live ones. Both pads work: tap the answer in.</p>
+
+  <h2 class="mk-h2">1. Try it</h2>
+  <p class="mk-sub">The voice is not in the mock, so what you would hear is written in italics.</p>
+  <div class="mk-row">
+    <div class="mk-phone" id="p-price">
+      <div class="mk-tag">Prices you'll hear</div>
+      <div class="mk-dir">You hear</div>
+      <div class="mk-cue">Tap the price</div>
+      <div class="mk-listen"><button class="mk-play" aria-label="Play">&#9654;</button><span class="mk-said">"doce con cincuenta"</span></div>
+      <div class="num-echo"></div>
+      <div class="numpad"></div>
+      <button class="mk-reset">Start again</button>
+    </div>
+    <div class="mk-phone" id="p-hour">
+      <div class="mk-tag">The hour</div>
+      <div class="mk-dir">You hear</div>
+      <div class="mk-cue">Tap the time</div>
+      <div class="mk-listen"><button class="mk-play" aria-label="Play">&#9654;</button><span class="mk-said">"a las ocho y media"</span></div>
+      <div class="num-echo"></div>
+      <div class="numpad"></div>
+      <button class="mk-reset">Start again</button>
+    </div>
+  </div>
+
+  <h2 class="mk-h2">2. How it behaves</h2>
+  <ul class="mk-list">
+    <li><b>Same pad, same places.</b> The digits never move. The new key takes the one empty corner, and that corner is free on every number screen you have today.</li>
+    <li><b>No Enter key.</b> It finishes by itself when the last digit is right, as the number screens do now.</li>
+    <li><b>A wrong tap shakes red and does not go in</b>, as now.</li>
+    <li><b>Prices:</b> a whole price takes no comma (treinta y cinco is 3, 5). With cents it is always the comma and two digits.</li>
+    <li><b>The hour:</b> always the hour, the colon, and two digits. "A las nueve" is 9:00.</li>
+    <li><b>When it lands,</b> the words and the number show together, with the euro sign on a price.</li>
+  </ul>
+
+  <h2 class="mk-h2">3. Two choices that are yours</h2>
+
+  <div class="mk-pick"><b>A. How the key looks.</b> The two pads above are option 1.
+    <div class="mk-row" style="margin-top:12px">
+      <div class="mk-phone"><div class="mk-tag">Option 1 (my pick): a key like the others</div><div class="numpad" id="lookA"></div><div class="mk-note">It reads as part of the pad. Nothing new to learn about the screen.</div></div>
+      <div class="mk-phone"><div class="mk-tag">Option 2: the key in gold</div><div class="numpad" id="lookB"></div><div class="mk-note">Easier to spot the first time, but gold already means "new" and "yours" elsewhere in the app.</div></div>
+    </div>
+  </div>
+
+  <div class="mk-pick"><b>B. What the readout shows before you tap.</b>
+    <div class="mk-row" style="margin-top:12px">
+      <div class="mk-phone"><div class="mk-tag">Option 1 (my pick): empty, with the euro sign</div><div class="num-echo"><span class="eur">&euro;</span></div><div class="mk-note">You are told nothing about the answer. Whether there are cents is the thing you are listening for.</div></div>
+      <div class="mk-phone"><div class="mk-tag">Option 2: dashes, as the number screens show today</div><div class="num-echo"><span class="ph">&ndash;</span><span class="ph">&ndash;</span><span class="ph">,</span><span class="ph">&ndash;</span><span class="ph">&ndash;</span><span class="eur">&nbsp;&euro;</span></div><div class="mk-note">Shows how long the answer is. On a price that gives away the comma before you have heard it.</div></div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  function build(pad, sep, gold, onTap) {
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, sep, 0, null].forEach(function (d) {
+      var k;
+      if (d === null) { k = document.createElement("span"); k.className = "nkey empty"; pad.appendChild(k); return; }
+      k = document.createElement("button"); k.className = "nkey" + (d === sep ? " sepkey" + (gold ? " gold" : "") : ""); if (d === sep) k.innerHTML = '<span class="g' + (d === "," ? " comma" : "") + '">' + d + "</span>"; else k.textContent = d;
+      if (onTap) k.addEventListener("click", function () { onTap(k, String(d)); });
+      pad.appendChild(k);
+    });
+  }
+  function live(id, sep, expected, words, shown) {
+    var root = document.getElementById(id), echo = root.querySelector(".num-echo"), pad = root.querySelector(".numpad"), pos = 0, done = false;
+    var euro = sep === ",";
+    function paint() {
+      if (done) { echo.innerHTML = '<span class="rv">' + words + ' <i>→</i> ' + shown + '</span>'; return; }
+      var h = ""; for (var i = 0; i < pos; i++) h += '<span class="' + (expected[i] === sep ? "in sep" : "in") + '">' + expected[i] + '</span>';
+      echo.innerHTML = h + (euro ? '<span class="eur">' + (pos ? "&nbsp;" : "") + '&euro;</span>' : "");
+    }
+    build(pad, sep, false, function (k, v) {
+      if (done) return;
+      if (v === expected[pos]) { pos++; if (pos === expected.length) { done = true; k.classList.add("correct"); } paint(); }
+      else { k.classList.add("vwrong", "shake-x"); setTimeout(function () { k.classList.remove("vwrong", "shake-x"); }, 420); }
+    });
+    root.querySelector(".mk-reset").addEventListener("click", function () { pos = 0; done = false; pad.querySelectorAll(".correct").forEach(function (x) { x.classList.remove("correct"); }); paint(); });
+    paint();
+  }
+  live("p-price", ",", ["1", "2", ",", "5", "0"], "doce con cincuenta", "12,50 €");
+  live("p-hour", ":", ["8", ":", "3", "0"], "a las ocho y media", "8:30");
+  build(document.getElementById("lookA"), ",", false, null);
+  build(document.getElementById("lookB"), ",", true, null);
+})();
+</script>
+</body>
+</html>

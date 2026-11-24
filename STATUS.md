@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## 2026-11-23 — MOCK for Tom: the corner key (design/numbers-corner-key.html), no app change
+- Chat's rulings-1123c C and D: one separator key in the pad's empty bottom-left corner, a comma for prices and a colon for the hour. The mock uses the live styles.css keys and readout; both pads take taps (12,50 and 8:30).
+- The corner is free on every number screen today (digits, word keys, runs with delete).
+- TWO CHOICES FOR TOM: (A) the key like the others (Code's pick) or in gold; (B) the readout empty with the euro sign (Code's pick) or the dashes the number screens show today. Code's reason on B: dashes show the answer's shape, and on a price that gives away the comma, which is the thing listened for (y against con). With chat (ledger).
+- Checked in the pane at phone width: both pads complete, a wrong tap does not enter, no sideways scroll.
+- Next: Tom picks; then the staged numbers build (three sessions, the Shop's ¿A qué hora? card and two lines, Paying's two reply sets, four session lines).
+
 ## v646 (2026-11-23) — STAGED: trip batch 5, the end of the meal (`trip-table-end`); chat's v644 answers (`three-to-a-tag`, `card-pair`); the numbers ruling filed
 - Chat (2026-11-23): trip batch 5 ruled and written (docs/rulings-1123b-table-end.md): postre (word), "Ya he terminado, gracias." (one line, owed dessert-menu reply), two dietary dessert lines in Your table lines; Part 2 words at six to nine, Part 2 sentences at eleven.
 - Chat (2026-11-23): numbers in chapter 2 ruled (docs/rulings-1123c-numbers.md): three sessions (Prices · Part 1 and · Part 2, The hour), the comma / colon key, the number sets and confusable pairs, ¿A qué hora ___? in the Shop (card, two lines), two Paying reply sets rewritten, four session lines. The kitchen line is out (Tom did not meet a closed kitchen). Next: Code mocks the corner key for Tom, then builds staged.
