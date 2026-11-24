@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v653 (2026-11-24) — SHIPPED trip batch 5, the end of the meal (Tom: "third falta line is good. So's the traigo sentence, good to ship batch 5")
+- LIVE for everyone: postre (Table words · Part 2, its line now "from the plate to the dessert"); in Table sentences · Part 2 the third Falta line (una copa de vino), the Ya he terminado card and its line (the dessert-menu question heard on the first play); the dessert line for gluten and lactose learners; the waiter's side on the Queremos and ¿Me puede traer? cards. A lactose-only learner's two own lines sit inside Table sentences (a row needs three).
+- HOW: `trip-table-end` out of STAGED and TRIP_BATCHES (the Test Lab's batch list is empty); six item marks removed, the two note swaps and the Table words line folded into their lines.
+- Checked: 23 profiles. Staging on, before and after: identical. Staging off: gains exactly batch 5 (twenty differences, all listed above), nothing else.
+- STILL STAGED, not named by Tom: `card-pair`, `three-to-a-tag` (with the ¿Lleva? cap), `reply-stays`; lab-only `mic-check`, `learn-reset-swipe`.
+- NEXT: Tom's two picks on the corner-key mock, then the numbers build (rulings-1123c); Tom names the other switches.
+
 ## v652 (2026-11-24) — STAGED `reply-stays`: a reply no longer speaks over the next screen; the Test Lab plays an ask as an ask
 - Tom, playing batch 5: "The autoplay sound for ya he terminado card said ya he terminado then said tinto o blanco too", and a build exercise for ¿Me puede traer ___? that "looks like an old version".
 - MEASURED (speak() logged in the pane, staging off = live): in They answer, your line is spoken with an end handler that speaks the reply 700ms later. The handler also fires when the line is CUT. Move on before your line finishes and the next screen's autoplay cuts it: at 855ms the card says "Ya he terminado", at 1557ms "¿Tinto o blanco?" is queued behind it. LIVE since exchange-voices shipped (v607), for every learner who answers before their own line ends (easy on a line's third reply, known by elimination).

@@ -23,7 +23,7 @@
 | 9 | Help: offering it | 4 | 1 to 2 lines | NOTED |
 | — | Moved to chapter 3 by the framework's tests (11/21) | 8 (sin azúcar, sin leche), 9 (where to throw something away), 15 ("too full" and the colourful declines), 24 ("is it sweet?") | | CHAPTER 3 |
 
-**Chapter 2's remaining work, in the framework's order (chat 11/21, docs/chapter-framework-1121.md):** batch 4 (SHIPPED v645, 11/23) · batch 5, the end of the meal (STAGED v646, trip-table-end; chat's rulings-1123b) · Numbers · batch 6, the Street · batch 7, small words · batch 9, Help · batch 8, Catalan · the third turn (to design: when the reply is a question, the learner answers it) · visits in review (to design). One candidate open with Tom: "Más despacio, por favor" and "¿Puede repetir?" for chapter 2.
+**Chapter 2's remaining work, in the framework's order (chat 11/21, docs/chapter-framework-1121.md):** batch 4 (SHIPPED v645, 11/23) · batch 5, the end of the meal (SHIPPED v653, 11/24; was staged v646, trip-table-end; chat's rulings-1123b) · Numbers · batch 6, the Street · batch 7, small words · batch 9, Help · batch 8, Catalan · the third turn (to design: when the reply is a question, the learner answers it) · visits in review (to design). One candidate open with Tom: "Más despacio, por favor" and "¿Puede repetir?" for chapter 2.
 
 ## Every note
 
