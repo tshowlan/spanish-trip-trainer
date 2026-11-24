@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v645 (2026-11-23) — SHIPPED on Tom's word: trip batch 4, asking for another, and the Table in two (`trip-table-another`)
+- Tom, after playing v644 with staging on: "Batch 4 looks great to me!"
+- LIVE: Table words in two by sense (vaso, botella, tenedor, cuchillo in Part 2); Table sentences in two along the meal (the otro card and three lines, the menu again, the Falta un vaso card and two lines, the wine list); the plan's goal counted from the deck; "· N new" on a done row and unmet lines first; the five reply changes of 11/23 (Vale, ya le traigo otro; four bare Vales varied).
+- Collapsed: fifteen `staged` marks, both `parts.staged`, two reply swaps. The code-side isStaged("trip-table-another") reads stay and read true.
+- Checked: staging off at v645 is byte-identical to staging on at v644 over all 23 profiles; staging on unchanged.
+- STILL STAGED: `card-pair` (Tom named batch 4, not the card fix; it also gains four pairs from chat's 1123d before he has seen them).
+
 ## v644 (2026-11-23) — chat's card-pair ruling applied (docs/rulings-1123-card-pairs.md), still STAGED `card-pair` and `trip-table-another`
 - Chat (2026-11-23): the card pairs reviewed: the rule, eighteen of Code's nineteen passed, forty-eight neighbour picks written; "Vale, uno limpio" replaced; four bare Vales varied; the carta otra vez line retagged; the three-per-tag rule with an audit asked of Code.
 - THE PACK (curriculum.js): forty-eight `wrong` values written as chat's table B2; ¿Lleva carne? takes "Do you have meat?" and the gluten and allergy ¿Lleva ___? cards take "Do you have ___?" with their own word (the allergy card's `wrong` is a template, filled like its English).
