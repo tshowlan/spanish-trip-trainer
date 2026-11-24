@@ -378,3 +378,4 @@ luminous law.)
 - 2026-11-23 — (chat) Code's eight dietary pairs pass. Four fallback pairs are written: mesa / the bar, todo recto / to the left, el metro / the bus, la llave / the door.
 - 2026-11-23 — (Tom) Batch 4 shipped (v645). The card fix stays staged until Tom names it.
 - 2026-11-23 — (Tom) The Spanish inside a Good to know is italic, in the note's own grey. Chosen from six mocked treatments after bold white "spoke too loudly"; italics now serve notes as well as narrative. No quotation marks around Spanish in notes.
+- 2026-11-24 — (Tom) Withdrawn: the Spanish inside a Good to know is NOT styled. No italics, no bold, no quotation marks; a note reads as it always has (v647-648 removed at v649). "Complete answer" on the postre note stays.

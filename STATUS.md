@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v649 (2026-11-24) — `note-spanish` REMOVED on Tom's word; three batch 5 questions answered and sent to chat
+- Tom: "let's remove the italics from the Spanish in the good to knows, I don't think we need it after all."
+- REMOVED, not switched off: the STAGED entry, `noteHtml()` (ui.js), `.note-es` (styles.css), the four call sites (lesson.js x3, screen-learn.js), and the [[ ]] marks on the postre note. Those four files are byte-identical to before v647. Kept: "complete answer" on the postre note (staged with batch 5). The constitution's amendment is withdrawn; design/note-spanish-options.html stays as the record.
+- Checked: all 23 profiles, staging off identical to v648 live; staging on differs by the postre note's marks only.
+- Tom's three questions on batch 5 (a card for Ya he terminado; quieren; le traigo; do later chapters build on these forms): measured and answered in chat, asks in docs/chat-ledger.md. Finding: Ya he terminado is the only said line in chapters 1-2 with no frame and no card, while every other fixed line that brings new words has a card (¿Me cobra?, ¿Pago aquí?, Está bien así., Falta un vaso). Nothing built on it: a card is chat's to rule.
+- NEXT: chat on the card and on a forms-owed list; Tom plays batch 5; the corner-key picks; numbers build.
+
 ## v648 (2026-11-23) — `note-spanish` is now italic in the note's grey (Tom's pick, mock B), still STAGED, postre card only
 - Tom: "if we use italics here in addition to stories its fine, im thinking B."
 - `.note-es { font-style: italic }` and nothing else: the note's colour and weight are inherited. The constitution's NARRATIVE IS ITALIC law carries Tom's amendment; decisions.md has the line.
