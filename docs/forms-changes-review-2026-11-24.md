@@ -1,6 +1,6 @@
-# Tripfluent: what changed at v649 and v650 (changes only, for Tom's play)
+# Tripfluent: what changed at v649, v650, and v651 (changes only, for Tom's play)
 
-*Everything here is staged. Turn staging on, then open the Test Lab batch "5 · The end of the meal": it now plays the postre card, the ¿Me puede traer? card, the new Ya he terminado card and its line, and the Queremos card.*
+*Everything here is staged. Turn staging on, then open the Test Lab batch "5 · The end of the meal": it now plays the postre card, the ¿Me puede traer? card, the new Falta line, the new Ya he terminado card and its line, and the Queremos card.*
 
 ## 1. Ya he terminado now has a card (your question; chat agreed)
 
@@ -34,7 +34,17 @@ The second note is yours from October. Chat says the added sentence is yours to 
 
 A row now needs three lines of your own. Gluten, celiac, vegetarian, and allergy learners keep their row unchanged.
 
-## 5. Not built, recorded
+## 5. Falta stays, with a third line (your ruling; v651)
 
-- The rule for new sentence forms (use an owned form if one does the job; otherwise a fixed phrase on a card, logged with its reason; nothing has to be built on later) is in the rulebook and the chapter framework.
+| | Was | Now |
+|---|---|---|
+| Falta lines in Table sentences · Part 2 | Perdón, falta un vaso. · Perdón, falta un cuchillo. | The same two, plus **Perdón, falta una copa de vino.** (Excuse me, a glass of wine is missing.) |
+| What you hear back | | Perdón, ya la traigo (Sorry, I'll bring it now) · Un momento, lo miro (One moment, I'll check) · ¿Tinto o blanco? (Red or white?) |
+| Wrong answers in the pick | | "Excuse me, another glass of wine." · "Excuse me, a glass of water is missing." |
+
+The line and its replies are chat's wording, unsourced. Cut it if two Falta lines are enough. The Falta card is unchanged.
+
+## 6. Not built, recorded
+
+- The rule for new sentence structures (a tense, a command, a new shape; not new words) is in the rulebook and the chapter framework: use a structure the learner owns if it does the same job; otherwise a fixed phrase on a card, logged with its reason; nothing has to be built on later.
 - The number readout starting empty is chat's recommendation. It waits for your pick on the corner-key mock.

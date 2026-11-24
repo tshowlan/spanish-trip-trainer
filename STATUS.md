@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v651 (2026-11-24) — Falta stays (Tom) and gains a third line, STAGED; the register is re-scoped to sentence structures
+- Chat: docs/rulings-1124b-register.md (the ¿Lleva? cap for mixed learners waved through; the register graded) and docs/rulings-1124c-falta.md, which replaces 1124b's section 2 on Tom's two rulings. The framework file is committed as resent: NEW SENTENCE STRUCTURES, seven rows.
+- Tom: "being able to clarify something is missing from an order is important vs ordering a new one... The intention of the rule was more so for sentence structure. Not specific verbs/adjectives."
+- BUILT under `trip-table-end`: "Perdón, falta una copa de vino." (frame falta, Part 2, after the knife line). The falta tag holds three; Table sentences · Part 2 holds twelve sentences and three cards. Nothing cut. The ¿Lleva? cap stays as built.
+- Checked: 23 profiles, staging off identical to v650; staging on adds the one line. Composer: every Part 2 line plays on a first play.
+- NEXT: Tom plays batch 5 (the new Falta line and the ¿Me puede traer? note are his to keep or cut) and names what ships; the corner-key picks; numbers build.
+
 ## v650 (2026-11-24) — chat's 11/24 rulings BUILT STAGED: a card for Ya he terminado, two tying sentences, a row needs three, ¿Lleva? capped; the one-off forms register
 - Chat: docs/rulings-1124-forms.md; the framework file resent with ONE-OFF FORMS (a register, not a debt, on Tom's clarification) and committed as sent, then extended.
 - BUILT under `trip-table-end`: (a) the Ya he terminado card (frame `terminado`, pair "I'm ready to order") leading its one line; the line's note moved to the card. (b) Queremos card note gains the waiter's side (¿Quiere? / ¿Quieren?), as a staged swap on a live card. (c) ¿Me puede traer? card note gains traigo, as a staged swap; the asks mapping in engine.js now reads `swap.note` (it read no swaps before).

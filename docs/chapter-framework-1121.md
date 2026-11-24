@@ -58,43 +58,32 @@ Chapter 4 depends on this: half its tasks turn on a time or a number.
 
 **One candidate for Tom to rule:** "Más despacio, por favor" and "¿Puede repetir?" pass the need test (when you do not catch the answer, the trip stalls) and are built from puede, which the learner owns. Chat would add them to chapter 2, in Help or beside No entiendo. They are not in any batch yet.
 
-## ONE-OFF FORMS (added 2026-11-24; amended the same day on Tom's clarification)
+## NEW SENTENCE STRUCTURES (added 2026-11-24; re-scoped the same day on Tom's word)
 
-The app prepares a traveler for what they will meet. It does not teach every way to say a thing. So a new sentence form is a decision made on purpose, and this section is where it is recorded. It is a register, not a debt: nothing here has to be built on.
+The app prepares a traveler for what they will meet. It does not teach every way to say a thing. So a new sentence structure is a decision made on purpose, and this section is where it is recorded. It is a register, not a debt: nothing here has to be built on.
 
-**Before a line brings a new form, in this order:**
-1. **Can the learner do the job with a form they already own?** Then use that, and the new form is not written.
+**Scope (Tom, 11/24): this is about sentence structure, not vocabulary.** A structure is a way of building a sentence the learner has not used: a tense, a command, a new shape. A new verb or adjective inside a shape the learner already owns is vocabulary, and the card rules govern it, not this section.
+
+**Before a line brings a new structure, in this order:**
+1. **Does a structure the learner owns do the same job?** Then use that. A different job (saying something is missing, against ordering a new one) is a different job.
 2. **If not, is the phrase worth owning by itself?** Then it is taught as a fixed phrase on a card, never as grammar, and logged below with the reason.
-3. **A later chapter may reuse a logged form where its own content calls for it.** No chapter is written to justify one. A one-off may stay a one-off for good.
+3. **A later chapter may reuse a logged structure where its own content calls for it.** No chapter is written to justify one. A one-off may stay a one-off for good.
 
-A form the learner only hears is logged too. It is owed recognition, and at most one sentence in a note tying it to the verb the learner already says.
+A structure the learner only hears is logged too. It is owed recognition, and at most one sentence in a note tying it to the verb the learner already says.
 
-| Form | In chapter 2 | Why it is here | Later use, if any |
+| Structure | In chapter 2 | Why it is here | Later use, if any |
 |---|---|---|---|
-| he + -ado / -ido | said once: Ya he terminado. Heard: ¿Ha terminado?, ¿Se ha caído? | Nothing the learner owns says "I'm done" (trip notes 21 and 26). A confident one-off | Chapter 4's "something is wrong" task would reuse it if that task is written. Not required |
-| pedir | said once: Perdón, ¿puedo pedir? | One new word inside an ask the learner owns | The same task, if written |
-| quiere / quieren | heard: ¿Quiere copia?, ¿Quieren postre o café? | The waiter's side of Quiero; answered with an owned Sí or No | The third turn, already planned |
-| The staff's le / lo + verb (traigo, pongo, retiro, digo, pregunto, miro) | heard only | The answers to the learner's own asks | None. Recognition only |
-| *Rows added by Code from the pack, 2026-11-24 (v650). Each "why" is chat's to write; a row with no good why is a candidate to cut.* | | | |
-| cobra | said: ¿Me cobra? (card, three lines: por favor · el café · las dos cañas) | *chat* | |
-| pago | said: ¿Pago aquí? (card, two lines: ¿Pago aquí? · ¿Pago aquí o en caja?) | *chat* | |
-| Está bien así. | said once (card, one line). está is owned from ¿Está ___?; así is met nowhere else | *chat* | |
-| falta | said: Falta un vaso (card, two lines: un vaso · un cuchillo) | *chat* | |
-| pone | said: ¿Me pone ___? (card with a slot, two lines). Heard: ¿Qué le pongo? | *chat* | |
-| llame | said: Llame a ___ (card with a slot, two lines: la policía · un médico) | *chat* | |
-| queremos | said: Queremos (card, two lines). The we-form of an owned ask | *chat* | |
-| no entiendo | said: a chapter 1 phrase, then two Help lines (Perdón. No entiendo. · No entiendo. ¿Inglés, por favor?). No card in chapter 2 | *chat* | |
-| es | said in three lines, no card (it rides the hint): ¿Cuánto es? · ¿Cuánto es todo, por favor? · Llame a un médico. Es una emergencia. Celiac learners add ¿La freidora es compartida? | *chat* | |
-| *Dietary learners only* | | | |
-| lleva | said: ¿Lleva ___? (one card per learner; one line per answer, capped at three for allergies) | *chat* | |
-| tengo | said: Tengo alergia a ___ (card, one line naming every allergy); Tengo celiaquía (a word, by the learner's answer) | *chat* | Tengo as a frame is already named for chapter 4's table task |
-| soy | said: Soy celíaco / celíaca (a word), Soy vegetariano / vegetariana (one line) | *chat* | |
-| como | said once, vegetarians: No como carne ni pescado. | *chat* | |
-| comer | said once, gluten learners: No puedo comer gluten. One new word inside an owned ask, as pedir is | *chat* | |
-| *Heard only, met as chapter 1 words* | | | |
-| Aquí tiene · ¿Qué le pongo? · Que aproveche | heard: three of the Words you'll hear and Counter words | *chat* | |
+| The past: he + -ado / -ido | said once: Ya he terminado. Heard: ¿Ha terminado?, ¿Se ha caído? | Nothing the learner owns says "I'm done" (trip notes 21 and 26). A confident one-off | Chapter 4's "something is wrong" task would reuse it if that task is written. Not required |
+| The thing after the verb: Falta ___ | said: Falta un vaso (card, three lines) | It says something is missing from what was ordered or laid, which is a different job from ordering a new one (Tom, 11/24) | None needed |
+| The command: Llame a ___ | said: two lines (la policía · un médico). Heard: Llame al 112 | Safety. It tells a bystander what to do, and the same word comes back at the learner | None needed |
+| The short request: ¿Me ___? | said: ¿Me pone ___? (two lines), ¿Me cobra? (three lines) | The bar's own shape in Spain, the short form of ¿Me puede ___? The learner hears its other half (¿Qué le pongo?) | None needed |
+| The we-form | said: Queremos (two lines). In a note: hemos | Ordering for the table (premise P2, Tom's trip) | None needed |
+| Heard: quiere / quieren | ¿Quiere copia?, ¿Quieren postre o café? | The waiter's side of Quiero; answered with an owned Sí or No | The third turn, already planned |
+| Heard: the staff's le / lo + verb (traigo, pongo, retiro, digo, pregunto, miro) | replies only | The answers to the learner's own asks | None. Recognition only |
 
-Code keeps the register complete from the pack: every said line whose verb form sits in no frame and in no second line is a row.
+**Not rows, by the scope rule:** pedir, comer, pago, es, lleva, tengo, soy, como, no entiendo, and Está bien así. Each is a word or a fixed phrase inside a shape the learner owns (an I-statement, a question about a thing, an owned ask). Code listed them at v650 and chat graded them; they leave the register as vocabulary.
+
+Code adds a row only when a line brings a tense, a command, or a sentence shape that no earlier line has.
 
 ## WHAT THIS DOES TO THE PLAN
 
@@ -107,7 +96,7 @@ The plan's goal is chapters 1 and 2, derived from the deck (11/20). Chapters 3 a
 - 2026-11-21 — Numbers get two chapter 2 sessions, moved up: Prices you'll hear (teens, tens, compounds) before Paying, and The hour with ¿A qué hora? before the Shop.
 - 2026-11-21 — The app teaches for the places where English runs out. The hotel desk gets no session and no task (amends 11/20); a chapter 4 task must pass that filter.
 - 2026-11-21 — Sin azúcar, "too full", "is it sweet?", asking where to throw something away, and the bigger thank-yous and superlatives (taught as muy + a word and the -ísimo ending) are chapter 3.
-- 2026-11-24 — One-off forms: a new sentence form is used only when no owned form does the job and the phrase is worth owning alone; it is taught as a fixed phrase and logged. Nothing logged has to be built on. The register lives in this file.
+- 2026-11-24 — New sentence structures are decided on purpose: one is used only when no owned structure does the same job and the phrase is worth owning alone; it is taught as a fixed phrase and logged. The rule covers structure (a tense, a command, a shape), not vocabulary. Nothing logged has to be built on. The register lives in this file.
 
 ## → STATUS.md (prepend)
 

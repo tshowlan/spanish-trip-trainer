@@ -384,3 +384,6 @@ luminous law.)
 - 2026-11-24 — (chat) Your table lines needs three lines; one or two stay woven (replaces two or more, and 11/23b's row of two). ¿Lleva ___? is capped at three lines per learner.
 - 2026-11-24 — (chat, pending Tom's pick on the mock) In Prices you'll hear and The hour the readout starts empty: a readout never shows the shape of an answer the ear is being tested on. Chapter 1's Numbers keep their dashes.
 - 2026-11-24 — (chat) quieren and traigo get no card: one sentence each on the Queremos card and the ¿Me puede traer? card. "Complete answer" passes.
+- 2026-11-24 — (chat) The ¿Lleva ___? cap counts allergies only; a learner whose gluten or vegetarian answer takes the tag past three is a logged exception, with the two from v646.
+- 2026-11-24 — (Tom) Falta stays: saying something is missing from an order is a different job from ordering a new one. A third line, "Perdón, falta una copa de vino.", carries the order case (chat's wording, Tom's to cut).
+- 2026-11-24 — (Tom) The register covers sentence structure (a tense, a command, a shape), not vocabulary. Ten word-level rows leave it; seven remain. Supersedes the "one-off forms" wording of the same day and section 2 of rulings-1124b.
