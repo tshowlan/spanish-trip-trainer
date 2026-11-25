@@ -388,3 +388,4 @@ luminous law.)
 - 2026-11-24 — (Tom) Falta stays: saying something is missing from an order is a different job from ordering a new one. A third line, "Perdón, falta una copa de vino.", carries the order case (chat's wording, Tom's to cut).
 - 2026-11-24 — (Tom) The register covers sentence structure (a tense, a command, a shape), not vocabulary. Ten word-level rows leave it; seven remain. Supersedes the "one-off forms" wording of the same day and section 2 of rulings-1124b.
 - 2026-11-24 — (Tom) Batch 5 shipped (v653), with the third Falta line and the traigo sentence kept. card-pair, three-to-a-tag, and reply-stays stay staged until Tom names them.
+- 2026-11-25 — (Tom, on the mock) The corner key is a key like the others, not gold. The readout in Prices you'll hear and The hour starts empty, with a dim euro sign on a price. The 11/24 readout law is no longer pending. Built staged as "prices-hour" (v654).

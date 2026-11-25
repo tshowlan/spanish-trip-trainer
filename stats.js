@@ -9,7 +9,7 @@ const STAT_KINDS = { listen: "Listening", pick: "Picking", build: "Building", ty
 // (present, encore, say_it, sounds_end, the sound cards) are not answers and are not counted.
 const STAT_KIND_OF = {
   listen_choice: "listen", hear_pick: "listen", reply_hear: "listen", reply_listen: "listen", sound_choice: "listen", scene_hear: "listen",
-  exchange: "listen", num_pad: "listen", num_run: "listen", num_set: "listen", key_sound: "listen", odd_one: "listen", sound_wall: "listen",
+  exchange: "listen", num_pad: "listen", num_run: "listen", num_set: "listen", num_entry: "listen", key_sound: "listen", odd_one: "listen", sound_wall: "listen",
   mc_es2en: "pick", context_choice: "pick", ask_which: "pick", sign_which: "pick", sign_act: "pick", variation: "pick", grasp: "pick",
   pairs: "pick", days_set: "pick", sign_table: "pick", sign_wall: "pick", days_order: "pick", circuit_door: "pick", circuit_close: "pick",
   scene_sign: "pick", scene_door: "pick", scene_close: "pick",

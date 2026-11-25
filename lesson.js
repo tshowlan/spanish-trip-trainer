@@ -2037,7 +2037,7 @@ function renderQuestion() {
      word_fill: renderWordFill, phrase_fill: renderPhraseFill,
      sound_choice: renderSoundChoice, audio_cloze: renderAudioCloze, ear_build: renderEarBuild,
      scene_door: renderSceneDoor, scene_close: renderSceneClose, scene_hear: renderSceneHear, scene_sign: renderSceneSign, context_choice: renderContextChoice,
-     num_set: renderNumSet, num_pad: renderNumPad, num_run: renderNumRun,
+     num_set: renderNumSet, num_pad: renderNumPad, num_run: renderNumRun, num_entry: renderNumEntry,
      ask_which: renderAskWhich, key_sound: renderKeySound, sound_wall: renderSoundWall, say_it: renderSayIt, odd_one: renderOddOne, sounds_end: renderSoundsEnd, sign_act: renderSignAct, sign_which: renderSignWhich, sign_table: renderSignTable, days_set: renderDaysSet, sign_wall: renderSignWall, days_order: renderDaysOrder,
      circuit_door: renderCircuitDoor, circuit_close: renderCircuitClose,
      reply: renderReplyChat }[q.type])(q);
@@ -3712,10 +3712,11 @@ function renderContextChoice(q) {
 const NUM_NEIGHBORS = [[6, 7], [2, 10], [5, 50], [5, 100], [50, 100]];   // seis/siete · dos/diez · cinco/cincuenta · cinco/cien · cincuenta/cien (once, sesenta/setenta join in chapter 2)
 const NUM_BILLS = [5, 10, 20, 50, 100];
 const _numSilent = () => !!(run && run.soundOff) || !("speechSynthesis" in window) || state.sound === false;
-const _numItems = () => { const seen = new Set(); return (ALL_ITEMS || []).filter(it => it.num != null && !seen.has(it.num) && seen.add(it.num)); };
+const _numItems = () => { const seen = new Set(); return (ALL_ITEMS || []).filter(it => it.num != null && !it.price && !seen.has(it.num) && seen.add(it.num)); };   // chapter 1's thirteen: the tens and teens of chapter 2 (`price`) stay in their own sessions
 const _numBy = n => _numItems().find(it => it.num === n);
 function composeNumbers(lesson) {
   state.sessionSeq = (state.sessionSeq || 0) + 1; save();
+  if (lesson.numbers === "prices" || lesson.numbers === "hour") return _applyFloor(_composePriceHour(lesson), lesson);   // chapter 2's three (chat 11/23)
   const items = lesson.items.filter(it => it.num != null), by = n => items.find(it => it.num === n);
   const qs = [], pad = (it, extra) => Object.assign({ type: "num_pad", item: it, arc: true }, extra || {});
   if (items.some(it => exposuresOf(it) === 0)) qs.push({ type: "num_set", items, arc: true });          // met as a set, never a card per number
@@ -3753,6 +3754,7 @@ function _numDone(q, goStrength) {                                     // the re
   f.querySelector("#cont").addEventListener("click", () => { if (gone) return; gone = true; slideOut(next); });
 }
 function renderNumSet(q) {
+  if (q.set) return _renderNumSetCard(q);
   const body = $("#qbody");
   body.appendChild(el(`<div class="qtype">Numbers</div>`));
   body.appendChild(el(`<div class="num-title">One to ten, and the bills.</div>`));
@@ -3778,7 +3780,7 @@ function renderNumSet(q) {
   f.querySelector("#cont").addEventListener("click", () => next());
 }
 const NUM_DELETE_SVG = `<svg viewBox="0 0 32 24" width="40" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.2 2.5h15.3a3 3 0 0 1 3 3v13a3 3 0 0 1-3 3H11.2a3 3 0 0 1-2.2-1L2.6 13.3a2 2 0 0 1 0-2.6L9 3.5a3 3 0 0 1 2.2-1Z"/><path d="m15.2 8.2 7.6 7.6m0-7.6-7.6 7.6"/></svg>`;   // the calculator's backspace: a tag pointing left with an x (Tom 9/20)
-function _numKeypad(kind, onTap, onDelete) {                                     // ONE surface: the digits never move (1-2-3 / 4-5-6 / 7-8-9 / 0)
+function _numKeypad(kind, onTap, onDelete, sep) {                                     // ONE surface: the digits never move (1-2-3 / 4-5-6 / 7-8-9 / 0)
   if (kind === "bills") {
     const row = el(`<div class="bills"></div>`);
     NUM_BILLS.forEach(v => { const b = el(`<button class="nkey bill" data-v="${v}"><span>${v}</span></button>`); b.addEventListener("click", () => onTap(b, String(v))); row.appendChild(b); });
@@ -3787,6 +3789,9 @@ function _numKeypad(kind, onTap, onDelete) {                                    
   const pad = el(`<div class="numpad"></div>`);
   [1, 2, 3, 4, 5, 6, 7, 8, 9, null, 0, onDelete ? "del" : null].forEach(d => {
     if (d === "del") { const k = el(`<button class="nkey delkey dim" aria-label="Delete">${NUM_DELETE_SVG}</button>`); k.addEventListener("click", () => onDelete(k)); pad.appendChild(k); return; }
+    if (d === null && sep && !pad.querySelector(".sepkey")) {          // THE CORNER KEY (chat 11/23, Tom's pick 11/25: a key like the others): the pad's one empty corner, a comma for a price, a colon for the hour
+      const k = el(`<button class="nkey sepkey" data-v="${sep}" aria-label="${sep === "," ? "Comma" : "Colon"}"><span class="g${sep === "," ? " comma" : ""}">${sep}</span></button>`);
+      k.addEventListener("click", () => onTap(k, sep)); pad.appendChild(k); return; }
     if (d === null) { pad.appendChild(el(`<span class="nkey empty"></span>`)); return; }
     const word = kind === "words" ? ((_numBy(d === 0 ? 10 : d) || {}).es || "") : null;   // the reverse keypad: the keys are the words; diez takes the bottom key
     if (kind === "words" && !word) { pad.appendChild(el(`<span class="nkey empty"></span>`)); return; }
@@ -3923,13 +3928,175 @@ function renderNumRun(q) {
   paint();
   const answers = el(`<div class="answers atpad"></div>`); answers.appendChild(pad); body.appendChild(answers);
 }
+/* ===== NUMBERS IN CHAPTER 2 (chat 11/23, docs/rulings-1123c-numbers.md; Tom's picks 11/25; STAGED "prices-hour") =====
+   Three ear sessions on the same keypad: Prices you'll hear, Part 1 (the tens, y, con) and Part 2 (eleven to fifteen; the other teens, the
+   twenties and ciento by ear), and The hour (a las, a la una, y media). ONE rep shape: a price or a time is said once and tapped in, with the
+   corner key for its second part (a comma for the cents, a colon for the hour). A wrong tap does not go in; the last right tap finishes it.
+   THE READOUT STARTS EMPTY (chat's law, Tom's pick): it never shows the shape of an answer the ear is being tested on. Dashes would give away
+   the comma, and with it y against con. Chapter 1's Numbers keep their dashes.
+   The pack holds every word and how they join (flow.numberSpeech); this only arranges them. A price never ends in one euro (uno changes
+   before euros). A rep records against the one number word it leans on; the fused forms (dieciséis, veintidós, ciento) are heard only and record nothing. */
+const _numAny = n => (ALL_ITEMS || []).find(it => it.num === n);
+const _numSpeech = () => ((activePack().flow || {}).numberSpeech) || { join: " y ", cents: " con ", hundred: "ciento", euros: "euros", fused: {}, hourOne: "a la una", hourAt: "a las ", half: " y media" };
+function _numSay(n) {
+  const sp = _numSpeech(), w = k => ((_numAny(k) || {}).es || String(k));
+  if (n > 100) return sp.hundred + " " + _numSay(n - 100);
+  if (sp.fused && sp.fused[n]) return sp.fused[n];
+  if (_numAny(n)) return w(n);
+  return w(Math.floor(n / 10) * 10) + sp.join + w(n % 10);
+}
+function _priceRep(euros, cents, o) {                                   // o: { item, drop, euroWord, gtk }
+  o = o || {}; const sp = _numSpeech(), whole = cents == null, cc = whole ? "" : String(cents).padStart(2, "0");
+  return { type: "num_entry", kind: "price", arc: true, euros, cents: whole ? null : cents,
+    say: _numSay(euros) + (whole ? (o.euroWord ? " " + sp.euros : "") : (o.drop ? " " : sp.cents) + _numSay(cents)),
+    expected: String(euros).split("").concat(whole ? [] : [","].concat(cc.split(""))), shown: euros + (whole ? "" : "," + cc) + "\u00a0\u20ac",
+    item: o.item === undefined ? (_numAny(euros) || null) : o.item, gtk: o.gtk || null };
+}
+function _hourRep(h, half) {
+  const sp = _numSpeech();
+  return { type: "num_entry", kind: "hour", arc: true, hour: h, half: !!half, say: (h === 1 ? sp.hourOne : sp.hourAt + _numSay(h)) + (half ? sp.half : ""),
+    expected: String(h).split("").concat([":"], half ? ["3", "0"] : ["0", "0"]), shown: h + ":" + (half ? "30" : "00"), item: _numAny(h) || null };
+}
+function _composePriceHour(lesson) {
+  const qs = [], items = lesson.items || [], lean = lesson.lean || [], notes = lesson.notes || {};
+  if (!(state.lessons && state.lessons[lesson.id]) || items.some(it => exposuresOf(it) === 0)) qs.push({ type: "num_set", set: lesson.set, lesson, items, arc: true });   // met as a set, on the first play
+  const pick = a => sample(a, 1)[0], unit = () => pick([2, 3, 4, 5, 6, 7, 8, 9]);
+  const seen = new Set(), add = q => { const k = q.say; if (seen.has(k)) return false; seen.add(k); qs.push(q); return true; };
+  const fresh = make => { for (let i = 0; i < 12; i++) if (add(make())) return; };          // never the same price twice in a sitting
+  if (lesson.numbers === "hour") {
+    // THE HOUR: the board (said against printed), then ten heard times: the three pairs that trip people, an hour against its half, two more halves
+    qs.push({ type: "pairs", mode: "numeral", noRecord: true, boardLine: "Match each time to how it is said", arc: true, items: (lesson.board || []).map((p, i) => ({ id: "hourboard:" + i, es: p[0], num: p[1] })) });
+    const pairs = shuffle(lean.slice()), others = shuffle([3, 4, 5, 8, 9, 10]);
+    const pairReps = p => shuffle(p.slice()).map(h => _hourRep(h, false));
+    const h0 = others[0];
+    [pairReps(pairs[0] || [1, 11]), shuffle([_hourRep(h0, false), _hourRep(h0, true)]), pairReps(pairs[1] || [2, 12]),
+     [_hourRep(others[1], true), _hourRep(pick([1, 2, 6, 7]), true)], pairReps(pairs[2] || [6, 7])].forEach(g => g.forEach(add));
+    return qs;
+  }
+  const newTens = [30, 40, 60, 70, 80, 90], tens = [20].concat(newTens, [50]), T = () => pick(newTens);
+  const centsTen = () => pick([10, 20, 30, 40, 60, 70, 80, 90]);
+  if (lesson.part !== 2) {
+    // PART 1: four whole tens (one pair that trips people) · four joined with y (two lean on a unit and its ten: treinta y tres) · three with
+    // con · y against con, back to back (35, then 30,50) · three that mix both. Con cincuenta is about half the cents.
+    const tp = pick(lean.filter(p => tens.includes(p[0]) && tens.includes(p[1]))) || [60, 70];
+    shuffle(tp.concat(sample(newTens.filter(n => !tp.includes(n)), 2))).forEach(n => add(_priceRep(n, null)));
+    const ut = sample(lean.filter(p => p[0] < 10 && newTens.includes(p[1])), 2);
+    ut.forEach(p => add(_priceRep(p[1] + p[0], null, { item: _numAny(p[1]) })));
+    fresh(() => { const t = T(); return _priceRep(t + unit(), null, { item: _numAny(t) }); });
+    fresh(() => { const t = T(); return _priceRep(t + unit(), null, { item: _numAny(t), euroWord: true }); });
+    add(_priceRep(unit(), 50, { item: _numAny(50) }));
+    fresh(() => { const c = centsTen(); return _priceRep(unit(), c, { item: _numAny(c) }); });
+    fresh(() => { const c = centsTen(); return _priceRep(pick([10, 20]), c, { item: _numAny(c) }); });
+    const yc = T(); shuffle([_priceRep(yc + 5, null, { item: _numAny(yc) }), _priceRep(yc, 50, { item: _numAny(yc) })]).forEach(add);
+    fresh(() => { const t = T(); return _priceRep(t + unit(), 50, { item: _numAny(t) }); });
+    fresh(() => { const t = T(), c = centsTen(); return _priceRep(t + unit(), c, { item: _numAny(t) }); });
+    fresh(() => { const t = T(), c = centsTen(); return _priceRep(t, c, { item: _numAny(c) }); });
+    return qs;
+  }
+  // PART 2: eleven to fifteen, each once, one followed by the ten it is mistaken for (trece, treinta) · the other teens and a twenty by ear ·
+  // dos con cincuenta against doce con cincuenta · a teen or its ten with cents · con noventa y cinco · ciento twice · then con dropped, twice
+  const twin = pick(lean.filter(p => p[0] >= 13 && p[0] <= 15 && p[1] >= 30));
+  shuffle([11, 12, 13, 14, 15]).forEach(n => { add(_priceRep(n, null)); if (twin && twin[0] === n) add(_priceRep(twin[1], null)); });
+  shuffle([16, 17]).forEach(n => add(_priceRep(n, null, { item: null })));
+  add(_priceRep(pick([22, 23, 24, 25, 26, 27, 28, 29]), null, { item: null, euroWord: true }));
+  shuffle([_priceRep(2, 50, { item: _numAny(2) }), _priceRep(12, 50, { item: _numAny(12) })]).forEach(add);
+  const tn = pick([16, 17, 60, 70]), tc = pick([20, 40, 60, 80]);
+  add(_priceRep(tn, tc, { item: tn >= 60 ? _numAny(tn) : null }));
+  add(_priceRep(pick([9, 13, 14, 19, 24, 29]), 95, { item: _numAny(90) }));
+  let hundredSaid = false;
+  shuffle([pick([110, 112, 115]), pick([120, 130, 140, 150, 160, 170, 180, 190])]).forEach(n => { add(_priceRep(n, null, { item: null, gtk: hundredSaid ? null : notes.hundred })); hundredSaid = true; });
+  qs.push(_priceRep(12, 50, { item: _numAny(12), drop: true, gtk: notes.drop }));   // the note's own example, heard with con a few screens earlier
+  qs.push(_priceRep(tn, tc, { item: tn >= 60 ? _numAny(tn) : null, drop: true }));
+  return qs;
+}
+function _renderNumSetCard(q) {                                          // the set card of a chapter 2 number session: the pack's title, chips, worked examples and line
+  const body = $("#qbody"), L = q.lesson, set = q.set, hour = L.numbers === "hour", silent = _numSilent(), sp = _numSpeech();
+  body.appendChild(el(`<div class="qtype">${hour ? "The hour" : "Numbers"}</div>`));
+  body.appendChild(el(`<div class="num-title">${set.title}</div>`));
+  if (!silent) body.appendChild(el(`<div class="num-tap-hint">${icon("speaker", 15)}<span>Tap a ${hour ? "time" : "number"} to hear it.</span></div>`));
+  const chip = (n, w) => {
+    const c = el(`<button class="num-chip"><span class="n">${n}</span><span class="w">${w}</span></button>`);
+    c.addEventListener("click", () => { c.classList.add("heard"); if (!_numSilent()) speak(w); });
+    return c;
+  };
+  const grid = el(`<div class="num-grid${hour ? " num-hours" : ""}"></div>`);
+  if (hour) { for (let h = 1; h <= 12; h++) grid.appendChild(chip(h, h === 1 ? sp.hourOne : sp.hourAt + _numSay(h))); grid.appendChild(chip(":30", sp.half.trim())); }
+  else q.items.slice().sort((a, b) => a.num - b.num).forEach(it => grid.appendChild(chip(it.num, it.es)));
+  body.appendChild(grid);
+  if (set.examples && set.examples.length) { const ex = el(`<div class="num-ex"></div>`); set.examples.forEach(e => ex.appendChild(chip(e[0], e[1]))); body.appendChild(ex); }
+  if (set.line) body.appendChild(el(`<div class="num-line">${set.line}</div>`));
+  if (silent) { body.appendChild(el(`<div class="num-status">Numbers are an ear skill. This one is better with sound on.</div>`)); run.numSilentNoted = true; }
+  run.exposed = run.exposed || new Set();
+  q.items.forEach(it => { const id = itemId(it); if (!run.exposed.has(id)) { run.exposed.add(id); recordExposure(id); } });
+  const f = footer(`<button class="btn" id="cont">Continue</button>`);
+  f.querySelector("#cont").addEventListener("click", () => next());
+}
+function renderNumEntry(q) {
+  const silent = _numSilent(), body = $("#qbody"); _anchor(body);
+  const hour = q.kind === "hour", sep = hour ? ":" : ",";
+  const top = el(`<div class="top"></div>`);
+  top.appendChild(el(`<div class="direction">${silent ? "You read" : "You hear"}</div>`));
+  top.appendChild(el(`<div class="conv-cuewrap"><div class="cue-meaning conv-cue">${hour ? "Tap the time" : "Tap the price"}</div></div>`));
+  let supported = false, playing = false;
+  const spot = el(`<div class="num-spot phrase off"></div>`);
+  if (silent) {                                                        // the flashed twin: the words, once, in the one spot; "Show it again" is a supported rep, never a fail
+    const flash = () => { if (playing || run.answered) return; playing = true; spot.textContent = q.say; spot.classList.remove("off");
+      setTimeout(() => { spot.classList.add("off"); playing = false; }, Math.max(900, q.say.split(" ").length * 420)); };   /* [tune] */
+    top.appendChild(spot);
+    const again = el(`<button class="num-again">Show it again</button>`);
+    again.addEventListener("click", () => { if (playing || run.answered) return; supported = true; flash(); });
+    top.appendChild(again);
+    setTimeout(flash, 500);
+  } else {
+    const play = audioControl(slow => { if (slow) q.slow = true; slow ? speak(q.say, 0.55) : speak(q.say); }, { speed: true });
+    const row = el(`<div class="listen-stage inv-ask num-listen"></div>`); row.appendChild(play);
+    row.appendChild(el(`<div class="hint">Tap to hear it again</div>`));
+    top.appendChild(row);
+    setTimeout(() => { if (!run.answered) play._fire(); }, 350);   /* [tune] autoplay-on-entry */
+    setTimeout(() => listenEscape($("#footer") || footer(``), q, { keep: true }), 0);
+  }
+  const echo = el(`<div class="num-echo entry"></div>`); top.appendChild(echo);
+  _numSilentNote(top);
+  body.appendChild(top);
+  setTimeout(() => { const st = top.querySelector(".num-status"), pd = body.querySelector(".numpad"); if (st && pd && st.getBoundingClientRect().bottom > pd.getBoundingClientRect().top - 4) st.remove(); }, 0);   // a short phone has no room for the door line above the pad; the escape screen has just said it
+  const expected = q.expected, answers = el(`<div class="answers atpad"></div>`);
+  let pos = 0, wrong = 0;
+  // the readout starts EMPTY: only what was tapped, and for a price the euro sign waiting after it
+  const paint = () => { echo.innerHTML = expected.slice(0, pos).map(d => `<span class="in${d === sep ? " sep" : ""}">${d}</span>`).join("") + (hour ? "" : `<span class="eur">${pos ? "&nbsp;" : ""}&euro;</span>`); };
+  paint();
+  const pad = _numKeypad("digits", (key, val) => {
+    if (run.answered || playing) return;
+    if (val === expected[pos]) {
+      pos++; paint();
+      if (pos < expected.length) return;
+      run.answered = true;
+      const ok = wrong === 0; _recordSlotTime(q, ok);
+      const id = q.item ? itemId(q.item) : null;
+      if (id) { if (supported && ok) recordExposure(id); else recordAnswer(id, ok, { mode: "num_hear", scaffolded: !!q.slow }); }
+      if (!ok) run.wrong++;                                            // a miss informs; it never re-serves in the session
+      if (ok) playSound("correct"); haptic(ok ? "correct" : "wrong");
+      key.classList.add("correct");
+      spot.remove(); const ag = top.querySelector(".num-again"); if (ag) ag.remove();
+      echo.innerHTML = `<span class="rv">${q.say} <i>→</i> ${q.shown}</span>`;
+      pad.querySelectorAll(".vwrong").forEach(k => k.classList.remove("vwrong"));   // a slip a moment ago does not stay red on the answer
+      if (q.gtk) { const note = el(`<div class="res-note gtk num-note"><span class="cue-label note-label">Good to know</span>${q.gtk}</div>`); top.appendChild(note);
+        if (note.getBoundingClientRect().bottom > pad.getBoundingClientRect().top - 6) answers.classList.add("gone"); }   // a short phone has no room for the note above the pad: the pad has done its job and steps aside
+      const st = id && state.learn && state.learn[id];
+      _numDone(q, id ? () => _setQStrength(st ? Math.round(itemStrength(st)) : 0, ok) : null);
+    } else {
+      wrong++; haptic("wrong"); key.classList.add("vwrong");            // wrong-then-release, as the number screens do: it does not go in
+      setTimeout(() => key.classList.remove("vwrong"), 900);
+    }
+  }, null, sep);
+  answers.appendChild(pad); body.appendChild(answers);
+}
 function renderPairs(q) {
   const items = q.items;
   const numeral = q.mode === "numeral";            // numbers (rulings 2026-09-20): the numeral to its word, 7 to siete
   const reverse = q.mode === "reverse";            // a read session's lap (Tom 9/26): the meaning on the left, find the word
   const text = q.mode === "text" || numeral || reverse;      // (Tom, 9/12): the first board matches the WORDS - phrase to meaning, no audio
   const body = $("#qbody");
-  body.appendChild(el(`<div class="qtype">${numeral ? "Match each number to its word" : reverse ? "Match each meaning to its word" : text ? "Match each phrase to its meaning" : "Match the sound to its meaning"}</div>`));
+  body.appendChild(el(`<div class="qtype">${q.boardLine ? q.boardLine : numeral ? "Match each number to its word" : reverse ? "Match each meaning to its word" : text ? "Match each phrase to its meaning" : "Match the sound to its meaning"}</div>`));
   const grid = el(`<div class="pairs${text ? " pairs-text" : ""}${items.length > 6 ? " pairs-fit" : ""}" style="--rows:${items.length}"></div>`);   // boards over six rows fit ONE screen (Tom 9/20: Signs scrolled, Continue clipped)
   const audioOrder = shuffle(items.map((_, i) => i));
   let enOrder = shuffle(items.map((_, i) => i));
@@ -3996,7 +4163,7 @@ function renderPairs(q) {
       // a clean pair is a real review rep; a missed one records at low weight [tune]:
       // exposure only, so the slip neither advances nor resets the item (§5, artifact caption)
       const id = itemId(mi);
-      if (missed.has(id)) recordExposure(id); else recordAnswer(id, true, { mode: "pairs" });
+      if (q.noRecord) { /* a board of phrases that are not items (the hour's): nothing to record */ } else if (missed.has(id)) recordExposure(id); else recordAnswer(id, true, { mode: "pairs" });
       matched++;
       if (matched === items.length) { run.answered = true; setTimeout(() => reunite(), 420); }
       else if (chain) setTimeout(() => { if (!sel) cue(grid.querySelector(".pcard.audio:not(.matched)")); }, 650);   /* [tune] after the ding */
@@ -4039,8 +4206,8 @@ function renderPairs(q) {
     const barEl = document.querySelector(".pbar > i");
     if (barEl) { run.pct = Math.max(run.pct || 0, Math.round((run.idx + 1) / run.qs.length * 100)); barEl.style.width = run.pct + "%"; }
     const grown = el(`<div class="res-grown pairs-grown">
-      ${clean ? `<div class="pairs-tick">${clean} stronger</div>` : ""}
-      <div class="pairs-allset">${numeral ? "Match every number to its word." : reverse ? "Match each meaning to its word." : text ? "Every phrase, matched to what it means." : (items.length === 4 ? "Match the four sounds to their meanings and spellings." : "Match each sound to its meaning and its spelling.")}</div>
+      ${clean && !q.noRecord ? `<div class="pairs-tick">${clean} stronger</div>` : ""}
+      <div class="pairs-allset">${q.boardLine ? q.boardLine + "." : numeral ? "Match every number to its word." : reverse ? "Match each meaning to its word." : text ? "Every phrase, matched to what it means." : (items.length === 4 ? "Match the four sounds to their meanings and spellings." : "Match each sound to its meaning and its spelling.")}</div>
       ${isStaged("pairs-chain") ? "" : `<button class="btn res-cont">Continue</button>`}
     </div>`);
     let gone = false; const go = () => { if (gone) return; gone = true; slideOut(next); };

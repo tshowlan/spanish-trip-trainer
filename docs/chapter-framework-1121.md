@@ -36,7 +36,7 @@ Chapter 4's unit is the task. **A task earns a place only where English runs out
 |---|---|---|---|
 | 1 | Batch 4, asking for another and the Table's split | shipped v645 | live |
 | 2 | Batch 5, the end of the meal | shipped v653 | chapter 2's part only: the dessert question understood, a plain no, done, the plate taken, the dessert carrier for dietary learners |
-| 3 | **Numbers in chapter 2** | ruled 11/23 (docs/rulings-1123c-numbers.md), mock first | see below; moved up on Tom's word |
+| 3 | **Numbers in chapter 2** | STAGED v654 as `prices-hour` (ruled 11/23, docs/rulings-1123c-numbers.md; Tom's picks on the mock 11/25) | see below; moved up on Tom's word |
 | 4 | Batch 6, the Street for a phone | ruled in premise (11/16) | the three cuts, the pointing lines, the driver's line, the ride pick-up line |
 | 5 | Batch 7, small words | to write | bolsa and asking for one; tinto and blanco as said words; hoy and mañana |
 | 6 | Batch 9, Help: offering it | to write | one or two lines; safety, so chapter 2 |
