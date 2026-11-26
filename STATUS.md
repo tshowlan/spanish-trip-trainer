@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v657 (2026-11-26) — iOS 27 top bar: both test pages came back, and the answer is no (docs and the test pages' wording only)
+- THE ICON IS CONFIRMED FIXED on Tom's phone (remove and re-add, v656).
+- BOTH TEST PAGES printed YES and BOTH PICTURES SHOW NO. The pages judged by the top inset (59), which was the wrong test. Measured from the two screenshots: the first colour under the strip is (209,130,42), which is the gold band's colour 60pt down from its own top, and the orange peak sits where it would if the band began at the screen's top edge. So the page IS laid out from the top of the screen (inset 59, as before iOS 27), and the phone paints an opaque flat strip (#05060d, the page's ground) over the top 59pt. Page height reads 793 on an 852 screen; fixed-bottom elements still sit at the true bottom (Home's tab bar measures 18pt up, its CSS says 17).
+- CORRECTS v656: the app's top inset is not 0. The logo's position fits either reading; the test pages settle it.
+- NEITHER LEAD WORKS: manifest display "fullscreen" (A) and no manifest (B) both get the same strip. Three other projects' fixes were read (hermes-webui 8365, vanyaOS 138, javis-os 1180): all gave up edge to edge and took an opaque bar. No page-side way to show art behind the clock on iOS 27 is known. WebKit bug 325807 is the one cited to wait for (unverified).
+- NOTHING CHANGED IN THE APP. The test pages now say "Look behind the clock" instead of a verdict.
+
 ## v656 (2026-11-26) — iOS 27: the Home Screen icon as a PNG (live, cannot be staged); the top bar measured, two test pages for Tom's phone
 - TOM'S REPORT: after iOS 27 the header was "broken", and a fresh Add to Home Screen gave a letter T for the icon.
 - THE ICON: the app had no apple-touch-icon, only the manifest's SVG (which iOS 26 accepted on 10/20). Added apple-touch-icon.png (180), icon-192.png, icon-512.png: the settled v469 icon rendered from icon.svg with both rounded rects made square (opaque; iOS cuts its own corners), a link tag in index.html, and the two PNGs ahead of the SVG in the manifest. A head tag is read when the icon is added, so this cannot ride a staged switch; it shipped live. NOT YET CONFIRMED on iOS 27: Tom removes and re-adds.

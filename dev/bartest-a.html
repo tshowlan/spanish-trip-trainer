@@ -39,8 +39,7 @@
       var standalone = (navigator.standalone === true) || (window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches));
       var v = document.getElementById("verdict"), how = document.getElementById("how");
       if (!standalone) { v.textContent = "Not on the Home Screen yet"; v.className = "v no"; how.textContent = "In Safari: Share, Add to Home Screen, then open it from its icon."; }
-      else if (top > 0) { v.textContent = "YES: the page reaches under the clock"; v.className = "v ok"; how.textContent = "The gold should run right up behind the time and battery."; }
-      else { v.textContent = "NO: the page starts below the clock"; v.className = "v no"; how.textContent = "The strip behind the time is flat, and the gold starts under it."; }
+      else { v.textContent = "Look behind the clock"; v.className = "v no"; how.textContent = "Bright yellow behind the time means the page shows through. A flat dark strip means the phone has covered it. The numbers below cannot tell the two apart (11/26: the inset read 59 while the strip hid the page)."; }
       var m = (navigator.userAgent.match(/OS (\d+[_\d]*)/) || [])[1] || "?";
       var rows = [["Top inset", top], ["Bottom inset", bottom], ["Page height", window.innerHeight], ["Screen height", screen.height], ["iOS says", m.replace(/_/g, ".")]];
       document.getElementById("t").innerHTML = rows.map(function (r) { return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td></tr>"; }).join("");
