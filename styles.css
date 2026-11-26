@@ -2091,6 +2091,7 @@ img.scene-art { width: 286px; }
 .num-echo.entry { gap: 4px; }
 .num-echo.entry .eur { color: var(--text-dim); opacity: .55; }
 .num-echo.entry .sep { color: var(--accent-2, var(--accent)); }
+.num-echo.entry .given { color: var(--text-dim); }   /* a spot the app filled in after three wrong taps (Tom 11/26) */
 .num-echo.entry .rv { font-size: 20px; line-height: 1.3; }
 .num-spot.phrase { font-size: 24px; min-height: 36px; }
 .num-note { margin-top: 10px; }

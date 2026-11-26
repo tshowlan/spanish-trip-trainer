@@ -1173,6 +1173,13 @@ function _newFirst(lesson, qs) {
 }
 function startLesson(lesson) {
   if (lesson.chain) return renderChain(lesson);   // M4 boss lesson — a chat-style dialogue (§7.5)
+  // A PAUSED SESSION OPENED FROM ITS ROW (Tom 11/26, STAGED learn-resume): it asks, continue or start over. Before this the row started it
+  // over without a word and the paused copy stayed on Home. The pause still ends with the day (11/4).
+  const p = state.paused;
+  if (isStaged("learn-resume") && p && !p.review && p.lessonId === lesson.id) {
+    if (p.day === dayKey() && p.n > 0) return pausedSheet(lesson);
+    delete state.paused; save();
+  }
   // THE RETURN DOOR (depth ruling 5): a completed lesson greets before it drills. NO DOOR (Tom 11/3, STAGED replay): the row's
   // ring and the tile's preview already say it; a completed session opens its replay straight in, composed by the door's three cases
   if (lessonDone(lesson.id)) return isStaged("replay") ? startReplay(lesson) : renderReturnDoor(lesson);
@@ -2427,6 +2434,20 @@ function resumeSession() {
   if (!lesson || !qs.length || p.idx >= qs.length) { toast("That session is gone. Start it fresh."); return renderHome(); }
   run = { lesson, qs, idx: p.idx, wrong: p.wrong, restored: p.restored, answered: false, reasks: {}, pct: p.pct, review: p.review, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
+}
+function pausedSheet(lesson) {                                            // copy is Code's draft for chat (ledger 11/26)
+  document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
+  const p = state.paused;
+  const wrap = el(`<div class="sheet-wrap"><div class="sheet-backdrop"></div><div class="sheet"><div class="sheet-grab"></div>
+    <div class="sheet-title">You paused this one</div><div class="confirm-body">${p.idx} of ${p.n} done. Continue where you left off, or start it over.</div>
+    <button class="btn" id="ps-go">Continue</button>
+    <button class="btn grey" id="ps-over">Start over</button></div></div>`);
+  const close = () => { wrap.classList.remove("show"); setTimeout(() => wrap.remove(), 260); };
+  document.body.appendChild(wrap);
+  requestAnimationFrame(() => wrap.classList.add("show"));
+  wrap.querySelector(".sheet-backdrop").addEventListener("click", close);
+  wrap.querySelector("#ps-go").addEventListener("click", () => { close(); resumeSession(); });
+  wrap.querySelector("#ps-over").addEventListener("click", () => { close(); delete state.paused; save(); startLesson(lesson); });
 }
 function sessionSheet() {
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
@@ -4060,14 +4081,24 @@ function renderNumEntry(q) {
   body.appendChild(top);
   setTimeout(() => { const st = top.querySelector(".num-status"), pd = body.querySelector(".numpad"); if (st && pd && st.getBoundingClientRect().bottom > pd.getBoundingClientRect().top - 4) st.remove(); }, 0);   // a short phone has no room for the door line above the pad; the escape screen has just said it
   const expected = q.expected, answers = el(`<div class="answers atpad"></div>`);
-  let pos = 0, wrong = 0;
+  let pos = 0, wrong = 0, here = 0, giving = false; const given = new Set();
   // the readout starts EMPTY: only what was tapped, and for a price the euro sign waiting after it
-  const paint = () => { echo.innerHTML = expected.slice(0, pos).map(d => `<span class="in${d === sep ? " sep" : ""}">${d}</span>`).join("") + (hour ? "" : `<span class="eur">${pos ? "&nbsp;" : ""}&euro;</span>`); };
+  const paint = () => { echo.innerHTML = expected.slice(0, pos).map((d, i) => `<span class="in${d === sep ? " sep" : ""}${given.has(i) ? " given" : ""}">${d}</span>`).join("") + (hour ? "" : `<span class="eur">${pos ? "&nbsp;" : ""}&euro;</span>`); };
   paint();
+  let land = null;
   const pad = _numKeypad("digits", (key, val) => {
-    if (run.answered || playing) return;
-    if (val === expected[pos]) {
-      pos++; paint();
+    if (run.answered || playing || giving) return;
+    if (val === expected[pos]) land(key);
+    else {
+      wrong++; here++; haptic("wrong"); key.classList.add("vwrong");    // wrong-then-release, as the number screens do: it does not go in
+      setTimeout(() => key.classList.remove("vwrong"), 900);
+      // NEVER STUCK (Tom 11/26): three wrong taps on one spot and the app puts that one in, dim, and the learner goes on from there.
+      // The rep was a miss from the first wrong tap, so nothing about the record changes.
+      if (here >= 3) { giving = true; setTimeout(() => { giving = false; if (!run || run.answered || !echo.isConnected) return; given.add(pos); land(null); }, 600); }   /* [tune] */
+    }
+  }, null, sep);
+  land = key => {
+      pos++; here = 0; paint();
       if (pos < expected.length) return;
       run.answered = true;
       const ok = wrong === 0; _recordSlotTime(q, ok);
@@ -4075,7 +4106,7 @@ function renderNumEntry(q) {
       if (id) { if (supported && ok) recordExposure(id); else recordAnswer(id, ok, { mode: "num_hear", scaffolded: !!q.slow }); }
       if (!ok) run.wrong++;                                            // a miss informs; it never re-serves in the session
       if (ok) playSound("correct"); haptic(ok ? "correct" : "wrong");
-      key.classList.add("correct");
+      if (key) key.classList.add("correct");
       spot.remove(); const ag = top.querySelector(".num-again"); if (ag) ag.remove();
       echo.innerHTML = `<span class="rv">${q.say} <i>→</i> ${q.shown}</span>`;
       pad.querySelectorAll(".vwrong").forEach(k => k.classList.remove("vwrong"));   // a slip a moment ago does not stay red on the answer
@@ -4083,11 +4114,7 @@ function renderNumEntry(q) {
         if (note.getBoundingClientRect().bottom > pad.getBoundingClientRect().top - 6) answers.classList.add("gone"); }   // a short phone has no room for the note above the pad: the pad has done its job and steps aside
       const st = id && state.learn && state.learn[id];
       _numDone(q, id ? () => _setQStrength(st ? Math.round(itemStrength(st)) : 0, ok) : null);
-    } else {
-      wrong++; haptic("wrong"); key.classList.add("vwrong");            // wrong-then-release, as the number screens do: it does not go in
-      setTimeout(() => key.classList.remove("vwrong"), 900);
-    }
-  }, null, sep);
+  };
   answers.appendChild(pad); body.appendChild(answers);
 }
 function renderPairs(q) {

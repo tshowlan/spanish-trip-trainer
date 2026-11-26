@@ -389,3 +389,5 @@ luminous law.)
 - 2026-11-24 — (Tom) The register covers sentence structure (a tense, a command, a shape), not vocabulary. Ten word-level rows leave it; seven remain. Supersedes the "one-off forms" wording of the same day and section 2 of rulings-1124b.
 - 2026-11-24 — (Tom) Batch 5 shipped (v653), with the third Falta line and the traigo sentence kept. card-pair, three-to-a-tag, and reply-stays stay staged until Tom names them.
 - 2026-11-25 — (Tom, on the mock) The corner key is a key like the others, not gold. The readout in Prices you'll hear and The hour starts empty, with a dim euro sign on a price. The 11/24 readout law is no longer pending. Built staged as "prices-hour" (v654).
+- 2026-11-26 — (Tom, playing v654) A paused session opened from Learn offers Continue or Start over; the pause keeps its 11/4 limit, the end of the day. Built staged as "learn-resume" (v655).
+- 2026-11-26 — (Tom, playing v654) Nobody is left stuck on a heard price or time: three wrong taps on one spot and the app fills that spot in. Built inside "prices-hour" (v655). A hint was the other option; not built.

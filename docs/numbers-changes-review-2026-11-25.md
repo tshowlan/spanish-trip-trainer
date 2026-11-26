@@ -60,3 +60,12 @@
 - "Doors print 17:00. People say a las cinco." (The hour's set card)
 - The midday-closing note and the six replies under the two ¿A qué hora? lines.
 - "con noventa y cinco" as the way a ,95 price is said.
+
+## Added 2026-11-26, from your play (v655, still staged)
+
+| Where | Was | Now |
+|---|---|---|
+| A price or a time you cannot get | wrong taps did nothing, with no limit | three wrong taps on one spot and the app fills that spot in, dim; you go on from there. It counts as a miss, as any wrong tap already did |
+| A paused session, opened from Learn (its own switch, learn-resume) | started over without asking; the paused copy stayed on Home | a sheet: "You paused this one. 6 of 17 done. Continue where you left off, or start it over." Continue · Start over |
+
+"euros" in the voice: once per price session, on purpose (chat's rule: it may follow a whole price and is never needed for the answer).

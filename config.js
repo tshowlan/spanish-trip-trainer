@@ -8,7 +8,7 @@ const VAPID_PUBLIC = "BEYdbCF7Fr9aPAWN4qIuPxYYI7QYJZ_-zjBjtSt9XtQJmkkmk-1x68SjXm
 
 // build stamp: printed beside the SW version — a MISMATCH means the device is executing
 // stale JavaScript regardless of what the worker claims (the 2026-07-26 vault saga).
-const APP_BUILD = "v654";
+const APP_BUILD = "v655";
 
 /* STAGING BEFORE LIVE (Tom's process change, 2026-09-08): increments deploy GATED behind a
    staging switch (Profile > Test Lab > Staging). Tom flips it, plays the increment, and "ship"
@@ -18,7 +18,8 @@ const APP_BUILD = "v654";
 const TRIP_BATCHES = [
 ];
 const STAGED = {
-  "prices-hour": "Numbers in chapter 2 (chat 11/23, your two picks 11/25): three new sessions. Prices you'll hear \u00b7 Part 1 (the tens, y, and con) before Street sentences; Prices you'll hear \u00b7 Part 2 (eleven to fifteen, the other teens by ear) and The hour (a las, a la una, y media) before Shop sentences. A price or a time is said once and tapped in, with a new corner key: a comma for the cents, a colon for the hour. The Shop gains \u00bfA qu\u00e9 hora ___? with a card and two lines; Paying's two totals speak real prices; Numbers \u00b7 2 has a new line",
+  "learn-resume": "A paused session opened from Learn asks first (Tom 11/26): Continue where you left off, or Start over. Today its row starts it over without a word and the paused copy stays on Home. The pause still ends with the day",
+  "prices-hour": "Numbers in chapter 2 (chat 11/23, your two picks 11/25): three new sessions. Prices you'll hear \u00b7 Part 1 (the tens, y, and con) before Street sentences; Prices you'll hear \u00b7 Part 2 (eleven to fifteen, the other teens by ear) and The hour (a las, a la una, y media) before Shop sentences. A price or a time is said once and tapped in, with a new corner key: a comma for the cents, a colon for the hour. The Shop gains \u00bfA qu\u00e9 hora ___? with a card and two lines; Paying's two totals speak real prices; Numbers \u00b7 2 has a new line. Three wrong taps on one spot and the app fills that one in, dim (Tom 11/26)",
   "reply-stays": "They answer: the reply is only spoken on its own screen. If you moved on while your own line was still being said, the reply played over the next screen (Tom 11/24: the Ya he terminado card said its line, then tinto o blanco). Tapping play twice no longer says the reply twice",
   "three-to-a-tag": "No more than three lines of one kind in a session, so one play reaches every line (chat 11/23): Help loses Necesito un hospital, por favor (the hospital keeps two lines); your own dietary lines at the Counter no longer crowd its ¿Tiene? lines; the cross-contamination question sits with the fryer question. 11/24: a learner with four or more allergies gets ¿Lleva ___? for their first three (the declaring line still names them all)",
   "card-pair": "Intro cards: the second meaning on a card is the same one every time and close to the right one (the next word or card of its own session, or the pack's own word for it where it has no relative: another against the same, not against Wednesday). Ninety cards carry a written one (chat 11/23: la cuenta against the menu, el hotel against the hospital; the eight dietary pairs passed, four more written: mesa against the bar, la llave against the door)",
