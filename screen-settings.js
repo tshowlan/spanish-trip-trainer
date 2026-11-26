@@ -103,6 +103,9 @@ function renderProfile() {
     row.querySelector("input").addEventListener("change", e => { if (optIn) setStagedOn(f, e.target.checked); else setStagedOff(f, !e.target.checked); toast(`${f}: ${e.target.checked ? "on" : "off"}`); });
     stg.querySelector("#lab-staged-list").appendChild(row);
   });
+  // the sound session's readout (11/26, the silent-switch question): what the phone answered when the app asked for the playback lane
+  const ss = window._sndSess, as = navigator.audioSession;
+  stg.appendChild(el(`<div class="set-d" style="margin-top:8px;opacity:.8">Sound session: ${as ? `now ${as.type}${as.state ? ", " + as.state : ""} · at load ${ss && ss.load || "none"} · in a tap ${ss && ss.tap || "not asked"}${ss && ss.taps ? " (" + ss.taps + ")" : ""}` : "this browser does not offer it"}</div>`));
   wrap.appendChild(stg);
   // the session's end, played with a fabricated result (Tom 11/5; the v609 ground options retired 11/6, Current won)
   const cerBtn = el(`<button class="btn-quiet" style="margin:6px 0 10px">Play the session's end (a pretend result: 4 new, 6 stronger, 1 restored)</button>`);

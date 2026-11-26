@@ -1175,11 +1175,7 @@ function startLesson(lesson) {
   if (lesson.chain) return renderChain(lesson);   // M4 boss lesson — a chat-style dialogue (§7.5)
   // A PAUSED SESSION OPENED FROM ITS ROW (Tom 11/26, STAGED learn-resume): it asks, continue or start over. Before this the row started it
   // over without a word and the paused copy stayed on Home. The pause still ends with the day (11/4).
-  const p = state.paused;
-  if (isStaged("learn-resume") && p && !p.review && p.lessonId === lesson.id) {
-    if (p.day === dayKey() && p.n > 0) return pausedSheet(lesson);
-    delete state.paused; save();
-  }
+  if (pausedDue(lesson)) return pausedSheet(lesson);
   // THE RETURN DOOR (depth ruling 5): a completed lesson greets before it drills. NO DOOR (Tom 11/3, STAGED replay): the row's
   // ring and the tile's preview already say it; a completed session opens its replay straight in, composed by the door's three cases
   if (lessonDone(lesson.id)) return isStaged("replay") ? startReplay(lesson) : renderReturnDoor(lesson);
@@ -2435,6 +2431,15 @@ function resumeSession() {
   run = { lesson, qs, idx: p.idx, wrong: p.wrong, restored: p.restored, answered: false, reasks: {}, pct: p.pct, review: p.review, missed: new Map(), daylight: fieldDaylight(), soundOff: false };
   renderQuestion();
 }
+function pausedDue(lesson) {                                              // a pause of THIS session, from today? An older one is dropped here.
+  const p = state.paused;
+  if (!isStaged("learn-resume") || !p || p.review || !lesson || p.lessonId !== lesson.id) return false;
+  if (p.day === dayKey() && p.n > 0) return true;
+  delete state.paused; save(); return false;
+}
+/* THE SHEET COMES FIRST (Tom's recording 11/26): the row's launch played, the list came back with the sheet on it, and the session then
+   opened with no launch at all. Now a Learn row with a pause opens the sheet straight away, and the launch plays from the button the
+   learner picks, as the Practice sheet's options do. */
 function pausedSheet(lesson) {                                            // copy is Code's draft for chat (ledger 11/26)
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());
   const p = state.paused;
@@ -2446,8 +2451,10 @@ function pausedSheet(lesson) {                                            // cop
   document.body.appendChild(wrap);
   requestAnimationFrame(() => wrap.classList.add("show"));
   wrap.querySelector(".sheet-backdrop").addEventListener("click", close);
-  wrap.querySelector("#ps-go").addEventListener("click", () => { close(); resumeSession(); });
-  wrap.querySelector("#ps-over").addEventListener("click", () => { close(); delete state.paused; save(); startLesson(lesson); });
+  let gone = false;
+  const launch = (btn, fn) => { if (gone) return; gone = true; enterWith(btn, () => { wrap.remove(); fn(); }); };
+  wrap.querySelector("#ps-go").addEventListener("click", e => launch(e.currentTarget, () => resumeSession()));
+  wrap.querySelector("#ps-over").addEventListener("click", e => launch(e.currentTarget, () => { delete state.paused; save(); startLesson(lesson); }));
 }
 function sessionSheet() {
   document.querySelectorAll(".sheet-wrap").forEach(n => n.remove());

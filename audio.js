@@ -70,6 +70,7 @@ function _renderClip(notes, seconds, normTo) {
 const _clips = {};
 try {
   if (navigator.audioSession) navigator.audioSession.type = "playback";
+  window._sndSess = { load: navigator.audioSession ? navigator.audioSession.type : null, tap: null, taps: 0 };   // what the phone answered, for the Test Lab's readout
   // gains re-leveled 8/19 (Tom: the ding sat well under the voice): correct/win bake at
   // 0.45/0.4 peak (~+8dB over the old 0.18, still clip-safe with note overlap); wrong stays
   // deliberately soft - errors never blare.
@@ -85,6 +86,11 @@ try {
 // iOS lets an <audio> element play programmatically only after it has once played inside a
 // user gesture — prime each clip (muted play/pause) on taps until all three are unlocked.
 document.addEventListener("pointerdown", () => {
+  // SOUND WITH THE SILENT SWITCH ON (Tom 11/26, STAGED silent-sound): after iOS 27 the voice only plays with the ringer on. The app has
+  // asked for the playback lane at load since v208; this asks again inside each tap, where iOS honours more. A try, not a known fix.
+  if (navigator.audioSession && typeof isStaged === "function" && isStaged("silent-sound")) {
+    try { navigator.audioSession.type = "playback"; if (window._sndSess) { window._sndSess.tap = navigator.audioSession.type; window._sndSess.taps++; } } catch (e) { if (window._sndSess) window._sndSess.tap = "refused: " + (e && e.message); }
+  }
   for (const k in _clips) {
     const el = _clips[k];
     if (el._primed) continue;
