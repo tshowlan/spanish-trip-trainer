@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- TOP BAR TEST B (11/26): after iOS 27 the Home Screen app no longer draws under the status bar. This throwaway page is added to the
+       Home Screen by itself to see whether leaving the manifest out brings that back. It touches nothing in the app. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Bar test B" />
+  <meta name="theme-color" content="#05060d" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+  <title>Bar test B</title>
+  <style>
+    html, body { margin: 0; background: #05060d; color: #f2efe6; font: 17px/1.45 -apple-system, system-ui, sans-serif; }
+    .band { position: fixed; top: 0; left: 0; right: 0; height: 150px; background: linear-gradient(#e6c62a, #c96a2b 55%, #05060d); }
+    .wrap { position: relative; padding: calc(170px + env(safe-area-inset-top)) 24px 40px; }
+    h1 { font-size: 24px; margin: 0 0 6px; }
+    .v { font-size: 30px; font-weight: 700; margin: 14px 0 6px; }
+    .ok { color: #7fd08a; } .no { color: #e6c62a; }
+    table { border-collapse: collapse; margin-top: 16px; } td { padding: 4px 14px 4px 0; color: #a7a494; } td + td { color: #f2efe6; }
+    #probe { position: fixed; top: 0; left: 0; width: 0; height: 0; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); visibility: hidden; }
+  </style>
+</head>
+<body>
+  <div class="band"></div><div id="probe"></div>
+  <div class="wrap">
+    <h1>Bar test B</h1>
+    <div>This copy uses the older Apple tags only.</div>
+    <div class="v" id="verdict"></div>
+    <div id="how"></div>
+    <table id="t"></table>
+  </div>
+  <script>
+    function read() {
+      var cs = getComputedStyle(document.getElementById("probe"));
+      var top = parseFloat(cs.paddingTop) || 0, bottom = parseFloat(cs.paddingBottom) || 0;
+      var standalone = (navigator.standalone === true) || (window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches));
+      var v = document.getElementById("verdict"), how = document.getElementById("how");
+      if (!standalone) { v.textContent = "Not on the Home Screen yet"; v.className = "v no"; how.textContent = "In Safari: Share, Add to Home Screen, then open it from its icon."; }
+      else if (top > 0) { v.textContent = "YES: the page reaches under the clock"; v.className = "v ok"; how.textContent = "The gold should run right up behind the time and battery."; }
+      else { v.textContent = "NO: the page starts below the clock"; v.className = "v no"; how.textContent = "The strip behind the time is flat, and the gold starts under it."; }
+      var m = (navigator.userAgent.match(/OS (\d+[_\d]*)/) || [])[1] || "?";
+      var rows = [["Top inset", top], ["Bottom inset", bottom], ["Page height", window.innerHeight], ["Screen height", screen.height], ["iOS says", m.replace(/_/g, ".")]];
+      document.getElementById("t").innerHTML = rows.map(function (r) { return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td></tr>"; }).join("");
+    }
+    read(); window.addEventListener("resize", read); setTimeout(read, 600);
+  </script>
+</body>
+</html>

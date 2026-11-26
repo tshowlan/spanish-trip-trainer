@@ -32,6 +32,9 @@
   <link rel="apple-touch-startup-image" href="./launch/launch-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
   <link rel="apple-touch-startup-image" href="./launch/launch-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
   <title>Tripfluent</title>
+  <!-- the Home Screen icon as a PNG (11/26): the app had only the manifest's SVG, and after iOS 27 a fresh Add to Home Screen drew a letter T
+       instead. The same settled icon (v469), square and opaque; iOS cuts its own corners. Bump ?v= when icon.svg changes, and re-render the PNGs. -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=656" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="preload" href="./fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="./fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
