@@ -2080,6 +2080,13 @@ clean on both packs. **No live browser check this session** — worth a device p
 ## v499 (2026-10-25) — the typed lap keeps the English in view; no doubled replies
 - Tom: with the keyboard up, the typed beat showed only the field. The field now sits in flow right under the English (the phone keeps the cue in view when it scrolls the field up). A reply set never carries two answers that mean the same (Sí, claro and Claro): ¿Puedo pagar en efectivo? answers Sí, claro / Solo tarjeta / Un momento. All sets scanned: no doubled meanings.
 
+## v659 (2026-11-27): a Sound check box in the Test Lab (measuring only)
+- Tom on v658, phone on silent: the right/wrong chime plays, the voice does not, and he could not find the "Sound session" line (it was one dim line at the foot of the staging box).
+- What that tells us: the chime is an audio clip and the voice is the phone's speech engine. After iOS 27 the clip still ignores the silent switch and the speech engine obeys it. Whether any page-side ask changes that is not known yet.
+- Built: Profile > Test Lab > "Sound check" box, titled with the build number. Six buttons (the chime; the voice as today; the voice asking for media sound in the tap; the voice with a silent clip under it; the voice with the phone choosing the sound kind; the chime then the voice). Under them, what the phone reported for each: started, ended, and the sound session at that moment. The old dim line moved to the top of that readout.
+- Nothing in a session changed. Button 4's silent clip exists only in this box (audio.js still forbids a keeper in sessions, v211).
+- Next, by result: if a button is heard on silent, that way of speaking gets staged for sessions. If none is, the voice cannot be made to play on silent from a web page on iOS 27, and the choices are recorded voice clips (the lane the chime uses) or a line telling the learner to turn the ringer on. That is Tom's call, not built.
+
 ## v658 (2026-11-26) — the paused sheet comes before the launch (learn-resume, staged); STAGED "silent-sound", a try at the voice on a silenced iPhone after iOS 27
 - TOM'S RECORDING (8s, read as 33 frames): the row's gold launch played (1.5 to 1.75s), the Learn list came back with the sheet on it (2.0s), and after Continue the session opened with no launch at all (4.25s).
 - NOW (still staged, learn-resume): a Learn row with a pause from today opens the sheet at once, no launch. The launch plays from the button picked (Continue or Start over), the way the Practice sheet's options launch; a second tap on the button does nothing. A row with no pause launches as before. `pausedDue(lesson)` is the one test, used by the row and by startLesson.

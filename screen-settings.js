@@ -103,10 +103,49 @@ function renderProfile() {
     row.querySelector("input").addEventListener("change", e => { if (optIn) setStagedOn(f, e.target.checked); else setStagedOff(f, !e.target.checked); toast(`${f}: ${e.target.checked ? "on" : "off"}`); });
     stg.querySelector("#lab-staged-list").appendChild(row);
   });
-  // the sound session's readout (11/26, the silent-switch question): what the phone answered when the app asked for the playback lane
-  const ss = window._sndSess, as = navigator.audioSession;
-  stg.appendChild(el(`<div class="set-d" style="margin-top:8px;opacity:.8">Sound session: ${as ? `now ${as.type}${as.state ? ", " + as.state : ""} · at load ${ss && ss.load || "none"} · in a tap ${ss && ss.tap || "not asked"}${ss && ss.taps ? " (" + ss.taps + ")" : ""}` : "this browser does not offer it"}</div>`));
   wrap.appendChild(stg);
+  // SOUND CHECK (Tom 11/27): on iOS 27, with the silent switch on, the chime plays and the voice does not. Six buttons, each one way of
+  // making a sound, and under them what the phone answered. A measuring tool for Tom's phone: it changes nothing in a session.
+  {
+    const as = navigator.audioSession, ss = window._sndSess, hasV = "speechSynthesis" in window;
+    const sess = () => as ? `${as.type}${as.state ? "/" + as.state : ""}` : "no session";
+    const sc = el(`<div class="lab-row" style="border:1px solid var(--accent-2);border-radius:10px;padding:8px 10px;display:block;margin-top:8px"><div style="font-weight:700">Sound check · ${APP_BUILD}</div>
+      <div class="set-d" style="margin-top:4px">Put the phone on silent. Tap each button, wait for it to finish, and note which ones you hear. Then screenshot this box.</div>
+      <div id="sc-btns" style="margin-top:6px"></div>
+      <div class="set-d" id="sc-log" style="margin-top:6px">Sound session: ${as ? `now ${sess()} · at load ${ss && ss.load || "none"} · in a tap ${ss && ss.tap || "not asked"}${ss && ss.taps ? " (" + ss.taps + ")" : ""}` : "this browser does not offer it"}</div></div>`);
+    const log = sc.querySelector("#sc-log");
+    const row = n => { const d = el(`<div></div>`); log.appendChild(d); return t => { d.textContent = `${n}: ${t}`; }; };
+    // one spoken line, with what the phone reports about it: whether it started, when it ended, and the sound session at each point
+    const sayIt = (n, before, after) => {
+      const put = row(n), t0 = performance.now(), sec = () => ((performance.now() - t0) / 1000).toFixed(1) + "s", parts = [];
+      const add = t => { parts.push(t); put(parts.join(" · ")); };
+      if (!hasV) return add("this browser has no voice");
+      try { if (before) before(); } catch (e) { add("refused: " + (e && e.message)); }
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance("Una mesa para dos, por favor."), lang = (typeof activePack === "function" ? activePack().tts : "es-ES"), v = voiceFor(lang);
+      u.lang = lang; if (v) u.voice = v; u.rate = 0.9;
+      let done = false; const end = t => { if (done) return; done = true; add(t); if (after) { try { after(); } catch (e) {} } };
+      u.onstart = () => add(`started ${sec()}, ${sess()}`);
+      u.onend = () => end(`ended ${sec()}`);
+      u.onerror = e => end(`error ${e && e.error} at ${sec()}`);
+      add(`asked, ${sess()}`);
+      speechSynthesis.speak(u);
+      setTimeout(() => end("no end reported after 8s"), 8000);
+    };
+    // the clip for button 4: two seconds of a 20Hz tone far below hearing, looped. Rendered here, never in a session (audio.js forbids a keeper there)
+    let under = null;
+    try { _renderClip([[20, 0, 1.9, "sine", 0.001]], 2).then(a => { a.loop = true; under = a; }); } catch (e) {}
+    const tests = [
+      ["1 · The chime", () => { const put = row(1), c = _clips.correct; if (!c) return put("no clip"); c.currentTime = 0; c.play().then(() => put(`played, ${sess()}`)).catch(e => put("refused: " + (e && e.message))); }],
+      ["2 · The voice, as the app says it today", () => sayIt(2)],
+      ["3 · The voice, asking for media sound in this tap", () => sayIt(3, () => { if (as) as.type = "playback"; })],
+      ["4 · The voice, with a silent clip playing under it", () => sayIt(4, () => { if (as) as.type = "playback"; if (under) under.play().catch(() => {}); }, () => { if (under) { under.pause(); under.currentTime = 0; } })],
+      ["5 · The voice, the phone choosing the kind of sound", () => sayIt(5, () => { if (as) as.type = "auto"; }, () => { if (as) as.type = "playback"; })],
+      ["6 · The chime, then the voice", () => { const c = _clips.correct; if (c) { c.currentTime = 0; c.play().catch(() => {}); } setTimeout(() => sayIt(6), 600); }]
+    ];
+    tests.forEach(([label, fn]) => { const b = el(`<button class="btn-quiet" style="display:block;margin:4px 0;text-align:left">${label}</button>`); b.addEventListener("click", fn); sc.querySelector("#sc-btns").appendChild(b); });
+    wrap.appendChild(sc);
+  }
   // the session's end, played with a fabricated result (Tom 11/5; the v609 ground options retired 11/6, Current won)
   const cerBtn = el(`<button class="btn-quiet" style="margin:6px 0 10px">Play the session's end (a pretend result: 4 new, 6 stronger, 1 restored)</button>`);
   cerBtn.addEventListener("click", () => {
